@@ -1,4 +1,4 @@
-package convert
+package integers
 
 import (
 	"github.com/funtimecoding/go-library/assert"

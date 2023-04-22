@@ -1,4 +1,4 @@
-package ranges
+package slice_sum
 
 func Float(
 	input []float64,

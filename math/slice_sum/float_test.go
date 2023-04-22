@@ -1,4 +1,4 @@
-package ranges
+package slice_sum
 
 import (
 	"github.com/funtimecoding/go-library/assert"

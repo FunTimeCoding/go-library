@@ -1,4 +1,4 @@
-package strings
+package list
 
 func Join[T any](slices [][]T) []T {
 	var length int

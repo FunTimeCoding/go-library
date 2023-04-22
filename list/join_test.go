@@ -1,4 +1,4 @@
-package strings
+package list
 
 import (
 	"github.com/funtimecoding/go-library/assert"

@@ -5,16 +5,12 @@ import (
 	"strings"
 )
 
-func ToIntegerStrict(number string) int {
-	parsed, fail := strconv.ParseInt(
-		strings.TrimSpace(number),
-		10,
-		32,
-	)
+func ToIntegerStrict(s string) int {
+	result, e := strconv.ParseInt(strings.TrimSpace(s), 10, 32)
 
-	if fail != nil {
-		panic(fail)
+	if e != nil {
+		panic(e)
 	}
 
-	return int(parsed)
+	return int(result)
 }

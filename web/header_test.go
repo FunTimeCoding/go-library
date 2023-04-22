@@ -16,3 +16,13 @@ func TestTextHeader(t *testing.T) {
 		mock.Headers,
 	)
 }
+
+func TestObjectHeader(t *testing.T) {
+	mock := writer_mock.New()
+	ObjectHeader(mock)
+	assert.Any(
+		t,
+		http.Header{"Content-Type": {"application/json"}},
+		mock.Headers,
+	)
+}

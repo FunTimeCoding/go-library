@@ -1,5 +1,7 @@
 package web
 
 const ContentTypeHeader = "Content-Type"
+const UserAgentHeader = "User-Agent"
 
-const textContentType = "text/plain"
+const TextContentType = "text/plain"
+const ObjectContentType = "application/json"

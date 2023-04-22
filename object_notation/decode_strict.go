@@ -1,13 +1,10 @@
 package object_notation
 
-import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/errors"
-)
+import "github.com/funtimecoding/go-library/errors"
 
 func DecodeStrict(
 	value string,
 	structure any,
 ) {
-	errors.PanicOnError(json.Unmarshal([]byte(value), structure))
+	errors.PanicOnError(Decode(value, structure))
 }

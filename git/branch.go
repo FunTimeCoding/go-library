@@ -12,16 +12,16 @@ import (
 func Branch(path string) string {
 	fileSystem := osfs.New(path)
 	dot, dotFail := fileSystem.Chroot(".git")
-	errors.FatalOnError(dotFail)
+	errors.PanicOnError(dotFail)
 
 	repository, openFail := git.Open(
 		filesystem.NewStorage(dot, cache.NewObjectLRUDefault()),
 		fileSystem,
 	)
-	errors.FatalOnError(openFail)
+	errors.PanicOnError(openFail)
 
 	branch, branchFail := repository.Head()
-	errors.FatalOnError(branchFail)
+	errors.PanicOnError(branchFail)
 
 	return strings.TrimPrefix(branch.Name().String(), "refs/heads/")
 }

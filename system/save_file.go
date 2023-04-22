@@ -12,16 +12,16 @@ func SaveFile(
 	text string,
 ) {
 	directory, directoryFail := os.Getwd()
-	errors.FatalOnError(directoryFail)
+	errors.PanicOnError(directoryFail)
 
 	file, fileFail := os.Create(path.Join(directory, name))
-	errors.FatalOnError(fileFail)
+	errors.PanicOnError(fileFail)
 
 	writer := bufio.NewWriter(file)
 	_, writeFail := writer.WriteString(text)
-	errors.FatalOnError(writeFail)
+	errors.PanicOnError(writeFail)
 
-	errors.FatalOnError(writer.Flush())
+	errors.PanicOnError(writer.Flush())
 
-	errors.FatalOnError(file.Close())
+	errors.PanicOnError(file.Close())
 }

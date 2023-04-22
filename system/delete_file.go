@@ -6,5 +6,5 @@ import (
 )
 
 func DeleteFile(name string) {
-	errors.FatalOnError(os.Remove(name))
+	errors.PanicOnError(os.Remove(name))
 }

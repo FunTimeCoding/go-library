@@ -19,7 +19,7 @@ func Encode(
 		encoder.SetIndent("", "    ")
 	}
 
-	errors.FatalOnError(encoder.Encode(object))
+	errors.PanicOnError(encoder.Encode(object))
 
 	return strings.TrimSuffix(buffer.String(), "\n")
 }

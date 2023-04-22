@@ -8,10 +8,10 @@ import (
 
 func ReadFile(name string) string {
 	directory, directoryFail := os.Getwd()
-	errors.FatalOnError(directoryFail)
+	errors.PanicOnError(directoryFail)
 
 	file, readFail := os.ReadFile(path.Join(directory, name))
-	errors.FatalOnError(readFail)
+	errors.PanicOnError(readFail)
 
 	return string(file)
 }

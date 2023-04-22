@@ -9,5 +9,5 @@ func Unmarshal(
 	value string,
 	structure any,
 ) {
-	errors.FatalOnError(json.Unmarshal([]byte(value), structure))
+	errors.PanicOnError(json.Unmarshal([]byte(value), structure))
 }

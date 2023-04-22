@@ -3,7 +3,7 @@ package time
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/floats"
-	"github.com/funtimecoding/go-library/math"
+	"github.com/funtimecoding/go-library/math/round"
 )
 
 func HumanReadable(seconds int) string {
@@ -31,7 +31,7 @@ func HumanReadable(seconds int) string {
 		unit = "second"
 	}
 
-	rounded := math.Round(value, 1)
+	rounded := round.Round(value, 1)
 
 	if rounded == float64(int(value)) {
 		result = fmt.Sprintf("%d %s", int(value), unit)

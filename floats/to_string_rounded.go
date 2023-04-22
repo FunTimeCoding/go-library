@@ -1,7 +1,7 @@
 package floats
 
-import "github.com/funtimecoding/go-library/math"
+import "github.com/funtimecoding/go-library/math/round"
 
 func ToStringRounded(number float64) string {
-	return ToString(math.Round(number, 1))
+	return ToString(round.Round(number, 1))
 }

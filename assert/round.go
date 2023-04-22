@@ -1,7 +1,7 @@
 package assert
 
 import (
-	"github.com/funtimecoding/go-library/math"
+	"github.com/funtimecoding/go-library/math/round"
 	"testing"
 )
 
@@ -16,7 +16,7 @@ func Round(
 		return
 	}
 
-	actual = math.Round(actual, decimals)
+	actual = round.Round(actual, decimals)
 
 	// Pass if identical after rounding
 	if actual == expected {

@@ -9,6 +9,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sanity-io/litter v1.5.5
 	github.com/use-go/spew v1.1.2
+	gonum.org/v1/gonum v0.0.0-20190331200053-3d26580ed485
 	gotest.tools/v3 v3.4.0
 )
 

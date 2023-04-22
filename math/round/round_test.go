@@ -1,4 +1,4 @@
-package math
+package round
 
 import (
 	"gotest.tools/v3/assert"

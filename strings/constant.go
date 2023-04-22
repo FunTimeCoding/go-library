@@ -1,0 +1,15 @@
+package strings
+
+const Alfa = "Alfa"
+const Bravo = "Bravo"
+const Charlie = "Charlie"
+const Delta = "Delta"
+const Echo = "Echo"
+const Foxtrot = "Foxtrot"
+const Golf = "Golf"
+const Hotel = "Hotel"
+const India = "India"
+const Juliett = "Juliett"
+const Kilo = "Kilo"
+const Lima = "Lima"
+const Mike = "Mike"

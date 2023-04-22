@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/errors"
 )
 
-func Unmarshal(
+func DecodeStrict(
 	value string,
 	structure any,
 ) {

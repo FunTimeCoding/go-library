@@ -10,7 +10,7 @@ func Float(
 	maximum float64,
 ) float64 {
 	if maximum > minimum && now+change > maximum {
-		return now - maximum
+		return maximum - now
 	}
 
 	if now+change < minimum {

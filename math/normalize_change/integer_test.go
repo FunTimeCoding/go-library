@@ -11,6 +11,7 @@ func TestInteger(t *testing.T) {
 	assertInteger(t, 1, -3, 0, 100, -1)
 	assertInteger(t, 100, -100, 0, 100, -100)
 	assertInteger(t, 100, -150, 0, 100, -100)
+	assertInteger(t, 95, 20, 0, 100, 5)
 }
 
 func TestIntegerNoMaximum(t *testing.T) {

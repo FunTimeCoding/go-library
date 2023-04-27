@@ -12,7 +12,7 @@ func Integer(
 	maximum int,
 ) int {
 	if maximum > minimum && now+change > maximum {
-		return now - maximum
+		return maximum - now
 	}
 
 	if now+change < minimum {

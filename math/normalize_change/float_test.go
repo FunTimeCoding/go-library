@@ -11,6 +11,7 @@ func TestFloat(t *testing.T) {
 	assertFloat(t, 1, -3, 0, 100, -1)
 	assertFloat(t, 100, -100, 0, 100, -100)
 	assertFloat(t, 100, -150, 0, 100, -100)
+	assertFloat(t, 95, 20, 0, 100, 5)
 }
 
 func TestFloatNoMaximum(t *testing.T) {

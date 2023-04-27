@@ -13,8 +13,8 @@ func TestInteger(t *testing.T) {
 
 func assertInteger(
 	t *testing.T,
-	value int,
-	mark int,
+	f int,
+	magnitude int,
 	expectedAbove bool,
 	expectedBelow bool,
 ) {
@@ -22,8 +22,8 @@ func assertInteger(
 	var above bool
 	var below bool
 	Integer(
-		value,
-		mark,
+		f,
+		magnitude,
 		func() {
 			above = true
 		},

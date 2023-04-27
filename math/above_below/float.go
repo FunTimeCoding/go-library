@@ -4,15 +4,14 @@ package above_below
 //
 //	See Integer
 func Float(
-	value float64,
-	mark float64,
+	f float64,
 	magnitude float64,
 	above func(),
 	below func(),
 ) {
-	if value > mark && value > magnitude {
+	if f > magnitude {
 		above()
-	} else if value < mark && value*-1 > magnitude {
+	} else if f*-1 > magnitude {
 		below()
 	}
 }

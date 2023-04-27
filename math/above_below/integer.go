@@ -2,17 +2,17 @@ package above_below
 
 // Integer
 //
-//	If value is above mark, above closure is called
-//	If value is below mark, below closure is called
+//	If i > magnitude, above closure is called
+//	If i*-1 > magnitude, below closure is called
 func Integer(
-	value int,
-	mark int,
+	i int,
+	magnitude int,
 	above func(),
 	below func(),
 ) {
-	if value > mark {
+	if i > magnitude {
 		above()
-	} else if value < mark {
+	} else if i*-1 > magnitude {
 		below()
 	}
 }

@@ -6,22 +6,21 @@ import (
 )
 
 func TestFloat(t *testing.T) {
-	assertFloat(t, 1, 0, 0, true, false)
-	assertFloat(t, -1, 0, 0, false, true)
-	assertFloat(t, 0, 0, 0, false, false)
+	assertFloat(t, 1, 0, true, false)
+	assertFloat(t, -1, 0, false, true)
+	assertFloat(t, 0, 0, false, false)
 
-	assertFloat(t, 1, 0, 1, false, false)
-	assertFloat(t, -1, 0, 1, false, false)
-	assertFloat(t, 0, 0, 1, false, false)
+	assertFloat(t, 1, 1, false, false)
+	assertFloat(t, -1, 1, false, false)
+	assertFloat(t, 0, 1, false, false)
 
-	assertFloat(t, 2, 0, 1, true, false)
-	assertFloat(t, -2, 0, 1, false, true)
+	assertFloat(t, 2, 1, true, false)
+	assertFloat(t, -2, 1, false, true)
 }
 
 func assertFloat(
 	t *testing.T,
-	value float64,
-	mark float64,
+	f float64,
 	magnitude float64,
 	expectedAbove bool,
 	expectedBelow bool,
@@ -30,8 +29,7 @@ func assertFloat(
 	var above bool
 	var below bool
 	Float(
-		value,
-		mark,
+		f,
 		magnitude,
 		func() {
 			above = true

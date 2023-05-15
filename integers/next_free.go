@@ -1,15 +1,16 @@
 package integers
 
-func NextFree(numbers []int) int {
-	result := 0
-
+func NextFree(
+	start int,
+	numbers []int,
+) int {
 	for {
-		if Contains(result, numbers) {
-			result++
+		if Contains(numbers, start) {
+			start++
 		} else {
 			break
 		}
 	}
 
-	return result
+	return start
 }

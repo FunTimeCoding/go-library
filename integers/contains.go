@@ -1,8 +1,8 @@
 package integers
 
 func Contains(
-	element int,
 	elements []int,
+	element int,
 ) bool {
 	for _, value := range elements {
 		if element == value {

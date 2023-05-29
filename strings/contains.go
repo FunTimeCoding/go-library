@@ -1,11 +1,11 @@
-package integers
+package strings
 
 func Contains(
-	elements []int,
-	element int,
+	elements []string,
+	search string,
 ) bool {
 	for _, v := range elements {
-		if element == v {
+		if search == v {
 			return true
 		}
 	}

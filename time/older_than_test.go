@@ -8,8 +8,8 @@ import (
 
 func TestOlderThan(t *testing.T) {
 	now := time.Now()
-	assert.Boolean(t, false, OlderThan(now, 1))
+	assert.False(t, OlderThan(now, 1))
 
 	fiveMinutesAgo := now.Add(-5 * time.Minute)
-	assert.Boolean(t, true, OlderThan(fiveMinutesAgo, 1))
+	assert.True(t, OlderThan(fiveMinutesAgo, 1))
 }

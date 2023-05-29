@@ -6,6 +6,6 @@ import (
 )
 
 func TestContains(t *testing.T) {
-	assert.Boolean(t, true, Contains([]int{0}, 0))
-	assert.Boolean(t, false, Contains([]int{0}, 1))
+	assert.True(t, Contains([]int{0}, 0))
+	assert.False(t, Contains([]int{0}, 1))
 }

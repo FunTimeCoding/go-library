@@ -1,10 +1,10 @@
 package expression
 
-import "github.com/funtimecoding/go-library/strings"
+import "github.com/funtimecoding/go-library/strings/contains"
 
 func (e *Expression) Evaluate(input []string) bool {
-	if strings.ContainsMultiple(e.include, input) {
-		if !strings.ContainsAny(e.exclude, input) {
+	if contains.Multiple(e.include, input) {
+		if !contains.Any(e.exclude, input) {
 			return true
 		}
 	}

@@ -8,5 +8,8 @@ lint:
 test:
 	gotestsum --format standard-quiet -- ./...
 
-install-dependencies:
+dependencies:
+	go get -u ./...
+
+tools:
 	go install gotest.tools/gotestsum@latest

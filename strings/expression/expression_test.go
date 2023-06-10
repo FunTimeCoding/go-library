@@ -8,7 +8,7 @@ import (
 
 func TestExpression(t *testing.T) {
 	e := New([]string{strings.Alfa}, []string{strings.Delta})
-	assert.True(t, e.Evaluate([]string{strings.Alfa}))
-	assert.True(t, e.Evaluate([]string{strings.Alfa, strings.Bravo}))
-	assert.False(t, e.Evaluate([]string{strings.Alfa, strings.Delta}))
+	assert.True(t, e.Check([]string{strings.Alfa}))
+	assert.True(t, e.Check([]string{strings.Alfa, strings.Bravo}))
+	assert.False(t, e.Check([]string{strings.Alfa, strings.Delta}))
 }

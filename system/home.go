@@ -1,7 +1,13 @@
 package system
 
-import "os"
+import (
+	"github.com/funtimecoding/go-library/errors"
+	"os"
+)
 
 func Home() string {
-	return os.Getenv("HOME")
+	result, e := os.UserHomeDir()
+	errors.PanicOnError(e)
+
+	return result
 }

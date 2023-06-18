@@ -5,6 +5,6 @@ import (
 	"testing"
 )
 
-func TestTags(t *testing.T) {
-	Tags(system.ParentDirectory(1))
+func TestStatus(t *testing.T) {
+	Status(system.ParentDirectory(1))
 }

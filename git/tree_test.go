@@ -5,6 +5,6 @@ import (
 	"testing"
 )
 
-func TestTags(t *testing.T) {
-	Tags(system.ParentDirectory(1))
+func TestTree(t *testing.T) {
+	Tree(system.ParentDirectory(1))
 }

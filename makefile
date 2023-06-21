@@ -8,8 +8,9 @@ lint:
 test:
 	gotestsum --format standard-quiet -- ./...
 
-dependencies:
-	go get -u ./...
+update:
+	for ELEMENT in $$(go list -f "{{if not (or .Main .Indirect)}}{{.Path}}{{end}}" -m all); do echo $${ELEMENT}; go get $${ELEMENT}; done
+	go mod tidy
 
-tools:
+tool:
 	go install gotest.tools/gotestsum@latest

@@ -10,8 +10,9 @@ require (
 	github.com/jackc/pgx/v5 v5.4.1
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sanity-io/litter v1.5.5
+	github.com/stretchr/testify v1.8.1
 	github.com/use-go/spew v1.1.2
-	gonum.org/v1/gonum v0.0.0-20190331200053-3d26580ed485
+	gonum.org/v1/gonum v0.13.0
 	gorm.io/driver/postgres v1.5.2
 	gorm.io/gorm v1.25.1
 	gotest.tools/v3 v3.4.0
@@ -23,6 +24,7 @@ require (
 	github.com/acomagu/bufpipe v1.0.4 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
@@ -51,4 +53,5 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/tools v0.9.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

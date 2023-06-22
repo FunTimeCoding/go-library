@@ -7,9 +7,9 @@ import (
 )
 
 func TestGetList(t *testing.T) {
-	r, fail := http.NewRequest(
+	r, e := http.NewRequest(
 		http.MethodGet, "http://localhost?a=1,2,3", nil,
 	)
-	assert.FatalOnError(t, fail)
+	assert.FatalOnError(t, e)
 	assert.Any(t, []string{"1", "2", "3"}, GetList(r, "a"))
 }

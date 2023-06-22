@@ -4,9 +4,9 @@ import "testing"
 
 func FatalOnError(
 	t *testing.T,
-	fail error,
+	e error,
 ) {
-	if fail != nil {
-		t.Fatal(fail)
+	if e != nil {
+		t.Fatal(e)
 	}
 }

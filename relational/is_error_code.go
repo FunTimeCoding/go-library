@@ -3,11 +3,11 @@ package relational
 import "github.com/jackc/pgconn"
 
 func IsErrorCode(
-	fail error,
+	e error,
 	code string,
 ) bool {
-	if e, yes := fail.(*pgconn.PgError); yes {
-		return e.Code == code
+	if f, yes := e.(*pgconn.PgError); yes {
+		return f.Code == code
 	}
 
 	return false

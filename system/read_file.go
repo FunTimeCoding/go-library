@@ -7,11 +7,8 @@ import (
 )
 
 func ReadFile(name string) string {
-	directory, directoryFail := os.Getwd()
-	errors.PanicOnError(directoryFail)
-
-	file, readFail := os.ReadFile(path.Join(directory, name))
-	errors.PanicOnError(readFail)
+	file, e := os.ReadFile(path.Join(WorkingDirectory(), name))
+	errors.PanicOnError(e)
 
 	return string(file)
 }

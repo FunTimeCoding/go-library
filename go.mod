@@ -10,7 +10,7 @@ require (
 	github.com/jackc/pgx/v5 v5.4.1
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sanity-io/litter v1.5.5
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.4
 	github.com/use-go/spew v1.1.2
 	gonum.org/v1/gonum v0.13.0
 	gorm.io/driver/postgres v1.5.2

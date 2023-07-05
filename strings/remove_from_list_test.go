@@ -6,11 +6,20 @@ import (
 )
 
 func TestRemoveElementsFromList(t *testing.T) {
-	removeOne := []string{Alfa, Alfa, Bravo, Charlie}
-	removeOne = RemoveFromList(removeOne, []string{Alfa})
-	assert.Any(t, []string{Bravo, Charlie}, removeOne)
-
-	multiple := []string{Alfa, Alfa, Bravo, Charlie}
-	multiple = RemoveFromList(multiple, []string{Alfa, Bravo})
-	assert.Any(t, []string{Charlie}, multiple)
+	assert.Any(
+		t,
+		[]string{Bravo, Charlie},
+		RemoveFromList(
+			[]string{Alfa, Alfa, Bravo, Charlie},
+			[]string{Alfa},
+		),
+	)
+	assert.Any(
+		t,
+		[]string{Charlie},
+		RemoveFromList(
+			[]string{Alfa, Alfa, Bravo, Charlie},
+			[]string{Alfa, Bravo},
+		),
+	)
 }

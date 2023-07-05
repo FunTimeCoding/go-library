@@ -14,8 +14,8 @@ require (
 	github.com/use-go/spew v1.1.2
 	gonum.org/v1/gonum v0.13.0
 	gorm.io/driver/postgres v1.5.2
-	gorm.io/gorm v1.25.1
-	gotest.tools/v3 v3.4.0
+	gorm.io/gorm v1.25.2
+	gotest.tools/v3 v3.5.0
 )
 
 require (

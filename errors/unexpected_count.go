@@ -2,6 +2,8 @@ package errors
 
 import "log"
 
-func UnexpectedCount(c int) {
-	log.Panicf("unexpected count: %d", c)
+func UnexpectedCount(expected int, a []any) {
+	if len(a) != expected {
+		log.Panicf("unexpected count: %d", expected)
+	}
 }

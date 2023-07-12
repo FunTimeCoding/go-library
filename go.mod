@@ -7,7 +7,7 @@ require (
 	github.com/go-git/go-billy/v5 v5.4.1
 	github.com/go-git/go-git/v5 v5.7.0
 	github.com/jackc/pgconn v1.14.0
-	github.com/jackc/pgx/v5 v5.4.1
+	github.com/jackc/pgx/v5 v5.4.2
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sanity-io/litter v1.5.5
 	github.com/stretchr/testify v1.8.4

@@ -1,14 +1,14 @@
 package web
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/errors"
 	"io"
+	"log"
 	"net/http"
 	"os"
 )
 
-func Download(locator string, output string) error {
+func Download(locator string, output string) {
 	file, fileFail := os.Create(output)
 	errors.PanicOnError(fileFail)
 	defer func() {
@@ -22,7 +22,7 @@ func Download(locator string, output string) error {
 	}()
 
 	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf(
+		log.Panicf(
 			"unexpected status code: %d",
 			response.StatusCode,
 		)
@@ -30,6 +30,4 @@ func Download(locator string, output string) error {
 
 	_, copyFail := io.Copy(file, response.Body)
 	errors.PanicOnError(copyFail)
-
-	return nil
 }

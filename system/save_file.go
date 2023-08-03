@@ -17,5 +17,5 @@ func SaveFile(
 	errors.PanicOnError(e)
 
 	errors.PanicOnError(w.Flush())
-	errors.PanicOnError(f.Close())
+	errors.PanicClose(f)
 }

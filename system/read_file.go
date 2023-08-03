@@ -6,8 +6,8 @@ import (
 )
 
 func ReadFile(name string) string {
-	file, e := os.ReadFile(Join(WorkingDirectory(), name))
+	result, e := os.ReadFile(name)
 	errors.PanicOnError(e)
 
-	return string(file)
+	return string(result)
 }

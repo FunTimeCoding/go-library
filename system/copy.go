@@ -2,12 +2,10 @@ package system
 
 import (
 	"github.com/funtimecoding/go-library/errors"
-	"os"
+	"io"
 )
 
-func Open(path string) *os.File {
-	result, e := os.Open(path)
+func Copy(source io.Reader, destination io.Writer) {
+	_, e := io.Copy(destination, source)
 	errors.PanicOnError(e)
-
-	return result
 }

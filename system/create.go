@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-func Open(path string) *os.File {
-	result, e := os.Open(path)
+func Create(name string) *os.File {
+	result, e := os.Create(name)
 	errors.PanicOnError(e)
 
 	return result

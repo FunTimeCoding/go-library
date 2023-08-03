@@ -2,32 +2,28 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/errors"
-	"io"
+	"github.com/funtimecoding/go-library/system"
 	"log"
 	"net/http"
-	"os"
 )
 
 func Download(locator string, output string) {
-	file, fileFail := os.Create(output)
-	errors.PanicOnError(fileFail)
+	f := system.Create(output)
 	defer func() {
-		errors.LogOnError(file.Close())
+		errors.LogClose(f)
 	}()
 
-	response, getFail := http.Get(locator)
-	errors.PanicOnError(getFail)
+	r := BasicGet(locator)
 	defer func() {
-		errors.LogOnError(response.Body.Close())
+		errors.LogClose(r.Body)
 	}()
 
-	if response.StatusCode != http.StatusOK {
+	if r.StatusCode != http.StatusOK {
 		log.Panicf(
 			"unexpected status code: %d",
-			response.StatusCode,
+			r.StatusCode,
 		)
 	}
 
-	_, copyFail := io.Copy(file, response.Body)
-	errors.PanicOnError(copyFail)
+	system.Copy(r.Body, f)
 }

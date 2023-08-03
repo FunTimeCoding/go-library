@@ -1,13 +1,10 @@
 package system
 
-import (
-	"github.com/funtimecoding/go-library/errors"
-	"os/exec"
-)
+import "github.com/funtimecoding/go-library/errors"
 
 func Run(s ...string) string {
-	result, e := exec.Command(s[0], s[1:]...).CombinedOutput()
+	result, e := RunError(s...)
 	errors.PanicOnError(e)
 
-	return string(result)
+	return result
 }

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/funtimecoding/go-library/errors"
+	"github.com/funtimecoding/go-library/separator"
 	"strings"
 )
 
@@ -21,5 +22,5 @@ func Encode(
 
 	errors.PanicOnError(encoder.Encode(object))
 
-	return strings.TrimSuffix(buffer.String(), "\n")
+	return strings.TrimSuffix(buffer.String(), separator.Unix)
 }

@@ -1,7 +1,10 @@
 package multi_line
 
-import "strings"
+import (
+	"github.com/funtimecoding/go-library/separator"
+	"strings"
+)
 
 func (l *MultiLine) Format() string {
-	return strings.Join(l.lines, "\n")
+	return strings.Join(l.lines, separator.Unix)
 }

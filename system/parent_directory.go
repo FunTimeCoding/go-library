@@ -1,7 +1,5 @@
 package system
 
-import "path/filepath"
-
 func ParentDirectory(levels int) string {
 	var dots []string
 
@@ -9,5 +7,5 @@ func ParentDirectory(levels int) string {
 		dots = append(dots, "..")
 	}
 
-	return filepath.Join(append([]string{WorkingDirectory()}, dots...)...)
+	return Join(append([]string{WorkingDirectory()}, dots...)...)
 }

@@ -1,10 +1,7 @@
 package system
 
-import (
-	"os"
-	"path"
-)
+import "os"
 
 func OpenHome(subPath string) *os.File {
-	return Open(path.Join(Home(), subPath))
+	return Open(Join(Home(), subPath))
 }

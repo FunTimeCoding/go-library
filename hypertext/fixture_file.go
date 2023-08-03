@@ -1,10 +1,10 @@
 package hypertext
 
 import (
+	"github.com/funtimecoding/go-library/system"
 	"os"
-	"path/filepath"
 )
 
 func fixtureFile(name string) (*os.File, error) {
-	return os.Open(filepath.Join("..", "fixture", name))
+	return os.Open(system.Join("..", "fixture", name))
 }

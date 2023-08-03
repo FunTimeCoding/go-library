@@ -40,9 +40,7 @@ func CreateTarZip(
 				header, headerFail := tar.FileInfoHeader(i, i.Name())
 				errors.PanicOnError(headerFail)
 
-				header.Name = filepath.ToSlash(
-					filepath.Join(sourceDirectory, path),
-				)
+				header.Name = filepath.ToSlash(Join(sourceDirectory, path))
 				errors.PanicOnError(writer.WriteHeader(header))
 
 				if !i.Mode().IsRegular() {

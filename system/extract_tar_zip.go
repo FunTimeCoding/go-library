@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/errors"
 	"io"
 	"os"
-	"path/filepath"
 )
 
 func ExtractTarZip(
@@ -32,7 +31,7 @@ func ExtractTarZip(
 		}
 
 		errors.PanicOnError(nextFail)
-		target := filepath.Join(destinationDirectory, header.Name)
+		target := Join(destinationDirectory, header.Name)
 
 		switch header.Typeflag {
 		case tar.TypeDir:

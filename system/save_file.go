@@ -6,10 +6,10 @@ import (
 )
 
 func SaveFile(
-	name string,
+	path string,
 	text string,
 ) {
-	f := Create(Join(WorkingDirectory(), name))
+	f := Create(path)
 
 	w := bufio.NewWriter(f)
 	_, e := w.WriteString(text)

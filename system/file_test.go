@@ -6,7 +6,7 @@ import (
 )
 
 func TestFile(t *testing.T) {
-	SaveFile("test.txt", "test content")
+	SaveFile(Join(WorkingDirectory(), "test.txt"), "test content")
 	assert.String(t, "test content", ReadFile("test.txt"))
 	DeleteFile("test.txt")
 }

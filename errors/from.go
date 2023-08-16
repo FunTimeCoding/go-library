@@ -7,6 +7,8 @@ import (
 
 func From(a any) error {
 	switch cast := a.(type) {
+	case nil:
+		return nil
 	case error:
 		return cast
 	default:

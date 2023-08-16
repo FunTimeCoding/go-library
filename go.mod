@@ -7,7 +7,7 @@ require (
 	github.com/go-git/go-billy/v5 v5.4.1
 	github.com/go-git/go-git/v5 v5.8.1
 	github.com/jackc/pgconn v1.14.1
-	github.com/jackc/pgx/v5 v5.4.2
+	github.com/jackc/pgx/v5 v5.4.3
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sanity-io/litter v1.5.5
 	github.com/stretchr/testify v1.8.4
@@ -35,7 +35,7 @@ require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.3.2 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
-	github.com/jackc/puddle/v2 v2.2.0 // indirect
+	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect

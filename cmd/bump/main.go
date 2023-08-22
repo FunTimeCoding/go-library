@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/coreos/go-semver/semver"
-	"github.com/funtimecoding/go-library/pkg/git"
+	gitHelper "github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
 )
@@ -19,11 +19,10 @@ func main() {
 	}
 
 	d := system.WorkingDirectory()
-	s := git.Status(d)
+	s := gitHelper.Status(d)
 
-	if !s.IsClean() {
-		fmt.Println("Repository not clean:")
-		fmt.Println(s.String())
+	if !gitHelper.IsClean(s, true) {
+		fmt.Printf("Status: %s\n", s.String())
 
 		os.Exit(1)
 	}
@@ -31,7 +30,7 @@ func main() {
 	system.Run("git", "fetch", "--prune", "--prune-tags")
 	var versions semver.Versions
 
-	for _, element := range git.Tags(d) {
+	for _, element := range gitHelper.Tags(d) {
 		versions = append(versions, semver.New(element))
 	}
 

@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
+	github.com/coreos/go-semver v0.3.0
 	github.com/go-git/go-billy/v5 v5.4.1
 	github.com/go-git/go-git/v5 v5.8.1
 	github.com/jackc/pgconn v1.14.1
@@ -12,9 +13,9 @@ require (
 	github.com/sanity-io/litter v1.5.5
 	github.com/stretchr/testify v1.8.4
 	github.com/use-go/spew v1.1.2
-	gonum.org/v1/gonum v0.13.0
+	gonum.org/v1/gonum v0.14.0
 	gorm.io/driver/postgres v1.5.2
-	gorm.io/gorm v1.25.2
+	gorm.io/gorm v1.25.4
 	gotest.tools/v3 v3.5.0
 )
 

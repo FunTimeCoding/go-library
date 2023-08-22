@@ -66,11 +66,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Tag: %s\n", next)
-	system.Run(
-		"git",
-		"tag",
-		fmt.Sprintf("%s%s", gitHelper.VersionPrefix, next.String()),
+	nextString := fmt.Sprintf(
+		"%s%s",
+		gitHelper.VersionPrefix,
+		next.String(),
 	)
+	fmt.Printf("Tag: %s\n", nextString)
+	system.Run("git", "tag", nextString)
 	system.Run("git", "push", "origin", "--tags")
 }

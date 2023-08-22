@@ -10,7 +10,10 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Printf("Usage: %s INCREASE\n", os.Args[0])
+		fmt.Printf(
+			"Usage: %s INCREASE\nIncrease options: major, minor, patch\n",
+			os.Args[0],
+		)
 
 		os.Exit(1)
 	}

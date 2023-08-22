@@ -6,6 +6,7 @@ import (
 	gitHelper "github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -31,7 +32,14 @@ func main() {
 	var versions semver.Versions
 
 	for _, element := range gitHelper.Tags(d) {
-		versions = append(versions, semver.New(element))
+		if strings.HasPrefix(element, gitHelper.VersionPrefix) {
+			versions = append(
+				versions,
+				semver.New(
+					strings.TrimPrefix(element, gitHelper.VersionPrefix),
+				),
+			)
+		}
 	}
 
 	semver.Sort(versions)
@@ -59,6 +67,10 @@ func main() {
 	}
 
 	fmt.Printf("Tag: %s\n", next)
-	system.Run("git", "tag", next.String())
+	system.Run(
+		"git",
+		"tag",
+		fmt.Sprintf("%s%s", gitHelper.VersionPrefix, next.String()),
+	)
 	system.Run("git", "push", "origin", "--tags")
 }

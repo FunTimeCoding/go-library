@@ -14,3 +14,9 @@ update:
 
 tool:
 	go install gotest.tools/gotestsum@latest
+
+install:
+	go build -o $$HOME/go/bin/bump cmd/bump/main.go
+
+bump:
+	go run cmd/bump/main.go

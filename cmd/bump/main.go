@@ -21,7 +21,7 @@ func main() {
 	d := system.WorkingDirectory()
 	s := gitHelper.Status(d)
 
-	if !gitHelper.IsClean(s, true) {
+	if !gitHelper.IsClean(s, false) {
 		fmt.Printf("Status: %s\n", s.String())
 
 		os.Exit(1)
@@ -35,7 +35,14 @@ func main() {
 	}
 
 	semver.Sort(versions)
-	next := semver.New(versions[len(versions)-1].String())
+	var next *semver.Version
+
+	if len(versions) == 0 {
+		next = semver.New("0.0.0")
+	} else {
+		next = semver.New(versions[len(versions)-1].String())
+	}
+
 	increase := os.Args[1]
 
 	switch increase {

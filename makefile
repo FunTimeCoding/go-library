@@ -20,3 +20,6 @@ install:
 
 bump:
 	go run cmd/bump/main.go
+
+build-debian-package:
+	go build -o $$HOME/go/bin/debian-package cmd/debian_package/main.go

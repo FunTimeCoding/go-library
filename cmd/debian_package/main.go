@@ -10,9 +10,9 @@ func main() {
 	if len(os.Args) != 5 {
 		fmt.Printf(
 			"Usage: %s EXECUTABLE VERSION MAINTAINER_NAME MAINTAINER_EMAIL"+
-				"\n Version: 1.0"+
-				"\n Maintainer name: AN Other"+
-				"\n Maintainer email: another@example.org"+
+				"\nVersion: 1.0.0"+
+				"\nMaintainer name: AN Other"+
+				"\nMaintainer email: another@example.org"+
 				"\n",
 			os.Args[0],
 		)

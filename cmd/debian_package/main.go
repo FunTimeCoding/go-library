@@ -27,9 +27,9 @@ func main() {
 
 	work := system.WorkingDirectory()
 	packageName := fmt.Sprintf("%s_%s-1_amd64", executable, version)
-	root := system.Join(work, packageName)
+	packageDirectory := system.Join(work, packageName)
 
-	debian := system.Join(root, "DEBIAN")
+	debian := system.Join(packageDirectory, "DEBIAN")
 	system.MakeDirectory(debian)
 	control := system.Join(debian, "control")
 	system.SaveFile(
@@ -49,7 +49,8 @@ func main() {
 		),
 	)
 
-	bin := system.Join(root, "usr", "local", "bin")
+	bin := system.Join(packageDirectory, "usr", "local", "bin")
+	system.MakeDirectory(bin)
 	system.Move(executable, system.Join(bin, executable))
 
 	fmt.Println(

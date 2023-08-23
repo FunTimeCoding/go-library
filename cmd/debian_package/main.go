@@ -49,6 +49,27 @@ func main() {
 		),
 	)
 
+	unit := system.Join(packageDirectory, "lib", "systemd", "system")
+	system.MakeDirectory(unit)
+	system.SaveFile(
+		system.Join(unit, fmt.Sprintf("%s.service", executable)),
+		fmt.Sprintf(
+			"[Unit]"+
+				"\nDescription=%s stub description"+
+				"\nAfter=network.target"+
+				"\n"+
+				"\n[Service]"+
+				"\nType=simple"+
+				"\nExecStart=/usr/local/bin/%s"+
+				"\n"+
+				"\n[Install]"+
+				"\nWantedBy=multi-user.target"+
+				"\n",
+			executable,
+			executable,
+		),
+	)
+
 	bin := system.Join(packageDirectory, "usr", "local", "bin")
 	system.MakeDirectory(bin)
 	system.Move(executable, system.Join(bin, executable))

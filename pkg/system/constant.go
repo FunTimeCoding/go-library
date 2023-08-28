@@ -1,7 +1,7 @@
 package system
 
 const Linux = "linux"
-const Darwin = "Darwin"
+const Darwin = "darwin"
 
 const NullPhysicalAddressString = "00:00:00:00:00:00"
 

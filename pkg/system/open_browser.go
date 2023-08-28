@@ -9,15 +9,14 @@ import (
 
 func OpenBrowser(locator string) {
 	var e error
-	platform := runtime.GOOS
 
-	switch platform {
-	case "linux":
+	switch p := runtime.GOOS; p {
+	case Linux:
 		e = exec.Command("xdg-open", locator).Start()
-	case "darwin":
+	case Darwin:
 		e = exec.Command("open", locator).Start()
 	default:
-		e = fmt.Errorf("unexpected platform: %s", platform)
+		e = fmt.Errorf("unexpected platform: %s", p)
 	}
 
 	errors.PanicOnError(e)

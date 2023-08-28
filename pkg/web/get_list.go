@@ -1,22 +1,18 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/strings"
 	"net/http"
-	"strings"
 )
 
 func GetList(
 	r *http.Request,
 	key string,
 ) []string {
-	getString := r.URL.Query().Get(key)
 	var result []string
 
-	if getString != "" {
-		result = strings.Split(
-			getString,
-			",",
-		)
+	if s := r.URL.Query().Get(key); s != "" {
+		result = strings.SplitComma(s)
 	}
 
 	return result

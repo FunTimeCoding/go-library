@@ -1,7 +1,8 @@
 package separator
 
 const (
-	Unix  = "\n"
-	Space = " "
-	Comma = ","
+	Unix       = "\n"
+	Space      = " "
+	Comma      = ","
+	CommaSpace = ", "
 )

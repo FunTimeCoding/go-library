@@ -1,7 +1,7 @@
 package web
 
 import (
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"net/http"
 )
 
@@ -12,7 +12,7 @@ func GetList(
 	var result []string
 
 	if s := r.URL.Query().Get(key); s != "" {
-		result = strings.SplitComma(s)
+		result = split.Comma(s)
 	}
 
 	return result

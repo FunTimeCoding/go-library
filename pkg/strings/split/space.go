@@ -1,10 +1,10 @@
-package strings
+package split
 
 import (
 	"github.com/funtimecoding/go-library/pkg/separator"
 	"strings"
 )
 
-func SplitSpace(s string) []string {
+func Space(s string) []string {
 	return strings.Split(s, separator.Space)
 }

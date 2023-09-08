@@ -1,10 +1,10 @@
-package strings
+package join
 
 import (
 	"github.com/funtimecoding/go-library/pkg/separator"
 	"strings"
 )
 
-func JoinNewLine(s []string) string {
+func NewLine(s []string) string {
 	return strings.Join(s, separator.Unix)
 }

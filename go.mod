@@ -5,6 +5,7 @@ go 1.21.0
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/coreos/go-semver v0.3.1
+	github.com/davecgh/go-spew v1.1.1
 	github.com/go-git/go-billy/v5 v5.4.1
 	github.com/go-git/go-git/v5 v5.8.1
 	github.com/jackc/pgconn v1.14.1
@@ -12,7 +13,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sanity-io/litter v1.5.5
 	github.com/stretchr/testify v1.8.4
-	github.com/use-go/spew v1.1.2
 	gonum.org/v1/gonum v0.14.0
 	gorm.io/driver/postgres v1.5.2
 	gorm.io/gorm v1.25.4
@@ -26,7 +26,6 @@ require (
 	github.com/acomagu/bufpipe v1.0.4 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect

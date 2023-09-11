@@ -2,9 +2,9 @@ package assert
 
 import (
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/pmezard/go-difflib/difflib"
 	"github.com/sanity-io/litter"
-	"github.com/use-go/spew"
 	"reflect"
 	"testing"
 )

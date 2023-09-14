@@ -6,5 +6,5 @@ import (
 )
 
 func TestTags(t *testing.T) {
-	Tags(system.ParentDirectory(1))
+	Tags(system.ParentDirectory(depth))
 }

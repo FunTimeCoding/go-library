@@ -10,6 +10,6 @@ func TestBranch(t *testing.T) {
 	assert.String(
 		t,
 		"main",
-		Branch(system.ParentDirectory(1)),
+		Branch(system.ParentDirectory(depth)),
 	)
 }

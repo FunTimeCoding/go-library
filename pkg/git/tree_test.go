@@ -6,5 +6,5 @@ import (
 )
 
 func TestTree(t *testing.T) {
-	Tree(system.ParentDirectory(1))
+	Tree(system.ParentDirectory(depth))
 }

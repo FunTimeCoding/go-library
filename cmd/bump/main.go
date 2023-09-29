@@ -23,7 +23,7 @@ func main() {
 	s := gitHelper.Status(d)
 
 	if !gitHelper.IsClean(s, false) {
-		fmt.Printf("Status: %s\n", s.String())
+		fmt.Printf("Not clean:\n%s\n", s.String())
 
 		os.Exit(1)
 	}

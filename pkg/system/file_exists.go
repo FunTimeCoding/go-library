@@ -9,5 +9,5 @@ func FileExists(path string) bool {
 		return false
 	}
 
-	return result.IsDir() == false
+	return !result.IsDir()
 }

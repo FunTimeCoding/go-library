@@ -3,16 +3,27 @@ package main
 import (
 	"fmt"
 	"github.com/coreos/go-semver/semver"
-	gitHelper "github.com/funtimecoding/go-library/pkg/git"
+	"github.com/funtimecoding/go-library/pkg/git"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
-	"strings"
 )
+
+const major = "major"
+const minor = "minor"
+const patch = "patch"
+
+var parts = []string{
+	major,
+	minor,
+	patch,
+}
 
 func main() {
 	if len(os.Args) != 2 {
 		fmt.Printf(
-			"Usage: %s INCREASE\nIncrease options: major, minor, patch\n",
+			"Usage: %s INCREASE\nIncrease options: %s\n",
+			join.CommaSpace(parts),
 			os.Args[0],
 		)
 
@@ -20,29 +31,19 @@ func main() {
 	}
 
 	d := system.WorkingDirectory()
-	s := gitHelper.Status(d)
 
-	if !gitHelper.IsClean(s, false) {
-		fmt.Printf("Not clean:\n%s\n", s.String())
+	if !git.IsCleanCommand() {
+		s := git.Status(d)
 
-		os.Exit(1)
-	}
+		if !git.IsClean(s, false) {
+			fmt.Printf("Not clean:\n%s\n", s.String())
 
-	system.Run("git", "fetch", "--prune", "--prune-tags")
-	var versions semver.Versions
-
-	for _, element := range gitHelper.Tags(d) {
-		if strings.HasPrefix(element, gitHelper.VersionPrefix) {
-			versions = append(
-				versions,
-				semver.New(
-					strings.TrimPrefix(element, gitHelper.VersionPrefix),
-				),
-			)
+			os.Exit(1)
 		}
 	}
 
-	semver.Sort(versions)
+	git.Fetch()
+	versions := git.Versions(d)
 	var next *semver.Version
 
 	if len(versions) == 0 {
@@ -54,11 +55,11 @@ func main() {
 	increase := os.Args[1]
 
 	switch increase {
-	case "patch":
+	case patch:
 		next.BumpPatch()
-	case "minor":
+	case minor:
 		next.BumpMinor()
-	case "major":
+	case major:
 		next.BumpMajor()
 	default:
 		fmt.Printf("Unexpected increase: %s", increase)
@@ -68,10 +69,10 @@ func main() {
 
 	nextString := fmt.Sprintf(
 		"%s%s",
-		gitHelper.VersionPrefix,
+		git.VersionPrefix,
 		next.String(),
 	)
 	fmt.Printf("Tag: %s\n", nextString)
-	system.Run("git", "tag", nextString)
-	system.Run("git", "push", "origin", "--tags")
+	git.Tag(nextString)
+	git.Push()
 }

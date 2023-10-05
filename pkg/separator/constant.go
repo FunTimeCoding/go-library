@@ -4,6 +4,9 @@ const (
 	Comma      = ","
 	CommaSpace = ", "
 	Equals     = "="
+	Dash       = "-"
 	Space      = " "
+	Pipe       = "|"
+	Colon      = ":"
 	Unix       = "\n"
 )

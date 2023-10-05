@@ -1,12 +1,13 @@
 package separator
 
 const (
+	Colon      = ":"
 	Comma      = ","
 	CommaSpace = ", "
-	Equals     = "="
 	Dash       = "-"
-	Space      = " "
+	Equals     = "="
 	Pipe       = "|"
-	Colon      = ":"
+	Space      = " "
+	Underscore = "_"
 	Unix       = "\n"
 )

@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.21.1
+go 1.21.3
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
@@ -14,8 +14,8 @@ require (
 	github.com/sanity-io/litter v1.5.5
 	github.com/stretchr/testify v1.8.4
 	gonum.org/v1/gonum v0.14.0
-	gorm.io/driver/postgres v1.5.2
-	gorm.io/gorm v1.25.4
+	gorm.io/driver/postgres v1.5.3
+	gorm.io/gorm v1.25.5
 	gotest.tools/v3 v3.5.1
 )
 

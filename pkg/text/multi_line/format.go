@@ -1,9 +1,7 @@
 package multi_line
 
-import (
-	"github.com/funtimecoding/go-library/pkg/strings/join"
-)
+import "github.com/funtimecoding/go-library/pkg/strings/join"
 
-func (l *MultiLine) Format() string {
-	return join.NewLine(l.lines)
+func (m *MultiLine) Format() string {
+	return join.NewLine(m.lines)
 }

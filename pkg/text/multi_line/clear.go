@@ -1,5 +1,5 @@
 package multi_line
 
-func (l *MultiLine) Clear() {
-	l.lines = []string{}
+func (m *MultiLine) Clear() {
+	m.lines = []string{}
 }

@@ -1,5 +1,5 @@
 package multi_line
 
-func (l *MultiLine) Count() int {
-	return len(l.lines)
+func (m *MultiLine) Count() int {
+	return len(m.lines)
 }

@@ -2,7 +2,7 @@ package multi_line
 
 import "fmt"
 
-func (l *MultiLine) Add(
+func (m *MultiLine) Add(
 	line string,
 	arguments ...any,
 ) {
@@ -11,8 +11,8 @@ func (l *MultiLine) Add(
 	}
 
 	if len(arguments) > 0 {
-		l.lines = append(l.lines, fmt.Sprintf(line, arguments...))
+		m.lines = append(m.lines, fmt.Sprintf(line, arguments...))
 	} else {
-		l.lines = append(l.lines, line)
+		m.lines = append(m.lines, line)
 	}
 }

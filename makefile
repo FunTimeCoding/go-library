@@ -17,6 +17,7 @@ tool:
 
 install:
 	go build -o $$HOME/go/bin/bump cmd/bump/main.go
+	go build -o $$HOME/go/bin/lint cmd/lint/main.go
 
 bump:
 	go run cmd/bump/main.go

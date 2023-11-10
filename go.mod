@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.21.3
+go 1.21.4
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
@@ -10,9 +10,9 @@ require (
 	github.com/go-git/go-billy/v5 v5.5.0
 	github.com/go-git/go-git/v5 v5.10.0
 	github.com/jackc/pgconn v1.14.1
-	github.com/jackc/pgx/v5 v5.4.3
+	github.com/jackc/pgx/v5 v5.5.0
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/rivo/tview v0.0.0-20231024211518-8b7bcf9883df
+	github.com/rivo/tview v0.0.0-20231102183219-1b91b8131c43
 	github.com/sanity-io/litter v1.5.5
 	github.com/stretchr/testify v1.8.4
 	gonum.org/v1/gonum v0.14.0

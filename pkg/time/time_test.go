@@ -1,21 +1,21 @@
 package time
 
 import (
-	assert2 "github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 	"time"
 )
 
 func TestTime(t *testing.T) {
-	assert2.Integer(t, 3600, HourInSeconds)
-	assert2.Integer(t, 86400, DayInSeconds)
-	assert2.Integer(t, 604800, WeekInSeconds)
-	assert2.Integer(t, 2419200, MonthInSeconds)
-	assert2.Integer(t, 29030400, YearInSeconds)
+	assert.Integer(t, 3600, HourInSeconds)
+	assert.Integer(t, 86400, DayInSeconds)
+	assert.Integer(t, 604800, WeekInSeconds)
+	assert.Integer(t, 2419200, MonthInSeconds)
+	assert.Integer(t, 29030400, YearInSeconds)
 
-	assert2.Integer(t, 28, MonthInDays)
+	assert.Integer(t, 28, MonthInDays)
 
-	assert2.String(
+	assert.String(
 		t,
 		"2022-01-01 00:00:00",
 		time.Date(

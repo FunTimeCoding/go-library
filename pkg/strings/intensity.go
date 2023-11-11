@@ -1,8 +1,6 @@
 package strings
 
-import (
-	"github.com/funtimecoding/go-library/pkg/math/normalize"
-)
+import "github.com/funtimecoding/go-library/pkg/math/normalize"
 
 func Intensity(
 	elements []string,

@@ -1,8 +1,6 @@
 package assert
 
-import (
-	"testing"
-)
+import "testing"
 
 func Greater(
 	t *testing.T,

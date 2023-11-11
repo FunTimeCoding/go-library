@@ -3,7 +3,7 @@ package system
 import (
 	"archive/tar"
 	"compress/gzip"
-	errors2 "github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"os"
 	"path/filepath"
 )
@@ -14,20 +14,20 @@ func CreateTarZip(
 ) {
 	f := Create(destinationFile)
 	defer func() {
-		errors2.LogClose(f)
+		errors.LogClose(f)
 	}()
 
 	zip := gzip.NewWriter(f)
 	defer func() {
-		errors2.LogClose(zip)
+		errors.LogClose(zip)
 	}()
 
 	writer := tar.NewWriter(zip)
 	defer func() {
-		errors2.LogClose(writer)
+		errors.LogClose(writer)
 	}()
 
-	errors2.PanicOnError(
+	errors.PanicOnError(
 		filepath.Walk(
 			sourceDirectory,
 			func(
@@ -35,13 +35,13 @@ func CreateTarZip(
 				i os.FileInfo,
 				e error,
 			) error {
-				errors2.PanicOnError(e)
+				errors.PanicOnError(e)
 
 				header, headerFail := tar.FileInfoHeader(i, i.Name())
-				errors2.PanicOnError(headerFail)
+				errors.PanicOnError(headerFail)
 
 				header.Name = filepath.ToSlash(Join(sourceDirectory, path))
-				errors2.PanicOnError(writer.WriteHeader(header))
+				errors.PanicOnError(writer.WriteHeader(header))
 
 				if !i.Mode().IsRegular() {
 					return nil
@@ -49,7 +49,7 @@ func CreateTarZip(
 
 				file := Open(path)
 				defer func() {
-					errors2.LogClose(file)
+					errors.LogClose(file)
 				}()
 
 				Copy(file, writer)

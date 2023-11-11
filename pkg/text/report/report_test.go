@@ -1,7 +1,7 @@
 package report
 
 import (
-	assert2 "github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
@@ -21,7 +21,7 @@ func TestReport(t *testing.T) {
 	other.String("String", "other")
 	root.AppendSection(other)
 
-	assert2.String(
+	assert.String(
 		t,
 		"Example root"+
 			"\n  String: example"+
@@ -42,19 +42,19 @@ func TestReport(t *testing.T) {
 
 func TestReportLimit(t *testing.T) {
 	root := New("Example root", 67)
-	assert2.Integer(t, 12, root.Length())
+	assert.Integer(t, 12, root.Length())
 	root.String("String", "example")
-	assert2.Integer(t, 30, root.Length())
+	assert.Integer(t, 30, root.Length())
 
 	firstSection := root.Nest("Example section", NoLimit)
-	assert2.Integer(t, 15, firstSection.Length())
+	assert.Integer(t, 15, firstSection.Length())
 	firstSection.String("String", "example")
-	assert2.Integer(t, 37, firstSection.Length())
+	assert.Integer(t, 37, firstSection.Length())
 
 	secondSection := root.Nest("Too long section", NoLimit)
-	assert2.Integer(t, 16, secondSection.Length())
+	assert.Integer(t, 16, secondSection.Length())
 
-	assert2.String(
+	assert.String(
 		t,
 		"Example root"+
 			"\n  String: example"+

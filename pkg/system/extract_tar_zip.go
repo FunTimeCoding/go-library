@@ -2,7 +2,7 @@ package system
 
 import (
 	"archive/tar"
-	errors2 "github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"io"
 	"os"
 )
@@ -13,12 +13,12 @@ func ExtractTarZip(
 ) {
 	f := Open(sourceFile)
 	defer func() {
-		errors2.LogClose(f)
+		errors.LogClose(f)
 	}()
 
 	zip := ZipReader(f)
 	defer func() {
-		errors2.LogClose(zip)
+		errors.LogClose(zip)
 	}()
 
 	reader := tar.NewReader(zip)
@@ -30,7 +30,7 @@ func ExtractTarZip(
 			break
 		}
 
-		errors2.PanicOnError(nextFail)
+		errors.PanicOnError(nextFail)
 		target := Join(destinationDirectory, header.Name)
 
 		switch header.Typeflag {
@@ -40,11 +40,11 @@ func ExtractTarZip(
 			file := OpenFile(target, os.FileMode(header.Mode))
 
 			if _, g := io.Copy(file, reader); g != nil {
-				errors2.PanicClose(file)
-				errors2.PanicOnError(g)
+				errors.PanicClose(file)
+				errors.PanicOnError(g)
 			}
 
-			errors2.PanicClose(file)
+			errors.PanicClose(file)
 		}
 	}
 }

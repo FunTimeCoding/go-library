@@ -1,8 +1,6 @@
 package git
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/funtimecoding/go-library/pkg/errors"
 
 type Remote struct {
 	Name    string

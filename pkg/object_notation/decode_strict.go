@@ -1,8 +1,6 @@
 package object_notation
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/funtimecoding/go-library/pkg/errors"
 
 func DecodeStrict(
 	value string,

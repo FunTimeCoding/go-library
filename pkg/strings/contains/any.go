@@ -1,8 +1,6 @@
 package contains
 
-import (
-	"github.com/funtimecoding/go-library/pkg/strings"
-)
+import "github.com/funtimecoding/go-library/pkg/strings"
 
 func Any(
 	valid []string,

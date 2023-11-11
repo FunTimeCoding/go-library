@@ -2,13 +2,13 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	system2 "github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"log"
 	"net/http"
 )
 
 func Download(locator string, output string) {
-	f := system2.Create(output)
+	f := system.Create(output)
 	defer func() {
 		errors.LogClose(f)
 	}()
@@ -25,5 +25,5 @@ func Download(locator string, output string) {
 		)
 	}
 
-	system2.Copy(r.Body, f)
+	system.Copy(r.Body, f)
 }

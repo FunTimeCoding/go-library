@@ -10,6 +10,11 @@ func GreaterEqual(
 	t.Helper()
 
 	if actual < than {
+		t.Logf(
+			"\nExpected greater equal than: %f\nActual: %f",
+			than,
+			actual,
+		)
 		t.Fail()
 	}
 }

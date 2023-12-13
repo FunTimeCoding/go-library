@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func TableElements(d *goquery.Document) []string {
+func Tables(d *goquery.Document) []string {
 	var result []string
 	d.Find("table").Each(
 		func(
@@ -22,10 +22,8 @@ func TableElements(d *goquery.Document) []string {
 							indexValue int,
 							td *goquery.Selection,
 						) {
-							var text = strings.TrimSpace(td.Text())
-
-							if text != "" {
-								result = append(result, text)
+							if s := strings.TrimSpace(td.Text()); s != "" {
+								result = append(result, s)
 							}
 						},
 					)

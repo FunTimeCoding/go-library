@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func DivElements(d *goquery.Document) []string {
+func Divisions(d *goquery.Document) []string {
 	var result []string
 	d.Find("div").Each(
 		func(
@@ -22,10 +22,8 @@ func DivElements(d *goquery.Document) []string {
 							indexDtDd int,
 							dtDd *goquery.Selection,
 						) {
-							var text = strings.TrimSpace(dtDd.Text())
-
-							if text != "" {
-								result = append(result, text)
+							if s := strings.TrimSpace(dtDd.Text()); s != "" {
+								result = append(result, s)
 							}
 						},
 					)

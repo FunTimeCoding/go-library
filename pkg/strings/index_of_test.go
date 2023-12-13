@@ -9,9 +9,6 @@ func TestIndexOf(t *testing.T) {
 	assert.Integer(
 		t,
 		1,
-		IndexOf(
-			Bravo,
-			[]string{Alfa, Bravo, Charlie},
-		),
+		IndexOf(Bravo, []string{Alfa, Bravo, Charlie}),
 	)
 }

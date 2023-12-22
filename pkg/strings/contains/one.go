@@ -1,6 +1,6 @@
-package strings
+package contains
 
-func Contains(
+func One(
 	elements []string,
 	search string,
 ) bool {

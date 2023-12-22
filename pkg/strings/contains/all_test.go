@@ -6,20 +6,20 @@ import (
 	"testing"
 )
 
-func TestMultiple(t *testing.T) {
-	assert.True(t, Multiple([]string{strings.Alfa}, []string{strings.Alfa}))
-	assert.False(t, Multiple([]string{strings.Alfa}, []string{strings.Bravo}))
+func TestAll(t *testing.T) {
+	assert.True(t, All([]string{strings.Alfa}, []string{strings.Alfa}))
+	assert.False(t, All([]string{strings.Alfa}, []string{strings.Bravo}))
 
 	assert.True(
 		t,
-		Multiple(
+		All(
 			[]string{strings.Alfa, strings.Bravo},
 			[]string{strings.Alfa, strings.Bravo, strings.Charlie},
 		),
 	)
 	assert.False(
 		t,
-		Multiple(
+		All(
 			[]string{strings.Alfa, strings.Delta},
 			[]string{strings.Alfa, strings.Bravo, strings.Charlie},
 		),

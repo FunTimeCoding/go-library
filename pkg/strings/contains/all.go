@@ -1,11 +1,13 @@
 package contains
 
+import "slices"
+
 func All(
 	expected []string,
 	input []string,
 ) bool {
 	for _, element := range expected {
-		if !One(input, element) {
+		if !slices.Contains(input, element) {
 			return false
 		}
 	}

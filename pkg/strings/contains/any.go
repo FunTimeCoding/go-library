@@ -1,11 +1,13 @@
 package contains
 
+import "slices"
+
 func Any(
 	valid []string,
 	input []string,
 ) bool {
 	for _, element := range valid {
-		if One(input, element) {
+		if slices.Contains(input, element) {
 			return true
 		}
 	}

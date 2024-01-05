@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"os"
+	"io"
 )
 
-func Document(f *os.File) *goquery.Document {
+func Document(f io.Reader) *goquery.Document {
 	result, e := goquery.NewDocumentFromReader(bufio.NewReader(f))
 	errors.PanicOnError(e)
 

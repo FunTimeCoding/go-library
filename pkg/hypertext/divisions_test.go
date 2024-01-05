@@ -9,6 +9,6 @@ func TestDivisions(t *testing.T) {
 	assert.Any(
 		t,
 		[]string{"Example DT", "Example DD"},
-		Divisions(document(fixtureFile("test.html"))),
+		Divisions(Document(fixtureFile("test.html"))),
 	)
 }

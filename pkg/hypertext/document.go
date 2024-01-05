@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func document(f *os.File) *goquery.Document {
+func Document(f *os.File) *goquery.Document {
 	result, e := goquery.NewDocumentFromReader(bufio.NewReader(f))
 	errors.PanicOnError(e)
 

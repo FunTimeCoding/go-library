@@ -9,6 +9,6 @@ func TestTitle(t *testing.T) {
 	assert.String(
 		t,
 		"Test Title",
-		Title(document(fixtureFile("test.html"))),
+		Title(Document(fixtureFile("test.html"))),
 	)
 }

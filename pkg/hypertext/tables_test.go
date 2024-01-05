@@ -9,6 +9,6 @@ func TestTables(t *testing.T) {
 	assert.Any(
 		t,
 		[]string{"Example TD"},
-		Tables(document(fixtureFile("test.html"))),
+		Tables(Document(fixtureFile("test.html"))),
 	)
 }

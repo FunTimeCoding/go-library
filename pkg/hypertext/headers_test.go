@@ -16,6 +16,6 @@ func TestHeaders(t *testing.T) {
 			"Example h5",
 			"Example h6",
 		},
-		Headers(document(fixtureFile("test.html"))),
+		Headers(Document(fixtureFile("test.html"))),
 	)
 }

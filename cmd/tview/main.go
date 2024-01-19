@@ -48,7 +48,7 @@ func main() {
 		},
 	)
 
-	if err := app.SetRoot(table, true).EnableMouse(true).Run(); err != nil {
-		panic(err)
+	if e := app.SetRoot(table, true).EnableMouse(true).Run(); e != nil {
+		panic(e)
 	}
 }

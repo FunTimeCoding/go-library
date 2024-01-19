@@ -7,6 +7,6 @@ func FatalOnEmpty(
 	text string,
 ) {
 	if s == "" {
-		log.Fatalf("Empty: %s", text)
+		log.Fatalf("empty: %s", text)
 	}
 }

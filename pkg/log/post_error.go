@@ -6,5 +6,5 @@ func PostError(
 	locator string,
 	text string,
 ) {
-	log.Printf("Post error (%s): %s\n", locator, text)
+	log.Printf("post error (%s): %s\n", locator, text)
 }

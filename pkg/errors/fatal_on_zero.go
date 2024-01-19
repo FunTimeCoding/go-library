@@ -7,6 +7,6 @@ func FatalOnZero(
 	text string,
 ) {
 	if i == 0 {
-		log.Fatalf("Zero: %s", text)
+		log.Fatalf("zero: %s", text)
 	}
 }

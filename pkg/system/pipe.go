@@ -2,15 +2,15 @@ package system
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"log"
 	"os/exec"
 )
 
 func Pipe(
 	c *exec.Cmd,
 	input string,
-) (string, string, int) {
+) (string, string) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	c.Stdout = &stdout
@@ -25,8 +25,12 @@ func Pipe(
 	errors.PanicOnError(pipe.Close())
 
 	if f := c.Wait(); f != nil {
-		fmt.Printf("Wait fail: %e\n", f)
+		log.Panicf("wait fail: %e\n", f)
 	}
 
-	return stdout.String(), stderr.String(), written
+	if written == 0 {
+		log.Panicf("no bytes written")
+	}
+
+	return stdout.String(), stderr.String()
 }

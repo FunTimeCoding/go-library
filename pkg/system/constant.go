@@ -8,6 +8,10 @@ const (
 
 	AMD64 = "amd64"
 	ARM64 = "arm64"
+
+	DownloadsPath               = "Downloads"
+	KubernetesConfigurationPath = ".kube/config"
+	QuerySocketPath             = ".osquery/shell.em"
 )
 
 var NullPhysicalAddress = PhysicalAddress(NullPhysicalAddressString)

@@ -1,4 +1,4 @@
-package object_notation
+package notation
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 

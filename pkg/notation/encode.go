@@ -1,4 +1,4 @@
-package object_notation
+package notation
 
 import (
 	"bytes"

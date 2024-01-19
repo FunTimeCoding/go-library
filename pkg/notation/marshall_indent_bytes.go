@@ -1,12 +1,12 @@
-package object_notation
+package notation
 
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
-func Marshall(a any) []byte {
-	result, e := json.Marshal(a)
+func MarshallIndentBytes(a any) []byte {
+	result, e := json.MarshalIndent(a, "", "\t")
 	errors.PanicOnError(e)
 
 	return result

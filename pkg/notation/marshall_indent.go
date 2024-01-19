@@ -1,4 +1,4 @@
-package object_notation
+package notation
 
 func MarshallIndent(a any) string {
 	return string(MarshallIndentBytes(a))

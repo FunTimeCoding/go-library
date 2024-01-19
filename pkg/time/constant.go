@@ -1,6 +1,11 @@
 package time
 
 const (
+	DateMinute = "2006-01-02 15:04"
+	DateSecond = "2006-01-02 15:04:05"
+)
+
+const (
 	HourInMinutes  = int(60)
 	DayInMinutes   = HourInMinutes * 24
 	WeekInMinutes  = DayInMinutes * 7

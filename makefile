@@ -19,6 +19,7 @@ install:
 	go build -o $$HOME/go/bin/bump cmd/bump/main.go
 	go build -o $$HOME/go/bin/lint cmd/lint/main.go
 	go build -o $$HOME/go/bin/go-update cmd/update/main.go
+	go build -o $$HOME/go/bin/clean-repository cmd/clean_repository/main.go
 
 bump:
 	@go run cmd/bump/main.go

@@ -1,14 +1,18 @@
 package web
 
-const InsecureScheme = "http"
-const SecureScheme = "https"
+const (
+	InsecureScheme = "http"
+	SecureScheme   = "https"
 
-const ContentTypeHeader = "Content-Type"
-const UserAgentHeader = "User-Agent"
-const AuthorizationHeader = "Authorization"
-const AcceptHeader = "Accept"
+	ContentTypeHeader   = "Content-Type"
+	UserAgentHeader     = "User-Agent"
+	AuthorizationHeader = "Authorization"
+	AcceptHeader        = "Accept"
 
-const TextContentType = "text/plain"
-const ObjectContentType = "application/json"
+	TextContentType   = "text/plain"
+	ObjectContentType = "application/json"
 
-const GetMethod = "GET"
+	GetMethod = "GET"
+
+	SecureSchemePrefix = "https://"
+)

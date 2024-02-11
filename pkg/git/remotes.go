@@ -1,20 +1,24 @@
 package git
 
-import "github.com/funtimecoding/go-library/pkg/errors"
+import (
+	"github.com/funtimecoding/go-library/pkg/git/remote"
+	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
+)
 
-type Remote struct {
-	Name    string
-	Locator string
-}
+func Remotes(path string, m *provider_map.Map) []*remote.Remote {
+	var result []*remote.Remote
 
-func Remotes(path string) []*Remote {
-	remotes, e := Open(path).Remotes()
-	errors.FatalOnError(e)
-	var result []*Remote
-
-	for _, element := range remotes {
+	for _, element := range RemotesRaw(path) {
 		c := element.Config()
-		result = append(result, &Remote{Name: c.Name, Locator: c.URLs[0]})
+		locator := c.URLs[0]
+		result = append(
+			result,
+			remote.New(
+				c.Name,
+				locator,
+				m.FindProvider(ParseLocator(locator).Host),
+			),
+		)
 	}
 
 	return result

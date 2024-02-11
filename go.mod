@@ -15,6 +15,7 @@ require (
 	github.com/rivo/tview v0.0.0-20240204151237-861aa94d61c8
 	github.com/sanity-io/litter v1.5.5
 	github.com/stretchr/testify v1.8.4
+	github.com/whilp/git-urls v1.0.0
 	github.com/xanzy/go-gitlab v0.97.0
 	golang.org/x/crypto v0.19.0
 	golang.org/x/mod v0.15.0

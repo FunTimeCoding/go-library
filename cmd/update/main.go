@@ -8,15 +8,18 @@ import (
 )
 
 func main() {
-	v := runtime.Version().String()
-	system.Run("go", "mod", "edit", fmt.Sprintf("-go=%s", v))
+	goVersion := runtime.Version()
+	goString := goVersion.String()
+	system.Run("go", "mod", "edit", fmt.Sprintf("-go=%s", goString))
 
 	if system.FileExists(project.DockerFile) {
 		d := project.ReplaceGoFromVersion(
 			system.ReadFile(project.DockerFile),
-			v,
+			goString,
 		)
-		d = project.ReplaceDelveVersion(d, v)
+		// TODO: Find latest version by go minor version (for compatibility)
+		//  Example: If go is 1.21.7, find latest 1.21.* Delve
+		d = project.ReplaceDelveVersion(d, goString)
 		system.SaveFile(project.DockerFile, d)
 	}
 }

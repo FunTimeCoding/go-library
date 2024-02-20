@@ -2,9 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/git"
+	"github.com/funtimecoding/go-library/pkg/github"
+	"github.com/funtimecoding/go-library/pkg/github/release"
 	"github.com/funtimecoding/go-library/pkg/project"
 	"github.com/funtimecoding/go-library/pkg/runtime"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"os"
+	"strings"
 )
 
 func main() {
@@ -17,9 +22,21 @@ func main() {
 			system.ReadFile(project.DockerFile),
 			goString,
 		)
-		// TODO: Find latest version by go minor version (for compatibility)
-		//  Example: If go is 1.21.7, find latest 1.21.* Delve
-		d = project.ReplaceDelveVersion(d, goString)
+
+		if token := os.Getenv(github.Token); token != "" {
+			if v := release.LatestCompatible(
+				github.New(
+					token,
+				).Releases(github.DelveNamespace, github.DelveRepository),
+				goVersion,
+			); v != nil {
+				d = project.ReplaceDelveVersion(
+					d,
+					strings.TrimPrefix(v.Name, git.VersionPrefix),
+				)
+			}
+		}
+
 		system.SaveFile(project.DockerFile, d)
 	}
 }

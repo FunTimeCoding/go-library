@@ -56,9 +56,6 @@ func main() {
 			}
 		}
 
-		// TODO: Delete registry images except latest and its version
-		//  Why is this forbidden?
-		// TODO: Clean up package repository too
 		for _, element := range c.RegistryRepositories(p.Identifier) {
 			images := c.Images(p.Identifier, element.ID)
 

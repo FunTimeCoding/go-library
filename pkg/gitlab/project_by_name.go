@@ -16,17 +16,30 @@ func (c *Client) ProjectByName(
 	)
 	errors.PanicOnError(e)
 	count := len(result)
+	var p *gitlab.Project
 
 	if count == 0 {
 		return nil
+	} else if count == 1 {
+		p = result[0]
 	} else if count > 1 {
-		log.Panicf("unexpected: %d", count)
+		// Name could also be partial of another repository, with a longer name
+		for _, element := range result {
+			if p == nil && element.Name == name {
+				p = element
+			} else if p != nil && element.Name == name {
+				// A second one with the same name is a problem, should not be possible
+				p = element
+			}
+		}
+
+		if p == nil {
+			log.Panicf("unexpected: %d", count)
+		}
 	}
 
-	r := result[0]
-
-	if r.Namespace.Path == namespace {
-		return project.New(r)
+	if p.Namespace.Path == namespace {
+		return project.New(p)
 	}
 
 	return nil

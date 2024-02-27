@@ -56,24 +56,29 @@ func main() {
 			}
 		}
 
-		for _, element := range c.RegistryRepositories(p.Identifier) {
+		for _, element := range c.RegistryRepositories(
+			p.Identifier,
+			false,
+		) {
 			images := c.Images(p.Identifier, element.ID)
 
-			if len(images) > 0 {
-				latest := gitlab.LatestImage(images)
+			if len(images) == 0 {
+				continue
+			}
 
-				for _, image := range images {
-					if strings.HasSuffix(image.Path, ":latest") {
-						continue
-					}
+			latest := gitlab.LatestImage(images)
 
-					if image.Path == latest.Path {
-						continue
-					}
-
-					fmt.Printf("Delete image: %s\n", image.Name)
-					c.DeleteImage(p.Identifier, element.ID, image.Name)
+			for _, image := range images {
+				if strings.HasSuffix(image.Path, ":latest") {
+					continue
 				}
+
+				if image.Path == latest.Path {
+					continue
+				}
+
+				fmt.Printf("Delete image: %s\n", image.Name)
+				c.DeleteImage(p.Identifier, element.ID, image.Name)
 			}
 		}
 

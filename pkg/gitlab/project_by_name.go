@@ -25,6 +25,10 @@ func (c *Client) ProjectByName(
 	} else if count > 1 {
 		// Name could also be partial of another repository, with a longer name
 		for _, element := range result {
+			if element.Namespace.Name != namespace {
+				continue
+			}
+
 			if p == nil && element.Name == name {
 				p = element
 			} else if p != nil && element.Name == name {

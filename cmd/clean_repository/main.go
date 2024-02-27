@@ -53,10 +53,6 @@ func main() {
 
 		git.Fetch()
 	case provider_map.GitLabProvider:
-		if true {
-			return
-		}
-
 		remoteLocator := git.ParseLocator(r.Locator)
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := gitlab.New(gitlabLocator.Host, environment.Get(gitlab.Token))

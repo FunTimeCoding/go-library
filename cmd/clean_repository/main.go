@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/git/remote"
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
+	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
@@ -35,8 +36,27 @@ func main() {
 
 	switch r.Provider {
 	case provider_map.GitHubProvider:
-		// TODO: Delete all tags except the latest remotely, then fetch --prune-tags
+		remoteLocator := git.ParseLocator(r.Locator)
+		namespace, repository := git.ParseProject(remoteLocator.Path)
+		c := github.New(environment.Get(github.Token))
+		tags := c.Tags(namespace, repository)
+		latest := github.LatestTag(tags)
+
+		for _, element := range tags {
+			if element.Name == latest.Name {
+				continue
+			}
+
+			fmt.Printf("Delete tag: %s\n", *element.Name)
+			c.DeleteTag(namespace, repository, *element.Name)
+		}
+
+		git.Fetch()
 	case provider_map.GitLabProvider:
+		if true {
+			return
+		}
+
 		remoteLocator := git.ParseLocator(r.Locator)
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := gitlab.New(gitlabLocator.Host, environment.Get(gitlab.Token))

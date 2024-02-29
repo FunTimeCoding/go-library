@@ -26,10 +26,10 @@ func (c *Client) ProjectByName(
 	} else if count > 1 {
 		// Name could also be partial of another repository, with a longer name
 		for _, element := range result {
-			if element.Namespace.Name == namespace && element.Name == name {
+			if element.Namespace.Path == namespace && element.Name == name {
 				fmt.Printf(
 					"match: %s/%s\n",
-					element.Namespace.Name,
+					element.Namespace.Path,
 					element.Name,
 				)
 				p = element
@@ -38,7 +38,7 @@ func (c *Client) ProjectByName(
 			} else {
 				fmt.Printf(
 					"warning: not matching %s/%s\n",
-					element.Namespace.Name,
+					element.Namespace.Path,
 					element.Name,
 				)
 			}

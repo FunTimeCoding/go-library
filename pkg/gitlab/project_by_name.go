@@ -1,6 +1,7 @@
 package gitlab
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"github.com/xanzy/go-gitlab"
@@ -25,20 +26,26 @@ func (c *Client) ProjectByName(
 	} else if count > 1 {
 		// Name could also be partial of another repository, with a longer name
 		for _, element := range result {
-			if element.Namespace.Name != namespace {
-				continue
-			}
+			if element.Namespace.Name == namespace && element.Name == name {
+				fmt.Printf(
+					"match: %s/%s\n",
+					element.Namespace.Name,
+					element.Name,
+				)
+				p = element
 
-			if p == nil && element.Name == name {
-				p = element
-			} else if p != nil && element.Name == name {
-				// A second one with the same name is a problem, should not be possible
-				p = element
+				break
+			} else {
+				fmt.Printf(
+					"warning: not matching %s/%s\n",
+					element.Namespace.Name,
+					element.Name,
+				)
 			}
 		}
 
 		if p == nil {
-			log.Panicf("unexpected: %d", count)
+			log.Panicf("unexpected: %d %+v", count, result)
 		}
 	}
 

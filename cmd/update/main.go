@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	goVersion := runtime.Version()
+	goVersion := runtime.ExecutableVersion()
 	goString := goVersion.String()
 	system.Run("go", "mod", "edit", fmt.Sprintf("-go=%s", goString))
 

@@ -9,7 +9,9 @@ func RemoveEmpty(input any) any {
 			cleanedV := RemoveEmpty(v)
 			if cleanedV == nil ||
 				(reflect.ValueOf(cleanedV).Kind() == reflect.Map &&
-					len(cleanedV.(map[string]any)) == 0) {
+					len(cleanedV.(map[string]any)) == 0) ||
+				(reflect.ValueOf(cleanedV).Kind() == reflect.String &&
+					len(cleanedV.(string)) == 0) {
 				delete(val, k)
 			} else {
 				val[k] = cleanedV

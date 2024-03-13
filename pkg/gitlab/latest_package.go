@@ -2,35 +2,14 @@ package gitlab
 
 import "github.com/xanzy/go-gitlab"
 
-func LatestPackages(v []*gitlab.Package) []*gitlab.Package {
-	var result []*gitlab.Package
+func LatestPackages(v []*gitlab.Package) map[string]*gitlab.Package {
+	result := make(map[string]*gitlab.Package)
 
 	for _, p := range v {
-		// Add first entry either way
-		if len(result) == 0 {
-			result = append(result, p)
+		existing := result[p.Name]
 
-			continue
-		}
-
-		var found bool
-
-		// If name is found, replace
-		for i, r := range result {
-			if r.Name == p.Name {
-				if r.Version < p.Version {
-					result[i] = p
-				}
-
-				found = true
-
-				break
-			}
-		}
-
-		// If name not found, append as well
-		if !found {
-			result = append(result, p)
+		if existing == nil || p.Version > existing.Version {
+			result[p.Name] = p
 		}
 	}
 

@@ -1,7 +1,6 @@
 package gitlab
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"github.com/xanzy/go-gitlab"
@@ -27,20 +26,9 @@ func (c *Client) ProjectByName(
 		// Name could also be partial of another repository, with a longer name
 		for _, element := range result {
 			if element.Namespace.Path == namespace && element.Name == name {
-				fmt.Printf(
-					"match: %s/%s\n",
-					element.Namespace.Path,
-					element.Name,
-				)
 				p = element
 
 				break
-			} else {
-				fmt.Printf(
-					"warning: not matching %s/%s\n",
-					element.Namespace.Path,
-					element.Name,
-				)
 			}
 		}
 

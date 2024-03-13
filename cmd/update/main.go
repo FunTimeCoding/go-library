@@ -39,4 +39,13 @@ func main() {
 
 		system.SaveFile(project.DockerFile, d)
 	}
+
+	if system.FileExists(project.GitLabFile) {
+		d := project.ReplaceGoImageVersion(
+			system.ReadFile(project.GitLabFile),
+			goString,
+		)
+
+		system.SaveFile(project.GitLabFile, d)
+	}
 }

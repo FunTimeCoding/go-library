@@ -18,15 +18,14 @@ func LatestTag(v []*gitlab.Tag) *gitlab.Tag {
 	}
 
 	semver.Sort(tags)
-	count := len(tags)
-	var latest *gitlab.Tag
-	index := count - 1
+	var result *gitlab.Tag
+	index := len(tags) - 1
 
 	for _, element := range v {
 		if element.Name == tags[index] {
-			latest = element
+			result = element
 		}
 	}
 
-	return latest
+	return result
 }

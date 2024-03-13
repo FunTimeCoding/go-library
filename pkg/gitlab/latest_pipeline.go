@@ -13,15 +13,14 @@ func LatestPipeline(v []*gitlab.PipelineInfo) *gitlab.PipelineInfo {
 	}
 
 	semver.Sort(references)
-	count := len(references)
-	var latest *gitlab.PipelineInfo
-	index := count - 1
+	var result *gitlab.PipelineInfo
+	index := len(references) - 1
 
 	for _, element := range v {
 		if element.Ref == references[index] {
-			latest = element
+			result = element
 		}
 	}
 
-	return latest
+	return result
 }

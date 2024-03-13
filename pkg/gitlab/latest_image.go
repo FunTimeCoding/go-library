@@ -21,15 +21,14 @@ func LatestImage(v []*gitlab.RegistryRepositoryTag) *gitlab.RegistryRepositoryTa
 	}
 
 	semver.Sort(versions)
-	count := len(versions)
-	var latest *gitlab.RegistryRepositoryTag
-	index := count - 1
+	index := len(versions) - 1
+	var result *gitlab.RegistryRepositoryTag
 
 	for _, element := range v {
 		if strings.HasSuffix(element.Path, versions[index]) {
-			latest = element
+			result = element
 		}
 	}
 
-	return latest
+	return result
 }

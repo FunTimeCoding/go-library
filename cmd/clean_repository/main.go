@@ -98,6 +98,34 @@ func main() {
 			}
 		}
 
+		packages := c.Packages(p.Identifier)
+
+		if len(packages) > 0 {
+			latest := gitlab.LatestPackages(packages)
+
+			for _, element := range packages {
+				var isLatest bool
+
+				for _, inner := range latest {
+					if inner.Name == element.Name &&
+						inner.Version == element.Version {
+						isLatest = true
+					}
+				}
+
+				if isLatest {
+					continue
+				}
+
+				fmt.Printf(
+					"Delete package: %s %s\n",
+					element.Name,
+					element.Version,
+				)
+				c.DeletePackage(p.Identifier, element.ID)
+			}
+		}
+
 		tags := c.Tags(p.Identifier)
 
 		if len(tags) > 0 {

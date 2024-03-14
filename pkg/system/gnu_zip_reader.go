@@ -1,12 +1,13 @@
 package system
 
 import (
-	"archive/zip"
+	"compress/gzip"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"io"
 )
 
-func ZipReader(path string) *zip.ReadCloser {
-	result, e := zip.OpenReader(path)
+func GnuZipReader(r io.Reader) *gzip.Reader {
+	result, e := gzip.NewReader(r)
 	errors.PanicOnError(e)
 
 	return result

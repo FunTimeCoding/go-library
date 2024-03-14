@@ -16,7 +16,7 @@ func ExtractTarZip(
 		errors.LogClose(f)
 	}()
 
-	zip := ZipReader(f)
+	zip := GnuZipReader(f)
 	defer func() {
 		errors.LogClose(zip)
 	}()

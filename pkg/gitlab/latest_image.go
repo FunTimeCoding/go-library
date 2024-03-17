@@ -3,29 +3,20 @@ package gitlab
 import (
 	"github.com/xanzy/go-gitlab"
 	"golang.org/x/mod/semver"
-	"strings"
 )
 
 func LatestImage(v []*gitlab.RegistryRepositoryTag) *gitlab.RegistryRepositoryTag {
-	var versions []string
+	result := v[0]
 
 	for _, element := range v {
-		parts := strings.Split(element.Path, ":")
-		version := parts[1]
+		current := ImageVersion(element)
 
-		if version == "latest" {
+		// skip latest
+		if current == LatestVersion {
 			continue
 		}
 
-		versions = append(versions, version)
-	}
-
-	semver.Sort(versions)
-	index := len(versions) - 1
-	var result *gitlab.RegistryRepositoryTag
-
-	for _, element := range v {
-		if strings.HasSuffix(element.Path, versions[index]) {
+		if semver.Compare(current, ImageVersion(result)) > 0 {
 			result = element
 		}
 	}

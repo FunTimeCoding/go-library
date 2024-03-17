@@ -6,5 +6,7 @@ const (
 
 	PrivateTokenHeader = "Private-Token"
 
+	LatestVersion = "latest"
+
 	PerPage = int(1000)
 )

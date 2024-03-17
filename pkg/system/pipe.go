@@ -25,11 +25,11 @@ func Pipe(
 	errors.PanicOnError(pipe.Close())
 
 	if f := c.Wait(); f != nil {
-		log.Panicf("wait fail: %e\n", f)
+		log.Panicf("wait: %e", f)
 	}
 
 	if written == 0 {
-		log.Panicf("no bytes written")
+		log.Panic("no bytes written")
 	}
 
 	return stdout.String(), stderr.String()

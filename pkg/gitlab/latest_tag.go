@@ -8,21 +8,15 @@ import (
 )
 
 func LatestTag(v []*gitlab.Tag) *gitlab.Tag {
-	var tags []string
+	result := v[0]
 
 	for _, element := range v {
-		// Only consider tags with prefix
-		if strings.HasPrefix(element.Name, git.VersionPrefix) {
-			tags = append(tags, element.Name)
+		// only consider tags with prefix
+		if !strings.HasPrefix(element.Name, git.VersionPrefix) {
+			continue
 		}
-	}
 
-	semver.Sort(tags)
-	var result *gitlab.Tag
-	index := len(tags) - 1
-
-	for _, element := range v {
-		if element.Name == tags[index] {
+		if semver.Compare(element.Name, result.Name) > 0 {
 			result = element
 		}
 	}

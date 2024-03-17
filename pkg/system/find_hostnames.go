@@ -14,7 +14,7 @@ func FindHostnames(instance string) ([]string, error) {
 		splitHost, _, splitFail := net.SplitHostPort(instance)
 
 		if splitFail != nil {
-			return result, fmt.Errorf("split fail: %s", splitFail)
+			return result, fmt.Errorf("split: %s", splitFail)
 		}
 
 		host = splitHost
@@ -33,7 +33,7 @@ func FindHostnames(instance string) ([]string, error) {
 				return result, nil
 			}
 
-			return result, fmt.Errorf("lookup fail: %s", lookUpFail)
+			return result, fmt.Errorf("lookup: %s", lookUpFail)
 		}
 
 		result = names

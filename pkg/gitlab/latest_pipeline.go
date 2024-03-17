@@ -6,18 +6,10 @@ import (
 )
 
 func LatestPipeline(v []*gitlab.PipelineInfo) *gitlab.PipelineInfo {
-	var references []string
+	result := v[0]
 
 	for _, element := range v {
-		references = append(references, element.Ref)
-	}
-
-	semver.Sort(references)
-	var result *gitlab.PipelineInfo
-	index := len(references) - 1
-
-	for _, element := range v {
-		if element.Ref == references[index] {
+		if result == nil || semver.Compare(element.Ref, result.Ref) > 0 {
 			result = element
 		}
 	}

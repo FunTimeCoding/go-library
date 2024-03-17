@@ -98,7 +98,7 @@ func main() {
 			}
 		}
 
-		packages := c.Packages(p.Identifier)
+		packages := c.Packages(p.Identifier, false)
 
 		if len(packages) > 0 {
 			latest := gitlab.LatestPackages(packages)

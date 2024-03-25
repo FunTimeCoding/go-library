@@ -12,7 +12,8 @@ const (
 	TextContentType   = "text/plain"
 	ObjectContentType = "application/json"
 
-	GetMethod = "GET"
+	GetMethod  = "GET"
+	PostMethod = "POST"
 
 	SecureSchemePrefix = "https://"
 )

@@ -1,6 +1,8 @@
 package system
 
 const (
+	Tilde = "~"
+
 	NullPhysicalAddressString = "00:00:00:00:00:00"
 
 	Linux  = "linux"

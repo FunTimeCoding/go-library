@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.21.7
+go 1.22.1
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.1
@@ -20,13 +20,13 @@ require (
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
 	github.com/whilp/git-urls v1.0.0
-	github.com/xanzy/go-gitlab v0.100.0
+	github.com/xanzy/go-gitlab v0.101.0
 	golang.org/x/crypto v0.21.0
 	golang.org/x/mod v0.16.0
 	golang.org/x/oauth2 v0.18.0
 	gonum.org/v1/gonum v0.15.0
 	gorm.io/driver/postgres v1.5.7
-	gorm.io/gorm v1.25.7
+	gorm.io/gorm v1.25.9
 	gotest.tools/v3 v3.5.1
 	k8s.io/apimachinery v0.29.3
 	sigs.k8s.io/yaml v1.4.0

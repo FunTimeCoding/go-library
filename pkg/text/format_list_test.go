@@ -9,6 +9,6 @@ func TestFormatList(t *testing.T) {
 	assert.String(
 		t,
 		FormatList("title", []string{"element"}),
-		"title:\nelement\n",
+		"title:\nelement",
 	)
 }

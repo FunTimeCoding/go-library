@@ -1,12 +1,17 @@
 package relational
 
-import "github.com/jackc/pgconn"
+import (
+	"errors"
+	"github.com/jackc/pgconn"
+)
 
 func IsErrorCode(
 	e error,
 	code string,
 ) bool {
-	if f, yes := e.(*pgconn.PgError); yes {
+	var f *pgconn.PgError
+
+	if errors.As(e, &f) {
 		return f.Code == code
 	}
 

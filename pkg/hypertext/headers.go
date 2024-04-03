@@ -5,8 +5,7 @@ import (
 	"strings"
 )
 
-func Headers(d *goquery.Document) []string {
-	var result []string
+func Headers(d *goquery.Document) (result []string) {
 	d.Find("h1").Each(
 		func(
 			_ int,
@@ -68,5 +67,5 @@ func Headers(d *goquery.Document) []string {
 		},
 	)
 
-	return result
+	return
 }

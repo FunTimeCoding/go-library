@@ -9,15 +9,7 @@ import (
 func TestJoin(t *testing.T) {
 	assert.Any(
 		t,
-		[]string{"Alfa", "Bravo"}, Join(
-			[][]string{
-				{
-					strings.Alfa,
-				},
-				{
-					strings.Bravo,
-				},
-			},
-		),
+		[]string{"Alfa", "Bravo"},
+		Join([][]string{{strings.Alfa}, {strings.Bravo}}),
 	)
 }

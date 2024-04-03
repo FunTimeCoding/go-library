@@ -10,7 +10,7 @@ func main() {
 	app := tview.NewApplication()
 	table := tview.NewTable().SetBorders(true)
 	lorem := strings.Split(
-		"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+		"One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. ",
 		" ",
 	)
 	cols, rows := 10, 40
@@ -42,7 +42,10 @@ func main() {
 			}
 		},
 	).SetSelectedFunc(
-		func(row int, column int) {
+		func(
+			row int,
+			column int,
+		) {
 			table.GetCell(row, column).SetTextColor(tcell.ColorRed)
 			table.SetSelectable(false, false)
 		},

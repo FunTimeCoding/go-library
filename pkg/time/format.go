@@ -1,10 +1,7 @@
 package time
 
-import (
-	"fmt"
-	"time"
-)
+import "time"
 
 func Format(t time.Time) string {
-	return fmt.Sprintf("%s", t.Format(DateMinute))
+	return t.Format(DateMinute)
 }

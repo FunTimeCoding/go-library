@@ -1,9 +1,6 @@
 package errors
 
-import (
-	"errors"
-	"fmt"
-)
+import "fmt"
 
 func From(a any) error {
 	switch cast := a.(type) {
@@ -15,7 +12,7 @@ func From(a any) error {
 		v := fmt.Sprintf("%v", a)
 
 		if v != "" {
-			return errors.New(fmt.Sprintf("non-error: %s", v))
+			return fmt.Errorf("non-error: %s", v)
 		}
 	}
 

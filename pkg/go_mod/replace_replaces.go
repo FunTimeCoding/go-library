@@ -7,6 +7,6 @@ func ReplaceReplaces(
 	replaces string,
 ) string {
 	return regexp.MustCompile(
-		`(?s)replace (.*)`,
+		"(?s)replace (.*)",
 	).ReplaceAllString(mod, replaces)
 }

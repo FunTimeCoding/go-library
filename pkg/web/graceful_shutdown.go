@@ -16,9 +16,6 @@ func GracefulShutdown(
 	o, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 	errors.PanicOnError(s.Shutdown(o))
-	select {
-	case <-o.Done():
-		log.Println("timeout done")
-	}
+	<-o.Done()
 	log.Println("shutdown complete")
 }

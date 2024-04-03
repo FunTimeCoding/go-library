@@ -5,9 +5,9 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-func ToUnstructured(input []byte) *unstructured.Unstructured {
-	u := &unstructured.Unstructured{}
-	errors.PanicOnError(u.UnmarshalJSON(input))
+func ToUnstructured(b []byte) *unstructured.Unstructured {
+	result := &unstructured.Unstructured{}
+	errors.PanicOnError(result.UnmarshalJSON(b))
 
-	return u
+	return result
 }

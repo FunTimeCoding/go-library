@@ -5,8 +5,7 @@ import (
 	"strings"
 )
 
-func Divisions(d *goquery.Document) []string {
-	var result []string
+func Divisions(d *goquery.Document) (result []string) {
 	d.Find("div").Each(
 		func(
 			index int,
@@ -32,5 +31,5 @@ func Divisions(d *goquery.Document) []string {
 		},
 	)
 
-	return result
+	return
 }

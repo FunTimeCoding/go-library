@@ -39,6 +39,8 @@ func Any(
 		expectedLength = reflect.ValueOf(expected).Len()
 	case reflect.Array:
 		expectedLength = reflect.ValueOf(expected).Len()
+	default:
+		// skip
 	}
 
 	switch reflect.TypeOf(actual).Kind() {
@@ -46,6 +48,8 @@ func Any(
 		actualLength = reflect.ValueOf(actual).Len()
 	case reflect.Array:
 		actualLength = reflect.ValueOf(actual).Len()
+	default:
+		// skip
 	}
 
 	if expectedLength > -1 || actualLength > -1 {
@@ -74,11 +78,12 @@ func Any(
 		return
 	}
 
-	diff := difflib.UnifiedDiff{
-		A:       difflib.SplitLines(spew.Sdump(expected)),
-		B:       difflib.SplitLines(spew.Sdump(actual)),
-		Context: 10,
-	}
-	text, _ := difflib.GetUnifiedDiffString(diff)
+	text, _ := difflib.GetUnifiedDiffString(
+		difflib.UnifiedDiff{
+			A:       difflib.SplitLines(spew.Sdump(expected)),
+			B:       difflib.SplitLines(spew.Sdump(actual)),
+			Context: 10,
+		},
+	)
 	t.Error(text)
 }

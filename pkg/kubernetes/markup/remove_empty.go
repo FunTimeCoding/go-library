@@ -3,28 +3,29 @@ package markup
 import "reflect"
 
 func RemoveEmpty(input any) any {
-	switch val := input.(type) {
+	switch result := input.(type) {
 	case map[string]any:
-		for k, v := range val {
-			cleanedV := RemoveEmpty(v)
-			if cleanedV == nil ||
-				(reflect.ValueOf(cleanedV).Kind() == reflect.Map &&
-					len(cleanedV.(map[string]any)) == 0) ||
-				(reflect.ValueOf(cleanedV).Kind() == reflect.String &&
-					len(cleanedV.(string)) == 0) {
-				delete(val, k)
+		for k, v := range result {
+			cleanV := RemoveEmpty(v)
+
+			if cleanV == nil ||
+				(reflect.ValueOf(cleanV).Kind() == reflect.Map &&
+					len(cleanV.(map[string]any)) == 0) ||
+				(reflect.ValueOf(cleanV).Kind() == reflect.String &&
+					len(cleanV.(string)) == 0) {
+				delete(result, k)
 			} else {
-				val[k] = cleanedV
+				result[k] = cleanV
 			}
 		}
 
-		return val
+		return result
 	case []any:
-		for i, v := range val {
-			val[i] = RemoveEmpty(v)
+		for i, v := range result {
+			result[i] = RemoveEmpty(v)
 		}
 
-		return val
+		return result
 	default:
 		return input
 	}

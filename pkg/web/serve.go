@@ -2,6 +2,7 @@ package web
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"log"
@@ -15,9 +16,10 @@ func Serve(
 ) {
 	s := &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: r}
 	go func() {
-		if err := s.ListenAndServe(); err != nil &&
-			err != http.ErrServerClosed {
-			log.Fatalf("listen: %s\n", err)
+		if e := s.ListenAndServe(); e != nil {
+			if !errors.Is(e, http.ErrServerClosed) {
+				log.Fatalf("listen: %s\n", e)
+			}
 		}
 	}()
 	system.KillSignalBlock()

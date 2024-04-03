@@ -5,8 +5,9 @@ const (
 
 	NullPhysicalAddressString = "00:00:00:00:00:00"
 
-	Linux  = "linux"
-	Darwin = "darwin"
+	Linux   = "linux"
+	Darwin  = "darwin"
+	Windows = "windows"
 
 	AMD64 = "amd64"
 	ARM64 = "arm64"

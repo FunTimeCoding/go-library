@@ -2,15 +2,12 @@ package go_mod
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"golang.org/x/mod/modfile"
-	"os"
 )
 
 func Read() *modfile.File {
-	modBytes, readFail := os.ReadFile(ModFile)
-	errors.PanicOnError(readFail)
-
-	result, e := modfile.Parse(ModFile, modBytes, nil)
+	result, e := modfile.Parse(ModFile, system.ReadBytes(ModFile), nil)
 	errors.PanicOnError(e)
 
 	return result

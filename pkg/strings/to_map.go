@@ -9,8 +9,9 @@ func ToMap(
 	result := make(map[string]string)
 
 	for _, s := range input {
-		parts := strings.Split(s, separator)
-		result[parts[0]] = parts[1]
+		if p := strings.Split(s, separator); len(p) == 2 {
+			result[p[0]] = p[1]
+		}
 	}
 
 	return result

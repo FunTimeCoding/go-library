@@ -1,4 +1,4 @@
-package gitlab
+package image
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func ImageVersion(v *gitlab.RegistryRepositoryTag) string {
+func Version(v *gitlab.RegistryRepositoryTag) string {
 	result := strings.Split(v.Path, ":")[1]
 
 	if result == "" {

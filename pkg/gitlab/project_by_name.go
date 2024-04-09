@@ -37,7 +37,7 @@ func (c *Client) ProjectByName(
 		}
 	}
 
-	if p.Namespace.Path == namespace {
+	if p != nil && p.Namespace.Path == namespace {
 		return project.New(p)
 	}
 

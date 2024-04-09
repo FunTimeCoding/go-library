@@ -1,4 +1,4 @@
-package gitlab
+package tag
 
 import (
 	"github.com/funtimecoding/go-library/pkg/git"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func LatestTag(v []*gitlab.Tag) *gitlab.Tag {
+func Latest(v []*gitlab.Tag) *gitlab.Tag {
 	result := v[0]
 
 	for _, element := range v {

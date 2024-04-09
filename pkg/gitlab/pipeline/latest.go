@@ -1,11 +1,11 @@
-package gitlab
+package pipeline
 
 import (
 	"github.com/xanzy/go-gitlab"
 	"golang.org/x/mod/semver"
 )
 
-func LatestPipeline(v []*gitlab.PipelineInfo) *gitlab.PipelineInfo {
+func Latest(v []*gitlab.PipelineInfo) *gitlab.PipelineInfo {
 	result := v[0]
 
 	for _, element := range v {

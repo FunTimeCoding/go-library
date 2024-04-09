@@ -7,6 +7,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
+	"github.com/funtimecoding/go-library/pkg/gitlab/image"
+	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
+	"github.com/funtimecoding/go-library/pkg/gitlab/pipeline"
+	"github.com/funtimecoding/go-library/pkg/gitlab/tag"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -60,15 +64,15 @@ func main() {
 		pipelines := c.Pipelines(p.Identifier)
 
 		if len(pipelines) > 0 {
-			latest := gitlab.LatestPipeline(pipelines)
+			latest := pipeline.Latest(pipelines)
 
-			for _, pipeline := range pipelines {
-				if pipeline.Ref == latest.Ref {
+			for _, element := range pipelines {
+				if element.Ref == latest.Ref {
 					continue
 				}
 
-				fmt.Printf("Delete pipeline: %s\n", pipeline.Ref)
-				c.DeletePipeline(p.Identifier, pipeline.ID)
+				fmt.Printf("Delete pipeline: %s\n", element.Ref)
+				c.DeletePipeline(p.Identifier, element.ID)
 			}
 		}
 
@@ -82,28 +86,28 @@ func main() {
 				continue
 			}
 
-			latest := gitlab.LatestImage(images)
+			latest := image.Latest(images)
 
-			for _, image := range images {
-				if strings.HasSuffix(image.Path, ":latest") {
+			for _, i := range images {
+				if strings.HasSuffix(i.Path, ":latest") {
 					continue
 				}
 
-				if image.Path == latest.Path {
+				if i.Path == latest.Path {
 					continue
 				}
 
-				fmt.Printf("Delete image: %s\n", image.Name)
-				c.DeleteImage(p.Identifier, element.ID, image.Name)
+				fmt.Printf("Delete image: %s\n", i.Name)
+				c.DeleteImage(p.Identifier, element.ID, i.Name)
 			}
 		}
 
-		packages := c.Packages(p.Identifier, false)
+		projectPackages := c.Packages(p.Identifier, false)
 
-		if len(packages) > 0 {
-			latest := gitlab.LatestPackages(packages)
+		if len(projectPackages) > 0 {
+			latest := packages.Latest(projectPackages)
 
-			for _, element := range packages {
+			for _, element := range projectPackages {
 				var isLatest bool
 
 				for _, inner := range latest {
@@ -129,7 +133,7 @@ func main() {
 		tags := c.Tags(p.Identifier)
 
 		if len(tags) > 0 {
-			latest := gitlab.LatestTag(tags)
+			latest := tag.Latest(tags)
 
 			for _, element := range tags {
 				if element.Name == latest.Name {

@@ -27,7 +27,7 @@ func Any(
 				actual,
 			),
 		)
-	} else if expected == nil && actual == nil {
+	} else if expected == nil {
 		return
 	}
 

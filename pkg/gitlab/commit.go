@@ -51,7 +51,7 @@ func (c *Client) File(
 		&gitlab.GetFileOptions{Ref: &branch},
 	)
 
-	if e != nil && r.StatusCode == 404 {
+	if e != nil && r != nil && r.StatusCode == 404 {
 		return nil
 	}
 

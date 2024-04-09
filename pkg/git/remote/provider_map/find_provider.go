@@ -26,9 +26,5 @@ func (m *Map) FindProvider(host string) string {
 		}
 	}
 
-	if result == "" {
-		return UnknownProvider
-	}
-
-	return result
+	return UnknownProvider
 }

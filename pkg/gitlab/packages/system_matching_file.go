@@ -1,4 +1,4 @@
-package gitlab
+package packages
 
 import (
 	"github.com/xanzy/go-gitlab"

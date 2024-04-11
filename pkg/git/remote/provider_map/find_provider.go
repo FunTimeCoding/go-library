@@ -6,8 +6,6 @@ import (
 )
 
 func (m *Map) FindProvider(host string) string {
-	var result string
-
 	switch host {
 	case constant.GitHubHost:
 		return GitHubProvider

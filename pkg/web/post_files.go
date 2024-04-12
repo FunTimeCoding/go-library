@@ -9,6 +9,7 @@ import (
 
 func PostFiles(
 	locator string,
+	headers map[string]string,
 	files ...*mime.File,
 ) []byte {
 	var b = new(bytes.Buffer)
@@ -21,6 +22,11 @@ func PostFiles(
 	errors.PanicClose(w)
 	req := NewPostBytes(locator, b)
 	req.Header.Add(ContentTypeHeader, w.FormDataContentType())
+
+	for k, v := range headers {
+		req.Header.Add(k, v)
+	}
+
 	c := Client(true)
 	res := Send(c, req)
 	defer errors.PanicClose(res.Body)

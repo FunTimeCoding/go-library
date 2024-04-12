@@ -12,6 +12,7 @@ const (
 	AMD64 = "amd64"
 	ARM64 = "arm64"
 
+	Temporary                   = "tmp"
 	DownloadsPath               = "Downloads"
 	KubernetesConfigurationPath = ".kube/config"
 	QuerySocketPath             = ".osquery/shell.em"

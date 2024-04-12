@@ -12,6 +12,7 @@ const (
 	AMD64 = "amd64"
 	ARM64 = "arm64"
 
+	Command                     = "cmd"
 	Temporary                   = "tmp"
 	DownloadsPath               = "Downloads"
 	KubernetesConfigurationPath = ".kube/config"

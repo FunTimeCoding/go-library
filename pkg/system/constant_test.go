@@ -7,6 +7,7 @@ import (
 )
 
 func TestConstant(t *testing.T) {
+	assert.String(t, "cmd", Command)
 	assert.String(t, "tmp", Temporary)
 	assert.String(t, "Downloads", DownloadsPath)
 	assert.String(t, ".kube/config", KubernetesConfigurationPath)

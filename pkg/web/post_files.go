@@ -11,7 +11,7 @@ func PostFiles(
 	locator string,
 	headers map[string]string,
 	files ...*mime.File,
-) []byte {
+) (int, string) {
 	var b = new(bytes.Buffer)
 	var w = multipart.NewWriter(b)
 
@@ -31,5 +31,5 @@ func PostFiles(
 	res := Send(c, req)
 	defer errors.PanicClose(res.Body)
 
-	return ReadBytes(res)
+	return res.StatusCode, ReadString(res)
 }

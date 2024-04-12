@@ -32,9 +32,17 @@ func (r *Run) Start(s ...string) string {
 	}
 
 	if r.Verbose {
-		fmt.Printf("Error: %s\n", r.Error)
-		fmt.Printf("Stdout:\n%s\n", r.OutputString)
-		fmt.Printf("Stderr:\n%s\n", r.ErrorString)
+		if r.Error != nil {
+			fmt.Printf("Error: %s\n", r.Error)
+		}
+
+		if r.OutputString != "" {
+			fmt.Printf("Stdout:\n%s\n", r.OutputString)
+		}
+
+		if r.ErrorString != "" {
+			fmt.Printf("Stderr:\n%s\n", r.ErrorString)
+		}
 	}
 
 	if r.Panic {

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"os"
 	"os/exec"
 )
 
@@ -19,7 +20,7 @@ func (r *Run) Start(s ...string) string {
 	}
 
 	if len(r.Environment) > 0 {
-		c.Env = r.Environment
+		c.Env = append(os.Environ(), r.Environment...)
 	}
 
 	e := c.Run()

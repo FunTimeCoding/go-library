@@ -7,7 +7,7 @@ import (
 	"mime/multipart"
 )
 
-func PostFiles(
+func PutFiles(
 	locator string,
 	headers map[string]string,
 	files ...*mime.File,
@@ -20,7 +20,7 @@ func PostFiles(
 	}
 
 	errors.PanicClose(w)
-	req := NewPostBytes(locator, b)
+	req := NewPutBytes(locator, b)
 	req.Header.Add(ContentTypeHeader, w.FormDataContentType())
 
 	for k, v := range headers {

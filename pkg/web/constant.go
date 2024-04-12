@@ -14,6 +14,7 @@ const (
 
 	GetMethod  = "GET"
 	PostMethod = "POST"
+	PutMethod  = "PUT"
 
 	SecureSchemePrefix   = "https://"
 	InsecureSchemePrefix = "http://"

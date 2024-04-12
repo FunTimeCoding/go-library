@@ -1,5 +1,5 @@
 package run
 
 func New() *Run {
-	return &Run{}
+	return &Run{Panic: true}
 }

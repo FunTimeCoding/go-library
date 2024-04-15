@@ -16,6 +16,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "output", Output)
 	assert.String(t, "owner", Owner)
 	assert.String(t, "package", Package)
+	assert.String(t, "password", Password)
 	assert.String(t, "path", Path)
 	assert.String(t, "project", Project)
 	assert.String(t, "replace", Replace)
@@ -23,6 +24,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "tag", Tag)
 	assert.String(t, "template", Template)
 	assert.String(t, "token", Token)
+	assert.String(t, "user", User)
 	assert.String(t, "verbose", Verbose)
 	assert.String(t, "version", Version)
 }

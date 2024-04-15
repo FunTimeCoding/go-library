@@ -11,6 +11,7 @@ const (
 	Output     = "output"
 	Owner      = "owner"
 	Package    = "package"
+	Password   = "password"
 	Path       = "path"
 	Project    = "project"
 	Replace    = "replace"
@@ -18,6 +19,7 @@ const (
 	Tag        = "tag"
 	Template   = "template"
 	Token      = "token"
+	User       = "user"
 	Verbose    = "verbose"
 	Version    = "version"
 )

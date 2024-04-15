@@ -2,5 +2,8 @@ package debian
 
 const (
 	PackageConfigurationDirectory = "DEBIAN"
-	ControlFile                   = "control"
+
+	ControlFile = "control"
+
+	PackageExtension = ".deb"
 )

@@ -7,6 +7,7 @@ import (
 
 func TestConstant(t *testing.T) {
 	assert.String(t, "Private-Token", PrivateTokenHeader)
+	assert.String(t, "Job-Token", JobTokenHeader)
 	assert.String(t, "CI_API_V4_URL", InterfaceLocator)
 	assert.String(t, "CI_PROJECT_ID", ProjectIdentifier)
 	assert.String(t, "CI_COMMIT_TAG", CommitTag)

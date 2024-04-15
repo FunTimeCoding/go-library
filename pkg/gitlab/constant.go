@@ -5,6 +5,7 @@ const (
 	Token = "GITLAB_TOKEN"
 
 	PrivateTokenHeader = "Private-Token"
+	JobTokenHeader     = "Job-Token"
 
 	LatestVersion = "latest"
 

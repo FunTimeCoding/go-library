@@ -23,6 +23,8 @@ const (
 	Temporary = "tmp"
 	Library   = "lib"
 	Resources = "usr"
+	Local     = "local"
+	Binary    = "bin"
 )
 
 var Architectures = []string{AMD64, ARM64}

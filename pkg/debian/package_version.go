@@ -1,6 +1,9 @@
 package debian
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/system"
+)
 
 func PackageVersion(
 	name string,
@@ -8,6 +11,8 @@ func PackageVersion(
 	packageVersion int,
 	architecture string,
 ) string {
+	system.ValidateArchitecture(architecture)
+
 	return fmt.Sprintf(
 		"%s_%s-%d_%s",
 		name,

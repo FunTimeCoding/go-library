@@ -9,6 +9,8 @@ import (
 func TestConstant(t *testing.T) {
 	assert.String(t, "cmd", Command)
 	assert.String(t, "tmp", Temporary)
+	assert.String(t, "lib", Library)
+	assert.String(t, "usr", Resources)
 	assert.String(t, "Downloads", DownloadsPath)
 	assert.String(t, ".kube/config", KubernetesConfigurationPath)
 	assert.String(t, ".osquery/shell.em", QuerySocketPath)

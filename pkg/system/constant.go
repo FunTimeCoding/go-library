@@ -13,10 +13,18 @@ const (
 	ARM64 = "arm64"
 
 	Command                     = "cmd"
-	Temporary                   = "tmp"
 	DownloadsPath               = "Downloads"
 	KubernetesConfigurationPath = ".kube/config"
 	QuerySocketPath             = ".osquery/shell.em"
 )
+
+// File hierarchy system
+const (
+	Temporary = "tmp"
+	Library   = "lib"
+	Resources = "usr"
+)
+
+var Architectures = []string{AMD64, ARM64}
 
 var NullPhysicalAddress = PhysicalAddress(NullPhysicalAddressString)

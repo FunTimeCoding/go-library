@@ -2,75 +2,119 @@ package main
 
 import (
 	"fmt"
+	debianHelper "github.com/funtimecoding/go-library/pkg/debian"
+	"github.com/funtimecoding/go-library/pkg/semver"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"os"
+	"github.com/funtimecoding/go-library/pkg/system/argument"
+	viperHelper "github.com/funtimecoding/go-library/pkg/viper"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 )
 
+const MaintainerNameArgument = "maintainer-name"
+const MaintainerEmailArgument = "maintainer-email"
+const SystemdUnitFlag = "systemd-unit"
+
 func main() {
-	if len(os.Args) != 5 {
-		fmt.Printf(
-			"Usage: %s EXECUTABLE VERSION MAINTAINER_NAME MAINTAINER_EMAIL"+
-				"\nVersion: 1.0.0"+
-				"\nMaintainer name: AN Other"+
-				"\nMaintainer email: another@example.org"+
-				"\n",
-			os.Args[0],
-		)
+	pflag.String(
+		argument.Executable,
+		"",
+		"Executable to package: go-example",
+	)
+	pflag.String(
+		argument.Version,
+		"",
+		"Package semantic version: 1.0.0, v-prefix gets trimmed",
+	)
+	pflag.String(
+		MaintainerNameArgument,
+		"",
+		"Maintainer name: AN Other",
+	)
+	pflag.String(
+		MaintainerEmailArgument,
+		"",
+		"Maintainer email: another@example.org",
+	)
+	var createUnit bool
+	pflag.BoolVar(
+		&createUnit,
+		SystemdUnitFlag,
+		false,
+		"Create a systemd unit",
+	)
+	viperHelper.ParseAndBind()
+	executable := viper.GetString(argument.Executable)
+	version := semver.Trim(viper.GetString(argument.Version))
+	maintainerName := viper.GetString(MaintainerNameArgument)
+	maintainerMail := viper.GetString(MaintainerEmailArgument)
+	architecture := system.AMD64
 
-		os.Exit(1)
-	}
+	packageName := debianHelper.PackageVersion(
+		executable,
+		version,
+		1,
+		architecture,
+	)
+	packageDirectory := system.Join(system.WorkingDirectory(), packageName)
 
-	executable := os.Args[1]
-	version := os.Args[2]
-	maintainerName := os.Args[3]
-	maintainerMail := os.Args[4]
-
-	work := system.WorkingDirectory()
-	packageName := fmt.Sprintf("%s_%s-1_amd64", executable, version)
-	packageDirectory := system.Join(work, packageName)
-
-	debian := system.Join(packageDirectory, "DEBIAN")
-	system.MakeDirectory(debian)
-	control := system.Join(debian, "control")
+	debianDirectory := system.Join(
+		packageDirectory,
+		debianHelper.PackageConfigurationDirectory,
+	)
+	system.MakeDirectory(debianDirectory)
 	system.SaveFile(
-		control,
+		system.Join(debianDirectory, debianHelper.ControlFile),
 		fmt.Sprintf(
 			"Package: %s"+
 				"\nVersion: %s"+
-				"\nArchitecture: amd64"+
+				"\nArchitecture: %s"+
 				"\nMaintainer: %s <%s>"+
 				"\nDescription: Short stub description."+
 				"\n Long stub description."+
 				"\n",
 			executable,
 			version,
+			architecture,
 			maintainerName,
 			maintainerMail,
 		),
 	)
 
-	unit := system.Join(packageDirectory, "lib", "systemd", "system")
-	system.MakeDirectory(unit)
-	system.SaveFile(
-		system.Join(unit, fmt.Sprintf("%s.service", executable)),
-		fmt.Sprintf(
-			"[Unit]"+
-				"\nDescription=%s stub description"+
-				"\nAfter=network.target"+
-				"\n"+
-				"\n[Service]"+
-				"\nType=simple"+
-				"\nExecStart=/usr/local/bin/%s"+
-				"\n"+
-				"\n[Install]"+
-				"\nWantedBy=multi-user.target"+
-				"\n",
-			executable,
-			executable,
-		),
-	)
+	if createUnit {
+		unit := system.Join(
+			packageDirectory,
+			system.Library,
+			"systemd",
+			"system",
+		)
+		system.MakeDirectory(unit)
+		system.SaveFile(
+			system.Join(unit, fmt.Sprintf("%s.service", executable)),
+			fmt.Sprintf(
+				"[Unit]"+
+					"\nDescription=%s stub description"+
+					"\nAfter=network.target"+
+					"\n"+
+					"\n[Service]"+
+					"\nType=simple"+
+					"\nExecStart=/usr/local/bin/%s"+
+					"\n"+
+					"\n[Install]"+
+					"\nWantedBy=multi-user.target"+
+					"\n",
+				executable,
+				executable,
+			),
+		)
+	}
 
-	bin := system.Join(packageDirectory, "usr", "local", "bin")
+	bin := system.Join(
+		packageDirectory,
+		system.Resources,
+		system.Local,
+		system.Binary,
+	)
 	system.MakeDirectory(bin)
 	system.Move(executable, system.Join(bin, executable))
 

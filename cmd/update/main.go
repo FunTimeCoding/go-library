@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/github/release"
 	"github.com/funtimecoding/go-library/pkg/project"
 	"github.com/funtimecoding/go-library/pkg/runtime"
+	"github.com/funtimecoding/go-library/pkg/semver"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -30,10 +29,7 @@ func main() {
 				).Releases(github.DelveNamespace, github.DelveRepository),
 				goVersion,
 			); v != nil {
-				d = project.ReplaceDelveVersion(
-					d,
-					strings.TrimPrefix(v.Name, git.VersionPrefix),
-				)
+				d = project.ReplaceDelveVersion(d, semver.Trim(v.Name))
 			}
 		}
 

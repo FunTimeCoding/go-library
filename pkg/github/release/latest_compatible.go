@@ -2,8 +2,7 @@ package release
 
 import (
 	"github.com/coreos/go-semver/semver"
-	"github.com/funtimecoding/go-library/pkg/git"
-	"strings"
+	helper "github.com/funtimecoding/go-library/pkg/semver"
 )
 
 func LatestCompatible(
@@ -11,7 +10,7 @@ func LatestCompatible(
 	other *semver.Version,
 ) *Release {
 	for _, element := range v {
-		s := semver.New(strings.TrimPrefix(element.Name, git.VersionPrefix))
+		s := semver.New(helper.Trim(element.Name))
 
 		if s.Major == other.Major && s.Minor == other.Minor {
 			return element

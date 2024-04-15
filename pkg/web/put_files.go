@@ -20,15 +20,15 @@ func PutFiles(
 	}
 
 	errors.PanicClose(w)
-	req := NewPutBytes(locator, b)
-	req.Header.Add(ContentTypeHeader, w.FormDataContentType())
+	request := NewPutBytes(locator, b)
+	request.Header.Add(ContentTypeHeader, w.FormDataContentType())
 
 	for k, v := range headers {
-		req.Header.Add(k, v)
+		request.Header.Add(k, v)
 	}
 
-	res := Send(Client(true), req)
-	defer errors.PanicClose(res.Body)
+	response := Send(Client(true), request)
+	defer errors.PanicClose(response.Body)
 
-	return res.StatusCode, ReadString(res)
+	return response.StatusCode, ReadString(response)
 }

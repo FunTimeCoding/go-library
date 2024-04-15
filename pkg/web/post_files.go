@@ -12,23 +12,23 @@ func PostFiles(
 	headers map[string]string,
 	files ...*mime.File,
 ) (int, string) {
-	var b = new(bytes.Buffer)
-	var w = multipart.NewWriter(b)
+	var buffer = new(bytes.Buffer)
+	var w = multipart.NewWriter(buffer)
 
 	for _, f := range files {
 		mime.CreateAndWrite(w, f)
 	}
 
 	errors.PanicClose(w)
-	req := NewPostBytes(locator, b)
-	req.Header.Add(ContentTypeHeader, w.FormDataContentType())
+	request := NewPostBytes(locator, buffer)
+	request.Header.Add(ContentTypeHeader, w.FormDataContentType())
 
 	for k, v := range headers {
-		req.Header.Add(k, v)
+		request.Header.Add(k, v)
 	}
 
-	res := Send(Client(true), req)
-	defer errors.PanicClose(res.Body)
+	response := Send(Client(true), request)
+	defer errors.PanicClose(response.Body)
 
-	return res.StatusCode, ReadString(res)
+	return response.StatusCode, ReadString(response)
 }

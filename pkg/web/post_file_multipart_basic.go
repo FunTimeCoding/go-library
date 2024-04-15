@@ -7,26 +7,23 @@ import (
 	"mime/multipart"
 )
 
-func PutFiles(
+func PostFileMultipartBasic(
 	locator string,
-	headers map[string]string,
+	user string,
+	password string,
 	files ...*mime.File,
 ) (int, string) {
-	var b = new(bytes.Buffer)
-	var w = multipart.NewWriter(b)
+	var buffer = new(bytes.Buffer)
+	var w = multipart.NewWriter(buffer)
 
 	for _, f := range files {
 		mime.CreateAndWrite(w, f)
 	}
 
 	errors.PanicClose(w)
-	request := NewPutBytes(locator, b)
+	request := NewPostBytes(locator, buffer)
 	request.Header.Add(ContentTypeHeader, w.FormDataContentType())
-
-	for k, v := range headers {
-		request.Header.Add(k, v)
-	}
-
+	request.SetBasicAuth(user, password)
 	response := Send(Client(true), request)
 	defer errors.PanicClose(response.Body)
 

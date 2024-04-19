@@ -26,7 +26,7 @@ func PostFileMultipartBasic(
 	request.SetBasicAuth(user, password)
 
 	for k, v := range request.Header {
-		fmt.Printf("Request header: %s = %s", k, join.Comma(v))
+		fmt.Printf("Request header: k=%s v=%s\n", k, join.Comma(v))
 	}
 
 	response := Send(Client(true), request)

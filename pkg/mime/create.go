@@ -4,14 +4,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"io"
 	"mime/multipart"
-	"path/filepath"
 )
 
 func Create(
 	w *multipart.Writer,
-	f *File,
+	fileType string,
+	fileName string,
 ) io.Writer {
-	result, e := w.CreateFormFile(f.Type, filepath.Base(f.Name))
+	result, e := w.CreateFormFile(fileType, fileName)
 	errors.PanicOnError(e)
 
 	return result

@@ -4,7 +4,9 @@ import "mime/multipart"
 
 func CreateAndWrite(
 	w *multipart.Writer,
-	f *File,
+	fileType string,
+	fileName string,
+	b []byte,
 ) {
-	Write(Create(w, f), f)
+	Write(Create(w, fileType, fileName), b)
 }

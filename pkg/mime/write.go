@@ -6,9 +6,9 @@ import (
 )
 
 func Write(
-	part io.Writer,
-	f *File,
+	w io.Writer,
+	b []byte,
 ) {
-	_, e := part.Write(f.Data)
+	_, e := w.Write(b)
 	errors.PanicOnError(e)
 }

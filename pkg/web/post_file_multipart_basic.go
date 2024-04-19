@@ -2,8 +2,10 @@ package web
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/mime"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"mime/multipart"
 )
 
@@ -11,19 +13,22 @@ func PostFileMultipartBasic(
 	locator string,
 	user string,
 	password string,
-	files ...*mime.File,
+	fileType string,
+	fileName string,
+	b []byte,
 ) (int, string) {
 	var buffer = new(bytes.Buffer)
 	var w = multipart.NewWriter(buffer)
-
-	for _, f := range files {
-		mime.CreateAndWrite(w, f)
-	}
-
+	mime.CreateAndWrite(w, fileType, fileName, b)
 	errors.PanicClose(w)
 	request := NewPostBytes(locator, buffer)
 	request.Header.Add(ContentTypeHeader, w.FormDataContentType())
 	request.SetBasicAuth(user, password)
+
+	for k, v := range request.Header {
+		fmt.Printf("Request header: %s = %s", k, join.Comma(v))
+	}
+
 	response := Send(Client(true), request)
 	defer errors.PanicClose(response.Body)
 

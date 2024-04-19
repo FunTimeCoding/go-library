@@ -5,7 +5,10 @@ import (
 	"github.com/go-git/go-git/v5"
 )
 
-func IsClean(s git.Status, log bool) bool {
+func IsClean(
+	s git.Status,
+	log bool,
+) bool {
 	for _, status := range s {
 		if status.Worktree != git.Unmodified ||
 			status.Staging != git.Unmodified {

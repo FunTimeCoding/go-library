@@ -5,7 +5,10 @@ import (
 	"os/exec"
 )
 
-func RunDirectory(directory string, s ...string) string {
+func RunDirectory(
+	directory string,
+	s ...string,
+) string {
 	c := exec.Command(s[0], s[1:]...)
 	c.Dir = directory
 	result, e := c.CombinedOutput()

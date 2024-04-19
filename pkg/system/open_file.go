@@ -6,7 +6,10 @@ import (
 	"os"
 )
 
-func OpenFile(name string, m fs.FileMode) *os.File {
+func OpenFile(
+	name string,
+	m fs.FileMode,
+) *os.File {
 	result, e := os.OpenFile(
 		name,
 		os.O_CREATE|os.O_RDWR,

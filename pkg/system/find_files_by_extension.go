@@ -15,7 +15,11 @@ func FindFilesByExtensions(
 	errors.PanicOnError(
 		filepath.WalkDir(
 			root,
-			func(path string, d os.DirEntry, e error) error {
+			func(
+				path string,
+				d os.DirEntry,
+				e error,
+			) error {
 				if e != nil {
 					return e
 				}

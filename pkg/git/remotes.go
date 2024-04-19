@@ -5,7 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
 )
 
-func Remotes(path string, m *provider_map.Map) []*remote.Remote {
+func Remotes(
+	path string,
+	m *provider_map.Map,
+) []*remote.Remote {
 	var result []*remote.Remote
 
 	for _, element := range RemotesRaw(path) {

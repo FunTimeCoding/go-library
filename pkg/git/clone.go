@@ -5,7 +5,10 @@ import (
 	"github.com/go-git/go-git/v5"
 )
 
-func Clone(locator string, path string) {
+func Clone(
+	locator string,
+	path string,
+) {
 	_, e := git.PlainClone(
 		path,
 		false,

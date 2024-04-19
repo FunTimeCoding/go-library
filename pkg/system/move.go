@@ -5,6 +5,9 @@ import (
 	"os"
 )
 
-func Move(from string, to string) {
+func Move(
+	from string,
+	to string,
+) {
 	errors.PanicOnError(os.Rename(from, to))
 }

@@ -5,6 +5,9 @@ import (
 	"os"
 )
 
-func Set(k string, v string) {
+func Set(
+	k string,
+	v string,
+) {
 	errors.PanicOnError(os.Setenv(k, v))
 }

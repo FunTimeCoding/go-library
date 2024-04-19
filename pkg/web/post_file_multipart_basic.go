@@ -16,13 +16,19 @@ func PostFileMultipartBasic(
 	fileType string,
 	fileName string,
 	b []byte,
+	contentType string,
 ) (int, string) {
 	var buffer = new(bytes.Buffer)
 	var w = multipart.NewWriter(buffer)
 	mime.CreateAndWrite(w, fileType, fileName, b)
 	errors.PanicClose(w)
 	request := NewPostBytes(locator, buffer)
-	request.Header.Add(ContentTypeHeader, w.FormDataContentType())
+
+	if contentType == "" {
+		contentType = w.FormDataContentType()
+	}
+
+	request.Header.Add(ContentTypeHeader, contentType)
 	request.SetBasicAuth(user, password)
 
 	for k, v := range request.Header {

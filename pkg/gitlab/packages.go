@@ -12,7 +12,9 @@ func (c *Client) Packages(
 ) []*gitlab.Package {
 	result, r, e := c.client.Packages.ListProjectPackages(
 		project,
-		nil,
+		&gitlab.ListProjectPackagesOptions{
+			ListOptions: gitlab.ListOptions{PerPage: PerPage},
+		},
 	)
 
 	if !panicOnForbidden && r != nil && r.StatusCode == 403 {

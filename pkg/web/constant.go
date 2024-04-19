@@ -9,8 +9,9 @@ const (
 	AuthorizationHeader = "Authorization"
 	AcceptHeader        = "Accept"
 
-	TextContentType   = "text/plain"
-	ObjectContentType = "application/json"
+	TextContentType     = "text/plain"
+	ObjectContentType   = "application/json"
+	FormDataContentType = "multipart/form-data"
 
 	GetMethod  = "GET"
 	PostMethod = "POST"

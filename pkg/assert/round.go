@@ -44,6 +44,10 @@ func Round(
 		format = "\nExpected: %.7f\nActual:   %.7f"
 	} else if decimals == 8 {
 		format = "\nExpected: %.8f\nActual:   %.8f"
+	} else if decimals == 9 {
+		format = "\nExpected: %.9f\nActual:   %.9f"
+	} else if decimals == 10 {
+		format = "\nExpected: %.10f\nActual:   %.10f"
 	} else {
 		t.Error("Unexpected decimals:", decimals)
 

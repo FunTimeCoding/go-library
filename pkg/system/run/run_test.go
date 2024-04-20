@@ -2,6 +2,8 @@ package run
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/system"
+	"runtime"
 	"testing"
 )
 
@@ -20,9 +22,19 @@ func TestRun(t *testing.T) {
 	assert.True(t, r2.Error != nil)
 	assert.String(t, "", r2.OutputString)
 	assert.String(t, "", r2.ErrorString)
-	assert.String(
-		t,
-		`exec: "nonexistent": executable file not found in $PATH`,
-		r2.Error.Error(),
-	)
+
+	switch runtime.GOOS {
+	case system.Windows:
+		assert.String(
+			t,
+			`exec: "nonexistent": executable file not found in %PATH%`,
+			r2.Error.Error(),
+		)
+	default:
+		assert.String(
+			t,
+			`exec: "nonexistent": executable file not found in $PATH`,
+			r2.Error.Error(),
+		)
+	}
 }

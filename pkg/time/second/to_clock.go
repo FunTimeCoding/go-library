@@ -1,11 +1,11 @@
-package time
+package second
 
 import (
 	"fmt"
 	"time"
 )
 
-func SecondsToClock(seconds int) string {
+func ToClock(seconds int) string {
 	duration := time.Duration(seconds) * time.Second
 	hour := duration / time.Hour
 	duration -= hour * time.Hour

@@ -1,4 +1,4 @@
-package time
+package second
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/math/round"
 )
 
-func HumanReadable(seconds int) string {
+func Readable(seconds int) string {
 	var result string
 	var value float64
 	var unit string

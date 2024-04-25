@@ -1,4 +1,4 @@
-package time
+package second
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestSecondOfDay(t *testing.T) {
+func TestOfDay(t *testing.T) {
 	now := time.Now()
 	y, m, d := now.Date()
 	midnight := time.Date(
@@ -30,6 +30,6 @@ func TestSecondOfDay(t *testing.T) {
 		now.Location(),
 	)
 
-	assert.Integer(t, 0, SecondOfDay(midnight))
-	assert.Integer(t, 3600, SecondOfDay(one))
+	assert.Integer(t, 0, OfDay(midnight))
+	assert.Integer(t, 3600, OfDay(one))
 }

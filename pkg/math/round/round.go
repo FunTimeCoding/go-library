@@ -25,6 +25,10 @@ func Round(
 		result = math.Round(number*10000000) / 10000000
 	case 8:
 		result = math.Round(number*100000000) / 100000000
+	case 9:
+		result = math.Round(number*1000000000) / 1000000000
+	case 10:
+		result = math.Round(number*10000000000) / 10000000000
 	default:
 		result = math.Round(number)
 	}

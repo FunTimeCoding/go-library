@@ -12,12 +12,28 @@ func Start(
 	environment string,
 	version string,
 ) {
+	errors.FatalOnEmpty(projectName, "projectName")
+	errors.FatalOnEmpty(locator, "locator")
+
+	if environment == "" {
+		environment = UndefinedEnvironment
+	}
+
+	if version == "" {
+		version = UndefinedVersion
+	}
+
 	errors.FatalOnError(
 		sentry.Init(
 			sentry.ClientOptions{
 				Dsn:         locator,
 				Environment: environment,
-				Release:     fmt.Sprintf("%s@%s", projectName, version),
+				Release: fmt.Sprintf(
+					"%s@%s",
+					projectName,
+					version,
+				),
+				TracesSampleRate: 1.0,
 			},
 		),
 	)

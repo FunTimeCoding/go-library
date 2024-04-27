@@ -1,8 +1,8 @@
-package log
+package errors
 
 import "log"
 
-func PostError(
+func Post(
 	locator string,
 	text string,
 ) {

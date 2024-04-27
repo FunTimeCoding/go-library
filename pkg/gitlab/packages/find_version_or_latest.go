@@ -1,8 +1,6 @@
 package packages
 
-import (
-	"github.com/xanzy/go-gitlab"
-)
+import "github.com/xanzy/go-gitlab"
 
 func FindVersionOrLatest(
 	v []*gitlab.Package,

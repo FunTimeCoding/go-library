@@ -1,6 +1,6 @@
 package face
 
-import "github.com/funtimecoding/go-library/pkg/web/web_client"
+import "github.com/funtimecoding/go-library/pkg/web/web_client/web_response"
 
 type WebClient interface {
 	IsWebClient()
@@ -8,5 +8,5 @@ type WebClient interface {
 	Post(
 		locator string,
 		body any,
-	) (*web_client.Response, error)
+	) (*web_response.Response, error)
 }

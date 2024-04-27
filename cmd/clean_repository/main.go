@@ -33,9 +33,13 @@ func main() {
 	}
 
 	if r == nil {
-		fmt.Printf("Could not identify provider: %s", gitlabLocator.Host)
-
+		fmt.Printf(
+			"Could not identify provider: %s",
+			gitlabLocator.Host,
+		)
 		os.Exit(1)
+
+		return
 	}
 
 	switch r.Provider {

@@ -64,8 +64,9 @@ func main() {
 
 	if p == nil {
 		fmt.Printf("repository not found: %s/%s\n", owner, repository)
-
 		os.Exit(1)
+
+		return
 	}
 
 	f := c.File(p.Identifier, "main", viper.GetString(PathArgument))

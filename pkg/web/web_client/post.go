@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/web_client/web_response"
 	"net/http"
 	"time"
 )
@@ -11,7 +12,7 @@ import (
 func (c *Client) Post(
 	locator string,
 	body any,
-) (*Response, error) {
+) (*web_response.Response, error) {
 	encoded := notation.Encode(body, false)
 	start := c.clock.Now()
 	response, e := http.Post(
@@ -19,11 +20,10 @@ func (c *Client) Post(
 		web.ObjectContentType,
 		bytes.NewBuffer([]byte(encoded)),
 	)
-	result := &Response{
+
+	return &web_response.Response{
 		Response:     response,
 		BodyBytes:    len(encoded),
 		Milliseconds: time.Since(start).Milliseconds(),
-	}
-
-	return result, e
+	}, e
 }

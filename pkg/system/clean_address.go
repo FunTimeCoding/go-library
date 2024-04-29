@@ -1,16 +1,18 @@
 package system
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/split/key_value"
 	"net"
 	"strings"
 )
 
-func CleanAddress(s string) string {
+func CleanAddress(s string) (string, error) {
 	if strings.ContainsRune(s, ':') {
 		host, _, e := net.SplitHostPort(s)
-		errors.PanicOnError(e)
+
+		if e != nil {
+			return "", e
+		}
 
 		s = host
 	}
@@ -21,5 +23,5 @@ func CleanAddress(s string) string {
 		s = host
 	}
 
-	return s
+	return s, nil
 }

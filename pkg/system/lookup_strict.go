@@ -6,7 +6,7 @@ import (
 )
 
 func LookupStrict(address string) []string {
-	result, e := net.LookupAddr(CleanAddress(address))
+	result, e := net.LookupAddr(CleanAddressStrict(address))
 	errors.PanicOnError(e)
 
 	return result

@@ -6,21 +6,15 @@ import (
 	"strings"
 )
 
-func FindHostnames(instance string) ([]string, error) {
+func FindHostnames(host string) ([]string, error) {
 	var result []string
-	var host string
+	clean, cleanFail := CleanAddress(host)
 
-	if strings.ContainsRune(instance, ':') {
-		splitHost, _, splitFail := net.SplitHostPort(instance)
-
-		if splitFail != nil {
-			return result, fmt.Errorf("split: %s", splitFail)
-		}
-
-		host = splitHost
-	} else {
-		host = instance
+	if cleanFail != nil {
+		return result, cleanFail
 	}
+
+	host = clean
 
 	if net.ParseIP(host) != nil {
 		names, lookUpFail := net.LookupAddr(host)

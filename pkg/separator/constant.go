@@ -5,10 +5,11 @@ const (
 	Comma       = ","
 	CommaSpace  = ", "
 	Dash        = "-"
+	DoubleColon = "::"
 	Equals      = "="
 	Pipe        = "|"
+	Slash       = "/"
 	Space       = " "
 	Underscore  = "_"
-	DoubleColon = "::"
 	Unix        = "\n"
 )

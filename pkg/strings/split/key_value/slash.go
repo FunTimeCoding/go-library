@@ -1,12 +1,12 @@
-package split
+package key_value
 
 import (
 	"github.com/funtimecoding/go-library/pkg/separator"
 	"strings"
 )
 
-func Equals(s string) (string, string) {
-	result := strings.SplitN(s, separator.Equals, 2)
+func Slash(s string) (string, string) {
+	result := strings.SplitN(s, separator.Slash, 2)
 	count := len(result)
 
 	if count == 2 {

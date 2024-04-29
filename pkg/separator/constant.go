@@ -5,6 +5,7 @@ const (
 	Comma       = ","
 	CommaSpace  = ", "
 	Dash        = "-"
+	Dot         = "."
 	DoubleColon = "::"
 	Equals      = "="
 	Pipe        = "|"

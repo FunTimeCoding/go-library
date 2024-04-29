@@ -1,6 +1,10 @@
 package system
 
-import "net"
+import (
+	"github.com/funtimecoding/go-library/pkg/separator"
+	"github.com/funtimecoding/go-library/pkg/strings"
+	"net"
+)
 
 func Lookup(address string) []string {
 	result, e := net.LookupAddr(CleanAddressStrict(address))
@@ -9,5 +13,5 @@ func Lookup(address string) []string {
 		return []string{}
 	}
 
-	return result
+	return strings.SliceTrimSuffix(result, separator.Dot)
 }

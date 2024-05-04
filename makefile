@@ -1,4 +1,6 @@
-.DEFAULT_GOAL := build
+.DEFAULT_GOAL := all
+
+all: test lint build
 
 tool:
 	@go install gotest.tools/gotestsum@latest
@@ -18,7 +20,7 @@ update:
 	@go mod tidy
 	@goupdate
 
-build: test lint
+build:
 	@gobuild cmd/gobuild/main.go
 	@gobuild cmd/gobump/main.go
 	@gobuild cmd/goclean/main.go
@@ -26,6 +28,9 @@ build: test lint
 	@gobuild cmd/godebian/main.go
 	@gobuild cmd/golint/main.go
 	@gobuild cmd/goupdate/main.go
+
+clean:
+	@rm --force --recursive tmp
 
 install: build
 	@cp tmp/gobuild $$HOME/bin/gobuild
@@ -35,6 +40,3 @@ install: build
 	@cp tmp/godebian $$HOME/bin/godebian
 	@cp tmp/golint $$HOME/bin/golint
 	@cp tmp/goupdate $$HOME/bin/goupdate
-
-clean:
-	@rm --force --recursive tmp

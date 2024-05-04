@@ -22,7 +22,7 @@ func Update(
 		combined, e := c.CombinedOutput()
 
 		if t := string(combined); t != "" {
-			fmt.Println(t)
+			fmt.Printf(t)
 		}
 
 		errors.PanicOnError(e)

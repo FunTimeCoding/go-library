@@ -7,6 +7,8 @@ import (
 
 func TestConstant(t *testing.T) {
 	assert.String(t, "branch", Branch)
+	assert.String(t, "downgrade", Downgrade)
+	assert.String(t, "exclusive", Exclusive)
 	assert.String(t, "executable", Executable)
 	assert.String(t, "header", Header)
 	assert.String(t, "host", Host)

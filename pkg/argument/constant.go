@@ -2,6 +2,8 @@ package argument
 
 const (
 	Branch     = "branch"
+	Downgrade  = "downgrade"
+	Exclusive  = "exclusive"
 	Executable = "executable"
 	Header     = "header"
 	Host       = "host"

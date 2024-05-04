@@ -10,7 +10,7 @@ import (
 
 func Open(path string) *git.Repository {
 	f := osfs.New(path)
-	dot, dotFail := f.Chroot(".git")
+	dot, dotFail := f.Chroot(Directory)
 	errors.PanicOnError(dotFail)
 
 	r, openFail := git.Open(

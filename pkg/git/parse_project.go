@@ -14,7 +14,7 @@ func ParseProject(path string) (string, string) {
 	}
 
 	namespace := parts[0]
-	repository := strings.TrimSuffix(parts[count-1], ".git")
+	repository := strings.TrimSuffix(parts[count-1], Directory)
 
 	return namespace, repository
 }

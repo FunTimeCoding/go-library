@@ -1,10 +1,7 @@
 package build
 
-import (
-	"github.com/funtimecoding/go-library/pkg/git"
-	"github.com/funtimecoding/go-library/pkg/system"
-)
+import "github.com/funtimecoding/go-library/pkg/git"
 
 func GitHash() string {
-	return git.ShortHash(system.WorkingDirectory())
+	return git.ShortHash(git.FindDirectory())
 }

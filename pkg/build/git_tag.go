@@ -1,10 +1,7 @@
 package build
 
-import (
-	"github.com/funtimecoding/go-library/pkg/git"
-	"github.com/funtimecoding/go-library/pkg/system"
-)
+import "github.com/funtimecoding/go-library/pkg/git"
 
 func GitTag() string {
-	return git.LatestTag(system.WorkingDirectory())
+	return git.LatestTag(git.FindDirectory())
 }

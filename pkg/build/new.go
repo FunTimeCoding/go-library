@@ -17,9 +17,5 @@ func New(
 		date = DefaultDate
 	}
 
-	return &Build{
-		Version:   version,
-		GitHash:   gitHash,
-		BuildDate: date,
-	}
+	return &Build{Version: version, GitHash: gitHash, BuildDate: date}
 }

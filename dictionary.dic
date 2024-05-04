@@ -11,3 +11,6 @@ osquery
 # Go
 nodename
 servname
+
+# GoLibrary
+gobuild

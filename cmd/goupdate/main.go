@@ -9,6 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/project"
 	"github.com/funtimecoding/go-library/pkg/runtime"
 	"github.com/funtimecoding/go-library/pkg/semver"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/spf13/pflag"
 	"os"
@@ -31,8 +32,14 @@ func main() {
 	)
 	argument.ParseAndBind()
 
-	fmt.Printf("Exclusive matches: %+v\n", exclusives)
-	fmt.Printf("Downgrades: %+v\n", downgrades)
+	if len(exclusives) > 0 {
+		fmt.Printf("Exclusive matches: %s\n", join.Comma(exclusives))
+	}
+
+	if len(downgrades) > 0 {
+		fmt.Printf("Downgrades: %s\n", join.Comma(downgrades))
+	}
+
 	go_mod.UpdateDirectDependencies(exclusives)
 	go_mod.DowngradeDependencies(downgrades)
 

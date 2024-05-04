@@ -2,32 +2,39 @@
 
 tool:
 	@go install gotest.tools/gotestsum@latest
-	@go install github.com/funtimecoding/go-library/cmd/goupdate@latest
-	@go install github.com/funtimecoding/go-library/cmd/golint@latest
-	@go install github.com/funtimecoding/go-library/cmd/gobuild@latest
+	@GOPROXY=direct go install github.com/funtimecoding/go-library/cmd/goupdate@latest
+	@GOPROXY=direct go install github.com/funtimecoding/go-library/cmd/golint@latest
+	@GOPROXY=direct go install github.com/funtimecoding/go-library/cmd/gobuild@latest
 
-test: tool
+test:
 	@gotestsum --format standard-quiet -- ./...
 
-lint: tool
+lint:
 	@golint
 	@golangci-lint run
 
-update: tool
+update:
 	@for ELEMENT in $$(go list -f "{{if not (or .Main .Indirect)}}{{.Path}}{{end}}" -m all); do echo $${ELEMENT}; go get $${ELEMENT}; done
 	@go mod tidy
 	@goupdate
 
 build: test lint
+	@gobuild cmd/gobuild/main.go
 	@gobuild cmd/gobump/main.go
 	@gobuild cmd/goclean/main.go
+	@gobuild cmd/gocommit/main.go
 	@gobuild cmd/godebian/main.go
 	@gobuild cmd/golint/main.go
 	@gobuild cmd/goupdate/main.go
 
 install: build
-	@cp tmp/gobump $$HOME/go/bin/gobump
-	@cp tmp/goclean $$HOME/go/bin/goclean
-	@cp tmp/godebian $$HOME/go/bin/godebian
-	@cp tmp/golint $$HOME/go/bin/golint
-	@cp tmp/goupdate $$HOME/go/bin/goupdate
+	@cp tmp/gobuild $$HOME/bin/gobuild
+	@cp tmp/gobump $$HOME/bin/gobump
+	@cp tmp/goclean $$HOME/bin/goclean
+	@cp tmp/gocommit $$HOME/bin/gocommit
+	@cp tmp/godebian $$HOME/bin/godebian
+	@cp tmp/golint $$HOME/bin/golint
+	@cp tmp/goupdate $$HOME/bin/goupdate
+
+clean:
+	@rm --force --recursive tmp

@@ -6,15 +6,15 @@ import (
 )
 
 func AnyToSlice(a any) []string {
-	switch a.(type) {
+	switch t := a.(type) {
 	case string:
-		return []string{a.(string)}
+		return []string{t}
 	case []string:
-		return a.([]string)
+		return t
 	case []any:
 		var result []string
 
-		for _, v := range a.([]any) {
+		for _, v := range t {
 			result = append(result, v.(string))
 		}
 
@@ -22,7 +22,7 @@ func AnyToSlice(a any) []string {
 	case nil:
 		return []string{}
 	default:
-		log.Panicf("unexpected type: %s", reflect.TypeOf(a))
+		log.Panicf("unexpected %s", reflect.TypeOf(a))
 
 		return []string{}
 	}

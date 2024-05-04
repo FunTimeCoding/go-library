@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/github/release"
+	"github.com/funtimecoding/go-library/pkg/go_mod"
 	"github.com/funtimecoding/go-library/pkg/project"
 	"github.com/funtimecoding/go-library/pkg/runtime"
 	"github.com/funtimecoding/go-library/pkg/semver"
@@ -12,6 +13,8 @@ import (
 )
 
 func main() {
+	go_mod.UpdateDirectDependencies()
+	go_mod.Tidy()
 	goVersion := runtime.ExecutableVersion()
 	goString := goVersion.String()
 	system.Run("go", "mod", "edit", fmt.Sprintf("-go=%s", goString))

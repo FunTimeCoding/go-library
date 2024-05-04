@@ -16,8 +16,6 @@ lint:
 	@golangci-lint run
 
 update:
-	@for ELEMENT in $$(go list -f "{{if not (or .Main .Indirect)}}{{.Path}}{{end}}" -m all); do echo $${ELEMENT}; go get $${ELEMENT}; done
-	@go mod tidy
 	@goupdate
 
 build:

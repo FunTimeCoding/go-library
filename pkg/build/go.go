@@ -11,7 +11,7 @@ import (
 func Go(
 	main string,
 	output string,
-) string {
+) {
 	if main == "" {
 		main = "."
 	}
@@ -35,8 +35,10 @@ func Go(
 	c.Env = append(c.Env, "CGO_ENABLED=0")
 	c.Env = append(c.Env, fmt.Sprintf("GOOS=%s", runtime.GOOS))
 	combined, e := c.CombinedOutput()
-	result := string(combined)
-	errors.PanicOnError(e)
 
-	return result
+	if t := string(combined); t != "" {
+		fmt.Printf("Output:\n%s", t)
+	}
+
+	errors.PanicOnError(e)
 }

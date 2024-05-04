@@ -11,7 +11,7 @@ func Start(
 	locator string,
 	environment string,
 	version string,
-) {
+) *sentry.Hub {
 	errors.FatalOnEmpty(projectName, "projectName")
 	errors.FatalOnEmpty(locator, "locator")
 
@@ -23,18 +23,21 @@ func Start(
 		version = UndefinedVersion
 	}
 
-	errors.FatalOnError(
-		sentry.Init(
-			sentry.ClientOptions{
-				Dsn:         locator,
-				Environment: environment,
-				Release: fmt.Sprintf(
-					"%s@%s",
-					projectName,
-					version,
-				),
-				TracesSampleRate: 1.0,
-			},
-		),
+	h := sentry.CurrentHub()
+	client, e := sentry.NewClient(
+		sentry.ClientOptions{
+			Dsn:         locator,
+			Environment: environment,
+			Release: fmt.Sprintf(
+				"%s@%s",
+				projectName,
+				version,
+			),
+			TracesSampleRate: 1.0,
+		},
 	)
+	errors.FatalOnError(e)
+	h.BindClient(client)
+
+	return h
 }

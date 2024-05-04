@@ -1,7 +1,10 @@
 package sentry
 
-import "testing"
+import (
+	"github.com/getsentry/sentry-go"
+	"testing"
+)
 
 func TestCaptureOnError(t *testing.T) {
-	CaptureOnError(nil)
+	CaptureOnError(sentry.CurrentHub(), nil)
 }

@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-func Flush() {
-	if !sentry.Flush(2 * time.Second) {
+func Flush(h *sentry.Hub) {
+	if !h.Flush(2 * time.Second) {
 		errors.Warning("sentry flush fail")
 	}
 }

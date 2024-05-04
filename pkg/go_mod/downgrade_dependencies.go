@@ -6,8 +6,6 @@ import (
 )
 
 func DowngradeDependencies(v []string) {
-	fmt.Printf("Downgrades: %+v\n", v)
-
 	for _, element := range v {
 		fmt.Printf("Downgrade: %s\n", element)
 		system.Run("go", "get", element)

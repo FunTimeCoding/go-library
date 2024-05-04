@@ -31,6 +31,8 @@ func main() {
 	)
 	argument.ParseAndBind()
 
+	fmt.Printf("Exclusive matches: %+v\n", exclusives)
+	fmt.Printf("Downgrades: %+v\n", downgrades)
 	go_mod.UpdateDirectDependencies(exclusives)
 	go_mod.DowngradeDependencies(downgrades)
 

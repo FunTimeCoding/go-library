@@ -1,13 +1,8 @@
 package go_mod
 
-import (
-	"fmt"
-	"strings"
-)
+import "strings"
 
 func UpdateDirectDependencies(exclusiveMatches []string) {
-	fmt.Printf("Exclusive matches: %+v\n", exclusiveMatches)
-
 	hasExclusive := len(exclusiveMatches) > 0
 
 	for _, dep := range Read().Require {

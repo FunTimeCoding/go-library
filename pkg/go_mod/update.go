@@ -12,7 +12,7 @@ func Update(
 	name string,
 	skipProxy bool,
 ) {
-	fmt.Printf("%s skip=%v\n", name, skipProxy)
+	fmt.Printf("%s\n", name)
 
 	if skipProxy {
 		s := []string{"go", "get", name}

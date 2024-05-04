@@ -27,6 +27,6 @@ func Update(
 
 		errors.PanicOnError(e)
 	} else {
-		fmt.Println(system.Run("go", "get", name))
+		fmt.Printf(system.Run("go", "get", name))
 	}
 }

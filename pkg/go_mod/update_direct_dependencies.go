@@ -8,14 +8,14 @@ import (
 func UpdateDirectDependencies(exclusiveMatches []string) {
 	fmt.Printf("Exclusive matches: %+v\n", exclusiveMatches)
 
-	skipProxy := len(exclusiveMatches) > 0
+	hasExclusive := len(exclusiveMatches) > 0
 
 	for _, dep := range Read().Require {
 		if dep.Indirect {
 			continue
 		}
 
-		if len(exclusiveMatches) > 0 {
+		if hasExclusive {
 			var found bool
 
 			for _, element := range exclusiveMatches {
@@ -31,7 +31,7 @@ func UpdateDirectDependencies(exclusiveMatches []string) {
 			}
 		}
 
-		Update(dep.Mod.Path, skipProxy)
+		Update(dep.Mod.Path, hasExclusive)
 	}
 
 	Tidy()

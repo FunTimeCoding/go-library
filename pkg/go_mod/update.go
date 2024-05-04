@@ -22,11 +22,11 @@ func Update(
 		combined, e := c.CombinedOutput()
 
 		if t := string(combined); t != "" {
-			fmt.Printf("Output:\n%s", t)
+			fmt.Println(t)
 		}
 
 		errors.PanicOnError(e)
 	} else {
-		system.Run("go", "get", name)
+		fmt.Println(system.Run("go", "get", name))
 	}
 }

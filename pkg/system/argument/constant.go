@@ -6,6 +6,7 @@ const (
 	Header     = "header"
 	Host       = "host"
 	Locator    = "locator"
+	Main       = "main"
 	Message    = "message"
 	Name       = "name"
 	Output     = "output"

@@ -11,6 +11,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "header", Header)
 	assert.String(t, "host", Host)
 	assert.String(t, "locator", Locator)
+	assert.String(t, "main", Main)
 	assert.String(t, "message", Message)
 	assert.String(t, "name", Name)
 	assert.String(t, "output", Output)

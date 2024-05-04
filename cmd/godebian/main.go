@@ -2,18 +2,19 @@ package main
 
 import (
 	"fmt"
-	debianHelper "github.com/funtimecoding/go-library/pkg/debian"
+	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/debian"
 	"github.com/funtimecoding/go-library/pkg/semver"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/system/argument"
-	viperHelper "github.com/funtimecoding/go-library/pkg/viper"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
-const MaintainerNameArgument = "maintainer-name"
-const MaintainerEmailArgument = "maintainer-email"
-const SystemdUnitFlag = "systemd-unit"
+const (
+	maintainerNameArgument  = "maintainer-name"
+	maintainerEmailArgument = "maintainer-email"
+	systemdUnitFlag         = "systemd-unit"
+)
 
 func main() {
 	pflag.String(
@@ -27,30 +28,30 @@ func main() {
 		"Package semantic version: 1.0.0, v-prefix gets trimmed",
 	)
 	pflag.String(
-		MaintainerNameArgument,
+		maintainerNameArgument,
 		"",
 		"Maintainer name: AN Other",
 	)
 	pflag.String(
-		MaintainerEmailArgument,
+		maintainerEmailArgument,
 		"",
 		"Maintainer email: another@example.org",
 	)
 	var createUnit bool
 	pflag.BoolVar(
 		&createUnit,
-		SystemdUnitFlag,
+		systemdUnitFlag,
 		false,
 		"Create a systemd unit",
 	)
-	viperHelper.ParseAndBind()
+	argument.ParseAndBind()
 	executable := viper.GetString(argument.Executable)
 	version := semver.Trim(viper.GetString(argument.Version))
-	maintainerName := viper.GetString(MaintainerNameArgument)
-	maintainerMail := viper.GetString(MaintainerEmailArgument)
+	maintainerName := viper.GetString(maintainerNameArgument)
+	maintainerMail := viper.GetString(maintainerEmailArgument)
 	architecture := system.AMD64
 
-	packageName := debianHelper.PackageVersion(
+	packageName := debian.PackageVersion(
 		executable,
 		version,
 		1,
@@ -60,11 +61,11 @@ func main() {
 
 	debianDirectory := system.Join(
 		packageDirectory,
-		debianHelper.PackageConfigurationDirectory,
+		debian.PackageConfigurationDirectory,
 	)
 	system.MakeDirectory(debianDirectory)
 	system.SaveFile(
-		system.Join(debianDirectory, debianHelper.ControlFile),
+		system.Join(debianDirectory, debian.ControlFile),
 		fmt.Sprintf(
 			"Package: %s"+
 				"\nVersion: %s"+

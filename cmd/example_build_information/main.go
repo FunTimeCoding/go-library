@@ -21,7 +21,9 @@ func main() {
 		fmt.Printf("Message: %s", c.Message)
 	}
 
-	fmt.Printf("Latest: %s\n", git.LatestTag(system.WorkingDirectory()))
-
+	fmt.Printf(
+		"Latest: %s\n",
+		git.LatestTag(system.WorkingDirectory()),
+	)
 	fmt.Printf("Date: %s\n", time.Now().Format(timeHelper.DateMinute))
 }

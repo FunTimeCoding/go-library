@@ -1,28 +1,33 @@
-.DEFAULT_GOAL := all
-
-all: test lint
-
-lint:
-	@golangci-lint run
-
-test:
-	@gotestsum --format standard-quiet -- ./...
-
-update:
-	for ELEMENT in $$(go list -f "{{if not (or .Main .Indirect)}}{{.Path}}{{end}}" -m all); do echo $${ELEMENT}; go get $${ELEMENT}; done
-	@go mod tidy
+.DEFAULT_GOAL := build
 
 tool:
-	go install gotest.tools/gotestsum@latest
+	@go install gotest.tools/gotestsum@latest
+	@go install github.com/funtimecoding/go-library/cmd/goupdate@latest
+	@go install github.com/funtimecoding/go-library/cmd/golint@latest
+	@go install github.com/funtimecoding/go-library/cmd/gobuild@latest
 
-install:
-	go build -o $$HOME/go/bin/bump cmd/bump/main.go
-	go build -o $$HOME/go/bin/lint cmd/lint/main.go
-	go build -o $$HOME/go/bin/go-update cmd/update/main.go
-	go build -o $$HOME/go/bin/clean-repository cmd/clean_repository/main.go
+test: tool
+	@gotestsum --format standard-quiet -- ./...
 
-bump:
-	@go run cmd/bump/main.go
+lint: tool
+	@golint
+	@golangci-lint run
 
-build-debian-package:
-	go build -o $$HOME/go/bin/debian-package cmd/debian_package/main.go
+update: tool
+	@for ELEMENT in $$(go list -f "{{if not (or .Main .Indirect)}}{{.Path}}{{end}}" -m all); do echo $${ELEMENT}; go get $${ELEMENT}; done
+	@go mod tidy
+	@goupdate
+
+build: test lint
+	@gobuild cmd/gobump/main.go
+	@gobuild cmd/goclean/main.go
+	@gobuild cmd/godebian/main.go
+	@gobuild cmd/golint/main.go
+	@gobuild cmd/goupdate/main.go
+
+install: build
+	@cp tmp/gobump $$HOME/go/bin/gobump
+	@cp tmp/goclean $$HOME/go/bin/goclean
+	@cp tmp/godebian $$HOME/go/bin/godebian
+	@cp tmp/golint $$HOME/go/bin/golint
+	@cp tmp/goupdate $$HOME/go/bin/goupdate

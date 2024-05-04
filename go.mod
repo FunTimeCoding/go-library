@@ -23,7 +23,7 @@ require (
 	github.com/xanzy/go-gitlab v0.103.0
 	golang.org/x/crypto v0.22.0
 	golang.org/x/mod v0.17.0
-	golang.org/x/oauth2 v0.19.0
+	golang.org/x/oauth2 v0.20.0
 	gonum.org/v1/gonum v0.15.0
 	gorm.io/driver/postgres v1.5.7
 	gorm.io/gorm v1.25.10

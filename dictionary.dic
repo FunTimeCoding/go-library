@@ -14,3 +14,7 @@ servname
 
 # GoLibrary
 gobuild
+goclean
+golint
+gobump
+godebian

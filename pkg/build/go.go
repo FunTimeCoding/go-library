@@ -15,14 +15,27 @@ func Go(
 	main string,
 	output string,
 ) {
+	var name string
+
 	if main == "" {
 		main = "."
+	} else {
+		name = filepath.Base(filepath.Dir(main))
+		fmt.Printf("Name: %s\n", name)
 	}
 
+	if output == "" {
+		if name == "" {
+			panic("output empty and main not specified")
+		} else {
+			output = system.Join(system.Temporary, name)
+		}
+	}
+
+	fmt.Printf("Output: %s\n", output)
 	path := filepath.Dir(output)
 	fmt.Printf("Path: %s\n", path)
 	system.EnsurePathExists(path)
-
 	s := []string{
 		"go",
 		"build",

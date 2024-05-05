@@ -1,7 +1,7 @@
 package git
 
 import (
-	"log"
+	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"strings"
 )
 
@@ -10,7 +10,7 @@ func ParseProject(path string) (string, string) {
 	count := len(parts)
 
 	if count != 2 {
-		log.Panicf("unexpected: %d", count)
+		unexpected.Integer(count)
 	}
 
 	namespace := parts[0]

@@ -1,23 +1,19 @@
 package system
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"os/exec"
 	"runtime"
 )
 
 func OpenBrowser(locator string) {
-	var e error
-
 	switch p := runtime.GOOS; p {
 	case Linux:
-		e = exec.Command("xdg-open", locator).Start()
+		errors.PanicOnError(exec.Command("xdg-open", locator).Start())
 	case Darwin:
-		e = exec.Command("open", locator).Start()
+		errors.PanicOnError(exec.Command("open", locator).Start())
 	default:
-		e = fmt.Errorf("unexpected platform: %s", p)
+		unexpected.String(p)
 	}
-
-	errors.PanicOnError(e)
 }

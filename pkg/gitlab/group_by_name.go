@@ -3,8 +3,8 @@ package gitlab
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"github.com/xanzy/go-gitlab"
-	"log"
 )
 
 func (c *Client) GroupByName(s string) *gitlab.Group {
@@ -13,7 +13,7 @@ func (c *Client) GroupByName(s string) *gitlab.Group {
 	fmt.Printf("Groups: %+v\n", result)
 
 	if l := len(result); l != 1 {
-		log.Panicf("unexpected: %d", l)
+		unexpected.Integer(l)
 	}
 
 	return result[0]

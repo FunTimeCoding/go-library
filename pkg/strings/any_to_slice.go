@@ -1,7 +1,7 @@
 package strings
 
 import (
-	"log"
+	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"reflect"
 )
 
@@ -22,7 +22,7 @@ func AnyToSlice(a any) []string {
 	case nil:
 		return []string{}
 	default:
-		log.Panicf("unexpected %s", reflect.TypeOf(a))
+		unexpected.String(reflect.TypeOf(a).String())
 
 		return []string{}
 	}

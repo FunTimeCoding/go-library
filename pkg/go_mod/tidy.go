@@ -1,7 +1,10 @@
 package go_mod
 
-import "github.com/funtimecoding/go-library/pkg/system"
+import (
+	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/system"
+)
 
 func Tidy() {
-	system.Run("go", "mod", "tidy")
+	system.Run(constant.Go, constant.Mod, constant.Tidy)
 }

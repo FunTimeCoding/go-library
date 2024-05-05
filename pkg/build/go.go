@@ -2,8 +2,10 @@ package build
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
 	"os/exec"
@@ -37,24 +39,34 @@ func Go(
 	fmt.Printf("Path: %s\n", path)
 	system.EnsurePathExists(path)
 	s := []string{
-		"go",
-		"build",
-		"-ldflags",
-		fmt.Sprintf(
-			"-X main.Version=%s -X main.GitHash=%s -X main.BuildDate=%s",
-			GitTag(),
-			GitHash(),
-			Date(),
+		constant.Go,
+		constant.Build,
+		constant.LinkerFlagsArgument,
+		join.Space(
+			[]string{
+				constant.LinkerSetVariable,
+				fmt.Sprintf("main.Version=%s", GitTag()),
+				constant.LinkerSetVariable,
+				fmt.Sprintf("main.GitHash=%s", GitHash()),
+				constant.LinkerSetVariable,
+				fmt.Sprintf("main.BuildDate=%s", Date()),
+			},
 		),
-		"-o",
+		constant.OutputArgument,
 		output,
 		main,
 	}
 	fmt.Printf("Command: %s\n", join.Space(s))
 	c := exec.Command(s[0], s[1:]...)
 	c.Env = os.Environ()
-	c.Env = append(c.Env, "CGO_ENABLED=0")
-	c.Env = append(c.Env, fmt.Sprintf("GOOS=%s", runtime.GOOS))
+	c.Env = append(
+		c.Env,
+		key_value.Equals(constant.NativeEnabled, constant.False),
+	)
+	c.Env = append(
+		c.Env,
+		key_value.Equals(constant.System, runtime.GOOS),
+	)
 	combined, e := c.CombinedOutput()
 
 	if t := string(combined); t != "" {

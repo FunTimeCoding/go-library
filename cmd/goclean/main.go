@@ -117,7 +117,7 @@ func main() {
 					if mainBranchHash == "" {
 						if verbose {
 							fmt.Printf(
-								"Skip pipeline: %s %s\n",
+								"Skip pipeline (ref): %s %s\n",
 								element.Ref,
 								element.SHA,
 							)
@@ -125,10 +125,10 @@ func main() {
 
 						continue
 					} else {
-						if element.Ref != mainBranchHash {
+						if element.SHA == mainBranchHash {
 							if verbose {
 								fmt.Printf(
-									"Skip pipeline: %s %s\n",
+									"Skip pipeline (sha): %s %s\n",
 									element.Ref,
 									element.SHA,
 								)

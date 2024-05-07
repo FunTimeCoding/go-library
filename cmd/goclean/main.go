@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/git/remote"
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
@@ -14,11 +15,18 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 	"os"
+	"slices"
 	"strings"
 )
 
 func main() {
+	pflag.Bool(argument.Verbose, false, "Verbose output")
+	argument.ParseAndBind()
+	verbose := viper.GetBool(argument.Verbose)
+
 	gitlabLocator := web.ParseLocator(environment.Get(gitlab.Host))
 	m := provider_map.New()
 	m.Add(gitlabLocator.Host, provider_map.GitLabProvider)
@@ -65,14 +73,70 @@ func main() {
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := gitlab.New(gitlabLocator.Host, environment.Get(gitlab.Token))
 		p := c.ProjectByName(namespace, repository)
+
+		if verbose {
+			fmt.Printf(
+				"Project: %d %s %s\n",
+				p.Identifier,
+				p.Namespace,
+				p.Name,
+			)
+		}
+
 		pipelines := c.Pipelines(p.Identifier)
+
+		var mainBranchHash string
+
+		for _, element := range c.Branches(p.Identifier) {
+			if slices.Contains(git.MainBranches, element.Name) {
+				mainBranchHash = element.Commit.ID
+
+				break
+			}
+		}
+
+		if verbose {
+			fmt.Printf("Default branch: %s\n", p.Raw.DefaultBranch)
+
+			for _, element := range c.Branches(p.Identifier) {
+				fmt.Printf(
+					"Branch: %s %s\n",
+					element.Name,
+					element.Commit.ID,
+				)
+			}
+
+			fmt.Printf("Main branch hash: %s\n", mainBranchHash)
+		}
 
 		if len(pipelines) > 0 {
 			latest := pipeline.Latest(pipelines)
 
 			for _, element := range pipelines {
 				if element.Ref == latest.Ref {
-					continue
+					if mainBranchHash == "" {
+						if verbose {
+							fmt.Printf(
+								"Skip pipeline: %s %s\n",
+								element.Ref,
+								element.SHA,
+							)
+						}
+
+						continue
+					} else {
+						if element.Ref != mainBranchHash {
+							if verbose {
+								fmt.Printf(
+									"Skip pipeline: %s %s\n",
+									element.Ref,
+									element.SHA,
+								)
+							}
+
+							continue
+						}
+					}
 				}
 
 				fmt.Printf("Delete pipeline: %s\n", element.Ref)

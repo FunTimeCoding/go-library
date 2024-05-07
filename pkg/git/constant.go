@@ -8,4 +8,9 @@ const (
 	OriginRemote = "origin"
 
 	Directory = ".git"
+
+	MainBranch   = "main"
+	MasterBranch = "master"
 )
+
+var MainBranches = []string{MainBranch, MasterBranch}

@@ -5,6 +5,6 @@ import (
 	"strings"
 )
 
-func Space(s []string) string {
+func Space(s ...string) string {
 	return strings.Join(s, separator.Space)
 }

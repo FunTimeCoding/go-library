@@ -1,25 +1,20 @@
 package ssh
 
 import (
-	"bytes"
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/separator"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/trim"
+	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
 )
 
-func (c *Client) Run(command string) string {
-	session, e := c.client.NewSession()
-	errors.PanicOnError(e)
-	defer func() {
-		if f := session.Close(); f != nil && f.Error() != "EOF" {
-			fmt.Println("Session error")
-			errors.LogOnError(f)
-		}
-	}()
-	var buffer bytes.Buffer
-	session.Stdout = &buffer
-	errors.PanicOnError(session.Run(command))
+func (c *Client) Run(command string) *Result {
+	s := secure_shell.Session(c.client)
+	defer secure_shell.CloseSession(s)
+	stdout, stderr := secure_shell.SessionBuffers(s)
+	e := s.Run(command)
 
-	return strings.TrimRight(buffer.String(), separator.Unix)
+	return &Result{
+		OutputString: trim.NewLine(stdout.String()),
+		ErrorString:  trim.NewLine(stderr.String()),
+		ExitCode:     secure_shell.ExitCode(e),
+		Error:        e,
+	}
 }

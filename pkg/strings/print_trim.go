@@ -6,5 +6,5 @@ import (
 )
 
 func PrintTrim(s string) {
-	fmt.Println(strings.TrimSpace(s))
+	fmt.Print(strings.TrimSpace(s))
 }

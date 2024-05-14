@@ -43,20 +43,18 @@ func Go(
 		constant.Build,
 		constant.LinkerFlagsArgument,
 		join.Space(
-			[]string{
-				constant.LinkerSetVariable,
-				fmt.Sprintf("main.Version=%s", GitTag()),
-				constant.LinkerSetVariable,
-				fmt.Sprintf("main.GitHash=%s", GitHash()),
-				constant.LinkerSetVariable,
-				fmt.Sprintf("main.BuildDate=%s", Date()),
-			},
+			constant.LinkerSetVariable,
+			fmt.Sprintf("main.Version=%s", GitTag()),
+			constant.LinkerSetVariable,
+			fmt.Sprintf("main.GitHash=%s", GitHash()),
+			constant.LinkerSetVariable,
+			fmt.Sprintf("main.BuildDate=%s", Date()),
 		),
 		constant.OutputArgument,
 		output,
 		main,
 	}
-	fmt.Printf("Command: %s\n", join.Space(s))
+	fmt.Printf("Command: %s\n", join.Space(s...))
 	c := exec.Command(s[0], s[1:]...)
 	c.Env = os.Environ()
 	c.Env = append(

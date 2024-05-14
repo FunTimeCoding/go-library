@@ -15,6 +15,6 @@ func TestJoin(t *testing.T) {
 	assert.String(t, "a=b", Equals(s))
 	assert.String(t, "a\nb", NewLine(s))
 	assert.String(t, "a|b", Pipe(s))
-	assert.String(t, "a b", Space(s))
+	assert.String(t, "a b", Space(s...))
 	assert.String(t, "a_b", Underscore(s))
 }

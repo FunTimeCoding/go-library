@@ -1,9 +1,10 @@
-package systemd
+package constant
 
 const (
 	Command   = "systemctl"
 	ListUnits = "list-units"
 	Status    = "status"
+	Show      = "show"
 
 	NoLegend = "--no-legend"
 
@@ -19,4 +20,10 @@ const (
 
 	Output   = "--output"
 	Notation = "json"
+
+	DateTime = "Mon 2006-01-02 15:04:05 MST"
 )
+
+const ActiveState = "active"
+
+const RunningSubState = "running"

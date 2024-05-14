@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.22.2
+go 1.22.3
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.2

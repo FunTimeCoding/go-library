@@ -6,12 +6,12 @@ func FormatList(
 	title string,
 	elements []string,
 ) string {
-	result := multi_line.New()
-	result.Add("%s:", title)
+	l := multi_line.New()
+	l.Add("%s:", title)
 
 	for _, element := range elements {
-		result.Add(element)
+		l.Add(element)
 	}
 
-	return result.Format()
+	return l.Format()
 }

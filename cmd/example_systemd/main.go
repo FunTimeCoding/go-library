@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/linux/systemd"
 	"github.com/funtimecoding/go-library/pkg/ssh"
+	"github.com/funtimecoding/go-library/pkg/ssh/command"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/spf13/pflag"
@@ -27,7 +28,7 @@ func main() {
 		fmt.Printf("Status: %+v\n", c.Status(service))
 	}
 
-	if true {
+	if false {
 		fmt.Printf(
 			"Is active running: %v\n",
 			c.IsActiveRunning(service),
@@ -36,5 +37,11 @@ func main() {
 			"Start time: %v\n",
 			time.Format(c.StartTime(service)),
 		)
+	}
+
+	if true {
+		s.RunCommand(
+			command.New("sudo echo $TEST").Set("TEST", "yay"),
+		).Print()
 	}
 }

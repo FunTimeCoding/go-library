@@ -1,4 +1,4 @@
-package ssh
+package result
 
 type Result struct {
 	OutputString string

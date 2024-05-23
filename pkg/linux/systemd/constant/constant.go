@@ -24,9 +24,15 @@ const (
 	DateTime = "Mon 2006-01-02 15:04:05 MST"
 )
 
-const ActiveState = "active"
+const (
+	ActiveState = "active"
+	FailedState = "failed"
+)
 
-const RunningSubState = "running"
+const (
+	RunningSubState = "running"
+	FailedSubState  = "failed"
+)
 
 const (
 	ActiveEnterTimestamp   = "ActiveEnterTimestamp"

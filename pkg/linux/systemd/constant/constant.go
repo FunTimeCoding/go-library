@@ -27,3 +27,8 @@ const (
 const ActiveState = "active"
 
 const RunningSubState = "running"
+
+const (
+	ActiveEnterTimestamp   = "ActiveEnterTimestamp"
+	ExecMainStartTimestamp = "ExecMainStartTimestamp"
+)

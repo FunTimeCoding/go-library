@@ -9,7 +9,7 @@ import (
 
 func KnownHosts() ssh.HostKeyCallback {
 	result, e := knownhosts.New(
-		system.Join(system.Home(), ".ssh", "known_hosts"),
+		system.Join(system.Home(), ConfigurationDirectory, KnownHostsFile),
 	)
 	errors.PanicOnError(e)
 

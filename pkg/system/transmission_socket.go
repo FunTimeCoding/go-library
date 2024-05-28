@@ -6,7 +6,7 @@ import (
 )
 
 func TransmissionSocket(address string) net.Conn {
-	result, e := net.Dial("tcp", address)
+	result, e := net.Dial(Transmission, address)
 	errors.PanicOnError(e)
 
 	return result

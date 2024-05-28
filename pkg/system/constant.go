@@ -16,6 +16,8 @@ const (
 	DownloadsPath               = "Downloads"
 	KubernetesConfigurationPath = ".kube/config"
 	QuerySocketPath             = ".osquery/shell.em"
+
+	Transmission = "tcp"
 )
 
 // File hierarchy system

@@ -1,12 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/lint"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func main() {
@@ -15,65 +15,37 @@ func main() {
 			".",
 			func(
 				path string,
-				info os.FileInfo,
+				i os.FileInfo,
 				e error,
 			) error {
 				if e != nil {
 					return e
 				}
 
-				if info.IsDir() || filepath.Ext(path) != ".go" {
+				if i.IsDir() || filepath.Ext(path) != ".go" {
 					return nil
 				}
 
-				file, openFail := os.Open(path)
+				f := system.Open(path)
+				defer errors.LogClose(f)
 
-				if openFail != nil {
-					return openFail
-				}
-
-				defer func() {
-					errors.LogOnError(file.Close())
-				}()
-
-				scanner := bufio.NewScanner(file)
-				var importBlock []string
-				var insideImportBlock bool
-
-				for scanner.Scan() {
-					line := scanner.Text()
-
-					if strings.HasPrefix(line, "import (") {
-						insideImportBlock = true
-						importBlock = append(importBlock, line)
-
-						continue
-					}
-
-					if insideImportBlock {
-						if strings.HasPrefix(line, ")") {
-							importBlock = append(importBlock, line)
-							insideImportBlock = false
-
-							if len(importBlock) == 3 {
-								fmt.Printf(
-									"Simplify import in %s: %s\n",
-									path,
-									strings.TrimSpace(importBlock[1]),
-								)
-							}
-
-							importBlock = nil
-						} else {
-							importBlock = append(importBlock, line)
-						}
-
-						continue
+				if false {
+					if linted := lint.Lint(f); linted != "" {
+						fmt.Printf(
+							"Simplify import in %s: %s\n",
+							path,
+							linted,
+						)
 					}
 				}
 
-				if f := scanner.Err(); f != nil {
-					return f
+				if linted := lint.Fix(f); linted != "" {
+					fmt.Printf(
+						"Simplify import in %s: %s\n",
+						path,
+						linted,
+					)
+					system.SaveFile(path, linted)
 				}
 
 				return nil

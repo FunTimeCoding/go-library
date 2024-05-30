@@ -1,6 +1,8 @@
 package errors
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestPost(t *testing.T) {
 	Post("https://localhost", "something went wrong")

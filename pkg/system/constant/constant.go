@@ -1,4 +1,6 @@
-package system
+package constant
+
+import "github.com/funtimecoding/go-library/pkg/network"
 
 const (
 	Tilde = "~"
@@ -31,4 +33,4 @@ const (
 
 var Architectures = []string{AMD64, ARM64}
 
-var NullPhysicalAddress = PhysicalAddress(NullPhysicalAddressString)
+var NullPhysicalAddress = network.PhysicalAddress(NullPhysicalAddressString)

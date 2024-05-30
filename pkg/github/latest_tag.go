@@ -1,7 +1,7 @@
 package github
 
 import (
-	"github.com/funtimecoding/go-library/pkg/git"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/google/go-github/v59/github"
 	"golang.org/x/mod/semver"
 	"strings"
@@ -12,7 +12,7 @@ func LatestTag(v []*github.RepositoryTag) *github.RepositoryTag {
 
 	for _, element := range v {
 		// Only consider tags with prefix
-		if strings.HasPrefix(*element.Name, git.VersionPrefix) {
+		if strings.HasPrefix(*element.Name, constant.VersionPrefix) {
 			tags = append(tags, *element.Name)
 		}
 	}

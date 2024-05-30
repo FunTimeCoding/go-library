@@ -1,4 +1,4 @@
-package system
+package network
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"

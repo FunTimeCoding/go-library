@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/coreos/go-semver/semver"
 	"github.com/funtimecoding/go-library/pkg/git"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
@@ -69,7 +70,7 @@ func main() {
 
 	nextString := fmt.Sprintf(
 		"%s%s",
-		git.VersionPrefix,
+		constant.VersionPrefix,
 		next.String(),
 	)
 	fmt.Printf("Tag: %s\n", nextString)

@@ -22,4 +22,7 @@ const (
 
 	False  = "0"
 	Direct = "direct"
+
+	CurrentDirectory = "."
+	GoExtension      = ".go"
 )

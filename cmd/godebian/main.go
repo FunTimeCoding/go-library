@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/debian"
 	"github.com/funtimecoding/go-library/pkg/semver"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -49,7 +50,7 @@ func main() {
 	version := semver.Trim(viper.GetString(argument.Version))
 	maintainerName := viper.GetString(maintainerNameArgument)
 	maintainerMail := viper.GetString(maintainerEmailArgument)
-	architecture := system.AMD64
+	architecture := constant.AMD64
 
 	packageName := debian.PackageVersion(
 		executable,
@@ -85,7 +86,7 @@ func main() {
 	if createUnit {
 		unit := system.Join(
 			packageDirectory,
-			system.Library,
+			constant.Library,
 			"systemd",
 			"system",
 		)
@@ -112,9 +113,9 @@ func main() {
 
 	bin := system.Join(
 		packageDirectory,
-		system.Resources,
-		system.Local,
-		system.Binary,
+		constant.Resources,
+		constant.Local,
+		constant.Binary,
 	)
 	system.MakeDirectory(bin)
 	system.Move(executable, system.Join(bin, executable))

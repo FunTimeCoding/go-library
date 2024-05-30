@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/git"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/git/remote"
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
 	"github.com/funtimecoding/go-library/pkg/github"
@@ -33,7 +34,7 @@ func main() {
 	var r *remote.Remote
 
 	for _, element := range git.Remotes(system.WorkingDirectory(), m) {
-		if element.Name == git.OriginRemote {
+		if element.Name == constant.OriginRemote {
 			r = element
 
 			break
@@ -88,7 +89,7 @@ func main() {
 		var mainBranchHash string
 
 		for _, element := range c.Branches(p.Identifier) {
-			if slices.Contains(git.MainBranches, element.Name) {
+			if slices.Contains(constant.MainBranches, element.Name) {
 				mainBranchHash = element.Commit.ID
 
 				break

@@ -2,6 +2,7 @@ package git
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"strings"
 )
 
@@ -14,7 +15,7 @@ func ParseProject(path string) (string, string) {
 	}
 
 	namespace := parts[0]
-	repository := strings.TrimSuffix(parts[count-1], Directory)
+	repository := strings.TrimSuffix(parts[count-1], constant.Directory)
 
 	return namespace, repository
 }

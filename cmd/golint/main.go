@@ -2,50 +2,29 @@ package main
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/lint"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"os"
-	"path/filepath"
 )
 
 func main() {
-	errors.PanicOnError(
-		filepath.Walk(
-			".",
-			func(
-				path string,
-				i os.FileInfo,
-				e error,
-			) error {
-				if e != nil {
-					return e
-				}
+	for _, element := range system.EmptyDirectories(
+		constant.CurrentDirectory,
+	) {
+		fmt.Printf("Empty directory: %s\n", element)
+	}
 
-				if i.IsDir() || filepath.Ext(path) != ".go" {
-					return nil
-				}
+	for _, element := range system.GoFiles(
+		constant.CurrentDirectory,
+	) {
+		f := system.Open(element)
 
-				f := system.Open(path)
-				defer errors.LogClose(f)
+		if linted := lint.Fix(f); linted != "" {
+			fmt.Printf("Simplify import %s\n", element)
+			system.SaveFile(element, linted)
+		}
 
-				if false {
-					if linted := lint.Lint(f); linted != "" {
-						fmt.Printf(
-							"Simplify import in %s: %s\n",
-							path,
-							linted,
-						)
-					}
-				}
-
-				if linted := lint.Fix(f); linted != "" {
-					fmt.Printf("Simplify import %s\n", path)
-					system.SaveFile(path, linted)
-				}
-
-				return nil
-			},
-		),
-	)
+		errors.LogClose(f)
+	}
 }

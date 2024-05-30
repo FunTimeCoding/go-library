@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/system"
+	constant2 "github.com/funtimecoding/go-library/pkg/system/constant"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -30,7 +31,7 @@ func Go(
 		if name == "" {
 			panic("output empty and main not specified")
 		} else {
-			output = system.Join(system.Temporary, name)
+			output = system.Join(constant2.Temporary, name)
 		}
 	}
 

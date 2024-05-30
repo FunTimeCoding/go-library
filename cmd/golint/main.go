@@ -40,11 +40,7 @@ func main() {
 				}
 
 				if linted := lint.Fix(f); linted != "" {
-					fmt.Printf(
-						"Simplify import in %s: %s\n",
-						path,
-						linted,
-					)
+					fmt.Printf("Simplify import %s\n", path)
 					system.SaveFile(path, linted)
 				}
 

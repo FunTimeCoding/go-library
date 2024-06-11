@@ -6,13 +6,16 @@ import (
 	"os"
 )
 
-func RequiredString(name string) string {
+func RequiredStringFlag(
+	name string,
+	exitCode int,
+) string {
 	if s := viper.GetString(name); s != "" {
 		return s
 	}
 
-	fmt.Printf("required argument empty: %s\n", name)
-	os.Exit(1)
+	fmt.Printf("flag empty: %s\n", name)
+	os.Exit(exitCode)
 
 	return ""
 }

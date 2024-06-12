@@ -13,8 +13,16 @@ import (
 
 func main() {
 	pflag.Parse()
-	host := argument.RequiredPositional(0, "host")
-	service := argument.RequiredPositional(1, "service")
+	host := argument.RequiredPositional(
+		0,
+		"host",
+		1,
+	)
+	service := argument.RequiredPositional(
+		1,
+		"service",
+		1,
+	)
 	fmt.Printf("Host: %s\n", host)
 	fmt.Printf("Service: %s\n", service)
 

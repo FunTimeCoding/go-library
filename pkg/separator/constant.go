@@ -7,6 +7,7 @@ const (
 	Dash        = "-"
 	Dot         = "."
 	DoubleColon = "::"
+	DoubleSpace = "  "
 	Equals      = "="
 	Pipe        = "|"
 	Slash       = "/"

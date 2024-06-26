@@ -5,5 +5,5 @@ func Scheme(secure bool) string {
 		return SecureScheme
 	}
 
-	return InsecureSchemePrefix
+	return InsecureScheme
 }

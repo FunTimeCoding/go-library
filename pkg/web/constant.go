@@ -19,4 +19,6 @@ const (
 
 	SecureSchemePrefix   = "https://"
 	InsecureSchemePrefix = "http://"
+
+	Localhost = "localhost"
 )

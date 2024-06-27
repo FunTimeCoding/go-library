@@ -9,7 +9,11 @@ func (c *Client) ReadCommit(
 	project int,
 	sha string,
 ) *gitlab.Commit {
-	result, _, e := c.client.Commits.GetCommit(project, sha)
+	result, _, e := c.client.Commits.GetCommit(
+		project,
+		sha,
+		&gitlab.GetCommitOptions{},
+	)
 	errors.PanicOnError(e)
 
 	return result

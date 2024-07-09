@@ -1,5 +1,5 @@
 package status
 
-func New() *Status {
-	return &Status{}
+func New(color bool) *Status {
+	return &Status{color: color}
 }

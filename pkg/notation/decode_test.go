@@ -13,6 +13,6 @@ func TestDecode(t *testing.T) {
 
 func TestDecodeStrict(t *testing.T) {
 	var actual []int
-	DecodeStrict("[1]", &actual)
+	DecodeStrict("[1]", &actual, false)
 	assert.Any(t, []int{1}, actual)
 }

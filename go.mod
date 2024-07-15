@@ -6,6 +6,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.9.2
 	github.com/coreos/go-semver v0.3.1
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+	github.com/fatih/color v1.14.1
 	github.com/gdamore/tcell/v2 v2.7.4
 	github.com/getsentry/sentry-go v0.28.1
 	github.com/go-git/go-billy/v5 v5.5.0
@@ -67,6 +68,8 @@ require (
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

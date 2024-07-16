@@ -1,12 +1,12 @@
 module github.com/funtimecoding/go-library
 
-go 1.22.4
+go 1.22.5
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.2
 	github.com/coreos/go-semver v0.3.1
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
-	github.com/fatih/color v1.14.1
+	github.com/fatih/color v1.17.0
 	github.com/gdamore/tcell/v2 v2.7.4
 	github.com/getsentry/sentry-go v0.28.1
 	github.com/go-git/go-billy/v5 v5.5.0
@@ -22,13 +22,13 @@ require (
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
 	github.com/whilp/git-urls v1.0.0
-	github.com/xanzy/go-gitlab v0.106.0
-	golang.org/x/crypto v0.24.0
-	golang.org/x/mod v0.18.0
+	github.com/xanzy/go-gitlab v0.107.0
+	golang.org/x/crypto v0.25.0
+	golang.org/x/mod v0.19.0
 	golang.org/x/oauth2 v0.21.0
 	gonum.org/v1/gonum v0.15.0
 	gorm.io/driver/postgres v1.5.9
-	gorm.io/gorm v1.25.10
+	gorm.io/gorm v1.25.11
 	gotest.tools/v3 v3.5.1
 	k8s.io/apimachinery v0.30.2
 	sigs.k8s.io/yaml v1.4.0
@@ -52,7 +52,7 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.2 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -91,8 +91,8 @@ require (
 	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect
 	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
-	golang.org/x/term v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
+	golang.org/x/term v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect

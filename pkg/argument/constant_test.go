@@ -7,6 +7,8 @@ import (
 
 func TestConstant(t *testing.T) {
 	assert.String(t, "branch", Branch)
+	assert.String(t, "cluster", Cluster)
+	assert.String(t, "container", Container)
 	assert.String(t, "downgrade", Downgrade)
 	assert.String(t, "exclusive", Exclusive)
 	assert.String(t, "executable", Executable)
@@ -17,11 +19,13 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "main", Main)
 	assert.String(t, "message", Message)
 	assert.String(t, "name", Name)
+	assert.String(t, "namespace", Namespace)
 	assert.String(t, "output", Output)
 	assert.String(t, "owner", Owner)
 	assert.String(t, "package", Package)
 	assert.String(t, "password", Password)
 	assert.String(t, "path", Path)
+	assert.String(t, "pod", Pod)
 	assert.String(t, "project", Project)
 	assert.String(t, "replace", Replace)
 	assert.String(t, "repository", Repository)

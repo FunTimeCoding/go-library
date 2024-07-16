@@ -2,6 +2,8 @@ package argument
 
 const (
 	Branch      = "branch"
+	Cluster     = "cluster"
+	Container   = "container"
 	Downgrade   = "downgrade"
 	Exclusive   = "exclusive"
 	Executable  = "executable"
@@ -12,11 +14,13 @@ const (
 	Main        = "main"
 	Message     = "message"
 	Name        = "name"
+	Namespace   = "namespace"
 	Output      = "output"
 	Owner       = "owner"
 	Package     = "package"
 	Password    = "password"
 	Path        = "path"
+	Pod         = "pod"
 	Project     = "project"
 	Replace     = "replace"
 	Repository  = "repository"

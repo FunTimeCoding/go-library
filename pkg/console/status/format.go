@@ -9,7 +9,7 @@ import (
 func (s *Status) Format() string {
 	result := strings.Join(s.bubbles, " | ")
 
-	if len(s.lines) > 0 {
+	if s.extended && len(s.lines) > 0 {
 		result = fmt.Sprintf("%s\n%s", result, join.NewLine(s.lines))
 	}
 

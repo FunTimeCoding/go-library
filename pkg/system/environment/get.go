@@ -1,15 +1,20 @@
 package environment
 
 import (
-	"log"
+	"fmt"
 	"os"
 )
 
-func Get(s string) string {
-	result := os.Getenv(s)
+func Get(
+	name string,
+	exitCode int,
+) string {
+	result := os.Getenv(name)
 
 	if result == "" {
-		log.Panicf("%s not set", s)
+		fmt.Printf("%s not set\n", name)
+
+		os.Exit(exitCode)
 	}
 
 	return result

@@ -17,6 +17,7 @@ func Log(
 ) {
 	c := gw2.New(environment.Get(gw2.TokenEnvironment, 1))
 	members := gw2.MembersOfGuild(c, tag)
+	fmt.Printf("Members count: %d\n", len(members))
 	fmt.Printf("Members: %s\n", join.Comma(members))
 
 	logs := log.NewSlice(gw2.ParseLogs(system.ReadBytes(path), false))

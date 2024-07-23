@@ -3,6 +3,10 @@ package status
 import "fmt"
 
 func (s *Status) Raw(a any) *Status {
+	if !s.raw {
+		return s
+	}
+
 	r := fmt.Sprintf("%+v", a)
 
 	if s.color {

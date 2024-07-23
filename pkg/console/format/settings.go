@@ -3,6 +3,9 @@ package format
 type Settings struct {
 	UseColor bool
 
+	// Use short names, possibly acronyms
+	UseCompact bool
+
 	// Extended Additional multiple lines of information
 	ShowExtended bool
 

@@ -3,9 +3,11 @@ module github.com/funtimecoding/go-library
 go 1.22.5
 
 require (
+	github.com/MrGunflame/gw2api v1.0.4
 	github.com/PuerkitoBio/goquery v1.9.2
 	github.com/coreos/go-semver v0.3.1
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+	github.com/dimchansky/utfbom v1.1.1
 	github.com/fatih/color v1.17.0
 	github.com/gdamore/tcell/v2 v2.7.4
 	github.com/getsentry/sentry-go v0.28.1
@@ -37,12 +39,10 @@ require (
 require (
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
-	github.com/MrGunflame/gw2api v1.0.4 // indirect
 	github.com/ProtonMail/go-crypto v1.0.0 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
-	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect

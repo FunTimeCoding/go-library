@@ -1,8 +1,6 @@
 package console
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestConstant(t *testing.T) {
 	Green("test")

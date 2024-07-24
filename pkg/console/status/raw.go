@@ -1,6 +1,9 @@
 package status
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console"
+)
 
 func (s *Status) Raw(a any) *Status {
 	if !s.raw {
@@ -10,7 +13,7 @@ func (s *Status) Raw(a any) *Status {
 	r := fmt.Sprintf("%+v", a)
 
 	if s.color {
-		s.Line("  Raw: %s", magenta(r))
+		s.Line("  Raw: %s", console.Magenta(r))
 	} else {
 		s.Line("  Raw: %s", r)
 	}

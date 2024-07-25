@@ -9,13 +9,6 @@ import (
 
 func (c *Client) Generate(prompt string) string {
 	var result string
-
-	respFunc := func(r api.GenerateResponse) error {
-		result = r.Response
-
-		return nil
-	}
-
 	errors.PanicOnError(
 		c.client.Generate(
 			context.Background(),
@@ -24,7 +17,11 @@ func (c *Client) Generate(prompt string) string {
 				Stream: pointer.Bool(false),
 				Prompt: prompt,
 			},
-			respFunc,
+			func(r api.GenerateResponse) error {
+				result = r.Response
+
+				return nil
+			},
 		),
 	)
 

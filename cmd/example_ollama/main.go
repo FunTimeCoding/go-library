@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	fmt.Println(ollama.New().Generate("What is a car?"))
+	fmt.Println(ollama.New().GenerateSimple("What is a car?"))
 }

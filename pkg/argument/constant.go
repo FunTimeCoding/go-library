@@ -10,6 +10,7 @@ const (
 	Header      = "header"
 	Host        = "host"
 	Interactive = "interactive"
+	Key         = "key"
 	Locator     = "locator"
 	Main        = "main"
 	Message     = "message"

@@ -5,6 +5,7 @@ const (
 	Cluster     = "cluster"
 	Container   = "container"
 	Core        = "core"
+	Disk        = "disk"
 	Downgrade   = "downgrade"
 	Download    = "download"
 	Exclusive   = "exclusive"

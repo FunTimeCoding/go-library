@@ -10,6 +10,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "cluster", Cluster)
 	assert.String(t, "container", Container)
 	assert.String(t, "core", Core)
+	assert.String(t, "disk", Disk)
 	assert.String(t, "downgrade", Downgrade)
 	assert.String(t, "download", Download)
 	assert.String(t, "exclusive", Exclusive)

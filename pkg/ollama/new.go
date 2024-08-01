@@ -1,6 +1,7 @@
 package ollama
 
 import (
+	"context"
 	"github.com/ollama/ollama/api"
 	"net"
 	"net/http"
@@ -13,6 +14,7 @@ func New() *Client {
 	port := "11434"
 
 	return &Client{
+		context: context.Background(),
 		client: api.NewClient(
 			&url.URL{Scheme: scheme, Host: net.JoinHostPort(host, port)},
 			http.DefaultClient,

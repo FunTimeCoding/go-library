@@ -1,7 +1,11 @@
 package ollama
 
-import "github.com/ollama/ollama/api"
+import (
+	"context"
+	"github.com/ollama/ollama/api"
+)
 
 type Client struct {
-	client *api.Client
+	context context.Context
+	client  *api.Client
 }

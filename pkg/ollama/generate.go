@@ -1,15 +1,15 @@
 package ollama
 
 import (
-	"context"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/ollama/constant"
 	"github.com/ollama/ollama/api"
 	"k8s.io/utils/ptr"
 )
 
 func (c *Client) Generate(r *api.GenerateRequest) *api.GenerateResponse {
 	if r.Model == "" {
-		r.Model = "llama3.1"
+		r.Model = constant.Llama31
 	}
 
 	if r.Stream == nil {
@@ -19,7 +19,7 @@ func (c *Client) Generate(r *api.GenerateRequest) *api.GenerateResponse {
 	var result *api.GenerateResponse
 	errors.PanicOnError(
 		c.client.Generate(
-			context.Background(),
+			c.context,
 			r,
 			func(r api.GenerateResponse) error {
 				result = &r

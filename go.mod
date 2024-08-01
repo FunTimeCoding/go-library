@@ -16,7 +16,7 @@ require (
 	github.com/google/go-github/v59 v59.0.0
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.6.0
-	github.com/ollama/ollama v0.3.1
+	github.com/ollama/ollama v0.3.2
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/rivo/tview v0.0.0-20240728114935-65571ae51e71
 	github.com/sanity-io/litter v1.5.5

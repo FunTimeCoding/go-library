@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/ollama/ollama/api"
-	"k8s.io/utils/pointer"
+	"k8s.io/utils/ptr"
 )
 
 func (c *Client) Generate(r *api.GenerateRequest) *api.GenerateResponse {
@@ -13,7 +13,7 @@ func (c *Client) Generate(r *api.GenerateRequest) *api.GenerateResponse {
 	}
 
 	if r.Stream == nil {
-		r.Stream = pointer.Bool(false)
+		r.Stream = ptr.To[bool](false)
 	}
 
 	var result *api.GenerateResponse

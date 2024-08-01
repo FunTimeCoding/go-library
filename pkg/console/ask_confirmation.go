@@ -19,8 +19,8 @@ func AskConfirmation(s string) bool {
 
 		if response == "y" || response == "yes" {
 			return true
+		} else {
+			return false
 		}
-
-		return false
 	}
 }

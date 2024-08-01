@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	// https://github.com/ollama/ollama/blob/main/docs/api.md
 	o := ollama.New()
 
 	if false {

@@ -15,24 +15,19 @@ func Generate(
 
 	sort.Float64s(f)
 	n := len(values)
-	groupSize := len(f) / n
-	var result []*Mapping
+	result := []*Mapping{{From: 0, To: f[0], Value: values[0]}}
 
-	for i := 0; i < n; i++ {
-		from := i * groupSize
-		to := (i+1)*groupSize - 1
+	for i := 1; i < n; i++ {
+		from := f[i-1]
+		to := f[i]
 
 		if i == n-1 {
-			to = len(f) - 1
+			to = f[len(f)-1]
 		}
 
 		result = append(
 			result,
-			&Mapping{
-				From:  f[from],
-				To:    f[to],
-				Value: values[i],
-			},
+			&Mapping{From: from, To: to, Value: values[i]},
 		)
 	}
 

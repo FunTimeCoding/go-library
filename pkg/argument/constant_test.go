@@ -9,6 +9,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "branch", Branch)
 	assert.String(t, "cluster", Cluster)
 	assert.String(t, "container", Container)
+	assert.String(t, "context", Context)
 	assert.String(t, "core", Core)
 	assert.String(t, "disk", Disk)
 	assert.String(t, "downgrade", Downgrade)

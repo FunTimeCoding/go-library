@@ -4,6 +4,7 @@ const (
 	Branch      = "branch"
 	Cluster     = "cluster"
 	Container   = "container"
+	Context     = "context"
 	Core        = "core"
 	Disk        = "disk"
 	Downgrade   = "downgrade"

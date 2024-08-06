@@ -1,7 +1,7 @@
 package environment
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
 )
 
@@ -13,8 +13,7 @@ func Required(
 		return s
 	}
 
-	fmt.Printf("environment variable empty: %s\n", name)
-	os.Exit(exitCode)
+	system.Exitf(exitCode, "environment variable empty: %s\n", name)
 
 	return ""
 }

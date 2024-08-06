@@ -22,13 +22,12 @@ var parts = []string{
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Printf(
+		system.Exitf(
+			1,
 			"Usage: %s INCREASE\nIncrease options: %s\n",
 			join.CommaSpace(parts),
 			os.Args[0],
 		)
-
-		os.Exit(1)
 	}
 
 	d := system.WorkingDirectory()
@@ -37,9 +36,7 @@ func main() {
 		s := git.Status(d)
 
 		if !git.IsClean(s, false) {
-			fmt.Printf("Not clean:\n%s\n", s.String())
-
-			os.Exit(1)
+			system.Exitf(1, "not clean:\n%s\n", s.String())
 		}
 	}
 
@@ -63,9 +60,7 @@ func main() {
 	case major:
 		next.BumpMajor()
 	default:
-		fmt.Printf("Unexpected increase: %s", increase)
-
-		os.Exit(1)
+		system.Exitf(1, "unexpected increase: %s\n", increase)
 	}
 
 	nextString := fmt.Sprintf(

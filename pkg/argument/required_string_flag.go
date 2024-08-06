@@ -1,9 +1,8 @@
 package argument
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/spf13/viper"
-	"os"
 )
 
 func RequiredStringFlag(
@@ -14,8 +13,7 @@ func RequiredStringFlag(
 		return s
 	}
 
-	fmt.Printf("flag empty: %s\n", name)
-	os.Exit(exitCode)
+	system.Exitf(exitCode, "flag empty: %s\n", name)
 
 	return ""
 }

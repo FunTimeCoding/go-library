@@ -21,3 +21,4 @@ goclean
 golint
 gobump
 godebian
+exitf

@@ -1,9 +1,6 @@
 package argument
 
-import (
-	"fmt"
-	"os"
-)
+import "github.com/funtimecoding/go-library/pkg/system"
 
 func RequiredPositional(
 	number int,
@@ -14,8 +11,11 @@ func RequiredPositional(
 		return s
 	}
 
-	fmt.Printf("positional argument empty: %s\n", description)
-	os.Exit(exitCode)
+	system.Exitf(
+		exitCode,
+		"positional argument empty: %s\n",
+		description,
+	)
 
 	return ""
 }

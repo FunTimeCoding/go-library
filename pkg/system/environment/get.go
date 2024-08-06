@@ -1,7 +1,7 @@
 package environment
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
 )
 
@@ -12,9 +12,7 @@ func Get(
 	result := os.Getenv(name)
 
 	if result == "" {
-		fmt.Printf("%s not set\n", name)
-
-		os.Exit(exitCode)
+		system.Exitf(exitCode, "%s not set\n", name)
 	}
 
 	return result

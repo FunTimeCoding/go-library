@@ -18,7 +18,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"os"
 	"slices"
 	"strings"
 )
@@ -42,11 +41,11 @@ func main() {
 	}
 
 	if r == nil {
-		fmt.Printf(
-			"Could not identify provider: %s",
+		system.Exitf(
+			1,
+			"could not identify provider: %s\n",
 			gitlabLocator.Host,
 		)
-		os.Exit(1)
 
 		return
 	}

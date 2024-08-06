@@ -1,14 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	stringsHelper "github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"os"
 	"strings"
 )
 
@@ -63,8 +61,12 @@ func main() {
 	p := c.ProjectByName(owner, repository)
 
 	if p == nil {
-		fmt.Printf("repository not found: %s/%s\n", owner, repository)
-		os.Exit(1)
+		system.Exitf(
+			1,
+			"repository not found: %s/%s\n",
+			owner,
+			repository,
+		)
 
 		return
 	}

@@ -15,7 +15,9 @@ func Play(
 ) {
 	switch p := runtime.GOOS; p {
 	case constant.Linux:
-		panic("not implemented")
+		if verbose {
+			fmt.Println("Sound not implemented on Linux")
+		}
 	case constant.Darwin:
 		result, e := system.RunError(
 			Afplay,

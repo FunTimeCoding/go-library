@@ -6,13 +6,13 @@ import (
 )
 
 func (s *Status) Raw(a any) *Status {
-	if !s.raw {
+	if !s.settings.ShowRaw {
 		return s
 	}
 
 	r := fmt.Sprintf("%+v", a)
 
-	if s.color {
+	if s.settings.UseColor {
 		s.Line("  Raw: %s", console.Magenta(r))
 	} else {
 		s.Line("  Raw: %s", r)

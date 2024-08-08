@@ -1,10 +1,11 @@
 package status
 
-type Status struct {
-	bubbles []string
-	lines   []string
+import "github.com/funtimecoding/go-library/pkg/console/format"
 
-	color    bool
-	raw      bool
-	extended bool
+type Status struct {
+	bubbles    []string
+	lines      []string
+	linesByTag map[string][]string
+
+	settings *format.Settings
 }

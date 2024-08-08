@@ -22,3 +22,6 @@ golint
 gobump
 godebian
 exitf
+
+# macOS
+afplay

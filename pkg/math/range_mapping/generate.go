@@ -15,26 +15,24 @@ func Generate(
 	}
 
 	sort.Float64s(f)
-	n := len(values)
-	result := []*Mapping{
-		{
-			Range: ranges.Range{L: 0, R: f[0]},
-			Value: values[0],
-		},
+	maxFloat := f[len(f)-1]
+	count := len(values)
+
+	if count == 0 {
+		return nil
 	}
 
-	for i := 1; i < n; i++ {
-		from := f[i-1]
-		to := f[i]
+	mappings := maxFloat / float64(count)
+	result := make([]*Mapping, 0)
 
-		if i == n-1 {
-			to = f[len(f)-1]
-		}
-
+	for i := 0; i < count; i++ {
 		result = append(
 			result,
 			&Mapping{
-				Range: ranges.Range{L: from, R: to},
+				Range: ranges.Range{
+					L: float64(i) * mappings,
+					R: float64(i+1) * mappings,
+				},
 				Value: values[i],
 			},
 		)

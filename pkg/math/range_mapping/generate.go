@@ -1,6 +1,7 @@
 package range_mapping
 
 import (
+	"github.com/funtimecoding/go-library/pkg/math/ranges"
 	"slices"
 	"sort"
 )
@@ -15,7 +16,12 @@ func Generate(
 
 	sort.Float64s(f)
 	n := len(values)
-	result := []*Mapping{{From: 0, To: f[0], Value: values[0]}}
+	result := []*Mapping{
+		{
+			Range: ranges.Range{L: 0, R: f[0]},
+			Value: values[0],
+		},
+	}
 
 	for i := 1; i < n; i++ {
 		from := f[i-1]
@@ -27,7 +33,10 @@ func Generate(
 
 		result = append(
 			result,
-			&Mapping{From: from, To: to, Value: values[i]},
+			&Mapping{
+				Range: ranges.Range{L: from, R: to},
+				Value: values[i],
+			},
 		)
 	}
 

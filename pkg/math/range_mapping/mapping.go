@@ -1,7 +1,8 @@
 package range_mapping
 
+import "github.com/funtimecoding/go-library/pkg/math/ranges"
+
 type Mapping struct {
-	From  float64
-	To    float64
+	Range ranges.Range
 	Value string
 }

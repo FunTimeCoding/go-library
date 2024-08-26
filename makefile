@@ -17,7 +17,7 @@ lint:
 
 update:
 	@goupdate
-	# Cilium is not ready for 0.31.0
+    # Cilium is not ready for 0.31.0
 	@go get k8s.io/apimachinery@v0.30.3
 
 build:

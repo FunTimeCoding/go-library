@@ -10,7 +10,7 @@ func FormatList(
 	l.Add("%s:", title)
 
 	for _, element := range elements {
-		l.Add(element)
+		l.Add("%s", element)
 	}
 
 	return l.Format()

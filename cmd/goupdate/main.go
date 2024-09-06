@@ -44,6 +44,7 @@ func main() {
 
 	go_mod.UpdateDirectDependencies(exclusives)
 	go_mod.DowngradeDependencies(downgrades)
+	go_mod.Tidy()
 
 	goVersion := runtime.ExecutableVersion()
 	goString := goVersion.String()

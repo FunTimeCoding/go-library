@@ -28,6 +28,4 @@ func UpdateDirectDependencies(exclusiveMatches []string) {
 
 		Update(dep.Mod.Path, hasExclusive)
 	}
-
-	Tidy()
 }

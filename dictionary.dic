@@ -25,3 +25,6 @@ exitf
 
 # macOS
 afplay
+
+# Kubernetes
+apimachinery

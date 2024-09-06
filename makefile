@@ -16,9 +16,8 @@ lint:
 	@golangci-lint run
 
 update:
-	@goupdate
-    # Cilium is not ready for 0.31.0
-	@go get k8s.io/apimachinery@v0.30.3
+    # k8s.io/apimachinery: Cilium is not ready for 0.31.0
+	@goupdate --downgrade k8s.io/apimachinery@v0.30.3
 
 build:
 	@gobuild cmd/gobuild/main.go

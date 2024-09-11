@@ -1,5 +1,8 @@
 package gitlab
 
-func NewGitLabCom(token string) *Client {
-	return New("", token)
+func NewGitLabCom(
+	token string,
+	projects []int,
+) *Client {
+	return New("", token, projects)
 }

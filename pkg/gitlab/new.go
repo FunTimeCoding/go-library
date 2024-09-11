@@ -9,6 +9,7 @@ import (
 func New(
 	host string,
 	token string,
+	projects []int,
 ) *Client {
 	var options []gitlab.ClientOptionFunc
 
@@ -21,7 +22,7 @@ func New(
 
 	client, e := gitlab.NewClient(token, options...)
 	errors.PanicOnError(e)
-	result := &Client{client: client}
+	result := &Client{client: client, projects: projects}
 	result.user = result.CurrentUser()
 
 	return result

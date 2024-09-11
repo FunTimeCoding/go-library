@@ -1,5 +1,14 @@
 package gitlab
 
+import "github.com/xanzy/go-gitlab"
+
+const (
+	OpenedState  = "opened"
+	PendingState = "pending"
+)
+
+var DefaultListOptions = gitlab.ListOptions{Page: 0, PerPage: 100}
+
 const (
 	Host  = "GITLAB_HOST"
 	Token = "GITLAB_TOKEN"

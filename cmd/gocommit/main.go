@@ -55,6 +55,7 @@ func main() {
 	c := gitlab.New(
 		viper.GetString(HostArgument),
 		viper.GetString(TokenArgument),
+		[]int{},
 	)
 	owner := viper.GetString(OwnerArgument)
 	repository := viper.GetString(RepositoryArgument)

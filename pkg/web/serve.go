@@ -11,9 +11,10 @@ func Serve(
 	c context.Context,
 	r http.Handler,
 	port int,
+	verbose bool,
 ) {
 	s := &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: r}
 	ServeAsynchronous(s)
 	system.KillSignalBlock()
-	GracefulShutdown(c, s)
+	GracefulShutdown(c, s, verbose)
 }

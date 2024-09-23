@@ -8,7 +8,10 @@ import (
 	"net/http"
 )
 
-func New(port int) *Server {
+func New(
+	port int,
+	verbose bool,
+) *Server {
 	if port == 0 {
 		port = 9090
 	}
@@ -24,6 +27,7 @@ func New(port int) *Server {
 	)
 
 	return &Server{
+		verbose:  verbose,
 		port:     port,
 		context:  context.Background(),
 		registry: r,

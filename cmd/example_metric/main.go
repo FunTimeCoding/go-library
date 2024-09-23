@@ -9,7 +9,7 @@ import (
 
 func main() {
 	var g sync.WaitGroup
-	m := metric.New(0)
+	m := metric.New(0, true)
 	log.Println("starting")
 	m.Run(&g)
 	log.Println("started")

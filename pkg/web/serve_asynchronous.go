@@ -10,7 +10,7 @@ func ServeAsynchronous(s *http.Server) {
 	go func() {
 		if e := s.ListenAndServe(); e != nil {
 			if !errors.Is(e, http.ErrServerClosed) {
-				log.Fatalf("listen: %s\n", e)
+				log.Panicf("listen: %s\n", e)
 			}
 		}
 	}()

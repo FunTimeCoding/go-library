@@ -12,4 +12,5 @@ type Server struct {
 	port     int
 	context  context.Context
 	mux      *http.ServeMux
+	verbose  bool
 }

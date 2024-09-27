@@ -10,24 +10,24 @@ require (
 	github.com/dimchansky/utfbom v1.1.1
 	github.com/fatih/color v1.17.0
 	github.com/gdamore/tcell/v2 v2.7.4
-	github.com/getsentry/sentry-go v0.28.1
+	github.com/getsentry/sentry-go v0.29.0
 	github.com/go-git/go-billy/v5 v5.5.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/google/go-github/v59 v59.0.0
 	github.com/jackc/pgconn v1.14.3
-	github.com/jackc/pgx/v5 v5.7.0
-	github.com/ollama/ollama v0.3.10
+	github.com/jackc/pgx/v5 v5.7.1
+	github.com/ollama/ollama v0.3.12
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/client_golang v1.20.4
-	github.com/rivo/tview v0.0.0-20240818110301-fd649dbf1223
+	github.com/rivo/tview v0.0.0-20240921122403-a64fc48d7654
 	github.com/sanity-io/litter v1.5.5
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
 	github.com/whilp/git-urls v1.0.0
-	github.com/xanzy/go-gitlab v0.109.0
+	github.com/xanzy/go-gitlab v0.107.0
 	golang.org/x/crypto v0.27.0
 	golang.org/x/mod v0.21.0
 	golang.org/x/oauth2 v0.23.0
@@ -36,7 +36,7 @@ require (
 	gorm.io/gorm v1.25.12
 	gotest.tools/v3 v3.5.1
 	k8s.io/apimachinery v0.30.3
-	k8s.io/utils v0.0.0-20240902221715-702e33fdd3c3
+	k8s.io/utils v0.0.0-20240921022957-49e7df575cb6
 	sigs.k8s.io/yaml v1.4.0
 )
 
@@ -71,7 +71,7 @@ require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.3.3 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
-	github.com/jackc/puddle/v2 v2.2.1 // indirect
+	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect

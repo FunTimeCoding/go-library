@@ -8,5 +8,6 @@ func New(v *gitlab.Todo) *Task {
 		Body:  v.Body,
 		State: v.State,
 		Link:  v.TargetURL,
+		Raw:   v,
 	}
 }

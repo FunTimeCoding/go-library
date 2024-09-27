@@ -12,7 +12,7 @@ func (c *Client) Images(
 	result, _, e := c.client.ContainerRegistry.ListRegistryRepositoryTags(
 		project,
 		repository,
-		&gitlab.ListRegistryRepositoryTagsOptions{PerPage: PerPage},
+		&gitlab.ListRegistryRepositoryTagsOptions{PerPage: PerPage1000},
 	)
 	errors.PanicOnError(e)
 

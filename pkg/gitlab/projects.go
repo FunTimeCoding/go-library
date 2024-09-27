@@ -13,7 +13,7 @@ func (c *Client) Projects() []*gitlab.Project {
 		page, _, e := c.client.Projects.ListProjects(
 			&gitlab.ListProjectsOptions{
 				ListOptions: gitlab.ListOptions{
-					PerPage: PerPage,
+					PerPage: PerPage1000,
 					Page:    number,
 				},
 			},
@@ -21,7 +21,7 @@ func (c *Client) Projects() []*gitlab.Project {
 		errors.PanicOnError(e)
 		result = append(result, page...)
 
-		if len(page) < PerPage {
+		if len(page) < PerPage1000 {
 			break
 		}
 

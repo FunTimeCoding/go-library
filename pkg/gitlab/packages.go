@@ -13,7 +13,7 @@ func (c *Client) Packages(
 	result, r, e := c.client.Packages.ListProjectPackages(
 		project,
 		&gitlab.ListProjectPackagesOptions{
-			ListOptions: gitlab.ListOptions{PerPage: PerPage},
+			ListOptions: gitlab.ListOptions{PerPage: PerPage1000},
 		},
 	)
 

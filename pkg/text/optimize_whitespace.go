@@ -6,7 +6,10 @@ import (
 	"strings"
 )
 
-func OptimizeWhitespace(input string) string {
+func OptimizeWhitespace(
+	input string,
+	allowedBlankLines int,
+) string {
 	var result []string
 	var blankLines int
 
@@ -16,7 +19,7 @@ func OptimizeWhitespace(input string) string {
 		if line == "" {
 			blankLines++
 
-			if blankLines > 1 {
+			if blankLines > allowedBlankLines {
 				continue
 			}
 		} else {

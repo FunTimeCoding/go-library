@@ -18,7 +18,8 @@ const (
 
 	LatestVersion = "latest"
 
-	PerPage = int(1000)
+	PerPage1000 int = 1000
+	PerPage100  int = 100
 )
 
 // Environment variables during jobs

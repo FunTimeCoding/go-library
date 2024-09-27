@@ -3,13 +3,18 @@ package text
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
+	"github.com/funtimecoding/go-library/pkg/text/optimize_settings"
 	"strings"
 )
 
 func OptimizeWhitespace(
 	input string,
-	allowedBlankLines int,
+	s *optimize_settings.Settings,
 ) string {
+	if s == nil {
+		s = optimize_settings.New()
+	}
+
 	var result []string
 	var blankLines int
 
@@ -19,7 +24,7 @@ func OptimizeWhitespace(
 		if line == "" {
 			blankLines++
 
-			if blankLines > allowedBlankLines {
+			if blankLines > s.AllowedBlankLines {
 				continue
 			}
 		} else {
@@ -27,6 +32,13 @@ func OptimizeWhitespace(
 		}
 
 		result = append(result, line)
+	}
+
+	if s.NewlineAtEnd {
+		// If no newline at the end, add one
+		if len(result) > 0 && result[len(result)-1] != "" {
+			result = append(result, "")
+		}
 	}
 
 	return join.NewLine(result)

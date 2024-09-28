@@ -1,15 +1,23 @@
 package log
 
-import "sort"
+import (
+	"sort"
+	"time"
+)
 
 func LastSeenPerMemberSlice(
 	members []string,
 	logs []*Log,
+	since *time.Time,
 ) []LastSeenMember {
 	var result []LastSeenMember
 
 	for _, member := range members {
 		if t := lastSeen(logs, member); t != nil {
+			if since != nil && t.Before(*since) {
+				continue
+			}
+
 			result = append(
 				result,
 				LastSeenMember{Name: member, Time: *t},

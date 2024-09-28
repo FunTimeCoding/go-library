@@ -17,6 +17,7 @@ require (
 	github.com/google/go-github/v59 v59.0.0
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.0
+	github.com/olekukonko/tablewriter v0.0.5
 	github.com/ollama/ollama v0.3.10
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/rivo/tview v0.0.0-20240818110301-fd649dbf1223

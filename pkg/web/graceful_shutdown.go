@@ -11,11 +11,18 @@ import (
 func GracefulShutdown(
 	c context.Context,
 	s *http.Server,
+	verbose bool,
 ) {
-	log.Println("shutdown with timeout")
+	if verbose {
+		log.Println("shutdown with timeout")
+	}
+
 	o, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 	errors.PanicOnError(s.Shutdown(o))
 	<-o.Done()
-	log.Println("shutdown complete")
+
+	if verbose {
+		log.Println("shutdown complete")
+	}
 }

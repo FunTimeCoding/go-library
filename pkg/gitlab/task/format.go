@@ -5,6 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
 )
 
-func (t *Task) Format(s *format.Settings) string {
-	return status.New(s).String(string(t.Type), t.State, t.Body).Format()
+func (t *Task) Format(f *format.Settings) string {
+	return status.New(f).String(
+		string(t.Type),
+		t.State,
+		t.Body,
+	).Raw(t.Raw).Format()
 }

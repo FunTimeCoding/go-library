@@ -171,6 +171,23 @@ func Log(
 		}
 	}
 
+	guildsReport := guilds.Parse("tmp/guilds.json")
+
+	if false {
+		// To maintain guilds.json
+		for guild, guildMembers := range guildsReport {
+			for _, element := range guildMembers {
+				if !slices.Contains(members, element) {
+					fmt.Printf(
+						"Member not found: %s %s\n",
+						guild,
+						element,
+					)
+				}
+			}
+		}
+	}
+
 	fmt.Printf("Exceptions count: %d\n", len(foundExceptions))
 	sort.Strings(foundExceptions)
 
@@ -180,7 +197,6 @@ func Log(
 
 	fmt.Printf("Never seen count: %d\n", len(neverSeen))
 	sort.Strings(neverSeen)
-	guildsReport := guilds.Parse("tmp/guilds.json")
 
 	for _, name := range neverSeen {
 		var extra string

@@ -1,5 +1,6 @@
 package web
 
+// noinspection HttpUrlsUsage
 const (
 	InsecureScheme = "http"
 	SecureScheme   = "https"

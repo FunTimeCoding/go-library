@@ -6,7 +6,6 @@ import (
 )
 
 type Commit struct {
-	Project    int
 	Identifier string
 	Title      string
 	Message    string

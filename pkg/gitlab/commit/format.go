@@ -7,11 +7,10 @@ import (
 )
 
 func (c *Commit) Format(s *format.Settings) string {
-	return status.New(s).Integer(c.Project).String(
+	return status.New(s).String(
 		c.Identifier,
 		c.Date.Format(time.DateMinute),
 		c.Author,
-		c.Title,
-		c.Message,
+		c.formatTitle(s),
 	).Raw(c.Raw).Format()
 }

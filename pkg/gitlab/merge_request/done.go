@@ -1,11 +1,11 @@
 package merge_request
 
-func (m *Request) Done() bool {
-	if m.State == "merged" {
+func (r *Request) Done() bool {
+	if r.State == MergedState {
 		return true
 	}
 
-	if m.State == "closed" {
+	if r.State == ClosedState {
 		return true
 	}
 

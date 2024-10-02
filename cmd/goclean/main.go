@@ -27,7 +27,12 @@ func main() {
 	argument.ParseAndBind()
 	verbose := viper.GetBool(argument.Verbose)
 
-	gitlabLocator := web.ParseLocator(environment.Get(gitlab.Host, 1))
+	gitlabLocator := web.ParseLocator(
+		environment.Get(
+			gitlab.HostEnvironment,
+			1,
+		),
+	)
 	m := provider_map.New()
 	m.Add(gitlabLocator.Host, provider_map.GitLabProvider)
 	var r *remote.Remote
@@ -73,7 +78,7 @@ func main() {
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := gitlab.New(
 			gitlabLocator.Host,
-			environment.Get(gitlab.Token, 1),
+			environment.Get(gitlab.TokenEnvironment, 1),
 			[]int{},
 		)
 		p := c.ProjectByName(namespace, repository)

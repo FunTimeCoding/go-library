@@ -10,9 +10,11 @@ import (
 	"os"
 )
 
-const major = "major"
-const minor = "minor"
-const patch = "patch"
+const (
+	major = "major"
+	minor = "minor"
+	patch = "patch"
+)
 
 var parts = []string{
 	major,
@@ -41,18 +43,15 @@ func main() {
 	}
 
 	git.Fetch()
-	versions := git.Versions(d)
 	var next *semver.Version
 
-	if len(versions) == 0 {
+	if versions := git.Versions(d); len(versions) == 0 {
 		next = semver.New("0.0.0")
 	} else {
 		next = semver.New(versions[len(versions)-1].String())
 	}
 
-	increase := os.Args[1]
-
-	switch increase {
+	switch increase := os.Args[1]; increase {
 	case patch:
 		next.BumpPatch()
 	case minor:

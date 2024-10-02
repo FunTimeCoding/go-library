@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	stringsHelper "github.com/funtimecoding/go-library/pkg/strings"
@@ -10,55 +11,45 @@ import (
 	"strings"
 )
 
-const HostArgument = "host"
-const TokenArgument = "token"
-const OwnerArgument = "owner"
-const RepositoryArgument = "repository"
-const BranchArgument = "branch"
-const MessageArgument = "message"
-const PathArgument = "path"
-const TemplateArgument = "template"
-const ReplaceArgument = "replace"
-
 func main() {
-	pflag.String(HostArgument, "", "GitLab host")
-	pflag.String(TokenArgument, "", "GitLab token")
+	pflag.String(argument.Host, "", "GitLab host")
+	pflag.String(argument.Token, "", "GitLab token")
 	pflag.String(
-		OwnerArgument,
+		argument.Owner,
 		"",
 		"Owner or namespace of project to commit to",
 	)
 	pflag.String(
-		RepositoryArgument,
+		argument.Repository,
 		"",
 		"Repository to commit to",
 	)
-	pflag.String(BranchArgument, "main", "Branch to commit to")
-	pflag.String(MessageArgument, "", "Commit message")
-	pflag.String(PathArgument, "", "Path in repository")
-	pflag.String(TemplateArgument, "", "Template file for commit")
+	pflag.String(argument.Branch, "main", "Branch to commit to")
+	pflag.String(argument.Message, "", "Commit message")
+	pflag.String(argument.Path, "", "Path in repository")
+	pflag.String(argument.Template, "", "Template file for commit")
 	var replaces []string
 	pflag.StringSliceVar(
 		&replaces,
-		ReplaceArgument,
+		argument.Replace,
 		nil,
 		"One or more key-value pairs to replace (Example: FOO=BAR)",
 	)
 	pflag.Parse()
 	errors.PanicOnError(viper.BindPFlags(pflag.CommandLine))
-	content := system.ReadFile(viper.GetString(TemplateArgument))
+	content := system.ReadFile(viper.GetString(argument.Template))
 
 	for k, v := range stringsHelper.ToMap(replaces, "=") {
 		content = strings.ReplaceAll(content, k, v)
 	}
 
 	c := gitlab.New(
-		viper.GetString(HostArgument),
-		viper.GetString(TokenArgument),
+		viper.GetString(argument.Host),
+		viper.GetString(argument.Token),
 		[]int{},
 	)
-	owner := viper.GetString(OwnerArgument)
-	repository := viper.GetString(RepositoryArgument)
+	owner := viper.GetString(argument.Owner)
+	repository := viper.GetString(argument.Repository)
 	p := c.ProjectByName(owner, repository)
 
 	if p == nil {
@@ -72,7 +63,7 @@ func main() {
 		return
 	}
 
-	f := c.File(p.Identifier, "main", viper.GetString(PathArgument))
+	f := c.File(p.Identifier, "main", viper.GetString(argument.Path))
 	var update bool
 
 	if f != nil {
@@ -81,9 +72,9 @@ func main() {
 
 	c.Commit(
 		p.Identifier,
-		viper.GetString(BranchArgument),
-		viper.GetString(MessageArgument),
-		viper.GetString(PathArgument),
+		viper.GetString(argument.Branch),
+		viper.GetString(argument.Message),
+		viper.GetString(argument.Path),
 		content,
 		update,
 	)

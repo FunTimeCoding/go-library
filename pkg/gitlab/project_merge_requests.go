@@ -9,15 +9,37 @@ import (
 
 func (c *Client) ProjectMergeRequests(
 	project int,
+	all bool,
 ) []*merge_request.Request {
-	result, _, e := c.client.MergeRequests.ListProjectMergeRequests(
-		project,
-		&gitlab.ListProjectMergeRequestsOptions{
-			State:       ptr.To[string](OpenedState),
-			ListOptions: DefaultListOptions,
-		},
-	)
-	errors.PanicOnError(e)
+	var result []*gitlab.MergeRequest
+	var number int
+
+	for {
+		o := &gitlab.ListProjectMergeRequestsOptions{
+			State: ptr.To[string](OpenedState),
+			ListOptions: gitlab.ListOptions{
+				PerPage: PerPage100,
+				Page:    number,
+			},
+		}
+
+		if all {
+			o.State = ptr.To[string]("all")
+		}
+
+		page, _, e := c.client.MergeRequests.ListProjectMergeRequests(
+			project,
+			o,
+		)
+		errors.PanicOnError(e)
+		result = append(result, page...)
+
+		if len(page) < PerPage100 {
+			break
+		}
+
+		number++
+	}
 
 	return merge_request.NewSlice(result)
 }

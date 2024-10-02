@@ -14,4 +14,6 @@ type Settings struct {
 
 	// Raw Print the wrapped object with %+v in a new line
 	ShowRaw bool
+
+	Indentation int
 }

@@ -8,6 +8,12 @@ import (
 func extendLines(
 	input string,
 	lines []string,
+	indent int,
 ) string {
-	return fmt.Sprintf("%s\n%s", input, join.NewLine(lines))
+	return fmt.Sprintf(
+		"%s%s\n%s",
+		spaces(indent),
+		input,
+		join.NewLine(lines),
+	)
 }

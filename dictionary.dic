@@ -1,14 +1,15 @@
 # English
+formattable
 renderable
 renderables
-formattable
 
 # Names
-funtimecoding
 Juliett
 Samsa
+funtimecoding
 golangci
 osquery
+xanzy
 
 # Go
 GOPROXY
@@ -16,12 +17,12 @@ nodename
 servname
 
 # GoLibrary
-gobuild
-goclean
-golint
-gobump
-godebian
 exitf
+gobuild
+gobump
+goclean
+godebian
+golint
 
 # macOS
 afplay
@@ -30,4 +31,6 @@ afplay
 apimachinery
 
 # Guild Wars 2
+Skrittsburgh
+aleeva
 evtc

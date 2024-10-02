@@ -171,6 +171,7 @@ func Log(
 		}
 	}
 
+	fmt.Printf("Useless exceptions: %d\n", len(uselessException))
 	guildsReport := guilds.Parse("tmp/guilds.json")
 
 	if false {

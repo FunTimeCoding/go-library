@@ -11,6 +11,5 @@ type Server struct {
 	registry *prometheus.Registry
 	port     int
 	context  context.Context
-	mux      *http.ServeMux
 	verbose  bool
 }

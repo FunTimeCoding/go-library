@@ -2,10 +2,10 @@ package integers
 
 import "strconv"
 
-func ToStrings(input []int) []string {
-	result := make([]string, len(input))
+func ToStrings(v []int) []string {
+	result := make([]string, len(v))
 
-	for i, element := range input {
+	for i, element := range v {
 		result[i] = strconv.Itoa(element)
 	}
 

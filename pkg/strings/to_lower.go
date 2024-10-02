@@ -2,10 +2,10 @@ package strings
 
 import "strings"
 
-func ToLower(input []string) []string {
+func ToLower(s []string) []string {
 	var result []string
 
-	for _, element := range input {
+	for _, element := range s {
 		result = append(result, strings.ToLower(element))
 	}
 

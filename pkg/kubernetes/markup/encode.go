@@ -5,8 +5,8 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func Encode(input any) []byte {
-	result, e := yaml.Marshal(input)
+func Encode(a any) []byte {
+	result, e := yaml.Marshal(a)
 	errors.PanicOnError(e)
 
 	return result

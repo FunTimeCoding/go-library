@@ -5,9 +5,9 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func Clean(input []byte) []byte {
+func Clean(v []byte) []byte {
 	var result map[string]any
-	errors.PanicOnError(yaml.Unmarshal(input, &result))
+	errors.PanicOnError(yaml.Unmarshal(v, &result))
 
 	return Encode(RemoveEmpty(result).(map[string]any))
 }

@@ -7,9 +7,9 @@ type Node struct {
 	Children []*Node
 }
 
-func Parse(input string) *Node {
+func Parse(s string) *Node {
 	root := &Node{}
-	inputLines := strings.Split(input, "\n")
+	inputLines := strings.Split(s, "\n")
 	parseLines(inputLines, root, 0)
 
 	return root

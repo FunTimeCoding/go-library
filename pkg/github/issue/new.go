@@ -6,17 +6,17 @@ import (
 	"strings"
 )
 
-func New(input *github.Issue) *Issue {
+func New(v *github.Issue) *Issue {
 	var repository string
 
-	if u, e := url.Parse(*input.RepositoryURL); e == nil {
+	if u, e := url.Parse(*v.RepositoryURL); e == nil {
 		repository = strings.TrimPrefix(u.Path, "/repos/")
 	}
 
 	return &Issue{
 		Repository: repository,
-		Title:      *input.Title,
-		Link:       *input.HTMLURL,
-		Raw:        input,
+		Title:      *v.Title,
+		Link:       *v.HTMLURL,
+		Raw:        v,
 	}
 }

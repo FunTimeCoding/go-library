@@ -2,10 +2,10 @@ package issue
 
 import "github.com/google/go-github/v59/github"
 
-func NewSlice(input []*github.Issue) []*Issue {
+func NewSlice(v []*github.Issue) []*Issue {
 	var result []*Issue
 
-	for _, element := range input {
+	for _, element := range v {
 		result = append(result, New(element))
 	}
 

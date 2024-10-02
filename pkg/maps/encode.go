@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
-func Encode(input map[string]string) []byte {
-	result, e := json.Marshal(input)
+func Encode(m map[string]string) []byte {
+	result, e := json.Marshal(m)
 	errors.PanicOnError(e)
 
 	return result

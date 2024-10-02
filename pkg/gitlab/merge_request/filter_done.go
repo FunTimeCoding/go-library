@@ -1,9 +1,9 @@
 package merge_request
 
-func FilterDone(input []*Request) []*Request {
+func FilterDone(v []*Request) []*Request {
 	var result []*Request
 
-	for _, element := range input {
+	for _, element := range v {
 		if element.Done() {
 			continue
 		}

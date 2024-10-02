@@ -2,8 +2,8 @@ package markup
 
 import "reflect"
 
-func RemoveEmpty(input any) any {
-	switch result := input.(type) {
+func RemoveEmpty(a any) any {
+	switch result := a.(type) {
 	case map[string]any:
 		for k, v := range result {
 			cleanV := RemoveEmpty(v)
@@ -27,6 +27,6 @@ func RemoveEmpty(input any) any {
 
 		return result
 	default:
-		return input
+		return a
 	}
 }

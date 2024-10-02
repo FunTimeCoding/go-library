@@ -7,6 +7,7 @@ func New(v *gitlab.Project) *Project {
 		Identifier: v.ID,
 		Namespace:  v.Namespace.Path,
 		Name:       v.Name,
+		Link:       v.WebURL,
 		Raw:        v,
 	}
 }

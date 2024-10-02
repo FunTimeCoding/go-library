@@ -6,6 +6,7 @@ type Project struct {
 	Identifier int
 	Namespace  string
 	Name       string
+	Link       string
 
 	Raw *gitlab.Project
 }

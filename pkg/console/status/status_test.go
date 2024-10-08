@@ -35,4 +35,6 @@ func TestStatus(t *testing.T) {
 		"a | b\n  extended",
 		e.Format(f),
 	)
+
+	// TODO: Test with nested format and indentation
 }

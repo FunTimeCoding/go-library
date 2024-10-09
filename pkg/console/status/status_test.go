@@ -1,6 +1,7 @@
 package status
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/console/format"
 	"testing"
@@ -11,11 +12,15 @@ type ExampleRaw struct {
 }
 
 type Example struct {
+	Identifier  int
+	Name        string
+	Description string
+
 	Raw *ExampleRaw
 }
 
 func (e *Example) Format(s *format.Settings) string {
-	f := New(s).String("a", "b")
+	f := New(s).Integer(e.Identifier).String(e.Name, e.Description)
 
 	if s.ShowExtended {
 		f.Line("  extended")
@@ -26,15 +31,43 @@ func (e *Example) Format(s *format.Settings) string {
 	return f.Format()
 }
 
-func TestStatus(t *testing.T) {
-	e := &Example{}
-	f := format.New().Extended()
+func NewExample(
+	identifier int,
+	name string,
+	description string,
+) *Example {
+	return &Example{
+		Identifier:  identifier,
+		Name:        name,
+		Description: description,
+	}
+}
 
+func TestStatus(t *testing.T) {
+	e := NewExample(1, "a", "b")
 	assert.String(
 		t,
-		"a | b\n  extended",
-		e.Format(f),
+		"1 | a | b\n  extended",
+		e.Format(format.New().Extended()),
 	)
+}
 
-	// TODO: Test with nested format and indentation
+func TestStatusNested(t *testing.T) {
+	o1 := NewExample(1, "a", "b")
+	o2 := NewExample(2, "c", "d")
+	f := format.New().Extended()
+
+	o1Output := fmt.Sprintf("%s\n", o1.Format(f))
+	assert.String(t, "1 | a | b\n  extended\n", o1Output)
+
+	o2Output := fmt.Sprintf("%s\n", o2.Format(f.Indent(1)))
+	assert.String(t, "  2 | c | d\n    extended\n", o2Output)
+
+	if false {
+		assert.String(
+			t,
+			"1 | a | b\n  extended\n  2 | c | d\n    extended",
+			fmt.Sprintf("%s%s", o1Output, o2Output),
+		)
+	}
 }

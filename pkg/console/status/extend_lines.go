@@ -2,7 +2,7 @@ package status
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"strings"
 )
 
 func extendLines(
@@ -10,10 +10,16 @@ func extendLines(
 	lines []string,
 	indent int,
 ) string {
-	return fmt.Sprintf(
-		"%s%s\n%s",
-		spaces(indent),
-		input,
-		join.NewLine(lines),
-	)
+	result := input
+
+	for _, line := range lines {
+		result = fmt.Sprintf(
+			"%s\n%s%s\n",
+			result,
+			spaces(indent),
+			line,
+		)
+	}
+
+	return strings.TrimRight(result, "\n")
 }

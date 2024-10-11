@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.23.1
+go 1.23.2
 
 require (
 	github.com/MrGunflame/gw2api v1.0.4
@@ -18,7 +18,7 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.1
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/ollama/ollama v0.3.12
+	github.com/ollama/ollama v0.3.13
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/client_golang v1.20.4
 	github.com/rivo/tview v0.0.0-20240921122403-a64fc48d7654

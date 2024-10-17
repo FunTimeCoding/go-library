@@ -14,9 +14,10 @@ const (
 	ObjectContentType   = "application/json"
 	FormDataContentType = "multipart/form-data"
 
-	GetMethod  = "GET"
-	PostMethod = "POST"
-	PutMethod  = "PUT"
+	GetMethod   = "GET"
+	PostMethod  = "POST"
+	PutMethod   = "PUT"
+	PatchMethod = "PATCH"
 
 	SecureSchemePrefix   = "https://"
 	InsecureSchemePrefix = "http://"

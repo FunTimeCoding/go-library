@@ -6,8 +6,3 @@ const (
 	Notation = "notation"
 	Markdown = "markdown"
 )
-
-var (
-	Default = New()
-	Debug   = New().Debug()
-)

@@ -6,12 +6,20 @@ import (
 )
 
 func TestSettings(t *testing.T) {
-	assert.True(t, Ensure(nil) != nil)
-	assert.True(t, Ensure(New()) != nil)
-	assert.Any(t, &Settings{Format: "text"}, FromOptions())
+	assert.Any(t, &Settings{Format: "text"}, New())
 	assert.Any(
 		t,
-		&Settings{Format: "text", ShowDebug: true},
-		FromOptions(WithDebug()),
+		&Settings{Format: "text", Debug: true},
+		New(WithDebug()),
+	)
+	assert.Any(
+		t,
+		&Settings{Format: "markdown"},
+		New(WithFormat(Markdown)),
+	)
+	assert.Any(
+		t,
+		&Settings{Format: "notation"},
+		New(WithFormat(Notation)),
 	)
 }

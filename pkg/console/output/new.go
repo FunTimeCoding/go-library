@@ -1,5 +1,11 @@
 package output
 
-func New() *Settings {
-	return &Settings{Format: Text, ShowDebug: false}
+func New(o ...Option) *Settings {
+	result := &Settings{Format: Text, Debug: false}
+
+	for _, element := range o {
+		element(result)
+	}
+
+	return result
 }

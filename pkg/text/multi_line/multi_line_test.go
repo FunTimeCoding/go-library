@@ -7,9 +7,9 @@ import (
 
 func TestMultiLine(t *testing.T) {
 	l := New()
-	assert.Boolean(t, true, l.Empty())
+	assert.True(t, l.Empty())
 	l.Add("a")
-	assert.Boolean(t, false, l.Empty())
+	assert.False(t, l.Empty())
 	l.Add("b")
 	assert.String(t, "a\nb", l.Format())
 }

@@ -2,7 +2,6 @@ package status
 
 import (
 	"fmt"
-	"strings"
 )
 
 func extendLines(
@@ -14,12 +13,12 @@ func extendLines(
 
 	for _, line := range lines {
 		result = fmt.Sprintf(
-			"%s\n%s%s\n",
+			"%s\n%s%s",
 			result,
 			spaces(indent),
 			line,
 		)
 	}
 
-	return strings.TrimRight(result, "\n")
+	return result
 }

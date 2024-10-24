@@ -1,8 +1,6 @@
 package status
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func extendLines(
 	input string,

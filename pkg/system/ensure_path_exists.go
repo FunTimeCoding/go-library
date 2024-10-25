@@ -7,6 +7,6 @@ import (
 
 func EnsurePathExists(path string) {
 	if _, e := os.Stat(path); os.IsNotExist(e) {
-		errors.LogOnError(os.Mkdir(path, 0755))
+		errors.LogOnError(os.MkdirAll(path, 0755))
 	}
 }

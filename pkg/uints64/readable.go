@@ -2,23 +2,34 @@ package uints64
 
 import "fmt"
 
-func Readable(bytes uint64) string {
-	const unit = 1024
+const unit = 1024
 
+// UnitLetter
+// K: Kilo
+// M: Mega
+// G: Giga
+// T: Tera
+// P: Peta
+// E: Exa
+// noinspection SpellCheckingInspection
+const UnitLetter = "KMGTPE"
+
+func Readable(bytes uint64) string {
 	if bytes < unit {
 		return fmt.Sprintf("%d B", bytes)
 	}
 
-	div, exp := unit, 0
+	index := 0
+	divisor := unit
 
-	for n := bytes / unit; n >= unit; n /= unit {
-		div *= unit
-		exp++
+	for i := bytes / unit; i >= unit; i /= unit {
+		divisor *= unit
+		index++
 	}
 
 	return fmt.Sprintf(
 		"%.1f %cB",
-		float64(bytes)/float64(div),
-		"KMGTPE"[exp],
+		float64(bytes)/float64(divisor),
+		UnitLetter[index],
 	)
 }

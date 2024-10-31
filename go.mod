@@ -21,7 +21,7 @@ require (
 	github.com/ollama/ollama v0.3.14
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/client_golang v1.20.5
-	github.com/rivo/tview v0.0.0-20241016194538-c5e4fb24af13
+	github.com/rivo/tview v0.0.0-20241030223020-e34b54cd4c27
 	github.com/sanity-io/litter v1.5.5
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5

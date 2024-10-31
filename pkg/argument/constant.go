@@ -1,6 +1,7 @@
 package argument
 
 const (
+	Arm         = "arm"
 	Branch      = "branch"
 	Cluster     = "cluster"
 	Container   = "container"
@@ -15,8 +16,10 @@ const (
 	Header      = "header"
 	Host        = "host"
 	Interactive = "interactive"
+	Issue       = "issue"
 	Key         = "key"
 	Locator     = "locator"
+	Loop        = "loop"
 	Main        = "main"
 	Memory      = "memory"
 	Message     = "message"
@@ -33,8 +36,10 @@ const (
 	Project     = "project"
 	Replace     = "replace"
 	Repository  = "repository"
+	Summary     = "summary"
 	Tag         = "tag"
 	Template    = "template"
+	Title       = "title"
 	Token       = "token"
 	Topic       = "topic"
 	User        = "user"

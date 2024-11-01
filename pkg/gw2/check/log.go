@@ -52,72 +52,57 @@ func Log(
 	aleevaPath := system.Join(constant.Temporary, latest)
 	fmt.Printf("Latest Aleeva file: %s\n", aleevaPath)
 
-	if true {
-		t := tablewriter.NewWriter(os.Stdout)
-		t.SetHeader([]string{"Name", "Account(s)", "Team(s)"})
+	t := tablewriter.NewWriter(os.Stdout)
+	t.SetHeader([]string{"Name", "Account(s)", "Team(s)"})
+	var verifiedAccounts []string
 
-		for _, element := range aleeva_report.Parse(aleevaPath) {
-			if len(element.WvwTeams) == 0 || len(element.Gw2Accounts) == 0 {
-				continue
-			}
-
-			if !gw2.IsAllianceMember(members, element.Gw2Accounts) {
-				continue
-			}
-
-			var teams []string
-
-			for _, team := range element.WvwTeams {
-				teams = append(teams, team)
-			}
-
-			if slices.Contains(teams, CurrentTeam) {
-				continue
-			}
-
-			if false {
-				fmt.Printf(
-					"%s | %s | %s\n", element.DiscordName,
-					join.Comma(element.Gw2Accounts),
-					join.Comma(teams),
-				)
-			}
-			t.Append(
-				[]string{
-					element.DiscordName, join.Comma(element.Gw2Accounts),
-					join.Comma(teams),
-				},
-			)
-			var onTeam bool
-
-			for account, teamId := range element.WvwTeams {
-				if teamId == CurrentTeam {
-					onTeamMembers = append(onTeamMembers, account)
-					onTeam = true
-				} else {
-					onDiscord = append(onDiscord, account)
-				}
-			}
-
-			if !onTeam {
-				continue
-			}
+	for _, discordUser := range aleeva_report.Parse(aleevaPath) {
+		if len(discordUser.WvwTeams) == 0 || len(discordUser.Gw2Accounts) == 0 {
+			continue
 		}
 
-		fmt.Println("Not on team members:")
-		t.Render()
+		if !gw2.IsAllianceMember(members, discordUser.Gw2Accounts) {
+			continue
+		}
+
+		verifiedAccounts = append(verifiedAccounts, discordUser.Gw2Accounts...)
+		var teams []string
+
+		for _, team := range discordUser.WvwTeams {
+			teams = append(teams, team)
+		}
+
+		if slices.Contains(teams, CurrentTeam) {
+			continue
+		}
+
+		t.Append(
+			[]string{
+				discordUser.DiscordName,
+				join.Comma(discordUser.Gw2Accounts),
+				join.Comma(teams),
+			},
+		)
+
+		for account, teamId := range discordUser.WvwTeams {
+			if teamId == CurrentTeam {
+				onTeamMembers = append(onTeamMembers, account)
+			} else {
+				onDiscord = append(onDiscord, account)
+			}
+		}
 	}
+
+	fmt.Println("Not on team members:")
+	t.Render()
 
 	fmt.Printf("Members: %s\n", join.Comma(members))
 	logs := log.NewSlice(gw2.ParseLogs(system.ReadBytes(path), false))
+	var unverifiedAccounts []string
 
-	if false {
-		for _, l := range logs {
-			fmt.Printf(
-				"Log: %+v\n",
-				l.Time.Format(timeLibrary.DateMinute),
-			)
-			fmt.Printf("  Accounts: %+v\n", join.Comma(l.Accounts))
+	for _, member := range members {
+		if !slices.Contains(verifiedAccounts, member) {
+			unverifiedAccounts = append(unverifiedAccounts, member)
 		}
 	}
 
@@ -174,7 +159,7 @@ func Log(
 			for _, element := range guildMembers {
 				if !slices.Contains(members, element) {
 					fmt.Printf(
-						"Member not found: %s %s\n",
+						"Guild member not found: %s %s\n",
 						guild,
 						element,
 					)
@@ -210,6 +195,10 @@ func Log(
 
 		if slices.Contains(onDiscord, name) {
 			extra = " on-discord"
+		}
+
+		if slices.Contains(unverifiedAccounts, name) {
+			extra = " unverified"
 		}
 
 		if extra == "" {

@@ -9,6 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/olekukonko/tablewriter"
@@ -18,56 +19,49 @@ import (
 	"time"
 )
 
-var (
-	MatchUpStart = time.Date(
-		2024,
-		9,
-		27,
-		20, // not 18, because log times are in UTC too
-		0,
-		0,
-		0,
-		time.UTC,
-	)
+var MatchUpStart = time.Date(
+	2024,
+	10,
+	25,
+	20, // not 18, because log times are in UTC too
+	0,
+	0,
+	0,
+	time.UTC,
 )
 
-const CurrentTeam = "Skrittsburgh"
-
-func isAllianceMember(
-	allMembers []string,
-	accounts []string,
-) bool {
-	for _, account := range accounts {
-		if slices.Contains(allMembers, account) {
-			return true
-		}
-	}
-
-	return false
-}
+const CurrentTeam = "Bloodstone Gulch"
 
 func Log(
 	path string,
 	tag string,
 ) {
+	gw2.ImportAleevaFiles()
 	c := gw2.New(environment.Get(gw2.TokenEnvironment, 1))
 	members := gw2.MembersOfGuild(c, tag)
 	fmt.Printf("Members count: %d\n", len(members))
 	var onTeamMembers []string
 	var onDiscord []string
+	files := system.FilesMatching(constant.Temporary, gw2.AleevaPrefix)
+
+	for _, file := range files {
+		fmt.Printf("Aleeva file: %s\n", file)
+	}
+
+	latest := gw2.LatestAleevaFile(files)
+	aleevaPath := system.Join(constant.Temporary, latest)
+	fmt.Printf("Latest Aleeva file: %s\n", aleevaPath)
 
 	if true {
 		t := tablewriter.NewWriter(os.Stdout)
 		t.SetHeader([]string{"Name", "Account(s)", "Team(s)"})
 
-		for _, element := range aleeva_report.Parse(
-			"tmp/aleeva-2024-09-28.json",
-		) {
+		for _, element := range aleeva_report.Parse(aleevaPath) {
 			if len(element.WvwTeams) == 0 || len(element.Gw2Accounts) == 0 {
 				continue
 			}
 
-			if !isAllianceMember(members, element.Gw2Accounts) {
+			if !gw2.IsAllianceMember(members, element.Gw2Accounts) {
 				continue
 			}
 

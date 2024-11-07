@@ -19,8 +19,10 @@ const (
 	PutMethod   = "PUT"
 	PatchMethod = "PATCH"
 
-	SecureSchemePrefix   = "https://"
-	InsecureSchemePrefix = "http://"
-
 	Localhost = "localhost"
+
+	SecureSchemePrefix = "https://"
 )
+
+// noinspection HttpUrlsUsage
+const InsecureSchemePrefix = "http://"

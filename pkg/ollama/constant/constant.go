@@ -1,3 +1,6 @@
 package constant
 
-const Llama31 = "llama3.1"
+const (
+	Port    int = 11434
+	Llama31     = "llama3.1"
+)

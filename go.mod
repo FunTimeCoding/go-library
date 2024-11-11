@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.23.2
+go 1.23.3
 
 require (
 	github.com/MrGunflame/gw2api v1.0.4
@@ -18,10 +18,10 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.1
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/ollama/ollama v0.3.14
+	github.com/ollama/ollama v0.4.1
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/client_golang v1.20.5
-	github.com/rivo/tview v0.0.0-20241030223020-e34b54cd4c27
+	github.com/rivo/tview v0.0.0-20241103174730-c76f7879f592
 	github.com/sanity-io/litter v1.5.5
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
@@ -30,15 +30,15 @@ require (
 	github.com/tobischo/gokeepasslib/v3 v3.6.0
 	github.com/whilp/git-urls v1.0.0
 	github.com/xanzy/go-gitlab v0.107.0
-	golang.org/x/crypto v0.28.0
-	golang.org/x/mod v0.21.0
-	golang.org/x/oauth2 v0.23.0
+	golang.org/x/crypto v0.29.0
+	golang.org/x/mod v0.22.0
+	golang.org/x/oauth2 v0.24.0
 	gonum.org/v1/gonum v0.15.1
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.12
 	gotest.tools/v3 v3.5.1
 	k8s.io/apimachinery v0.30.3
-	k8s.io/utils v0.0.0-20240921022957-49e7df575cb6
+	k8s.io/utils v0.0.0-20241104163129-6fe5fd82f078
 	sigs.k8s.io/yaml v1.4.0
 )
 
@@ -111,10 +111,10 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
 	golang.org/x/net v0.29.0 // indirect
-	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
-	golang.org/x/term v0.25.0 // indirect
-	golang.org/x/text v0.19.0 // indirect
+	golang.org/x/sync v0.9.0 // indirect
+	golang.org/x/sys v0.27.0 // indirect
+	golang.org/x/term v0.26.0 // indirect
+	golang.org/x/text v0.20.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.23.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect

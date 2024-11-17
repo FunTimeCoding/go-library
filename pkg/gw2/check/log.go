@@ -40,8 +40,9 @@ func Log(
 	c := gw2.New(environment.Get(gw2.TokenEnvironment, 1))
 	members := gw2.MembersOfGuild(c, tag)
 	fmt.Printf("Members count: %d\n", len(members))
-	var onTeamMembers []string
-	var onDiscord []string
+	var onTeamAccounts []string
+	var onDiscordAccounts []string
+	var confirmedNotOnTeamAccounts []string
 	files := system.FilesMatching(constant.Temporary, gw2.AleevaPrefix)
 
 	for _, file := range files {
@@ -73,6 +74,12 @@ func Log(
 		}
 
 		if slices.Contains(teams, CurrentTeam) {
+			for account, teamId := range discordUser.WvwTeams {
+				if teamId == CurrentTeam {
+					onTeamAccounts = append(onTeamAccounts, account)
+				}
+			}
+
 			continue
 		}
 
@@ -85,10 +92,17 @@ func Log(
 		)
 
 		for account, teamId := range discordUser.WvwTeams {
-			if teamId == CurrentTeam {
-				onTeamMembers = append(onTeamMembers, account)
-			} else {
-				onDiscord = append(onDiscord, account)
+			if teamId != CurrentTeam {
+				confirmedNotOnTeamAccounts = append(
+					confirmedNotOnTeamAccounts,
+					account,
+				)
+			}
+		}
+
+		for account, teamId := range discordUser.WvwTeams {
+			if teamId != CurrentTeam {
+				onDiscordAccounts = append(onDiscordAccounts, account)
 			}
 		}
 	}
@@ -189,11 +203,11 @@ func Log(
 			break
 		}
 
-		if slices.Contains(onTeamMembers, name) {
+		if slices.Contains(onTeamAccounts, name) {
 			extra = " on-current-team"
 		}
 
-		if slices.Contains(onDiscord, name) {
+		if slices.Contains(onDiscordAccounts, name) {
 			extra = " on-discord"
 		}
 
@@ -206,5 +220,71 @@ func Log(
 		}
 
 		fmt.Printf("Never seen: %s%s\n", name, extra)
+	}
+
+	daysAgo := 56
+	ago := time.Now().AddDate(0, 0, -daysAgo)
+	seenDays := log.SeenDaysPerMemberSlice(members, logs, &ago)
+	fmt.Printf("Total members: %d\n", len(members))
+	fmt.Printf(
+		"  Seen days count since %s (%d days): %d\n",
+		ago.Format(timeLibrary.DateMinute),
+		daysAgo,
+		len(seenDays),
+	)
+	var seenMembers []string
+	var lessThanFour []string
+
+	for _, element := range seenDays {
+		seenMembers = append(seenMembers, element.Name)
+
+		if len(element.Days) < 4 {
+			lessThanFour = append(lessThanFour, element.Name)
+		}
+	}
+
+	fmt.Printf("  Less than four days count: %d\n", len(lessThanFour))
+	var neverSeenDays []string
+	var exceptionCount int
+	var noAleevaOrNotOnTeamCount int
+	var confirmedNotOnTeamCount int
+
+	for _, member := range members {
+		if !slices.Contains(onTeamAccounts, member) {
+			noAleevaOrNotOnTeamCount++
+		}
+
+		if slices.Contains(confirmedNotOnTeamAccounts, member) {
+			confirmedNotOnTeamCount++
+		}
+
+		if slices.Contains(exceptionNames, member) {
+			exceptionCount++
+
+			continue
+		}
+
+		if !slices.Contains(seenMembers, member) {
+			neverSeenDays = append(neverSeenDays, member)
+		}
+	}
+
+	fmt.Printf("  Never seen days count: %d\n", len(neverSeenDays))
+	fmt.Printf("    Exception count: %d\n", exceptionCount)
+	fmt.Printf(
+		"    Confirmed not on team count: %d\n",
+		confirmedNotOnTeamCount,
+	)
+	fmt.Printf(
+		"    No Aleeva count: %d\n",
+		noAleevaOrNotOnTeamCount-confirmedNotOnTeamCount,
+	)
+
+	for _, element := range seenDays {
+		fmt.Printf("Seen days: %d %s\n", len(element.Days), element.Name)
+	}
+
+	for _, element := range neverSeenDays {
+		fmt.Printf("Seen days: 0 %s\n", element)
 	}
 }

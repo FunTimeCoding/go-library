@@ -96,5 +96,5 @@ func (t *Tunnel) Start(
 	<-t.started
 	<-t.listening
 
-	return &Result{}
+	return &Result{LocalPort: localPort}
 }

@@ -5,11 +5,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-func RequiredIntegerFlag(
+func RequiredInteger64Flag(
 	name string,
 	exitCode int,
-) int {
-	if s := viper.GetInt(name); s != 0 {
+) int64 {
+	if s := viper.GetInt64(name); s != 0 {
 		return s
 	}
 

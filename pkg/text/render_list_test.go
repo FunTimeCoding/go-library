@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-func TestFormatList(t *testing.T) {
+func TestRenderList(t *testing.T) {
 	assert.String(
 		t,
-		FormatList("title", []string{"element"}),
+		RenderList("title", []string{"element"}),
 		"title:\nelement",
 	)
 }

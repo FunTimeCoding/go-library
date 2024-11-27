@@ -1,6 +1,7 @@
 package separator
 
 const (
+	At          = "@"
 	Colon       = ":"
 	Comma       = ","
 	CommaSpace  = ", "

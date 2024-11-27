@@ -11,5 +11,5 @@ func TestMultiLine(t *testing.T) {
 	l.Add("a")
 	assert.False(t, l.Empty())
 	l.Add("b")
-	assert.String(t, "a\nb", l.Format())
+	assert.String(t, "a\nb", l.Render())
 }

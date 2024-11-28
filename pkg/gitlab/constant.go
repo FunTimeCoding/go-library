@@ -7,6 +7,14 @@ const (
 	PendingState = "pending"
 )
 
+const Identifier = "id"
+
+// Sort order
+const (
+	Ascending  = "asc"
+	Descending = "desc"
+)
+
 var DefaultListOptions = gitlab.ListOptions{Page: 0, PerPage: 100}
 
 const (

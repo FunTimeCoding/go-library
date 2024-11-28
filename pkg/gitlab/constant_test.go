@@ -12,4 +12,6 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "CI_PROJECT_ID", ProjectIdentifier)
 	assert.String(t, "CI_COMMIT_TAG", CommitTag)
 	assert.String(t, "CI_JOB_TOKEN", JobToken)
+	assert.String(t, "asc", Ascending)
+	assert.String(t, "failed", Failed)
 }

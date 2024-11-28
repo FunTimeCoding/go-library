@@ -21,6 +21,7 @@ const (
 	Locator     = "locator"
 	Loop        = "loop"
 	Main        = "main"
+	Match       = "match"
 	Memory      = "memory"
 	Message     = "message"
 	Name        = "name"

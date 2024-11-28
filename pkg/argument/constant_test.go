@@ -21,6 +21,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "locator", Locator)
 	assert.String(t, "loop", Loop)
 	assert.String(t, "main", Main)
+	assert.String(t, "match", Match)
 	assert.String(t, "memory", Memory)
 	assert.String(t, "name", Name)
 	assert.String(t, "namespace", Namespace)

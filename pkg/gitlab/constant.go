@@ -7,6 +7,7 @@ const (
 	PendingState = "pending"
 )
 
+// Identifier Sort field
 const Identifier = "id"
 
 // Sort order
@@ -14,6 +15,9 @@ const (
 	Ascending  = "asc"
 	Descending = "desc"
 )
+
+// Failed Job status
+const Failed = "failed"
 
 var DefaultListOptions = gitlab.ListOptions{Page: 0, PerPage: 100}
 

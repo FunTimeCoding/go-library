@@ -14,4 +14,5 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "CI_JOB_TOKEN", JobToken)
 	assert.String(t, "asc", Ascending)
 	assert.String(t, "failed", Failed)
+	assert.String(t, "success", Success)
 }

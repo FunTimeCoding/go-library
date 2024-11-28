@@ -16,8 +16,11 @@ const (
 	Descending = "desc"
 )
 
-// Failed Job status
-const Failed = "failed"
+// Job status
+const (
+	Success = "success"
+	Failed  = "failed"
+)
 
 var DefaultListOptions = gitlab.ListOptions{Page: 0, PerPage: 100}
 

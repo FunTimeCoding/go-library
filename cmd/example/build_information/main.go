@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/system"
-	timeHelper "github.com/funtimecoding/go-library/pkg/time"
+	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"time"
 )
 
@@ -25,5 +25,5 @@ func main() {
 		"Latest: %s\n",
 		git.LatestTag(system.WorkingDirectory()),
 	)
-	fmt.Printf("Date: %s\n", time.Now().Format(timeHelper.DateMinute))
+	fmt.Printf("Date: %s\n", time.Now().Format(timeLibrary.DateMinute))
 }

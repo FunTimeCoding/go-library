@@ -79,7 +79,7 @@ func runnerWay(
 				) {
 					p := g.Project(job.Project.ID)
 					fmt.Printf(
-						"    Pod start timeout: project=%s/%s stage=%s\n",
+						"    Pod start timeout %s/%s in stage %s\n",
 						p.Raw.Namespace.FullPath,
 						p.Raw.Name,
 						job.Stage,

@@ -31,6 +31,8 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "pod", Pod)
 	assert.String(t, "pretend", Pretend)
 	assert.String(t, "project", Project)
+	assert.String(t, "retry", Retry)
+	assert.String(t, "run", Run)
 	assert.String(t, "summary", Summary)
 	assert.String(t, "title", Title)
 	assert.String(t, "topic", Topic)

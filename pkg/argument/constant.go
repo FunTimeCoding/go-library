@@ -37,6 +37,8 @@ const (
 	Project     = "project"
 	Replace     = "replace"
 	Repository  = "repository"
+	Retry       = "retry"
+	Run         = "run"
 	Summary     = "summary"
 	Tag         = "tag"
 	Template    = "template"

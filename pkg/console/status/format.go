@@ -21,10 +21,6 @@ func (s *Status) Format() string {
 	}
 
 	if s.settings.ShowExtended && len(s.lines) > 0 {
-		for _, lines := range s.linesByTag {
-			result = extendLines(result, lines, s.settings.Indentation)
-		}
-
 		result = extendLines(result, s.lines, s.settings.Indentation)
 	}
 

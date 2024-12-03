@@ -78,40 +78,43 @@ func NewBravo(
 }
 
 func TestStatus(t *testing.T) {
-	e := NewAlfa(1, "a", "b")
+	apple := NewAlfa(1, "a", "b")
 	assert.String(
 		t,
 		"1 | a | b\n  line1\n  line2",
-		e.Format(format.New().Extended()),
+		apple.Format(format.New().Extended()),
 	)
 }
 
 func TestStatusNested(t *testing.T) {
-	o1 := NewAlfa(1, "a", "b")
-	o2 := NewAlfa(2, "c", "d")
+	apple := NewAlfa(1, "a", "b")
+	orange := NewAlfa(2, "c", "d")
 	f := format.New().Extended()
 
-	o1Output := fmt.Sprintf("%s\n", o1.Format(f))
-	assert.String(t, "1 | a | b\n  line1\n  line2\n", o1Output)
+	appleOutput := fmt.Sprintf("%s\n", apple.Format(f))
+	assert.String(t, "1 | a | b\n  line1\n  line2\n", appleOutput)
 
-	o2Output := fmt.Sprintf("%s\n", o2.Format(f.Indent(1)))
-	assert.String(t, "  2 | c | d\n    line1\n    line2\n", o2Output)
+	orangeOutput := fmt.Sprintf("%s\n", orange.Format(f.Indent(1)))
+	assert.String(
+		t,
+		"  2 | c | d\n    line1\n    line2\n",
+		orangeOutput,
+	)
 
 	if false {
 		assert.String(
 			t,
 			"1 | a | b\n  line1\n  line2\n  2 | c | d\n    line1\n    line2\n",
-			fmt.Sprintf("%s%s", o1Output, o2Output),
+			fmt.Sprintf("%s%s", appleOutput, orangeOutput),
 		)
 	}
 }
 
 func TestTagLine(t *testing.T) {
-	e := NewBravo(1, "a", "b")
-
+	apple := NewBravo(1, "a", "b")
 	assert.String(
 		t,
 		"1 | a\n  line1\n  line2\n  Raw: &{String:b}",
-		e.Format(format.New().Extended().Tag(tag.Usage).Raw()),
+		apple.Format(format.New().Extended().Tag(tag.Usage).Raw()),
 	)
 }

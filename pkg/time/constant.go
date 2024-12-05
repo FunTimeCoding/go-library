@@ -1,8 +1,10 @@
 package time
 
 const (
-	DateMinute = "2006-01-02 15:04"
-	DateSecond = "2006-01-02 15:04:05"
+	HourMinute       = "15:04"
+	HourMinuteSecond = "15:04:05"
+	DateMinute       = "2006-01-02 15:04"
+	DateSecond       = "2006-01-02 15:04:05"
 )
 
 const (

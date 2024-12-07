@@ -21,8 +21,8 @@ import (
 
 var MatchUpStart = time.Date(
 	2024,
-	10,
-	25,
+	12,
+	06,
 	20, // not 18, because log times are in UTC too
 	0,
 	0,
@@ -30,7 +30,7 @@ var MatchUpStart = time.Date(
 	time.UTC,
 )
 
-const CurrentTeam = "Bloodstone Gulch"
+const CurrentTeam = "Frost Citadel"
 
 func Log(
 	path string,

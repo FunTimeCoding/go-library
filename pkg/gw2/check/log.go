@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gw2/check/aleeva_report"
 	"github.com/funtimecoding/go-library/pkg/gw2/check/exceptions"
 	"github.com/funtimecoding/go-library/pkg/gw2/check/guilds"
+	"github.com/funtimecoding/go-library/pkg/gw2/check/meta"
 	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -19,31 +20,66 @@ import (
 	"time"
 )
 
-var MatchUpStart = time.Date(
-	2024,
-	12,
-	06,
-	20, // not 18, because log times are in UTC too
-	0,
-	0,
-	0,
-	time.UTC,
-)
-
-const CurrentTeam = "Frost Citadel"
-
 func Log(
 	path string,
 	tag string,
 ) {
+	m := meta.Parse("tmp/meta.json")
+	var atRiskCutOff string
+	var currentTeam string
+	var metaToken string
+	var matchUpStart time.Time
+
+	if tag == "" && m.AllianceTag != "" {
+		tag = m.AllianceTag
+	}
+
+	atRiskCutOff = m.AtRiskCutOff
+	metaToken = m.Token
+	currentTeam = m.Team
+	matchUpStart = timeLibrary.Parse("2006-01-02", m.LinkStartDate)
+	matchUpStart = time.Date(
+		matchUpStart.Year(),
+		matchUpStart.Month(),
+		matchUpStart.Day(),
+		20, // not 18, because log times are in UTC too
+		0,
+		0,
+		0,
+		time.UTC,
+	)
+	fmt.Printf(
+		"Match-up start: %s\n",
+		matchUpStart.Format(timeLibrary.DateMinute),
+	)
+	fmt.Printf("Alliance tag: %s\n", tag)
+	fmt.Printf("Team: %s\n", currentTeam)
+	fmt.Printf("At-risk cut-off member: %s\n", atRiskCutOff)
+	token := environment.GetDefault(gw2.TokenEnvironment, metaToken)
+
+	if token == "" {
+		fmt.Println("No GW2 API token found")
+
+		return
+	}
+
 	gw2.ImportAleevaFiles()
-	c := gw2.New(environment.Get(gw2.TokenEnvironment, 1))
+	c := gw2.New(token)
 	members := gw2.MembersOfGuild(c, tag)
 	fmt.Printf("Members count: %d\n", len(members))
 	var onTeamAccounts []string
 	var onDiscordAccounts []string
 	var confirmedNotOnTeamAccounts []string
 	files := system.FilesMatching(constant.Temporary, gw2.AleevaPrefix)
+	var atRiskMembers []string
+
+	for _, member := range members {
+		atRiskMembers = append(atRiskMembers, member)
+
+		if member == atRiskCutOff {
+			break
+		}
+	}
 
 	for _, file := range files {
 		fmt.Printf("Aleeva file: %s\n", file)
@@ -56,6 +92,7 @@ func Log(
 	t := tablewriter.NewWriter(os.Stdout)
 	t.SetHeader([]string{"Name", "Account(s)", "Team(s)"})
 	var verifiedAccounts []string
+	var tableRowCount int
 
 	for _, discordUser := range aleeva_report.Parse(aleevaPath) {
 		if len(discordUser.WvwTeams) == 0 || len(discordUser.Gw2Accounts) == 0 {
@@ -73,9 +110,9 @@ func Log(
 			teams = append(teams, team)
 		}
 
-		if slices.Contains(teams, CurrentTeam) {
+		if slices.Contains(teams, currentTeam) {
 			for account, teamId := range discordUser.WvwTeams {
-				if teamId == CurrentTeam {
+				if teamId == currentTeam {
 					onTeamAccounts = append(onTeamAccounts, account)
 				}
 			}
@@ -83,6 +120,7 @@ func Log(
 			continue
 		}
 
+		tableRowCount++
 		t.Append(
 			[]string{
 				discordUser.DiscordName,
@@ -92,7 +130,7 @@ func Log(
 		)
 
 		for account, teamId := range discordUser.WvwTeams {
-			if teamId != CurrentTeam {
+			if teamId != currentTeam {
 				confirmedNotOnTeamAccounts = append(
 					confirmedNotOnTeamAccounts,
 					account,
@@ -101,14 +139,16 @@ func Log(
 		}
 
 		for account, teamId := range discordUser.WvwTeams {
-			if teamId != CurrentTeam {
+			if teamId != currentTeam {
 				onDiscordAccounts = append(onDiscordAccounts, account)
 			}
 		}
 	}
 
-	fmt.Println("Not on team members:")
-	t.Render()
+	if tableRowCount > 0 {
+		fmt.Println("Not on team members:")
+		t.Render()
+	}
 
 	fmt.Printf("Members: %s\n", join.Comma(members))
 	logs := log.NewSlice(gw2.ParseLogs(system.ReadBytes(path), false))
@@ -120,7 +160,7 @@ func Log(
 		}
 	}
 
-	seenSlice := log.LastSeenPerMemberSlice(members, logs, &MatchUpStart)
+	seenSlice := log.LastSeenPerMemberSlice(members, logs, &matchUpStart)
 	fmt.Printf("Last seen count: %d\n", len(seenSlice))
 
 	for _, v := range seenSlice {
@@ -133,13 +173,13 @@ func Log(
 
 	var exceptionNames []string
 
-	for _, element := range exceptions.Parse("tmp/exceptions.json") {
+	for _, element := range exceptions.Parse("tmp/exception.json") {
 		exceptionNames = append(exceptionNames, element.Name)
 	}
 
 	var neverSeen []string
 	var foundExceptions []string
-	seenMap := log.LastSeenPerMemberMap(members, logs, &MatchUpStart)
+	seenMap := log.LastSeenPerMemberMap(members, logs, &matchUpStart)
 
 	for _, member := range members {
 		if _, ok := seenMap[member]; !ok {
@@ -165,11 +205,11 @@ func Log(
 	}
 
 	fmt.Printf("Useless exceptions: %d\n", len(uselessException))
-	guildsReport := guilds.Parse("tmp/guilds.json")
+	guildReport := guilds.Parse("tmp/guild.json")
 
 	if false {
 		// To maintain guilds.json
-		for guild, guildMembers := range guildsReport {
+		for guild, guildMembers := range guildReport {
 			for _, element := range guildMembers {
 				if !slices.Contains(members, element) {
 					fmt.Printf(
@@ -195,7 +235,7 @@ func Log(
 	for _, name := range neverSeen {
 		var extra string
 
-		for guildName, guildMembers := range guildsReport {
+		for guildName, guildMembers := range guildReport {
 			if slices.Contains(guildMembers, name) {
 				extra = " " + guildName
 			}
@@ -212,7 +252,11 @@ func Log(
 		}
 
 		if slices.Contains(unverifiedAccounts, name) {
-			extra = " unverified"
+			if slices.Contains(atRiskMembers, name) {
+				extra = " unverified at-risk"
+			} else {
+				extra = " unverified"
+			}
 		}
 
 		if extra == "" {
@@ -281,10 +325,27 @@ func Log(
 	)
 
 	for _, element := range seenDays {
-		fmt.Printf("Seen days: %d %s\n", len(element.Days), element.Name)
+		var extra string
+
+		if slices.Contains(atRiskMembers, element.Name) {
+			extra = " at-risk"
+		}
+
+		fmt.Printf(
+			"Seen days: %d %s%s\n",
+			len(element.Days),
+			element.Name,
+			extra,
+		)
 	}
 
 	for _, element := range neverSeenDays {
-		fmt.Printf("Seen days: 0 %s\n", element)
+		var extra string
+
+		if slices.Contains(atRiskMembers, element) {
+			extra = " at-risk"
+		}
+
+		fmt.Printf("Seen days: 0 %s%s\n", element, extra)
 	}
 }

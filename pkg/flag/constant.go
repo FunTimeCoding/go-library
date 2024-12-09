@@ -1,6 +1,6 @@
 package flag
 
 const (
-	FilterFlag      = "filter"
-	InvestigateFlag = "investigate"
+	Filter      = "filter"
+	Investigate = "investigate"
 )

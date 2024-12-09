@@ -6,6 +6,6 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "filter", FilterFlag)
-	assert.String(t, "investigate", InvestigateFlag)
+	assert.String(t, "filter", Filter)
+	assert.String(t, "investigate", Investigate)
 }

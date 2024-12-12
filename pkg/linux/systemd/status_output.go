@@ -8,8 +8,11 @@ import (
 func (c *Client) StatusOutput(name string) string {
 	result := c.ssh.Run(
 		join.Space(
-			constant.Command, constant.Status, constant.Output,
-			constant.Notation, name,
+			constant.Command,
+			constant.Status,
+			constant.Output,
+			constant.Notation,
+			name,
 		),
 	)
 

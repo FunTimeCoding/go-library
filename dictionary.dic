@@ -24,6 +24,9 @@ goclean
 godebian
 golint
 
+# Linux
+smartd
+
 # macOS
 afplay
 tink

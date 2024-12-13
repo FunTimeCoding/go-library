@@ -1,42 +1,26 @@
 package status
 
 import (
-	"regexp"
+	"github.com/funtimecoding/go-library/pkg/expression"
 	"strings"
 )
 
 func Parse(s string) *Result {
-	result := &Result{}
-
-	if m := regexp.MustCompile(
-		`Loaded: (.+)`,
-	).FindStringSubmatch(s); len(m) > 1 {
-		result.Loaded = strings.TrimSpace(m[1])
+	return &Result{
+		Loaded: strings.TrimSpace(
+			expression.SubMatch(`Loaded: (.+)`, s),
+		),
+		Active: strings.TrimSpace(
+			expression.SubMatch(`Active: (.+) since (.+);`, s),
+		),
+		MainProcess: strings.TrimSpace(
+			expression.SubMatch(`Main PID: (\d+)`, s),
+		),
+		Memory: strings.TrimSpace(
+			expression.SubMatch(`Memory: (.+)`, s),
+		),
+		Processor: strings.TrimSpace(
+			expression.SubMatch(`CPU: (.+)`, s),
+		),
 	}
-
-	if m := regexp.MustCompile(
-		`Active: (.+) since (.+);`,
-	).FindStringSubmatch(s); len(m) > 1 {
-		result.Active = strings.TrimSpace(m[1])
-	}
-
-	if m := regexp.MustCompile(
-		`Main PID: (\d+)`,
-	).FindStringSubmatch(s); len(m) > 1 {
-		result.MainProcess = strings.TrimSpace(m[1])
-	}
-
-	if m := regexp.MustCompile(
-		`Memory: (.+)`,
-	).FindStringSubmatch(s); len(m) > 1 {
-		result.Memory = strings.TrimSpace(m[1])
-	}
-
-	if m := regexp.MustCompile(
-		`CPU: (.+)`,
-	).FindStringSubmatch(s); len(m) > 1 {
-		result.Processor = strings.TrimSpace(m[1])
-	}
-
-	return result
 }

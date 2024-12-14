@@ -233,37 +233,29 @@ func Log(
 	sort.Strings(neverSeen)
 
 	for _, name := range neverSeen {
-		var extra string
+		labels := GuildsOfMember(guildReport, name)
 
-		for guildName, guildMembers := range guildReport {
-			if slices.Contains(guildMembers, name) {
-				extra = " " + guildName
-			}
-
-			break
+		if len(labels) == 0 {
+			labels = append(labels, "no-guild")
 		}
 
 		if slices.Contains(onTeamAccounts, name) {
-			extra = " on-current-team"
+			labels = append(labels, "on-current-team")
 		}
 
 		if slices.Contains(onDiscordAccounts, name) {
-			extra = " on-discord"
+			labels = append(labels, "on-discord")
 		}
 
 		if slices.Contains(unverifiedAccounts, name) {
-			if slices.Contains(atRiskMembers, name) {
-				extra = " unverified at-risk"
-			} else {
-				extra = " unverified"
-			}
+			labels = append(labels, "unverified")
 		}
 
-		if extra == "" {
-			extra = " no-guild"
+		if slices.Contains(atRiskMembers, name) {
+			labels = append(labels, "at-risk")
 		}
 
-		fmt.Printf("Never seen: %s%s\n", name, extra)
+		fmt.Printf("Never seen: %s %s\n", name, join.Space(labels...))
 	}
 
 	daysAgo := 56
@@ -325,27 +317,35 @@ func Log(
 	)
 
 	for _, element := range seenDays {
-		var extra string
+		labels := GuildsOfMember(guildReport, element.Name)
+
+		if len(labels) == 0 {
+			labels = append(labels, "no-guild")
+		}
 
 		if slices.Contains(atRiskMembers, element.Name) {
-			extra = " at-risk"
+			labels = append(labels, "at-risk")
 		}
 
 		fmt.Printf(
-			"Seen days: %d %s%s\n",
+			"Seen days: %d %s %s\n",
 			len(element.Days),
 			element.Name,
-			extra,
+			join.Space(labels...),
 		)
 	}
 
 	for _, element := range neverSeenDays {
-		var extra string
+		labels := GuildsOfMember(guildReport, element)
 
-		if slices.Contains(atRiskMembers, element) {
-			extra = " at-risk"
+		if len(labels) == 0 {
+			labels = append(labels, "no-guild")
 		}
 
-		fmt.Printf("Seen days: 0 %s%s\n", element, extra)
+		if slices.Contains(atRiskMembers, element) {
+			labels = append(labels, "at-risk")
+		}
+
+		fmt.Printf("Seen days: 0 %s %s\n", element, join.Space(labels...))
 	}
 }

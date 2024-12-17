@@ -18,7 +18,7 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.1
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/ollama/ollama v0.5.1
+	github.com/ollama/ollama v0.5.2
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/client_golang v1.20.5
 	github.com/rivo/tview v0.0.0-20241103174730-c76f7879f592
@@ -27,10 +27,10 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.10.0
-	github.com/tobischo/gokeepasslib/v3 v3.6.0
+	github.com/tobischo/gokeepasslib/v3 v3.6.1
 	github.com/whilp/git-urls v1.0.0
-	github.com/xanzy/go-gitlab v0.107.0
-	golang.org/x/crypto v0.30.0
+	gitlab.com/gitlab-org/api/client-go v0.116.0
+	golang.org/x/crypto v0.31.0
 	golang.org/x/mod v0.22.0
 	golang.org/x/oauth2 v0.24.0
 	gonum.org/v1/gonum v0.15.1
@@ -38,7 +38,7 @@ require (
 	gorm.io/gorm v1.25.12
 	gotest.tools/v3 v3.5.1
 	k8s.io/apimachinery v0.30.3
-	k8s.io/utils v0.0.0-20241104163129-6fe5fd82f078
+	k8s.io/utils v0.0.0-20241210054802-24370beab758
 	sigs.k8s.io/yaml v1.4.0
 )
 
@@ -110,20 +110,19 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
-	golang.org/x/net v0.29.0 // indirect
+	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/term v0.27.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
-	golang.org/x/time v0.5.0 // indirect
-	golang.org/x/tools v0.23.0 // indirect
-	google.golang.org/protobuf v1.34.2 // indirect
+	golang.org/x/time v0.7.0 // indirect
+	golang.org/x/tools v0.26.0 // indirect
+	google.golang.org/protobuf v1.35.1 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
-	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
-	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
+	sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3 // indirect
+	sigs.k8s.io/structured-merge-diff/v4 v4.4.2 // indirect
 )

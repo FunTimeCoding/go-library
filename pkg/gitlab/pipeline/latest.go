@@ -1,7 +1,7 @@
 package pipeline
 
 import (
-	"github.com/xanzy/go-gitlab"
+	"gitlab.com/gitlab-org/api/client-go"
 	"golang.org/x/mod/semver"
 )
 

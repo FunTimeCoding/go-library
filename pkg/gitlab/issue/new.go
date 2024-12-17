@@ -1,6 +1,6 @@
 package issue
 
-import "github.com/xanzy/go-gitlab"
+import "gitlab.com/gitlab-org/api/client-go"
 
 func New(v *gitlab.Issue) *Issue {
 	return &Issue{

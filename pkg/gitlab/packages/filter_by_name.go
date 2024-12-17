@@ -1,6 +1,6 @@
 package packages
 
-import "github.com/xanzy/go-gitlab"
+import "gitlab.com/gitlab-org/api/client-go"
 
 func FilterByName(
 	v []*gitlab.Package,

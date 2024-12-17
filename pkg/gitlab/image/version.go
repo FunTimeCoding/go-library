@@ -2,7 +2,7 @@ package image
 
 import (
 	"fmt"
-	"github.com/xanzy/go-gitlab"
+	"gitlab.com/gitlab-org/api/client-go"
 	"log"
 	"strings"
 )

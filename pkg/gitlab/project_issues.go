@@ -3,7 +3,7 @@ package gitlab
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/issue"
-	"github.com/xanzy/go-gitlab"
+	"gitlab.com/gitlab-org/api/client-go"
 )
 
 func (c *Client) ProjectIssues(project int) []*issue.Issue {

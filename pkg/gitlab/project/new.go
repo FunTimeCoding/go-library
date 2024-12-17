@@ -1,6 +1,6 @@
 package project
 
-import "github.com/xanzy/go-gitlab"
+import "gitlab.com/gitlab-org/api/client-go"
 
 func New(v *gitlab.Project) *Project {
 	return &Project{

@@ -17,10 +17,8 @@ lint:
 
 update:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
-    # github.com/xanzy/go-gitlab: GitLab 16.7 compatibility
 	@goupdate \
-		--downgrade k8s.io/apimachinery@v0.30.3 \
-		--downgrade github.com/xanzy/go-gitlab@v0.107.0
+		--downgrade k8s.io/apimachinery@v0.30.3
 
 build:
 	@gobuild cmd/gobuild/main.go

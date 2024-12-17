@@ -3,7 +3,7 @@ package gitlab
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/xanzy/go-gitlab"
+	"gitlab.com/gitlab-org/api/client-go"
 )
 
 func New(

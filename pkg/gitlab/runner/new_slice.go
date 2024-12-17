@@ -1,6 +1,6 @@
 package runner
 
-import "github.com/xanzy/go-gitlab"
+import "gitlab.com/gitlab-org/api/client-go"
 
 func NewSlice(v []*gitlab.Runner) []*Runner {
 	var result []*Runner

@@ -3,7 +3,7 @@ package packages
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
-	"github.com/xanzy/go-gitlab"
+	"gitlab.com/gitlab-org/api/client-go"
 )
 
 func Link(

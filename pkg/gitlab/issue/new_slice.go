@@ -1,6 +1,6 @@
 package issue
 
-import "github.com/xanzy/go-gitlab"
+import "gitlab.com/gitlab-org/api/client-go"
 
 func NewSlice(v []*gitlab.Issue) []*Issue {
 	var result []*Issue

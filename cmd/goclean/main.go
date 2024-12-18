@@ -9,6 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
+	gitlabConstant "github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/image"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
 	"github.com/funtimecoding/go-library/pkg/gitlab/pipeline"
@@ -16,6 +17,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"slices"
@@ -28,13 +30,18 @@ func main() {
 	verbose := viper.GetBool(argument.Verbose)
 
 	gitlabLocator := web.ParseLocator(
-		environment.Get(
-			gitlab.HostEnvironment,
-			1,
-		),
+		environment.Get(gitlabConstant.HostEnvironment, 1),
 	)
 	m := provider_map.New()
 	m.Add(gitlabLocator.Host, provider_map.GitLabProvider)
+
+	if locator.IsSubdomain(gitlabLocator.Host) {
+		m.Add(
+			locator.RemoveSubdomain(gitlabLocator.Host),
+			provider_map.GitLabProvider,
+		)
+	}
+
 	var r *remote.Remote
 
 	for _, element := range git.Remotes(system.WorkingDirectory(), m) {
@@ -78,7 +85,7 @@ func main() {
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := gitlab.New(
 			gitlabLocator.Host,
-			environment.Get(gitlab.TokenEnvironment, 1),
+			environment.Get(gitlabConstant.TokenEnvironment, 1),
 			[]int{},
 		)
 		p := c.ProjectByName(namespace, repository)

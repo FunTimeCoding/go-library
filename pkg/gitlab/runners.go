@@ -2,6 +2,7 @@ package gitlab
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/runner"
 	"gitlab.com/gitlab-org/api/client-go"
 	"slices"
@@ -15,7 +16,10 @@ func (c *Client) Runners(all bool) []*runner.Runner {
 		var page []*gitlab.Runner
 		var response *gitlab.Response
 		options := &gitlab.ListRunnersOptions{
-			ListOptions: gitlab.ListOptions{PerPage: PerPage100, Page: number},
+			ListOptions: gitlab.ListOptions{
+				PerPage: constant.PerPage100,
+				Page:    number,
+			},
 		}
 
 		if all {
@@ -46,7 +50,7 @@ func (c *Client) Runners(all bool) []*runner.Runner {
 
 		result = append(result, page...)
 
-		if len(page) < PerPage100 {
+		if len(page) < constant.PerPage100 {
 			break
 		}
 

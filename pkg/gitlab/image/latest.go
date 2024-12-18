@@ -1,7 +1,7 @@
 package image
 
 import (
-	library "github.com/funtimecoding/go-library/pkg/gitlab"
+	library "github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"gitlab.com/gitlab-org/api/client-go"
 	"golang.org/x/mod/semver"
 )

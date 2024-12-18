@@ -2,6 +2,7 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/merge_request"
 	"gitlab.com/gitlab-org/api/client-go"
 	"k8s.io/utils/ptr"
@@ -16,9 +17,9 @@ func (c *Client) ProjectMergeRequests(
 
 	for {
 		o := &gitlab.ListProjectMergeRequestsOptions{
-			State: ptr.To[string](OpenedState),
+			State: ptr.To[string](constant.OpenedState),
 			ListOptions: gitlab.ListOptions{
-				PerPage: PerPage100,
+				PerPage: constant.PerPage100,
 				Page:    number,
 			},
 		}
@@ -34,7 +35,7 @@ func (c *Client) ProjectMergeRequests(
 		errors.PanicOnError(e)
 		result = append(result, page...)
 
-		if len(page) < PerPage100 {
+		if len(page) < constant.PerPage100 {
 			break
 		}
 

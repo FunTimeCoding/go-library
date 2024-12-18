@@ -1,4 +1,4 @@
-package gitlab
+package constant
 
 import "gitlab.com/gitlab-org/api/client-go"
 

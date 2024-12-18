@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console/format"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/time"
 	"strings"
 )
@@ -33,7 +34,7 @@ func RunnerWay(
 				job.Status,
 			)
 
-			if job.Status == gitlab.Failed {
+			if job.Status == constant.Failed {
 				trace := g.Trace(job.Project.ID, job.ID)
 
 				if strings.Contains(

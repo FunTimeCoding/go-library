@@ -3,6 +3,7 @@ package gitlab
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -13,7 +14,7 @@ func (c *Client) Packages(
 	result, r, e := c.client.Packages.ListProjectPackages(
 		project,
 		&gitlab.ListProjectPackagesOptions{
-			ListOptions: gitlab.ListOptions{PerPage: PerPage1000},
+			ListOptions: gitlab.ListOptions{PerPage: constant.PerPage1000},
 		},
 	)
 

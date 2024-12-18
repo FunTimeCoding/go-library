@@ -2,6 +2,8 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
+	"github.com/funtimecoding/go-library/pkg/gitlab/image"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -12,9 +14,9 @@ func (c *Client) Images(
 	result, _, e := c.client.ContainerRegistry.ListRegistryRepositoryTags(
 		project,
 		repository,
-		&gitlab.ListRegistryRepositoryTagsOptions{PerPage: PerPage1000},
+		&gitlab.ListRegistryRepositoryTagsOptions{PerPage: constant.PerPage1000},
 	)
 	errors.PanicOnError(e)
 
-	return result
+	return image.Sort(result)
 }

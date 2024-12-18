@@ -14,4 +14,5 @@ func TestSplit(t *testing.T) {
 	assert.Strings(t, []string{"a", "b"}, Pipe("a|b"))
 	assert.Strings(t, []string{"a", "b"}, Space("a b"))
 	assert.Strings(t, []string{"a", "b"}, Underscore("a_b"))
+	assert.Strings(t, []string{"a", "b"}, Dot("a.b"))
 }

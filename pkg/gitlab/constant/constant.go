@@ -33,6 +33,8 @@ const (
 
 	LatestVersion = "latest"
 
+	LatestSuffix = ":latest"
+
 	PerPage1000 int = 1000
 	PerPage100  int = 100
 )

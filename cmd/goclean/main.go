@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
-	"github.com/funtimecoding/go-library/pkg/git/remote"
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
@@ -42,17 +41,9 @@ func main() {
 		)
 	}
 
-	var r *remote.Remote
+	origin := git.Remote(system.WorkingDirectory(), m, constant.OriginRemote)
 
-	for _, element := range git.Remotes(system.WorkingDirectory(), m) {
-		if element.Name == constant.OriginRemote {
-			r = element
-
-			break
-		}
-	}
-
-	if r == nil {
+	if origin == nil {
 		system.Exitf(
 			1,
 			"could not identify provider: %s\n",
@@ -62,9 +53,9 @@ func main() {
 		return
 	}
 
-	switch r.Provider {
+	switch origin.Provider {
 	case provider_map.GitHubProvider:
-		remoteLocator := git.ParseLocator(r.Locator)
+		remoteLocator := git.ParseLocator(origin.Locator)
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := github.New(environment.Get(github.Token, 1))
 		tags := c.Tags(namespace, repository)
@@ -81,7 +72,7 @@ func main() {
 
 		git.Fetch()
 	case provider_map.GitLabProvider:
-		remoteLocator := git.ParseLocator(r.Locator)
+		remoteLocator := git.ParseLocator(origin.Locator)
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := gitlab.New(
 			gitlabLocator.Host,
@@ -160,11 +151,12 @@ func main() {
 			}
 		}
 
-		for _, element := range c.RegistryRepositories(
+		for _, r := range c.RegistryRepositories(
 			p.Identifier,
 			false,
 		) {
-			images := c.Images(p.Identifier, element.ID)
+			// TODO: This still doesn't delete the latest, test now to see what happens
+			images := c.Images(p.Identifier, r.ID)
 
 			if len(images) == 0 {
 				continue
@@ -173,7 +165,7 @@ func main() {
 			latest := image.Latest(images)
 
 			for _, i := range images {
-				if strings.HasSuffix(i.Path, ":latest") {
+				if strings.HasSuffix(i.Path, gitlabConstant.LatestSuffix) {
 					continue
 				}
 
@@ -182,7 +174,7 @@ func main() {
 				}
 
 				fmt.Printf("Delete image: %s\n", i.Name)
-				c.DeleteImage(p.Identifier, element.ID, i.Name)
+				c.DeleteImage(p.Identifier, r.ID, i.Name)
 			}
 		}
 

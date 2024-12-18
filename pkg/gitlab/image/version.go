@@ -2,6 +2,7 @@ package image
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"gitlab.com/gitlab-org/api/client-go"
 	"log"
 	"strings"
@@ -14,5 +15,9 @@ func Version(v *gitlab.RegistryRepositoryTag) string {
 		log.Panicf("empty version: %+v", result)
 	}
 
-	return fmt.Sprintf("v%s", result)
+	if !strings.HasPrefix(result, constant.VersionPrefix) {
+		return fmt.Sprintf("%s%s", constant.VersionPrefix, result)
+	}
+
+	return result
 }

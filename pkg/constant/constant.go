@@ -11,6 +11,7 @@ const (
 
 	LinkerFlagsArgument = "-ldflags"
 	OutputArgument      = "-o"
+	TagsArgument        = "-tags"
 
 	VersionArgument = "-go"
 

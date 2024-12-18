@@ -17,6 +17,7 @@ import (
 func Go(
 	main string,
 	output string,
+	buildTags string,
 ) {
 	var name string
 
@@ -51,10 +52,14 @@ func Go(
 			constant.LinkerSetVariable,
 			fmt.Sprintf("main.BuildDate=%s", Date()),
 		),
-		constant.OutputArgument,
-		output,
-		main,
 	}
+
+	if buildTags != "" {
+		s = append(s, constant.TagsArgument, buildTags)
+	}
+
+	s = append(s, []string{constant.OutputArgument, output, main}...)
+
 	fmt.Printf("Command: %s\n", join.Space(s...))
 	c := exec.Command(s[0], s[1:]...)
 	c.Env = os.Environ()

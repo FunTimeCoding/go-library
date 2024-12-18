@@ -3,6 +3,7 @@ package argument
 const (
 	Arm         = "arm"
 	Branch      = "branch"
+	BuildTags   = "build-tags"
 	Cluster     = "cluster"
 	Container   = "container"
 	Context     = "context"

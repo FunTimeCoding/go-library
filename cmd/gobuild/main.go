@@ -8,10 +8,12 @@ import (
 )
 
 func main() {
-	pflag.String(argument.Output, "", "Output path")
+	pflag.StringP(argument.Output, "o", "", "Output path")
+	pflag.StringP(argument.BuildTags, "t", "", "Build tags")
 	argument.ParseAndBind()
 	build.Go(
 		argument.Positional(0),
 		viper.GetString(argument.Output),
+		viper.GetString(argument.BuildTags),
 	)
 }

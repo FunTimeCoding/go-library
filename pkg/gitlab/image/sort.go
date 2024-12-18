@@ -1,7 +1,7 @@
 package image
 
 import (
-	gitlab "gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go"
 	"golang.org/x/mod/semver"
 	"sort"
 )

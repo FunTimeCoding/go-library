@@ -103,7 +103,10 @@ func Log(
 			continue
 		}
 
-		verifiedAccounts = append(verifiedAccounts, discordUser.Gw2Accounts...)
+		verifiedAccounts = append(
+			verifiedAccounts,
+			discordUser.Gw2Accounts...,
+		)
 		var teams []string
 
 		for _, team := range discordUser.WvwTeams {

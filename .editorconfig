@@ -6,14 +6,14 @@ end_of_line = lf
 indent_size = 4
 indent_style = space
 insert_final_newline = true
-max_line_length = 80
+max_line_length = 78
 tab_width = 4
 ij_continuation_indent_size = 8
 ij_formatter_off_tag = @formatter:off
 ij_formatter_on_tag = @formatter:on
 ij_formatter_tags_enabled = true
 ij_smart_tabs = false
-ij_visual_guides = 80
+ij_visual_guides = 78
 ij_wrap_on_typing = false
 
 [*.go]
@@ -39,7 +39,7 @@ ij_go_use_back_quotes_for_imports = false
 ij_go_wrap_comp_lit = on_every_item
 ij_go_wrap_comp_lit_newline_after_lbrace = true
 ij_go_wrap_comp_lit_newline_before_rbrace = true
-ij_go_wrap_func_params = split_into_lines
+ij_go_wrap_func_params = on_every_item
 ij_go_wrap_func_params_newline_after_lparen = true
 ij_go_wrap_func_params_newline_before_rparen = true
 ij_go_wrap_func_result = off

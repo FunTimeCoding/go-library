@@ -6,6 +6,7 @@ import (
 )
 
 func TestConstant(t *testing.T) {
+	assert.String(t, "POSTGRES_LOCATOR", LocatorEnvironment)
 	assert.String(t, "psql", Command)
 	assert.String(t, "--username", UserArgument)
 	assert.String(t, "--command", CommandArgument)

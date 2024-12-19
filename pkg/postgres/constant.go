@@ -1,6 +1,8 @@
 package postgres
 
 const (
+	LocatorEnvironment = "POSTGRES_LOCATOR"
+
 	Command         = "psql"
 	UserArgument    = "--username"
 	CommandArgument = "--command"

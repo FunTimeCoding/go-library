@@ -8,6 +8,8 @@ import (
 func TestConstant(t *testing.T) {
 	assert.String(t, "concerns", Concerns)
 	assert.String(t, "dense", Dense)
+	assert.String(t, "filter", Filter)
+	assert.String(t, "investigate", Investigate)
 	assert.String(t, "link", Link)
 	assert.String(t, "markdown", Markdown)
 	assert.String(t, "score", Score)

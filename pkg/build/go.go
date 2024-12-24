@@ -78,4 +78,5 @@ func Go(
 	}
 
 	errors.PanicOnError(e)
+	fmt.Printf("Size: %dM\n", system.FileSize(output)/1024/1024)
 }

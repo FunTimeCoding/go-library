@@ -8,8 +8,18 @@ import (
 )
 
 func main() {
-	pflag.StringP(argument.Output, "o", "", "Output path")
-	pflag.StringP(argument.BuildTags, "t", "", "Build tags")
+	pflag.StringP(
+		argument.Output,
+		"o",
+		"",
+		"Output path",
+	)
+	pflag.StringP(
+		argument.BuildTags,
+		"t",
+		"",
+		"Build tags",
+	)
 	argument.ParseAndBind()
 	build.Go(
 		argument.Positional(0),

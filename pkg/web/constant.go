@@ -22,6 +22,8 @@ const (
 	Localhost = "localhost"
 
 	SecureSchemePrefix = "https://"
+
+	SessionCookie = "session"
 )
 
 // noinspection HttpUrlsUsage

@@ -5,7 +5,11 @@ import (
 	"time"
 )
 
-func SetCookie(w http.ResponseWriter, k string, v string) *http.Cookie {
+func SetCookie(
+	w http.ResponseWriter,
+	k string,
+	v string,
+) *http.Cookie {
 	result := &http.Cookie{
 		Name:     k,
 		Value:    v,

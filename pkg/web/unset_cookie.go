@@ -5,7 +5,10 @@ import (
 	"time"
 )
 
-func UnsetCookie(w http.ResponseWriter, k string) {
+func UnsetCookie(
+	w http.ResponseWriter,
+	k string,
+) {
 	http.SetCookie(
 		w,
 		&http.Cookie{

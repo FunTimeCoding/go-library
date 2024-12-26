@@ -5,6 +5,9 @@ import (
 	"net/http"
 )
 
-func (c *Context) SetCookie(k string, v string) *http.Cookie {
+func (c *Context) SetCookie(
+	k string,
+	v string,
+) *http.Cookie {
 	return web.SetCookie(c.writer, k, v)
 }

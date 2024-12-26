@@ -5,7 +5,11 @@ import (
 	"net/http"
 )
 
-func WriteBytes(w http.ResponseWriter, code int, b []byte) {
+func WriteBytes(
+	w http.ResponseWriter,
+	code int,
+	b []byte,
+) {
 	w.WriteHeader(code)
 	_, e := w.Write(b)
 	errors.PanicOnError(e)

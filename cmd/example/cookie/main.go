@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/authenticator"
+	"github.com/funtimecoding/go-library/pkg/web/location"
 	"github.com/funtimecoding/go-library/pkg/web/request_context"
 	"net/http"
 )
@@ -13,7 +14,7 @@ func main() {
 	a := authenticator.New()
 	m := http.NewServeMux()
 	m.HandleFunc(
-		"/",
+		location.Root,
 		func(
 			w http.ResponseWriter,
 			e *http.Request,
@@ -31,26 +32,26 @@ func main() {
 		},
 	)
 	m.HandleFunc(
-		"/login",
+		location.Login,
 		func(
 			w http.ResponseWriter,
 			e *http.Request,
 		) {
 			c := request_context.New(w, e)
 			a.AddressLogin(c)
-			c.Redirect("/")
+			c.Redirect(location.Root)
 		},
 	)
 	m.HandleFunc(
-		"/logout",
+		location.Logout,
 		func(
 			w http.ResponseWriter,
 			e *http.Request,
 		) {
 			c := request_context.New(w, e)
 			a.Logout(c)
-			c.Redirect("/")
+			c.Redirect(location.Root)
 		},
 	)
-	errors.PanicOnError(http.ListenAndServe(":8080", m))
+	errors.PanicOnError(http.ListenAndServe(web.ListenAddress, m))
 }

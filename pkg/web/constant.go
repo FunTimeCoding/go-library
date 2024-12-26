@@ -24,6 +24,8 @@ const (
 	SecureSchemePrefix = "https://"
 
 	SessionCookie = "session"
+
+	ListenAddress = ":8080"
 )
 
 // noinspection HttpUrlsUsage

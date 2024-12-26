@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/authenticator"
@@ -26,6 +27,10 @@ func main() {
 				l.Add("logged in")
 			} else {
 				l.Add("not logged in")
+			}
+
+			for k, v := range c.Header() {
+				l.Format("Header: %s=%s", k, join.Comma(v))
 			}
 
 			c.WriteOkay(l.Render())

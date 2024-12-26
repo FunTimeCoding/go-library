@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/network"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/authenticator"
@@ -11,7 +10,7 @@ import (
 )
 
 func main() {
-	a := authenticator.New([]string{network.LocalhostAddressString})
+	a := authenticator.New()
 	m := http.NewServeMux()
 	m.HandleFunc(
 		"/",

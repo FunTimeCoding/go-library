@@ -6,15 +6,9 @@ import (
 )
 
 func (a *Authenticator) AddressLogin(c *request_context.Context) string {
-	var address string
+	address := c.Address()
 
-	if v, okay := c.Header()[web.RealAddressHeader]; okay {
-		address = v[0]
-	} else {
-		address = c.Address()
-	}
-
-	if a.address != address {
+	if address != a.loginAddress {
 		return ""
 	}
 

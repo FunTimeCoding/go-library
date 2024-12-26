@@ -9,7 +9,7 @@ const (
 	UserAgentHeader     = "User-Agent"
 	AuthorizationHeader = "Authorization"
 	AcceptHeader        = "Accept"
-	RealAddressHeader   = "X-Real-IP"
+	RealAddressHeader   = "X-Real-Ip"
 
 	TextContentType     = "text/plain"
 	ObjectContentType   = "application/json"

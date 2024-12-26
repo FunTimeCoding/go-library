@@ -33,6 +33,7 @@ func Start(
 				projectName,
 				version,
 			),
+			EnableTracing:    true,
 			TracesSampleRate: 1.0,
 		},
 	)

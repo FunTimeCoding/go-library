@@ -7,12 +7,12 @@ import (
 
 func Get(
 	name string,
-	exitCode int,
+	code int,
 ) string {
 	result := os.Getenv(name)
 
 	if result == "" {
-		system.Exitf(exitCode, "%s not set\n", name)
+		system.Exitf(code, "%s not set\n", name)
 	}
 
 	return result

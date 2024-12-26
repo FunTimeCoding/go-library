@@ -28,7 +28,7 @@ func main() {
 				l.Add("not logged in")
 			}
 
-			web.WriteOkay(w, l.Render())
+			c.WriteOkay(l.Render())
 		},
 	)
 	m.HandleFunc(

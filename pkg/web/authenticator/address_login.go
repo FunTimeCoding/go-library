@@ -3,13 +3,12 @@ package authenticator
 import (
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/request_context"
-	"slices"
 )
 
 func (a *Authenticator) AddressLogin(c *request_context.Context) string {
 	address := c.Address()
 
-	if !slices.Contains(a.address, address) {
+	if a.address != address {
 		return ""
 	}
 

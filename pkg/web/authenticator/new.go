@@ -7,12 +7,12 @@ import (
 )
 
 func New() *Authenticator {
-	var address []string
+	var address string
 
 	if a := os.Getenv(LoginAddressEnvironment); a != "" {
-		address = append(address, a)
+		address = a
 	} else {
-		address = append(address, network.LocalhostAddressString)
+		address = network.LocalhostAddressString
 	}
 
 	return &Authenticator{store: session_store.New(), address: address}

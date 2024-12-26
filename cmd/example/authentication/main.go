@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/authenticator"
@@ -21,6 +20,7 @@ func main() {
 			e *http.Request,
 		) {
 			c := request_context.New(w, e)
+			c.SetLastLocation()
 			l := multi_line.New()
 
 			if a.LoggedIn(c) {
@@ -29,10 +29,19 @@ func main() {
 				l.Add("not logged in")
 			}
 
-			for k, v := range c.Header() {
-				l.Format("Header: %s=%s", k, join.Comma(v))
-			}
-
+			c.WriteOkay(l.Render())
+		},
+	)
+	m.HandleFunc(
+		location.Status,
+		func(
+			w http.ResponseWriter,
+			e *http.Request,
+		) {
+			c := request_context.New(w, e)
+			c.SetLastLocation()
+			l := multi_line.New()
+			l.Format("Session: %s", a.Session(c))
 			c.WriteOkay(l.Render())
 		},
 	)
@@ -44,7 +53,7 @@ func main() {
 		) {
 			c := request_context.New(w, e)
 			a.AddressLogin(c)
-			c.Redirect(location.Root)
+			c.Redirect(c.LastLocation())
 		},
 	)
 	m.HandleFunc(
@@ -55,7 +64,7 @@ func main() {
 		) {
 			c := request_context.New(w, e)
 			a.Logout(c)
-			c.Redirect(location.Root)
+			c.Redirect(c.LastLocation())
 		},
 	)
 	errors.PanicOnError(http.ListenAndServe(web.ListenAddress, m))

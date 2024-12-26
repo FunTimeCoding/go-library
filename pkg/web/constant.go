@@ -10,6 +10,7 @@ const (
 	AuthorizationHeader = "Authorization"
 	AcceptHeader        = "Accept"
 	RealAddressHeader   = "X-Real-Ip"
+	RefererHeader       = "Referer"
 
 	TextContentType     = "text/plain"
 	ObjectContentType   = "application/json"
@@ -24,7 +25,8 @@ const (
 
 	SecureSchemePrefix = "https://"
 
-	SessionCookie = "session"
+	SessionCookie      = "session"
+	LastLocationCookie = "last_location"
 
 	ListenAddress = ":8080"
 )

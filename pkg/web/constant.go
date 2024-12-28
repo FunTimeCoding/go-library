@@ -28,7 +28,8 @@ const (
 	SessionCookie      = "session"
 	LastLocationCookie = "last_location"
 
-	ListenAddress = ":8080"
+	ListenAddress  = ":8080"
+	MetricsAddress = ":9090"
 )
 
 // noinspection HttpUrlsUsage

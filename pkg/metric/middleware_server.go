@@ -9,7 +9,7 @@ import (
 
 func MiddlewareServer(
 	address string,
-	m *http.ServeMux,
+	m http.Handler,
 ) *http.Server {
 	return &http.Server{
 		Addr: address,

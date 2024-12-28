@@ -1,9 +1,11 @@
 package location
 
 const (
-	Root    = "/"
-	Login   = "/login"
-	Logout  = "/logout"
-	Status  = "/status"
-	Metrics = "/metrics"
+	Root = "/"
+
+	Login    = "/login"
+	Logout   = "/logout"
+	Metrics  = "/metrics"
+	Shutdown = "/shutdown"
+	Status   = "/status"
 )

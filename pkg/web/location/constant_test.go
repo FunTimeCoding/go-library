@@ -6,5 +6,6 @@ import (
 )
 
 func TestConstant(t *testing.T) {
+	assert.String(t, "/shutdown", Shutdown)
 	assert.String(t, "/status", Status)
 }

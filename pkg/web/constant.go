@@ -12,9 +12,10 @@ const (
 	RealAddressHeader   = "X-Real-Ip"
 	RefererHeader       = "Referer"
 
-	TextContentType     = "text/plain"
-	ObjectContentType   = "application/json"
 	FormDataContentType = "multipart/form-data"
+	IconContentType     = "image/x-icon"
+	ObjectContentType   = "application/json"
+	TextContentType     = "text/plain"
 
 	GetMethod   = "GET"
 	PostMethod  = "POST"

@@ -156,7 +156,7 @@ func Log(
 	}
 
 	fmt.Printf("Members: %s\n", join.Comma(members))
-	logs := log.NewSlice(gw2.ParseLogs(system.ReadBytes(path), true))
+	logs := log.NewSlice(gw2.ParseLogs(system.ReadBytes(path), false))
 	var unverified []string
 
 	for _, member := range members {

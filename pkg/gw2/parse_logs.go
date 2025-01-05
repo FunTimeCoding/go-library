@@ -32,14 +32,9 @@ func ParseLogs(
 		}
 
 		var log log_manager.Log
-
-		if e := notation.Decode(
-			notation.Encode(v, false),
-			&log,
-		); e != nil {
-			errors.PanicOnError(e)
-		}
-
+		errors.PanicOnError(
+			notation.Decode(notation.Encode(v, false), &log),
+		)
 		result = append(result, &log)
 	}
 

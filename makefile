@@ -17,7 +17,9 @@ lint:
 
 update:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
-	@goupdate --downgrade k8s.io/apimachinery@v0.30.8
+    # sigs.k8s.io/structured-merge-diff/v4: IgnoredFields error in structuredmerge.go
+	@goupdate --downgrade k8s.io/apimachinery@v0.30.8 \
+		--downgrade sigs.k8s.io/structured-merge-diff/v4@v4.4.1
 
 build:
 	@gobuild cmd/gobuild/main.go

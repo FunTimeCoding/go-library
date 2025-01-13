@@ -33,6 +33,8 @@ tink
 
 # Kubernetes
 apimachinery
+sigs
+structuredmerge
 
 # Guild Wars 2
 Skrittsburgh

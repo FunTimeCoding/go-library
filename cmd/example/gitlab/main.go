@@ -2,12 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/job"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"os"
 )
 
 func main() {
@@ -45,7 +43,7 @@ func CloneAll() {
 		)
 
 		if !system.DirectoryExists(repository) {
-			errors.PanicOnError(os.Chdir(group))
+			system.ChangeDirectory(group)
 			git.Run("clone", element.SSHURLToRepo)
 
 			if false {

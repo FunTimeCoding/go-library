@@ -1,7 +1,7 @@
 package run
 
 type Run struct {
-	Environment []string
+	environment []string
 	Directory   string
 
 	Panic   bool

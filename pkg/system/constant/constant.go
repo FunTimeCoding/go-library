@@ -28,11 +28,12 @@ const (
 
 // File hierarchy system
 const (
-	Temporary = "tmp"
-	Library   = "lib"
-	Resources = "usr"
-	Local     = "local"
 	Binary    = "bin"
+	Library   = "lib"
+	Local     = "local"
+	Resources = "usr"
+	Source    = "src"
+	Temporary = "tmp"
 )
 
 var (

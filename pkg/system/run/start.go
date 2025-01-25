@@ -24,8 +24,8 @@ func (r *Run) Start(s ...string) string {
 		c.Dir = r.Directory
 	}
 
-	if len(r.Environment) > 0 {
-		c.Env = append(os.Environ(), r.Environment...)
+	if len(r.environment) > 0 {
+		c.Env = append(os.Environ(), r.environment...)
 	}
 
 	e := c.Run()

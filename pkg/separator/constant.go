@@ -11,6 +11,7 @@ const (
 	DoubleSpace = "  "
 	Equals      = "="
 	Pipe        = "|"
+	Semicolon   = ";"
 	Slash       = "/"
 	Space       = " "
 	Underscore  = "_"

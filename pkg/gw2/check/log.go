@@ -6,7 +6,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gw2/check/aleeva_report"
 	"github.com/funtimecoding/go-library/pkg/gw2/check/exceptions"
 	"github.com/funtimecoding/go-library/pkg/gw2/check/guilds"
-	"github.com/funtimecoding/go-library/pkg/gw2/check/meta"
 	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
 	"github.com/funtimecoding/go-library/pkg/strings/contains"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
@@ -25,19 +24,16 @@ func Log(
 	path string,
 	tag string,
 ) {
-	m := meta.Parse("tmp/meta.json")
-	var atRiskCutOff string
-	var currentTeam string
-	var metaToken string
-
 	if tag == "" {
-		tag = m.AllianceTag
+		tag = environment.Get(gw2.AllianceEnvironment, 1)
 	}
 
-	atRiskCutOff = m.AtRiskCutOff
-	metaToken = m.Token
-	currentTeam = m.Team
-	start := timeLibrary.Parse("2006-01-02", m.LinkStartDate)
+	atRiskCutOff := environment.Get(gw2.AtRiskCutOffEnvironment, 1)
+	currentTeam := environment.Get(gw2.TeamEnvironment, 1)
+	start := timeLibrary.Parse(
+		"2006-01-02",
+		environment.Get(gw2.LinkStartDateEnvironment, 1),
+	)
 	matchUpStart := time.Date(
 		start.Year(),
 		start.Month(),
@@ -55,7 +51,7 @@ func Log(
 	fmt.Printf("Alliance tag: %s\n", tag)
 	fmt.Printf("Team: %s\n", currentTeam)
 	fmt.Printf("At-risk cut-off member: %s\n", atRiskCutOff)
-	token := environment.GetDefault(gw2.TokenEnvironment, metaToken)
+	token := environment.Get(gw2.TokenEnvironment, 1)
 
 	if token == "" {
 		fmt.Println("No GW2 API token found")

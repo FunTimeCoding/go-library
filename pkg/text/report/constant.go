@@ -1,3 +1,3 @@
 package report
 
-const NoLimit = int(-1)
+const NoLimit int = -1

@@ -3,7 +3,7 @@ package constant
 const (
 	VersionPrefix = "v"
 
-	Depth = int(2) // Test directory depth from repository root
+	Depth int = 2 // Test directory depth from repository root
 
 	OriginRemote = "origin"
 

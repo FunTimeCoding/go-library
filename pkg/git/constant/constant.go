@@ -11,9 +11,7 @@ const (
 
 	MainBranch   = "main"
 	MasterBranch = "master"
-)
 
-const (
 	GitHubHost = "github.com"
 	GitLabHost = "gitlab.com"
 )

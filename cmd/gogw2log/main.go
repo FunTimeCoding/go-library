@@ -22,7 +22,9 @@ func main() {
 	if true {
 		pflag.StringP(argument.Tag, "g", "", "Guild tag")
 		argument.ParseAndBind()
-		tag := viper.GetString(argument.Tag)
-		check.Log(fmt.Sprintf("%s\\LogDataCache.json", path), tag)
+		check.Log(
+			fmt.Sprintf("%s\\LogDataCache.json", path),
+			viper.GetString(argument.Tag),
+		)
 	}
 }

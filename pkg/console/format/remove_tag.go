@@ -1,11 +1,17 @@
 package format
 
-func (s *Settings) RemoveTag(v string) {
-	for i, tag := range s.Tags {
-		if tag == v {
-			s.Tags = append(s.Tags[:i], s.Tags[i+1:]...)
+import "slices"
 
-			return
+func (s *Settings) RemoveTag(v ...string) {
+	var newTags []string
+
+	for i, tag := range s.Tags {
+		if slices.Contains(v, tag) {
+			continue
 		}
+
+		newTags = append(newTags, s.Tags[i])
 	}
+
+	s.Tags = newTags
 }

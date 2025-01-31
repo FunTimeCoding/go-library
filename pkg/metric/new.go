@@ -35,9 +35,6 @@ func New(
 		port:     port,
 		context:  context.Background(),
 		registry: r,
-		server: &http.Server{
-			Addr:    address,
-			Handler: m,
-		},
+		server:   &http.Server{Addr: address, Handler: m},
 	}
 }

@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.23.5
+go 1.23.6
 
 require (
 	github.com/MrGunflame/gw2api v1.0.5
@@ -25,15 +25,15 @@ require (
 	github.com/sanity-io/litter v1.5.6
 	github.com/slok/go-http-metrics v0.13.0
 	github.com/spf13/cobra v1.8.1
-	github.com/spf13/pflag v1.0.5
+	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tobischo/gokeepasslib/v3 v3.6.1
 	github.com/whilp/git-urls v1.0.0
-	gitlab.com/gitlab-org/api/client-go v0.120.0
+	gitlab.com/gitlab-org/api/client-go v0.122.0
 	golang.org/x/crypto v0.32.0
-	golang.org/x/mod v0.22.0
-	golang.org/x/oauth2 v0.25.0
+	golang.org/x/mod v0.23.0
+	golang.org/x/oauth2 v0.26.0
 	gonum.org/v1/gonum v0.15.1
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
@@ -115,7 +115,7 @@ require (
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/term v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
-	golang.org/x/time v0.8.0 // indirect
+	golang.org/x/time v0.9.0 // indirect
 	golang.org/x/tools v0.26.0 // indirect
 	google.golang.org/protobuf v1.36.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect

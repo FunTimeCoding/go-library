@@ -10,7 +10,7 @@ func Generate(
 	f []float64,
 	values []string,
 ) []*Mapping {
-	if slices.Contains(f, 0) {
+	if !slices.Contains(f, 0) {
 		f = append(f, 0)
 	}
 

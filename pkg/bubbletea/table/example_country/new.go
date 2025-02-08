@@ -1,6 +1,9 @@
 package example_country
 
-import "github.com/charmbracelet/bubbles/table"
+import (
+	"github.com/charmbracelet/bubbles/table"
+	"github.com/funtimecoding/go-library/pkg/bubbletea/style"
+)
 
 func New() table.Model {
 	columns := []table.Column{
@@ -111,10 +114,13 @@ func New() table.Model {
 		{"99", "Shijiazhuang", "China", "4,285,135"},
 		{"100", "Montreal", "Canada", "4,276,526"},
 	}
-	return table.New(
+	result := table.New(
 		table.WithColumns(columns),
 		table.WithRows(rows),
 		table.WithFocused(true),
 		table.WithHeight(7),
 	)
+	style.Table(result)
+
+	return result
 }

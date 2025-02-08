@@ -1,4 +1,4 @@
-package example_countries
+package example_country
 
 import "github.com/charmbracelet/bubbles/table"
 

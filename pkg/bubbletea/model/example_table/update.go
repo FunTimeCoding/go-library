@@ -6,7 +6,8 @@ import (
 )
 
 func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
-	var cmd tea.Cmd
+	var result tea.Cmd
+
 	switch g := s.(type) {
 	case tea.KeyMsg:
 		switch g.String() {
@@ -26,7 +27,8 @@ func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 			)
 		}
 	}
-	m.table, cmd = m.table.Update(s)
 
-	return m, cmd
+	m.table, result = m.table.Update(s)
+
+	return m, result
 }

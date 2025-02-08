@@ -1,7 +1,8 @@
 package key
 
 const (
-	Enter = "enter"
+	Enter  = "enter"
+	Escape = "esc"
 
 	Space = " "
 

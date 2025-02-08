@@ -177,7 +177,7 @@ func Log(
 	seenMap := log.LastSeenPerMemberMap(members, logs, &matchUpStart)
 
 	for _, member := range members {
-		if _, ok := seenMap[member]; !ok {
+		if _, okay := seenMap[member]; !okay {
 			if slices.Contains(exceptionNames, member) {
 				foundExceptions = append(foundExceptions, member)
 			} else {

@@ -1,6 +1,6 @@
 package issue
 
-import "github.com/google/go-github/v59/github"
+import "github.com/google/go-github/v69/github"
 
 type Issue struct {
 	Repository string

@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
-	"github.com/google/go-github/v59/github"
+	"github.com/google/go-github/v69/github"
 	"testing"
 )
 

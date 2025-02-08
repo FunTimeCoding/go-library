@@ -20,7 +20,7 @@ func SeenDaysPerMemberSlice(
 					continue
 				}
 
-				if _, ok := seenMap[member]; !ok {
+				if _, okay := seenMap[member]; !okay {
 					seenMap[member] = &SeenDaysMember{Name: member}
 				}
 

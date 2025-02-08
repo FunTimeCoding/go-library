@@ -2,7 +2,7 @@ package github
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/google/go-github/v59/github"
+	"github.com/google/go-github/v69/github"
 )
 
 func (c *Client) User() *github.User {

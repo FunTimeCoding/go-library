@@ -14,7 +14,7 @@ func (s *Status) Format() string {
 
 	if len(s.linesByTag) > 0 {
 		for _, tag := range s.settings.Tags {
-			if lines, ok := s.linesByTag[tag]; ok {
+			if lines, okay := s.linesByTag[tag]; okay {
 				result = extendLines(result, lines, s.settings.Indentation)
 			}
 		}

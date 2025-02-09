@@ -1,7 +1,7 @@
-package monitor
+package fetch
 
 import "github.com/funtimecoding/go-library/pkg/monitor/item"
 
-type FetchMessage struct {
+type Message struct {
 	Items []*item.Item
 }

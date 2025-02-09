@@ -1,15 +1,15 @@
-package monitor
+package tick
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
 	"time"
 )
 
-func tick() tea.Cmd {
+func Command() tea.Cmd {
 	return tea.Tick(
 		time.Second,
 		func(t time.Time) tea.Msg {
-			return TickMessage{Time: t}
+			return Message{Time: t}
 		},
 	)
 }

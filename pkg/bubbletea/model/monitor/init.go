@@ -1,7 +1,10 @@
 package monitor
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"
+)
 
 func (m *Model) Init() tea.Cmd {
-	return tick()
+	return tick.Command()
 }

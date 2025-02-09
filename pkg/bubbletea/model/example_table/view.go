@@ -6,5 +6,5 @@ import (
 )
 
 func (m *Model) View() string {
-	return constant.Style.Render(m.table.View()) + separator.Unix
+	return constant.Table.Render(m.table.View()) + separator.Unix
 }

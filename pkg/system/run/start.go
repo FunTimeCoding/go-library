@@ -2,10 +2,10 @@ package run
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	errorLibrary "github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
 	"os/exec"
 )
@@ -51,10 +51,14 @@ func (r *Run) Start(s ...string) string {
 		}
 	}
 
-	r.ExitCode = system.ExitErrorCode(e)
+	var f *exec.ExitError
+
+	if errors.As(e, &f) {
+		r.ExitCode = f.ExitCode()
+	}
 
 	if r.Panic {
-		errors.PanicOnError(e)
+		errorLibrary.PanicOnError(e)
 	}
 
 	return r.OutputString

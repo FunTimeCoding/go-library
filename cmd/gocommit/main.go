@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
-	stringsHelper "github.com/funtimecoding/go-library/pkg/strings"
+	stringLibrary "github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -39,7 +39,7 @@ func main() {
 	errors.PanicOnError(viper.BindPFlags(pflag.CommandLine))
 	content := system.ReadFile(viper.GetString(argument.Template))
 
-	for k, v := range stringsHelper.ToMap(replaces, "=") {
+	for k, v := range stringLibrary.ToMap(replaces, "=") {
 		content = strings.ReplaceAll(content, k, v)
 	}
 

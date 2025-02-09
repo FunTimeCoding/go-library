@@ -2,7 +2,7 @@ package system
 
 import (
 	"errors"
-	errorHelper "github.com/funtimecoding/go-library/pkg/errors"
+	errorLibrary "github.com/funtimecoding/go-library/pkg/errors"
 	"os/exec"
 )
 
@@ -13,7 +13,7 @@ func ExitErrorCode(e error) int {
 		if errors.As(e, &f) {
 			return f.ExitCode()
 		} else {
-			errorHelper.PanicOnError(e)
+			errorLibrary.PanicOnError(e)
 		}
 	}
 

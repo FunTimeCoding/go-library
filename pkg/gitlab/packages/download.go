@@ -2,7 +2,7 @@ package packages
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	helper "github.com/funtimecoding/go-library/pkg/gitlab/request"
+	library "github.com/funtimecoding/go-library/pkg/gitlab/request"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/web"
 )
@@ -13,7 +13,7 @@ func Download(
 	outputFile string,
 ) {
 	request := web.NewGet(link)
-	helper.PrivateToken(request, token)
+	library.PrivateToken(request, token)
 	response := web.Send(web.Client(true), request)
 	defer errors.PanicClose(response.Body)
 	errors.PanicStatus(response)

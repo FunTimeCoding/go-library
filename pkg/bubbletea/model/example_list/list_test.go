@@ -1,7 +1,10 @@
 package example_list
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestGroceryList(t *testing.T) {
-	// Stub
+	assert.True(t, New() != nil)
 }

@@ -14,7 +14,5 @@ func RunAlternative(
 		defer errors.LogClose(f)
 	}
 
-	p := tea.NewProgram(m, tea.WithAltScreen())
-	_, e := p.Run()
-	errors.PanicOnError(e)
+	RunProgram(tea.NewProgram(m, tea.WithAltScreen()))
 }

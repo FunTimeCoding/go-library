@@ -5,7 +5,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func Table(m table.Model) {
+func Table(m *table.Model) {
 	s := table.DefaultStyles()
 
 	s.Header = s.Header.BorderStyle(

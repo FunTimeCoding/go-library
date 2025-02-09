@@ -41,3 +41,7 @@ install: build
 	@cp tmp/godebian $$HOME/bin/godebian
 	@cp tmp/golint $$HOME/bin/golint
 	@cp tmp/goupdate $$HOME/bin/goupdate
+
+monitor:
+	@gobuild --copy-to-bin cmd/gomonitor/main.go
+	@gobuild --copy-to-bin cmd/gosensor/main.go

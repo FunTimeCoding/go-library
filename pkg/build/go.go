@@ -18,6 +18,7 @@ func Go(
 	main string,
 	output string,
 	buildTags string,
+	copyToBin bool,
 ) {
 	var name string
 
@@ -78,5 +79,14 @@ func Go(
 	}
 
 	errors.PanicOnError(e)
+
+	if copyToBin {
+		destination := system.Join(system.Home(), systemConstant.Binary, name)
+		fmt.Printf("Source: %s\n", output)
+		fmt.Printf("Destination: %s\n", destination)
+		system.CopyFile(output, destination)
+		system.Executable(destination)
+	}
+
 	fmt.Printf("Size: %dM\n", system.FileSize(output)/1024/1024)
 }

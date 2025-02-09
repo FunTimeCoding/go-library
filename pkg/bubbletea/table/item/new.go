@@ -6,23 +6,25 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings"
 )
 
-func New() table.Model {
-	columns := []table.Column{
-		{Title: "Name", Width: 4},
+func New(rows []table.Row) *table.Model {
+	columns := []table.Column{{Title: "Name", Width: 4}}
+
+	if len(rows) == 0 {
+		rows = []table.Row{
+			{strings.Alfa},
+			{strings.Bravo},
+			{strings.Charlie},
+			{strings.Delta},
+		}
 	}
-	rows := []table.Row{
-		{strings.Alfa},
-		{strings.Bravo},
-		{strings.Charlie},
-		{strings.Delta},
-	}
+
 	result := table.New(
 		table.WithColumns(columns),
 		table.WithRows(rows),
 		table.WithFocused(true),
 		table.WithHeight(7),
 	)
-	style.Table(result)
+	style.Table(&result)
 
-	return result
+	return &result
 }

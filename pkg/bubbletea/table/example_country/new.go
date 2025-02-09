@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/style"
 )
 
-func New() table.Model {
+func New() *table.Model {
 	columns := []table.Column{
 		{Title: "Rank", Width: 4},
 		{Title: "City", Width: 10},
@@ -120,7 +120,7 @@ func New() table.Model {
 		table.WithFocused(true),
 		table.WithHeight(7),
 	)
-	style.Table(result)
+	style.Table(&result)
 
-	return result
+	return &result
 }

@@ -1,7 +1,10 @@
 package example_country
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestCountry(t *testing.T) {
-	// Stub
+	assert.True(t, New() != nil)
 }

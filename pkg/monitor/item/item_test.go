@@ -1,11 +1,11 @@
 package item
 
 import (
-	"github.com/charmbracelet/bubbles/table"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings"
 	"testing"
 )
 
 func TestItem(t *testing.T) {
-	assert.True(t, New([]table.Row{}) != nil)
+	assert.String(t, "Alfa", New(strings.Alfa).Name)
 }

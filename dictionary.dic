@@ -24,6 +24,8 @@ gobump
 goclean
 godebian
 golint
+gomonitor
+gosensor
 
 # Linux
 smartd

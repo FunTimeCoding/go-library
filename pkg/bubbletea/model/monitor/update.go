@@ -1,6 +1,8 @@
 package monitor
 
 import (
+	"fmt"
+	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/key"
 	"github.com/funtimecoding/go-library/pkg/time"
@@ -8,8 +10,6 @@ import (
 )
 
 func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
-	var result tea.Cmd
-
 	switch g := s.(type) {
 	case tea.WindowSizeMsg:
 		m.width = g.Width
@@ -30,12 +30,11 @@ func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Q, key.CtrlC:
 			return m, tea.Quit
 		case key.Enter:
-			log.Printf("Selected log: %s\n", m.table.SelectedRow()[0])
+			selected := m.table.SelectedRow()
+			log.Printf("Selected log: %s\n", selected[0])
 
-			return m, tea.Batch(
-				tea.Printf(
-					"Selected tea: %s", m.table.SelectedRow()[0],
-				),
+			return m, tea.Printf(
+				"Selected tea: %s", selected[0],
 			)
 		}
 	case TickMessage:
@@ -43,12 +42,33 @@ func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 			log.Printf("Tick: %s\n", g.Time.Format(time.DateMinute))
 		}
 
-		m.bottomBar = g.Time.Format(time.DateSecond)
+		var commands tea.BatchMsg
 
-		return m, tick()
+		if m.second%60 == 0 {
+			commands = append(commands, fetch())
+		}
+
+		m.bottomBar = fmt.Sprintf(
+			"%s %d",
+			g.Time.Format(time.DateSecond),
+			m.second,
+		)
+		m.second++
+		commands = append(commands, tick())
+
+		return m, tea.Batch(commands...)
+	case FetchMessage:
+		var rows []table.Row
+
+		for _, element := range g.Items {
+			rows = append(rows, table.Row{element.Name})
+		}
+
+		m.table.SetRows(rows)
 	}
 
-	m.table, result = m.table.Update(s)
+	t, result := m.table.Update(s)
+	m.table = &t
 
 	return m, result
 }

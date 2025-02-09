@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
 	"os/exec"
 )
@@ -49,6 +50,8 @@ func (r *Run) Start(s ...string) string {
 			fmt.Printf("Stderr:\n%s\n", r.ErrorString)
 		}
 	}
+
+	r.ExitCode = system.ExitErrorCode(e)
 
 	if r.Panic {
 		errors.PanicOnError(e)

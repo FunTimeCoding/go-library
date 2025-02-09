@@ -1,7 +1,10 @@
 package style
 
-import "testing"
+import (
+	"github.com/charmbracelet/bubbles/table"
+	"testing"
+)
 
 func TestStyle(t *testing.T) {
-	// Stub
+	Table(&table.Model{})
 }

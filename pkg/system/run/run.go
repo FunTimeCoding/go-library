@@ -10,4 +10,5 @@ type Run struct {
 	OutputString string
 	ErrorString  string
 	Error        error
+	ExitCode     int
 }

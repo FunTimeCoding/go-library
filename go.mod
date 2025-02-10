@@ -8,6 +8,7 @@ require (
 	github.com/charmbracelet/bubbles v0.20.0
 	github.com/charmbracelet/bubbletea v1.3.0
 	github.com/charmbracelet/lipgloss v1.0.0
+	github.com/coder/websocket v1.8.12
 	github.com/coreos/go-semver v0.3.1
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/dimchansky/utfbom v1.1.1
@@ -37,6 +38,7 @@ require (
 	golang.org/x/crypto v0.33.0
 	golang.org/x/mod v0.23.0
 	golang.org/x/oauth2 v0.26.0
+	golang.org/x/time v0.9.0
 	gonum.org/v1/gonum v0.15.1
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
@@ -126,7 +128,6 @@ require (
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/term v0.29.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
-	golang.org/x/time v0.9.0 // indirect
 	golang.org/x/tools v0.26.0 // indirect
 	google.golang.org/protobuf v1.36.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect

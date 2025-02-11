@@ -8,5 +8,5 @@ import (
 )
 
 func main() {
-	bubbletea.RunAlternative(monitor.New(item.New([]table.Row{})), true)
+	bubbletea.Run(monitor.New(item.New([]table.Row{})), true)
 }

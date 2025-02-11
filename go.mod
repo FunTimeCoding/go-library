@@ -6,7 +6,7 @@ require (
 	github.com/MrGunflame/gw2api v1.0.5
 	github.com/PuerkitoBio/goquery v1.10.1
 	github.com/charmbracelet/bubbles v0.20.0
-	github.com/charmbracelet/bubbletea v1.3.0
+	github.com/charmbracelet/bubbletea v1.3.2
 	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/coder/websocket v1.8.12
 	github.com/coreos/go-semver v0.3.1
@@ -19,10 +19,11 @@ require (
 	github.com/go-git/go-git/v5 v5.13.2
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/google/go-github/v69 v69.0.0
+	github.com/gorilla/websocket v1.5.3
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/ollama/ollama v0.5.7
+	github.com/ollama/ollama v0.5.8
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/client_golang v1.20.5
 	github.com/rivo/tview v0.0.0-20241227133733-17b7edb88c57
@@ -38,7 +39,7 @@ require (
 	golang.org/x/crypto v0.33.0
 	golang.org/x/mod v0.23.0
 	golang.org/x/oauth2 v0.26.0
-	golang.org/x/time v0.9.0
+	golang.org/x/time v0.10.0
 	gonum.org/v1/gonum v0.15.1
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12

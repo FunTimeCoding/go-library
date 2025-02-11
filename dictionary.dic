@@ -25,7 +25,11 @@ goclean
 godebian
 golint
 gomonitor
+gomonitord
 gosensor
+
+# UNIX
+websocat
 
 # Linux
 smartd
@@ -39,9 +43,15 @@ apimachinery
 sigs
 structuredmerge
 
+# HTML
+DOCTYPE
+
 # Guild Wars 2
 Dragrimmar
 Ettin's
 Skrittsburgh
 aleeva
 evtc
+
+# Gorilla
+upgrader

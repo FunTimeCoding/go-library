@@ -9,10 +9,10 @@ import (
 
 func main() {
 	if false {
-		bubbletea.Run(example_list.New())
+		bubbletea.Run(example_list.New(), false)
 	}
 
 	if true {
-		bubbletea.Run(example_table.New(example_country.New()))
+		bubbletea.Run(example_table.New(example_country.New()), false)
 	}
 }

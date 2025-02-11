@@ -6,5 +6,5 @@ import (
 )
 
 func (m *Model) Init() tea.Cmd {
-	return tick.Command()
+	return tea.Sequence(tea.EnterAltScreen, tick.Command())
 }

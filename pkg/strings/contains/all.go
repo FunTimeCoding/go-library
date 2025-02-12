@@ -3,10 +3,10 @@ package contains
 import "slices"
 
 func All(
-	expected []string,
 	input []string,
+	valid []string,
 ) bool {
-	for _, element := range expected {
+	for _, element := range valid {
 		if !slices.Contains(input, element) {
 			return false
 		}

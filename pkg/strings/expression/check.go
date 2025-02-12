@@ -3,8 +3,8 @@ package expression
 import "github.com/funtimecoding/go-library/pkg/strings/contains"
 
 func (e *Expression) Check(s []string) bool {
-	if contains.All(e.include, s) {
-		if !contains.Any(e.exclude, s) {
+	if contains.All(s, e.include) {
+		if !contains.Any(s, e.exclude) {
 			return true
 		}
 	}

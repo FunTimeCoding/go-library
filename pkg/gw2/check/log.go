@@ -103,7 +103,7 @@ func Log(
 			continue
 		}
 
-		if contains.Any(exceptionNames, r.Gw2Accounts) {
+		if contains.Any(r.Gw2Accounts, exceptionNames) {
 			continue
 		}
 

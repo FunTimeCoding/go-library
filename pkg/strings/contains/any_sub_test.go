@@ -7,23 +7,23 @@ import (
 )
 
 func TestSubAny(t *testing.T) {
-	assert.True(t, AnySub([]string{strings.Alfa}, []string{"Al"}))
-	assert.False(t, AnySub([]string{strings.Alfa}, []string{"Ga"}))
-	assert.False(t, AnySub([]string{strings.Alfa}, []string{}))
+	assert.True(t, AnySub([]string{"Al"}, []string{strings.Alfa}))
+	assert.False(t, AnySub([]string{"Ga"}, []string{strings.Alfa}))
+	assert.False(t, AnySub([]string{}, []string{strings.Alfa}))
 	assert.False(t, AnySub([]string{}, []string{}))
-	assert.False(t, AnySub([]string{}, []string{"Al"}))
+	assert.False(t, AnySub([]string{"Al"}, []string{}))
 	assert.True(
 		t,
 		AnySub(
-			[]string{strings.Alfa, strings.Bravo, strings.Charlie},
 			[]string{"Br"},
+			[]string{strings.Alfa, strings.Bravo, strings.Charlie},
 		),
 	)
 	assert.False(
 		t,
 		AnySub(
-			[]string{strings.Alfa, strings.Bravo, strings.Charlie},
 			[]string{"De"},
+			[]string{strings.Alfa, strings.Bravo, strings.Charlie},
 		),
 	)
 }

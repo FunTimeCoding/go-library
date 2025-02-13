@@ -3,8 +3,8 @@ package contains
 import "strings"
 
 func AnySub(
-	valid []string,
 	substrings []string,
+	valid []string,
 ) bool {
 	for _, element := range valid {
 		for _, match := range substrings {

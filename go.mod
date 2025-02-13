@@ -1,12 +1,12 @@
 module github.com/funtimecoding/go-library
 
-go 1.23.6
+go 1.24.0
 
 require (
 	github.com/MrGunflame/gw2api v1.0.5
 	github.com/PuerkitoBio/goquery v1.10.1
 	github.com/charmbracelet/bubbles v0.20.0
-	github.com/charmbracelet/bubbletea v1.3.2
+	github.com/charmbracelet/bubbletea v1.3.3
 	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/coder/websocket v1.8.12
 	github.com/coreos/go-semver v0.3.1
@@ -23,11 +23,11 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/ollama/ollama v0.5.8
+	github.com/ollama/ollama v0.5.9
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/client_golang v1.20.5
 	github.com/rivo/tview v0.0.0-20241227133733-17b7edb88c57
-	github.com/sanity-io/litter v1.5.6
+	github.com/sanity-io/litter v1.5.7
 	github.com/slok/go-http-metrics v0.13.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.6

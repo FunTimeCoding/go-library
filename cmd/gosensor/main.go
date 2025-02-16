@@ -9,33 +9,33 @@ import (
 )
 
 func main() {
-	var items []*item.Item
-	items = append(
-		items,
+	var result []*item.Item
+	result = append(
+		result,
 		item.New(
+			fmt.Sprintf("%s-%d", constant.ExamplePrefix, 1),
+			constant.ErrorType,
 			strings.Alfa,
-			constant.ErrorType,
-			"Example detail 1",
-			"https://example.com/1",
+			"https://example.org/1",
 		),
 	)
-	items = append(
-		items,
+	result = append(
+		result,
 		item.New(
+			fmt.Sprintf("%s-%d", constant.ExamplePrefix, 2),
+			constant.ErrorType,
 			strings.Bravo,
-			constant.ErrorType,
-			"Example detail 2",
-			"https://example.com/2",
+			"https://example.org/2",
 		),
 	)
-	items = append(
-		items,
+	result = append(
+		result,
 		item.New(
-			strings.Charlie,
+			fmt.Sprintf("%s-%d", constant.ExamplePrefix, 3),
 			constant.ErrorType,
-			"Example detail 3",
-			"https://example.com/3",
+			strings.Charlie,
+			"https://example.org/3",
 		),
 	)
-	fmt.Println(notation.Encode(items, true))
+	fmt.Println(notation.Encode(result, true))
 }

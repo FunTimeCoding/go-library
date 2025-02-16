@@ -9,6 +9,15 @@ import (
 )
 
 func TestIssue(t *testing.T) {
+	actual := New(
+		&sentry.Issue{
+			Project:   &sentry.Project{Name: strings.Alfa},
+			Type:      ptr.To(strings.Bravo),
+			Title:     ptr.To(strings.Charlie),
+			Permalink: ptr.To(strings.Delta),
+		},
+	)
+	actual.Raw = nil
 	assert.Any(
 		t,
 		&Issue{
@@ -17,13 +26,6 @@ func TestIssue(t *testing.T) {
 			Title:   "Charlie",
 			Link:    "Delta",
 		},
-		New(
-			&sentry.Issue{
-				Project:   &sentry.Project{Name: strings.Alfa},
-				Type:      ptr.To(strings.Bravo),
-				Title:     ptr.To(strings.Charlie),
-				Permalink: ptr.To(strings.Delta),
-			},
-		),
+		actual,
 	)
 }

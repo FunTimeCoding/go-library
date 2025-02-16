@@ -9,7 +9,7 @@ tool:
 	@GOPROXY=direct go install github.com/funtimecoding/go-library/cmd/goupdate@latest
 
 test:
-	@gotestsum --format standard-quiet -- ./... | grep -v '^ok'
+	@gotestsum --format standard-quiet -- ./...
 
 lint:
 	@golint

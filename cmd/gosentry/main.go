@@ -9,11 +9,11 @@ import (
 )
 
 func main() {
-	var items []*item.Item
+	var result []*item.Item
 
 	for _, i := range sentry.NewEnvironment().AllIssues() {
-		items = append(
-			items,
+		result = append(
+			result,
 			item.New(
 				fmt.Sprintf("%s-%s", constant.SentryPrefix, *i.Raw.ID),
 				constant.ErrorType,
@@ -23,5 +23,5 @@ func main() {
 		)
 	}
 
-	fmt.Println(notation.Encode(items, true))
+	fmt.Println(notation.Encode(result, true))
 }

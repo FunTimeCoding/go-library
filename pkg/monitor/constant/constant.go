@@ -4,7 +4,8 @@ const (
 	GoSensor = "gosensor"
 	GoSentry = "gosentry"
 
-	SentryPrefix = "sentry"
+	ExamplePrefix = "example"
+	SentryPrefix  = "sentry"
 
 	ErrorType = "error"
 )

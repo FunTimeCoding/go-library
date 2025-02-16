@@ -1,5 +1,8 @@
 package item
 
 type Item struct {
-	Name string
+	Identifier string
+	Type       string
+	Detail     string
+	Link       string
 }

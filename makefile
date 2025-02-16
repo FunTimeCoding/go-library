@@ -9,7 +9,7 @@ tool:
 	@GOPROXY=direct go install github.com/funtimecoding/go-library/cmd/goupdate@latest
 
 test:
-	@gotestsum --format standard-quiet -- ./...
+	@gotestsum --format standard-quiet -- ./... | grep -v '^ok'
 
 lint:
 	@golint
@@ -45,3 +45,4 @@ install: build
 monitor:
 	@gobuild --copy-to-bin cmd/gomonitor/main.go
 	@gobuild --copy-to-bin cmd/gosensor/main.go
+	@gobuild --copy-to-bin cmd/gosentry/main.go

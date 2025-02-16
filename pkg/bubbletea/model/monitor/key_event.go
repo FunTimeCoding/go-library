@@ -18,7 +18,7 @@ func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 	case key.Enter:
 		selected := m.table.SelectedRow()
-		log.Printf("Selected: %s\n", selected[0])
+		log.Printf("Selected: %+v\n", selected)
 
 		return m, nil
 	}

@@ -1,6 +1,7 @@
 package monitor
 
 import (
+	"fmt"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/constant"
 )
@@ -10,16 +11,12 @@ func (m *Model) View() string {
 		return "wait for screen size"
 	}
 
-	return lipgloss.Place(
-		m.width,
-		m.height,
-		lipgloss.Center,
-		lipgloss.Center,
-		lipgloss.JoinVertical(
-			lipgloss.Left,
-			constant.Default.Render(m.topBar),
-			constant.Table.Render(m.table.View()),
-			constant.Default.Render(m.bottomBar),
-		),
+	m.topBar = fmt.Sprintf("%dx%d", m.width, m.height)
+
+	return lipgloss.JoinVertical(
+		lipgloss.Left,
+		constant.Default.Render(m.topBar),
+		constant.Table.Render(m.table.View()),
+		constant.Default.Render(m.bottomBar),
 	)
 }

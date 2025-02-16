@@ -1,5 +1,15 @@
 package item
 
-func New(name string) *Item {
-	return &Item{Name: name}
+func New(
+	identifier string,
+	itemType string,
+	detail string,
+	link string,
+) *Item {
+	return &Item{
+		Identifier: identifier,
+		Type:       itemType,
+		Detail:     detail,
+		Link:       link,
+	}
 }

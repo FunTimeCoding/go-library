@@ -3,26 +3,17 @@ package item
 import (
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/style"
-	"github.com/funtimecoding/go-library/pkg/strings"
 )
 
-func New(rows []table.Row) *table.Model {
-	columns := []table.Column{{Title: "Name", Width: 4}}
-
-	if len(rows) == 0 {
-		rows = []table.Row{
-			{strings.Alfa},
-			{strings.Bravo},
-			{strings.Charlie},
-			{strings.Delta},
-		}
-	}
-
+func New() *table.Model {
 	result := table.New(
-		table.WithColumns(columns),
-		table.WithRows(rows),
+		table.WithColumns(
+			[]table.Column{
+				{Title: IdentifierColumn},
+				{Title: DetailColumn},
+			},
+		),
 		table.WithFocused(true),
-		table.WithHeight(7),
 	)
 	style.Table(&result)
 

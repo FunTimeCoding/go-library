@@ -27,6 +27,7 @@ golint
 gomonitor
 gomonitord
 gosensor
+gosentry
 
 # UNIX
 websocat

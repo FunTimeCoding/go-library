@@ -7,5 +7,5 @@ import (
 )
 
 func TestItem(t *testing.T) {
-	assert.String(t, "Alfa", New(strings.Alfa).Name)
+	assert.String(t, "Alfa", New(strings.Alfa).Identifier)
 }

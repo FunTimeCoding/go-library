@@ -9,12 +9,16 @@ import (
 
 func Command() tea.Cmd {
 	return func() tea.Msg {
-		exists := run.CommandExists(constant.GoSensor)
+		commands := []string{
+			constant.GoSensor,
+			constant.GoSentry,
+		}
 		result := Message{}
 
-		if exists {
-			items := monitor.Run(constant.GoSensor)
-			result.Items = items
+		for _, c := range commands {
+			if run.CommandExists(c) {
+				result.Items = append(result.Items, monitor.Run(c)...)
+			}
 		}
 
 		return result

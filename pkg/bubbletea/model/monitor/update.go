@@ -6,14 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"
 )
 
-// TODO: Expand on Item and what it can contain
-//  What are good examples of Items?
-//   Sentry!
-//   GitLab CI pipeline status?
-//   GitLab CI job?
-//   There is a difference: temporarily running jobs vs. permanent pipelines
-//    Jobs become irrelevant after a while
-// TODO: After that begin writing the server
+// TODO: Begin writing the server
 //  Make the client connect to the server
 //  Show per item what user@host is analyzing/investigating
 //  Let users flag items as important

@@ -1,18 +1,6 @@
 package gorilla
 
-import (
-	"flag"
-	"github.com/gorilla/websocket"
-	"html/template"
-)
-
-var addressFlag = flag.String(
-	"addr",
-	"localhost:8080",
-	"http service address",
-)
-
-var upgrader = websocket.Upgrader{}
+import "html/template"
 
 var homeTemplate = template.Must(
 	template.New("").Parse(

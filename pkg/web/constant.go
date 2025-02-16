@@ -4,6 +4,7 @@ package web
 const (
 	InsecureScheme = "http"
 	SecureScheme   = "https"
+	SocketScheme = "ws"
 
 	ContentTypeHeader   = "Content-Type"
 	UserAgentHeader     = "User-Agent"

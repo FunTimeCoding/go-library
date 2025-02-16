@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/web/location"
 	"net/http"
 	"time"
 )
@@ -15,7 +16,7 @@ func SetCookie(
 		Value:    v,
 		HttpOnly: true,
 		Secure:   true,
-		Path:     "/",
+		Path: location.Root,
 		Expires:  time.Now().Add(24 * time.Hour),
 	}
 	http.SetCookie(w, result)

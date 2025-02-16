@@ -47,6 +47,12 @@ structuredmerge
 # HTML
 DOCTYPE
 
+# JavaScript
+onopen
+onclose
+onmessage
+onerror
+
 # Guild Wars 2
 Dragrimmar
 Ettin's

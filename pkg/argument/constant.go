@@ -5,6 +5,7 @@ const (
 	Branch      = "branch"
 	BuildTags   = "build-tags"
 	Cluster     = "cluster"
+	Connect = "connect"
 	Container   = "container"
 	Context     = "context"
 	Core        = "core"

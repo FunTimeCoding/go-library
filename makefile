@@ -46,3 +46,4 @@ monitor:
 	@gobuild --copy-to-bin cmd/gomonitor/main.go
 	@gobuild --copy-to-bin cmd/gosensor/main.go
 	@gobuild --copy-to-bin cmd/gosentry/main.go
+	@gobuild --copy-to-bin cmd/gomonitord/main.go

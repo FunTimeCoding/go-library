@@ -9,4 +9,7 @@ const (
 	Metrics  = "/metrics"
 	Shutdown = "/shutdown"
 	Status   = "/status"
+
+	Echo    = "/echo"
+	Monitor = "/monitor"
 )

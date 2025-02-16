@@ -1,6 +1,9 @@
 package monitor
 
-import "github.com/charmbracelet/bubbles/table"
+import (
+	"github.com/charmbracelet/bubbles/table"
+	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/client"
+)
 
 type Model struct {
 	table     *table.Model
@@ -9,4 +12,9 @@ type Model struct {
 	topBar    string
 	bottomBar string
 	second    int
+
+	client   *client.Client
+	connect  bool
+	user     string
+	hostname string
 }

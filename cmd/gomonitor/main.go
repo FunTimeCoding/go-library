@@ -1,11 +1,20 @@
 package main
 
 import (
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor"
-	"github.com/funtimecoding/go-library/pkg/bubbletea/table/item"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	bubbletea.Run(monitor.New(item.New()), true)
+	pflag.BoolP(
+		argument.Connect,
+		"c",
+		false,
+		"connect to the server",
+	)
+	argument.ParseAndBind()
+	bubbletea.Run(monitor.New(viper.GetBool(argument.Connect)), true)
 }

@@ -3,7 +3,6 @@ package coder
 import (
 	"context"
 	"errors"
-	"fmt"
 	errorLibrary "github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/monitor/coder/server"
 	"log"
@@ -30,19 +29,19 @@ func Run() error {
 	channelFail := make(chan error, 1)
 
 	go func() {
-		fmt.Println("serving")
+		log.Println("serve")
 		channelFail <- s.Serve(l)
 	}()
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
-	fmt.Println("waiting for signal")
+	log.Println("wait for signal")
 
 	select {
 	case selectFail := <-channelFail:
-		log.Printf("failed to serve: %v", selectFail)
+		log.Printf("serve fail: %v", selectFail)
 	case sig := <-signals:
-		log.Printf("terminating: %v", sig)
+		log.Printf("terminate: %v", sig)
 	}
 
 	c, cancel := context.WithTimeout(context.Background(), time.Second*10)

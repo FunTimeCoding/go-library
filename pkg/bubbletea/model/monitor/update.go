@@ -3,13 +3,11 @@ package monitor
 import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
+	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/receive"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"
 )
 
-// TODO: Begin writing the server
-//  Make the client connect to the server
-//  Show per item what user@host is analyzing/investigating
-//  Let users flag items as important
+// TODO: Show per item what user@host flagged
 
 func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 	switch g := s.(type) {
@@ -23,6 +21,8 @@ func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 		return m.tickEvent(g)
 	case fetch.Message:
 		m.fetchEvent(g)
+	case receive.Message:
+		m.receiveEvent(g)
 	}
 
 	t, result := m.table.Update(s)

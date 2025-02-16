@@ -29,11 +29,9 @@ func (m *Model) updateColumns() {
 			}
 
 			m.table.Columns()[i].Width = width
-			log.Printf("identifier width: %d", width)
 			remaining -= width + 2 // 2 for padding
 		case item.DetailColumn:
 			m.table.Columns()[i].Width = remaining - 2 // 2 for padding
-			log.Printf("detail width: %d", remaining)
 			remaining = 0
 		default:
 			log.Panicf("unexpected: %s", c.Title)

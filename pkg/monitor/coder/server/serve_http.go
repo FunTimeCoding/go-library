@@ -1,10 +1,10 @@
 package server
 
 import (
-	"fmt"
 	"github.com/coder/websocket"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"golang.org/x/time/rate"
+	"log"
 	"net/http"
 	"time"
 )
@@ -18,7 +18,7 @@ func (s Server) ServeHTTP(
 		r,
 		&websocket.AcceptOptions{Subprotocols: []string{"echo"}},
 	)
-	fmt.Printf("accepted: %s\n", r.RemoteAddr)
+	log.Printf("accept: %s\n", r.RemoteAddr)
 
 	if echoFail != nil {
 		s.Logf("%v", echoFail)
@@ -33,7 +33,7 @@ func (s Server) ServeHTTP(
 		}
 	}(c)
 
-	fmt.Printf("subprotocol: %v\n", c.Subprotocol())
+	log.Printf("subprotocol: %v\n", c.Subprotocol())
 
 	if c.Subprotocol() != "echo" {
 		errors.LogOnError(
@@ -49,7 +49,7 @@ func (s Server) ServeHTTP(
 	l := rate.NewLimiter(rate.Every(time.Millisecond*100), 10)
 
 	for {
-		fmt.Println("waiting for echo")
+		log.Println("wait for echo")
 		echoFail = echo(c, l)
 
 		if websocket.CloseStatus(echoFail) == websocket.StatusNormalClosure {
@@ -57,7 +57,7 @@ func (s Server) ServeHTTP(
 		}
 
 		if echoFail != nil {
-			s.Logf("failed to echo with %v: %v", r.RemoteAddr, echoFail)
+			s.Logf("echo fail %v: %v", r.RemoteAddr, echoFail)
 
 			return
 		}

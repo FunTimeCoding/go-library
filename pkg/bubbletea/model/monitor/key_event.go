@@ -17,16 +17,23 @@ func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.table.Focus()
 		}
 	case key.Q, key.CtrlC:
-		m.client.Write(join.Comma([]string{constant.LogoutCommand, m.user}))
-		m.client.Close()
+		if m.connect {
+			m.client.Write(
+				join.Comma([]string{constant.LogoutCommand, m.user}),
+			)
+			m.client.Close()
+		}
 
 		return m, tea.Quit
 	case key.Enter:
 		selected := m.table.SelectedRow()
 		log.Printf("Selected: %+v\n", selected)
-		m.client.Write(
-			join.Comma([]string{constant.FlagCommand, selected[0]}),
-		)
+
+		if m.connect {
+			m.client.Write(
+				join.Comma([]string{constant.FlagCommand, selected[0]}),
+			)
+		}
 
 		return m, nil
 	}

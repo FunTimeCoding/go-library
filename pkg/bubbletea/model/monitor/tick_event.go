@@ -22,7 +22,10 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 	}
 
 	if m.second%60 == 0 {
-		m.client.Write(constant.PingCommand)
+		if m.connect {
+			m.client.Write(constant.PingCommand)
+		}
+
 		commands = append(commands, fetch.Command())
 	}
 
@@ -33,7 +36,11 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 		m.hostname,
 	)
 	m.second++
-	commands = append(commands, tick.Command(), receive.Command(m.client))
+	commands = append(commands, tick.Command())
+
+	if m.connect {
+		commands = append(commands, receive.Command(m.client))
+	}
 
 	return m, tea.Batch(commands...)
 }

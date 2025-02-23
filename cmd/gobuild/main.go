@@ -7,8 +7,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const CopyToBinFlag = "copy-to-bin"
-
 func main() {
 	pflag.StringP(
 		argument.Output,
@@ -23,7 +21,7 @@ func main() {
 		"Build tags",
 	)
 	pflag.BoolP(
-		CopyToBinFlag,
+		build.CopyToBinFlag,
 		"b",
 		false,
 		"Copy to $HOME/bin",
@@ -33,6 +31,6 @@ func main() {
 		argument.Positional(0),
 		viper.GetString(argument.Output),
 		viper.GetString(argument.BuildTags),
-		viper.GetBool(CopyToBinFlag),
+		viper.GetBool(build.CopyToBinFlag),
 	)
 }

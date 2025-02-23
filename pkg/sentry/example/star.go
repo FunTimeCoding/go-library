@@ -6,6 +6,6 @@ import (
 )
 
 func Star() {
-	// TODO: API does not expose stars. Read from the database?
+	// TODO: API does not expose stars. Read from the database.
 	fmt.Println(sentry.NewEnvironment().Favourites())
 }

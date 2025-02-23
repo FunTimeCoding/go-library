@@ -25,30 +25,26 @@ func CloneAll() {
 	count := len(projects)
 	var i int
 
-	for _, element := range projects {
+	for _, p := range projects {
 		i++
 		fmt.Printf(
 			"Project (%d/%d): %s\n",
 			i,
 			count,
-			element.PathWithNamespace,
+			p.PathWithNamespace,
 		)
-		group := system.Join(base, element.Namespace.Path)
+		group := system.Join(base, p.Namespace.Path)
 		system.EnsurePathExists(group)
-		repository := system.Join(group, element.Path)
-		fmt.Printf(
-			"  Clone %s to %s\n",
-			element.SSHURLToRepo,
-			repository,
-		)
+		repository := system.Join(group, p.Path)
+		fmt.Printf("  Clone %s to %s\n", p.SSHURLToRepo, repository)
 
 		if !system.DirectoryExists(repository) {
 			system.ChangeDirectory(group)
-			git.Run("clone", element.SSHURLToRepo)
+			git.Run("clone", p.SSHURLToRepo)
 
 			if false {
 				// Fails with SSH agent on Windows
-				git.Clone(element.SSHURLToRepo, repository)
+				git.Clone(p.SSHURLToRepo, repository)
 			}
 		}
 	}

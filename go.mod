@@ -6,6 +6,7 @@ require (
 	github.com/MrGunflame/gw2api v1.0.5
 	github.com/PuerkitoBio/goquery v1.10.2
 	github.com/atlassian/go-sentry-api v1.0.0
+	github.com/bwmarrin/discordgo v0.28.1
 	github.com/charmbracelet/bubbles v0.20.0
 	github.com/charmbracelet/bubbletea v1.3.3
 	github.com/charmbracelet/lipgloss v1.0.0

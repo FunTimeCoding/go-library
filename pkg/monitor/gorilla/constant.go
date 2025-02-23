@@ -9,7 +9,7 @@ var homeTemplate = template.Must(
 <html>
 <head>
 <meta charset="utf-8">
-<script>  
+<script>
 window.addEventListener("load", function(evt) {
 
     var output = document.getElementById("output");
@@ -67,9 +67,9 @@ window.addEventListener("load", function(evt) {
 <body>
 <table>
 <tr><td valign="top" width="50%">
-<p>Click "Open" to create a connection to the server, 
-"Send" to send a message to the server and "Close" to close the connection. 
-You can change the message and send multiple times.
+<p>Click "Open" to create a connection to the server,
+ "Send" to send a message to the server and "Close" to close the connection.
+ You can change the message and send multiple times.
 <p>
 <form>
 <button id="open">Open</button>

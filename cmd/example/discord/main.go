@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/discord"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -9,23 +8,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-	DeleteLoopFlag  = "delete-loop"
-	ChannelArgument = "channel"
-)
+const DeleteLoopArgument = "delete-loop"
 
 func main() {
-	pflag.BoolP(
-		DeleteLoopFlag,
-		"d",
-		false,
-		"Delete messages in a loop",
-	)
 	pflag.StringP(
-		ChannelArgument,
-		"c",
+		DeleteLoopArgument,
+		"d",
 		"",
-		"Channel to delete from",
+		"Delete messages in a loop, requires channel",
 	)
 	argument.ParseAndBind()
 
@@ -33,15 +23,7 @@ func main() {
 	c.Listen(false)
 	defer c.Close()
 
-	if viper.GetBool(DeleteLoopFlag) {
-		h := viper.GetString(ChannelArgument)
-
-		if h == "" {
-			fmt.Println("Channel is required")
-
-			return
-		}
-
+	if h := viper.GetString(DeleteLoopArgument); h != "" {
 		c.DeleteLoop(h)
 
 		return

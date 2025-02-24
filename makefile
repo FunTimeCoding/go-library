@@ -22,28 +22,37 @@ update:
 		--downgrade sigs.k8s.io/structured-merge-diff/v4@v4.4.1
 
 build:
-	@gobuild cmd/gobuild/main.go
-	@gobuild cmd/gobump/main.go
-	@gobuild cmd/goclean/main.go
-	@gobuild cmd/gocommit/main.go
-	@gobuild cmd/godebian/main.go
-	@gobuild cmd/golint/main.go
-	@gobuild cmd/goupdate/main.go
+	@go run cmd/gobuild/main.go gobuild
+	@go run cmd/gobuild/main.go gobump
+	@go run cmd/gobuild/main.go goclean
+	@go run cmd/gobuild/main.go gocommit
+	@go run cmd/gobuild/main.go godebian
+	@go run cmd/gobuild/main.go golint
+	@go run cmd/gobuild/main.go goupdate
+	@go run cmd/gobuild/main.go godownload
+	@go run cmd/gobuild/main.go gopackage
+	@go run cmd/gobuild/main.go goupload
 
 clean:
 	@rm --force --recursive tmp
 
-install: build
-	@cp tmp/gobuild $$HOME/bin/gobuild
-	@cp tmp/gobump $$HOME/bin/gobump
-	@cp tmp/goclean $$HOME/bin/goclean
-	@cp tmp/gocommit $$HOME/bin/gocommit
-	@cp tmp/godebian $$HOME/bin/godebian
-	@cp tmp/golint $$HOME/bin/golint
-	@cp tmp/goupdate $$HOME/bin/goupdate
+install:
+	@go run cmd/gobuild/main.go --copy-to-bin gobuild
+	@gobuild --copy-to-bin gobump
+	@gobuild --copy-to-bin goclean
+	@gobuild --copy-to-bin gocommit
+	@gobuild --copy-to-bin godebian
+	@gobuild --copy-to-bin golint
+	@gobuild --copy-to-bin goupdate
+	@gobuild --copy-to-bin godownload
+	@gobuild --copy-to-bin gopackage
+	@gobuild --copy-to-bin goupload
 
 monitor:
-	@gobuild --copy-to-bin cmd/gomonitor/main.go
-	@gobuild --copy-to-bin cmd/gosensor/main.go
-	@gobuild --copy-to-bin cmd/gosentry/main.go
-	@gobuild --copy-to-bin cmd/gomonitord/main.go
+	@gobuild --copy-to-bin gomonitor
+	@gobuild --copy-to-bin gosensor
+	@gobuild --copy-to-bin gosentry
+	@gobuild --copy-to-bin gomonitord
+
+chk:
+	@gobuild --copy-to-bin gochk

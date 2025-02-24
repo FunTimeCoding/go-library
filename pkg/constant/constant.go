@@ -19,6 +19,7 @@ const (
 
 	NativeEnabled = "CGO_ENABLED"
 	System        = "GOOS"
+	Architecture  = "GOARCH"
 	Proxy         = "GOPROXY"
 
 	False  = "0"

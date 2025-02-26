@@ -56,3 +56,6 @@ monitor:
 
 chk:
 	@gobuild --copy-to-bin gochk
+
+deploy: chk
+	tmp/deploy.sh

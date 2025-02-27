@@ -33,6 +33,8 @@ gosentry
 websocat
 
 # Linux
+netns
+recv
 smartd
 
 # macOS

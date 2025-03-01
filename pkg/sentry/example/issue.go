@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console/format"
 	"github.com/funtimecoding/go-library/pkg/sentry"
+	"github.com/funtimecoding/go-library/pkg/sentry/constant"
 )
 
 func Issue() {
@@ -23,7 +24,7 @@ func Issue() {
 				for _, i := range c.Issues(
 					o,
 					p,
-					sentry.PeriodFortnight,
+					constant.PeriodFortnight,
 				) {
 					fmt.Printf("Issue: %s\n", i.Format(format.Plain))
 				}

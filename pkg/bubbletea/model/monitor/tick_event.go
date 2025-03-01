@@ -12,7 +12,7 @@ import (
 )
 
 func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
-	var commands tea.BatchMsg
+	var result tea.BatchMsg
 
 	if m.connect && m.second == 0 {
 		m.client.Connect()
@@ -26,7 +26,7 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 			m.client.Write(constant.PingCommand)
 		}
 
-		commands = append(commands, fetch.Command())
+		result = append(result, fetch.Command())
 	}
 
 	m.bottomBar = fmt.Sprintf(
@@ -36,11 +36,11 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 		m.hostname,
 	)
 	m.second++
-	commands = append(commands, tick.Command())
+	result = append(result, tick.Command())
 
 	if m.connect {
-		commands = append(commands, receive.Command(m.client))
+		result = append(result, receive.Command(m.client))
 	}
 
-	return m, tea.Batch(commands...)
+	return m, tea.Batch(result...)
 }

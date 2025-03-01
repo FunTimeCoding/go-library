@@ -1,10 +1,13 @@
 package sentry
 
-import "github.com/funtimecoding/go-library/pkg/system/environment"
+import (
+	"github.com/funtimecoding/go-library/pkg/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
+)
 
 func NewEnvironment() *Client {
 	return New(
-		environment.Get(HostEnvironment, 1),
-		environment.Get(TokenEnvironment, 1),
+		environment.Get(constant.HostEnvironment, 1),
+		environment.Get(constant.TokenEnvironment, 1),
 	)
 }

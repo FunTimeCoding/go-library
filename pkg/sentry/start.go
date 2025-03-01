@@ -3,6 +3,7 @@ package sentry
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/sentry/constant"
 	"github.com/getsentry/sentry-go"
 )
 
@@ -16,11 +17,11 @@ func Start(
 	errors.FatalOnEmpty(locator, "locator")
 
 	if environment == "" {
-		environment = UndefinedEnvironment
+		environment = constant.UndefinedEnvironment
 	}
 
 	if version == "" {
-		version = UndefinedVersion
+		version = constant.UndefinedVersion
 	}
 
 	h := sentry.CurrentHub()

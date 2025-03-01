@@ -7,8 +7,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"
 )
 
-// TODO: Show per item what user@host flagged
-
 func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 	switch g := s.(type) {
 	case tea.WindowSizeMsg:

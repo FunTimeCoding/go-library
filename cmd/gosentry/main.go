@@ -2,26 +2,36 @@ package main
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
-	"github.com/funtimecoding/go-library/pkg/monitor/item"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"github.com/funtimecoding/go-library/pkg/sentry"
 )
 
 func main() {
-	var result []*item.Item
+	p := monitor.BindFlag()
+	c := sentry.NewEnvironment()
+	issues := c.AllIssues()
 
-	for _, i := range sentry.NewEnvironment().AllIssues() {
-		result = append(
-			result,
-			item.New(
-				fmt.Sprintf("%s-%s", constant.SentryPrefix, *i.Raw.ID),
+	if p.Notation {
+		r := report.New()
+
+		for _, i := range issues {
+			r.AddItem(
+				i.MonitorIdentifier,
 				constant.ErrorType,
 				i.Title,
 				i.Link,
-			),
-		)
+			)
+		}
+
+		r.Print()
+
+		return
 	}
 
-	fmt.Println(notation.Encode(result, true))
+	for _, i := range issues {
+		fmt.Println(i.Format(format.Color))
+	}
 }

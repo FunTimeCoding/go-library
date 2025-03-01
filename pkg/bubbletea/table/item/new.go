@@ -11,6 +11,7 @@ func New() *table.Model {
 			[]table.Column{
 				{Title: IdentifierColumn},
 				{Title: DetailColumn},
+				{Title: UserColumn},
 			},
 		),
 		table.WithFocused(true),

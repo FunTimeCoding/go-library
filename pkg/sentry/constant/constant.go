@@ -1,4 +1,4 @@
-package sentry
+package constant
 
 const (
 	UndefinedEnvironment = "undefined"
@@ -7,6 +7,8 @@ const (
 	HostEnvironment    = "SENTRY_HOST"
 	TokenEnvironment   = "SENTRY_TOKEN"
 	LocatorEnvironment = "SENTRY_LOCATOR"
+
+	ErrorType = "error"
 )
 
 const (

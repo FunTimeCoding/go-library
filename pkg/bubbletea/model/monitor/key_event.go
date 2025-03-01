@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/key"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"log"
+	"github.com/funtimecoding/go-library/pkg/system"
 )
 
 func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
@@ -25,13 +25,13 @@ func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 
 		return m, tea.Quit
+	case key.O:
+		system.OpenBrowser(m.selectedItem().Link)
 	case key.Enter:
-		selected := m.table.SelectedRow()
-		log.Printf("Selected: %+v\n", selected)
-
 		if m.connect {
+			r := m.table.SelectedRow()
 			m.client.Write(
-				join.Comma([]string{constant.FlagCommand, selected[0]}),
+				join.Comma([]string{constant.FlagCommand, r[0]}),
 			)
 		}
 

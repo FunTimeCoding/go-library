@@ -6,35 +6,26 @@ import (
 )
 
 func (m *Model) updateColumns() {
-	remaining := m.width - 2
+	remaining := m.width - 2 // 2 for border
+	var detailIndex int
 
 	for i, c := range m.table.Columns() {
 		switch c.Title {
 		case item.IdentifierColumn:
-			title := len(item.IdentifierColumn)
-			var longest int
-
-			for _, r := range m.table.Rows() {
-				if len(r[i]) > longest {
-					longest = len(r[i])
-				}
-			}
-
-			var width int
-
-			if title > longest {
-				width = title
-			} else {
-				width = longest
-			}
-
-			m.table.Columns()[i].Width = width
-			remaining -= width + 2 // 2 for padding
+			w := columnWidth(c, m.table, i)
+			m.table.Columns()[i].Width = w
+			remaining -= w + 2 // 2 for padding
 		case item.DetailColumn:
-			m.table.Columns()[i].Width = remaining - 2 // 2 for padding
-			remaining = 0
+			detailIndex = i
+		case item.UserColumn:
+			w := columnWidth(c, m.table, i)
+			m.table.Columns()[i].Width = w
+			remaining -= w + 2 // 2 for padding
 		default:
 			log.Panicf("unexpected: %s", c.Title)
 		}
 	}
+
+	m.table.Columns()[detailIndex].Width = remaining - 2 // 2 for padding
+	m.table.UpdateViewport()
 }

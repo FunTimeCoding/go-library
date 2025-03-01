@@ -29,6 +29,7 @@ const (
 	Name        = "name"
 	Namespace   = "namespace"
 	Node        = "node"
+	Notation    = "notation"
 	Output      = "output"
 	Owner       = "owner"
 	Package     = "package"

@@ -6,5 +6,10 @@ import (
 )
 
 func (i *Issue) Format(s *format.Settings) string {
-	return status.New(s).String(i.Project, i.Type, i.Title).Format()
+	return status.New(s).String(
+		i.Project,
+		i.Title,
+		i.formatType(s),
+		i.formatAge(),
+	).Format()
 }

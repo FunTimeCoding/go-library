@@ -9,8 +9,9 @@ const (
 	Up   = "up"
 	Down = "down"
 
-	K = "k"
 	J = "j"
+	K = "k"
+	O = "o"
 	Q = "q"
 
 	CtrlC = "ctrl+c"

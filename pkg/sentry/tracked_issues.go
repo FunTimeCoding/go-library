@@ -1,6 +1,9 @@
 package sentry
 
-import "github.com/funtimecoding/go-library/pkg/sentry/issue"
+import (
+	"github.com/funtimecoding/go-library/pkg/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/sentry/issue"
+)
 
 func (c *Client) TrackedIssues() []*issue.Issue {
 	var result []*issue.Issue
@@ -17,7 +20,7 @@ func (c *Client) TrackedIssues() []*issue.Issue {
 			c.Issues(
 				organization,
 				c.Project(organization, element),
-				PeriodFortnight,
+				constant.PeriodFortnight,
 			)...,
 		)
 	}

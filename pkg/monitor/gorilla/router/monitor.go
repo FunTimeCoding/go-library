@@ -63,33 +63,32 @@ func (r *Router) Monitor(
 				}
 			}
 		case constant.FlagCommand:
-			var found bool
+			identifier := arguments[1]
+			var operation string
 
-			for _, l := range r.Flag {
-				if l.Identifier == arguments[1] {
-					l.By = append(l.By, i)
-					found = true
+			if r.HasFlag(identifier) {
+				l := r.FlagByIdentifier(identifier)
 
-					break
+				if l.HasClient(i) {
+					operation = constant.FlagRemoveCommand
+					l.RemoveClient(i)
+
+					if len(l.By) == 0 {
+						r.RemoveFlag(l)
+					}
+				} else {
+					operation = constant.FlagAddCommand
+					l.AddClient(i)
 				}
-			}
-
-			if !found {
-				r.Flag = append(r.Flag, flag.New(arguments[1], i))
+			} else {
+				operation = constant.FlagAddCommand
+				r.AddFlag(flag.New(identifier, i))
 			}
 
 			for _, l := range r.Client {
-				if l.Address.Equal(i.Address) {
-					continue
-				}
-
 				l.Send(
 					join.Comma(
-						[]string{
-							constant.FlagAddCommand,
-							i.Handle(),
-							arguments[1],
-						},
+						[]string{operation, i.Handle(), arguments[1]},
 					),
 				)
 			}

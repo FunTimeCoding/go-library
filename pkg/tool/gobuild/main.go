@@ -9,12 +9,17 @@ import (
 )
 
 func Main() {
-	pflag.String(argument.Main, "", "Path to main.go")
+	pflag.StringP(
+		argument.Main,
+		"m",
+		"",
+		"Path to main.go, defaults to cmd/$NAME/main.go",
+	)
 	pflag.StringP(
 		argument.Output,
 		"o",
 		"",
-		"Output path",
+		"Output path, defaults to tmp/$NAME/$OS-$ARCH/$NAME",
 	)
 	pflag.StringP(
 		argument.BuildTags,
@@ -42,7 +47,11 @@ func Main() {
 		darwinAMD64 = true
 	}
 
-	name := argument.RequiredPositional(0, "NAME", 1)
+	name := argument.RequiredPositional(
+		0,
+		"NAME",
+		1,
+	)
 	mainPath := viper.GetString(argument.Main)
 
 	if mainPath == "" {

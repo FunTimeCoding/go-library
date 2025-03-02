@@ -24,38 +24,41 @@ update:
 build:
 	@go run cmd/gobuild/main.go gobuild
 	@go run cmd/gobuild/main.go gobump
+	@go run cmd/gobuild/main.go gochk
 	@go run cmd/gobuild/main.go goclean
 	@go run cmd/gobuild/main.go gocommit
 	@go run cmd/gobuild/main.go godebian
-	@go run cmd/gobuild/main.go golint
-	@go run cmd/gobuild/main.go goupdate
 	@go run cmd/gobuild/main.go godownload
+	@go run cmd/gobuild/main.go golint
+	@go run cmd/gobuild/main.go gomonitor
+	@go run cmd/gobuild/main.go gomonitord
 	@go run cmd/gobuild/main.go gopackage
+	@go run cmd/gobuild/main.go gosensor
+	@go run cmd/gobuild/main.go gosentry
+	@go run cmd/gobuild/main.go goupdate
 	@go run cmd/gobuild/main.go goupload
 
 clean:
 	@rm --force --recursive tmp
+	@mkdir tmp
 
 install:
 	@go run cmd/gobuild/main.go --copy-to-bin gobuild
 	@gobuild --copy-to-bin gobump
+	@gobuild --copy-to-bin gochk
 	@gobuild --copy-to-bin goclean
 	@gobuild --copy-to-bin gocommit
 	@gobuild --copy-to-bin godebian
-	@gobuild --copy-to-bin golint
-	@gobuild --copy-to-bin goupdate
 	@gobuild --copy-to-bin godownload
-	@gobuild --copy-to-bin gopackage
-	@gobuild --copy-to-bin goupload
-
-monitor:
+	@gobuild --copy-to-bin golint
 	@gobuild --copy-to-bin gomonitor
+	@gobuild --copy-to-bin gomonitord
+	@gobuild --copy-to-bin gopackage
 	@gobuild --copy-to-bin gosensor
 	@gobuild --copy-to-bin gosentry
-	@gobuild --copy-to-bin gomonitord
+	@gobuild --copy-to-bin goupdate
+	@gobuild --copy-to-bin goupload
 
 chk:
 	@gobuild --copy-to-bin gochk
-
-deploy: chk
 	tmp/deploy.sh

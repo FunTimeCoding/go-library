@@ -12,7 +12,7 @@ func (c *Client) ProjectMergeRequests(
 	project int,
 	all bool,
 ) []*merge_request.Request {
-	var result []*gitlab.MergeRequest
+	var result []*gitlab.BasicMergeRequest
 	var number int
 
 	for {

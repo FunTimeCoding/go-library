@@ -12,6 +12,7 @@ func New() *table.Model {
 		{Title: "Country", Width: 10},
 		{Title: "Population", Width: 10},
 	}
+	// noinspection SpellCheckingInspection
 	rows := []table.Row{
 		{"1", "Tokyo", "Japan", "37,274,000"},
 		{"2", "Delhi", "India", "32,065,760"},

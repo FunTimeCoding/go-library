@@ -9,5 +9,5 @@ type Request struct {
 	State      string
 	Link       string
 
-	Raw *gitlab.MergeRequest
+	Raw *gitlab.BasicMergeRequest
 }

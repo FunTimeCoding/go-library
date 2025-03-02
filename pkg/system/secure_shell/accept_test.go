@@ -8,11 +8,11 @@ import (
 
 type ConnMock struct{}
 
-func (c ConnMock) Read(b []byte) (n int, err error) {
+func (c ConnMock) Read(_ []byte) (n int, err error) {
 	return 0, nil
 }
 
-func (c ConnMock) Write(b []byte) (n int, err error) {
+func (c ConnMock) Write(_ []byte) (n int, err error) {
 	return 0, nil
 }
 
@@ -28,15 +28,15 @@ func (c ConnMock) RemoteAddr() net.Addr {
 	return nil
 }
 
-func (c ConnMock) SetDeadline(t time.Time) error {
+func (c ConnMock) SetDeadline(_ time.Time) error {
 	return nil
 }
 
-func (c ConnMock) SetReadDeadline(t time.Time) error {
+func (c ConnMock) SetReadDeadline(_ time.Time) error {
 	return nil
 }
 
-func (c ConnMock) SetWriteDeadline(t time.Time) error {
+func (c ConnMock) SetWriteDeadline(_ time.Time) error {
 	return nil
 }
 

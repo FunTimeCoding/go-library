@@ -2,7 +2,7 @@ package merge_request
 
 import "gitlab.com/gitlab-org/api/client-go"
 
-func New(v *gitlab.MergeRequest) *Request {
+func New(v *gitlab.BasicMergeRequest) *Request {
 	return &Request{
 		Project:    v.ProjectID,
 		Identifier: v.IID,

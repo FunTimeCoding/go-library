@@ -1,7 +1,7 @@
-package github
+package constant
 
 const (
-	Token = "GITHUB_TOKEN"
+	TokenEnvironment = "GITHUB_TOKEN"
 
 	DelveNamespace  = "go-delve"
 	DelveRepository = "delve"

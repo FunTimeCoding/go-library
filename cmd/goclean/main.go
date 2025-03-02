@@ -57,7 +57,7 @@ func main() {
 	case provider_map.GitHubProvider:
 		remoteLocator := git.ParseLocator(origin.Locator)
 		namespace, repository := git.ParseProject(remoteLocator.Path)
-		c := github.New(environment.Get(github.Token, 1))
+		c := github.NewEnvironment()
 		tags := c.Tags(namespace, repository)
 		latest := github.LatestTag(tags)
 

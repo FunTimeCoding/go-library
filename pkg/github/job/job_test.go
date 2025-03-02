@@ -1,4 +1,4 @@
-package release
+package job
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -9,17 +9,13 @@ import (
 	"time"
 )
 
-func TestRelease(t *testing.T) {
+func TestJob(t *testing.T) {
 	r := New(
-		&github.RepositoryRelease{
-			TagName:   ptr.To(strings.Alfa),
+		&github.WorkflowJob{
+			Name:      ptr.To(strings.Alfa),
 			CreatedAt: &github.Timestamp{},
 		},
 	)
 	r.Raw = nil
-	assert.Any(
-		t,
-		&Release{Name: "Alfa", CreatedAt: time.Time{}},
-		r,
-	)
+	assert.Any(t, &Job{Name: "Alfa", CreatedAt: time.Time{}}, r)
 }

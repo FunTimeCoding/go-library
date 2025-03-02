@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/github"
+	githubConstant "github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/github/release"
 	"github.com/funtimecoding/go-library/pkg/go_mod"
 	"github.com/funtimecoding/go-library/pkg/project"
@@ -61,11 +62,14 @@ func main() {
 			goString,
 		)
 
-		if token := os.Getenv(github.Token); token != "" {
+		if token := os.Getenv(githubConstant.TokenEnvironment); token != "" {
 			if v := release.LatestCompatible(
 				github.New(
 					token,
-				).Releases(github.DelveNamespace, github.DelveRepository),
+				).Releases(
+					githubConstant.DelveNamespace,
+					githubConstant.DelveRepository,
+				),
 				goVersion,
 			); v != nil {
 				d = project.ReplaceDelveVersion(d, semver.Trim(v.Name))

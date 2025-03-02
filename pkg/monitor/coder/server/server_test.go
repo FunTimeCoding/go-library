@@ -5,6 +5,7 @@ import (
 	"github.com/coder/websocket"
 	"github.com/coder/websocket/wsjson"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"net/http/httptest"
 	"testing"
 	"time"
@@ -25,7 +26,14 @@ func TestServer(t *testing.T) {
 		&websocket.DialOptions{Subprotocols: []string{"echo"}},
 	)
 	assert.FatalOnError(t, err)
-	defer c.Close(websocket.StatusInternalError, "the sky is falling")
+	defer func() {
+		errors.LogOnError(
+			c.Close(
+				websocket.StatusInternalError,
+				"the sky is falling",
+			),
+		)
+	}()
 
 	for i := 0; i < 5; i++ {
 		assert.FatalOnError(t, wsjson.Write(ctx, c, map[string]int{"i": i}))
@@ -38,5 +46,5 @@ func TestServer(t *testing.T) {
 		}
 	}
 
-	c.Close(websocket.StatusNormalClosure, "")
+	errors.LogOnError(c.Close(websocket.StatusNormalClosure, ""))
 }

@@ -7,11 +7,7 @@ import (
 )
 
 func TestMock(t *testing.T) {
-	mock := New()
-	mock.Header().Set("a", "b")
-	assert.Any(
-		t,
-		http.Header{"A": {"b"}},
-		mock.Headers,
-	)
+	m := New()
+	m.Header().Set("a", "b")
+	assert.Any(t, http.Header{"A": {"b"}}, m.Headers)
 }

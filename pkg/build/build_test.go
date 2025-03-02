@@ -7,15 +7,22 @@ import (
 )
 
 func TestBuild(t *testing.T) {
-	if d := git.FindDirectory(); d == "" {
-		t.Skip("no git directory found")
+	d := git.FindDirectory()
+
+	if d == "" {
+		t.Skip("no git directory")
 	}
 
-	build := New("a", "b", "c")
-	assert.String(t, build.Version, "a")
-	assert.String(t, build.GitHash, "b")
-	assert.String(t, build.BuildDate, "c")
+	b := New("a", "b", "c")
+	assert.String(t, b.Version, "a")
+	assert.String(t, b.GitHash, "b")
+	assert.String(t, b.BuildDate, "c")
 	assert.True(t, len(Date()) > 0)
 	assert.True(t, len(GitHash()) > 0)
+
+	if len(git.Tags(d)) == 0 {
+		t.Skip("no git tags")
+	}
+
 	assert.True(t, len(GitTag()) > 0)
 }

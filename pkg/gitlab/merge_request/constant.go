@@ -11,3 +11,5 @@ var States = []string{
 	MergedState,
 	ClosedState,
 }
+
+const OpenAlias = "open"

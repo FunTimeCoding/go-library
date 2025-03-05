@@ -6,9 +6,21 @@ import (
 )
 
 func (r *Request) formatState(s *format.Settings) string {
-	if s.UseColor && r.State == OpenedState {
-		return console.Yellow(r.State)
+	result := r.State
+
+	if result == OpenedState {
+		result = OpenAlias
 	}
 
-	return r.State
+	if s.UseColor {
+		if result == OpenAlias {
+			return console.Yellow(result)
+		}
+
+		if result == ClosedState {
+			return console.Green(result)
+		}
+	}
+
+	return result
 }

@@ -96,7 +96,7 @@ func main() {
 
 		for _, element := range c.Branches(p.Identifier) {
 			if slices.Contains(constant.MainBranches, element.Name) {
-				mainBranchHash = element.Commit.ID
+				mainBranchHash = element.Raw.Commit.ID
 
 				break
 			}
@@ -109,7 +109,7 @@ func main() {
 				fmt.Printf(
 					"Branch: %s %s\n",
 					element.Name,
-					element.Commit.ID,
+					element.Raw.Commit.ID,
 				)
 			}
 

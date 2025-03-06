@@ -9,3 +9,9 @@ var (
 	Cyan    = color.New(color.FgCyan).SprintfFunc()
 	Magenta = color.New(color.FgMagenta).SprintfFunc()
 )
+
+const (
+	GreenColor  = "green"
+	RedColor    = "red"
+	YellowColor = "yellow"
+)

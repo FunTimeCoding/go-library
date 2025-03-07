@@ -1,6 +1,10 @@
 package merge_request
 
-import "gitlab.com/gitlab-org/api/client-go"
+import (
+	"github.com/funtimecoding/go-library/pkg/face"
+	"gitlab.com/gitlab-org/api/client-go"
+	"time"
+)
 
 type Request struct {
 	Project    int
@@ -8,6 +12,9 @@ type Request struct {
 	Title      string
 	State      string
 	Link       string
+	Create     *time.Time
+
+	AgeColor face.SprintFunction
 
 	Raw *gitlab.BasicMergeRequest
 }

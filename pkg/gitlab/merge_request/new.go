@@ -9,6 +9,7 @@ func New(v *gitlab.BasicMergeRequest) *Request {
 		Title:      v.Title,
 		State:      v.State,
 		Link:       v.WebURL,
+		Create:     v.CreatedAt,
 		Raw:        v,
 	}
 }

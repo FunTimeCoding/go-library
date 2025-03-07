@@ -7,7 +7,7 @@ import (
 
 func (b *Branch) Format(f *format.Settings) string {
 	r := status.New(f)
-	r.String(b.Name, b.formatMerged(f), b.formatAge())
+	r.String(b.Name, b.formatMerged(f), b.formatAge(f))
 
 	return r.Format()
 }

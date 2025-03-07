@@ -1,7 +1,7 @@
 package issue
 
-import "k8s.io/apimachinery/pkg/util/duration"
+import "github.com/docker/go-units"
 
 func (i *Issue) formatAge() string {
-	return duration.HumanDuration(i.Age())
+	return units.HumanDuration(i.Age())
 }

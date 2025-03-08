@@ -9,6 +9,12 @@ import (
 func TestConcern(t *testing.T) {
 	assert.True(
 		t,
-		New(strings.Alfa, strings.Bravo, 1, strings.Charlie) != nil,
+		New(
+			strings.Alfa,
+			strings.Bravo,
+			strings.Charlie,
+			1,
+			strings.Charlie,
+		) != nil,
 	)
 }

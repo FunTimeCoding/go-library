@@ -22,6 +22,7 @@ func TestGo(t *testing.T) {
 			{
 				Key:      "single_multi_line_import",
 				Text:     "single multi-line import",
+				Path:     "Alfa",
 				Line:     3,
 				LineText: "import (",
 			},

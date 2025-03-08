@@ -20,6 +20,7 @@ func TestMarkup(t *testing.T) {
 			{
 				Key:      "front_matter_delimiter",
 				Text:     "no front matter delimiter",
+				Path:     "Alfa",
 				Line:     1,
 				LineText: "myKey: myValue",
 			},

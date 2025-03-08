@@ -24,6 +24,7 @@ func Markup(
 				result.AddConcern(
 					constant.FrontMatterDelimiterKey,
 					constant.FrontMatterDelimiterText,
+					path,
 					number,
 					line,
 				)

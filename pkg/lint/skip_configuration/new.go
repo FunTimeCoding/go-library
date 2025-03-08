@@ -10,15 +10,20 @@ func New(
 	raw string,
 	verbose bool,
 ) *Configuration {
-	var result []string
+	result := &Configuration{Raw: raw}
 
 	if raw != "" {
-		result = split.Comma(raw)
+		result.Skips = split.Comma(raw)
+		result.Count = len(result.Skips)
 	}
 
-	if c := len(result); c > 0 && verbose {
-		fmt.Printf("Skips (%d): %s\n", c, join.Comma(result))
+	if result.Count > 0 && verbose {
+		fmt.Printf(
+			"Skips (%d): %s\n",
+			result.Count,
+			join.Comma(result.Skips),
+		)
 	}
 
-	return &Configuration{Raw: raw, Skips: result}
+	return result
 }

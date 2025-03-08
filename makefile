@@ -12,7 +12,7 @@ test:
 	@gotestsum --format standard-quiet -- ./...
 
 lint:
-	@golint --skip fixture,tmp
+	@golint --fix --skip fixture,tmp
 	@golangci-lint run
 
 update:

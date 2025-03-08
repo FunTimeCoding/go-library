@@ -62,7 +62,7 @@ func Go(
 
 	result.Fix = func() {
 		if result.Fixed != "" {
-			fmt.Printf("Simplify import %s %+v\n", path, result)
+			fmt.Printf("Simplify import %s\n", path)
 			system.SaveFile(path, result.Fixed)
 		}
 	}

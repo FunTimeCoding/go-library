@@ -36,11 +36,7 @@ func Markup(
 
 	result.Fix = func() {
 		if result.Fixed != "" {
-			fmt.Printf(
-				"Add front matter delimiter %s %+v\n",
-				path,
-				result,
-			)
+			fmt.Printf("Add front matter delimiter %s\n", path)
 			system.SaveFile(path, result.Fixed)
 		}
 	}

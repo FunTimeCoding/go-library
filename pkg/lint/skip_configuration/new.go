@@ -2,6 +2,7 @@ package skip_configuration
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 )
 
@@ -16,7 +17,7 @@ func New(
 	}
 
 	if c := len(result); c > 0 && verbose {
-		fmt.Printf("Skips (%d): %+v\n", c, result)
+		fmt.Printf("Skips (%d): %s\n", c, join.Comma(result))
 	}
 
 	return &Configuration{Raw: raw, Skips: result}

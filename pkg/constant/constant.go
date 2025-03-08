@@ -1,5 +1,7 @@
 package constant
 
+import "time"
+
 const (
 	Go      = "go"
 	Mod     = "mod"
@@ -27,4 +29,16 @@ const (
 
 	CurrentDirectory = "."
 	GoExtension      = ".go"
+	MarkupExtension  = ".yaml"
+)
+
+var FixtureDate = time.Date(
+	2020,
+	1,
+	1,
+	0,
+	0,
+	0,
+	0,
+	time.UTC,
 )

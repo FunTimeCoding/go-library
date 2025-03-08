@@ -3,6 +3,7 @@ package issue
 import (
 	"github.com/atlassian/go-sentry-api"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"testing"
@@ -17,18 +18,7 @@ func TestIssue(t *testing.T) {
 			Type:      ptr.To(strings.Bravo),
 			Title:     ptr.To(strings.Charlie),
 			Permalink: ptr.To(strings.Delta),
-			FirstSeen: ptr.To(
-				time.Date(
-					2020,
-					1,
-					1,
-					0,
-					0,
-					0,
-					0,
-					time.UTC,
-				),
-			),
+			FirstSeen: ptr.To(constant.FixtureDate),
 		},
 	)
 	actual.Create = time.Time{}

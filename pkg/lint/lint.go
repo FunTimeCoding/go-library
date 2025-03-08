@@ -1,50 +1,81 @@
 package lint
 
 import (
-	"bufio"
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"io"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/lint/skip_configuration"
+	"github.com/funtimecoding/go-library/pkg/system"
 )
 
-func Lint(r io.Reader) string {
-	var importBlock []string
-	var insideImportBlock bool
-	s := bufio.NewScanner(r)
+func Lint(
+	skipString string,
+	verbose bool,
+	fix bool,
+) {
+	skip := skip_configuration.New(skipString, verbose)
 
-	for s.Scan() {
-		line := s.Text()
-
-		if strings.HasPrefix(line, "import (") {
-			insideImportBlock = true
-			importBlock = append(importBlock, line)
-
-			continue
-		}
-
-		if insideImportBlock {
-			if strings.HasPrefix(line, ")") {
-				importBlock = append(importBlock, line)
-				insideImportBlock = false
-
-				if len(importBlock) == 3 {
-					return fmt.Sprintf(
-						"import %s",
-						strings.TrimSpace(importBlock[1]),
-					)
-				}
-
-				importBlock = nil
-			} else {
-				importBlock = append(importBlock, line)
+	for _, p := range system.EmptyDirectories(constant.CurrentDirectory) {
+		if Skipped(skip, p) {
+			if verbose {
+				fmt.Printf("Skip empty directory: %s\n", p)
 			}
 
 			continue
 		}
+
+		fmt.Printf("Empty directory: %s\n", p)
+
+		if fix {
+			system.Remove(p)
+		}
 	}
 
-	errors.PanicOnError(s.Err())
+	for _, p := range system.FilesRecursive(constant.CurrentDirectory) {
+		if Skipped(skip, p) {
+			if verbose {
+				fmt.Printf("Skip file: %s\n", p)
+			}
 
-	return ""
+			continue
+		}
+
+		if !system.FileEmpty(p) {
+			continue
+		}
+
+		fmt.Printf("Empty file: %s\n", p)
+
+		if fix {
+			system.Remove(p)
+		}
+	}
+
+	for _, p := range system.GoFiles(constant.CurrentDirectory) {
+		if Skipped(skip, p) {
+			if verbose {
+				fmt.Printf("Skip go file: %s\n", p)
+			}
+
+			continue
+		}
+
+		f := system.Open(p)
+		Go(p, f).ProcessConcerns(fix)
+		errors.LogClose(f)
+	}
+
+	for _, p := range system.MarkupFiles(constant.CurrentDirectory) {
+		if Skipped(skip, p) {
+			if verbose {
+				fmt.Printf("Skip markup file: %s\n", p)
+			}
+
+			continue
+		}
+
+		f := system.Open(p)
+		Markup(p, f).ProcessConcerns(fix)
+		errors.LogClose(f)
+	}
 }

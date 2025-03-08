@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.24.0
+go 1.24.1
 
 require (
 	github.com/MrGunflame/gw2api v1.0.5
@@ -26,9 +26,9 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/ollama/ollama v0.5.12
+	github.com/ollama/ollama v0.5.13
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
-	github.com/prometheus/client_golang v1.21.0
+	github.com/prometheus/client_golang v1.21.1
 	github.com/rivo/tview v0.0.0-20241227133733-17b7edb88c57
 	github.com/sanity-io/litter v1.5.8
 	github.com/slok/go-http-metrics v0.13.0
@@ -39,10 +39,10 @@ require (
 	github.com/tobischo/gokeepasslib/v3 v3.6.1
 	github.com/whilp/git-urls v1.0.0
 	gitlab.com/gitlab-org/api/client-go v0.124.0
-	golang.org/x/crypto v0.35.0
-	golang.org/x/mod v0.23.0
-	golang.org/x/oauth2 v0.27.0
-	golang.org/x/time v0.10.0
+	golang.org/x/crypto v0.36.0
+	golang.org/x/mod v0.24.0
+	golang.org/x/oauth2 v0.28.0
+	golang.org/x/time v0.11.0
 	gonum.org/v1/gonum v0.15.1
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
@@ -126,12 +126,12 @@ require (
 	go.mongodb.org/mongo-driver v1.14.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e // indirect
+	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
 	golang.org/x/net v0.35.0 // indirect
-	golang.org/x/sync v0.11.0 // indirect
-	golang.org/x/sys v0.30.0 // indirect
-	golang.org/x/term v0.29.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
+	golang.org/x/sync v0.12.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/term v0.30.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	google.golang.org/protobuf v1.36.1 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect

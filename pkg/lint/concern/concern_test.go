@@ -1,0 +1,14 @@
+package concern
+
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings"
+	"testing"
+)
+
+func TestConcern(t *testing.T) {
+	assert.True(
+		t,
+		New(strings.Alfa, strings.Bravo, 1, strings.Charlie) != nil,
+	)
+}

@@ -5,6 +5,6 @@ import (
 	"os"
 )
 
-func RemoveDirectory(path string) {
+func Remove(path string) {
 	errors.PanicOnError(os.RemoveAll(path))
 }

@@ -20,8 +20,8 @@ func TestGo(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      "single_multi_line_import",
-				Text:     "single multi-line import",
+				Key:      "single_multi_import",
+				Text:     "Single multi import",
 				Path:     "Alfa",
 				Line:     3,
 				LineText: "import (",

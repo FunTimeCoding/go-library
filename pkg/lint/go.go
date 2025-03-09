@@ -43,8 +43,8 @@ func Go(
 						),
 					)
 					result.AddConcern(
-						constant.SingleMultiLineImportKey,
-						constant.SingleMultiLineImportText,
+						constant.SingleMultiImportKey,
+						constant.SingleMultiImportText,
 						path,
 						start,
 						blockText,

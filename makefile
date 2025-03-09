@@ -12,6 +12,7 @@ test:
 	@gotestsum --format standard-quiet -- ./...
 
 lint:
+	@mkdir -p fixture/lint/empty_directory
 	@golint --fix --skip fixture,tmp
 	@golangci-lint run
 

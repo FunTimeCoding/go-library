@@ -1,10 +1,10 @@
 package ssh
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/ssh/command"
 	"github.com/funtimecoding/go-library/pkg/ssh/result"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/strings/trim"
 	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
 	"golang.org/x/crypto/ssh"
@@ -34,7 +34,7 @@ func (c *Client) RunCommand(o *command.Command) *result.Result {
 	var text string
 
 	if prefix := environmentPrefix(o); prefix != "" {
-		text = fmt.Sprintf("%s %s", prefix, o.Command)
+		text = key_value.Space(prefix, o.Command)
 	} else {
 		text = o.Command
 	}

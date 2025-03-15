@@ -10,8 +10,10 @@ import (
 )
 
 func (a *Alert) Format(s *format.Settings) string {
-	t := status.New(s).String(a.formatSeverity(s)).Raw(a)
-	t.String(a.formatName())
+	t := status.New(s).String(
+		a.formatName(s),
+		a.formatSeverity(s),
+	).Raw(a)
 
 	if a.Start != nil {
 		if false {

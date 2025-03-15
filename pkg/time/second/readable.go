@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/floats"
 	"github.com/funtimecoding/go-library/pkg/math/round"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 )
 
 func Readable(seconds int) string {
@@ -36,11 +37,7 @@ func Readable(seconds int) string {
 	if rounded == float64(int(value)) {
 		result = fmt.Sprintf("%d %s", int(value), unit)
 	} else {
-		result = fmt.Sprintf(
-			"%s %s",
-			floats.ToStringRounded(value),
-			unit,
-		)
+		result = key_value.Space(floats.ToStringRounded(value), unit)
 	}
 
 	if rounded > 1 {

@@ -18,4 +18,5 @@ func TestJoin(t *testing.T) {
 	assert.String(t, "a b", Space(s...))
 	assert.String(t, "a_b", Underscore(s))
 	assert.String(t, "a.b", Dot(s))
+	assert.String(t, "ab", Empty(s))
 }

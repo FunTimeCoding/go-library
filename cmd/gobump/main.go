@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"os"
 )
@@ -62,11 +63,7 @@ func main() {
 		system.Exitf(1, "unexpected increase: %s\n", increase)
 	}
 
-	nextString := fmt.Sprintf(
-		"%s%s",
-		constant.VersionPrefix,
-		next.String(),
-	)
+	nextString := key_value.Empty(constant.VersionPrefix, next.String())
 	fmt.Printf("Tag: %s\n", nextString)
 	git.Tag(nextString)
 	git.Push()

@@ -1,13 +1,12 @@
 package status
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"strings"
 )
 
 func (s *Status) Format() string {
-	result := fmt.Sprintf(
-		"%s%s",
+	result := key_value.Empty(
 		spaces(s.settings.Indentation),
 		strings.Join(s.bubbles, " | "),
 	)

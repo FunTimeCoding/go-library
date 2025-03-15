@@ -6,10 +6,13 @@ func NewAlert(
 	r *v1.AlertingRule,
 	g *v1.RuleGroup,
 ) *Rule {
-	return &Rule{
+	result := &Rule{
 		Group:    g.Name,
 		Name:     r.Name,
 		RawAlert: r,
 		RawGroup: g,
 	}
+	result.readAnnotations()
+
+	return result
 }

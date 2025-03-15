@@ -65,3 +65,7 @@ evtc
 
 # Gorilla
 upgrader
+
+# Prometheus
+alertname
+alertmanager

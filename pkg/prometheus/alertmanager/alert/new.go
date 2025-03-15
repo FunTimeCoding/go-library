@@ -15,7 +15,7 @@ func New(v *models.GettableAlert) *Alert {
 	if state == "" {
 		state = constant.None
 	} else {
-		if !slices.Contains(constant.States, state) {
+		if !slices.Contains(constant.AlertStates, state) {
 			fmt.Printf("Unexpected state: %s\n", state)
 		}
 	}

@@ -7,6 +7,7 @@ const (
 	HostEnvironment = "ALERTMANAGER_HOST"
 )
 
+// Alert field
 const (
 	NameField       = "alertname"
 	SeverityField   = "severity"
@@ -15,10 +16,9 @@ const (
 	PrometheusField = "prometheus"
 )
 
-// State
+// Alert state
 const (
 	ActiveState     = "active"
-	ExpiredState    = "expired"
 	SuppressedState = "suppressed"
 )
 
@@ -31,10 +31,12 @@ const (
 	WarningSeverity  = "warning"
 )
 
-const NodeNotReady = "KubeNodeNotReady"
+const ExpiredState = "expired" // Silence state
+
+const NodeNotReady = "KubeNodeNotReady" // Alert name
 
 var (
-	States = []string{
+	AlertStates = []string{
 		ActiveState,
 		SuppressedState,
 	}

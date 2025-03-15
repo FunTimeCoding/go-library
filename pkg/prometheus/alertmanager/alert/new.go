@@ -27,25 +27,11 @@ func New(v *models.GettableAlert) *Alert {
 		Raw:             v,
 		Start:           openapi.ConvertTime(v.StartsAt),
 	}
-
-	ExtractKey(&remaining, constant.NameField, &result.Name)
-	ExtractKey(&remaining, constant.SeverityField, &result.Severity)
-	ExtractKey(&remaining, constant.SummaryField, &result.Summary)
-	ExtractKey(&remaining, constant.MessageField, &result.Message)
-	ExtractKey(&remaining, constant.PrometheusField, &result.Prometheus)
+	extractKey(&remaining, constant.NameField, &result.Name)
+	extractKey(&remaining, constant.SeverityField, &result.Severity)
+	extractKey(&remaining, constant.SummaryField, &result.Summary)
+	extractKey(&remaining, constant.MessageField, &result.Message)
+	extractKey(&remaining, constant.PrometheusField, &result.Prometheus)
 
 	return result
-}
-
-func ExtractKey(
-	remaining *models.LabelSet,
-	k string,
-	to *string,
-) {
-	if v, ok := (*remaining)[k]; ok {
-		*to = v
-		delete(*remaining, k)
-	} else {
-		*to = constant.None
-	}
 }

@@ -1,19 +1,19 @@
 package rule
 
-func (a *Rule) readAnnotations() {
-	if a.RawAlert == nil {
+func (r *Rule) readAnnotations() {
+	if r.RawAlert == nil {
 		return
 	}
 
-	for k, v := range a.RawAlert.Annotations {
+	for k, v := range r.RawAlert.Annotations {
 		switch k {
 		case DocumentationKey:
-			a.Documentation = string(v)
+			r.Documentation = string(v)
 		case RunbookLocatorKey:
-			a.Documentation = string(v)
+			r.Documentation = string(v)
 		}
 
-		if a.Documentation != "" {
+		if r.Documentation != "" {
 			break
 		}
 	}

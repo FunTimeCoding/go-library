@@ -1,7 +1,8 @@
 package constant
 
 const (
-	None = "none"
+	None      = "none"
+	NoComment = "no comment"
 
 	HostEnvironment = "ALERTMANAGER_HOST"
 )
@@ -17,6 +18,7 @@ const (
 // State
 const (
 	ActiveState     = "active"
+	ExpiredState    = "expired"
 	SuppressedState = "suppressed"
 )
 
@@ -28,6 +30,8 @@ const (
 	UnknownSeverity  = "unknown"
 	WarningSeverity  = "warning"
 )
+
+const NodeNotReady = "KubeNodeNotReady"
 
 var (
 	States = []string{

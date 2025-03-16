@@ -62,6 +62,7 @@ func TestSilence(t *testing.T) {
 			State:      "active",
 			Author:     "Bravo",
 			Comment:    "Charlie",
+			Rule:       "unknown rule",
 		},
 		actual,
 	)

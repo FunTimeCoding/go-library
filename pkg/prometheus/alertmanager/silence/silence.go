@@ -15,5 +15,7 @@ type Silence struct {
 	Start *time.Time
 	End   *time.Time
 
+	Rule string
+
 	Raw *models.GettableSilence
 }

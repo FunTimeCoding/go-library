@@ -1,15 +1,20 @@
 package constant
 
+import "time"
+
 const (
-	None      = "none"
-	NoComment = "no comment"
+	None        = "none"
+	NoComment   = "no comment"
+	UnknownRule = "unknown rule"
+
+	DefaultDuration = 10 * time.Minute
 
 	HostEnvironment = "ALERTMANAGER_HOST"
 )
 
 // Alert field
 const (
-	NameField       = "alertname"
+	AlertnameField  = "alertname"
 	SeverityField   = "severity"
 	SummaryField    = "summary"
 	MessageField    = "message"

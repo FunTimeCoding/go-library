@@ -10,14 +10,11 @@ func main() {
 		prometheus.Rule()
 		alertmanager.Alert()
 		alertmanager.Status()
+		alertmanager.SetSilence()
 		alertmanager.DeleteSilence()
 	}
 
-	if true {
-		if false {
-			alertmanager.CreateSilence()
-		}
-
+	if false {
 		alertmanager.Silence()
 	}
 }

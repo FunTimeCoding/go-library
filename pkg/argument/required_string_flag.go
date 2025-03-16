@@ -7,13 +7,13 @@ import (
 
 func RequiredStringFlag(
 	name string,
-	exitCode int,
+	exit int,
 ) string {
 	if s := viper.GetString(name); s != "" {
 		return s
 	}
 
-	system.Exitf(exitCode, "flag empty: %s\n", name)
+	system.Exitf(exit, "flag empty: %s\n", name)
 
 	return ""
 }

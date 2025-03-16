@@ -3,19 +3,53 @@ package main
 import (
 	"fmt"
 	"github.com/akkuman/logrus-loki-hook"
+	"github.com/funtimecoding/go-library/pkg/prometheus/loki"
+	"github.com/funtimecoding/go-library/pkg/prometheus/loki/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/sirupsen/logrus"
+	"time"
 )
 
 func main() {
+	if false {
+		load()
+	}
+
+	if false {
+		write()
+	}
+
+	if true {
+		c := loki.NewEnvironment()
+		end := time.Now()
+		start := end.AddDate(0, 0, -7)
+
+		if false {
+			for _, l := range c.Labels(start, end) {
+				fmt.Printf("Label: %s\n", l)
+				fmt.Printf("  Values: %+v\n", c.LabelValues(start, end, l))
+			}
+		}
+
+		fmt.Printf("Query: %s\n", c.Query("{namespace=\"i9n\"} |= ``"))
+
+		if false {
+			c.Statistic("")
+			c.QueryRange("")
+			c.Series("")
+		}
+	}
+}
+
+func write() {
 	l := logrus.New()
 	h, e := hook.NewHook(
 		&hook.Config{
 			URL: fmt.Sprintf(
 				"https://%s:%s@%s/api/prom/push",
-				environment.Get("LOKI_HOST", 1),
-				environment.Get("LOKI_USER", 1),
-				environment.Get("LOKI_PASSWORD", 1),
+				environment.Get(constant.HostEnvironment, 1),
+				environment.Get(constant.UserEnvironment, 1),
+				environment.Get(constant.PasswordEnvironment, 1),
 			),
 			LevelName: "severity",
 			Labels:    map[string]string{"application": "test"},

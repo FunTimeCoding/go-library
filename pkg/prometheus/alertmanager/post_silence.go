@@ -8,50 +8,40 @@ import (
 	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/prometheus/alertmanager/api/v2/client/silence"
 	"github.com/prometheus/alertmanager/api/v2/models"
-	"log"
 	"time"
 )
 
-func (c *Client) CreateSilence(
+func (c *Client) PostSilence(
+	identifier string,
 	alert string,
 	comment string,
-	d time.Duration,
-) *silence.PostSilencesOKBody {
-	r := c.Rules().Find(alert)
-
-	if r == nil {
-		log.Panicf("alert not found: %s", alert)
-	}
-
+	start time.Time,
+	end time.Time,
+) string {
 	if comment == "" {
 		comment = constant.NoComment
 	}
 
-	t := time.Now()
-
-	if d == 0 {
-		d = 10 * time.Minute
-	}
-
 	p := silence.NewPostSilencesParams()
 	p.Silence = &models.PostableSilence{
+		ID: identifier,
 		Silence: models.Silence{
 			Comment:   &comment,
 			CreatedBy: ptr.To(system.User().Username),
 			Matchers: []*models.Matcher{
 				{
-					Name:    ptr.To(constant.NameField),
+					Name:    ptr.To(constant.AlertnameField),
 					Value:   &alert,
 					IsRegex: ptr.To(false),
 				},
 			},
-			StartsAt: ptr.To(timeLibrary.Scan(t)),
-			EndsAt:   ptr.To(timeLibrary.Scan(t.Add(d))),
+			StartsAt: ptr.To(timeLibrary.Scan(start)),
+			EndsAt:   ptr.To(timeLibrary.Scan(end)),
 		},
 	}
 
 	result, e := c.client.Silence.PostSilences(p)
 	errors.PanicOnError(e)
 
-	return result.Payload
+	return result.Payload.SilenceID
 }

@@ -27,7 +27,7 @@ func New(v *models.GettableAlert) *Alert {
 		Raw:             v,
 		Start:           openapi.ConvertTime(v.StartsAt),
 	}
-	extractKey(&remaining, constant.NameField, &result.Name)
+	extractKey(&remaining, constant.AlertnameField, &result.Name)
 	extractKey(&remaining, constant.SeverityField, &result.Severity)
 	extractKey(&remaining, constant.SummaryField, &result.Summary)
 	extractKey(&remaining, constant.MessageField, &result.Message)

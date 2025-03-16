@@ -44,6 +44,7 @@ const (
 	Repository  = "repository"
 	Retry       = "retry"
 	Run         = "run"
+	Set         = "set"
 	Skip        = "skip"
 	Summary     = "summary"
 	Tag         = "tag"

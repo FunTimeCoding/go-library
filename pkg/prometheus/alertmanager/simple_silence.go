@@ -1,5 +1,5 @@
 package alertmanager
 
-func (c *Client) SimpleSilence(alert string) {
-	c.CreateSilence(alert, "", 0)
+func (c *Client) SimpleSilence(alert string) string {
+	return c.SetSilence(alert, "", 0)
 }

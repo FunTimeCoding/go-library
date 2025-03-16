@@ -23,6 +23,7 @@ update:
 		--downgrade sigs.k8s.io/structured-merge-diff/v4@v4.4.1
 
 build:
+	@go run cmd/gobuild/main.go goalert
 	@go run cmd/gobuild/main.go gobuild
 	@go run cmd/gobuild/main.go gobump
 	@go run cmd/gobuild/main.go gochk
@@ -36,6 +37,7 @@ build:
 	@go run cmd/gobuild/main.go gopackage
 	@go run cmd/gobuild/main.go gosensor
 	@go run cmd/gobuild/main.go gosentry
+	@go run cmd/gobuild/main.go gosilence
 	@go run cmd/gobuild/main.go goupdate
 	@go run cmd/gobuild/main.go goupload
 
@@ -45,6 +47,7 @@ clean:
 
 install:
 	@go run cmd/gobuild/main.go --copy-to-bin gobuild
+	@gobuild --copy-to-bin goalert
 	@gobuild --copy-to-bin gobump
 	@gobuild --copy-to-bin gochk
 	@gobuild --copy-to-bin goclean
@@ -57,6 +60,7 @@ install:
 	@gobuild --copy-to-bin gopackage
 	@gobuild --copy-to-bin gosensor
 	@gobuild --copy-to-bin gosentry
+	@gobuild --copy-to-bin gosilence
 	@gobuild --copy-to-bin goupdate
 	@gobuild --copy-to-bin goupload
 

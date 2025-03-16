@@ -1,6 +1,7 @@
 package argument
 
 const (
+	All         = "all"
 	Arm         = "arm"
 	Branch      = "branch"
 	BuildTags   = "build-tags"

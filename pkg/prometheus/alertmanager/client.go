@@ -8,6 +8,7 @@ import (
 
 type Client struct {
 	client     *client.AlertmanagerAPI
+	host       string
 	prometheus *prometheus.Client
 	rules      *rule_list.List
 }

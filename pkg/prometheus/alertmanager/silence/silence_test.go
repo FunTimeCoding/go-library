@@ -51,6 +51,7 @@ func TestSilence(t *testing.T) {
 				),
 			},
 		},
+		strings.Delta,
 	)
 	actual.Start = nil
 	actual.End = nil
@@ -58,11 +59,13 @@ func TestSilence(t *testing.T) {
 	assert.Any(
 		t,
 		&Silence{
-			Identifier: "Alfa",
-			State:      "active",
-			Author:     "Bravo",
-			Comment:    "Charlie",
-			Rule:       "unknown rule",
+			MonitorIdentifier: "silence-Alfa",
+			Identifier:        "Alfa",
+			State:             "active",
+			Author:            "Bravo",
+			Comment:           "Charlie",
+			Rule:              "unknown rule",
+			Link:              "https://Delta/#/silences/Alfa",
 		},
 		actual,
 	)

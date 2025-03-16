@@ -6,16 +6,18 @@ import (
 )
 
 type Silence struct {
-	Identifier string
-	State      string
-	Match      string
-	Author     string
-	Comment    string
+	MonitorIdentifier string
+	Identifier        string
+	State             string
+	Match             string
+	Author            string
+	Comment           string
 
 	Start *time.Time
 	End   *time.Time
 
 	Rule string
+	Link string
 
 	Raw *models.GettableSilence
 }

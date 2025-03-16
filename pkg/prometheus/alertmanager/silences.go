@@ -20,7 +20,7 @@ func (c *Client) Silences(expired bool) []*silence.Silence {
 	errors.PanicOnError(e)
 	var result []*silence.Silence
 
-	for _, s := range silence.NewSlice(response.GetPayload()) {
+	for _, s := range silence.NewSlice(response.GetPayload(), c.host) {
 		if !expired && s.Expired() {
 			continue
 		}

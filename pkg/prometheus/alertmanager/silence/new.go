@@ -2,13 +2,17 @@ package silence
 
 import (
 	"fmt"
+	monitorConstant "github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/openapi"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/prometheus/alertmanager/api/v2/models"
 )
 
-func New(v *models.GettableSilence) *Silence {
+func New(
+	v *models.GettableSilence,
+	host string,
+) *Silence {
 	var match []string
 	var rule string
 
@@ -25,6 +29,11 @@ func New(v *models.GettableSilence) *Silence {
 	}
 
 	return &Silence{
+		MonitorIdentifier: fmt.Sprintf(
+			"%s-%s",
+			monitorConstant.SilencePrefix,
+			*v.ID,
+		),
 		Identifier: *v.ID,
 		State:      *v.Status.State,
 		Match:      join.Comma(match),
@@ -33,6 +42,11 @@ func New(v *models.GettableSilence) *Silence {
 		Author:     *v.CreatedBy,
 		Comment:    *v.Comment,
 		Rule:       rule,
-		Raw:        v,
+		Link: fmt.Sprintf(
+			"https://%s/#/silences/%s",
+			host,
+			*v.ID,
+		),
+		Raw: v,
 	}
 }

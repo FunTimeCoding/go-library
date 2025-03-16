@@ -6,17 +6,19 @@ import (
 )
 
 type Alert struct {
-	Name       string
-	State      string
-	Severity   string
-	Summary    string
-	Message    string
-	Prometheus string
-	Start      *time.Time
-	Labels     models.LabelSet
+	MonitorIdentifier string
+	Name              string
+	State             string
+	Severity          string
+	Summary           string
+	Message           string
+	Prometheus        string
+	Start             *time.Time
+	Labels            models.LabelSet
 
 	RemainingLabels models.LabelSet
 	Documentation   string
+	Link            string
 
 	Raw *models.GettableAlert
 }

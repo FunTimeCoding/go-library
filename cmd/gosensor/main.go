@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	p := monitor.BindFlag()
+	p := monitor.BindGeneric()
 
 	if p.Notation {
 		r := report.New()

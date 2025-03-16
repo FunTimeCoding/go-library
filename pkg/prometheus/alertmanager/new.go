@@ -26,5 +26,5 @@ func New(
 	t.DefaultAuthentication = transport.BasicAuth(user, password)
 	c.SetTransport(t)
 
-	return &Client{client: c, prometheus: p}
+	return &Client{client: c, host: host, prometheus: p}
 }

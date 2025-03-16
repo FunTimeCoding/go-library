@@ -10,8 +10,10 @@ import (
 func Command() tea.Cmd {
 	return func() tea.Msg {
 		commands := []string{
+			constant.GoAlert,
 			constant.GoSensor,
 			constant.GoSentry,
+			constant.GoSilence,
 		}
 		result := Message{}
 

@@ -1,37 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
-	"github.com/funtimecoding/go-library/pkg/monitor/report"
-	"github.com/funtimecoding/go-library/pkg/sentry"
+	"github.com/funtimecoding/go-library/pkg/sentry/check/issue"
+	"github.com/funtimecoding/go-library/pkg/sentry/check/issue/parameter"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	p := monitor.BindFlag()
-	c := sentry.NewEnvironment()
-	issues := c.AllIssues()
-
-	if p.Notation {
-		r := report.New()
-
-		for _, i := range issues {
-			r.AddItem(
-				i.MonitorIdentifier,
-				constant.ErrorType,
-				i.Title,
-				i.Link,
-			)
-		}
-
-		r.Print()
-
-		return
-	}
-
-	for _, i := range issues {
-		fmt.Println(i.Format(format.Color))
-	}
+	monitor.NotationArgument()
+	monitor.AllArgument()
+	argument.ParseAndBind()
+	p := parameter.New()
+	p.Notation = viper.GetBool(argument.Notation)
+	p.All = viper.GetBool(argument.All)
+	issue.Print(p)
 }

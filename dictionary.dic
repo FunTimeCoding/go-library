@@ -20,6 +20,7 @@ servname
 
 # GoLibrary
 exitf
+goalert
 gobuild
 gobump
 goclean
@@ -29,6 +30,7 @@ gomonitor
 gomonitord
 gosensor
 gosentry
+gosilence
 
 # UNIX
 websocat

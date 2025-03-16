@@ -3,6 +3,7 @@ package tag
 const (
 	Concerns    = "concerns"
 	Dense       = "dense"
+	Emoji       = "emoji"
 	Filter      = "filter"
 	Investigate = "investigate"
 	Link        = "link"

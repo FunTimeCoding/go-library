@@ -3,13 +3,18 @@ package constant
 import "github.com/gorilla/websocket"
 
 const (
-	GoSensor = "gosensor"
-	GoSentry = "gosentry"
+	GoSensor  = "gosensor"
+	GoSentry  = "gosentry"
+	GoAlert   = "goalert"
+	GoSilence = "gosilence"
 
 	ExamplePrefix = "example"
 	SentryPrefix  = "sentry"
+	SilencePrefix = "silence"
+	AlertPrefix   = "alert"
 
-	ErrorType = "error"
+	WarningType = "warning"
+	ErrorType   = "error"
 
 	Address = "localhost:8080"
 

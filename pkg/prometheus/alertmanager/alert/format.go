@@ -5,6 +5,7 @@ import (
 	"github.com/docker/go-units"
 	"github.com/funtimecoding/go-library/pkg/console/format"
 	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/time"
 )
@@ -36,6 +37,8 @@ func (a *Alert) Format(s *format.Settings) string {
 			t.Line("  RemainingLabels: %s", v)
 		}
 	}
+
+	t.TagLine(tag.Link, "  %s", a.Link)
 
 	return t.Format()
 }

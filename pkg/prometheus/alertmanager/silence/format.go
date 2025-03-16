@@ -11,8 +11,7 @@ import (
 
 func (s *Silence) Format(f *format.Settings) string {
 	t := status.New(f).String(
-		s.Identifier,
-		s.formatRule(),
+		s.formatRule(f),
 		s.Author,
 		fmt.Sprintf("%s ago", units.HumanDuration(s.Age())),
 	).Raw(s)
@@ -26,6 +25,8 @@ func (s *Silence) Format(f *format.Settings) string {
 	if f.HasTag(tag.State) {
 		t.String(s.State)
 	}
+
+	t.TagLine(tag.Link, "  %s", s.Link)
 
 	return t.Format()
 }

@@ -18,5 +18,9 @@ func (a *Alert) formatSeverity(s *format.Settings) string {
 		}
 	}
 
+	if result == constant.NoneSeverity {
+		result = "no severity"
+	}
+
 	return result
 }

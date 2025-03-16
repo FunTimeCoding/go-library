@@ -10,7 +10,7 @@ func (a *Alert) emoji() []string {
 	}
 
 	if a.Documentation != constant.None {
-		result = append(result, "🖊")
+		result = append(result, "🖊 ")
 	}
 
 	return result

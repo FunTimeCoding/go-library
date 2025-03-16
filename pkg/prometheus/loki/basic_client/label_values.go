@@ -14,7 +14,7 @@ func (c *Client) LabelValues(
 	end time.Time,
 	label string,
 ) []string {
-	result := &response.LabelValues{}
+	result := &response.List{}
 	notation.DecodeStrict(
 		c.Get(
 			fmt.Sprintf(

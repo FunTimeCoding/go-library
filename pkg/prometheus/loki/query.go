@@ -1,5 +1,7 @@
 package loki
 
-func (c *Client) Query(query string) string {
+import "github.com/funtimecoding/go-library/pkg/prometheus/loki/basic_client/response"
+
+func (c *Client) Query(query string) response.Data {
 	return c.basic.Query(query)
 }

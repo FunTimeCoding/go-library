@@ -13,7 +13,7 @@ func (c *Client) Labels(
 	start time.Time,
 	end time.Time,
 ) []string {
-	result := &response.Labels{}
+	result := &response.List{}
 	notation.DecodeStrict(
 		c.Get(
 			fmt.Sprintf(

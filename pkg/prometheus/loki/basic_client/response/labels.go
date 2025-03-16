@@ -1,6 +1,6 @@
 package response
 
-type Labels struct {
+type List struct {
 	Status string   `json:"status"`
 	Data   []string `json:"data"`
 }

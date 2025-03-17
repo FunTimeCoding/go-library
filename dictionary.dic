@@ -71,3 +71,4 @@ upgrader
 # Prometheus
 alertname
 alertmanager
+amtool

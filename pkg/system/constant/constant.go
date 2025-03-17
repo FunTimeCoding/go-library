@@ -18,7 +18,8 @@ const (
 	DarwinARM64 = "darwin-arm64"
 	DarwinAMD64 = "darwin-amd64"
 
-	Command                     = "cmd"
+	CommandPath                 = "cmd"
+	ConfigurationPath           = ".config"
 	DownloadsPath               = "Downloads"
 	KubernetesConfigurationPath = ".kube/config"
 	QuerySocketPath             = ".osquery/shell.em"
@@ -40,6 +41,5 @@ var (
 	OperatingSystems    = []string{Linux, Darwin}
 	Architectures       = []string{AMD64, ARM64}
 	SystemArchitectures = []string{LinuxAMD64, DarwinARM64, DarwinAMD64}
+	NullPhysicalAddress = network.PhysicalAddress(NullPhysicalAddressString)
 )
-
-var NullPhysicalAddress = network.PhysicalAddress(NullPhysicalAddressString)

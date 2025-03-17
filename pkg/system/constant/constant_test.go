@@ -7,7 +7,7 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "cmd", Command)
+	assert.String(t, "cmd", CommandPath)
 	assert.String(t, "tmp", Temporary)
 	assert.String(t, "lib", Library)
 	assert.String(t, "usr", Resources)

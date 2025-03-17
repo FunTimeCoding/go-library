@@ -8,7 +8,7 @@ import (
 
 func GuessMainPath(name string) string {
 	if s := system.Join(
-		constant.Command,
+		constant.CommandPath,
 		name,
 		project.MainFile,
 	); system.FileExists(s) {

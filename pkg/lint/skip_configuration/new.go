@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
+	"slices"
 )
 
 func New(
@@ -14,8 +15,13 @@ func New(
 
 	if raw != "" {
 		result.Skips = split.Comma(raw)
-		result.Count = len(result.Skips)
 	}
+
+	if !slices.Contains(result.Skips, ".git/") {
+		result.Skips = append(result.Skips, ".git/")
+	}
+
+	result.Count = len(result.Skips)
 
 	if result.Count > 0 && verbose {
 		fmt.Printf(

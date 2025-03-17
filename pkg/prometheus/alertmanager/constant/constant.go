@@ -10,6 +10,13 @@ const (
 	DefaultDuration = 10 * time.Minute
 
 	HostEnvironment = "ALERTMANAGER_HOST"
+
+	AmtoolCommand = "amtool"
+
+	AmtoolPath          = "amtool"
+	AmtoolConfiguration = "config.yml"
+
+	AmtoolConfigurationPrefix = "config-"
 )
 
 // Alert field

@@ -14,5 +14,5 @@ func (c *Client) Alerts() []*alert.Alert {
 		a.Documentation = c.Documentation(a.Name)
 	}
 
-	return result
+	return alert.SortByAge(result, false)
 }

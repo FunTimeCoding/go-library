@@ -24,4 +24,6 @@ func main() {
 			fmt.Printf("  Run: %s\n", j.Format())
 		}
 	}
+
+	// TODO: Delete all but latest workflow runs
 }

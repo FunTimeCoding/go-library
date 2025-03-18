@@ -2,8 +2,10 @@ package skip_configuration
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
+	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
 	"slices"
 )
 
@@ -17,8 +19,15 @@ func New(
 		result.Skips = split.Comma(raw)
 	}
 
-	if !slices.Contains(result.Skips, ".git/") {
-		result.Skips = append(result.Skips, ".git/")
+	for _, skip := range []string{
+		constant.Directory,
+		systemConstant.IdeaPath,
+	} {
+		withSlash := fmt.Sprintf("%s/", skip)
+
+		if !slices.Contains(result.Skips, withSlash) {
+			result.Skips = append(result.Skips, withSlash)
+		}
 	}
 
 	result.Count = len(result.Skips)

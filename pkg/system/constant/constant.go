@@ -23,6 +23,7 @@ const (
 	DownloadsPath               = "Downloads"
 	KubernetesConfigurationPath = ".kube/config"
 	QuerySocketPath             = ".osquery/shell.em"
+	IdeaPath                    = ".idea"
 
 	Transmission = "tcp"
 )

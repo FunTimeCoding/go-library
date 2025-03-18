@@ -6,15 +6,16 @@ import (
 )
 
 func main() {
+	if true {
+		prometheus.Query()
+	}
+
 	if false {
 		prometheus.Rule()
 		alertmanager.Alert()
 		alertmanager.Status()
 		alertmanager.SetSilence()
 		alertmanager.DeleteSilence()
-	}
-
-	if false {
 		alertmanager.Silence()
 	}
 }

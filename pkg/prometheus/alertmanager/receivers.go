@@ -5,8 +5,8 @@ import (
 	"github.com/prometheus/alertmanager/api/v2/models"
 )
 
-func (c *Client) Status() *models.AlertmanagerStatus {
-	result, e := c.client.General.GetStatus(nil)
+func (c *Client) Receivers() []*models.Receiver {
+	result, e := c.client.Receiver.GetReceivers(nil, nil)
 	errors.PanicOnError(e)
 
 	return result.GetPayload()

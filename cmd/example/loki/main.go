@@ -11,41 +11,12 @@ import (
 )
 
 func main() {
-	if false {
+	if true {
 		load()
 	}
 
 	if false {
 		write()
-	}
-
-	if true {
-		c := loki.NewEnvironment()
-		end := time.Now()
-
-		if false {
-			start := end.AddDate(0, 0, -7)
-
-			for _, l := range c.Labels(start, end) {
-				fmt.Printf("Label: %s\n", l)
-				fmt.Printf("  Values: %+v\n", c.LabelValues(start, end, l))
-			}
-		}
-
-		start := end.Add(-1 * time.Hour)
-		fmt.Printf(
-			"QueryRange: %+v\n",
-			c.QueryRange("{namespace=\"i9n\"} |= ``", start, end),
-		)
-
-		if false {
-			fmt.Printf(
-				"Query: %+v\n",
-				c.Query("{namespace=\"i9n\"} |= ``"),
-			)
-			c.Statistic("")
-			c.Series("")
-		}
 	}
 }
 
@@ -74,42 +45,30 @@ func write() {
 }
 
 func load() {
-	// TODO: How to use https://github.com/grafana/loki/blob/main/pkg/loghttp/params.go
-	//  Probably need a separate project to import this due to kubernetes client-go
+	c := loki.NewEnvironment()
+	end := time.Now()
 
-	//lokiAddr := "http://localhost:3100"
-	//
-	//c, err := client.New(lokiAddr, client.Options{})
-	//if err != nil {
-	//	log.Fatalf("Failed to create Loki client: %v", err)
-	//}
-	//
-	//query := `{job="my-app"}`
-	//start := time.Now().Add(-1 * time.Hour)
-	//end := time.Now()
-	//
-	//ctx := context.Background()
-	//resp, err := c.QueryRange(
-	//	ctx, query, loghttp.QueryRangeParams{
-	//		Start:     start,
-	//		End:       end,
-	//		Step:      time.Minute, // Granularity
-	//		Limit:     100,
-	//		Direction: loghttp.FORWARD, // Or loghttp.BACKWARD
-	//	},
-	//)
-	//if err != nil {
-	//	log.Fatalf("Query failed: %v", err)
-	//}
-	//
-	//if resp.Data.Result != nil {
-	//	for _, stream := range resp.Data.Result.(logproto.Streams) {
-	//		fmt.Printf("Stream: %+v\n", stream.Stream)
-	//		for _, entry := range stream.Entries {
-	//			fmt.Printf("[%s] %s\n", entry.Timestamp, entry.Line)
-	//		}
-	//	}
-	//} else {
-	//	fmt.Println("No logs found")
-	//}
+	if false {
+		start := end.AddDate(0, 0, -7)
+
+		for _, l := range c.Labels(start, end) {
+			fmt.Printf("Label: %s\n", l)
+			fmt.Printf("  Values: %+v\n", c.LabelValues(start, end, l))
+		}
+	}
+
+	start := end.Add(-1 * time.Hour)
+	fmt.Printf(
+		"QueryRange: %+v\n",
+		c.QueryRange("{namespace=\"i9n\"} |= ``", start, end),
+	)
+
+	if false {
+		fmt.Printf(
+			"Query: %+v\n",
+			c.Query("{namespace=\"i9n\"} |= ``"),
+		)
+		c.Statistic("")
+		c.Series("")
+	}
 }

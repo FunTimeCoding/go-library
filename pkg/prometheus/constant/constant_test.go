@@ -6,5 +6,5 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "PROMETHEUS_HOST", HostEnvironment)
+	assert.String(t, "up", Up)
 }

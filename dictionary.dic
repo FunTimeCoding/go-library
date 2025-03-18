@@ -69,6 +69,8 @@ evtc
 upgrader
 
 # Prometheus
-alertname
 alertmanager
+alertname
 amtool
+ingester
+querier

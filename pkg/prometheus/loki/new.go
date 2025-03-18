@@ -1,13 +1,15 @@
 package loki
 
 import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic_client"
 	"github.com/grafana/loki-client-go/loki"
 	"github.com/samber/slog-loki/v3"
 	"log/slog"
 )
 
-// Conflict with github.com/prometheus/common/config
+// Conflicts with github.com/prometheus/common/config
 //import "github.com/grafana/loki/v3/integration/client"
 
 func New(
@@ -18,27 +20,25 @@ func New(
 	//client.New()
 
 	if false {
-		slogWay()
+		slogWay(host)
 	}
 
 	return &Client{basic: basic_client.New(host, user, password)}
 }
 
-func slogWay() {
-	// Yet another way to log, not to read logs
-	config, _ := loki.NewDefaultConfig(
-		"http://localhost:3100/loki/api/v1/push",
+func slogWay(host string) {
+	// Another way to log, not to read
+	configuration, e := loki.NewDefaultConfig(
+		fmt.Sprintf("https://%s/loki/api/v1/push", host),
 	)
-	config.TenantID = "xyz"
-	client, _ := loki.New(config)
+	errors.PanicOnError(e)
+	configuration.TenantID = "exampleTenant"
+	c, _ := loki.New(configuration)
 	l := slog.New(
-		slogloki.Option{
-			Level:  slog.LevelDebug,
-			Client: client,
-		}.NewLokiHandler(),
+		slogloki.Option{Level: slog.LevelDebug, Client: c}.NewLokiHandler(),
 	)
 	l = l.With("environment", "dev").With("release", "v1.0.0")
-	l.Error("caramba!")
-	l.Info("user registration")
-	client.Stop()
+	l.Error("example error")
+	l.Info("example info")
+	c.Stop()
 }

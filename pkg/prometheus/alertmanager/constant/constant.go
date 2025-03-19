@@ -9,7 +9,9 @@ const (
 
 	DefaultDuration = 10 * time.Minute
 
-	HostEnvironment = "ALERTMANAGER_HOST"
+	HostEnvironment     = "ALERTMANAGER_HOST"
+	UserEnvironment     = "ALERTMANAGER_USER"
+	PasswordEnvironment = "ALERTMANAGER_PASSWORD"
 
 	AmtoolCommand = "amtool"
 

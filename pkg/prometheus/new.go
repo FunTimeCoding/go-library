@@ -14,6 +14,7 @@ func New(
 	secure bool,
 	user string,
 	password string,
+	alternateGraphHost string,
 ) *Client {
 	errors.FatalOnEmpty(host, "host")
 
@@ -23,6 +24,7 @@ func New(
 			web.Link(host, port, secure),
 			round_tripper.New(user, password),
 		),
-		host: host,
+		host:               host,
+		alternateGraphHost: alternateGraphHost,
 	}
 }

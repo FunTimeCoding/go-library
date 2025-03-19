@@ -16,5 +16,6 @@ func NewEnvironment() *Client {
 		true,
 		environment.Get(constant.UserEnvironment, 1),
 		environment.Get(constant.PasswordEnvironment, 1),
+		"",
 	)
 }

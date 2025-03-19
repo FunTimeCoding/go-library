@@ -6,7 +6,8 @@ import (
 )
 
 type Client struct {
-	context context.Context
-	client  v1.API
-	host    string
+	context            context.Context
+	client             v1.API
+	host               string
+	alternateGraphHost string
 }

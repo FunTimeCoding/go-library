@@ -9,6 +9,13 @@ import (
 func TestPrometheus(t *testing.T) {
 	assert.True(
 		t,
-		New(web.Localhost, 0, false, "", "") != nil,
+		New(
+			web.Localhost,
+			0,
+			false,
+			"",
+			"",
+			"",
+		) != nil,
 	)
 }

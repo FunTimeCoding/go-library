@@ -1,8 +1,6 @@
 package alert
 
-import (
-	"sort"
-)
+import "sort"
 
 func SortBySeverity(
 	v []*Alert,

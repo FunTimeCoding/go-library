@@ -23,9 +23,8 @@ import (
 )
 
 func main() {
-	pflag.StringP(
+	pflag.String(
 		argument.Port,
-		"p",
 		"",
 		"Port, multiple values separated by comma",
 	)

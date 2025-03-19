@@ -5,7 +5,7 @@ import "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant
 func (a *Alert) emoji() []string {
 	var result []string
 
-	if a.Silenced() {
+	if a.Suppressed() {
 		result = append(result, "🔇")
 	}
 

@@ -14,9 +14,9 @@ const (
 )
 
 func main() {
-	pflag.StringP(argument.Host, "o", "", "Relay host")
-	pflag.StringP(TargetHost, "t", "", "Target host")
-	pflag.IntP(TargetPort, "p", 0, "Target port")
+	pflag.String(argument.Host, "", "Relay host")
+	pflag.String(TargetHost, "", "Target host")
+	pflag.Int(TargetPort, 0, "Target port")
 	argument.ParseAndBind()
 	t := tunnel.New()
 

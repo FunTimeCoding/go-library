@@ -9,9 +9,8 @@ import (
 )
 
 func main() {
-	pflag.BoolP(
+	pflag.Bool(
 		argument.Connect,
-		"c",
 		false,
 		"connect to the server",
 	)

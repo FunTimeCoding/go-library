@@ -16,9 +16,9 @@ type Alert struct {
 	Start             *time.Time
 	Labels            models.LabelSet
 
-	RemainingLabels models.LabelSet
-	Documentation   string
-	Link            string
+	Remaining     models.LabelSet
+	Documentation string
+	Link          string
 
 	Raw *models.GettableAlert
 }

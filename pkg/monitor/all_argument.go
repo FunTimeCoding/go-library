@@ -6,10 +6,5 @@ import (
 )
 
 func AllArgument() {
-	pflag.BoolP(
-		argument.All,
-		"a",
-		false,
-		"Include filtered in output",
-	)
+	pflag.Bool(argument.All, false, "Include filtered in output")
 }

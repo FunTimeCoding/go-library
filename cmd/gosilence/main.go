@@ -12,9 +12,8 @@ import (
 func main() {
 	monitor.NotationArgument()
 	monitor.AllArgument()
-	pflag.StringP(
+	pflag.String(
 		argument.Set,
-		"s",
 		"",
 		"Create or update silence with name",
 	)

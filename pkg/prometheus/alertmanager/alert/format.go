@@ -24,6 +24,16 @@ func (a *Alert) Format(s *format.Settings) string {
 		t.String(fmt.Sprintf("%s ago", units.HumanDuration(a.Age())))
 	}
 
+	t.TagLine(tag.Link, "  %s", a.Link)
+
+	if a.Documentation != constant.None {
+		t.TagLine(
+			tag.Documentation,
+			"  Documentation: %s",
+			a.Documentation,
+		)
+	}
+
 	if s.ShowExtended {
 		if a.Summary != constant.None {
 			t.Line("  Summary: %s", a.Summary)
@@ -33,12 +43,10 @@ func (a *Alert) Format(s *format.Settings) string {
 			t.Line("  Message: %s", a.Message)
 		}
 
-		if v := a.formatRemainingLabels(); v != "" {
-			t.Line("  RemainingLabels: %s", v)
+		if v := a.formatRemainingLabels(s); v != "" {
+			t.Line("  Labels: %s", v)
 		}
 	}
-
-	t.TagLine(tag.Link, "  %s", a.Link)
 
 	return t.Format()
 }

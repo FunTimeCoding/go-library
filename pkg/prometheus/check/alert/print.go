@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/parameter"
+	"time"
 )
 
 func Print(p *parameter.Alert) {
@@ -27,12 +28,36 @@ func Print(p *parameter.Alert) {
 	}
 
 	c := alertmanager.NewEnvironment()
-	f := format.Color.Copy().Tag(tag.Link, tag.Emoji)
+	f := format.Color.Copy().Tag(tag.Link, tag.Documentation, tag.Emoji)
 	var relevant int
 	alerts := c.Alerts()
 
+	if p.Extended {
+		f.Extended()
+	}
+
 	for _, a := range alerts {
 		if !p.All && a.Severity == constant.NoneSeverity {
+			continue
+		}
+
+		if !p.All && a.Severity == constant.InfoSeverity {
+			continue
+		}
+
+		if p.Critical && a.Severity != constant.CriticalSeverity {
+			continue
+		}
+
+		if p.Warning && a.Severity != constant.WarningSeverity {
+			continue
+		}
+
+		if !p.Old && a.Age() > 7*24*time.Hour {
+			continue
+		}
+
+		if !p.Suppressed && a.Suppressed() {
 			continue
 		}
 

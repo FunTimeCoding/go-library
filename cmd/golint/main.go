@@ -8,21 +8,18 @@ import (
 )
 
 func main() {
-	pflag.BoolP(
+	pflag.Bool(
 		argument.Fix,
-		"f",
 		false,
 		"Go concerns that can be fixed",
 	)
-	pflag.StringP(
+	pflag.String(
 		argument.Skip,
-		"s",
 		"",
 		"Directories to skip, comma separated",
 	)
-	pflag.BoolP(
+	pflag.Bool(
 		argument.Verbose,
-		"v",
 		false,
 		"Verbose output",
 	)

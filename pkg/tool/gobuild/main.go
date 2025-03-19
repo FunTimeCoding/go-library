@@ -9,27 +9,23 @@ import (
 )
 
 func Main() {
-	pflag.StringP(
+	pflag.String(
 		argument.Main,
-		"m",
 		"",
 		"Path to main.go, defaults to cmd/$NAME/main.go",
 	)
-	pflag.StringP(
+	pflag.String(
 		argument.Output,
-		"o",
 		"",
 		"Output path, defaults to tmp/$NAME/$OS-$ARCH/$NAME",
 	)
-	pflag.StringP(
+	pflag.String(
 		argument.BuildTags,
-		"t",
 		"",
 		"Build tags",
 	)
-	pflag.BoolP(
+	pflag.Bool(
 		build.CopyToBinFlag,
-		"b",
 		false,
 		"Copy to $HOME/bin",
 	)

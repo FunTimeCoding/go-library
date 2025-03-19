@@ -6,10 +6,5 @@ import (
 )
 
 func NotationArgument() {
-	pflag.BoolP(
-		argument.Notation,
-		"n",
-		false,
-		"JSON output",
-	)
+	pflag.Bool(argument.Notation, false, "JSON output")
 }

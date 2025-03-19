@@ -20,7 +20,7 @@ func main() {
 	}
 
 	if true {
-		pflag.StringP(argument.Tag, "g", "", "Guild tag")
+		pflag.String(argument.Tag, "", "Guild tag")
 		argument.ParseAndBind()
 		check.Log(
 			fmt.Sprintf("%s\\LogDataCache.json", path),

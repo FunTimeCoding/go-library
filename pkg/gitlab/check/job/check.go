@@ -7,14 +7,9 @@ import (
 )
 
 func Check() {
-	pflag.StringP(argument.Namespace, "n", "", "namespace")
-	pflag.StringP(argument.Project, "p", "", "project")
-	pflag.StringP(
-		argument.Match,
-		"m",
-		"",
-		"description match",
-	)
+	pflag.String(argument.Namespace, "", "Namespace")
+	pflag.String(argument.Project, "", "Project")
+	pflag.String(argument.Match, "", "Description match")
 	argument.ParseAndBind()
 	g := gitlab.NewEnvironment()
 

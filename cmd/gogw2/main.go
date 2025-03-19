@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	pflag.StringP(argument.Tag, "g", "", "Guild tag")
+	pflag.String(argument.Tag, "", "Guild tag")
 	argument.ParseAndBind()
 	c := gw2.New(environment.Get(gw2.TokenEnvironment, 1))
 	tag := viper.GetString(argument.Tag)

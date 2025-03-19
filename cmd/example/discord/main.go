@@ -11,9 +11,8 @@ import (
 const DeleteLoopArgument = "delete-loop"
 
 func main() {
-	pflag.StringP(
+	pflag.String(
 		DeleteLoopArgument,
-		"d",
 		"",
 		"Delete messages in a loop, requires channel",
 	)

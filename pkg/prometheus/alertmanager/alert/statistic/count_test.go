@@ -11,6 +11,7 @@ func TestCountStatistics(t *testing.T) {
 	assert.Any(
 		t,
 		&Statistic{
+			Total:    1,
 			Severity: SeverityCount{Critical: 1},
 			State:    StateCount{Active: 1},
 			Group:    GroupCount{All: 1, Other: 1},

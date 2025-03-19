@@ -9,19 +9,16 @@ import (
 )
 
 func (a *Alert) formatName(s *format.Settings) string {
-	var result string
-	name := a.Name
+	result := a.Name
 
 	if s.UseColor {
-		name = console.Cyan(name)
+		result = console.Cyan("%s", result)
 	}
 
 	if s.HasTag(tag.Emoji) {
 		if v := a.emoji(); len(v) > 0 {
-			result = key_value.Space(join.Empty(v), name)
+			result = key_value.Space(join.Empty(v), result)
 		}
-	} else {
-		result = name
 	}
 
 	return result

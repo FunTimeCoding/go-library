@@ -6,13 +6,14 @@ import (
 	"strings"
 )
 
-func Count(value []*alert.Alert) Statistic {
-	var result Statistic
+func (s *Statistic) Count(v []*alert.Alert) *Statistic {
+	result := New()
 
-	for _, element := range value {
+	for _, a := range v {
+		result.Total++
 		result.Group.All++
 
-		switch element.Severity {
+		switch a.Severity {
 		case constant.CriticalSeverity:
 			result.Severity.Critical++
 		case constant.WarningSeverity:
@@ -25,14 +26,14 @@ func Count(value []*alert.Alert) Statistic {
 			result.Severity.Unknown++
 		}
 
-		switch element.State {
+		switch a.State {
 		case constant.ActiveState:
 			result.State.Active++
 		case constant.SuppressedState:
 			result.State.Suppressed++
 		}
 
-		if strings.HasPrefix(element.Name, "Kube") {
+		if strings.HasPrefix(a.Name, constant.KubernetesPrefix) {
 			result.Group.Kubernetes++
 		} else {
 			result.Group.Other++

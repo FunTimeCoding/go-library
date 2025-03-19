@@ -5,9 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/format"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/label_filter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_aliaser"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/parameter"
-	"time"
 )
 
 func Print(p *parameter.Alert) {
@@ -29,43 +30,33 @@ func Print(p *parameter.Alert) {
 
 	c := alertmanager.NewEnvironment()
 	f := format.Color.Copy().Tag(tag.Link, tag.Documentation, tag.Emoji)
-	var relevant int
-	alerts := c.Alerts()
 
 	if p.Extended {
 		f.Extended()
 	}
 
+	p2 := advanced_parameter.New()
+	p2.All = p.All
+	p2.CriticalOnly = p.Critical
+	p2.WarningOnly = p.Warning
+	p2.Suppressed = p.Suppressed
+	p2.Old = p.Old
+	alerts, statistic := c.AlertsAdvanced(
+		p2,
+		name_aliaser.New().Add("KubernetesCronJobFailed", "Job"),
+		label_filter.New(true),
+	)
+	// TODO: Name filter, to filter for example KubernetesCronJobFailed
+	// TODO: Merge alert filter, name aliaser, label filter and name filter into an alert processor?
+
 	for _, a := range alerts {
-		if !p.All && a.Severity == constant.NoneSeverity {
-			continue
-		}
-
-		if !p.All && a.Severity == constant.InfoSeverity {
-			continue
-		}
-
-		if p.Critical && a.Severity != constant.CriticalSeverity {
-			continue
-		}
-
-		if p.Warning && a.Severity != constant.WarningSeverity {
-			continue
-		}
-
-		if !p.Old && a.Age() > 7*24*time.Hour {
-			continue
-		}
-
-		if !p.Suppressed && a.Suppressed() {
-			continue
-		}
-
-		relevant++
 		fmt.Println(a.Format(f))
 	}
 
-	if !p.All && relevant == 0 {
-		fmt.Printf("No relevant alerts, %d in total\n", len(alerts))
+	if !p.All && statistic.Relevant == 0 {
+		fmt.Printf(
+			"No relevant alerts, %d in total\n",
+			statistic.Total,
+		)
 	}
 }

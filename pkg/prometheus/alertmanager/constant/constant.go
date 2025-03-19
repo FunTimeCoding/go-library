@@ -19,6 +19,8 @@ const (
 	AmtoolConfiguration = "config.yml"
 
 	AmtoolConfigurationPrefix = "config-"
+
+	KubernetesPrefix = "Kube"
 )
 
 // Alert field

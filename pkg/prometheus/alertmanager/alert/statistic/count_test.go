@@ -10,12 +10,12 @@ import (
 func TestCountStatistics(t *testing.T) {
 	assert.Any(
 		t,
-		Statistic{
+		&Statistic{
 			Severity: SeverityCount{Critical: 1},
 			State:    StateCount{Active: 1},
 			Group:    GroupCount{All: 1, Other: 1},
 		},
-		Count(
+		New().Count(
 			[]*alert.Alert{
 				{
 					State:    constant.ActiveState,

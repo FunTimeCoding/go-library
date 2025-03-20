@@ -11,10 +11,24 @@ import (
 )
 
 func (a *Alert) Format(s *format.Settings) string {
-	t := status.New(s).String(
-		a.formatName(s),
-		a.formatSeverity(s),
-	).Raw(a)
+	t := status.New(s).Raw(a)
+	entity := a.formatEntity()
+
+	if entity != "" {
+		t.String(entity)
+	}
+
+	category := a.formatCategory()
+
+	if category != "" {
+		t.String(category)
+	}
+
+	if entity == "" && category == "" {
+		t.String(a.formatName(s))
+	}
+
+	t.String(a.formatSeverity(s))
 
 	if a.Start != nil {
 		if false {

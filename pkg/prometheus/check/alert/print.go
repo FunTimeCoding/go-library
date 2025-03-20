@@ -6,9 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/alert_enricher"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/field_changer"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/label_filter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_filter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/parameter"
 )
 
@@ -44,13 +46,31 @@ func Print(p *parameter.Alert) {
 	p2.Old = p.Old
 	alerts, statistic := c.AlertsAdvanced(
 		p2,
-		field_changer.New().AddName("KubernetesCronJobFailed", "Job"),
+		alert_enricher.New().Add(
+			constant.KubernetesCronJobFailed,
+			constant.Job,
+			constant.Fail,
+		),
+		field_changer.New(),
 		name_filter.New(true),
 		label_filter.New(true),
 	)
 
 	for _, a := range alerts {
 		fmt.Println(a.Format(f))
+
+		if false {
+			// TODO: More details: Annotations, rule
+			fmt.Printf("  Raw: %+v\n", a.Raw)
+
+			if r := c.Rule(a.Name); r != nil {
+				if r.RawAlert != nil {
+					fmt.Printf("  RawAlert: %+v\n", r.RawAlert)
+				} else {
+					fmt.Printf("  Rule: %+v\n", r)
+				}
+			}
+		}
 	}
 
 	if !p.All && statistic.Relevant == 0 {

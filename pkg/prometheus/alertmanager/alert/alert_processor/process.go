@@ -9,6 +9,10 @@ import (
 func (p *Processor) Process(v []*alert.Alert) ([]*alert.Alert, *statistic.Statistic) {
 	p.statistic.CountBeforeProcessing(v)
 
+	if p.enricher != nil {
+		v = p.enricher.Run(v)
+	}
+
 	if p.changer != nil {
 		v = p.changer.Run(v)
 	}

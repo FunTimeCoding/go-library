@@ -8,7 +8,7 @@ import (
 func (a *Alert) formatCategory(s *format.Settings) string {
 	result := a.Category
 
-	if s.UseColor {
+	if result != "" && s.UseColor {
 		result = console.Cyan(result)
 	}
 

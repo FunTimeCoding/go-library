@@ -8,7 +8,7 @@ import (
 func (a *Alert) formatEntity(s *format.Settings) string {
 	result := a.Entity
 
-	if s.UseColor {
+	if result != "" && s.UseColor {
 		result = console.Cyan(result)
 	}
 

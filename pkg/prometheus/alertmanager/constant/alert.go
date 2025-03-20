@@ -7,6 +7,7 @@ const (
 	Container  = "Container"
 	Deployment = "Deployment"
 	Job        = "Job"
+	Node       = "Node"
 	Pod        = "Pod"
 )
 

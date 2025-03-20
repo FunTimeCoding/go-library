@@ -1,6 +1,7 @@
 package tag
 
 const (
+	Category      = "category"
 	Concerns      = "concerns"
 	Dense         = "dense"
 	Documentation = "documentation"

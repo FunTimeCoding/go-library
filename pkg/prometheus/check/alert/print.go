@@ -32,7 +32,12 @@ func Print(p *parameter.Alert) {
 	}
 
 	c := alertmanager.NewEnvironment()
-	f := format.Color.Copy().Tag(tag.Link, tag.Documentation, tag.Emoji)
+	f := format.Color.Copy().Tag(
+		tag.Link,
+		tag.Documentation,
+		tag.Category,
+		tag.Emoji,
+	)
 
 	if p.Extended {
 		f.Extended()

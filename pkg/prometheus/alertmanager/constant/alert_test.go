@@ -6,6 +6,7 @@ import (
 )
 
 func TestAlert(t *testing.T) {
+	assert.String(t, "Check", Check)
 	assert.String(t, "Cluster", Cluster)
 	assert.String(t, "Container", Container)
 	assert.String(t, "Database", Database)
@@ -24,9 +25,11 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Broken", Broken)
 	assert.String(t, "Corrupt", Corrupt)
 	assert.String(t, "Down", Down)
+	assert.String(t, "High", High)
 	assert.String(t, "Lag", Lag)
 	assert.String(t, "Load", Load)
 	assert.String(t, "OutOfMemory", OutOfMemory)
 	assert.String(t, "OutOfSync", OutOfSync)
 	assert.String(t, "Timeout", Timeout)
+	assert.String(t, "Unhealthy", Unhealthy)
 }

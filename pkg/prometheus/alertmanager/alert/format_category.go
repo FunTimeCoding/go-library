@@ -1,5 +1,16 @@
 package alert
 
-func (a *Alert) formatEntity() string {
-	return a.Entity
+import (
+	"github.com/funtimecoding/go-library/pkg/console"
+	"github.com/funtimecoding/go-library/pkg/console/format"
+)
+
+func (a *Alert) formatEntity(s *format.Settings) string {
+	result := a.Entity
+
+	if s.UseColor {
+		result = console.Cyan(result)
+	}
+
+	return result
 }

@@ -12,13 +12,13 @@ import (
 
 func (a *Alert) Format(s *format.Settings) string {
 	t := status.New(s).Raw(a)
-	entity := a.formatEntity()
+	entity := a.formatEntity(s)
 
 	if entity != "" {
 		t.String(entity)
 	}
 
-	category := a.formatCategory()
+	category := a.formatCategory(s)
 
 	if category != "" {
 		t.String(category)

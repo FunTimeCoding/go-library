@@ -9,8 +9,8 @@ import (
 func (p *Processor) Process(v []*alert.Alert) ([]*alert.Alert, *statistic.Statistic) {
 	p.statistic.CountBeforeProcessing(v)
 
-	if p.aliaser != nil {
-		v = p.aliaser.Run(v)
+	if p.changer != nil {
+		v = p.changer.Run(v)
 	}
 
 	if p.nameFilter != nil {

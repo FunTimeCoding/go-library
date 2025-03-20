@@ -6,8 +6,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/field_changer"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/label_filter"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_aliaser"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_filter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/parameter"
 )
@@ -44,7 +44,7 @@ func Print(p *parameter.Alert) {
 	p2.Old = p.Old
 	alerts, statistic := c.AlertsAdvanced(
 		p2,
-		name_aliaser.New().Add("KubernetesCronJobFailed", "Job"),
+		field_changer.New().AddName("KubernetesCronJobFailed", "Job"),
 		name_filter.New(true),
 		label_filter.New(true),
 	)

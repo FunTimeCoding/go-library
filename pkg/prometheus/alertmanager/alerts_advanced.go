@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/alert_processor"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/field_changer"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/label_filter"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_aliaser"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_filter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/rule_parser"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/statistic"
@@ -14,7 +14,7 @@ import (
 
 func (c *Client) AlertsAdvanced(
 	p *advanced_parameter.Parameter,
-	l *name_aliaser.Aliaser,
+	h *field_changer.Changer,
 	n *name_filter.Filter,
 	f *label_filter.Filter,
 ) ([]*alert.Alert, *statistic.Statistic) {
@@ -22,7 +22,7 @@ func (c *Client) AlertsAdvanced(
 	errors.PanicOnError(e)
 	result, s := alert_processor.New(
 		p,
-		l,
+		h,
 		n,
 		f,
 		rule_parser.New(c.Rules()),

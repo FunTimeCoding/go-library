@@ -20,11 +20,11 @@ func TestFilter(t *testing.T) {
 	}
 
 	f1 := New(false)
-	f1.KeepLabel("Apple")
+	f1.Keep("Apple")
 	assertHasOnly(t, f1.Run(fixture), "Alfa")
 
 	f2 := New(true)
-	f2.DropLabel("Apple")
+	f2.Drop("Apple")
 	assertHasOnly(t, f2.Run(fixture), "Bravo")
 
 	fixtureValue := []*alert.Alert{

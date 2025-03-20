@@ -8,6 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/label_filter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_aliaser"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_filter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/parameter"
 )
 
@@ -44,10 +45,9 @@ func Print(p *parameter.Alert) {
 	alerts, statistic := c.AlertsAdvanced(
 		p2,
 		name_aliaser.New().Add("KubernetesCronJobFailed", "Job"),
+		name_filter.New(true),
 		label_filter.New(true),
 	)
-	// TODO: Name filter, to filter for example KubernetesCronJobFailed
-	// TODO: Merge alert filter, name aliaser, label filter and name filter into an alert processor?
 
 	for _, a := range alerts {
 		fmt.Println(a.Format(f))

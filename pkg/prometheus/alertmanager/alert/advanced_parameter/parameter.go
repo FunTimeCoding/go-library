@@ -6,4 +6,5 @@ type Parameter struct {
 	WarningOnly  bool
 	Old          bool
 	Suppressed   bool
+	Receiver     []string
 }

@@ -9,6 +9,7 @@ const (
 	Configuration = "Configuration"
 	Connection    = "Connection"
 	Container     = "Container"
+	DaemonSet     = "DaemonSet"
 	Database      = "Database"
 	Deployment    = "Deployment"
 	Disk          = "Disk"
@@ -23,6 +24,7 @@ const (
 	ReplicaSet    = "ReplicaSet"
 	Report        = "Report"
 	Service       = "Service"
+	StatefulSet   = "StatefulSet"
 	Volume        = "Volume"
 )
 
@@ -36,11 +38,14 @@ const (
 	Exceeded     = "Exceeded"
 	Fail         = "Fail"
 	High         = "High"
+	Inconsistent = "Inconsistent"
 	Lag          = "Lag"
 	Load         = "Load"
 	NearFull     = "NearFull"
 	OutOfMemory  = "OutOfMemory"
 	OutOfSync    = "OutOfSync"
+	Stuck        = "Stuck"
 	Timeout      = "Timeout"
+	Unbound      = "Unbound"
 	Unhealthy    = "Unhealthy"
 )

@@ -6,32 +6,27 @@ func SortBySeverity(
 	v []*Alert,
 	severities []string,
 ) []*Alert {
-	m := make(map[string][]*Alert)
+	var result []*Alert
 
-	for _, severity := range severities {
-		for _, element := range v {
-			if element.Severity == severity {
-				m[severity] = append(m[severity], element)
+	for _, s := range severities {
+		var alerts []*Alert
+
+		for _, a := range v {
+			if a.Severity == s {
+				alerts = append(alerts, a)
 			}
 		}
-	}
 
-	for _, severity := range severities {
 		sort.SliceStable(
-			m[severity],
+			alerts,
 			func(
 				i int,
 				j int,
 			) bool {
-				return m[severity][i].Start.After(*m[severity][j].Start)
+				return alerts[i].Start.After(*alerts[j].Start)
 			},
 		)
-	}
-
-	var result []*Alert
-
-	for _, value := range m {
-		result = append(result, value...)
+		result = append(result, alerts...)
 	}
 
 	return result

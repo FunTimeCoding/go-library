@@ -45,4 +45,6 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Timeout", Timeout)
 	assert.String(t, "Unbound", Unbound)
 	assert.String(t, "Unhealthy", Unhealthy)
+
+	assert.String(t, "Okay", Okay)
 }

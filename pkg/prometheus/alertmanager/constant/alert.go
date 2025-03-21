@@ -48,4 +48,6 @@ const (
 	Timeout      = "Timeout"
 	Unbound      = "Unbound"
 	Unhealthy    = "Unhealthy"
+
+	Okay = "Okay" // For Watchdog
 )

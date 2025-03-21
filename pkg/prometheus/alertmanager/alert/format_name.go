@@ -12,7 +12,7 @@ func (a *Alert) formatName(s *format.Settings) string {
 	result := a.Name
 
 	if s.UseColor {
-		result = console.Cyan("%s", result)
+		result = console.Yellow("%s", result)
 	}
 
 	if s.HasTag(tag.Emoji) {

@@ -11,34 +11,34 @@ import (
 )
 
 func (l *List) Add(i *rule.Rule) {
-	for _, element := range l.rules {
-		if i.Name != element.Name || i.Group != element.Group {
+	for _, r := range l.rules {
+		if i.Name != r.Name || i.Group != r.Group {
 			continue
 		}
 
-		if i.RawAlert != nil && element.RawAlert != nil {
-			if !LabelsSame(i.RawAlert, element.RawAlert) {
+		if i.RawAlert != nil && r.RawAlert != nil {
+			if !LabelsSame(i.RawAlert, r.RawAlert) {
 				if false {
 					// This is fine
 					fmt.Printf(
 						"labels differ: %+v %+v\n",
 						i.RawAlert.Labels,
-						element.RawAlert.Labels,
+						r.RawAlert.Labels,
 					)
 				}
-			} else if i.RawAlert.Query != element.RawAlert.Query {
+			} else if i.RawAlert.Query != r.RawAlert.Query {
 				if false {
 					// This is fine
 					fmt.Printf(
 						"queries differ: %s %s\n",
 						i.RawAlert.Query,
-						element.RawAlert.Query,
+						r.RawAlert.Query,
 					)
 				}
 			} else {
 				if !cmp.Equal(
 					i.RawAlert,
-					element.RawAlert,
+					r.RawAlert,
 					cmpopts.IgnoreFields(
 						v1.AlertingRule{},
 						"EvaluationTime",
@@ -47,25 +47,25 @@ func (l *List) Add(i *rule.Rule) {
 				) {
 					log.Panicf(
 						"duplicate RawAlert: name=%s comparison=%+v",
-						element.Name,
-						deep.Equal(i.RawAlert, element.RawAlert),
+						r.Name,
+						deep.Equal(i.RawAlert, r.RawAlert),
 					)
 				}
 			}
-		} else if i.RawRecord != nil && element.RawRecord != nil {
-			if c := deep.Equal(i.RawAlert, element.RawAlert); len(c) != 0 {
+		} else if i.RawRecord != nil && r.RawRecord != nil {
+			if c := deep.Equal(i.RawAlert, r.RawAlert); len(c) != 0 {
 				log.Panicf(
 					"duplicate RawRecord: name=%s comparison=%+v",
-					element.Name,
+					r.Name,
 					c,
 				)
 			}
 		} else {
 			log.Panicf(
 				"duplicate: name=%s existing=%+v new=%+v",
-				element.Name,
+				r.Name,
 				i,
-				element,
+				r,
 			)
 		}
 	}

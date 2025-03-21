@@ -9,6 +9,11 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	RulesArgument  = "rules"
+	FiringArgument = "firing"
+)
+
 func main() {
 	monitor.NotationArgument()
 	monitor.AllArgument()
@@ -21,6 +26,8 @@ func main() {
 		false,
 		"Include alerts older than 1 week",
 	)
+	pflag.Bool(RulesArgument, false, "Print rules")
+	pflag.Bool(FiringArgument, false, "Print firing rules")
 	argument.ParseAndBind()
 	p := parameter.New()
 	p.Notation = viper.GetBool(argument.Notation)
@@ -30,5 +37,7 @@ func main() {
 	p.Extended = viper.GetBool(argument.Extended)
 	p.Old = viper.GetBool(argument.Old)
 	p.Suppressed = viper.GetBool(argument.Suppressed)
+	p.Rules = viper.GetBool(RulesArgument)
+	p.Firing = viper.GetBool(FiringArgument)
 	alert.Print(p)
 }

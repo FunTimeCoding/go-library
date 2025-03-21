@@ -11,7 +11,7 @@ func (c *Client) Alerts() []*alert.Alert {
 	result := alert.NewSlice(response.GetPayload(), c.host)
 
 	for _, a := range result {
-		a.Documentation = c.Documentation(a.Name)
+		a.Runbook = c.Runbook(a.Name)
 	}
 
 	return alert.SortByAge(result, false)

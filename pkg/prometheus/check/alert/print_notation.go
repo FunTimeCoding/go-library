@@ -6,8 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 )
 
-func printNotation() {
-	c := alertmanager.NewEnvironment()
+func printNotation(c *alertmanager.Client) {
 	r := report.New()
 
 	for _, a := range c.Alerts() {

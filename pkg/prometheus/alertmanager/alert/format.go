@@ -39,11 +39,11 @@ func (a *Alert) Format(s *format.Settings) string {
 
 	t.TagLine(tag.Link, "  %s", a.Link)
 
-	if a.Documentation != constant.None {
+	if a.Runbook != constant.None {
 		t.TagLine(
-			tag.Documentation,
-			"  Documentation: %s",
-			a.Documentation,
+			tag.Runbook,
+			"  Runbook: %s",
+			a.Runbook,
 		)
 	}
 

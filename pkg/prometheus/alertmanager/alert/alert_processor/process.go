@@ -30,7 +30,7 @@ func (p *Processor) Process(v []*alert.Alert) ([]*alert.Alert, *statistic.Statis
 	}
 
 	for _, a := range v {
-		a.Documentation = p.rule.Documentation(a.Name)
+		a.Runbook = p.rule.Runbook(a.Name)
 	}
 
 	p.statistic.CountAfterProcessing(v)

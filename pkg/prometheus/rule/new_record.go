@@ -12,7 +12,6 @@ func NewRecord(
 		RawRecord: r,
 		RawGroup:  g,
 	}
-	result.readAnnotations()
 
-	return result
+	return result.parse()
 }

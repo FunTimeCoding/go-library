@@ -16,11 +16,11 @@ type Alert struct {
 	Start             *time.Time
 	Labels            models.LabelSet
 
-	Entity        string
-	Category      string
-	Documentation string
-	Link          string
-	Remaining     models.LabelSet
+	Entity    string
+	Category  string
+	Runbook   string
+	Link      string
+	Remaining models.LabelSet
 
 	Raw *models.GettableAlert
 }

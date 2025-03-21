@@ -10,4 +10,7 @@ type Alert struct {
 	Extended   bool
 	Old        bool
 	Suppressed bool
+
+	Rules  bool
+	Firing bool
 }

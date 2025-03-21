@@ -25,16 +25,23 @@ func Print(p *parameter.Alert) {
 	//   How to get alert notifications as events?
 	//    If events not available, store current alerts in memory and only notify on new alerts
 
+	c := alertmanager.NewEnvironment()
+
 	if p.Notation {
-		printNotation()
+		printNotation(c)
 
 		return
 	}
 
-	c := alertmanager.NewEnvironment()
+	if p.Rules {
+		printRules(c, p.Firing, p.Old)
+
+		return
+	}
+
 	f := format.Color.Copy().Tag(
 		tag.Link,
-		tag.Documentation,
+		tag.Runbook,
 		tag.Category,
 		tag.Emoji,
 	)

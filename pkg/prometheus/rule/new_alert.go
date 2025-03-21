@@ -9,10 +9,12 @@ func NewAlert(
 	result := &Rule{
 		Group:    g.Name,
 		Name:     r.Name,
+		Query:    r.Query,
+		Health:   r.Health,
+		State:    r.State,
 		RawAlert: r,
 		RawGroup: g,
 	}
-	result.readAnnotations()
 
-	return result
+	return result.parse()
 }

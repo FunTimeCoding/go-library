@@ -15,6 +15,7 @@ type Alert struct {
 	Prometheus        string
 	Start             *time.Time
 	Labels            models.LabelSet
+	Receivers         []string
 
 	Entity    string
 	Category  string

@@ -25,6 +25,12 @@ func New(
 		}
 	}
 
+	var receivers []string
+
+	for _, receiver := range v.Receivers {
+		receivers = append(receivers, *receiver.Name)
+	}
+
 	result := &Alert{
 		MonitorIdentifier: fmt.Sprintf(
 			"%s-%s",
@@ -33,6 +39,7 @@ func New(
 		),
 		State:     state,
 		Labels:    v.Labels,
+		Receivers: receivers,
 		Remaining: remaining,
 		Raw:       v,
 		Start:     openapi.ConvertTime(v.StartsAt),

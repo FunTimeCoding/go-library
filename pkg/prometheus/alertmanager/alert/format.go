@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/time"
 )
 
@@ -58,6 +59,10 @@ func (a *Alert) Format(s *format.Settings) string {
 
 		if v := a.formatRemainingLabels(s); v != "" {
 			t.Line("  Labels: %s", v)
+		}
+
+		if len(a.Receivers) > 0 {
+			t.Line("  Receivers: %s", join.Comma(a.Receivers))
 		}
 	}
 

@@ -20,6 +20,7 @@ const (
 	ReplicaSet = "ReplicaSet"
 	Report     = "Report"
 	Service    = "Service"
+	Volume     = "Volume"
 )
 
 // Category
@@ -31,6 +32,7 @@ const (
 	High        = "High"
 	Lag         = "Lag"
 	Load        = "Load"
+	NearFull    = "NearFull"
 	OutOfMemory = "OutOfMemory"
 	OutOfSync   = "OutOfSync"
 	Timeout     = "Timeout"

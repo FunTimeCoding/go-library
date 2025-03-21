@@ -21,6 +21,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "ReplicaSet", ReplicaSet)
 	assert.String(t, "Report", Report)
 	assert.String(t, "Service", Service)
+	assert.String(t, "Volume", Volume)
 
 	assert.String(t, "Broken", Broken)
 	assert.String(t, "Corrupt", Corrupt)
@@ -28,6 +29,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "High", High)
 	assert.String(t, "Lag", Lag)
 	assert.String(t, "Load", Load)
+	assert.String(t, "NearFull", NearFull)
 	assert.String(t, "OutOfMemory", OutOfMemory)
 	assert.String(t, "OutOfSync", OutOfSync)
 	assert.String(t, "Timeout", Timeout)

@@ -8,6 +8,7 @@ import (
 func TestAlert(t *testing.T) {
 	assert.String(t, "Check", Check)
 	assert.String(t, "Cluster", Cluster)
+	assert.String(t, "Connection", Connection)
 	assert.String(t, "Container", Container)
 	assert.String(t, "Database", Database)
 	assert.String(t, "Deployment", Deployment)
@@ -25,6 +26,7 @@ func TestAlert(t *testing.T) {
 
 	assert.String(t, "Broken", Broken)
 	assert.String(t, "Corrupt", Corrupt)
+	assert.String(t, "Disconnected", Disconnected)
 	assert.String(t, "Down", Down)
 	assert.String(t, "High", High)
 	assert.String(t, "Lag", Lag)

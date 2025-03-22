@@ -1,12 +1,12 @@
 package lint
 
 import (
-	"github.com/funtimecoding/go-library/pkg/lint/skip_configuration"
+	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"strings"
 )
 
 func Skipped(
-	s *skip_configuration.Configuration,
+	s *option.Lint,
 	path string,
 ) bool {
 	if s.Count == 0 {

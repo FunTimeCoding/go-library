@@ -2,7 +2,7 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"slices"
@@ -10,7 +10,7 @@ import (
 
 func Rule() {
 	c := prometheus.NewEnvironment()
-	f := format.ExtendedColor
+	f := option.ExtendedColor
 	var severities []string
 
 	for _, r := range c.Rules().Alert() {

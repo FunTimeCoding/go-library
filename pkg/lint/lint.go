@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/lint/skip_configuration"
+	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"github.com/funtimecoding/go-library/pkg/system"
 )
 
@@ -13,7 +13,7 @@ func Lint(
 	verbose bool,
 	fix bool,
 ) {
-	skip := skip_configuration.New(skipString, verbose)
+	skip := option.New(skipString, verbose)
 
 	for _, p := range system.EmptyDirectories(constant.CurrentDirectory) {
 		if Skipped(skip, p) {

@@ -1,10 +1,7 @@
 package status
 
-import "github.com/funtimecoding/go-library/pkg/console/format"
+import "github.com/funtimecoding/go-library/pkg/console/status/option"
 
-func New(s *format.Settings) *Status {
-	return &Status{
-		linesByTag: make(map[string][]string),
-		settings:   s,
-	}
+func New(f *option.Format) *Status {
+	return &Status{linesByTag: make(map[string][]string), format: f}
 }

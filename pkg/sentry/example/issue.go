@@ -2,7 +2,7 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/sentry"
 	"github.com/funtimecoding/go-library/pkg/sentry/constant"
 )
@@ -11,7 +11,7 @@ func Issue() {
 	c := sentry.NewEnvironment()
 
 	for _, i := range c.AllIssues() {
-		fmt.Printf("Issue: %s\n", i.Format(format.Plain))
+		fmt.Printf("Issue: %s\n", i.Format(option.Plain))
 	}
 
 	if false {
@@ -26,7 +26,7 @@ func Issue() {
 					p,
 					constant.PeriodFortnight,
 				) {
-					fmt.Printf("Issue: %s\n", i.Format(format.Plain))
+					fmt.Printf("Issue: %s\n", i.Format(option.Plain))
 				}
 			}
 		}

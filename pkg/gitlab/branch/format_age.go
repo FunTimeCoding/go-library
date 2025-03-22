@@ -2,13 +2,13 @@ package branch
 
 import (
 	"github.com/docker/go-units"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 )
 
-func (b *Branch) formatAge(s *format.Settings) string {
+func (b *Branch) formatAge(f *option.Format) string {
 	result := units.HumanDuration(b.Age())
 
-	if s.UseColor && b.AgeColor != nil {
+	if f.UseColor && b.AgeColor != nil {
 		result = b.AgeColor(result)
 	}
 

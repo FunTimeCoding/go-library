@@ -11,11 +11,11 @@ func (p *Printer) Print(
 ) {
 	var title string
 
-	if p.setting.UseCompact {
+	if p.format.UseCompact {
 		title = f.Meta().Short
 	} else {
 		title = f.Meta().Title
 	}
 
-	console.Print(f, title, indent, p.setting)
+	console.Print(f, title, indent, p.format)
 }

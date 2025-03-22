@@ -2,22 +2,22 @@ package console
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/separator"
 	"strings"
 )
 
 func Print(
-	f face.Formattable,
+	v face.Formattable,
 	title string,
 	indent int,
-	s *format.Settings,
+	f *option.Format,
 ) {
 	fmt.Printf(
 		"%s%s: %s\n",
 		strings.Repeat(separator.DoubleSpace, indent),
 		title,
-		f.Format(s),
+		v.Format(f),
 	)
 }

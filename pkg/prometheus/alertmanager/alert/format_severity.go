@@ -2,15 +2,15 @@ package alert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"slices"
 )
 
-func (a *Alert) formatSeverity(s *format.Settings) string {
+func (a *Alert) formatSeverity(f *option.Format) string {
 	result := a.Severity
 
-	if s.UseColor {
+	if f.UseColor {
 		if slices.Contains(constant.RedSeverities, result) {
 			result = console.Red(result)
 		} else if slices.Contains(constant.YellowSeverities, result) {

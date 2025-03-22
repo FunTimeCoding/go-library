@@ -3,68 +3,68 @@ package alert
 import (
 	"fmt"
 	"github.com/docker/go-units"
-	"github.com/funtimecoding/go-library/pkg/console/format"
 	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/time"
 )
 
-func (a *Alert) Format(s *format.Settings) string {
-	t := status.New(s).Raw(a)
+func (a *Alert) Format(f *option.Format) string {
+	s := status.New(f).Raw(a)
 
-	if v := a.formatEntity(s); v != "" {
-		t.String(v)
+	if v := a.formatEntity(f); v != "" {
+		s.String(v)
 	}
 
-	if s.HasTag(tag.Category) {
-		if v := a.formatCategory(s); v != "" {
-			t.String(v)
+	if f.HasTag(tag.Category) {
+		if v := a.formatCategory(f); v != "" {
+			s.String(v)
 		}
 	}
 
 	if a.Entity == "" && a.Category == "" {
-		t.String(a.formatName(s))
+		s.String(a.formatName(f))
 	}
 
-	t.String(a.formatSeverity(s))
+	s.String(a.formatSeverity(f))
 
 	if a.Start != nil {
 		if false {
-			t.String(a.Start.Format(time.DateMinute))
+			s.String(a.Start.Format(time.DateMinute))
 		}
 
-		t.String(fmt.Sprintf("%s ago", units.HumanDuration(a.Age())))
+		s.String(fmt.Sprintf("%s ago", units.HumanDuration(a.Age())))
 	}
 
-	t.TagLine(tag.Link, "  %s", a.Link)
+	s.TagLine(tag.Link, "  %s", a.Link)
 
 	if a.Runbook != constant.None {
-		t.TagLine(
+		s.TagLine(
 			tag.Runbook,
 			"  Runbook: %s",
 			a.Runbook,
 		)
 	}
 
-	if s.ShowExtended {
+	if f.ShowExtended {
 		if a.Summary != constant.None {
-			t.Line("  Summary: %s", a.Summary)
+			s.Line("  Summary: %s", a.Summary)
 		}
 
 		if a.Message != constant.None {
-			t.Line("  Message: %s", a.Message)
+			s.Line("  Message: %s", a.Message)
 		}
 
-		if v := a.formatRemainingLabels(s); v != "" {
-			t.Line("  Labels: %s", v)
+		if v := a.formatRemainingLabels(f); v != "" {
+			s.Line("  Labels: %s", v)
 		}
 
 		if len(a.Receivers) > 0 {
-			t.Line("  Receivers: %s", join.Comma(a.Receivers))
+			s.Line("  Receivers: %s", join.Comma(a.Receivers))
 		}
 	}
 
-	return t.Format()
+	return s.Format()
 }

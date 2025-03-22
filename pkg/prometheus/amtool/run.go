@@ -37,10 +37,10 @@ func Run(selected string) {
 		return
 	}
 
-	active := ReadConfiguration(tool)
+	active := Read(tool)
 	files := system.Files(base)
 	var contexts []string
-	contextLocator := make(map[string]string)
+	locatorByContext := make(map[string]string)
 
 	for _, f := range files {
 		if false {
@@ -61,8 +61,8 @@ func Run(selected string) {
 			if !slices.Contains(contexts, context) {
 				contexts = append(contexts, context)
 				p := system.Join(base, f)
-				c := ReadConfiguration(p)
-				contextLocator[context] = c.Locator
+				c := Read(p)
+				locatorByContext[context] = c.Locator
 			}
 		}
 	}
@@ -74,8 +74,8 @@ func Run(selected string) {
 	}
 
 	if selected == "" {
-		for _, k := range maps.StringKeys(contextLocator) {
-			v := contextLocator[k]
+		for _, k := range maps.StringKeys(locatorByContext) {
+			v := locatorByContext[k]
 
 			if v == active.Locator {
 				fmt.Printf("* %s\n", k)
@@ -93,7 +93,7 @@ func Run(selected string) {
 		return
 	}
 
-	if active.Locator == contextLocator[selected] {
+	if active.Locator == locatorByContext[selected] {
 		fmt.Printf("Already active: %s\n", selected)
 
 		return

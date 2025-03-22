@@ -2,7 +2,7 @@ package job
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/time"
@@ -13,7 +13,7 @@ func RunnerWay(
 	g *gitlab.Client,
 	match string,
 ) {
-	f := format.New().Color().Extended()
+	f := option.New().Color().Extended()
 	runners := g.Runners(true)
 	fmt.Printf("Runners (%d):\n", len(runners))
 

@@ -2,12 +2,12 @@ package runner
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
-	"github.com/funtimecoding/go-library/pkg/console/format"
 	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
-func (r *Runner) Format(f *format.Settings) string {
+func (r *Runner) Format(f *option.Format) string {
 	s := status.New(f).Integer(r.Identifier).String(
 		r.formatName(),
 		r.formatDescription(),

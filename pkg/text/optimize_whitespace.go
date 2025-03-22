@@ -3,16 +3,16 @@ package text
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
-	"github.com/funtimecoding/go-library/pkg/text/optimize_settings"
+	"github.com/funtimecoding/go-library/pkg/text/option"
 	"strings"
 )
 
 func OptimizeWhitespace(
 	input string,
-	s *optimize_settings.Settings,
+	s *option.Whitespace,
 ) string {
 	if s == nil {
-		s = optimize_settings.New()
+		s = option.New()
 	}
 
 	var result []string

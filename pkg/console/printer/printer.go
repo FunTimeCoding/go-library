@@ -1,7 +1,7 @@
 package printer
 
-import "github.com/funtimecoding/go-library/pkg/console/format"
+import "github.com/funtimecoding/go-library/pkg/console/status/option"
 
 type Printer struct {
-	setting *format.Settings
+	format *option.Format
 }

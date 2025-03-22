@@ -2,11 +2,11 @@ package silence
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 )
 
-func (s *Silence) formatRule(f *format.Settings) string {
+func (s *Silence) formatRule(f *option.Format) string {
 	if s.Rule != constant.UnknownRule {
 		result := s.Rule
 

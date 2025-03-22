@@ -2,13 +2,13 @@ package rule
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 )
 
-func (r *Rule) formatName(s *format.Settings) string {
+func (r *Rule) formatName(f *option.Format) string {
 	result := r.Name
 
-	if s.UseColor {
+	if f.UseColor {
 		result = console.Cyan(result)
 	}
 

@@ -2,7 +2,7 @@ package alert
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
@@ -39,7 +39,7 @@ func Print(p *parameter.Alert) {
 		return
 	}
 
-	f := format.Color.Copy().Tag(
+	f := option.Color.Copy().Tag(
 		tag.Link,
 		tag.Runbook,
 		tag.Category,

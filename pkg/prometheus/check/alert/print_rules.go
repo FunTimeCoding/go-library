@@ -2,7 +2,7 @@ package alert
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/rule"
 	"time"
@@ -13,7 +13,7 @@ func printRules(
 	firing bool,
 	old bool,
 ) {
-	f := format.ExtendedColor.Copy()
+	f := option.ExtendedColor.Copy()
 
 	for _, r := range c.Rules().Alert() {
 		if old &&

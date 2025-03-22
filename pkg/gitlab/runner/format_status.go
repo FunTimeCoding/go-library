@@ -2,10 +2,10 @@ package runner
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 )
 
-func (r *Runner) formatStatus(f *format.Settings) string {
+func (r *Runner) formatStatus(f *option.Format) string {
 	result := r.Status
 
 	if f.UseColor {

@@ -2,7 +2,7 @@ package text
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/text/optimize_settings"
+	"github.com/funtimecoding/go-library/pkg/text/option"
 	"testing"
 )
 
@@ -42,7 +42,7 @@ func TestOptimizeWhitespace(t *testing.T) {
 	)
 
 	// No blank line is allowed
-	zeroBlank := optimize_settings.New()
+	zeroBlank := option.New()
 	zeroBlank.AllowedBlankLines = 0
 	assert.String(
 		t,

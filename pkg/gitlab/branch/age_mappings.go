@@ -13,5 +13,5 @@ func AgeMappings(v []*Branch) []*range_mapping.Mapping {
 		a = append(a, element)
 	}
 
-	return console.AgeMappings(a)
+	return console.AgeMapping(a)
 }

@@ -2,10 +2,10 @@ package branch
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 )
 
-func (b *Branch) formatMerged(f *format.Settings) string {
+func (b *Branch) formatMerged(f *option.Format) string {
 	var result string
 
 	if b.Merged {

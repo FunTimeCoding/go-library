@@ -3,13 +3,13 @@ package silence
 import (
 	"fmt"
 	"github.com/docker/go-units"
-	"github.com/funtimecoding/go-library/pkg/console/format"
 	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/time"
 )
 
-func (s *Silence) Format(f *format.Settings) string {
+func (s *Silence) Format(f *option.Format) string {
 	t := status.New(f).String(
 		s.formatRule(f),
 		s.Author,

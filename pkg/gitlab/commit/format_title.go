@@ -2,12 +2,12 @@ package commit
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
-	"github.com/funtimecoding/go-library/pkg/console/format"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"strings"
 )
 
-func (c *Commit) formatTitle(s *format.Settings) string {
-	if s.UseColor {
+func (c *Commit) formatTitle(f *option.Format) string {
+	if f.UseColor {
 		return console.Cyan("%s", strings.TrimSpace(c.Title))
 	}
 

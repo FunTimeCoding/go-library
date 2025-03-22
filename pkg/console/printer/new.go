@@ -1,7 +1,7 @@
 package printer
 
-import "github.com/funtimecoding/go-library/pkg/console/format"
+import "github.com/funtimecoding/go-library/pkg/console/status/option"
 
-func New(s *format.Settings) *Printer {
-	return &Printer{setting: s}
+func New(f *option.Format) *Printer {
+	return &Printer{format: f}
 }

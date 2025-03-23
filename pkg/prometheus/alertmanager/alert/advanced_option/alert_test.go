@@ -1,10 +1,10 @@
-package advanced_parameter
+package advanced_option
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestParameter(t *testing.T) {
+func TestOption(t *testing.T) {
 	assert.True(t, New() != nil)
 }

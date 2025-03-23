@@ -1,7 +1,7 @@
 package alert_filter
 
-import "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
+import "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 
 type Filter struct {
-	parameter *advanced_parameter.Parameter
+	option *advanced_option.Alert
 }

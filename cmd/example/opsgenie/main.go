@@ -69,13 +69,13 @@ func main() {
 	}
 
 	f := option.ExtendedColor.Copy()
-	open := c.Open()
+	alerts := c.Open()
 
-	for _, a := range open {
+	for _, a := range alerts {
 		fmt.Println(a.Format(f))
 	}
 
-	if len(open) == 0 {
-		fmt.Println("No open alerts")
+	if len(alerts) == 0 {
+		fmt.Println("No relevant alerts")
 	}
 }

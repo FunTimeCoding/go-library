@@ -2,21 +2,21 @@ package issue
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/sentry"
-	"github.com/funtimecoding/go-library/pkg/sentry/check/issue/parameter"
+	"github.com/funtimecoding/go-library/pkg/sentry/check/issue/option"
 )
 
-func Print(p *parameter.Issue) {
-	if p.Notation {
+func Print(o *option.Issue) {
+	if o.Notation {
 		printNotation()
 
 		return
 	}
 
 	c := sentry.NewEnvironment()
-	f := option.Color.Copy().Tag(tag.Link)
+	f := statusOption.Color.Copy().Tag(tag.Link)
 	issues := c.AllIssues()
 
 	for _, i := range issues {
@@ -24,6 +24,6 @@ func Print(p *parameter.Issue) {
 	}
 
 	if len(issues) == 0 {
-		fmt.Println("No issues")
+		fmt.Println("No relevant issues")
 	}
 }

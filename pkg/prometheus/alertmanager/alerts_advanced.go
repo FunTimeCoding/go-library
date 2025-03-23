@@ -3,7 +3,7 @@ package alertmanager
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/alert_enricher"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/alert_processor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/field_changer"
@@ -14,7 +14,7 @@ import (
 )
 
 func (c *Client) AlertsAdvanced(
-	p *advanced_parameter.Parameter,
+	p *advanced_option.Alert,
 	n *alert_enricher.Enricher,
 	h *field_changer.Changer,
 	a *name_filter.Filter,

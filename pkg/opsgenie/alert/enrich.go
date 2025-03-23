@@ -1,6 +1,8 @@
 package alert
 
 import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/opsgenie/alert/option"
 	"github.com/funtimecoding/go-library/pkg/opsgenie/team"
 )
@@ -9,6 +11,11 @@ func (a *Alert) enrich(
 	p *option.Alert,
 	t *team.Team,
 ) *Alert {
+	a.MonitorIdentifier = fmt.Sprintf(
+		"%s-%d",
+		constant.OpsgeniePrefix,
+		a.SmallIdentifier,
+	)
 	a.TeamKey = p.Team.KeyByIdentifier(t.Identifier)
 	a.Team = t
 	a.TeamMap = p.Team

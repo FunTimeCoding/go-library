@@ -11,6 +11,7 @@ func Command() tea.Cmd {
 	return func() tea.Msg {
 		commands := []string{
 			constant.GoAlert,
+			constant.GoGenie,
 			constant.GoSensor,
 			constant.GoSentry,
 			constant.GoSilence,

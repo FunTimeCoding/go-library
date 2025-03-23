@@ -2,19 +2,19 @@ package alert
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/alert_enricher"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/field_changer"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/label_filter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_filter"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
-	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
 )
 
-func Print(p *parameter.Alert) {
+func Print(p *option.Alert) {
 	// TODO: Use in gomonitor
 	//  Highlight new alerts
 	//  Press key to add 10 minute silence in gomonitor
@@ -39,7 +39,7 @@ func Print(p *parameter.Alert) {
 		return
 	}
 
-	f := option.Color.Copy().Tag(
+	f := statusOption.Color.Copy().Tag(
 		tag.Link,
 		tag.Runbook,
 		tag.Category,
@@ -50,14 +50,14 @@ func Print(p *parameter.Alert) {
 		f.Extended()
 	}
 
-	p2 := advanced_parameter.New()
-	p2.All = p.All
-	p2.CriticalOnly = p.Critical
-	p2.WarningOnly = p.Warning
-	p2.Suppressed = p.Suppressed
-	p2.Old = p.Old
+	d := advanced_option.New()
+	d.All = p.All
+	d.CriticalOnly = p.Critical
+	d.WarningOnly = p.Warning
+	d.Suppressed = p.Suppressed
+	d.Old = p.Old
 	alerts, statistic := c.AlertsAdvanced(
-		p2,
+		d,
 		alert_enricher.New().Add(
 			constant.KubernetesCronJobFailed,
 			constant.Job,

@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert"
-	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -29,15 +29,15 @@ func main() {
 	pflag.Bool(RulesArgument, false, "Print rules")
 	pflag.Bool(FiringArgument, false, "Print firing rules")
 	argument.ParseAndBind()
-	p := parameter.New()
-	p.Notation = viper.GetBool(argument.Notation)
-	p.All = viper.GetBool(argument.All)
-	p.Critical = viper.GetBool(argument.Critical)
-	p.Warning = viper.GetBool(argument.Warning)
-	p.Extended = viper.GetBool(argument.Extended)
-	p.Old = viper.GetBool(argument.Old)
-	p.Suppressed = viper.GetBool(argument.Suppressed)
-	p.Rules = viper.GetBool(RulesArgument)
-	p.Firing = viper.GetBool(FiringArgument)
-	alert.Print(p)
+	o := option.New()
+	o.Notation = viper.GetBool(argument.Notation)
+	o.All = viper.GetBool(argument.All)
+	o.Critical = viper.GetBool(argument.Critical)
+	o.Warning = viper.GetBool(argument.Warning)
+	o.Extended = viper.GetBool(argument.Extended)
+	o.Old = viper.GetBool(argument.Old)
+	o.Suppressed = viper.GetBool(argument.Suppressed)
+	o.Rules = viper.GetBool(RulesArgument)
+	o.Firing = viper.GetBool(FiringArgument)
+	alert.Print(o)
 }

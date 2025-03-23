@@ -1,7 +1,7 @@
 package alert_filter
 
-import "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
+import "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 
-func New(p *advanced_parameter.Parameter) *Filter {
-	return &Filter{parameter: p}
+func New(o *advanced_option.Alert) *Filter {
+	return &Filter{option: o}
 }

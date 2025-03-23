@@ -38,6 +38,7 @@ type Alert struct {
 	shortUser         constant.StringAlias
 	shortAlert        constant.StringAlias
 	descriptionToName constant.StringAlias
+	MonitorIdentifier string
 
 	Raw       *alert.Alert
 	RawResult *alert.GetAlertResult

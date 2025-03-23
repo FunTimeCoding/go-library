@@ -2,21 +2,21 @@ package silence
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 )
 
-func Print(p *parameter.Silence) {
+func Print(p *option.Silence) {
+	c := alertmanager.NewEnvironment()
+
 	if p.Notation {
-		printNotation()
+		printNotation(c)
 
 		return
 	}
-
-	c := alertmanager.NewEnvironment()
 
 	if p.Set != "" {
 		fmt.Printf("Set: %s\n", c.SimpleSilence(p.Set))
@@ -24,7 +24,7 @@ func Print(p *parameter.Silence) {
 
 	silences := c.Silences(true)
 	var relevant int
-	f := option.Color.Copy().Tag(tag.Link)
+	f := statusOption.Color.Copy().Tag(tag.Link)
 
 	for _, a := range silences {
 		if !p.All && a.State != constant.ActiveState {
@@ -36,6 +36,9 @@ func Print(p *parameter.Silence) {
 	}
 
 	if !p.All && relevant == 0 {
-		fmt.Printf("No relevant silences, %d in total\n", len(silences))
+		fmt.Printf(
+			"No relevant silences, %d in total\n",
+			len(silences),
+		)
 	}
 }

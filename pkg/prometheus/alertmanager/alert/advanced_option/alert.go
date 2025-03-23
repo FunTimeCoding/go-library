@@ -1,6 +1,6 @@
-package advanced_parameter
+package advanced_option
 
-type Parameter struct {
+type Alert struct {
 	All          bool
 	CriticalOnly bool
 	WarningOnly  bool

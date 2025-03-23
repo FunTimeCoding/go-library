@@ -26,7 +26,7 @@ func (p *Processor) Process(v []*alert.Alert) ([]*alert.Alert, *statistic.Statis
 	}
 
 	if p != nil {
-		v = alert_filter.New(p.parameter).Run(v)
+		v = alert_filter.New(p.option).Run(v)
 	}
 
 	for _, a := range v {

@@ -1,4 +1,4 @@
-package parameter
+package option
 
 type Alert struct {
 	All      bool

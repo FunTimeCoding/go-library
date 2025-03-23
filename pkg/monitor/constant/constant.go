@@ -3,15 +3,17 @@ package constant
 import "github.com/gorilla/websocket"
 
 const (
+	GoAlert   = "goalert"
+	GoGenie   = "gogenie"
 	GoSensor  = "gosensor"
 	GoSentry  = "gosentry"
-	GoAlert   = "goalert"
 	GoSilence = "gosilence"
 
-	ExamplePrefix = "example"
-	SentryPrefix  = "sentry"
-	SilencePrefix = "silence"
-	AlertPrefix   = "alert"
+	ExamplePrefix  = "example"
+	OpsgeniePrefix = "opsgenie"
+	SentryPrefix   = "sentry"
+	SilencePrefix  = "silence"
+	AlertPrefix    = "alert"
 
 	WarningType = "warning"
 	ErrorType   = "error"

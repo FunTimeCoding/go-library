@@ -56,6 +56,7 @@ install:
 	@gobuild --copy-to-bin gocommit
 	@gobuild --copy-to-bin godebian
 	@gobuild --copy-to-bin godownload
+	@gobuild --copy-to-bin gogenie
 	@gobuild --copy-to-bin golint
 	@gobuild --copy-to-bin gomonitor
 	@gobuild --copy-to-bin gomonitord

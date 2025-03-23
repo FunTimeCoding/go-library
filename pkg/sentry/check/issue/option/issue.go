@@ -1,4 +1,4 @@
-package parameter
+package option
 
 type Issue struct {
 	Notation bool

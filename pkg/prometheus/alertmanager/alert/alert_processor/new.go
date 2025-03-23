@@ -1,7 +1,7 @@
 package alert_processor
 
 import (
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_parameter"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/alert_enricher"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/field_changer"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/label_filter"
@@ -11,7 +11,7 @@ import (
 )
 
 func New(
-	p *advanced_parameter.Parameter,
+	p *advanced_option.Alert,
 	n *alert_enricher.Enricher,
 	h *field_changer.Changer,
 	a *name_filter.Filter,
@@ -19,7 +19,7 @@ func New(
 	r *rule_parser.Parser,
 ) *Processor {
 	return &Processor{
-		parameter:   p,
+		option:      p,
 		enricher:    n,
 		changer:     h,
 		nameFilter:  a,

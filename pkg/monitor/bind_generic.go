@@ -5,13 +5,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-type Parameter struct {
-	Notation bool
-}
-
-func BindGeneric() Parameter {
+func BindGeneric() Option {
 	NotationArgument()
 	argument.ParseAndBind()
 
-	return Parameter{Notation: viper.GetBool(argument.Notation)}
+	return Option{Notation: viper.GetBool(argument.Notation)}
 }

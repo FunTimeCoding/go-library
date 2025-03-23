@@ -29,6 +29,7 @@ gobuild
 gobump
 goclean
 godebian
+gogenie
 golint
 gomonitor
 gomonitord

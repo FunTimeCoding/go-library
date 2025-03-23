@@ -8,7 +8,7 @@ import (
 )
 
 func (f *Filter) match(a *alert.Alert) bool {
-	p := f.parameter
+	p := f.option
 
 	if p.All {
 		return true

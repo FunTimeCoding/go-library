@@ -21,15 +21,19 @@ const (
 	AmtoolConfigurationPrefix = "config-"
 
 	KubernetesPrefix = "Kube"
+
+	HighMemoryUsage = "HighMemoryUsage" // Test alert name
 )
 
 // Alert field
 const (
-	AlertnameField  = "alertname"
-	SeverityField   = "severity"
-	SummaryField    = "summary"
-	MessageField    = "message"
-	PrometheusField = "prometheus"
+	AlertnameField   = "alertname"
+	DescriptionField = "description"
+	InstanceField    = "instance"
+	MessageField     = "message"
+	PrometheusField  = "prometheus"
+	SeverityField    = "severity"
+	SummaryField     = "summary"
 )
 
 // Alert state

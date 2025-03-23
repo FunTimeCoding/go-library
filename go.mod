@@ -6,6 +6,7 @@ require (
 	github.com/MrGunflame/gw2api v1.0.5
 	github.com/PuerkitoBio/goquery v1.10.2
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5
+	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bwmarrin/discordgo v0.28.1
 	github.com/charmbracelet/bubbles v0.20.0
@@ -33,6 +34,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/ollama/ollama v0.6.2
+	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.28.1
 	github.com/prometheus/client_golang v1.21.1

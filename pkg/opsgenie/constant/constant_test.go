@@ -1,4 +1,4 @@
-package flag
+package constant
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,6 +6,5 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "filter", Filter)
-	assert.String(t, "investigate", Investigate)
+	assert.String(t, "OPSGENIE_USER_KEY", UserKeyEnvironment)
 }

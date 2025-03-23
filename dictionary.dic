@@ -7,11 +7,14 @@ renderables
 
 # Names
 Juliett
+Loopsies
 Ollama
+Opsgenie
 Samsa
 funtimecoding
 golangci
 osquery
+shiin
 xanzy
 
 # Go
@@ -43,6 +46,7 @@ smartd
 
 # macOS
 afplay
+sosumi
 tink
 
 # Kubernetes

@@ -5,4 +5,8 @@ const (
 	ArgumentEnvironment      = "CEPH_ARGS"
 
 	CephPath = "ceph"
+
+	clientConfiguration = "ceph.conf"
+
+	keyringSuffix = ".keyring"
 )

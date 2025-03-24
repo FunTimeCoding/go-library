@@ -7,5 +7,5 @@ import (
 
 func main() {
 	argument.ParseAndBind()
-	goc.Run(argument.Positional(0))
+	goc.Run(argument.Positional(0), false)
 }

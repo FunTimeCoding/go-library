@@ -2,30 +2,35 @@ package goc
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"slices"
 )
 
-func Run(selected string) {
-	// TODO: Swap Ceph configurations like goam
-	file := environment.GetDefault(
-		ConfigurationEnvironment,
-		"",
-	)
-	arguments := environment.GetDefault(
-		ArgumentEnvironment,
-		"",
-	)
-	fmt.Printf("File: %s\n", file)
-	fmt.Printf("Argument: %s\n", arguments)
-	base := system.Join(
-		system.Home(),
-		constant.ConfigurationPath,
-		CephPath,
-	)
-	fmt.Printf("Base: %s\n", base)
-	active := file
+func Run(
+	selected string,
+	verbose bool,
+) {
+	file := environment.GetDefault(ConfigurationEnvironment, "")
+
+	if verbose {
+		fmt.Printf("File: %s\n", file)
+	}
+
+	base := system.Join(system.Home(), constant.ConfigurationPath, CephPath)
+
+	if verbose {
+		fmt.Printf("Base: %s\n", base)
+	}
+
+	active := split.Slash(file)[5]
+
+	if verbose {
+		fmt.Printf("Active: %s\n", active)
+	}
+
 	directories := system.Directories(base)
 
 	if selected == "" {
@@ -40,7 +45,29 @@ func Run(selected string) {
 		return
 	}
 
-	if false {
-		environment.Set("", "")
+	if !slices.Contains(directories, selected) {
+		fmt.Printf("Unexpected: %s\n", selected)
+
+		return
 	}
+
+	name := configurationName(base, selected)
+	newConfiguration := system.Join(base, selected, clientConfiguration)
+	newArgument := fmt.Sprintf(
+		"-n %s --keyring=%s",
+		fmt.Sprintf("client.%s", name),
+		system.Join(
+			base,
+			selected,
+			fmt.Sprintf("ceph.client.%s.keyring", name),
+		),
+	)
+
+	if verbose {
+		fmt.Printf("newConfiguration: %s\n", newConfiguration)
+		fmt.Printf("newArgument: %s\n", newArgument)
+	}
+
+	environment.SetITerm(ConfigurationEnvironment, newConfiguration)
+	environment.SetITerm(ArgumentEnvironment, newArgument)
 }

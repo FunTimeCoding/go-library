@@ -27,6 +27,7 @@ build:
 	@go run cmd/gobuild/main.go goam
 	@go run cmd/gobuild/main.go gobuild
 	@go run cmd/gobuild/main.go gobump
+	@go run cmd/gobuild/main.go goc
 	@go run cmd/gobuild/main.go gochk
 	@go run cmd/gobuild/main.go goclean
 	@go run cmd/gobuild/main.go gocommit
@@ -51,6 +52,7 @@ install:
 	@gobuild --copy-to-bin goalert
 	@gobuild --copy-to-bin goam
 	@gobuild --copy-to-bin gobump
+	@gobuild --copy-to-bin goc
 	@gobuild --copy-to-bin gochk
 	@gobuild --copy-to-bin goclean
 	@gobuild --copy-to-bin gocommit

@@ -3,11 +3,17 @@ package console
 import "github.com/fatih/color"
 
 var (
-	Yellow  = color.New(color.FgYellow).SprintfFunc()
-	Green   = color.New(color.FgGreen).SprintfFunc()
-	Red     = color.New(color.FgRed).SprintfFunc()
-	Cyan    = color.New(color.FgCyan).SprintfFunc()
-	Magenta = color.New(color.FgMagenta).SprintfFunc()
+	CyanInstance    = color.New(color.FgCyan)
+	GreenInstance   = color.New(color.FgGreen)
+	MagentaInstance = color.New(color.FgMagenta)
+	RedInstance     = color.New(color.FgRed)
+	YellowInstance  = color.New(color.FgYellow)
+
+	Cyan    = CyanInstance.SprintfFunc()
+	Green   = GreenInstance.SprintfFunc()
+	Magenta = MagentaInstance.SprintfFunc()
+	Red     = RedInstance.SprintfFunc()
+	Yellow  = YellowInstance.SprintfFunc()
 )
 
 const (

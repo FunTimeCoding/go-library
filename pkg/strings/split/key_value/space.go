@@ -6,13 +6,13 @@ import (
 )
 
 func Space(s string) (string, string) {
-	result := strings.SplitN(s, separator.Space, 2)
-	count := len(result)
+	p := strings.SplitN(s, separator.Space, 2)
 
-	if count == 2 {
-		return result[0], result[1]
-	} else if count == 1 {
-		return result[0], ""
+	switch len(p) {
+	case 1:
+		return p[0], ""
+	case 2:
+		return p[0], p[1]
 	}
 
 	return "", ""

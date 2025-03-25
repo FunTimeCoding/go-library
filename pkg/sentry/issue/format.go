@@ -11,7 +11,7 @@ func (i *Issue) Format(f *option.Format) string {
 		i.Project,
 		i.Title,
 		i.formatType(f),
-		i.formatAge(),
+		i.formatAge(f),
 	)
 	s.TagLine(tag.Link, "  %s", i.Link)
 

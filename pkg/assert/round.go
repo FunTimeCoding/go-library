@@ -26,29 +26,30 @@ func Round(
 	t.Helper()
 	var format string
 
-	if decimals == 0 {
+	switch decimals {
+	case 0:
 		format = "\nExpected: %.0f\nActual:   %.0f"
-	} else if decimals == 1 {
+	case 1:
 		format = "\nExpected: %.1f\nActual:   %.1f"
-	} else if decimals == 2 {
+	case 2:
 		format = "\nExpected: %.2f\nActual:   %.2f"
-	} else if decimals == 3 {
+	case 3:
 		format = "\nExpected: %.3f\nActual:   %.3f"
-	} else if decimals == 4 {
+	case 4:
 		format = "\nExpected: %.4f\nActual:   %.4f"
-	} else if decimals == 5 {
+	case 5:
 		format = "\nExpected: %.5f\nActual:   %.5f"
-	} else if decimals == 6 {
+	case 6:
 		format = "\nExpected: %.6f\nActual:   %.6f"
-	} else if decimals == 7 {
+	case 7:
 		format = "\nExpected: %.7f\nActual:   %.7f"
-	} else if decimals == 8 {
+	case 8:
 		format = "\nExpected: %.8f\nActual:   %.8f"
-	} else if decimals == 9 {
+	case 9:
 		format = "\nExpected: %.9f\nActual:   %.9f"
-	} else if decimals == 10 {
+	case 10:
 		format = "\nExpected: %.10f\nActual:   %.10f"
-	} else {
+	default:
 		t.Error("Unexpected decimals:", decimals)
 
 		return

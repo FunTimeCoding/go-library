@@ -4,6 +4,6 @@ import "time"
 
 type AgeColorable interface {
 	Age() time.Duration
-	AgeColorFunction() SprintFunction
-	SetAgeColorFunction(SprintFunction)
+	AgeColor() SprintFunction
+	SetAgeColor(SprintFunction)
 }

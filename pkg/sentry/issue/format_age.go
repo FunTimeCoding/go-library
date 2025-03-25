@@ -1,7 +1,17 @@
 package issue
 
-import "github.com/docker/go-units"
+import (
+	"github.com/docker/go-units"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
-func (i *Issue) formatAge() string {
-	return units.HumanDuration(i.Age())
+func (i *Issue) formatAge(f *option.Format) string {
+	result := units.HumanDuration(i.Age())
+	color := i.AgeColor()
+
+	if f.UseColor && color != nil {
+		result = color(result)
+	}
+
+	return result
 }

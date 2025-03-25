@@ -61,13 +61,13 @@ func main() {
 		tags := c.Tags(namespace, repository)
 		latest := github.LatestTag(tags)
 
-		for _, element := range tags {
-			if element.Name == latest.Name {
+		for _, t := range tags {
+			if t.Name == latest.Name {
 				continue
 			}
 
-			fmt.Printf("Delete tag: %s\n", *element.Name)
-			c.DeleteTag(namespace, repository, *element.Name)
+			fmt.Printf("Delete tag: %s\n", *t.Name)
+			c.DeleteTag(namespace, repository, *t.Name)
 		}
 
 		git.Fetch()
@@ -94,9 +94,9 @@ func main() {
 
 		var mainBranchHash string
 
-		for _, element := range c.Branches(p.Identifier) {
-			if slices.Contains(constant.MainBranches, element.Name) {
-				mainBranchHash = element.Raw.Commit.ID
+		for _, b := range c.Branches(p.Identifier) {
+			if slices.Contains(constant.MainBranches, b.Name) {
+				mainBranchHash = b.Raw.Commit.ID
 
 				break
 			}
@@ -105,11 +105,11 @@ func main() {
 		if verbose {
 			fmt.Printf("Default branch: %s\n", p.Raw.DefaultBranch)
 
-			for _, element := range c.Branches(p.Identifier) {
+			for _, b := range c.Branches(p.Identifier) {
 				fmt.Printf(
 					"Branch: %s %s\n",
-					element.Name,
-					element.Raw.Commit.ID,
+					b.Name,
+					b.Raw.Commit.ID,
 				)
 			}
 
@@ -119,25 +119,25 @@ func main() {
 		if len(pipelines) > 0 {
 			latest := pipeline.Latest(pipelines)
 
-			for _, element := range pipelines {
-				if element.Ref == latest.Ref {
+			for _, i := range pipelines {
+				if i.Ref == latest.Ref {
 					if mainBranchHash == "" {
 						if verbose {
 							fmt.Printf(
 								"Skip pipeline (ref): %s %s\n",
-								element.Ref,
-								element.SHA,
+								i.Ref,
+								i.SHA,
 							)
 						}
 
 						continue
 					} else {
-						if element.SHA == mainBranchHash {
+						if i.SHA == mainBranchHash {
 							if verbose {
 								fmt.Printf(
 									"Skip pipeline (sha): %s %s\n",
-									element.Ref,
-									element.SHA,
+									i.Ref,
+									i.SHA,
 								)
 							}
 
@@ -146,8 +146,8 @@ func main() {
 					}
 				}
 
-				fmt.Printf("Delete pipeline: %s\n", element.Ref)
-				c.DeletePipeline(p.Identifier, element.ID)
+				fmt.Printf("Delete pipeline: %s\n", i.Ref)
+				c.DeletePipeline(p.Identifier, i.ID)
 			}
 		}
 
@@ -183,12 +183,12 @@ func main() {
 		if len(projectPackages) > 0 {
 			latest := packages.Latest(projectPackages)
 
-			for _, element := range projectPackages {
+			for _, a := range projectPackages {
 				var isLatest bool
 
 				for _, inner := range latest {
-					if inner.Name == element.Name &&
-						inner.Version == element.Version {
+					if inner.Name == a.Name &&
+						inner.Version == a.Version {
 						isLatest = true
 					}
 				}
@@ -199,10 +199,10 @@ func main() {
 
 				fmt.Printf(
 					"Delete package: %s %s\n",
-					element.Name,
-					element.Version,
+					a.Name,
+					a.Version,
 				)
-				c.DeletePackage(p.Identifier, element.ID)
+				c.DeletePackage(p.Identifier, a.ID)
 			}
 		}
 
@@ -211,13 +211,13 @@ func main() {
 		if len(tags) > 0 {
 			latest := tag.Latest(tags)
 
-			for _, element := range tags {
-				if element.Name == latest.Name {
+			for _, t := range tags {
+				if t.Name == latest.Name {
 					continue
 				}
 
-				fmt.Printf("Delete tag: %s\n", element.Name)
-				c.DeleteTag(p.Identifier, element.Name)
+				fmt.Printf("Delete tag: %s\n", t.Name)
+				c.DeleteTag(p.Identifier, t.Name)
 			}
 
 			git.Fetch()

@@ -11,7 +11,7 @@ type Branch struct {
 	Merged     bool
 	CommitDate *time.Time
 
-	AgeColor face.SprintFunction
+	ageColor face.SprintFunction
 
 	Raw *gitlab.Branch
 }

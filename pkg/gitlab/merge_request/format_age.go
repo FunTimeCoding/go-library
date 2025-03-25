@@ -8,8 +8,8 @@ import (
 func (r *Request) formatAge(f *option.Format) string {
 	result := units.HumanDuration(r.Age())
 
-	if f.UseColor && r.AgeColor != nil {
-		result = r.AgeColor(result)
+	if f.UseColor && r.ageColor != nil {
+		result = r.ageColor(result)
 	}
 
 	return result

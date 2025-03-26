@@ -6,7 +6,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/age_colorer/age_fixture"
 	"github.com/funtimecoding/go-library/pkg/math/range_mapping"
 	"github.com/funtimecoding/go-library/pkg/math/ranges"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"testing"
 	"time"
 )
@@ -16,22 +15,6 @@ func TestColorer(t *testing.T) {
 	y := age_fixture.New(15 * time.Hour)
 	r := age_fixture.New(30 * time.Hour)
 
-	assert.Float(
-		t,
-		0,
-		timeLibrary.HoursToDecades(g.Age().Hours()),
-	)
-	assert.Float(
-		t,
-		0.057534246575342465,
-		timeLibrary.HoursToDecades(y.Age().Hours()),
-	)
-	assert.Float(
-		t,
-		0.11506849315068493,
-		timeLibrary.HoursToDecades(r.Age().Hours()),
-	)
-
 	c := Default(g, y, r)
 	assert.Any(
 		t,
@@ -39,21 +22,21 @@ func TestColorer(t *testing.T) {
 			{
 				Range: ranges.Range{
 					L: 0,
-					R: 0.038356164383561646,
+					R: 0.3333333333333333,
 				},
 				Value: "green",
 			},
 			{
 				Range: ranges.Range{
-					L: 0.038356164383561646,
-					R: 0.07671232876712329,
+					L: 0.3333333333333333,
+					R: 0.6666666666666666,
 				},
 				Value: "yellow",
 			},
 			{
 				Range: ranges.Range{
-					L: 0.07671232876712329,
-					R: 0.11506849315068493,
+					L: 0.6666666666666666,
+					R: 1,
 				},
 				Value: "red",
 			},

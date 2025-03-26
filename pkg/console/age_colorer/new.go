@@ -4,17 +4,24 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/color_assignment"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/math/range_mapping"
-	"github.com/funtimecoding/go-library/pkg/time"
 )
 
 func New(
 	a []*color_assignment.Assignment,
 	c ...face.AgeColorable,
 ) *Colorer {
+	var largest float64
+
+	for _, e := range c {
+		if value := e.Age().Hours(); value > largest {
+			largest = value
+		}
+	}
+
 	var values []float64
 
 	for _, e := range c {
-		values = append(values, time.HoursToDecades(e.Age().Hours()))
+		values = append(values, e.Age().Hours()/largest)
 	}
 
 	var names []string
@@ -28,5 +35,6 @@ func New(
 	return &Colorer{
 		assignments: assignments,
 		mapping:     range_mapping.Generate(values, names),
+		largest:     largest,
 	}
 }

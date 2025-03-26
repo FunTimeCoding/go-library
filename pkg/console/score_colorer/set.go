@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Colorer) Set(i face.ScoreColorable) {
-	decades := i.Score()
+	value := i.Score() / c.largest
 
 	for _, m := range c.mapping {
-		if in_range.LeftOpen(decades, m.Range) {
+		if in_range.LeftOpen(value, m.Range) {
 			if f, okay := c.assignments[m.Value]; okay {
 				i.SetScoreColor(f)
 			}
@@ -19,11 +19,11 @@ func (c *Colorer) Set(i face.ScoreColorable) {
 		}
 	}
 
-	if first := c.mapping[0]; decades <= first.Range.L {
+	if first := c.mapping[0]; value <= first.Range.L {
 		i.SetScoreColor(console.Green)
 	}
 
-	if last := c.mapping[len(c.mapping)-1]; decades >= last.Range.R {
+	if last := c.mapping[len(c.mapping)-1]; value >= last.Range.R {
 		i.SetScoreColor(console.Red)
 	}
 

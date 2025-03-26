@@ -4,14 +4,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/math/in_range"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 )
 
 func (c *Colorer) Set(i face.AgeColorable) {
-	decades := timeLibrary.HoursToDecades(i.Age().Hours())
+	value := i.Age().Hours() / c.largest
 
 	for _, m := range c.mapping {
-		if in_range.LeftOpen(decades, m.Range) {
+		if in_range.LeftOpen(value, m.Range) {
 			if f, okay := c.assignments[m.Value]; okay {
 				i.SetAgeColor(f)
 			}
@@ -20,11 +19,11 @@ func (c *Colorer) Set(i face.AgeColorable) {
 		}
 	}
 
-	if first := c.mapping[0]; decades <= first.Range.L {
+	if first := c.mapping[0]; value <= first.Range.L {
 		i.SetAgeColor(console.Green)
 	}
 
-	if last := c.mapping[len(c.mapping)-1]; decades >= last.Range.R {
+	if last := c.mapping[len(c.mapping)-1]; value >= last.Range.R {
 		i.SetAgeColor(console.Red)
 	}
 

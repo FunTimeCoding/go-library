@@ -10,10 +10,18 @@ func New(
 	a []*color_assignment.Assignment,
 	c ...face.ScoreColorable,
 ) *Colorer {
+	var largest float64
+
+	for _, e := range c {
+		if value := e.Score(); value > largest {
+			largest = value
+		}
+	}
+
 	var values []float64
 
 	for _, e := range c {
-		values = append(values, e.Score())
+		values = append(values, e.Score()/largest)
 	}
 
 	var names []string
@@ -27,5 +35,6 @@ func New(
 	return &Colorer{
 		assignments: assignments,
 		mapping:     range_mapping.Generate(values, names),
+		largest:     largest,
 	}
 }

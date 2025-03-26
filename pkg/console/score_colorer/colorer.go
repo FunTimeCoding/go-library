@@ -8,4 +8,5 @@ import (
 type Colorer struct {
 	assignments map[string]face.SprintFunction
 	mapping     []*range_mapping.Mapping
+	largest     float64
 }

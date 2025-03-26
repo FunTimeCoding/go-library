@@ -14,24 +14,29 @@ func TestColorer(t *testing.T) {
 	y := score_fixture.New(15)
 	r := score_fixture.New(30)
 
-	assert.Float(t, 0, g.Score())
-	assert.Float(t, 15, y.Score())
-	assert.Float(t, 30, r.Score())
-
 	c := Default(g, y, r)
 	assert.Any(
 		t,
 		[]*range_mapping.Mapping{
 			{
-				Range: ranges.Range{L: 0, R: 10},
+				Range: ranges.Range{
+					L: 0,
+					R: 0.3333333333333333,
+				},
 				Value: "green",
 			},
 			{
-				Range: ranges.Range{L: 10, R: 20},
+				Range: ranges.Range{
+					L: 0.3333333333333333,
+					R: 0.6666666666666666,
+				},
 				Value: "yellow",
 			},
 			{
-				Range: ranges.Range{L: 20, R: 30},
+				Range: ranges.Range{
+					L: 0.6666666666666666,
+					R: 1,
+				},
 				Value: "red",
 			},
 		},

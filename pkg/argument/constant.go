@@ -22,6 +22,7 @@ const (
 	File        = "file"
 	Filter      = "filter"
 	Fix         = "fix"
+	Hardware    = "hardware"
 	Header      = "header"
 	Host        = "host"
 	Interactive = "interactive"

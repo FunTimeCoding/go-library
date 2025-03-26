@@ -15,6 +15,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "download", Download)
 	assert.String(t, "file", File)
 	assert.String(t, "filter", Filter)
+	assert.String(t, "hardware", Hardware)
 	assert.String(t, "interactive", Interactive)
 	assert.String(t, "investigate", Investigate)
 	assert.String(t, "issue", Issue)

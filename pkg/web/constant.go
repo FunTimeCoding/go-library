@@ -4,7 +4,7 @@ package web
 const (
 	InsecureScheme = "http"
 	SecureScheme   = "https"
-	SocketScheme = "ws"
+	SocketScheme   = "ws"
 
 	ContentTypeHeader   = "Content-Type"
 	UserAgentHeader     = "User-Agent"
@@ -32,6 +32,9 @@ const (
 
 	ListenAddress  = ":8080"
 	MetricsAddress = ":9090"
+
+	BasicPrefix  = "Basic"
+	BearerPrefix = "Bearer"
 )
 
 // noinspection HttpUrlsUsage

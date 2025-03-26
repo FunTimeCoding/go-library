@@ -1,5 +1,7 @@
 package option
 
+import "github.com/funtimecoding/go-library/pkg/console/status/option/pair"
+
 type Format struct {
 	UseColor bool
 
@@ -14,6 +16,9 @@ type Format struct {
 
 	// Raw Print the wrapped object with %+v in a new line
 	ShowRaw bool
+
+	// Filters To filter arbitrary key-value pairs
+	Filters []*pair.Pair
 
 	Indentation int
 }

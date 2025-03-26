@@ -4,6 +4,8 @@ const KubernetesCronJobFailed = "KubernetesCronJobFailed"
 
 // Entity
 const (
+	Battery       = "Battery"
+	Certificate   = "Certificate"
 	Check         = "Check"
 	Cluster       = "Cluster"
 	Configuration = "Configuration"
@@ -21,7 +23,9 @@ const (
 	Memory        = "Memory"
 	Node          = "Node"
 	Pod           = "Pod"
+	Queue         = "Queue"
 	ReplicaSet    = "ReplicaSet"
+	Replication   = "Replication"
 	Report        = "Report"
 	Service       = "Service"
 	StatefulSet   = "StatefulSet"
@@ -36,6 +40,7 @@ const (
 	Disconnected = "Disconnected"
 	Down         = "Down"
 	Exceeded     = "Exceeded"
+	Expired      = "Expired"
 	Fail         = "Fail"
 	High         = "High"
 	Inconsistent = "Inconsistent"

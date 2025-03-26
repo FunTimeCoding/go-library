@@ -6,6 +6,8 @@ import (
 )
 
 func TestAlert(t *testing.T) {
+	assert.String(t, "Battery", Battery)
+	assert.String(t, "Certificate", Certificate)
 	assert.String(t, "Check", Check)
 	assert.String(t, "Cluster", Cluster)
 	assert.String(t, "Configuration", Configuration)
@@ -22,7 +24,9 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Memory", Memory)
 	assert.String(t, "Node", Node)
 	assert.String(t, "Pod", Pod)
+	assert.String(t, "Queue", Queue)
 	assert.String(t, "ReplicaSet", ReplicaSet)
+	assert.String(t, "Replication", Replication)
 	assert.String(t, "Report", Report)
 	assert.String(t, "Service", Service)
 	assert.String(t, "StatefulSet", StatefulSet)
@@ -34,6 +38,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Disconnected", Disconnected)
 	assert.String(t, "Down", Down)
 	assert.String(t, "Exceeded", Exceeded)
+	assert.String(t, "Expired", Expired)
 	assert.String(t, "High", High)
 	assert.String(t, "Inconsistent", Inconsistent)
 	assert.String(t, "Lag", Lag)

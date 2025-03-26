@@ -31,4 +31,5 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "summary", Summary)
 	assert.String(t, "title", Title)
 	assert.String(t, "topic", Topic)
+	assert.String(t, "unknown", Unknown)
 }

@@ -62,6 +62,7 @@ const (
 	Title       = "title"
 	Token       = "token"
 	Topic       = "topic"
+	Unknown     = "unknown"
 	User        = "user"
 	Verbose     = "verbose"
 	Version     = "version"

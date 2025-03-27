@@ -18,6 +18,7 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/dimchansky/utfbom v1.1.1
 	github.com/docker/go-units v0.5.0
+	github.com/essentialkaos/go-confluence/v6 v6.0.3
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.8.1
 	github.com/getsentry/sentry-go v0.31.1
@@ -50,6 +51,7 @@ require (
 	github.com/spf13/viper v1.20.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tobischo/gokeepasslib/v3 v3.6.1
+	github.com/virtomize/confluence-go-api v1.5.0
 	github.com/whilp/git-urls v1.0.0
 	gitlab.com/gitlab-org/api/client-go v0.126.0
 	golang.org/x/crypto v0.36.0
@@ -70,6 +72,7 @@ require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.1.5 // indirect
 	github.com/afiskon/promtail-client v0.0.0-20190305142237-506f3f921e9c // indirect
+	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
@@ -131,6 +134,7 @@ require (
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
+	github.com/magefile/mage v1.14.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -164,6 +168,8 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tobischo/argon2 v0.1.0 // indirect
 	github.com/trivago/tgo v1.0.7 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/fasthttp v1.55.0 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	go.mongodb.org/mongo-driver v1.14.0 // indirect

@@ -13,9 +13,11 @@ const (
 	Container     = "Container"
 	DaemonSet     = "DaemonSet"
 	Database      = "Database"
+	Date          = "Date"
 	Deadline      = "Deadline"
 	Deployment    = "Deployment"
 	Disk          = "Disk"
+	Event         = "Event"
 	Fan           = "Fan"
 	Hardware      = "Hardware"
 	Job           = "Job"
@@ -31,6 +33,7 @@ const (
 	Report        = "Report"
 	Service       = "Service"
 	StatefulSet   = "StatefulSet"
+	Token         = "Token"
 	Volume        = "Volume"
 )
 

@@ -1,0 +1,19 @@
+package opsgenie
+
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/opsgenie/opsgenie-go-sdk-v2/alert"
+)
+
+func (c *Client) AlertAttachments(identifier string) []alert.ListedAttachment {
+	result, e := c.userClient.Alert.ListAlertsAttachments(
+		c.context,
+		&alert.ListAttachmentsRequest{
+			IdentifierType:  alert.ALERTID,
+			IdentifierValue: identifier,
+		},
+	)
+	errors.PanicOnError(e)
+
+	return result.Attachment
+}

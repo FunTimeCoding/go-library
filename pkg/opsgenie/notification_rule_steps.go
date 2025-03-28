@@ -1,0 +1,22 @@
+package opsgenie
+
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/opsgenie/opsgenie-go-sdk-v2/notification"
+)
+
+func (c *Client) NotificationRuleSteps(
+	user string,
+	rule string,
+) []notification.RuleStep {
+	result, e := c.userClient.Notification.ListRuleStep(
+		c.context,
+		&notification.ListRuleStepsRequest{
+			UserIdentifier: user,
+			RuleId:         rule,
+		},
+	)
+	errors.PanicOnError(e)
+
+	return result.RuleSteps
+}

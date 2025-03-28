@@ -1,0 +1,16 @@
+package opsgenie
+
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/opsgenie/opsgenie-go-sdk-v2/policy"
+)
+
+func (c *Client) AlertPolicies(team string) []policy.PolicyProps {
+	result, e := c.userClient.Policy.ListAlertPolicies(
+		c.context,
+		&policy.ListAlertPoliciesRequest{TeamId: team},
+	)
+	errors.PanicOnError(e)
+
+	return result.Policies
+}

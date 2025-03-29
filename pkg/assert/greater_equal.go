@@ -11,7 +11,7 @@ func GreaterEqual(
 
 	if actual < than {
 		t.Logf(
-			"\nExpected greater equal than: %f\nActual: %f",
+			"\nExpect greater equal than: %f\nActual: %f",
 			than,
 			actual,
 		)

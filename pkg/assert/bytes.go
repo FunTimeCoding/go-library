@@ -8,15 +8,15 @@ import (
 
 func Bytes(
 	t *testing.T,
-	expected []byte,
+	expect []byte,
 	actual []byte,
 ) {
 	t.Helper()
 	assert.Assert(
 		t,
-		bytes.Equal(actual, expected),
-		"expected %v, got %v",
-		expected,
+		bytes.Equal(actual, expect),
+		"expect %v, got %v",
+		expect,
 		actual,
 	)
 }

@@ -28,8 +28,8 @@ func assertInteger(
 	change int,
 	minimum int,
 	maximum int,
-	expected int,
+	expect int,
 ) {
 	t.Helper()
-	assert.Integer(t, expected, Integer(now, change, minimum, maximum))
+	assert.Integer(t, expect, Integer(now, change, minimum, maximum))
 }

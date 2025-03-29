@@ -9,7 +9,7 @@ import (
 
 func main() {
 	c := jira.NewEnvironment()
-	f := option.ExtendedColor
+	f := option.ExtendedColor.Copy()
 
 	for _, i := range query.Open(c) {
 		fmt.Println(i.Format(f))

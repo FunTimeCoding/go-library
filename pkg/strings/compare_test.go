@@ -32,7 +32,7 @@ func TestCompare(t *testing.T) {
 		[]string{Alfa},
 		[]string{},
 	)
-	// Remain
+	// Stay
 	assertCompare(
 		t,
 		[]string{},
@@ -45,15 +45,15 @@ func TestCompare(t *testing.T) {
 
 func assertCompare(
 	t *testing.T,
-	expectedAdd []string,
-	expectedRemove []string,
-	expectedRemain []string,
+	expectAdd []string,
+	expectRemove []string,
+	expectStay []string,
 	past []string,
 	now []string,
 ) {
 	t.Helper()
-	add, remove, remain := Compare(past, now)
-	assert.Any(t, expectedAdd, add)
-	assert.Any(t, expectedRemove, remove)
-	assert.Any(t, expectedRemain, remain)
+	add, remove, stay := Compare(past, now)
+	assert.Any(t, expectAdd, add)
+	assert.Any(t, expectRemove, remove)
+	assert.Any(t, expectStay, stay)
 }

@@ -122,12 +122,12 @@ func assertExceededByPercent(
 	present float64,
 	hundredPercent float64,
 	percent float64,
-	expected bool,
+	expect bool,
 ) {
 	t.Helper()
 	assert.Boolean(
 		t,
-		expected,
+		expect,
 		ExceededByPercent(past, present, hundredPercent, percent),
 	)
 }

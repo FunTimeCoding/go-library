@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie"
+	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert/detail"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
-	"github.com/funtimecoding/go-library/pkg/opsgenie"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/separator"
 	"github.com/funtimecoding/go-library/pkg/strings/split/key_value"
@@ -47,9 +48,14 @@ func main() {
 			return s
 		},
 	)
-	c.TagsToTeam(
+	c.TagToTeam(
 		func(s []string) string {
 			return ""
+		},
+	)
+	c.ParseDescription(
+		func(s string) *detail.Prometheus {
+			return detail.New()
 		},
 	)
 

@@ -13,7 +13,7 @@ func RunnerWay(
 	g *gitlab.Client,
 	match string,
 ) {
-	f := option.New().Color().Extended()
+	f := option.ExtendedColor.Copy()
 	runners := g.Runners(true)
 	fmt.Printf("Runners (%d):\n", len(runners))
 

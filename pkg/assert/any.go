@@ -11,34 +11,32 @@ import (
 
 func Any(
 	t *testing.T,
-	expected any,
+	expect any,
 	actual any,
 ) {
 	t.Helper()
 
-	if (expected == nil && actual != nil) ||
-		(expected != nil && actual == nil) {
+	if (expect == nil && actual != nil) ||
+		(expect != nil && actual == nil) {
 		t.Fatal(
 			spew.Sdump(
-				"\nNil comparison"+
-					"\nExpected: %#v"+
-					"\nActual:   %#v",
-				expected,
+				"\nNil comparison\nExpect: %#v\nActual: %#v",
+				expect,
 				actual,
 			),
 		)
-	} else if expected == nil {
+	} else if expect == nil {
 		return
 	}
 
-	expectedLength := -1
+	expectLength := -1
 	actualLength := -1
 
-	switch reflect.TypeOf(expected).Kind() {
+	switch reflect.TypeOf(expect).Kind() {
 	case reflect.Slice:
-		expectedLength = reflect.ValueOf(expected).Len()
+		expectLength = reflect.ValueOf(expect).Len()
 	case reflect.Array:
-		expectedLength = reflect.ValueOf(expected).Len()
+		expectLength = reflect.ValueOf(expect).Len()
 	default:
 		// skip
 	}
@@ -52,20 +50,20 @@ func Any(
 		// skip
 	}
 
-	if expectedLength > -1 || actualLength > -1 {
+	if expectLength > -1 || actualLength > -1 {
 		var reason string
 
-		if actualLength < expectedLength {
-			reason = "Actual is shorter than expected"
-		} else if actualLength > expectedLength {
-			reason = "Actual is longer than expected"
+		if actualLength < expectLength {
+			reason = "Actual is shorter than expect"
+		} else if actualLength > expectLength {
+			reason = "Actual is longer than expect"
 		}
 
 		if reason != "" {
 			diff := difflib.UnifiedDiff{
-				A:        difflib.SplitLines(litter.Sdump(expected)),
+				A:        difflib.SplitLines(litter.Sdump(expect)),
 				B:        difflib.SplitLines(litter.Sdump(actual)),
-				FromFile: fmt.Sprintf("Expected (%d)", expectedLength),
+				FromFile: fmt.Sprintf("Expect (%d)", expectLength),
 				ToFile:   fmt.Sprintf("Actual (%d)", actualLength),
 				Context:  1,
 			}
@@ -74,13 +72,13 @@ func Any(
 		}
 	}
 
-	if reflect.DeepEqual(actual, expected) {
+	if reflect.DeepEqual(actual, expect) {
 		return
 	}
 
 	text, _ := difflib.GetUnifiedDiffString(
 		difflib.UnifiedDiff{
-			A:       difflib.SplitLines(spew.Sdump(expected)),
+			A:       difflib.SplitLines(spew.Sdump(expect)),
 			B:       difflib.SplitLines(spew.Sdump(actual)),
 			Context: 10,
 		},

@@ -28,8 +28,8 @@ func assertFloat(
 	change float64,
 	minimum float64,
 	maximum float64,
-	expected float64,
+	expect float64,
 ) {
 	t.Helper()
-	assert.Float(t, expected, Float(now, change, minimum, maximum))
+	assert.Float(t, expect, Float(now, change, minimum, maximum))
 }

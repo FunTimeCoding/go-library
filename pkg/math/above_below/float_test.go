@@ -22,8 +22,8 @@ func assertFloat(
 	t *testing.T,
 	f float64,
 	magnitude float64,
-	expectedAbove bool,
-	expectedBelow bool,
+	expectAbove bool,
+	expectBelow bool,
 ) {
 	t.Helper()
 	var above bool
@@ -38,6 +38,6 @@ func assertFloat(
 			below = true
 		},
 	)
-	assert.Boolean(t, expectedAbove, above)
-	assert.Boolean(t, expectedBelow, below)
+	assert.Boolean(t, expectAbove, above)
+	assert.Boolean(t, expectBelow, below)
 }

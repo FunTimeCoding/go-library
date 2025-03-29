@@ -21,8 +21,8 @@ func assertWeight(
 	b float64,
 	aWeight float64,
 	bWeight float64,
-	expected float64,
+	expect float64,
 ) {
 	t.Helper()
-	assert.Round(t, expected, Weight(a, b, aWeight, bWeight), 2)
+	assert.Round(t, expect, Weight(a, b, aWeight, bWeight), 2)
 }

@@ -7,18 +7,17 @@ import (
 
 func Time(
 	t *testing.T,
-	expected time.Time,
+	expect time.Time,
 	actual time.Time,
 ) {
 	t.Helper()
-	expectedRounded := expected.Round(time.Second)
+	expectRounded := expect.Round(time.Second)
 	actualRounded := actual.Round(time.Second)
 
-	if !actualRounded.Equal(expectedRounded) {
+	if !actualRounded.Equal(expectRounded) {
 		t.Errorf(
-			"\nExpected: %#v"+
-				"\nActual:   %#v",
-			expectedRounded,
+			"\nExpect: %#v\nActual: %#v",
+			expectRounded,
 			actualRounded,
 		)
 	}

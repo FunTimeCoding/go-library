@@ -17,8 +17,8 @@ func assertInteger(
 	past int,
 	now int,
 	threshold int,
-	expected bool,
+	expect bool,
 ) {
 	t.Helper()
-	assert.Boolean(t, expected, Integer(past, now, threshold))
+	assert.Boolean(t, expect, Integer(past, now, threshold))
 }

@@ -7,9 +7,9 @@ import (
 
 func Boolean(
 	t *testing.T,
-	expected bool,
+	expect bool,
 	actual bool,
 ) {
 	t.Helper()
-	assert.Equal(t, actual, expected)
+	assert.Equal(t, actual, expect)
 }

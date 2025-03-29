@@ -17,8 +17,8 @@ func assertFloat(
 	past float64,
 	now float64,
 	threshold float64,
-	expected bool,
+	expect bool,
 ) {
 	t.Helper()
-	assert.Boolean(t, expected, Float(past, now, threshold))
+	assert.Boolean(t, expect, Float(past, now, threshold))
 }

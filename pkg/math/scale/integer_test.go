@@ -19,8 +19,8 @@ func assertInteger(
 	from int,
 	to int,
 	factor float64,
-	expected int,
+	expect int,
 ) {
 	t.Helper()
-	assert.Integer(t, expected, Integer(from, to, factor))
+	assert.Integer(t, expect, Integer(from, to, factor))
 }

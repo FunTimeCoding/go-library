@@ -33,7 +33,7 @@ func (r *Rule) Format(f *option.Format) string {
 	}
 
 	if !slices.Contains(Healths, r.Health) {
-		output := fmt.Sprintf("Unexpected health: %s", r.Health)
+		output := fmt.Sprintf("unexpected health: %s", r.Health)
 
 		if f.UseColor {
 			output = console.Red(output)
@@ -43,7 +43,7 @@ func (r *Rule) Format(f *option.Format) string {
 	}
 
 	if !slices.Contains(States, r.State) {
-		output := fmt.Sprintf("Unexpected state: %s", r.State)
+		output := fmt.Sprintf("unexpected state: %s", r.State)
 
 		if f.UseColor {
 			output = console.Red(output)

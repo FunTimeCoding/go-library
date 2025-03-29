@@ -21,8 +21,8 @@ func assertFloat(
 	from float64,
 	to float64,
 	factor float64,
-	expected float64,
+	expect float64,
 ) {
 	t.Helper()
-	assert.Round(t, expected, Float(from, to, factor), 1)
+	assert.Round(t, expect, Float(from, to, factor), 1)
 }

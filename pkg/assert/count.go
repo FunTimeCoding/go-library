@@ -7,7 +7,7 @@ import (
 
 func Count(
 	t *testing.T,
-	expected int,
+	expect int,
 	countable any,
 ) {
 	var actual int
@@ -21,5 +21,5 @@ func Count(
 		t.Errorf("Not countable: %#v", countable)
 	}
 
-	Integer(t, expected, actual)
+	Integer(t, expect, actual)
 }

@@ -6,17 +6,17 @@ import (
 )
 
 func TestCopy(t *testing.T) {
-	alpha := New()
-	alpha.Tags = []string{"a"}
-	bravo := alpha.Copy()
+	alfa := New()
+	alfa.Tags = []string{"a"}
+	bravo := alfa.Copy()
 	bravo.Tags = append(bravo.Tags, "b")
-	assert.Strings(t, []string{"a"}, alpha.Tags)
+	assert.Strings(t, []string{"a"}, alfa.Tags)
 	assert.Strings(t, []string{"a", "b"}, bravo.Tags)
 
-	if alpha == bravo {
+	if alfa == bravo {
 		t.Errorf(
-			"Expected copy to be different: %+v %+v",
-			alpha,
+			"Expect copy to be different: %+v %+v",
+			alfa,
 			bravo,
 		)
 	}

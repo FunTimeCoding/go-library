@@ -23,9 +23,9 @@ func assertInteger(
 	i int,
 	minimum int,
 	maximum int,
-	expected int,
+	expect int,
 ) {
 	t.Helper()
 	Integer(&i, minimum, maximum)
-	assert.Integer(t, expected, i)
+	assert.Integer(t, expect, i)
 }

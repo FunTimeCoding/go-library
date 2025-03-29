@@ -13,8 +13,8 @@ func TestSeriesSum(t *testing.T) {
 func assertSeriesSum(
 	t *testing.T,
 	n int,
-	expected int,
+	expect int,
 ) {
 	t.Helper()
-	assert.Integer(t, expected, SeriesSum(n))
+	assert.Integer(t, expect, SeriesSum(n))
 }

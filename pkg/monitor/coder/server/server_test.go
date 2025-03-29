@@ -42,7 +42,7 @@ func TestServer(t *testing.T) {
 		assert.FatalOnError(t, wsjson.Read(ctx, c, &v))
 
 		if v["i"] != i {
-			t.Fatalf("expected %v but got %v", i, v)
+			t.Fatalf("expect %v but got %v", i, v)
 		}
 	}
 

@@ -7,9 +7,9 @@ import (
 
 func Integer64(
 	t *testing.T,
-	expected int64,
+	expect int64,
 	actual int64,
 ) {
 	t.Helper()
-	assert.Equal(t, actual, expected)
+	assert.Equal(t, actual, expect)
 }

@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert"
+	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/opsgenie/check/alert"
-	"github.com/funtimecoding/go-library/pkg/opsgenie/check/alert/option"
 	"github.com/spf13/viper"
 )
 

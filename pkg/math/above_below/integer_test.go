@@ -15,8 +15,8 @@ func assertInteger(
 	t *testing.T,
 	f int,
 	magnitude int,
-	expectedAbove bool,
-	expectedBelow bool,
+	expectAbove bool,
+	expectBelow bool,
 ) {
 	t.Helper()
 	var above bool
@@ -31,6 +31,6 @@ func assertInteger(
 			below = true
 		},
 	)
-	assert.Boolean(t, expectedAbove, above)
-	assert.Boolean(t, expectedBelow, below)
+	assert.Boolean(t, expectAbove, above)
+	assert.Boolean(t, expectBelow, below)
 }

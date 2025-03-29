@@ -10,7 +10,7 @@ func Greater(
 	t.Helper()
 
 	if actual <= than {
-		t.Logf("\nExpected greater than: %f\nActual: %f", than, actual)
+		t.Logf("\nExpect greater than: %f\nActual: %f", than, actual)
 		t.Fail()
 	}
 }

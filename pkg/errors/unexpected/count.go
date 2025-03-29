@@ -1,10 +1,10 @@
 package unexpected
 
 func Count(
-	expected int,
+	expect int,
 	actual int,
 ) {
-	if actual != expected {
+	if actual != expect {
 		Integer(actual)
 	}
 }

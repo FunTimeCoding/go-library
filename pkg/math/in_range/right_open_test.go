@@ -19,8 +19,8 @@ func assertRightOpen(
 	t *testing.T,
 	value float64,
 	r ranges.Range,
-	expected bool,
+	expect bool,
 ) {
 	t.Helper()
-	assert.Boolean(t, RightOpen(value, r), expected)
+	assert.Boolean(t, RightOpen(value, r), expect)
 }

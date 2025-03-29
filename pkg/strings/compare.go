@@ -6,7 +6,7 @@ func Compare(
 ) ([]string, []string, []string) {
 	add := difference(now, past)
 	remove := difference(past, now)
-	remain := common(past, now)
+	stay := common(past, now)
 
-	return add, remove, remain
+	return add, remove, stay
 }

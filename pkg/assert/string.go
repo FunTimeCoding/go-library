@@ -7,9 +7,9 @@ import (
 
 func String(
 	t *testing.T,
-	expected string,
+	expect string,
 	actual string,
 ) {
 	t.Helper()
-	assert.Equal(t, actual, expected)
+	assert.Equal(t, actual, expect)
 }

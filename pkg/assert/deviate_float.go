@@ -4,26 +4,20 @@ import "testing"
 
 func Deviate(
 	t *testing.T,
-	expected float64,
+	expect float64,
 	actual float64,
 	deviation float64,
 ) {
-	amount := expected * deviation
+	amount := expect * deviation
 
 	if amount < 0 {
 		amount *= -1
 	}
 
-	if actual <= expected+amount && actual >= expected-amount {
+	if actual <= expect+amount && actual >= expect-amount {
 		return
 	}
 
 	t.Helper()
-	t.Errorf(
-		"\nExpected: %g+-%g"+
-			"\nActual:   %g",
-		expected,
-		amount,
-		actual,
-	)
+	t.Errorf("\nExpect: %g+-%g\nActual: %g", expect, amount, actual)
 }

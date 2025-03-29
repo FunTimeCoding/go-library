@@ -23,9 +23,9 @@ func assertFloat(
 	f float64,
 	minimum float64,
 	maximum float64,
-	expected float64,
+	expect float64,
 ) {
 	t.Helper()
 	Float(&f, minimum, maximum)
-	assert.Round(t, expected, f, 0)
+	assert.Round(t, expect, f, 0)
 }

@@ -60,7 +60,7 @@ func main() {
 
 				if !slices.Equal(ports, found) {
 					fmt.Printf(
-						"Expected ports: %s\n",
+						"Expect ports: %s\n",
 						join.Comma(ports),
 					)
 					fmt.Printf(

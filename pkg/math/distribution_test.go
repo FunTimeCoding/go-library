@@ -14,7 +14,7 @@ func assertDistribution(
 	t *testing.T,
 	all float64,
 	steps int,
-	expected float64,
+	expect float64,
 ) {
 	t.Helper()
 	var sum float64
@@ -24,6 +24,9 @@ func assertDistribution(
 	}
 
 	// Comparing all floats here is a lot of decimals
-	//assert.Any(t, expected, Distribution(all, steps))
-	assert.Float(t, expected, sum)
+	if false {
+		assert.Any(t, expect, Distribution(all, steps))
+	}
+
+	assert.Float(t, expect, sum)
 }

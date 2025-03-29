@@ -10,7 +10,7 @@ func Less(
 	t.Helper()
 
 	if actual >= than {
-		t.Logf("\nExpected less than: %f\nActual: %f", than, actual)
+		t.Logf("\nExpect less than: %f\nActual: %f", than, actual)
 		t.Fail()
 	}
 }

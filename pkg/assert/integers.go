@@ -7,18 +7,13 @@ import (
 
 func Integers(
 	t *testing.T,
-	expected []int,
+	expect []int,
 	actual []int,
 ) {
-	if reflect.DeepEqual(actual, expected) {
+	if reflect.DeepEqual(actual, expect) {
 		return
 	}
 
 	t.Helper()
-	t.Errorf(
-		"\nExpected: %+q"+
-			"\nActual:   %+q",
-		expected,
-		actual,
-	)
+	t.Errorf("\nExpect: %+q\nActual: %+q", expect, actual)
 }

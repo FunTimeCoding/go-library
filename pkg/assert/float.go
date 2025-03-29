@@ -7,9 +7,9 @@ import (
 
 func Float(
 	t *testing.T,
-	expected float64,
+	expect float64,
 	actual float64,
 ) {
 	t.Helper()
-	assert.Equal(t, actual, expected)
+	assert.Equal(t, actual, expect)
 }

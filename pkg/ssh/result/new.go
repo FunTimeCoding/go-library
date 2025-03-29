@@ -9,7 +9,7 @@ func New(
 	return &Result{
 		OutputString: outputString,
 		ErrorString:  errorString,
-		ExitCode:     code,
+		Exit:         code,
 		Error:        e,
 	}
 }

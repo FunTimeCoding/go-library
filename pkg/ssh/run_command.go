@@ -44,7 +44,7 @@ func (c *Client) RunCommand(o *command.Command) *result.Result {
 	return &result.Result{
 		OutputString: trim.NewLine(stdout.String()),
 		ErrorString:  trim.NewLine(stderr.String()),
-		ExitCode:     secure_shell.ExitCode(e),
+		Exit:         secure_shell.Exit(e),
 		Error:        e,
 	}
 }

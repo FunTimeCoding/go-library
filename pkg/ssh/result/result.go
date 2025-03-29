@@ -3,6 +3,6 @@ package result
 type Result struct {
 	OutputString string
 	ErrorString  string
-	ExitCode     int
+	Exit         int
 	Error        error
 }

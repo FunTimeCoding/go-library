@@ -54,7 +54,7 @@ func (r *Run) Start(s ...string) string {
 	var f *exec.ExitError
 
 	if errors.As(e, &f) {
-		r.ExitCode = f.ExitCode()
+		r.Exit = f.ExitCode()
 	}
 
 	if r.Panic {

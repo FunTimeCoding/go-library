@@ -12,7 +12,7 @@ func TestResult(t *testing.T) {
 		&Result{
 			OutputString: "Alfa",
 			ErrorString:  "Bravo",
-			ExitCode:     1,
+			Exit:         1,
 			Error:        nil,
 		},
 		New(strings.Alfa, strings.Bravo, 1, nil),

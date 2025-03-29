@@ -7,13 +7,13 @@ import (
 
 func Required(
 	name string,
-	exitCode int,
+	exit int,
 ) string {
 	if s := os.Getenv(name); s != "" {
 		return s
 	}
 
-	system.Exitf(exitCode, "environment variable empty: %s\n", name)
+	system.Exitf(exit, "environment variable empty: %s\n", name)
 
 	return ""
 }

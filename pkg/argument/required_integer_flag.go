@@ -7,13 +7,13 @@ import (
 
 func RequiredIntegerFlag(
 	name string,
-	exitCode int,
+	exit int,
 ) int {
 	if s := viper.GetInt(name); s != 0 {
 		return s
 	}
 
-	system.Exitf(exitCode, "flag empty: %s\n", name)
+	system.Exitf(exit, "flag empty: %s\n", name)
 
 	return 0
 }

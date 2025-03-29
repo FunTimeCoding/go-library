@@ -5,7 +5,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func ExitCode(e error) int {
+func Exit(e error) int {
 	var exit *ssh.ExitError
 
 	if errors.As(e, &exit) {

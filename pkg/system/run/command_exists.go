@@ -5,5 +5,5 @@ func CommandExists(name string) bool {
 	r.Panic = false
 	r.Start("which", name)
 
-	return r.ExitCode == 0
+	return r.Exit == 0
 }

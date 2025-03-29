@@ -21,9 +21,9 @@ func main() {
 		fmt.Printf("Run: %s\n", r.Format())
 
 		for _, j := range c.Jobs(Owner, Repository, *r.Raw.ID) {
-			fmt.Printf("  Run: %s\n", j.Format())
+			fmt.Printf("  Job: %s\n", j.Format())
 		}
-	}
 
-	// TODO: Delete all but latest workflow runs
+		c.DeleteRun(Owner, Repository, *r.Raw.ID)
+	}
 }

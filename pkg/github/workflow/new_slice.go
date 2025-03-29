@@ -1,6 +1,6 @@
 package workflow
 
-import "github.com/google/go-github/v69/github"
+import "github.com/google/go-github/v70/github"
 
 func NewSlice(v []*github.Workflow) []*Workflow {
 	var result []*Workflow

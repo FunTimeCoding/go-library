@@ -3,6 +3,7 @@ package gobuild
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/build"
+	"github.com/funtimecoding/go-library/pkg/build/option"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -56,43 +57,28 @@ func Main() {
 		}
 	}
 
-	output := viper.GetString(argument.Output)
-	buildTags := viper.GetString(argument.BuildTags)
-	copyToBin := viper.GetBool(build.CopyToBinFlag)
+	o := option.New()
+	o.Name = name
+	o.MainPath = mainPath
+	o.Output = viper.GetString(argument.Output)
+	o.BuildTags = viper.GetString(argument.BuildTags)
+	o.CopyToBin = viper.GetBool(build.CopyToBinFlag)
 
 	if linuxAMD64 {
-		build.Go(
-			name,
-			mainPath,
-			output,
-			buildTags,
-			copyToBin,
-			constant.Linux,
-			constant.AMD64,
-		)
+		o.OperatingSystem = constant.Linux
+		o.Architecture = constant.AMD64
+		build.Go(o)
 	}
 
 	if darwinARM64 {
-		build.Go(
-			name,
-			mainPath,
-			output,
-			buildTags,
-			copyToBin,
-			constant.Darwin,
-			constant.ARM64,
-		)
+		o.OperatingSystem = constant.Darwin
+		o.Architecture = constant.ARM64
+		build.Go(o)
 	}
 
 	if darwinAMD64 {
-		build.Go(
-			name,
-			mainPath,
-			output,
-			buildTags,
-			copyToBin,
-			constant.Darwin,
-			constant.AMD64,
-		)
+		o.OperatingSystem = constant.Darwin
+		o.Architecture = constant.AMD64
+		build.Go(o)
 	}
 }

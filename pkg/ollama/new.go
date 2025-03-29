@@ -12,6 +12,7 @@ import (
 )
 
 func New() *Client {
+	// https://github.com/ollama/ollama/blob/main/docs/api.md
 	return &Client{
 		context: context.Background(),
 		client: api.NewClient(

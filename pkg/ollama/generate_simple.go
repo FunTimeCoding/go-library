@@ -1,7 +1,7 @@
 package ollama
 
-import "github.com/ollama/ollama/api"
+import "github.com/funtimecoding/go-library/pkg/ollama/request"
 
 func (c *Client) GenerateSimple(prompt string) string {
-	return c.Generate(&api.GenerateRequest{Prompt: prompt}).Response
+	return c.Generate(request.New(prompt)).Response
 }

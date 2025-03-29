@@ -5,30 +5,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"testing"
-	"time"
 )
 
 func TestSortByAge(t *testing.T) {
-	dayOne := time.Date(
-		1970,
-		1,
-		1,
-		0,
-		0,
-		0,
-		0,
-		time.UTC,
-	)
-	dayTwo := time.Date(
-		1970,
-		1,
-		2,
-		0,
-		0,
-		0,
-		0,
-		time.UTC,
-	)
+	dayOne := assert.NewDay(1)
+	dayTwo := assert.NewDay(2)
 	descending := SortByAge(
 		[]*Alert{
 			{

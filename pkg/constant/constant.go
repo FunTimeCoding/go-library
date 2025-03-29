@@ -1,6 +1,6 @@
 package constant
 
-import "time"
+import "github.com/funtimecoding/go-library/pkg/assert"
 
 const (
 	Go      = "go"
@@ -32,13 +32,4 @@ const (
 	MarkupExtension  = ".yaml"
 )
 
-var FixtureDate = time.Date(
-	2020,
-	1,
-	1,
-	0,
-	0,
-	0,
-	0,
-	time.UTC,
-)
+var FixtureDate = assert.NewDay(1)

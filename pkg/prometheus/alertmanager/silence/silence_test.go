@@ -5,10 +5,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"testing"
-	"time"
 )
 
 func TestSilence(t *testing.T) {
@@ -21,34 +20,8 @@ func TestSilence(t *testing.T) {
 			Silence: models.Silence{
 				CreatedBy: ptr.To(strings.Bravo),
 				Comment:   ptr.To(strings.Charlie),
-				StartsAt: ptr.To(
-					timeLibrary.Scan(
-						time.Date(
-							1970,
-							1,
-							1,
-							0,
-							0,
-							0,
-							0,
-							time.UTC,
-						),
-					),
-				),
-				EndsAt: ptr.To(
-					timeLibrary.Scan(
-						time.Date(
-							1970,
-							1,
-							1,
-							0,
-							10,
-							0,
-							0,
-							time.UTC,
-						),
-					),
-				),
+				StartsAt:  ptr.To(time.Scan(assert.NewMinute(0))),
+				EndsAt:    ptr.To(time.Scan(assert.NewMinute(10))),
 			},
 		},
 		strings.Delta,

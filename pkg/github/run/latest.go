@@ -1,10 +1,16 @@
 package run
 
 func Latest(v []*Run) *Run {
-	latest := v[0]
+	var latest *Run
 
 	for _, r := range v {
 		if r.Status != Completed {
+			continue
+		}
+
+		if latest == nil {
+			latest = r
+
 			continue
 		}
 

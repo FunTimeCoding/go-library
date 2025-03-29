@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
 	"github.com/funtimecoding/go-library/pkg/github"
+	"github.com/funtimecoding/go-library/pkg/github/run"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	gitlabConstant "github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/image"
@@ -59,10 +60,10 @@ func main() {
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := github.NewEnvironment()
 		tags := c.Tags(namespace, repository)
-		latest := github.LatestTag(tags)
+		latestTag := github.LatestTag(tags)
 
 		for _, t := range tags {
-			if t.Name == latest.Name {
+			if t.Name == latestTag.Name {
 				continue
 			}
 
@@ -71,6 +72,18 @@ func main() {
 		}
 
 		git.Fetch()
+
+		runs := c.Runs(namespace, repository)
+		//latestRun := github.LatestRun(runs)
+
+		for _, r := range runs {
+			if r.Status != run.Completed {
+				continue
+			}
+
+			fmt.Printf("Delete run: %d\n", r.Identifier)
+			c.DeleteRun(namespace, repository, r.Identifier)
+		}
 	case provider_map.GitLabProvider:
 		remoteLocator := git.ParseLocator(origin.Locator)
 		namespace, repository := git.ParseProject(remoteLocator.Path)

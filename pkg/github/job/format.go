@@ -1,15 +1,15 @@
 package job
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/time"
 )
 
-func (j *Job) Format() string {
-	return fmt.Sprintf(
-		"%s | %s | %s",
+func (j *Job) Format(f *option.Format) string {
+	return status.New(f).String(
 		j.Name,
 		j.CreatedAt.Format(time.DateMinute),
-		j.Raw.GetHeadSHA(),
-	)
+		j.Hash,
+	).Raw(j).Format()
 }

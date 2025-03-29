@@ -3,5 +3,11 @@ package job
 import "github.com/google/go-github/v70/github"
 
 func New(v *github.WorkflowJob) *Job {
-	return &Job{Name: v.GetName(), CreatedAt: v.CreatedAt.Time, Raw: v}
+	return &Job{
+		Identifier: v.GetID(),
+		Name:       v.GetName(),
+		Hash:       v.GetHeadSHA(),
+		CreatedAt:  v.CreatedAt.Time,
+		Raw:        v,
+	}
 }

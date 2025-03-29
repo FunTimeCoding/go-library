@@ -6,8 +6,10 @@ import (
 )
 
 type Job struct {
-	Name      string
-	CreatedAt time.Time
+	Identifier int64
+	Name       string
+	Hash       string
+	CreatedAt  time.Time
 
 	Raw *github.WorkflowJob
 }

@@ -30,9 +30,7 @@ func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case key.Enter:
 		if m.connect {
 			r := m.table.SelectedRow()
-			m.client.Write(
-				join.Comma([]string{constant.FlagCommand, r[0]}),
-			)
+			m.client.Write(join.Comma([]string{constant.FlagCommand, r[0]}))
 		}
 
 		return m, nil

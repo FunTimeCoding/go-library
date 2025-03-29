@@ -6,6 +6,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/receive"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"
+	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/time"
@@ -29,12 +31,23 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 		result = append(result, fetch.Command())
 	}
 
-	m.bottomBar = fmt.Sprintf(
-		"%s %d %s",
-		g.Time.Format(time.DateSecond),
-		m.second,
-		m.hostname,
-	)
+	f := option.ExtendedColor.Copy()
+
+	top := status.New(f).String()
+	top.String(fmt.Sprintf("items: %d", len(m.table.Rows())))
+	m.topBar = top.Format()
+
+	bottom := status.New(f)
+	bottom.String(m.hostname)
+
+	if false {
+		bottom.String(g.Time.Format(time.DateSecond))
+	}
+
+	bottom.Integer(60 - m.second%60)
+	bottom.String(fmt.Sprintf("%dx%d", m.width, m.height))
+	m.bottomBar = bottom.Format()
+
 	m.second++
 	result = append(result, tick.Command())
 

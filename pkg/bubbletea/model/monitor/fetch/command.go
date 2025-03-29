@@ -1,10 +1,12 @@
 package fetch
 
 import (
+	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/system/run"
+	"strings"
 )
 
 func Command() tea.Cmd {
@@ -22,6 +24,14 @@ func Command() tea.Cmd {
 			if run.CommandExists(c) {
 				m := monitor.Run(c)
 				result.Items = append(result.Items, m.Items...)
+			}
+		}
+
+		for i, t := range result.Items {
+			alert := fmt.Sprintf("%s-", constant.AlertPrefix)
+
+			if strings.HasPrefix(t.Identifier, alert) {
+				t.Identifier = fmt.Sprintf("%s%d", alert, i+1)
 			}
 		}
 

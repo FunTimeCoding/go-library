@@ -7,17 +7,20 @@ import (
 )
 
 type Model struct {
-	table     *table.Model
-	width     int
-	height    int
-	topBar    string
+	width  int
+	height int
+
+	topBar string
+
+	table *table.Model
+	items []*item.Item
+
 	bottomBar string
-	second    int
+
+	second int
 
 	client   *client.Client
 	connect  bool
 	user     string
 	hostname string
-
-	items []*item.Item
 }

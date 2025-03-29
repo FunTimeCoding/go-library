@@ -8,7 +8,7 @@ import (
 
 func New(connect bool) *Model {
 	return &Model{
-		table:    item.New(),
+		table:    item.New(connect),
 		client:   client.New(),
 		connect:  connect,
 		user:     system.User().Username,

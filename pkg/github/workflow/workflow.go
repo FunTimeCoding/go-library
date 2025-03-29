@@ -8,6 +8,7 @@ import (
 type Workflow struct {
 	Identifier int64
 	Name       string
+	State      string
 	CreatedAt  time.Time
 
 	Raw *github.Workflow

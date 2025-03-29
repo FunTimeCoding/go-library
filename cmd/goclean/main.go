@@ -8,12 +8,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/remote/provider_map"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/github/run"
+	hubTag "github.com/funtimecoding/go-library/pkg/github/tag"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	gitlabConstant "github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/image"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
 	"github.com/funtimecoding/go-library/pkg/gitlab/pipeline"
-	"github.com/funtimecoding/go-library/pkg/gitlab/tag"
+	labTag "github.com/funtimecoding/go-library/pkg/gitlab/tag"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -60,7 +61,7 @@ func main() {
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := github.NewEnvironment()
 		tags := c.Tags(namespace, repository)
-		latestTag := github.LatestTag(tags)
+		latestTag := hubTag.Latest(tags)
 
 		for _, t := range tags {
 			if t.Name == latestTag.Name {
@@ -74,7 +75,11 @@ func main() {
 		git.Fetch()
 
 		runs := c.Runs(namespace, repository)
-		//latestRun := github.LatestRun(runs)
+
+		if false {
+			latestRun := run.Latest(runs)
+			fmt.Printf("Latest run: %s\n", latestRun.Name)
+		}
 
 		for _, r := range runs {
 			if r.Status != run.Completed {
@@ -222,7 +227,7 @@ func main() {
 		tags := c.Tags(p.Identifier)
 
 		if len(tags) > 0 {
-			latest := tag.Latest(tags)
+			latest := labTag.Latest(tags)
 
 			for _, t := range tags {
 				if t.Name == latest.Name {

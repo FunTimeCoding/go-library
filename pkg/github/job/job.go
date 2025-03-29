@@ -8,6 +8,7 @@ import (
 type Job struct {
 	Identifier int64
 	Name       string
+	Status     string
 	Hash       string
 	CreatedAt  time.Time
 

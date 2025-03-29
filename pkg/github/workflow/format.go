@@ -9,6 +9,7 @@ import (
 func (w *Workflow) Format(f *option.Format) string {
 	return status.New(f).String(
 		w.Name,
+		w.State,
 		w.CreatedAt.Format(time.DateMinute),
 	).Raw(w).Format()
 }

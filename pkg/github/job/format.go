@@ -9,6 +9,7 @@ import (
 func (j *Job) Format(f *option.Format) string {
 	return status.New(f).String(
 		j.Name,
+		j.Status,
 		j.CreatedAt.Format(time.DateMinute),
 		j.Hash,
 	).Raw(j).Format()

@@ -9,9 +9,10 @@ import (
 
 func Issue() {
 	c := sentry.NewEnvironment()
+	f := option.Color
 
 	for _, i := range c.AllIssues() {
-		fmt.Printf("Issue: %s\n", i.Format(option.Plain))
+		fmt.Printf("Issue: %s\n", i.Format(f))
 	}
 
 	if false {
@@ -26,7 +27,7 @@ func Issue() {
 					p,
 					constant.PeriodFortnight,
 				) {
-					fmt.Printf("Issue: %s\n", i.Format(option.Plain))
+					fmt.Printf("Issue: %s\n", i.Format(f))
 				}
 			}
 		}

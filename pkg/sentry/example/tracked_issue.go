@@ -7,7 +7,10 @@ import (
 )
 
 func TrackedIssue() {
-	for _, i := range sentry.NewEnvironment().TrackedIssues() {
-		fmt.Printf("Issue: %s\n", i.Format(option.Plain))
+	c := sentry.NewEnvironment()
+	f := option.Color
+
+	for _, i := range c.TrackedIssues() {
+		fmt.Printf("Issue: %s\n", i.Format(f))
 	}
 }

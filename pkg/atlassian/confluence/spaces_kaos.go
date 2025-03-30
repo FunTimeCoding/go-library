@@ -5,9 +5,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
-func (c *Client) User() *kaos.User {
-	result, e := c.kaos.GetCurrentUser(kaos.ExpandParameters{})
+func (c *Client) SpacesKaos(keys []string) []*kaos.Space {
+	result, e := c.kaos.GetSpaces(kaos.SpaceParameters{SpaceKey: keys})
 	errors.PanicOnError(e)
 
-	return result
+	return result.Results
 }

@@ -5,11 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence"
 )
 
-func SpaceVirtomize() {
+func Page() {
 	c := confluence.NewEnvironment()
-	fmt.Printf("%+v\n", c.UserVirtomize())
-
-	for _, s := range c.SpacesVirtomize() {
-		fmt.Println(s.Name)
-	}
+	fmt.Println("PagesBasic")
+	fmt.Println(c.PagesBasic())
 }

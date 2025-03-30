@@ -7,5 +7,5 @@ import (
 
 func Simple() {
 	o := ollama.New()
-	fmt.Println(o.GenerateSimple("What is a car?"))
+	fmt.Println(o.GenerateSimple("What is a car?").Text)
 }

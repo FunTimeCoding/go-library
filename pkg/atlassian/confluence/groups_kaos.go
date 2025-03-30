@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
-func (c *Client) Groups() []*kaos.Group {
+func (c *Client) GroupsKaos() []*kaos.Group {
 	result, e := c.kaos.GetGroups(kaos.CollectionParameters{})
 	errors.PanicOnError(e)
 

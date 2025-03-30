@@ -7,10 +7,42 @@ import (
 
 func Space() {
 	c := confluence.NewEnvironment()
-	u := c.User()
-	fmt.Println(u)
 
-	for _, s := range c.Spaces() {
-		fmt.Println(s.Name)
+	if false {
+		fmt.Println("SpacesKaos")
+
+		// Requires a key, cannot list all spaces
+		for _, s := range c.SpacesKaos([]string{""}) {
+			fmt.Printf("  Space: %s\n", s.Name)
+		}
+	}
+
+	if false {
+		fmt.Println("SpacesVirtomize")
+
+		for _, s := range c.SpacesVirtomize() {
+			fmt.Printf("  Space: %s\n", s.Name)
+		}
+	}
+
+	if false {
+		fmt.Println("SpacesBasic")
+		fmt.Println(c.SpacesBasic())
+	}
+
+	if true {
+		fmt.Println("SpacesTreminio")
+
+		for _, s := range c.SpacesTreminio() {
+			fmt.Printf("  Space: %s\n", s.Name)
+		}
+	}
+
+	if false {
+		fmt.Println("SpacesTreminioV2")
+
+		for _, s := range c.SpacesTreminioV2() {
+			fmt.Printf("  Space: %s\n", s.Name)
+		}
 	}
 }

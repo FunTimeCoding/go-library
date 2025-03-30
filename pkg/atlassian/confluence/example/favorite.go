@@ -6,11 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 )
 
-func Favourite() {
+func Favorite() {
 	c := confluence.NewEnvironment()
 	f := constant.DenseFormat
 
-	for _, o := range c.Favourites() {
+	for _, o := range c.FavoritesKaos() {
 		fmt.Println(o.Format(f))
 	}
 }

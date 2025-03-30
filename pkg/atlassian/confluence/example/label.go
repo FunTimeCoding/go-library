@@ -10,7 +10,7 @@ func Label() {
 	c := confluence.NewEnvironment()
 	f := constant.DenseFormat
 
-	for _, o := range c.Labeled() {
+	for _, o := range c.LabeledKaos() {
 		fmt.Println(o.Format(f))
 	}
 }

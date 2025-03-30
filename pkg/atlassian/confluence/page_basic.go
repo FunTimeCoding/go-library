@@ -7,12 +7,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
-func (c *Client) PagesBasic() []*response.Page {
-	var result *response.Pages
+func (c *Client) PageBasic(identifier string) *response.Page {
+	var result *response.Page
 	notation.DecodeStrict(
 		c.basic.GetV2(
 			fmt.Sprintf(
-				"/pages?body-format=%s",
+				"/pages/%s?body-format=%s",
+				identifier,
 				constant.StorageFormat,
 			),
 		),
@@ -20,5 +21,5 @@ func (c *Client) PagesBasic() []*response.Page {
 		false,
 	)
 
-	return result.Results
+	return result
 }

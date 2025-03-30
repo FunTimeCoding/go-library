@@ -8,6 +8,15 @@ import (
 func Space() {
 	c := confluence.NewEnvironment()
 
+	if true {
+		fmt.Println("SpacesBasic")
+
+		for _, s := range c.SpacesBasic() {
+			fmt.Printf("  Space: %s\n", s.Name)
+			fmt.Printf("    Raw: %+v\n", s)
+		}
+	}
+
 	if false {
 		fmt.Println("SpacesKaos")
 
@@ -26,11 +35,6 @@ func Space() {
 	}
 
 	if false {
-		fmt.Println("SpacesBasic")
-		fmt.Println(c.SpacesBasic())
-	}
-
-	if true {
 		fmt.Println("SpacesTreminio")
 
 		for _, s := range c.SpacesTreminio() {

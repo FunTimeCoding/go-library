@@ -3,6 +3,7 @@ module github.com/funtimecoding/go-library
 go 1.24.1
 
 require (
+	github.com/JohannesKaufmann/html-to-markdown v1.6.0
 	github.com/MrGunflame/gw2api v1.0.5
 	github.com/PuerkitoBio/goquery v1.10.2
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5
@@ -57,6 +58,7 @@ require (
 	gitlab.com/gitlab-org/api/client-go v0.126.0
 	golang.org/x/crypto v0.36.0
 	golang.org/x/mod v0.24.0
+	golang.org/x/net v0.35.0
 	golang.org/x/oauth2 v0.28.0
 	golang.org/x/time v0.11.0
 	gonum.org/v1/gonum v0.16.0
@@ -184,7 +186,6 @@ require (
 	go.uber.org/goleak v1.3.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
-	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/term v0.30.0 // indirect

@@ -4,7 +4,7 @@ import "github.com/funtimecoding/go-library/pkg/ollama/example"
 
 func main() {
 	if true {
-		example.AssessAlert()
+		example.ClassifyAlert()
 	}
 
 	if false {

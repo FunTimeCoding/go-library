@@ -1,5 +1,7 @@
 package team_map
 
+import "log"
+
 func (m *Map) AddKey(
 	name string,
 	key string,
@@ -12,5 +14,5 @@ func (m *Map) AddKey(
 		}
 	}
 
-	panic("team not found")
+	log.Panicf("team not found: %s", name)
 }

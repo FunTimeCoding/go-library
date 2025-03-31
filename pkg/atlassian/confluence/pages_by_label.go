@@ -2,17 +2,25 @@ package confluence
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
+	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
 func (c *Client) PagesByLabel(labelIdentifier string) []*page.Page {
-	var result []*page.Page
-
-	fmt.Println(
+	var result *response.Pages
+	notation.DecodeStrict(
 		c.basic.GetV2(
-			fmt.Sprintf("/labels/%s/pages", labelIdentifier),
+			fmt.Sprintf(
+				"/labels/%s/pages?body-format=%s",
+				labelIdentifier,
+				constant.StorageFormat,
+			),
 		),
+		&result,
+		false,
 	)
 
-	return result
+	return page.NewSlice(result.Results, c.host)
 }

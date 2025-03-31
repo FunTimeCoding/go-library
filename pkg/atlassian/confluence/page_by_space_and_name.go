@@ -1,18 +1,35 @@
 package confluence
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
+	"github.com/funtimecoding/go-library/pkg/notation"
+)
 
 func (c *Client) PageBySpaceAndName(
-	spaceIdentifier string,
+	spaceName string,
 	name string,
-) {
-	fmt.Println(
+) *page.Page {
+	s := c.SpaceByName(spaceName)
+	var result *response.Pages
+	notation.DecodeStrict(
 		c.basic.GetV2(
 			fmt.Sprintf(
-				"/pages?space-id=%s&title=%s",
-				spaceIdentifier,
+				"/pages?body-format=%s&space-id=%s&title=%s",
+				constant.StorageFormat,
+				s.Identifier,
 				name,
 			),
 		),
+		&result,
+		false,
 	)
+
+	if len(result.Results) == 1 {
+		return page.New(result.Results[0], c.host)
+	}
+
+	return nil
 }

@@ -11,17 +11,35 @@ func Page() {
 	c := confluence.NewEnvironment()
 	f := constant.DefaultFormat
 
-	for _, p := range c.Pages() {
-		fmt.Println(p.Format(f))
+	if true {
+		a := c.PageBySpaceAndName(
+			constant.OperationsSpace,
+			constant.ExamplePage,
+		)
+		fmt.Printf("Page: %s\n", a.Format(f))
+	}
 
-		if false {
-			if p.Name != constant.ExamplePage {
-				continue
+	if false {
+		s := c.SpaceByName(constant.OperationsSpace)
+
+		for _, p := range c.PagesBySpace(s.Identifier) {
+			fmt.Println(p.Format(f))
+
+			if false {
+				if p.Name != constant.ExamplePage {
+					continue
+				}
+			}
+
+			if false {
+				page.PrintBody(p.Raw.Body)
 			}
 		}
+	}
 
-		if false {
-			page.PrintBody(p.Raw.Body)
+	if false {
+		for _, p := range c.Pages() {
+			fmt.Println(p.Format(f))
 		}
 	}
 }

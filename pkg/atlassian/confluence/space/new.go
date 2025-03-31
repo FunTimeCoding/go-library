@@ -6,7 +6,8 @@ func New(
 	p *response.Space,
 ) *Space {
 	return &Space{
-		Name: p.Name,
-		Raw:  p,
+		Identifier: p.Id,
+		Name:       p.Name,
+		Raw:        p,
 	}
 }

@@ -15,15 +15,16 @@ func Label() {
 			fmt.Printf("Label: %+v\n", l)
 		}
 
-		if false {
-			for _, o := range c.Labeled() {
-				fmt.Println(o.Format(f))
-			}
+		c.SetLabels([]string{"favourite"})
+
+		for _, o := range c.Labeled() {
+			fmt.Println(o.Format(f))
 		}
 	}
 
 	if false {
 		fmt.Println("LabeledKaos")
+
 		for _, o := range c.LabeledKaos() {
 			fmt.Println(o.Format(f))
 		}

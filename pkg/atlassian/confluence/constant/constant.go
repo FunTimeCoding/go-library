@@ -7,6 +7,8 @@ import (
 
 const NoSpace = "no space"
 
+const PageType = "page"
+
 // Fixture
 const (
 	OperationsSpace = "Operations"

@@ -10,18 +10,26 @@ func Search() {
 	c := confluence.NewEnvironment()
 	f := constant.DenseFormat
 
+	if true {
+		for _, r := range c.Search(
+			fmt.Sprintf("space=%s", constant.OperationsSpace),
+		) {
+			fmt.Println(r.Format(f))
+		}
+	}
+
 	if false {
 		// Working syntax examples
-		fmt.Println(c.SearchBasic("favourite=currentUser()"))
-		fmt.Println(c.SearchBasic(`label IN ("ExampleLabel")`))
-		fmt.Println(c.SearchBasic("creator IN (currentUser())"))
-		fmt.Println(c.SearchBasic("creator=currentUser()"))
-		c.SearchVirtomize("creator=currentUser()")
-		c.SearchVirtomize("space=EXAMPLE")
-		c.SearchKaos("space=EXAMPLE")
+		c.Search("favorite=currentUser()")
+		c.Search(`label IN ("ExampleLabel")`)
+		c.Search("creator IN (currentUser())")
+		c.Search("creator=currentUser()")
+		c.Search("creator=currentUser()")
+		c.Search("space=EXAMPLE")
+		c.Search("space=EXAMPLE")
 
 		// No result, watcher does not work, use favorite instead
-		c.SearchVirtomize("watcher=currentUser()")
+		c.Search("watcher=currentUser()")
 	}
 
 	if false {
@@ -32,11 +40,19 @@ func Search() {
 		}
 	}
 
-	if true {
+	if false {
+		fmt.Println("SearchVirtomize")
+
+		for _, o := range c.SearchVirtomize("favorite=currentUser()") {
+			fmt.Println(o.Format(f))
+		}
+	}
+
+	if false {
 		fmt.Println("SearchTreminio")
 
-		for _, o := range c.SearchTreminio("favourite=currentUser()") {
-			fmt.Printf("  Search: %s\n", o.Title)
+		for _, o := range c.SearchTreminio("favorite=currentUser()") {
+			fmt.Println(o.Title)
 		}
 	}
 }

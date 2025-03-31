@@ -2,16 +2,17 @@ package confluence
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/user"
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
-func (c *Client) SpacesBasic() []*response.Space {
-	var result *response.Spaces
+func (c *Client) User() *user.User {
+	var result *response.User
 	notation.DecodeStrict(
-		c.basic.GetV2("/spaces"),
+		c.basic.Get("/user/current"),
 		&result,
 		false,
 	)
 
-	return result.Results
+	return user.New(result)
 }

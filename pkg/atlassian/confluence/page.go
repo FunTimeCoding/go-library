@@ -4,15 +4,17 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
-func (c *Client) PagesBasic() []*response.Page {
-	var result *response.Pages
+func (c *Client) Page(identifier string) *page.Page {
+	var result *response.Page
 	notation.DecodeStrict(
 		c.basic.GetV2(
 			fmt.Sprintf(
-				"/pages?body-format=%s",
+				"/pages/%s?body-format=%s",
+				identifier,
 				constant.StorageFormat,
 			),
 		),
@@ -20,5 +22,5 @@ func (c *Client) PagesBasic() []*response.Page {
 		false,
 	)
 
-	return result.Results
+	return page.New(result, c.host)
 }

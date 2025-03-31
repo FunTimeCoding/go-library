@@ -84,3 +84,8 @@ alertname
 amtool
 ingester
 querier
+
+# Atlassian
+tinyui
+editui
+edituiv

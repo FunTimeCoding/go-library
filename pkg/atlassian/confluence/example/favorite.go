@@ -10,7 +10,17 @@ func Favorite() {
 	c := confluence.NewEnvironment()
 	f := constant.DenseFormat
 
-	for _, o := range c.FavoritesKaos() {
-		fmt.Println(o.Format(f))
+	if true {
+		for _, p := range c.Favorites() {
+			fmt.Println(p.Format(f))
+		}
+	}
+
+	if false {
+		fmt.Println("FavoritesKaos")
+
+		for _, o := range c.FavoritesKaos() {
+			fmt.Println(o.Format(f))
+		}
 	}
 }

@@ -6,4 +6,6 @@ type Links struct {
 	EditUI   string `json:"editui"`
 	EditUIV2 string `json:"edituiv2"`
 	TinyUI   string `json:"tinyui"`
+	Context  string `json:"context"`
+	Self     string `json:"self"`
 }

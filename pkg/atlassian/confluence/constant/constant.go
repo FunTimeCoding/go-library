@@ -7,7 +7,11 @@ import (
 
 const NoSpace = "no space"
 
-var DenseFormat = option.Color.Copy().Tag(tag.Link, tag.Dense)
+// Fixture
+const (
+	OperationsSpace = "Operations"
+	ExamplePage     = "Example"
+)
 
 // Body format
 const (
@@ -18,4 +22,9 @@ const (
 	AnonymousFormat = "anonymous_export_view"
 	StyledFormat    = "styled_view"
 	EditFormat      = "editor"
+)
+
+var (
+	DefaultFormat = option.ExtendedColor
+	DenseFormat   = option.Color.Copy().Tag(tag.Link, tag.Dense)
 )

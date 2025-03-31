@@ -3,17 +3,16 @@ package example
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 )
 
 func Space() {
 	c := confluence.NewEnvironment()
+	f := constant.DefaultFormat
 
 	if true {
-		fmt.Println("SpacesBasic")
-
-		for _, s := range c.SpacesBasic() {
-			fmt.Printf("  Space: %s\n", s.Name)
-			fmt.Printf("    Raw: %+v\n", s)
+		for _, s := range c.Spaces() {
+			fmt.Println(s.Format(f))
 		}
 	}
 

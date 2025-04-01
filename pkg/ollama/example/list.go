@@ -6,7 +6,7 @@ import (
 )
 
 func List() {
-	o := ollama.New()
+	o := ollama.NewEnvironment()
 
 	for _, element := range o.List() {
 		fmt.Printf("Model: %+v\n", element)

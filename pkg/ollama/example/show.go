@@ -7,6 +7,6 @@ import (
 )
 
 func Show() {
-	o := ollama.New()
+	o := ollama.NewEnvironment()
 	fmt.Printf("Show: %+v\n", o.Show(constant.Llama31))
 }

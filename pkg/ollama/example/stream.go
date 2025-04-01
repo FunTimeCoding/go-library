@@ -8,7 +8,7 @@ import (
 )
 
 func Stream() {
-	o := ollama.New()
+	o := ollama.NewEnvironment()
 	c := make(chan string)
 	r := api.GenerateResponse{}
 	go o.GenerateStream(

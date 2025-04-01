@@ -11,7 +11,7 @@ import (
 	"net/url"
 )
 
-func New() *Client {
+func New(host string) *Client {
 	// https://github.com/ollama/ollama/blob/main/docs/api.md
 	return &Client{
 		context: context.Background(),
@@ -19,7 +19,7 @@ func New() *Client {
 			&url.URL{
 				Scheme: web.InsecureScheme,
 				Host: net.JoinHostPort(
-					web.Localhost,
+					host,
 					fmt.Sprintf("%d", constant.Port),
 				),
 			},

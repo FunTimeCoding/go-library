@@ -6,7 +6,7 @@ import (
 )
 
 func Running() {
-	o := ollama.New()
+	o := ollama.NewEnvironment()
 
 	for _, element := range o.Running() {
 		fmt.Printf("Running: %+v\n", element)

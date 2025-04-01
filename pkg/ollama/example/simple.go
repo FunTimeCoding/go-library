@@ -6,6 +6,6 @@ import (
 )
 
 func Simple() {
-	o := ollama.New()
+	o := ollama.NewEnvironment()
 	fmt.Println(o.GenerateSimple("What is a car?").Text)
 }

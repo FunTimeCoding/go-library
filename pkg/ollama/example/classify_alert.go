@@ -9,7 +9,7 @@ import (
 )
 
 func ClassifyAlert() {
-	o := ollama.New()
+	o := ollama.NewEnvironment()
 
 	if false {
 		alert := "ECCMemoryError"

@@ -21,9 +21,11 @@ const (
 	CommandPath                 = "cmd"
 	ConfigurationPath           = ".config"
 	DownloadsPath               = "Downloads"
-	KubernetesConfigurationPath = ".kube/config"
-	QuerySocketPath             = ".osquery/shell.em"
+	FixturePath                 = "fixture"
 	IdeaPath                    = ".idea"
+	KubernetesConfigurationPath = ".kube/config"
+	NotationPath                = "notation"
+	QuerySocketPath             = ".osquery/shell.em"
 
 	Transmission = "tcp"
 )

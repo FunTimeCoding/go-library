@@ -9,6 +9,14 @@ import (
 func TestAlert(t *testing.T) {
 	assert.True(
 		t,
-		New(nil, nil, strings.Alfa, nil, nil, nil, nil) != nil,
+		New(
+			nil,
+			nil,
+			strings.Alfa,
+			nil,
+			nil,
+			nil,
+			nil,
+		) != nil,
 	)
 }

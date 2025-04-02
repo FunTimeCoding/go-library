@@ -17,6 +17,8 @@ func Count(
 		actual = reflect.ValueOf(countable).Len()
 	case reflect.Array:
 		actual = reflect.ValueOf(countable).Len()
+	case reflect.Map:
+		actual = reflect.ValueOf(countable).Len()
 	default:
 		t.Errorf("Not countable: %#v", countable)
 	}

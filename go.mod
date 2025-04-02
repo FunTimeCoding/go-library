@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.24.1
+go 1.24.2
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown v1.6.0
@@ -43,7 +43,7 @@ require (
 	github.com/prometheus/alertmanager v0.28.1
 	github.com/prometheus/client_golang v1.21.1
 	github.com/prometheus/common v0.63.0
-	github.com/rivo/tview v0.0.0-20250325173046-7b72abf45814
+	github.com/rivo/tview v0.0.0-20250330220935-949945f8d922
 	github.com/samber/slog-loki/v3 v3.5.4
 	github.com/sanity-io/litter v1.5.8
 	github.com/sirupsen/logrus v1.9.3
@@ -55,10 +55,10 @@ require (
 	github.com/tobischo/gokeepasslib/v3 v3.6.1
 	github.com/virtomize/confluence-go-api v1.5.0
 	github.com/whilp/git-urls v1.0.0
-	gitlab.com/gitlab-org/api/client-go v0.126.0
+	gitlab.com/gitlab-org/api/client-go v0.127.0
 	golang.org/x/crypto v0.36.0
 	golang.org/x/mod v0.24.0
-	golang.org/x/net v0.35.0
+	golang.org/x/net v0.38.0
 	golang.org/x/oauth2 v0.28.0
 	golang.org/x/time v0.11.0
 	gonum.org/v1/gonum v0.16.0

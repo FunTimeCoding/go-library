@@ -1,12 +1,12 @@
 package project
 
-func ReplaceGoImageVersion(
+func ReplaceGoMarkupVersion(
 	content string,
 	v string,
 ) string {
 	return ReplaceVersionByPrefix(
 		content,
 		v,
-		`image: ([a-z\.\/]+)?golang:`,
+		"          go-version: ",
 	)
 }

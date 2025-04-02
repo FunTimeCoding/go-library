@@ -87,4 +87,13 @@ func main() {
 
 		system.SaveFile(project.GitLabFile, d)
 	}
+
+	if system.FileExists(project.GitHubBuildFile) {
+		d := project.ReplaceGoMarkupVersion(
+			system.ReadFile(project.GitHubBuildFile),
+			goString,
+		)
+
+		system.SaveFile(project.GitHubBuildFile, d)
+	}
 }

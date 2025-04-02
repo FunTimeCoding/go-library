@@ -39,6 +39,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Volume", Volume)
 
 	assert.String(t, "Bad", Bad)
+	assert.String(t, "Behind", Behind)
 	assert.String(t, "Broken", Broken)
 	assert.String(t, "Close", Close)
 	assert.String(t, "Corrupt", Corrupt)
@@ -56,8 +57,10 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Low", Low)
 	assert.String(t, "NearExpired", NearExpired)
 	assert.String(t, "NearFull", NearFull)
+	assert.String(t, "Old", Old)
 	assert.String(t, "OutOfMemory", OutOfMemory)
 	assert.String(t, "OutOfSync", OutOfSync)
+	assert.String(t, "Overload", Overload)
 	assert.String(t, "Stuck", Stuck)
 	assert.String(t, "Timeout", Timeout)
 	assert.String(t, "Unbound", Unbound)

@@ -41,6 +41,7 @@ const (
 // Category
 const (
 	Bad          = "Bad"
+	Behind       = "Behind"
 	Broken       = "Broken"
 	Close        = "Close"
 	Corrupt      = "Corrupt"
@@ -59,8 +60,10 @@ const (
 	Low          = "Low"
 	NearExpired  = "NearExpired"
 	NearFull     = "NearFull"
+	Old          = "Old"
 	OutOfMemory  = "OutOfMemory"
 	OutOfSync    = "OutOfSync"
+	Overload     = "Overload"
 	Stuck        = "Stuck"
 	Timeout      = "Timeout"
 	Unbound      = "Unbound"

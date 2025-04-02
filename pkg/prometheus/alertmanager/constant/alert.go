@@ -33,6 +33,7 @@ const (
 	Report        = "Report"
 	Service       = "Service"
 	StatefulSet   = "StatefulSet"
+	System        = "System"
 	Token         = "Token"
 	Volume        = "Volume"
 )
@@ -49,6 +50,7 @@ const (
 	Exceeded     = "Exceeded"
 	Expired      = "Expired"
 	Fail         = "Fail"
+	Frozen       = "Frozen"
 	Full         = "Full"
 	High         = "High"
 	Inconsistent = "Inconsistent"

@@ -34,6 +34,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Report", Report)
 	assert.String(t, "Service", Service)
 	assert.String(t, "StatefulSet", StatefulSet)
+	assert.String(t, "System", System)
 	assert.String(t, "Token", Token)
 	assert.String(t, "Volume", Volume)
 
@@ -46,6 +47,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Empty", Empty)
 	assert.String(t, "Exceeded", Exceeded)
 	assert.String(t, "Expired", Expired)
+	assert.String(t, "Frozen", Frozen)
 	assert.String(t, "Full", Full)
 	assert.String(t, "High", High)
 	assert.String(t, "Inconsistent", Inconsistent)

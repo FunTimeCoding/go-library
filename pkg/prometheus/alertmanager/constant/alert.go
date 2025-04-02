@@ -33,6 +33,7 @@ const (
 	Report        = "Report"
 	Service       = "Service"
 	StatefulSet   = "StatefulSet"
+	System        = "System"
 	Token         = "Token"
 	Volume        = "Volume"
 )
@@ -40,6 +41,7 @@ const (
 // Category
 const (
 	Bad          = "Bad"
+	Behind       = "Behind"
 	Broken       = "Broken"
 	Close        = "Close"
 	Corrupt      = "Corrupt"
@@ -49,6 +51,7 @@ const (
 	Exceeded     = "Exceeded"
 	Expired      = "Expired"
 	Fail         = "Fail"
+	Frozen       = "Frozen"
 	Full         = "Full"
 	High         = "High"
 	Inconsistent = "Inconsistent"
@@ -57,8 +60,10 @@ const (
 	Low          = "Low"
 	NearExpired  = "NearExpired"
 	NearFull     = "NearFull"
+	Old          = "Old"
 	OutOfMemory  = "OutOfMemory"
 	OutOfSync    = "OutOfSync"
+	Overload     = "Overload"
 	Stuck        = "Stuck"
 	Timeout      = "Timeout"
 	Unbound      = "Unbound"

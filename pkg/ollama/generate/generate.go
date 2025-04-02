@@ -6,5 +6,6 @@ type Generate struct {
 	Load             int64
 	PromptEvaluation int64
 	Evaluation       int64
+	PromptTokens     float64
 	Tokens           float64
 }

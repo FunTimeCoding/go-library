@@ -9,6 +9,7 @@ func New(r *api.GenerateResponse) *Generate {
 		Load:             r.LoadDuration.Milliseconds(),
 		PromptEvaluation: r.PromptEvalDuration.Milliseconds(),
 		Evaluation:       r.EvalDuration.Milliseconds(),
+		PromptTokens:     float64(r.PromptEvalCount) / r.PromptEvalDuration.Seconds(),
 		Tokens:           float64(r.EvalCount) / r.EvalDuration.Seconds(),
 	}
 }

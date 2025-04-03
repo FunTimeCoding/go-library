@@ -27,9 +27,18 @@ func RunnerWay(
 		fmt.Printf("  Jobs (%d):\n", len(jobs))
 
 		for _, job := range jobs {
+			var jobUser string
+
+			if job.User != nil {
+				jobUser = job.User.Name
+			} else {
+				jobUser = "no user"
+			}
+
 			fmt.Printf(
-				"  Job: %s | %s | %s\n",
+				"  Job: %s | %s | %s | %s\n",
 				job.CreatedAt.Format(time.DateMinute),
+				jobUser,
 				job.Name,
 				job.Status,
 			)

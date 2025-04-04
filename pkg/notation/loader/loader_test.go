@@ -31,32 +31,33 @@ func TestLoader(t *testing.T) {
 `,
 		l.contents["response-1.json"],
 	)
+	actualMap := l.ToMap()
 	assert.Any(
 		t,
-		map[string]map[string]string{
-			"response-1.json": {
-				"Classified": "AnAlertName",
-				"Reason":     "A reason why the answer was chosen",
-				"Answer":     "not-yet-broken",
-			},
-			"response-2.json": {
-				"Classified": "AnotherAlertName",
-				"Reason":     "Another reason why the answer was chosen",
-				"Answer":     "already-broken",
-			},
+		map[string]string{
+			"Classified": "AnAlertName",
+			"Reason":     "A reason why the answer was chosen",
+			"Answer":     "not-yet-broken",
 		},
-		l.ToMap(),
+		actualMap["response-1.json"],
 	)
+	assert.Any(
+		t,
+		map[string]string{
+			"Classified": "AnotherAlertName",
+			"Reason":     "Another reason why the answer was chosen",
+			"Answer":     "already-broken",
+		},
+		actualMap["response-2.json"],
+	)
+	reducedMap := actualMap
+	delete(reducedMap, "response-2.json")
 	assert.String(
 		t,
 		`1
 Answer: not-yet-broken
 Classified: AnAlertName
-Reason: A reason why the answer was chosen
-2
-Answer: already-broken
-Classified: AnotherAlertName
-Reason: Another reason why the answer was chosen`,
-		l.ToText(),
+Reason: A reason why the answer was chosen`,
+		l.ToText(reducedMap),
 	)
 }

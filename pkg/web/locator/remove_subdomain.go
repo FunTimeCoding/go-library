@@ -6,7 +6,7 @@ import (
 )
 
 func RemoveSubdomain(s string) string {
-	if IsSubdomain(s) {
+	if HasDot(s) {
 		return join.Dot(split.Dot(s)[1:])
 	}
 

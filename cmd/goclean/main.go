@@ -36,7 +36,7 @@ func main() {
 	m := provider_map.New()
 	m.Add(gitlabLocator.Host, provider_map.GitLabProvider)
 
-	if locator.IsSubdomain(gitlabLocator.Host) {
+	if locator.HasDot(gitlabLocator.Host) {
 		m.Add(
 			locator.RemoveSubdomain(gitlabLocator.Host),
 			provider_map.GitLabProvider,

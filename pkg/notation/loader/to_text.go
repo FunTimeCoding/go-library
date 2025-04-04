@@ -5,10 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
-func (l *Loader) ToText() string {
+func (l *Loader) ToText(m map[string]map[string]string) string {
 	var result []string
 
-	for k, v := range l.ToMap() {
+	for k, v := range m {
 		result = append(result, IntegerFromString(k))
 
 		for _, kk := range maps.StringKeys(v) {

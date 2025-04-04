@@ -5,6 +5,7 @@ const KubernetesCronJobFailed = "KubernetesCronJobFailed"
 // Entity
 const (
 	Battery       = "Battery"
+	Cache         = "Cache"
 	Certificate   = "Certificate"
 	Check         = "Check"
 	Cluster       = "Cluster"

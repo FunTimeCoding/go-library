@@ -8,6 +8,7 @@ import (
 func TestAlert(t *testing.T) {
 	assert.String(t, "Battery", Battery)
 	assert.String(t, "Certificate", Certificate)
+	assert.String(t, "Cache", Cache)
 	assert.String(t, "Check", Check)
 	assert.String(t, "Cluster", Cluster)
 	assert.String(t, "Configuration", Configuration)

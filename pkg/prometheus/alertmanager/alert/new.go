@@ -37,12 +37,13 @@ func New(
 			monitorConstant.AlertPrefix,
 			*v.Fingerprint,
 		),
-		State:     state,
-		Labels:    v.Labels,
-		Receivers: receivers,
-		Remaining: remaining,
-		Raw:       v,
-		Start:     openapi.ConvertTime(v.StartsAt),
+		Fingerprint: *v.Fingerprint,
+		State:       state,
+		Labels:      v.Labels,
+		Receivers:   receivers,
+		Remaining:   remaining,
+		Raw:         v,
+		Start:       openapi.ConvertTime(v.StartsAt),
 	}
 	extractKey(&remaining, constant.AlertnameField, &result.Name)
 	extractKey(&remaining, constant.SeverityField, &result.Severity)

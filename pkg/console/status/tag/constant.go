@@ -6,6 +6,7 @@ const (
 	Dense       = "dense"
 	Emoji       = "emoji"
 	Filter      = "filter"
+	Fingerprint = "fingerprint"
 	Investigate = "investigate"
 	Link        = "link"
 	Markdown    = "markdown"

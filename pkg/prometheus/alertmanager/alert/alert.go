@@ -7,6 +7,7 @@ import (
 
 type Alert struct {
 	MonitorIdentifier string
+	Fingerprint       string
 	Name              string
 	State             string
 	Severity          string

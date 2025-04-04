@@ -14,6 +14,10 @@ import (
 func (a *Alert) Format(f *option.Format) string {
 	s := status.New(f).Raw(a)
 
+	if f.HasTag(tag.Fingerprint) {
+		s.String(a.Fingerprint)
+	}
+
 	if v := a.formatEntity(f); v != "" {
 		s.String(v)
 	}

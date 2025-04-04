@@ -25,6 +25,7 @@ func TestAlert(t *testing.T) {
 		t,
 		&Alert{
 			MonitorIdentifier: "alert-Alfa",
+			Fingerprint:       "Alfa",
 			Name:              "none",
 			State:             "active",
 			Severity:          "none",

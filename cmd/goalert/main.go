@@ -9,11 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-	RulesArgument  = "rules"
-	FiringArgument = "firing"
-)
-
 func main() {
 	monitor.NotationArgument()
 	monitor.AllArgument()
@@ -26,8 +21,9 @@ func main() {
 		false,
 		"Include alerts older than 1 week",
 	)
-	pflag.Bool(RulesArgument, false, "Print rules")
-	pflag.Bool(FiringArgument, false, "Print firing rules")
+	pflag.Bool(argument.Rules, false, "Print rules")
+	pflag.Bool(argument.Firing, false, "Print firing rules")
+	pflag.Bool(argument.Fingerprint, false, "Fingerprint column")
 	argument.ParseAndBind()
 	o := option.New()
 	o.Notation = viper.GetBool(argument.Notation)
@@ -37,7 +33,8 @@ func main() {
 	o.Extended = viper.GetBool(argument.Extended)
 	o.Old = viper.GetBool(argument.Old)
 	o.Suppressed = viper.GetBool(argument.Suppressed)
-	o.Rules = viper.GetBool(RulesArgument)
-	o.Firing = viper.GetBool(FiringArgument)
+	o.Rules = viper.GetBool(argument.Rules)
+	o.Firing = viper.GetBool(argument.Firing)
+	o.Fingerprint = viper.GetBool(argument.Fingerprint)
 	alert.Print(o)
 }

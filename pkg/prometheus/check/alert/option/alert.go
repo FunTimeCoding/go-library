@@ -13,4 +13,6 @@ type Alert struct {
 
 	Rules  bool
 	Firing bool
+
+	Fingerprint bool
 }

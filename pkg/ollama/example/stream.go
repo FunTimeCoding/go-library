@@ -8,10 +8,9 @@ import (
 )
 
 func Stream() {
-	o := ollama.NewEnvironment()
 	c := make(chan string)
 	r := api.GenerateResponse{}
-	go o.GenerateStream(
+	go ollama.NewEnvironment().GenerateStream(
 		request.New("One short sentence: What is a car?"),
 		c,
 		&r,

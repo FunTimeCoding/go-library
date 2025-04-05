@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 )
 
-func Default(v ...face.ScoreColorable) *Colorer {
+func Default[T face.ScoreColorable](v ...T) *Colorer {
 	return New(
 		[]*color_assignment.Assignment{
 			color_assignment.New(console.GreenColor, console.Green),

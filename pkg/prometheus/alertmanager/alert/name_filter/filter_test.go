@@ -8,14 +8,7 @@ import (
 )
 
 func TestFilter(t *testing.T) {
-	fixture := []*alert.Alert{
-		{
-			Name: strings.Alfa,
-		},
-		{
-			Name: strings.Bravo,
-		},
-	}
+	fixture := []*alert.Alert{{Name: strings.Alfa}, {Name: strings.Bravo}}
 
 	f1 := New(false)
 	f1.Keep(strings.Alfa)

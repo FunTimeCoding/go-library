@@ -9,14 +9,14 @@ import (
 
 func Page() {
 	c := confluence.NewEnvironment()
-	f := constant.DefaultFormat
+	f := constant.DenseFormat
 
 	if true {
 		a := c.PageBySpaceAndName(
 			constant.OperationsSpace,
 			constant.ExamplePage,
 		)
-		fmt.Printf("Page: %s\n", a.Format(f))
+		fmt.Println(a.Format(f))
 	}
 
 	if false {

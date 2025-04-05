@@ -10,6 +10,10 @@ import (
 )
 
 func main() {
+	if false {
+		gw2.Example()
+	}
+
 	pflag.String(argument.Tag, "", "Guild tag")
 	argument.ParseAndBind()
 	c := gw2.New(environment.Get(gw2.TokenEnvironment, 1))

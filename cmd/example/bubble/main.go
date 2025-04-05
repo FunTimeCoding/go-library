@@ -29,7 +29,7 @@ func main() {
 					)
 				}
 
-				fmt.Println()
+				println()
 			}
 		}
 	}
@@ -45,6 +45,6 @@ func main() {
 			)
 		}
 
-		fmt.Println()
+		println()
 	}
 }

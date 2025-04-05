@@ -7,10 +7,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/integers"
 )
 
-func Dynamic(
+func Dynamic[T face.AgeColorable](
 	startHex string,
 	endHex string,
-	v ...face.AgeColorable,
+	v ...T,
 ) *Colorer {
 	count := len(v)
 	c := console.Gradient(startHex, endHex, count)

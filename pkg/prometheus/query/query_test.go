@@ -25,6 +25,19 @@ func TestNullFilter(t *testing.T) {
 	assert.String(t, "up", Filter(constant.Up, nil))
 }
 
+func TestSumBy(t *testing.T) {
+	assert.String(
+		t,
+		`sum(kube_pod_container_status_restarts_total{namespace="Alfa"}) by (namespace, pod)`,
+		SumBy(
+			constant.Restart,
+			filter.New().Namespace(strings.Alfa),
+			constant.Namespace,
+			constant.Pod,
+		),
+	)
+}
+
 func TestSumByRate(t *testing.T) {
 	assert.String(
 		t,

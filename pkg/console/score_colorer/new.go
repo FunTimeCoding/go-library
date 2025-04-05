@@ -6,9 +6,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/math/range_mapping"
 )
 
-func New(
+func New[T face.ScoreColorable](
 	a []*color_assignment.Assignment,
-	c ...face.ScoreColorable,
+	c ...T,
 ) *Colorer {
 	var largest float64
 

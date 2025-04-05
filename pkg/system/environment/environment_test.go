@@ -12,4 +12,6 @@ func TestEnvironment(t *testing.T) {
 		"Alfa",
 		GetDefault("DOES_NOT_EXIST", strings.Alfa),
 	)
+
+	EnsureUnset("NEVER_EXIST")
 }

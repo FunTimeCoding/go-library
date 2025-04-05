@@ -6,5 +6,7 @@ import (
 )
 
 func TestWhitespace(t *testing.T) {
-	assert.True(t, New() != nil)
+	c := Compact()
+	assert.False(t, c.NewlineAtEnd)
+	assert.Integer(t, 0, c.AllowedBlankLines)
 }

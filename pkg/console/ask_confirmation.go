@@ -1,25 +1,23 @@
 package console
 
 import (
-	"bufio"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"os"
+	"github.com/funtimecoding/go-library/pkg/console/reader"
 	"strings"
 )
 
 func AskConfirmation(s string) bool {
-	reader := bufio.NewReader(os.Stdin)
+	r := reader.New()
 
 	for {
 		fmt.Printf("%s [y/N]: ", s)
-		response, e := reader.ReadString('\n')
-		errors.PanicOnError(e)
-		response = strings.ToLower(strings.TrimSpace(response))
+		l := r.Line()
+		l = strings.ToLower(strings.TrimSpace(l))
 
-		if response == "y" || response == "yes" {
+		switch l {
+		case "y", "yes":
 			return true
-		} else {
+		default:
 			return false
 		}
 	}

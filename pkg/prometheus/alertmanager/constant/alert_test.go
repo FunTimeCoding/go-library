@@ -7,8 +7,8 @@ import (
 
 func TestAlert(t *testing.T) {
 	assert.String(t, "Battery", Battery)
-	assert.String(t, "Certificate", Certificate)
 	assert.String(t, "Cache", Cache)
+	assert.String(t, "Certificate", Certificate)
 	assert.String(t, "Check", Check)
 	assert.String(t, "Cluster", Cluster)
 	assert.String(t, "Configuration", Configuration)
@@ -27,6 +27,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Limit", Limit)
 	assert.String(t, "Measure", Measure)
 	assert.String(t, "Memory", Memory)
+	assert.String(t, "MountPoint", MountPoint)
 	assert.String(t, "Node", Node)
 	assert.String(t, "Pod", Pod)
 	assert.String(t, "Queue", Queue)
@@ -62,6 +63,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "OutOfMemory", OutOfMemory)
 	assert.String(t, "OutOfSync", OutOfSync)
 	assert.String(t, "Overload", Overload)
+	assert.String(t, "ReadOnly", ReadOnly)
 	assert.String(t, "Stuck", Stuck)
 	assert.String(t, "Timeout", Timeout)
 	assert.String(t, "Unbound", Unbound)

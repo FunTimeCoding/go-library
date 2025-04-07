@@ -1,13 +1,19 @@
 package tag
 
 const (
+	Age         = "age"
+	Assignee    = "assignee"
 	Category    = "category"
 	Concerns    = "concerns"
 	Dense       = "dense"
+	Description = "description"
 	Emoji       = "emoji"
 	Filter      = "filter"
 	Fingerprint = "fingerprint"
+	Graph       = "graph"
+	Instance    = "instance"
 	Investigate = "investigate"
+	Key         = "key"
 	Link        = "link"
 	Markdown    = "markdown"
 	Runbook     = "runbook"
@@ -17,4 +23,5 @@ const (
 	Timestamp   = "timestamp"
 	Type        = "type"
 	Usage       = "usage"
+	Wiki        = "wiki"
 )

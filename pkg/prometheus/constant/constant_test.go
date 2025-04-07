@@ -10,6 +10,7 @@ func TestConstant(t *testing.T) {
 
 	assert.String(t, "daemonset", DaemonSetLabel)
 	assert.String(t, "deployment", DeploymentLabel)
+	assert.String(t, "endpoint", EndpointLabel)
 	assert.String(t, "scope", ScopeLabel)
 	assert.String(t, "service", ServiceLabel)
 	assert.String(t, "state", StateLabel)

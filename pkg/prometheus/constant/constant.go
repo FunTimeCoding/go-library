@@ -30,6 +30,7 @@ const (
 	ContainerLabel   = "container"
 	DaemonSetLabel   = "daemonset"
 	DeploymentLabel  = "deployment"
+	EndpointLabel    = "endpoint"
 	InstanceLabel    = "instance"
 	JobLabel         = "job"
 	NamespaceLabel   = "namespace"

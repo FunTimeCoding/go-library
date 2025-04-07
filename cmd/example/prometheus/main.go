@@ -7,12 +7,12 @@ import (
 
 func main() {
 	if true {
-		alertmanager.Notify()
+		prometheus.Query()
 	}
 
 	if false {
+		alertmanager.Notify()
 		alertmanager.Create()
-		prometheus.Query()
 		prometheus.Rule()
 		alertmanager.Alert()
 		alertmanager.Status()

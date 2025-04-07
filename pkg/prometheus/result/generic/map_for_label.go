@@ -8,9 +8,9 @@ func MapForLabel(
 ) map[string][]*Result {
 	result := make(map[string][]*Result)
 
-	for _, element := range r {
-		value := metric.New(element.Metric).Label(label)
-		result[value] = append(result[value], element)
+	for _, e := range r {
+		value := metric.New(e.Metric).Label(label)
+		result[value] = append(result[value], e)
 	}
 
 	return result

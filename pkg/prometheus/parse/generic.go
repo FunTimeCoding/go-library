@@ -12,13 +12,13 @@ func Generic(v model.Value) []*generic.Result {
 
 	switch t := v.Type(); t {
 	case model.ValMatrix:
-		for _, element := range v.(model.Matrix) {
-			for _, inner := range element.Values {
+		for _, e := range v.(model.Matrix) {
+			for _, inner := range e.Values {
 				result = append(
 					result,
 					&generic.Result{
 						Type:   constant.Matrix,
-						Metric: element.Metric.String(),
+						Metric: e.Metric.String(),
 						Time:   inner.Timestamp.Time(),
 						Value:  inner.Value.String(),
 					},
@@ -26,14 +26,14 @@ func Generic(v model.Value) []*generic.Result {
 			}
 		}
 	case model.ValVector:
-		for _, element := range v.(model.Vector) {
+		for _, e := range v.(model.Vector) {
 			result = append(
 				result,
 				&generic.Result{
 					Type:   constant.Vector,
-					Metric: element.Metric.String(),
-					Time:   element.Timestamp.Time(),
-					Value:  element.Value.String(),
+					Metric: e.Metric.String(),
+					Time:   e.Timestamp.Time(),
+					Value:  e.Value.String(),
 				},
 			)
 		}

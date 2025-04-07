@@ -10,14 +10,14 @@ func UserInvolved(
 	o []*override.Override,
 	r []*rotation.Rotation,
 ) bool {
-	for _, element := range o {
-		if override.ContainsUser(element, user) {
+	for _, e := range o {
+		if override.ContainsUser(e, user, nil) {
 			return true
 		}
 	}
 
-	for _, element := range r {
-		if rotation.ContainsUser(element, user) {
+	for _, e := range r {
+		if rotation.ContainsUser(e, user, nil) {
 			return true
 		}
 	}

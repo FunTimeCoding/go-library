@@ -11,8 +11,8 @@ func RelevantLabels(
 ) []string {
 	var m []*metric.Metric
 
-	for _, element := range v {
-		m = append(m, metric.New(element.Metric))
+	for _, e := range v {
+		m = append(m, metric.New(e.Metric))
 	}
 
 	return sortLabels(

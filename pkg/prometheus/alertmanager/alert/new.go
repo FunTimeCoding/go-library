@@ -45,18 +45,18 @@ func New(
 		Raw:         v,
 		Start:       openapi.ConvertTime(v.StartsAt),
 	}
-	extractKey(&remaining, constant.AlertnameField, &result.Name)
-	extractKey(&remaining, constant.SeverityField, &result.Severity)
-	extractKey(&remaining, constant.SummaryField, &result.Summary)
-	extractKey(&remaining, constant.MessageField, &result.Message)
-	extractKey(&remaining, constant.PrometheusField, &result.Prometheus)
+	extractKey(&remaining, constant.AlertnameLabel, &result.Name)
+	extractKey(&remaining, constant.SeverityLabel, &result.Severity)
+	extractKey(&remaining, constant.SummaryLabel, &result.Summary)
+	extractKey(&remaining, constant.MessageLabel, &result.Message)
+	extractKey(&remaining, constant.PrometheusLabel, &result.Prometheus)
 	result.Link = fmt.Sprintf(
 		"https://%s/#/alerts?filter=%s",
 		host,
 		url.QueryEscape(
 			fmt.Sprintf(
 				"{%s=\"%s\"}",
-				constant.AlertnameField,
+				constant.AlertnameLabel,
 				result.Name,
 			),
 		),

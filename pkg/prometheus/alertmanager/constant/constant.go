@@ -25,15 +25,15 @@ const (
 	HighMemoryUsage = "HighMemoryUsage" // Test alert name
 )
 
-// Alert field
+// Alert label
 const (
-	AlertnameField   = "alertname"
-	DescriptionField = "description"
-	InstanceField    = "instance"
-	MessageField     = "message"
-	PrometheusField  = "prometheus"
-	SeverityField    = "severity"
-	SummaryField     = "summary"
+	AlertnameLabel   = "alertname"
+	DescriptionLabel = "description"
+	InstanceLabel    = "instance"
+	MessageLabel     = "message"
+	PrometheusLabel  = "prometheus"
+	SeverityLabel    = "severity"
+	SummaryLabel     = "summary"
 )
 
 // Alert state

@@ -25,9 +25,9 @@ func (c *Client) Create(
 		&models.PostableAlert{
 			Alert: models.Alert{
 				Labels: models.LabelSet{
-					constant.AlertnameField: name,
-					constant.SeverityField:  constant.CriticalSeverity,
-					constant.InstanceField:  instance,
+					constant.AlertnameLabel: name,
+					constant.SeverityLabel:  constant.CriticalSeverity,
+					constant.InstanceLabel:  instance,
 				},
 				GeneratorURL: strfmt.URI(
 					fmt.Sprintf(
@@ -38,8 +38,8 @@ func (c *Client) Create(
 				),
 			},
 			Annotations: map[string]string{
-				constant.SummaryField:     summary,
-				constant.DescriptionField: description,
+				constant.SummaryLabel:     summary,
+				constant.DescriptionLabel: description,
 			},
 			StartsAt: strfmt.DateTime(start),
 			EndsAt:   strfmt.DateTime(end),

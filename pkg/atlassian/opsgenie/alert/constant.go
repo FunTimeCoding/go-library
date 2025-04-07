@@ -37,7 +37,7 @@ var (
 		PriorityP5,
 	}
 	SkipDetail = []string{
-		constant.SeverityField,
+		constant.SeverityLabel,
 	}
 	CondenseSkipFields []string
 )

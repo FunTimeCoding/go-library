@@ -22,7 +22,7 @@ func (a *Alert) findName() string {
 		description = a.RawResult.Description
 	}
 
-	if n, okay := details[constant.AlertnameField]; okay {
+	if n, okay := details[constant.AlertnameLabel]; okay {
 		return a.shortenAlert(n)
 	}
 

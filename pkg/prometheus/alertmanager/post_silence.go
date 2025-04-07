@@ -30,7 +30,7 @@ func (c *Client) PostSilence(
 			CreatedBy: ptr.To(system.User().Username),
 			Matchers: []*models.Matcher{
 				{
-					Name:    ptr.To(constant.AlertnameField),
+					Name:    ptr.To(constant.AlertnameLabel),
 					Value:   &alert,
 					IsRegex: ptr.To(false),
 				},

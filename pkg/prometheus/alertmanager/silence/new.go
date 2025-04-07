@@ -17,7 +17,7 @@ func New(
 	var rule string
 
 	for _, m := range v.Matchers {
-		if *m.Name == constant.AlertnameField {
+		if *m.Name == constant.AlertnameLabel {
 			rule = *m.Value
 		}
 

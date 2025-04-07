@@ -18,7 +18,7 @@ func Rule() {
 			fmt.Printf("Alert: %s\n", r.Format(f))
 
 			for k, v := range r.RawAlert.Labels {
-				if k == constant.SeverityField {
+				if k == constant.SeverityLabel {
 					asString := string(v)
 
 					if !slices.Contains(severities, asString) {
@@ -30,7 +30,7 @@ func Rule() {
 			fmt.Printf("Record: %s\n", r.Format(f))
 
 			for k, v := range r.RawRecord.Labels {
-				if k == constant.SeverityField {
+				if k == constant.SeverityLabel {
 					asString := string(v)
 
 					if !slices.Contains(severities, asString) {

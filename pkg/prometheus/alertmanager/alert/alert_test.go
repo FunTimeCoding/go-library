@@ -32,7 +32,7 @@ func TestAlert(t *testing.T) {
 			Summary:           "none",
 			Message:           "none",
 			Prometheus:        "none",
-			Start:             ptr.To(libraryConstant.FixtureDate),
+			Start:             ptr.To(libraryConstant.StartOfTime),
 
 			Link: "https://Bravo/#/alerts?filter=%7Balertname%3D%22none%22%7D",
 		},

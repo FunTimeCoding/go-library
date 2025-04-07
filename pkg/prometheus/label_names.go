@@ -6,11 +6,14 @@ import (
 	"time"
 )
 
-func (c *Client) LabelNames(matches []string) []string {
+func (c *Client) LabelNames(
+	matches []string,
+	since time.Time,
+) []string {
 	result, w, e := c.client.LabelNames(
 		c.context,
 		matches,
-		time.Now(),
+		since,
 		time.Now(),
 	)
 	errors.PanicOnError(e)

@@ -10,6 +10,6 @@ func TestFormat(t *testing.T) {
 	assert.String(
 		t,
 		"1970-01-01 00:00",
-		Format(constant.FixtureDate),
+		Format(constant.StartOfTime),
 	)
 }

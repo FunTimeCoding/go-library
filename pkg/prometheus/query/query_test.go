@@ -32,8 +32,8 @@ func TestSumBy(t *testing.T) {
 		SumBy(
 			constant.Restart,
 			filter.New().Namespace(strings.Alfa),
-			constant.Namespace,
-			constant.Pod,
+			constant.NamespaceLabel,
+			constant.PodLabel,
 		),
 	)
 }
@@ -46,8 +46,8 @@ func TestSumByRate(t *testing.T) {
 			constant.Restart,
 			filter.New().Namespace(strings.Alfa),
 			5,
-			constant.Namespace,
-			constant.Pod,
+			constant.NamespaceLabel,
+			constant.PodLabel,
 		),
 	)
 }

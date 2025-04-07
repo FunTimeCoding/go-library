@@ -19,7 +19,7 @@ func TestTime(t *testing.T) {
 	assert.String(
 		t,
 		"1970-01-01 00:00:00",
-		constant.FixtureDate.Format(DateSecond),
+		constant.StartOfTime.Format(DateSecond),
 	)
 
 	now := time.Now()

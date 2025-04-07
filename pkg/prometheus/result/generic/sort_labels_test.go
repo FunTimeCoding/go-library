@@ -11,7 +11,11 @@ func TestSortLabels(t *testing.T) {
 		t,
 		[]string{"namespace", "pod", "container"},
 		sortLabels(
-			[]string{constant.Container, constant.Pod, constant.Namespace},
+			[]string{
+				constant.ContainerLabel,
+				constant.PodLabel,
+				constant.NamespaceLabel,
+			},
 		),
 	)
 }

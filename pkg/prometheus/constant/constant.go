@@ -25,12 +25,18 @@ const (
 	String = "string"
 )
 
-// Filter
+// Label
 const (
-	Container = "container"
-	Instance  = "instance"
-	Job       = "job"
-	Namespace = "namespace"
-	Node      = "node"
-	Pod       = "pod"
+	ContainerLabel   = "container"
+	DaemonSetLabel   = "daemonset"
+	DeploymentLabel  = "deployment"
+	InstanceLabel    = "instance"
+	JobLabel         = "job"
+	NamespaceLabel   = "namespace"
+	NodeLabel        = "node"
+	PodLabel         = "pod"
+	ScopeLabel       = "scope"
+	ServiceLabel     = "service"
+	StateLabel       = "state"
+	StatefulSetLabel = "statefulset"
 )

@@ -32,4 +32,4 @@ const (
 	MarkupExtension  = ".yaml"
 )
 
-var FixtureDate = assert.NewDay(1)
+var StartOfTime = assert.NewDay(1)

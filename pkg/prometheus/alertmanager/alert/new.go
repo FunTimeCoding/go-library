@@ -49,7 +49,11 @@ func New(
 	extractKey(&remaining, constant.SeverityLabel, &result.Severity)
 	extractKey(&remaining, constant.SummaryLabel, &result.Summary)
 	extractKey(&remaining, constant.MessageLabel, &result.Message)
-	extractKey(&remaining, constant.PrometheusLabel, &result.Prometheus)
+	extractKey(
+		&remaining,
+		constant.PrometheusLabel,
+		&result.Prometheus,
+	)
 	result.Link = fmt.Sprintf(
 		"https://%s/#/alerts?filter=%s",
 		host,

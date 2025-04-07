@@ -17,7 +17,7 @@ func TestBranch(t *testing.T) {
 				Name:   strings.Alfa,
 				Merged: false,
 				Commit: &gitlab.Commit{
-					CreatedAt: ptr.To(constant.FixtureDate),
+					CreatedAt: ptr.To(constant.StartOfTime),
 				},
 			},
 		) != nil,

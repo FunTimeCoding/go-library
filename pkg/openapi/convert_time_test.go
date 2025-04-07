@@ -11,7 +11,7 @@ import (
 
 func TestConvertTime(t *testing.T) {
 	i := strfmt.NewDateTime()
-	errors.PanicOnError(i.Scan(constant.FixtureDate))
+	errors.PanicOnError(i.Scan(constant.StartOfTime))
 	assert.String(
 		t,
 		"1970-01-01T00:00:00Z",

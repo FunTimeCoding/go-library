@@ -8,22 +8,22 @@ import (
 func sortLabels(s []string) []string {
 	var result []string
 
-	if slices.Contains(s, constant.Namespace) {
-		result = append(result, constant.Namespace)
+	if slices.Contains(s, constant.NamespaceLabel) {
+		result = append(result, constant.NamespaceLabel)
 	}
 
-	if slices.Contains(s, constant.Pod) {
-		result = append(result, constant.Pod)
+	if slices.Contains(s, constant.PodLabel) {
+		result = append(result, constant.PodLabel)
 	}
 
-	if slices.Contains(s, constant.Container) {
-		result = append(result, constant.Container)
+	if slices.Contains(s, constant.ContainerLabel) {
+		result = append(result, constant.ContainerLabel)
 	}
 
 	for _, e := range s {
-		if e == constant.Namespace ||
-			e == constant.Pod ||
-			e == constant.Container {
+		if e == constant.NamespaceLabel ||
+			e == constant.PodLabel ||
+			e == constant.ContainerLabel {
 			continue
 		}
 

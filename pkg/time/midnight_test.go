@@ -19,6 +19,6 @@ func TestMidnight(t *testing.T) {
 			0,
 			time.Local,
 		),
-		Midnight(constant.FixtureDate),
+		Midnight(constant.StartOfTime),
 	)
 }

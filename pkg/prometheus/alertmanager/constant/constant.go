@@ -28,12 +28,11 @@ const (
 // Alert label
 const (
 	AlertnameLabel   = "alertname"
+	SummaryLabel     = "summary"
 	DescriptionLabel = "description"
-	InstanceLabel    = "instance"
-	MessageLabel     = "message"
 	PrometheusLabel  = "prometheus"
 	SeverityLabel    = "severity"
-	SummaryLabel     = "summary"
+	MessageLabel     = "message"
 )
 
 // Alert state

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
+	prometheusConstant "github.com/funtimecoding/go-library/pkg/prometheus/constant"
 	"github.com/go-openapi/strfmt"
 	raw "github.com/prometheus/alertmanager/api/v2/client/alert"
 	"github.com/prometheus/alertmanager/api/v2/models"
@@ -25,9 +26,9 @@ func (c *Client) Create(
 		&models.PostableAlert{
 			Alert: models.Alert{
 				Labels: models.LabelSet{
-					constant.AlertnameLabel: name,
-					constant.SeverityLabel:  constant.CriticalSeverity,
-					constant.InstanceLabel:  instance,
+					constant.AlertnameLabel:          name,
+					constant.SeverityLabel:           constant.CriticalSeverity,
+					prometheusConstant.InstanceLabel: instance,
 				},
 				GeneratorURL: strfmt.URI(
 					fmt.Sprintf(

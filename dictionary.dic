@@ -82,8 +82,10 @@ upgrader
 alertmanager
 alertname
 amtool
+daemonset
 ingester
 querier
+statefulset
 
 # Atlassian
 tinyui

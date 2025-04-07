@@ -18,7 +18,7 @@ func TestIssue(t *testing.T) {
 			Type:      ptr.To(strings.Bravo),
 			Title:     ptr.To(strings.Charlie),
 			Permalink: ptr.To(strings.Delta),
-			FirstSeen: ptr.To(constant.FixtureDate),
+			FirstSeen: ptr.To(constant.StartOfTime),
 		},
 	)
 	actual.Create = time.Time{}

@@ -1,13 +1,26 @@
 package status
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag_line"
+)
 
 func (s *Status) TagLine(
 	tag string,
 	format string,
 	a ...any,
 ) *Status {
-	s.linesByTag[tag] = append(s.linesByTag[tag], fmt.Sprintf(format, a...))
+	for _, t := range s.linesByTag {
+		if t.Tag == tag {
+			t.Line = append(t.Line, fmt.Sprintf(format, a...))
+
+			return s
+		}
+	}
+
+	t := tag_line.New(tag)
+	t.Line = append(t.Line, fmt.Sprintf(format, a...))
+	s.linesByTag = append(s.linesByTag, t)
 
 	return s
 }

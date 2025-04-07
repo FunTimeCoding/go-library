@@ -2,6 +2,7 @@ package status
 
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
+	"slices"
 	"strings"
 )
 
@@ -11,11 +12,9 @@ func (s *Status) Format() string {
 		strings.Join(s.bubbles, " | "),
 	)
 
-	if len(s.linesByTag) > 0 {
-		for _, tag := range s.format.Tags {
-			if lines, okay := s.linesByTag[tag]; okay {
-				result = extendLines(result, lines, s.format.Indentation)
-			}
+	for _, t := range s.linesByTag {
+		if slices.Contains(s.format.Tags, t.Tag) {
+			result = extendLines(result, t.Line, s.format.Indentation)
 		}
 	}
 

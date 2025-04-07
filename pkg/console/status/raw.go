@@ -13,10 +13,8 @@ func (s *Status) Raw(a any) *Status {
 	r := fmt.Sprintf("%+v", a)
 
 	if s.format.UseColor {
-		s.Line("  Raw: %s", console.Magenta(r))
-	} else {
-		s.Line("  Raw: %s", r)
+		r = console.Magenta(r)
 	}
 
-	return s
+	return s.Line("  Raw: %s", r)
 }

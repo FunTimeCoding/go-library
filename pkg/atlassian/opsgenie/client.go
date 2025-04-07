@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/team_map"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/user_map"
+	"github.com/funtimecoding/go-library/pkg/face"
 )
 
 type Client struct {
@@ -18,9 +19,9 @@ type Client struct {
 	userClient *client.Client
 	teamClient *client.Client
 
-	shortUser         constant.StringAlias
-	shortAlert        constant.StringAlias
-	descriptionToName constant.StringAlias
-	tagToTeam         constant.SliceAlias
+	shortUser         face.StringAlias
+	shortAlert        face.StringAlias
+	descriptionToName face.StringAlias
+	tagToTeam         face.SliceAlias
 	parseDescription  constant.ParseDescription
 }

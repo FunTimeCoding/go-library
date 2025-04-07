@@ -1,11 +1,11 @@
 package rotation
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
+import "github.com/funtimecoding/go-library/pkg/face"
 
 func ContainsUser(
 	r *Rotation,
 	user string,
-	f constant.StringAlias,
+	f face.StringAlias,
 ) bool {
 	for _, element := range r.Participants {
 		if f == nil {

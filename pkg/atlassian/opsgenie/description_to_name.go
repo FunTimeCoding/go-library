@@ -1,7 +1,7 @@
 package opsgenie
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
+import "github.com/funtimecoding/go-library/pkg/face"
 
-func (c *Client) DescriptionToName(f constant.StringAlias) {
+func (c *Client) DescriptionToName(f face.StringAlias) {
 	c.descriptionToName = f
 }

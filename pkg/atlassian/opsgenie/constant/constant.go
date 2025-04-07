@@ -12,8 +12,4 @@ const (
 	NoKey = "no key"
 )
 
-type (
-	StringAlias      func(string) string
-	SliceAlias       func([]string) string
-	ParseDescription func(string) *detail.Prometheus
-)
+type ParseDescription func(string) *detail.Prometheus

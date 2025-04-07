@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/team_map"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/user_map"
+	"github.com/funtimecoding/go-library/pkg/face"
 )
 
 type Alert struct {
@@ -11,8 +12,8 @@ type Alert struct {
 	User    *user_map.Map
 	WebHost string
 
-	ShortAlert        constant.StringAlias
-	ShortUser         constant.StringAlias
-	DescriptionToName constant.StringAlias
+	ShortAlert        face.StringAlias
+	ShortUser         face.StringAlias
+	DescriptionToName face.StringAlias
 	ParseDescription  constant.ParseDescription
 }

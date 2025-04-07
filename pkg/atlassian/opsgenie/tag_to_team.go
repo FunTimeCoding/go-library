@@ -1,7 +1,7 @@
 package opsgenie
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
+import "github.com/funtimecoding/go-library/pkg/face"
 
-func (c *Client) TagToTeam(f constant.SliceAlias) {
+func (c *Client) TagToTeam(f face.SliceAlias) {
 	c.tagToTeam = f
 }

@@ -1,7 +1,7 @@
 package opsgenie
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
+import "github.com/funtimecoding/go-library/pkg/face"
 
-func (c *Client) ShortAlert(f constant.StringAlias) {
+func (c *Client) ShortAlert(f face.StringAlias) {
 	c.shortAlert = f
 }

@@ -1,11 +1,11 @@
 package override
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
+import "github.com/funtimecoding/go-library/pkg/face"
 
 func ContainsUser(
 	o *Override,
 	user string,
-	f constant.StringAlias,
+	f face.StringAlias,
 ) bool {
 	if f == nil {
 		return o.User == user

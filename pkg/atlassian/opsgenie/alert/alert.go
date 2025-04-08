@@ -32,6 +32,9 @@ type Alert struct {
 	Details         map[string]string
 	Description     string
 
+	// TODO: Add function to determine entity and category like in Prometheus alert
+	Entity            string
+	Category          string
 	Team              *team.Team
 	TeamKey           string
 	TeamMap           *team_map.Map

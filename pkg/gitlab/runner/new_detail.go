@@ -2,7 +2,7 @@ package runner
 
 import "gitlab.com/gitlab-org/api/client-go"
 
-func New(v *gitlab.Runner) *Runner {
+func FromDetail(v *gitlab.RunnerDetails) *Runner {
 	return &Runner{
 		Identifier:  v.ID,
 		Name:        v.Name,
@@ -13,6 +13,7 @@ func New(v *gitlab.Runner) *Runner {
 		Online:      v.Online,
 		Paused:      v.Paused,
 		Shared:      v.IsShared,
-		RawList:     v,
+		Tags:        v.TagList,
+		RawDetail:   v,
 	}
 }

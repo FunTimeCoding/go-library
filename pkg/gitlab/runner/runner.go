@@ -9,6 +9,11 @@ type Runner struct {
 	Address     string
 	Status      string
 	Type        string
+	Shared      bool
+	Online      bool
+	Paused      bool
+	Tags        []string
 
-	Raw *gitlab.Runner
+	RawList   *gitlab.Runner
+	RawDetail *gitlab.RunnerDetails
 }

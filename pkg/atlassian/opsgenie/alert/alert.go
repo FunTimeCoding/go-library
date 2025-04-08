@@ -43,6 +43,6 @@ type Alert struct {
 	parseDescription  constant.ParseDescription
 	MonitorIdentifier string
 
-	Raw       *alert.Alert
-	RawResult *alert.GetAlertResult
+	RawList   *alert.Alert
+	RawDetail *alert.GetAlertResult
 }

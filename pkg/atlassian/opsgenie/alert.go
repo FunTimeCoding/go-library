@@ -20,5 +20,5 @@ func (c *Client) Alert(
 	)
 	errors.PanicOnError(e)
 
-	return alert.FromResponse(result, c.AlertOption(), t)
+	return alert.NewDetail(result, c.AlertOption(), t)
 }

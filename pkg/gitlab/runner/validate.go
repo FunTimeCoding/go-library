@@ -5,20 +5,16 @@ func (r *Runner) validate() []string {
 
 	// TODO: Redundant? its already in the status bubbles
 	if false {
-		if !r.Raw.Online {
+		if !r.Online {
 			result = append(result, "offline")
 		}
 
-		if r.Raw.Status != OnlineStatus {
+		if r.Status != OnlineStatus {
 			result = append(result, "not_online")
 		}
 	}
 
-	if !r.Raw.Active {
-		result = append(result, "inactive")
-	}
-
-	if r.Raw.Paused {
+	if r.Paused {
 		result = append(result, "paused")
 	}
 

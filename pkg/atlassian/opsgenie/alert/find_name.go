@@ -11,15 +11,15 @@ func (a *Alert) findName() string {
 	var message string
 	var description string
 
-	if a.Raw != nil {
+	if a.RawList != nil {
 		// details and description not available
-		message = a.Raw.Message
+		message = a.RawList.Message
 	}
 
-	if a.RawResult != nil {
-		message = a.RawResult.Message
-		details = a.RawResult.Details
-		description = a.RawResult.Description
+	if a.RawDetail != nil {
+		message = a.RawDetail.Message
+		details = a.RawDetail.Details
+		description = a.RawDetail.Description
 	}
 
 	if n, okay := details[constant.AlertnameLabel]; okay {
@@ -33,12 +33,12 @@ func (a *Alert) findName() string {
 	}
 
 	if result == UnknownName {
-		if a.Raw != nil {
-			fmt.Printf("Unknown name (simple): %+v\n", a.Raw)
+		if a.RawList != nil {
+			fmt.Printf("Unknown name (simple): %+v\n", a.RawList)
 		}
 
-		if a.RawResult != nil {
-			fmt.Printf("Unknown name (full): %+v\n", a.RawResult)
+		if a.RawDetail != nil {
+			fmt.Printf("Unknown name (full): %+v\n", a.RawDetail)
 		}
 	}
 

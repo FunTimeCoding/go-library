@@ -1,7 +1,7 @@
 package runner
 
 func (r *Runner) formatShared() string {
-	if r.Raw.IsShared {
+	if r.Shared {
 		return "shared"
 	}
 

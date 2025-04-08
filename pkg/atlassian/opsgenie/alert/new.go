@@ -3,7 +3,7 @@ package alert
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert/option"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/team"
-	stringLibrary "github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/opsgenie/opsgenie-go-sdk-v2/alert"
 )
 
@@ -14,7 +14,7 @@ func New(
 ) *Alert {
 	result := &Alert{
 		Identifier:      v.Id,
-		SmallIdentifier: stringLibrary.ToIntegerStrict(v.TinyID),
+		SmallIdentifier: strings.ToIntegerStrict(v.TinyID),
 		Status:          v.Status,
 		Priority:        v.Priority,
 		Seen:            v.Seen,
@@ -28,7 +28,7 @@ func New(
 		Owner:           v.Owner,
 		Source:          v.Source,
 		Tags:            v.Tags,
-		Raw:             v,
+		RawList:         v,
 	}
 	result.enrich(p, t)
 

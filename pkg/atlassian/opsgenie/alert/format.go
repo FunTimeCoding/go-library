@@ -31,16 +31,16 @@ func (a *Alert) Format(f *option.Format) string {
 	}
 
 	if f.ShowRaw {
-		if a.Raw != nil {
-			s.Raw(a.Raw)
-		} else if a.RawResult != nil {
-			r := fmt.Sprintf("%+v", a.RawResult)
+		if a.RawList != nil {
+			s.Raw(a.RawList)
+		} else if a.RawDetail != nil {
+			r := fmt.Sprintf("%+v", a.RawDetail)
 
 			if f.UseColor {
 				r = console.Magenta(r)
 			}
 
-			s.Line("  RawResult: %s", r)
+			s.Line("  RawDetail: %s", r)
 		}
 	}
 

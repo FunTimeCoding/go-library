@@ -7,10 +7,11 @@ import (
 
 func main() {
 	if true {
-		job.Check()
+		example.Runner()
 	}
 
 	if false {
+		job.Check()
 		example.CloneAll()
 	}
 }

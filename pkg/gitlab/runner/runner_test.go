@@ -8,6 +8,6 @@ import (
 
 func TestRunner(t *testing.T) {
 	r := New(&gitlab.Runner{})
-	r.Raw = nil
+	r.RawList = nil
 	assert.Any(t, &Runner{}, r)
 }

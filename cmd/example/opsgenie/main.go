@@ -14,7 +14,36 @@ import (
 	"strings"
 )
 
+func addResponder() {
+	argument.ParseAndBind()
+	responder := argument.RequiredPositional(
+		0,
+		"RESPONDER_NAME",
+		1,
+	)
+	c := opsgenie.NewEnvironment()
+	f := option.ExtendedColor.Copy()
+
+	for _, a := range c.Open() {
+		fmt.Println(a.Format(f))
+
+		if false {
+			c.AddResponderUser(a, responder)
+		}
+
+		if true {
+			break
+		}
+	}
+}
+
 func main() {
+	if true {
+		addResponder()
+
+		return
+	}
+
 	pflag.Bool(argument.Create, false, "Create alert")
 	pflag.String(argument.User, "", "User email for alert")
 	pflag.String(argument.Text, "", "Alert name")

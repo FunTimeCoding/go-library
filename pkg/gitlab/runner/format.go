@@ -15,7 +15,11 @@ func (r *Runner) Format(f *option.Format) string {
 		r.Type,
 		r.formatShared(),
 		r.formatStatus(f),
-	).Raw(r.Raw)
+	).Raw(r.RawList)
+
+	if v := r.formatTags(); v != "" {
+		s.String(v)
+	}
 
 	if v := r.validate(); len(v) > 0 {
 		concerns := join.Comma(v)

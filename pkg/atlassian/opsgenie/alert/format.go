@@ -8,7 +8,23 @@ import (
 )
 
 func (a *Alert) Format(f *option.Format) string {
-	s := status.New(f).String(a.formatName(f), a.formatPriority(f))
+	s := status.New(f)
+
+	if v := a.formatEntity(f); v != "" {
+		s.String(v)
+	}
+
+	if f.HasTag(tag.Category) {
+		if v := a.formatCategory(f); v != "" {
+			s.String(v)
+		}
+	}
+
+	if a.Entity == "" && a.Category == "" {
+		s.String(a.formatName(f))
+	}
+
+	s.String(a.formatPriority(f))
 
 	if !f.HasTag(tag.Filter) && !f.HasTag(tag.Dense) {
 		s.String(a.formatStatus(f))

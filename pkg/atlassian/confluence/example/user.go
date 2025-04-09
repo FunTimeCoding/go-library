@@ -8,7 +8,7 @@ import (
 
 func User() {
 	c := confluence.NewEnvironment()
-	f := constant.DefaultFormat
+	f := constant.Format
 
 	if true {
 		fmt.Println(c.User().Format(f))

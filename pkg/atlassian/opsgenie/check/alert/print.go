@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
-	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 )
 
 func Print(p *option.Alert) {
@@ -16,7 +16,7 @@ func Print(p *option.Alert) {
 		return
 	}
 
-	f := statusOption.ExtendedColor.Copy()
+	f := constant.Format
 	alerts := c.Open()
 
 	for _, a := range alerts {

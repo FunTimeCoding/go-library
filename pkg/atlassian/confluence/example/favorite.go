@@ -8,7 +8,7 @@ import (
 
 func Favorite() {
 	c := confluence.NewEnvironment()
-	f := constant.DenseFormat
+	f := constant.Dense
 
 	if true {
 		for _, p := range c.Favorites() {

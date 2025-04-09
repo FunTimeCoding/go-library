@@ -4,14 +4,9 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert/detail"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
-	"github.com/funtimecoding/go-library/pkg/separator"
-	"github.com/funtimecoding/go-library/pkg/strings/split/key_value"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"strings"
 )
 
 func addResponder() {
@@ -50,43 +45,6 @@ func main() {
 	pflag.String(argument.Close, "", "Alert ID")
 	argument.ParseAndBind()
 	c := internal.Opsgenie()
-	c.TeamMap().AddKey("Infinite Loopsies", "INF")
-	c.ShortAlert(
-		func(s string) string {
-			switch s {
-			case constant.HighMemoryUsage:
-				return "Memory"
-			}
-
-			return s
-		},
-	)
-	c.ShortUser(
-		func(s string) string {
-			if strings.Contains(s, separator.At) {
-				k, _ := key_value.At(s)
-
-				return k
-			}
-
-			return s
-		},
-	)
-	c.DescriptionToName(
-		func(s string) string {
-			return s
-		},
-	)
-	c.TagToTeam(
-		func(s []string) string {
-			return ""
-		},
-	)
-	c.ParseDescription(
-		func(s string) *detail.Prometheus {
-			return detail.New()
-		},
-	)
 
 	if viper.GetBool(argument.Create) {
 		c.Create(

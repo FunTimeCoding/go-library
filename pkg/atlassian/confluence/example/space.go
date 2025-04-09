@@ -8,7 +8,7 @@ import (
 
 func Space() {
 	c := confluence.NewEnvironment()
-	f := constant.DefaultFormat
+	f := constant.Format
 
 	if true {
 		for _, s := range c.Spaces() {

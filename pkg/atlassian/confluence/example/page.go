@@ -9,7 +9,7 @@ import (
 
 func Page() {
 	c := confluence.NewEnvironment()
-	f := constant.DenseFormat
+	f := constant.Dense
 
 	if true {
 		a := c.PageBySpaceAndName(

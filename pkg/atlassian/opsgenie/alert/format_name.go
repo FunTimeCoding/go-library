@@ -6,12 +6,10 @@ import (
 )
 
 func (a *Alert) formatName(f *option.Format) string {
-	var result string
+	result := a.Name
 
 	if f.UseColor {
-		result = console.Cyan(a.Name)
-	} else {
-		result = a.Name
+		result = console.Yellow("%s", result)
 	}
 
 	return result

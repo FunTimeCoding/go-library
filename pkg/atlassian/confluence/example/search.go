@@ -8,7 +8,7 @@ import (
 
 func Search() {
 	c := confluence.NewEnvironment()
-	f := constant.DenseFormat
+	f := constant.Dense
 
 	if true {
 		for _, r := range c.Search(

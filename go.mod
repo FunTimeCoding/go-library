@@ -11,7 +11,7 @@ require (
 	github.com/andygrunwald/go-jira v1.16.0
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bwmarrin/discordgo v0.28.1
-	github.com/charmbracelet/bubbles v0.20.0
+	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.4
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/coder/websocket v1.8.13
@@ -57,7 +57,7 @@ require (
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.8
 	gitlab.com/gitlab-org/api/client-go v0.127.0
-	go.etcd.io/bbolt v1.3.7
+	go.etcd.io/bbolt v1.4.0
 	golang.org/x/crypto v0.37.0
 	golang.org/x/mod v0.24.0
 	golang.org/x/net v0.39.0

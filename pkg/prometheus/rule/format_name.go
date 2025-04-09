@@ -9,7 +9,7 @@ func (r *Rule) formatName(f *option.Format) string {
 	result := r.Name
 
 	if f.UseColor {
-		result = console.Cyan(result)
+		result = console.Cyan("%s", result)
 	}
 
 	return result

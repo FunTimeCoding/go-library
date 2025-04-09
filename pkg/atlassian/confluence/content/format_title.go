@@ -9,7 +9,7 @@ func (c *Content) formatTitle(f *option.Format) string {
 	result := c.Title
 
 	if f.UseColor {
-		result = console.Cyan(result)
+		result = console.Cyan("%s", result)
 	}
 
 	return result

@@ -9,7 +9,7 @@ func (a *Alert) formatCategory(f *option.Format) string {
 	result := a.Category
 
 	if result != "" && f.UseColor {
-		result = console.Cyan(result)
+		result = console.Cyan("%s", result)
 	}
 
 	return result

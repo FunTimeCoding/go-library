@@ -15,7 +15,7 @@ func (a *Alert) formatTeamName(s *option.Format) string {
 	result = NoTeam
 
 	if s.UseColor {
-		result = console.Red(result)
+		result = console.Red("%s", result)
 	}
 
 	return result

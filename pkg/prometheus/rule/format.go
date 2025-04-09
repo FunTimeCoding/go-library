@@ -32,7 +32,7 @@ func (r *Rule) Format(f *option.Format) string {
 		output := fmt.Sprintf("unexpected health: %s", r.Health)
 
 		if f.UseColor {
-			output = console.Red(output)
+			output = console.Red("%s", output)
 		}
 
 		s.Line("%s", output)
@@ -42,7 +42,7 @@ func (r *Rule) Format(f *option.Format) string {
 		output := fmt.Sprintf("unexpected state: %s", r.State)
 
 		if f.UseColor {
-			output = console.Red(output)
+			output = console.Red("%s", output)
 		}
 
 		s.Line("%s", output)
@@ -55,7 +55,7 @@ func (r *Rule) Format(f *option.Format) string {
 			output := fmt.Sprintf("  Alert last evaluation: %s", age)
 
 			if f.UseColor {
-				output = console.Red(output)
+				output = console.Red("%s", output)
 			}
 
 			s.Line("%s", output)
@@ -68,7 +68,7 @@ func (r *Rule) Format(f *option.Format) string {
 			)
 
 			if f.UseColor {
-				output = console.Yellow(output)
+				output = console.Yellow("%s", output)
 			}
 
 			s.Line("%s", output)

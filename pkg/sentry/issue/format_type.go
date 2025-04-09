@@ -10,7 +10,7 @@ func (i *Issue) formatType(f *option.Format) string {
 	if f.UseColor {
 		switch i.Type {
 		case constant.ErrorType:
-			return console.Red(i.Type)
+			return console.Red("%s", i.Type)
 		}
 	}
 

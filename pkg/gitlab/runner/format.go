@@ -25,7 +25,7 @@ func (r *Runner) Format(f *option.Format) string {
 		concerns := join.Comma(v)
 
 		if f.UseColor {
-			concerns = console.Yellow(concerns)
+			concerns = console.Yellow("%s", concerns)
 		}
 
 		s.String(concerns)

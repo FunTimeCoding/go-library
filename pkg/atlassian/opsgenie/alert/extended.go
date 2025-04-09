@@ -44,7 +44,7 @@ func (a *Alert) extended(
 		by := a.shortenUser(a.Report.AcknowledgedBy)
 
 		if f.UseColor {
-			by = console.Yellow(by)
+			by = console.Yellow("%s", by)
 		}
 
 		s.Line("  Acknowledged: %s", by)

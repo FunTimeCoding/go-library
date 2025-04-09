@@ -14,11 +14,11 @@ func (r *Request) formatState(f *option.Format) string {
 
 	if f.UseColor {
 		if result == OpenAlias {
-			return console.Yellow(result)
+			return console.Yellow("%s", result)
 		}
 
 		if result == ClosedState {
-			return console.Green(result)
+			return console.Green("%s", result)
 		}
 	}
 

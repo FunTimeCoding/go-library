@@ -13,13 +13,13 @@ func (a *Alert) formatOwner(s *option.Format) string {
 		result = a.shortenUser(a.Owner)
 
 		if s.UseColor {
-			result = console.Green(result)
+			result = console.Green("%s", result)
 		}
 	} else if !s.HasTag(tag.Dense) {
 		result = NoOwner
 
 		if s.UseColor {
-			result = console.Red(result)
+			result = console.Red("%s", result)
 		}
 	}
 

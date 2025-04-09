@@ -14,7 +14,7 @@ func (a *Alert) flags(f *option.Format) []string {
 			flag := UnacknowledgedFlag
 
 			if f.UseColor {
-				flag = console.Red(flag)
+				flag = console.Red("%s", flag)
 			}
 
 			result = append(result, flag)
@@ -24,7 +24,7 @@ func (a *Alert) flags(f *option.Format) []string {
 			flag := UnseenFlag
 
 			if f.UseColor {
-				flag = console.Red(flag)
+				flag = console.Red("%s", flag)
 			}
 
 			result = append(result, flag)
@@ -35,7 +35,7 @@ func (a *Alert) flags(f *option.Format) []string {
 		flag := SnoozedFlag
 
 		if f.UseColor {
-			flag = console.Red(flag)
+			flag = console.Red("%s", flag)
 		}
 
 		result = append(result, flag)

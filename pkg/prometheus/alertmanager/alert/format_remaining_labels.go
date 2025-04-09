@@ -19,7 +19,7 @@ func (a *Alert) formatRemainingLabels(f *option.Format) string {
 		v := a.Remaining[k]
 
 		if f.UseColor {
-			k = console.Yellow(k)
+			k = console.Yellow("%s", k)
 		}
 
 		result = append(result, fmt.Sprintf("%s=%s", k, v))

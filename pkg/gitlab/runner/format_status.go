@@ -10,9 +10,9 @@ func (r *Runner) formatStatus(f *option.Format) string {
 
 	if f.UseColor {
 		if result == OnlineStatus {
-			result = console.Green(result)
+			result = console.Green("%s", result)
 		} else {
-			result = console.Red(result)
+			result = console.Red("%s", result)
 		}
 	}
 

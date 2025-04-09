@@ -12,9 +12,9 @@ func (a *Alert) formatSeverity(f *option.Format) string {
 
 	if f.UseColor {
 		if slices.Contains(constant.RedSeverities, result) {
-			result = console.Red(result)
+			result = console.Red("%s", result)
 		} else if slices.Contains(constant.YellowSeverities, result) {
-			result = console.Yellow(result)
+			result = console.Yellow("%s", result)
 		}
 	}
 

@@ -10,7 +10,7 @@ func (a *Alert) formatStatus(f *option.Format) string {
 
 	if f.UseColor {
 		if a.Status != ClosedStatus {
-			result = console.Red(a.Status)
+			result = console.Red("%s", a.Status)
 		} else {
 			result = a.Status
 		}

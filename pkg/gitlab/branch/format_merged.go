@@ -12,13 +12,13 @@ func (b *Branch) formatMerged(f *option.Format) string {
 		result = Merged
 
 		if f.UseColor {
-			return console.Green(result)
+			return console.Green("%s", result)
 		}
 	} else {
 		result = Unmerged
 
 		if f.UseColor {
-			return console.Yellow(result)
+			return console.Yellow("%s", result)
 		}
 	}
 

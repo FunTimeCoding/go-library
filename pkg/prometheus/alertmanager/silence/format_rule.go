@@ -7,20 +7,16 @@ import (
 )
 
 func (s *Silence) formatRule(f *option.Format) string {
+	var result string
+
 	if s.Rule != constant.UnknownRule {
-		result := s.Rule
-
-		if f.UseColor {
-			result = console.Cyan(result)
-		}
-
-		return result
+		result = s.Rule
+	} else {
+		result = s.Match
 	}
 
-	result := s.Match
-
 	if f.UseColor {
-		result = console.Cyan(result)
+		result = console.Cyan("%s", result)
 	}
 
 	return result

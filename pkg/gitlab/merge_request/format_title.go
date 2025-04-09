@@ -7,7 +7,7 @@ import (
 
 func (r *Request) formatTitle(f *option.Format) string {
 	if f.UseColor {
-		return console.Cyan(r.Title)
+		return console.Cyan("%s", r.Title)
 	}
 
 	return r.Title

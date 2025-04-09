@@ -54,7 +54,19 @@ func TestColorer(t *testing.T) {
 
 	// Not sure if function pointers can be compared, so compare output
 
-	assert.String(t, console.Green("g"), g.AgeColor()("g"))
-	assert.String(t, console.Yellow("y"), y.AgeColor()("y"))
-	assert.String(t, console.Red("r"), r.AgeColor()("r"))
+	assert.String(
+		t,
+		console.Green("%s", "g"),
+		g.AgeColor()("g"),
+	)
+	assert.String(
+		t,
+		console.Yellow("%s", "y"),
+		y.AgeColor()("y"),
+	)
+	assert.String(
+		t,
+		console.Red("%s", "r"),
+		r.AgeColor()("r"),
+	)
 }

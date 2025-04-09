@@ -7,9 +7,10 @@ func New(
 	host string,
 ) *Page {
 	return &Page{
-		Name:     p.Title,
-		Link:     link(p, host, false),
-		TinyLink: link(p, host, true),
-		Raw:      p,
+		Identifier: p.Id,
+		Name:       p.Title,
+		Link:       link(p, host, false),
+		TinyLink:   link(p, host, true),
+		Raw:        p,
 	}
 }

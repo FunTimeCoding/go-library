@@ -1,8 +1,6 @@
 package alert
 
 import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
@@ -30,18 +28,12 @@ func (a *Alert) Format(f *option.Format) string {
 		a.extended(s, f)
 	}
 
-	if f.ShowRaw {
-		if a.RawList != nil {
-			s.Raw(a.RawList)
-		} else if a.RawDetail != nil {
-			r := fmt.Sprintf("%+v", a.RawDetail)
+	if a.RawList != nil {
+		s.RawList(a.RawList)
+	}
 
-			if f.UseColor {
-				r = console.Magenta(r)
-			}
-
-			s.Line("  RawDetail: %s", r)
-		}
+	if a.RawDetail != nil {
+		s.RawDetail(a.RawDetail)
 	}
 
 	return s.Format()

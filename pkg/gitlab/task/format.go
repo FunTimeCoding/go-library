@@ -10,5 +10,5 @@ func (t *Task) Format(f *option.Format) string {
 		string(t.Type),
 		t.State,
 		t.Body,
-	).Raw(t.Raw).Format()
+	).RawList(t.Raw).Format()
 }

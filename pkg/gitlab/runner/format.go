@@ -15,7 +15,7 @@ func (r *Runner) Format(f *option.Format) string {
 		r.Type,
 		r.formatShared(),
 		r.formatStatus(f),
-	).Raw(r.RawList)
+	).RawList(r.RawList)
 
 	if v := r.formatTags(); v != "" {
 		s.String(v)

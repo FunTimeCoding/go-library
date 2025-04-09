@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert/detail"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
@@ -21,7 +21,7 @@ func addResponder() {
 		"RESPONDER_NAME",
 		1,
 	)
-	c := opsgenie.NewEnvironment()
+	c := internal.Opsgenie()
 	f := option.ExtendedColor.Copy()
 
 	for _, a := range c.Open() {
@@ -49,7 +49,7 @@ func main() {
 	pflag.String(argument.Text, "", "Alert name")
 	pflag.String(argument.Close, "", "Alert ID")
 	argument.ParseAndBind()
-	c := opsgenie.NewEnvironment()
+	c := internal.Opsgenie()
 	c.TeamMap().AddKey("Infinite Loopsies", "INF")
 	c.ShortAlert(
 		func(s string) string {

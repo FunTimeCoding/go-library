@@ -2,9 +2,11 @@ package example
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/macos"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/sound"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -12,7 +14,7 @@ import (
 )
 
 func Notify() {
-	c := alertmanager.NewEnvironment()
+	c := internal.Alertmanager()
 	s := &State{}
 	stop := make(chan struct{})
 	go worker(stop, c, s)
@@ -38,7 +40,8 @@ func worker(
 
 			return
 		default:
-			now := c.Alerts()
+			alerts, _ := c.Alerts(advanced_option.New())
+			now := alerts
 			add, stay, remove := difference(s.Alerts, now)
 			s.Alerts = now
 

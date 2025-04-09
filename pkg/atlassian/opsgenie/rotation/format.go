@@ -12,7 +12,7 @@ func (r *Rotation) Format(f *option.Format) string {
 		string(r.Type),
 		r.Start.Format("Monday"),
 		r.current(),
-	).Raw(r.Raw)
+	).RawList(r.Raw)
 
 	for _, participant := range r.Participants {
 		s.Line("    Member: %s", compact.Mail(participant.Username))

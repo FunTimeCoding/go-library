@@ -2,11 +2,11 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
+	"github.com/funtimecoding/go-library/internal"
 )
 
 func Status() {
-	s := alertmanager.NewEnvironment().Status()
+	s := internal.Alertmanager().Status()
 	fmt.Printf("Status: %+v\n", s)
 	fmt.Printf("  Cluster: %+v\n", s.Cluster)
 	fmt.Printf("    Status: %s\n", *s.Cluster.Status)

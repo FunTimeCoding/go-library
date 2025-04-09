@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	prometheusConstant "github.com/funtimecoding/go-library/pkg/prometheus/constant"
 	"github.com/go-openapi/strfmt"
-	raw "github.com/prometheus/alertmanager/api/v2/client/alert"
+	rawAlert "github.com/prometheus/alertmanager/api/v2/client/alert"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"time"
 )
@@ -20,7 +20,7 @@ func (c *Client) Create(
 ) {
 	start := time.Now()
 	end := start.Add(3 * time.Minute)
-	p := raw.NewPostAlertsParams()
+	p := rawAlert.NewPostAlertsParams()
 	p.Alerts = append(
 		p.Alerts,
 		&models.PostableAlert{

@@ -28,7 +28,7 @@ func (a *Alfa) Format(f *option.Format) string {
 		s.Line("  line2")
 	}
 
-	s.Raw(a.Raw)
+	s.RawList(a.Raw)
 
 	return s.Format()
 }
@@ -60,7 +60,7 @@ func (b *Bravo) Format(f *option.Format) string {
 		s.TagLine(tag.Usage, "  line2")
 	}
 
-	s.Raw(b.Raw)
+	s.RawList(b.Raw)
 
 	return s.Format()
 }
@@ -114,7 +114,7 @@ func TestTagLine(t *testing.T) {
 	apple := NewBravo(1, "a", "b")
 	assert.String(
 		t,
-		"1 | a\n  line1\n  line2\n  Raw: &{String:b}",
+		"1 | a\n  line1\n  line2\n  RawList: &{String:b}",
 		apple.Format(option.New().Extended().Tag(tag.Usage).Raw()),
 	)
 }

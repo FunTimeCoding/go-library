@@ -9,7 +9,7 @@ func (t *Team) Format(f *option.Format) string {
 	result := status.New(f).String(
 		t.Name,
 		t.Identifier,
-	).Raw(t.Raw)
+	).RawList(t.Raw)
 
 	if t.Description != "" {
 		result.String(t.Description)

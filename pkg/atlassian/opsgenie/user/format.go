@@ -9,7 +9,7 @@ func (u *User) Format(f *option.Format) string {
 	result := status.New(f).String(
 		u.Name,
 		u.Identifier,
-	).Raw(u.Raw)
+	).RawList(u.Raw)
 
 	if u.FullName != "" {
 		result.String(u.FullName)

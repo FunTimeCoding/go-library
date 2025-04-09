@@ -2,13 +2,13 @@ package alert
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie"
+	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
 	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
 )
 
 func Print(p *option.Alert) {
-	c := opsgenie.NewEnvironment()
+	c := internal.Opsgenie()
 
 	if p.Notation {
 		printNotation(c)

@@ -12,5 +12,5 @@ func (j *Job) Format(f *option.Format) string {
 		j.Status,
 		j.CreatedAt.Format(time.DateMinute),
 		j.Hash,
-	).Raw(j).Format()
+	).RawList(j).Format()
 }

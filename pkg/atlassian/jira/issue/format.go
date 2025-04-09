@@ -14,7 +14,7 @@ func (i *Issue) Format(f *option.Format) string {
 		description = i.Description
 	}
 
-	s := status.New(f).String(i.Key, i.Summary, description).Raw(i)
+	s := status.New(f).String(i.Key, i.Summary, description).RawList(i)
 	s.Line("  %s", i.Link)
 
 	return s.Format()

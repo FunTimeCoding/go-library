@@ -9,5 +9,5 @@ func (i *Issue) Format(f *option.Format) string {
 	return status.New(f).Integer(i.Identifier).String(
 		i.State,
 		i.Title,
-	).Raw(i.Raw).Format()
+	).RawList(i.Raw).Format()
 }

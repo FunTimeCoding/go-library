@@ -11,5 +11,5 @@ func (w *Workflow) Format(f *option.Format) string {
 		w.Name,
 		w.State,
 		w.CreatedAt.Format(time.DateMinute),
-	).Raw(w).Format()
+	).RawList(w).Format()
 }

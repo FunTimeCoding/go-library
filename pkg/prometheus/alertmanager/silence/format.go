@@ -14,7 +14,7 @@ func (s *Silence) Format(f *option.Format) string {
 		s.formatRule(f),
 		s.Author,
 		fmt.Sprintf("%s ago", units.HumanDuration(s.Age())),
-	).Raw(s)
+	).RawList(s)
 
 	if r := s.Remain(); r > 0 {
 		t.String(fmt.Sprintf("%s remain", units.HumanDuration(r)))

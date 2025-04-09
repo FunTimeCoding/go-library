@@ -10,7 +10,11 @@ func (r *Request) Format(f *option.Format) string {
 	s := status.New(f).Integer(
 		r.Project,
 		r.Identifier,
-	).String(r.formatState(f), r.formatTitle(f), r.formatAge(f)).Raw(r.Raw)
+	).String(
+		r.formatState(f),
+		r.formatTitle(f),
+		r.formatAge(f),
+	).RawList(r.Raw)
 
 	if !f.ShowExtended {
 		s.TagLine(tag.Link, "  %s", r.Link)

@@ -1,7 +1,7 @@
 package team_map
 
 import "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/team"
-import raw "github.com/opsgenie/opsgenie-go-sdk-v2/team"
+import rawTeam "github.com/opsgenie/opsgenie-go-sdk-v2/team"
 
 func (m *Map) Add(
 	identifier string,
@@ -9,8 +9,8 @@ func (m *Map) Add(
 	description string,
 ) {
 	t := team.New(
-		&raw.ListedTeams{
-			TeamMeta:    raw.TeamMeta{Id: identifier, Name: name},
+		&rawTeam.ListedTeams{
+			TeamMeta:    rawTeam.TeamMeta{Id: identifier, Name: name},
 			Description: description,
 		},
 	)

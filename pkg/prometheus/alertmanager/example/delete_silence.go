@@ -1,9 +1,17 @@
 package example
 
-import "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
+import (
+	"github.com/funtimecoding/go-library/internal"
+	"github.com/funtimecoding/go-library/pkg/argument"
+)
 
 func DeleteSilence() {
-	alertmanager.NewEnvironment().DeleteSilence(
-		"81d9935b-0990-4761-9615-672e02d70340",
+	argument.ParseAndBind()
+	internal.Alertmanager().DeleteSilence(
+		argument.RequiredPositional(
+			0,
+			"SILENCE_IDENTIFIER",
+			1,
+		),
 	)
 }

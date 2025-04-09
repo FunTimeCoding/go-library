@@ -2,6 +2,7 @@ package opsgenie
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert/alert_enricher"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/client"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/team_map"
@@ -24,4 +25,6 @@ type Client struct {
 	descriptionToName face.StringAlias
 	tagToTeam         face.SliceAlias
 	parseDescription  constant.ParseDescription
+
+	enricher *alert_enricher.Enricher
 }

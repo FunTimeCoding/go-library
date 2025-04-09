@@ -11,5 +11,5 @@ func (r *Run) Format(f *option.Format) string {
 		r.Name,
 		r.Status,
 		r.CreatedAt.Format(time.DateMinute),
-	).Raw(r).Format()
+	).RawList(r).Format()
 }

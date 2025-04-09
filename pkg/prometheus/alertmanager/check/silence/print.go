@@ -2,15 +2,15 @@ package silence
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/internal"
 	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 )
 
 func Print(p *option.Silence) {
-	c := alertmanager.NewEnvironment()
+	c := internal.Alertmanager()
 
 	if p.Notation {
 		printNotation(c)

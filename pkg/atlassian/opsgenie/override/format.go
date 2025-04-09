@@ -13,7 +13,7 @@ func (o *Override) Format(f *option.Format) string {
 		compact.Mail(o.User),
 		o.Start.Format(time.DateMinute),
 		o.End.Format(time.DateMinute),
-	).Raw(o.Raw)
+	).RawList(o.Raw)
 
 	if r := o.rotations(); len(r) > 0 {
 		s.String(join.Comma(r))

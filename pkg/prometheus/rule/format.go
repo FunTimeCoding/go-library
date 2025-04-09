@@ -14,7 +14,7 @@ func (r *Rule) Format(f *option.Format) string {
 		r.formatName(f),
 		r.Group,
 		r.formatType(),
-	).Raw(r)
+	).RawList(r)
 
 	if r.Summary != "" {
 		s.Line("  Summary: %s", r.Summary)
@@ -29,7 +29,7 @@ func (r *Rule) Format(f *option.Format) string {
 	}
 
 	if f.ShowRaw && r.RawAlert != nil {
-		s.Line("  RawAlert: %+v", r.RawAlert)
+		s.Raw(r.RawAlert, "RawAlert")
 	}
 
 	if !slices.Contains(Healths, r.Health) {
@@ -98,7 +98,7 @@ func (r *Rule) Format(f *option.Format) string {
 	}
 
 	if f.ShowRaw && r.RawRecord != nil {
-		s.Line("  RawRecord: %+v", r.RawRecord)
+		s.Raw(r.RawRecord, "RawRecord")
 	}
 
 	return s.Format()

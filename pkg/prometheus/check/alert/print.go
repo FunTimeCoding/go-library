@@ -2,15 +2,10 @@ package alert
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/internal"
 	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/alert_enricher"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/field_changer"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/label_filter"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/name_filter"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
 )
 
@@ -25,7 +20,7 @@ func Print(p *option.Alert) {
 	//   How to get alert notifications as events?
 	//    If events not available, store current alerts in memory and only notify on new alerts
 
-	c := alertmanager.NewEnvironment()
+	c := internal.Alertmanager()
 
 	if p.Notation {
 		printNotation(c)
@@ -56,17 +51,7 @@ func Print(p *option.Alert) {
 	d.WarningOnly = p.Warning
 	d.Suppressed = p.Suppressed
 	d.Old = p.Old
-	alerts, statistic := c.AlertsAdvanced(
-		d,
-		alert_enricher.New().Add(
-			constant.KubernetesCronJobFailed,
-			constant.Job,
-			constant.Fail,
-		),
-		field_changer.New(),
-		name_filter.New(true),
-		label_filter.New(true),
-	)
+	alerts, statistic := c.Alerts(d)
 
 	for _, a := range alerts {
 		fmt.Println(a.Format(f))

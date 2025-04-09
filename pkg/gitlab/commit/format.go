@@ -11,5 +11,5 @@ func (c *Commit) Format(f *option.Format) string {
 		c.Date.Format(time.DateMinute),
 		c.Author,
 		c.formatTitle(f),
-	).Raw(c.Raw).Format()
+	).RawList(c.Raw).Format()
 }

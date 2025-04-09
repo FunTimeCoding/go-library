@@ -6,7 +6,7 @@ import (
 )
 
 func (s *Schedule) Format(t *option.Format) string {
-	result := status.New(t).String(s.Name, s.Team.Name).Raw(s.Raw)
+	result := status.New(t).String(s.Name, s.Team.Name).RawList(s.Raw)
 
 	if s.Description != "" {
 		result.String(s.Description)

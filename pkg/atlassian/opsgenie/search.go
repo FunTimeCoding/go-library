@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	raw "github.com/opsgenie/opsgenie-go-sdk-v2/alert"
+	rawAlert "github.com/opsgenie/opsgenie-go-sdk-v2/alert"
 )
 
 func (c *Client) Search(query string) []*alert.Alert {
@@ -15,7 +15,7 @@ func (c *Client) Search(query string) []*alert.Alert {
 	for {
 		page, e := c.userClient.Alert.List(
 			c.context,
-			&raw.ListAlertRequest{
+			&rawAlert.ListAlertRequest{
 				Limit:  constant.PageLimit,
 				Offset: start,
 				Query:  query,
@@ -34,5 +34,5 @@ func (c *Client) Search(query string) []*alert.Alert {
 		start += constant.PageLimit
 	}
 
-	return result
+	return c.processor().Process(result)
 }

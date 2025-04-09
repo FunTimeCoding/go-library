@@ -5,5 +5,6 @@ func New(
 	user string,
 	token string,
 ) *Client {
+	// https://developer.atlassian.com/cloud/confluence/rest/v2
 	return &Client{host: host, user: user, token: token}
 }

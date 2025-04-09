@@ -14,7 +14,7 @@ func (r *Rule) Format(f *option.Format) string {
 		r.formatName(f),
 		r.Group,
 		r.formatType(),
-	).RawList(r)
+	)
 
 	if r.Summary != "" {
 		s.Line("  Summary: %s", r.Summary)
@@ -26,10 +26,6 @@ func (r *Rule) Format(f *option.Format) string {
 
 	if r.Duration > 0 {
 		s.Line("  Duration: %d", r.Duration)
-	}
-
-	if f.ShowRaw && r.RawAlert != nil {
-		s.Raw(r.RawAlert, "RawAlert")
 	}
 
 	if !slices.Contains(Healths, r.Health) {
@@ -93,12 +89,21 @@ func (r *Rule) Format(f *option.Format) string {
 			delete(r.RawAlert.Annotations, DescriptionKey)
 			delete(r.RawAlert.Annotations, RunbookKey)
 			delete(r.RawAlert.Annotations, DurationKey)
-			s.Line("  RawAlert: %+v", r.RawAlert)
 		}
 	}
 
-	if f.ShowRaw && r.RawRecord != nil {
+	s.RawList(r)
+
+	if r.RawRecord != nil {
 		s.Raw(r.RawRecord, "RawRecord")
+	}
+
+	if r.RawAlert != nil {
+		s.Raw(r.RawAlert, "RawAlert")
+	}
+
+	if r.RawGroup != nil {
+		s.Raw(r.RawGroup, "RawGroup")
 	}
 
 	return s.Format()

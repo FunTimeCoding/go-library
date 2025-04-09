@@ -3,8 +3,6 @@ package silence
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/internal"
-	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
-	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 )
@@ -24,7 +22,7 @@ func Print(p *option.Silence) {
 
 	silences := c.Silences(true)
 	var relevant int
-	f := statusOption.Color.Copy().Tag(tag.Link)
+	f := constant.Format
 
 	for _, a := range silences {
 		if !p.All && a.State != constant.ActiveState {

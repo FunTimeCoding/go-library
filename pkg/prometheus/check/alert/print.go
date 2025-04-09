@@ -3,10 +3,9 @@ package alert
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/internal"
-	statusOption "github.com/funtimecoding/go-library/pkg/console/status/option"
-	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
+	"github.com/funtimecoding/go-library/pkg/prometheus/constant"
 )
 
 func Print(p *option.Alert) {
@@ -34,12 +33,7 @@ func Print(p *option.Alert) {
 		return
 	}
 
-	f := statusOption.Color.Copy().Tag(
-		tag.Link,
-		tag.Runbook,
-		tag.Category,
-		tag.Emoji,
-	)
+	f := constant.Format.Copy()
 
 	if p.Extended {
 		f.Extended()
@@ -53,20 +47,14 @@ func Print(p *option.Alert) {
 	d.Old = p.Old
 	alerts, statistic := c.Alerts(d)
 
+	m := c.Rules()
+
 	for _, a := range alerts {
+		// TODO: Rule details
 		fmt.Println(a.Format(f))
 
-		if false {
-			// TODO: More details: Annotations, rule
-			fmt.Printf("  Raw: %+v\n", a.Raw)
-
-			if r := c.Rule(a.Name); r != nil {
-				if r.RawAlert != nil {
-					fmt.Printf("  RawAlert: %+v\n", r.RawAlert)
-				} else {
-					fmt.Printf("  Rule: %+v\n", r)
-				}
-			}
+		if r := m.Find(a.Name); r != nil {
+			fmt.Printf("  Rule: %s\n", r.Format(f))
 		}
 	}
 

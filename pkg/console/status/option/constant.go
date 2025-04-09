@@ -1,12 +1,6 @@
 package option
 
 var (
-	Plain = New()
-	Color = New().Color()
-
-	Raw      = New().Raw()
-	RawColor = New().Raw().Color()
-
-	Extended      = New().Extended()
+	Color         = New().Color()
 	ExtendedColor = New().Extended().Color()
 )

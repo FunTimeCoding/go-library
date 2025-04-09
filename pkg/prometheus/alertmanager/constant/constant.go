@@ -1,6 +1,10 @@
 package constant
 
-import "time"
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+	"time"
+)
 
 const (
 	None        = "none"
@@ -55,6 +59,8 @@ const ExpiredState = "expired" // Silence state
 const NodeNotReady = "KubeNodeNotReady" // Alert name
 
 var (
+	Format = option.Color.Copy().Tag(tag.Link)
+
 	AlertStates = []string{
 		ActiveState,
 		SuppressedState,

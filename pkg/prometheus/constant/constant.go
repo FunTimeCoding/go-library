@@ -1,5 +1,10 @@
 package constant
 
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+)
+
 const (
 	HostEnvironment     = "PROMETHEUS_HOST"
 	PortEnvironment     = "PROMETHEUS_PORT"
@@ -40,4 +45,11 @@ const (
 	ServiceLabel     = "service"
 	StateLabel       = "state"
 	StatefulSetLabel = "statefulset"
+)
+
+var Format = option.Color.Copy().Tag(
+	tag.Link,
+	tag.Runbook,
+	tag.Category,
+	tag.Emoji,
 )

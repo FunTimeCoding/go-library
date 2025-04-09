@@ -28,7 +28,20 @@ func New(
 	var receivers []string
 
 	for _, receiver := range v.Receivers {
-		receivers = append(receivers, *receiver.Name)
+		if receiver.Name == nil {
+			continue
+		}
+
+		n := *receiver.Name
+
+		switch n {
+		case "":
+			continue
+		case "null":
+			continue
+		}
+
+		receivers = append(receivers, n)
 	}
 
 	result := &Alert{

@@ -9,8 +9,9 @@ import (
 
 func Alert() {
 	alerts, _ := internal.Alertmanager().Alerts(advanced_option.New())
+	f := option.ExtendedColor.Copy()
 
 	for _, a := range alerts {
-		fmt.Printf("Alert: %+v\n", a.Format(option.ExtendedColor))
+		fmt.Printf("Alert: %+v\n", a.Format(f))
 	}
 }

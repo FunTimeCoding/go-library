@@ -16,7 +16,7 @@ func (s *Status) Raw(
 	r := fmt.Sprintf("%+v", a)
 
 	if s.format.UseColor {
-		r = console.Magenta(r)
+		r = console.Magenta("%s", r)
 	}
 
 	return s.Line("  %s: %s", title, r)

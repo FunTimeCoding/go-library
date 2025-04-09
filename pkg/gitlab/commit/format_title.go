@@ -7,9 +7,11 @@ import (
 )
 
 func (c *Commit) formatTitle(f *option.Format) string {
+	result := strings.TrimSpace(c.Title)
+
 	if f.UseColor {
-		return console.Cyan("%s", strings.TrimSpace(c.Title))
+		return console.Cyan("%s", result)
 	}
 
-	return c.Title
+	return result
 }

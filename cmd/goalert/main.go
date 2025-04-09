@@ -16,11 +16,7 @@ func main() {
 	pflag.Bool(argument.Warning, false, "Warning severity only")
 	pflag.Bool(argument.Extended, false, "Extended output")
 	pflag.Bool(argument.Suppressed, false, "Include suppressed")
-	pflag.Bool(
-		argument.Old,
-		false,
-		"Include alerts older than 1 week",
-	)
+	pflag.Bool(argument.Old, false, "Include >1 week old")
 	pflag.Bool(argument.Rules, false, "Print rules")
 	pflag.Bool(argument.Firing, false, "Print firing rules")
 	pflag.Bool(argument.Fingerprint, false, "Fingerprint column")

@@ -8,7 +8,7 @@ import (
 
 func Runner() {
 	g := gitlab.NewEnvironment()
-	f := option.ExtendedColor.Copy().Extended().Raw()
+	f := option.ExtendedColor.Copy().Raw()
 
 	for _, r := range g.Runners(true) {
 		r = g.Runner(r.Identifier)

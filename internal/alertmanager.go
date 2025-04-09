@@ -15,7 +15,7 @@ func Alertmanager() *alertmanager.Client {
 			constant.KubernetesCronJobFailed,
 			constant.Job,
 			constant.Fail,
-		),
+		).Add(constant.Watchdog, constant.Service, constant.Okay),
 		field_changer.New(),
 		name_filter.New(true),
 		label_filter.New(true),

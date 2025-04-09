@@ -1,6 +1,9 @@
 package constant
 
-const KubernetesCronJobFailed = "KubernetesCronJobFailed"
+const (
+	Watchdog                = "Watchdog"
+	KubernetesCronJobFailed = "KubernetesCronJobFailed"
+)
 
 // Entity
 const (

@@ -12,7 +12,7 @@ import (
 )
 
 func (a *Alert) Format(f *option.Format) string {
-	s := status.New(f).RawList(a)
+	s := status.New(f)
 
 	if f.HasTag(tag.Fingerprint) {
 		s.String(a.Fingerprint)
@@ -73,6 +73,8 @@ func (a *Alert) Format(f *option.Format) string {
 			s.Line("  Receivers: %s", join.Comma(a.Receivers))
 		}
 	}
+
+	s.RawList(a.Raw)
 
 	return s.Format()
 }

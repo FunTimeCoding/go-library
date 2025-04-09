@@ -3,9 +3,10 @@ package console
 import "testing"
 
 func TestConstant(t *testing.T) {
-	Green("test")
-	Yellow("test")
-	Red("test")
+	Blue("test")
 	Cyan("test")
+	Green("test")
 	Magenta("test")
+	Red("test")
+	Yellow("test")
 }

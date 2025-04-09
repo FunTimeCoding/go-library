@@ -10,7 +10,7 @@ import (
 
 func Rule() {
 	c := prometheus.NewEnvironment()
-	f := option.ExtendedColor
+	f := option.ExtendedColor.Copy()
 	var severities []string
 
 	for _, r := range c.Rules().Alert() {

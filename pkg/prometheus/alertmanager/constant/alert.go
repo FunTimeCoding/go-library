@@ -7,6 +7,7 @@ const (
 
 // Entity
 const (
+	Backup        = "Backup"
 	Battery       = "Battery"
 	Cache         = "Cache"
 	Certificate   = "Certificate"
@@ -47,6 +48,7 @@ const (
 const (
 	Bad          = "Bad"
 	Behind       = "Behind"
+	Big          = "Big"
 	Broken       = "Broken"
 	Close        = "Close"
 	Corrupt      = "Corrupt"
@@ -77,5 +79,5 @@ const (
 	Unbound      = "Unbound"
 	Unhealthy    = "Unhealthy"
 
-	Okay = "Okay" // For Watchdog
+	Okay = "Okay"
 )

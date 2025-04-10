@@ -6,6 +6,7 @@ import (
 )
 
 func TestAlert(t *testing.T) {
+	assert.String(t, "Backup", Backup)
 	assert.String(t, "Battery", Battery)
 	assert.String(t, "Cache", Cache)
 	assert.String(t, "Certificate", Certificate)
@@ -42,6 +43,7 @@ func TestAlert(t *testing.T) {
 
 	assert.String(t, "Bad", Bad)
 	assert.String(t, "Behind", Behind)
+	assert.String(t, "Big", Big)
 	assert.String(t, "Broken", Broken)
 	assert.String(t, "Close", Close)
 	assert.String(t, "Corrupt", Corrupt)

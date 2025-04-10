@@ -7,6 +7,7 @@ func (e *Enricher) enrich(a *alert.Alert) {
 		if n.Name == a.Name {
 			a.Entity = n.Entity
 			a.Category = n.Category
+			a.Tag(n.Tags...)
 		}
 	}
 }

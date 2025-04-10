@@ -21,6 +21,7 @@ type Alert struct {
 
 	Entity    string
 	Category  string
+	Tags      []string
 	Runbook   string
 	Link      string
 	Remaining models.LabelSet

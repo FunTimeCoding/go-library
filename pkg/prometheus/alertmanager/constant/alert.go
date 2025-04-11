@@ -83,6 +83,7 @@ const (
 	OutOfSync    = "OutOfSync"
 	Overload     = "Overload"
 	ReadOnly     = "ReadOnly"
+	Received     = "Received"
 	Set          = "Set"
 	Slow         = "Slow"
 	Stuck        = "Stuck"

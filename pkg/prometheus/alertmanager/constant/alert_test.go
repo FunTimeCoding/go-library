@@ -76,6 +76,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "OutOfSync", OutOfSync)
 	assert.String(t, "Overload", Overload)
 	assert.String(t, "ReadOnly", ReadOnly)
+	assert.String(t, "Received", Received)
 	assert.String(t, "Set", Set)
 	assert.String(t, "Slow", Slow)
 	assert.String(t, "Stuck", Stuck)

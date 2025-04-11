@@ -18,6 +18,11 @@ func (a *Alert) extended(
 	f *option.Format,
 ) {
 	s.Line("  %s", a.Link)
+
+	if f.HasTag(tag.Name) {
+		s.Line("  Name: %s", a.Name)
+	}
+
 	investigate := f.HasTag(tag.Investigate)
 
 	if investigate && a.UpdatedAt.Sub(a.CreatedAt) > time.Minute {

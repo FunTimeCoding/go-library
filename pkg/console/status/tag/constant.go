@@ -16,6 +16,7 @@ const (
 	Key         = "key"
 	Link        = "link"
 	Markdown    = "markdown"
+	Name        = "name"
 	Runbook     = "runbook"
 	Score       = "score"
 	State       = "state"

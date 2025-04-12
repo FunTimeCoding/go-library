@@ -1,17 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/query"
-	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/check/issue"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/check/issue/option"
+	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	c := jira.NewEnvironment()
-	f := option.ExtendedColor.Copy()
-
-	for _, i := range query.Open(c) {
-		fmt.Println(i.Format(f))
-	}
+	monitor.NotationArgument()
+	monitor.AllArgument()
+	argument.ParseAndBind()
+	o := option.New()
+	o.All = viper.GetBool(argument.All)
+	o.Notation = viper.GetBool(argument.Notation)
+	issue.Print(o)
 }

@@ -8,7 +8,14 @@ import (
 	"net/url"
 )
 
-func (c *Client) Search(query string) []*search_result.Result {
+func (c *Client) Search(
+	query string,
+	a ...any,
+) []*search_result.Result {
+	if len(a) > 0 {
+		query = fmt.Sprintf(query, a)
+	}
+
 	var result *response.Search
 	notation.DecodeStrict(
 		c.basic.Get(

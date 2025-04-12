@@ -17,7 +17,7 @@ func New(v *sentry.Issue) *Issue {
 		Type:    *v.Type,
 		Title:   *v.Title,
 		Link:    *v.Permalink,
-		Create:  *v.FirstSeen,
+		Create:  v.FirstSeen,
 		Raw:     v,
 	}
 }

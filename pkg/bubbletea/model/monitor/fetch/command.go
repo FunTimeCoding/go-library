@@ -14,6 +14,7 @@ func Command() tea.Cmd {
 		commands := []string{
 			constant.GoAlert,
 			constant.GoGenie,
+			constant.GoJira,
 			constant.GoSensor,
 			constant.GoSentry,
 			constant.GoSilence,

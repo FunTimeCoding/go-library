@@ -5,15 +5,17 @@ import "github.com/gorilla/websocket"
 const (
 	GoAlert   = "goalert"
 	GoGenie   = "gogenie"
+	GoJira    = "gojira"
 	GoSensor  = "gosensor"
 	GoSentry  = "gosentry"
 	GoSilence = "gosilence"
 
+	AlertPrefix    = "alert"
 	ExamplePrefix  = "example"
+	JiraPrefix     = "jira"
 	OpsgeniePrefix = "opsgenie"
 	SentryPrefix   = "sentry"
 	SilencePrefix  = "silence"
-	AlertPrefix    = "alert"
 
 	WarningType = "warning"
 	ErrorType   = "error"

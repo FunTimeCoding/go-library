@@ -1,13 +1,18 @@
 package issue
 
-import "github.com/andygrunwald/go-jira"
+import (
+	"github.com/andygrunwald/go-jira"
+	"time"
+)
 
 type Issue struct {
-	Key         string
-	Summary     string
-	Description string
+	MonitorIdentifier string
+	Key               string
+	Summary           string
+	Description       string
 
 	Link string
 
-	Raw *jira.Issue
+	Raw    *jira.Issue
+	Create *time.Time
 }

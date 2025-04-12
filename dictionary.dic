@@ -34,6 +34,7 @@ gobump
 goclean
 godebian
 gogenie
+gojira
 golint
 gomonitor
 gomonitord

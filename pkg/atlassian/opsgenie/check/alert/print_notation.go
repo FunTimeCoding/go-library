@@ -18,7 +18,7 @@ func printNotation(c *opsgenie.Client) {
 			itemType = constant.ErrorType
 		}
 
-		r.AddItem(a.MonitorIdentifier, itemType, a.Name, a.Link)
+		r.AddItem(a.MonitorIdentifier, itemType, a.Name, a.Link, &a.Create)
 	}
 
 	r.Print()

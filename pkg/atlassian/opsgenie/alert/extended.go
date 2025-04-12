@@ -25,14 +25,14 @@ func (a *Alert) extended(
 
 	investigate := f.HasTag(tag.Investigate)
 
-	if investigate && a.UpdatedAt.Sub(a.CreatedAt) > time.Minute {
-		s.Line("  Update: %s", condenseTime(a.UpdatedAt))
+	if investigate && a.Update.Sub(a.Create) > time.Minute {
+		s.Line("  Update: %s", condenseTime(a.Update))
 	}
 
 	if a.Snoozed {
 		s.Line(
 			"  Snoozed: %s",
-			a.SnoozedUntil.Format(timeLibrary.DateMinute),
+			a.SnoozeUntil.Format(timeLibrary.DateMinute),
 		)
 	}
 

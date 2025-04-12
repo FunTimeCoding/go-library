@@ -4,12 +4,12 @@ import "os"
 
 func GetDefault(
 	name string,
-	defaultValue string,
+	fallback string,
 ) string {
 	result := os.Getenv(name)
 
 	if result == "" {
-		return defaultValue
+		return fallback
 	}
 
 	return result

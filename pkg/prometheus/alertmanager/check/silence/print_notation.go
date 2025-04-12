@@ -15,6 +15,7 @@ func printNotation(c *alertmanager.Client) {
 			constant.WarningType,
 			s.Rule,
 			s.Link,
+			s.Start,
 		)
 	}
 

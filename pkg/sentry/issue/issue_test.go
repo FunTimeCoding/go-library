@@ -7,7 +7,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"testing"
-	"time"
 )
 
 func TestIssue(t *testing.T) {
@@ -21,7 +20,7 @@ func TestIssue(t *testing.T) {
 			FirstSeen: ptr.To(constant.StartOfTime),
 		},
 	)
-	actual.Create = time.Time{}
+	actual.Create = nil
 	actual.Raw = nil
 	assert.Any(
 		t,

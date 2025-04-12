@@ -17,6 +17,7 @@ func TestItem(t *testing.T) {
 			constant.ErrorType,
 			strings.Alfa,
 			"https://example.org/1",
+			nil,
 		).Identifier,
 	)
 }

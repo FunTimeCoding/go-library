@@ -44,7 +44,10 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 		bottom.String(g.Time.Format(time.DateSecond))
 	}
 
-	bottom.Integer(60 - m.second%60)
+	if false {
+		bottom.Integer(60 - m.second%60)
+	}
+
 	bottom.String(fmt.Sprintf("%dx%d", m.width, m.height))
 	m.bottomBar = bottom.Format()
 

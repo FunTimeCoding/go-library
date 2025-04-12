@@ -12,15 +12,12 @@ import (
 func main() {
 	monitor.NotationArgument()
 	monitor.AllArgument()
-	pflag.String(
-		argument.Set,
-		"",
-		"Create or update silence with name",
-	)
+	pflag.String(argument.Set, "", "Name, creates or updates")
+	pflag.String(argument.Duration, "", "Duration, default 10m")
 	argument.ParseAndBind()
-	p := option.New()
-	p.Notation = viper.GetBool(argument.Notation)
-	p.All = viper.GetBool(argument.All)
-	p.Set = viper.GetString(argument.Set)
-	silence.Print(p)
+	o := option.New()
+	o.Notation = viper.GetBool(argument.Notation)
+	o.All = viper.GetBool(argument.All)
+	o.Set = viper.GetString(argument.Set)
+	silence.Print(o)
 }

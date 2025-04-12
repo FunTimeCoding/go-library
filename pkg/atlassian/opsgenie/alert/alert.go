@@ -23,9 +23,9 @@ type Alert struct {
 	Link            string
 	Owner           string
 	Source          string
-	CreatedAt       time.Time
-	SnoozedUntil    time.Time
-	UpdatedAt       time.Time
+	Create          time.Time
+	SnoozeUntil     time.Time
+	Update          time.Time
 	Report          alert.Report
 	Responders      []alert.Responder
 	Tags            []string

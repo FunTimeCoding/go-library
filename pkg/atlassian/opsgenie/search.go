@@ -1,13 +1,21 @@
 package opsgenie
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	rawAlert "github.com/opsgenie/opsgenie-go-sdk-v2/alert"
 )
 
-func (c *Client) Search(query string) []*alert.Alert {
+func (c *Client) Search(
+	query string,
+	a ...any,
+) []*alert.Alert {
+	if len(a) > 0 {
+		query = fmt.Sprintf(query, a)
+	}
+
 	var result []*alert.Alert
 	var start int
 	p := c.AlertOption()

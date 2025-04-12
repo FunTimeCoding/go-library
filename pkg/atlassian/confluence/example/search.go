@@ -12,7 +12,8 @@ func Search() {
 
 	if true {
 		for _, r := range c.Search(
-			fmt.Sprintf("space=%s", constant.OperationsSpace),
+			"space=%s",
+			constant.OperationsSpace,
 		) {
 			fmt.Println(r.Format(f))
 		}

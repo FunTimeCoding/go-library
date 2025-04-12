@@ -6,8 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/sentry"
 )
 
-func printNotation() {
-	c := sentry.NewEnvironment()
+func printNotation(c *sentry.Client) {
 	r := report.New()
 
 	for _, i := range c.AllIssues() {
@@ -16,6 +15,7 @@ func printNotation() {
 			constant.ErrorType,
 			i.Title,
 			i.Link,
+			i.Create,
 		)
 	}
 

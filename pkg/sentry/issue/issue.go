@@ -11,7 +11,7 @@ type Issue struct {
 	Type    string
 	Title   string
 	Link    string
-	Create  time.Time
+	Create  *time.Time
 
 	MonitorIdentifier string
 	ageColor          face.SprintFunction

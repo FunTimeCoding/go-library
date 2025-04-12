@@ -16,6 +16,7 @@ const (
 	Disk        = "disk"
 	Downgrade   = "downgrade"
 	Download    = "download"
+	Duration    = "duration"
 	Exclusive   = "exclusive"
 	Executable  = "executable"
 	Extended    = "extended"

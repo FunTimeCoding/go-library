@@ -9,6 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
+	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/markup"
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/prometheus/push"
@@ -90,4 +91,7 @@ func main() {
 
 	secure_shell.ParsePrivateKey([]byte{})
 	secure_shell.Listen(nil, "")
+
+	client.NewContextStrict("")
+	client.NewInCLuster("")
 }

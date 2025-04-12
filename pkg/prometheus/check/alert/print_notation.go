@@ -18,6 +18,7 @@ func printNotation(c *alertmanager.Client) {
 			constant.ErrorType,
 			a.Name,
 			a.Link,
+			a.Start,
 		)
 	}
 

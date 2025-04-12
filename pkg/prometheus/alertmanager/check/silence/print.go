@@ -7,17 +7,17 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 )
 
-func Print(p *option.Silence) {
+func Print(o *option.Silence) {
 	c := internal.Alertmanager()
 
-	if p.Notation {
+	if o.Notation {
 		printNotation(c)
 
 		return
 	}
 
-	if p.Set != "" {
-		fmt.Printf("Set: %s\n", c.SimpleSilence(p.Set))
+	if o.Set != "" {
+		fmt.Printf("Set: %s\n", c.SimpleSilence(o.Set))
 	}
 
 	silences := c.Silences(true)
@@ -25,7 +25,7 @@ func Print(p *option.Silence) {
 	f := constant.Format
 
 	for _, a := range silences {
-		if !p.All && a.State != constant.ActiveState {
+		if !o.All && a.State != constant.ActiveState {
 			continue
 		}
 
@@ -33,7 +33,7 @@ func Print(p *option.Silence) {
 		fmt.Println(a.Format(f))
 	}
 
-	if !p.All && relevant == 0 {
+	if !o.All && relevant == 0 {
 		fmt.Printf(
 			"No relevant silences, %d in total\n",
 			len(silences),

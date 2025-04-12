@@ -11,7 +11,7 @@ func (m *Model) View() string {
 	}
 
 	return lipgloss.JoinVertical(
-		lipgloss.Left,
+		lipgloss.Left, renderToasts(m.toast),
 		constant.Default.Render(m.topBar),
 		constant.Table.Render(m.table.View()),
 		constant.Default.Render(m.bottomBar),

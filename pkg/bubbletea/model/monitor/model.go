@@ -2,6 +2,7 @@ package monitor
 
 import (
 	"github.com/charmbracelet/bubbles/table"
+	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/toast"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/client"
 	"github.com/funtimecoding/go-library/pkg/monitor/item"
 )
@@ -23,4 +24,9 @@ type Model struct {
 	connect  bool
 	user     string
 	hostname string
+
+	toast     []*toast.Toast
+	nextToast int
+
+	initialResized bool
 }

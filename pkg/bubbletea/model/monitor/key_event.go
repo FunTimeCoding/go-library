@@ -34,6 +34,8 @@ func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 
 		return m, nil
+	case "t":
+		return m, tea.Batch(addToast("Pressed t"))
 	}
 
 	return nil, nil

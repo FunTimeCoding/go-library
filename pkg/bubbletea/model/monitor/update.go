@@ -5,6 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/receive"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"
+	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/toast"
+	"time"
 )
 
 func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
@@ -21,6 +23,31 @@ func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 		m.fetchEvent(g)
 	case receive.Message:
 		m.receiveEvent(g)
+	case addToastMessage:
+		n := toast.New(m.nextToast, string(g))
+		m.toast = append(m.toast, n)
+		m.nextToast++
+		m.updateTableHeight(false, false)
+		m.table.UpdateViewport()
+
+		return m, removeToast(n.Identifier, 10*time.Second)
+	case removeToastMessage:
+		var updated []*toast.Toast
+
+		for _, n := range m.toast {
+			if n.Identifier != int(g) {
+				updated = append(updated, n)
+			}
+		}
+
+		before := len(m.toast)
+		m.toast = updated
+		after := len(m.toast)
+
+		m.updateTableHeight(before > 0 && after == 0, false)
+		m.table.UpdateViewport()
+
+		return m, nil
 	}
 
 	t, result := m.table.Update(s)

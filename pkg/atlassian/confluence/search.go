@@ -13,7 +13,7 @@ func (c *Client) Search(
 	a ...any,
 ) []*search_result.Result {
 	if len(a) > 0 {
-		query = fmt.Sprintf(query, a)
+		query = fmt.Sprintf(query, a...)
 	}
 
 	var result *response.Search

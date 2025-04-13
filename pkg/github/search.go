@@ -11,7 +11,7 @@ func (c *Client) Search(
 	a ...any,
 ) []*issue.Issue {
 	if len(a) > 0 {
-		query = fmt.Sprintf(query, a)
+		query = fmt.Sprintf(query, a...)
 	}
 
 	result, _, e := c.client.Search.Issues(c.context, query, nil)

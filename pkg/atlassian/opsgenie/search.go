@@ -13,7 +13,7 @@ func (c *Client) Search(
 	a ...any,
 ) []*alert.Alert {
 	if len(a) > 0 {
-		query = fmt.Sprintf(query, a)
+		query = fmt.Sprintf(query, a...)
 	}
 
 	var result []*alert.Alert

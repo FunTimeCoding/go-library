@@ -16,7 +16,7 @@ func (c *Client) Search(
 	var result []*issue.Issue
 
 	if len(a) > 0 {
-		query = fmt.Sprintf(query, a)
+		query = fmt.Sprintf(query, a...)
 	}
 
 	for {

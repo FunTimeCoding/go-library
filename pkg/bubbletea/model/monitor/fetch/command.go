@@ -24,8 +24,9 @@ func Command() tea.Cmd {
 
 		for _, c := range commands {
 			if run.CommandExists(c) {
-				m := monitor.Run(c)
-				result.Items = append(result.Items, m.Items...)
+				if m := monitor.Run(c); m != nil {
+					result.Items = append(result.Items, m.Items...)
+				}
 			}
 		}
 

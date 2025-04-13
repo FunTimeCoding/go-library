@@ -35,12 +35,14 @@ goclean
 godebian
 gogenie
 gojira
+gokevt
 golint
 gomonitor
 gomonitord
 gosensor
 gosentry
 gosilence
+kevt
 
 # UNIX
 websocat

@@ -5,6 +5,7 @@ const (
 	Arm         = "arm"
 	Branch      = "branch"
 	BuildTags   = "build-tags"
+	Clean       = "clean"
 	Close       = "close"
 	Cluster     = "cluster"
 	Connect     = "connect"

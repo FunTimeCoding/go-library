@@ -1,6 +1,6 @@
 package rule
 
-import v1 "github.com/prometheus/client_golang/api/prometheus/v1"
+import "github.com/prometheus/client_golang/api/prometheus/v1"
 
 const (
 	SeverityKey = "severity"

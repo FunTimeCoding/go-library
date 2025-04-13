@@ -13,4 +13,13 @@ const (
 	CurrentContext = "current-context"
 )
 
-var Format = option.ExtendedColor
+var (
+	Format = option.ExtendedColor
+	Dense  = option.Color
+)
+
+const DNSConfigForming = "DNSConfigForming" // Event reason
+
+var IrrelevantEventReason = []string{
+	DNSConfigForming,
+}

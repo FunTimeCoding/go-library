@@ -11,14 +11,14 @@ func (c *Client) selectClients(f *filter.Filter) []*Client {
 	if len(c.clients) == 0 {
 		result = append(result, c)
 	} else {
-		for _, client := range c.clients {
+		for _, l := range c.clients {
 			if c.Verbose {
-				fmt.Printf("select client: %s\n", client.cluster)
+				fmt.Printf("select client: %s\n", l.cluster)
 				fmt.Printf("filter: %+v\n", f)
 			}
 
-			if f == nil || f.ContainsCluster(client.cluster) {
-				result = append(result, client)
+			if f == nil || f.ContainsCluster(l.cluster) {
+				result = append(result, l)
 			}
 		}
 	}

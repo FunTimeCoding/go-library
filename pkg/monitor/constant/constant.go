@@ -6,6 +6,7 @@ const (
 	GoAlert   = "goalert"
 	GoGenie   = "gogenie"
 	GoJira    = "gojira"
+	GoKevt    = "gokevt"
 	GoSensor  = "gosensor"
 	GoSentry  = "gosentry"
 	GoSilence = "gosilence"

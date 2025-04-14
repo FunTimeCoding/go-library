@@ -6,14 +6,15 @@ import (
 )
 
 type Event struct {
-	Cluster       string
-	Namespace     string
-	RegardingKind string
-	Name          string
-	Type          string
-	Reason        string
-	Note          string
-	Create        *time.Time
+	MonitorIdentifier string
+	Cluster           string
+	Namespace         string
+	RegardingKind     string
+	Name              string
+	Type              string
+	Reason            string
+	Note              string
+	Create            *time.Time
 
 	Raw *event.Event
 }

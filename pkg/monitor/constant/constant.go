@@ -11,12 +11,13 @@ const (
 	GoSentry  = "gosentry"
 	GoSilence = "gosilence"
 
-	AlertPrefix    = "alert"
-	ExamplePrefix  = "example"
-	JiraPrefix     = "jira"
-	OpsgeniePrefix = "opsgenie"
-	SentryPrefix   = "sentry"
-	SilencePrefix  = "silence"
+	AlertPrefix           = "alert"
+	ExamplePrefix         = "example"
+	JiraPrefix            = "jira"
+	KubernetesEventPrefix = "event"
+	OpsgeniePrefix        = "opsgenie"
+	SentryPrefix          = "sentry"
+	SilencePrefix         = "silence"
 
 	WarningType = "warning"
 	ErrorType   = "error"
@@ -35,3 +36,5 @@ const (
 )
 
 var Upgrader = websocket.Upgrader{}
+
+const NotationReport int = 10

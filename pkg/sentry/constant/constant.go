@@ -4,9 +4,11 @@ const (
 	UndefinedEnvironment = "undefined"
 	UndefinedVersion     = "undefined"
 
-	HostEnvironment    = "SENTRY_HOST"
-	TokenEnvironment   = "SENTRY_TOKEN"
-	LocatorEnvironment = "SENTRY_LOCATOR"
+	HostEnvironment         = "SENTRY_HOST"
+	TokenEnvironment        = "SENTRY_TOKEN"
+	OrganizationEnvironment = "SENTRY_ORGANIZATION"
+	ProjectEnvironment      = "SENTRY_PROJECT"
+	LocatorEnvironment      = "SENTRY_LOCATOR"
 
 	ErrorType = "error"
 )

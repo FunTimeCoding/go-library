@@ -16,7 +16,6 @@ func Command() tea.Cmd {
 			constant.GoGenie,
 			constant.GoJira,
 			constant.GoKevt,
-			constant.GoSensor,
 			constant.GoSentry,
 			constant.GoSilence,
 		}
@@ -35,6 +34,22 @@ func Command() tea.Cmd {
 
 			if strings.HasPrefix(t.Identifier, alert) {
 				t.Identifier = fmt.Sprintf("%s%d", alert, i+1)
+
+				continue
+			}
+
+			silence := fmt.Sprintf("%s-", constant.SilencePrefix)
+
+			if strings.HasPrefix(t.Identifier, silence) {
+				t.Identifier = fmt.Sprintf("%s%d", silence, i+1)
+
+				continue
+			}
+
+			event := fmt.Sprintf("%s-", constant.KubernetesEventPrefix)
+
+			if strings.HasPrefix(t.Identifier, event) {
+				t.Identifier = fmt.Sprintf("%s%d", event, i+1)
 			}
 		}
 

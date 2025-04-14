@@ -8,7 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/constant"
 )
 
-func Print(p *option.Alert) {
+func Print(o *option.Alert) {
 	// TODO: Use in gomonitor
 	//  Highlight new alerts
 	//  Press key to add 10 minute silence in gomonitor
@@ -21,30 +21,30 @@ func Print(p *option.Alert) {
 
 	c := internal.Alertmanager()
 
-	if p.Notation {
-		printNotation(c)
+	if o.Notation {
+		printNotation(c, o)
 
 		return
 	}
 
-	if p.Rules {
-		printRules(c, p.Firing, p.Old)
+	if o.Rules {
+		printRules(c, o.Firing, o.Old)
 
 		return
 	}
 
 	f := constant.Format.Copy()
 
-	if p.Extended {
+	if o.Extended {
 		f.Extended()
 	}
 
 	d := advanced_option.New()
-	d.All = p.All
-	d.CriticalOnly = p.Critical
-	d.WarningOnly = p.Warning
-	d.Suppressed = p.Suppressed
-	d.Old = p.Old
+	d.All = o.All
+	d.CriticalOnly = o.Critical
+	d.WarningOnly = o.Warning
+	d.Suppressed = o.Suppressed
+	d.Old = o.Old
 	alerts, statistic := c.Alerts(d)
 
 	m := c.Rules()
@@ -58,7 +58,7 @@ func Print(p *option.Alert) {
 		}
 	}
 
-	if !p.All && statistic.Relevant == 0 {
+	if !o.All && statistic.Relevant == 0 {
 		fmt.Printf(
 			"No relevant alerts, %d in total\n",
 			statistic.Total,

@@ -11,7 +11,7 @@ func Print(o *option.Silence) {
 	c := internal.Alertmanager()
 
 	if o.Notation {
-		printNotation(c)
+		printNotation(c, o)
 
 		return
 	}

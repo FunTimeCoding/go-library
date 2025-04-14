@@ -27,4 +27,6 @@ type Client struct {
 	parseDescription  constant.ParseDescription
 
 	enricher *alert_enricher.Enricher
+
+	Verbose bool
 }

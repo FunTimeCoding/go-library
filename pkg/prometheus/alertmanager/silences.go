@@ -28,5 +28,5 @@ func (c *Client) Silences(expired bool) []*silence.Silence {
 		result = append(result, s)
 	}
 
-	return result
+	return silence.Sort(result)
 }

@@ -16,9 +16,11 @@ func NewSlice(
 	for _, a := range v {
 		t := p.Team.ByIdentifier(a.OwnerTeamID)
 
-		if t == nil && verbose {
-			if t = p.Team.Guess(&a, true); t == nil {
-				fmt.Printf("Team not found: %+v\n", a)
+		if t == nil {
+			if t = p.Team.Guess(&a, verbose); t == nil {
+				if verbose {
+					fmt.Printf("Team not found: %+v\n", a)
+				}
 
 				continue
 			}

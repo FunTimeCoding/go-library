@@ -32,7 +32,7 @@ func (c *Client) Search(
 		errors.PanicOnError(e)
 		result = append(
 			result,
-			alert.NewSlice(page.Alerts, p, true)...,
+			alert.NewSlice(page.Alerts, p, c.Verbose)...,
 		)
 
 		if len(page.Alerts) < constant.PageLimit {

@@ -10,6 +10,7 @@ const (
 	UserKeyEnvironment = "OPSGENIE_USER_KEY"
 	TeamKeyEnvironment = "OPSGENIE_TEAM_KEY"
 	WebHostEnvironment = "OPSGENIE_WEB_HOST"
+	TeamEnvironment    = "OPSGENIE_TEAM"
 
 	PageLimit int = 100
 

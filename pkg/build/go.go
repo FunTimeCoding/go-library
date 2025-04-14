@@ -14,22 +14,24 @@ import (
 )
 
 func Go(o *option.Build) {
-	if o.Output == "" {
-		if o.Name == "" {
+	p := *o
+
+	if p.Output == "" {
+		if p.Name == "" {
 			panic("output empty and main not specified")
 		} else {
-			o.Output = system.Join(
+			p.Output = system.Join(
 				systemConstant.Temporary,
-				o.Name,
-				SystemArchitecture(o.OperatingSystem, o.Architecture),
-				o.Name,
+				p.Name,
+				SystemArchitecture(p.OperatingSystem, p.Architecture),
+				p.Name,
 			)
 		}
 	}
 
-	fmt.Printf("Name: %s\n", o.Name)
-	fmt.Printf("Output: %s\n", o.Output)
-	path := filepath.Dir(o.Output)
+	fmt.Printf("Name: %s\n", p.Name)
+	fmt.Printf("Output: %s\n", p.Output)
+	path := filepath.Dir(p.Output)
 	fmt.Printf("Path: %s\n", path)
 	system.EnsurePathExists(path)
 
@@ -47,18 +49,18 @@ func Go(o *option.Build) {
 		),
 	}
 
-	if o.BuildTags != "" {
-		s = append(s, constant.TagsArgument, o.BuildTags)
+	if p.BuildTags != "" {
+		s = append(s, constant.TagsArgument, p.BuildTags)
 	}
 
-	s = append(s, []string{constant.OutputArgument, o.Output, o.MainPath}...)
+	s = append(s, []string{constant.OutputArgument, p.Output, p.MainPath}...)
 
 	r := run.New()
 	r.Verbose = true
 	r.Panic = false
 	r.Environment(constant.NativeEnabled, constant.False)
-	r.Environment(constant.System, o.OperatingSystem)
-	r.Environment(constant.Architecture, o.Architecture)
+	r.Environment(constant.System, p.OperatingSystem)
+	r.Environment(constant.Architecture, p.Architecture)
 
 	if t := r.Start(s...); t != "" {
 		fmt.Printf("Output:\n%s", t)
@@ -66,19 +68,19 @@ func Go(o *option.Build) {
 
 	errors.PanicOnError(r.Error)
 
-	if o.CopyToBin &&
-		runtime.GOOS == o.OperatingSystem &&
-		runtime.GOARCH == o.Architecture {
+	if p.CopyToBin &&
+		runtime.GOOS == p.OperatingSystem &&
+		runtime.GOARCH == p.Architecture {
 		destination := system.Join(
 			system.Home(),
 			systemConstant.Binary,
-			o.Name,
+			p.Name,
 		)
-		fmt.Printf("Source: %s\n", o.Output)
+		fmt.Printf("Source: %s\n", p.Output)
 		fmt.Printf("Destination: %s\n", destination)
-		system.CopyFile(o.Output, destination)
+		system.CopyFile(p.Output, destination)
 		system.Executable(destination)
 	}
 
-	fmt.Printf("Size: %dM\n", system.FileSize(o.Output)/1024/1024)
+	fmt.Printf("Size: %dM\n", system.FileSize(p.Output)/1024/1024)
 }

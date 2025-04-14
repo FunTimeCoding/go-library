@@ -19,7 +19,7 @@ func Print(o *option.Issue) {
 	}
 
 	f := statusOption.Color.Copy().Tag(tag.Link)
-	issues := c.AllIssues()
+	issues := c.IssuesSimple()
 	colorer := age_colorer.Default(issues...)
 
 	for _, i := range issues {

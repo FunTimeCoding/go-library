@@ -7,11 +7,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 )
 
-func Print(p *option.Alert) {
+func Print(o *option.Alert) {
 	c := internal.Opsgenie()
 
-	if p.Notation {
-		printNotation(c)
+	if o.Notation {
+		printNotation(c, o)
 
 		return
 	}

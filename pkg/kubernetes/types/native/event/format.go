@@ -12,6 +12,7 @@ func (e *Event) Format(f *option.Format) string {
 
 	s.String(e.Reason)
 	s.String(e.Type)
+	s.String(e.RegardingKind)
 	s.String(e.Namespace)
 	s.String(e.formatAge())
 
@@ -19,7 +20,6 @@ func (e *Event) Format(f *option.Format) string {
 		s.String("  Cluster: %s", e.Cluster)
 	}
 
-	s.Line("  Regarding: %s", e.RegardingKind)
 	s.Line("  Note: %s", e.Note)
 	s.Line("  Create: %s", e.Create.Format(time.DateMinute))
 

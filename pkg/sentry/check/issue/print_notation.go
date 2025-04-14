@@ -9,7 +9,7 @@ import (
 func printNotation(c *sentry.Client) {
 	r := report.New()
 
-	for _, i := range c.AllIssues() {
+	for _, i := range c.IssuesSimple() {
 		r.AddItem(
 			i.MonitorIdentifier,
 			constant.ErrorType,

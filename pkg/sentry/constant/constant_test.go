@@ -7,4 +7,6 @@ import (
 
 func TestConstant(t *testing.T) {
 	assert.String(t, "SENTRY_LOCATOR", LocatorEnvironment)
+	assert.String(t, "SENTRY_ORGANIZATION", OrganizationEnvironment)
+	assert.String(t, "SENTRY_PROJECT", ProjectEnvironment)
 }

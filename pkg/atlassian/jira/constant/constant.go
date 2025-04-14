@@ -2,8 +2,12 @@ package constant
 
 import "github.com/funtimecoding/go-library/pkg/console/status/option"
 
-const SearchLimit int = 100
+const (
+	ProjectEnvironment = "JIRA_PROJECT"
 
-var Format = option.ExtendedColor.Copy()
+	SearchLimit int = 100
+)
 
 const Closed = "Closed" // Status
+
+var Format = option.ExtendedColor.Copy()

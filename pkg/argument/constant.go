@@ -73,4 +73,5 @@ const (
 	Verbose     = "verbose"
 	Version     = "version"
 	Warning     = "warning"
+	Watched     = "watched"
 )

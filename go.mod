@@ -58,7 +58,7 @@ require (
 	github.com/tobischo/gokeepasslib/v3 v3.6.1
 	github.com/virtomize/confluence-go-api v1.5.0
 	github.com/whilp/git-urls v1.0.0
-	github.com/yuin/goldmark v1.7.9
+	github.com/yuin/goldmark v1.7.10
 	gitlab.com/gitlab-org/api/client-go v0.127.0
 	go.etcd.io/bbolt v1.4.0
 	golang.org/x/crypto v0.37.0

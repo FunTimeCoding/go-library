@@ -9,7 +9,7 @@ import (
 	"slices"
 )
 
-func (i *Issue) printComments() {
+func (i *Issue) PrintComments() {
 	if i.Raw.Fields == nil {
 		return
 	}

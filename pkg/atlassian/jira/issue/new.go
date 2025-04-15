@@ -22,7 +22,9 @@ func New(
 	result.Key = v.Key
 	result.Summary = v.Fields.Summary
 	result.Description = v.Fields.Description
+	result.Initials = initialsField(v)
 	result.Status = statusField(v)
+	result.Type = v.Fields.Type.Name
 	result.Create = &t
 	result.Link = buildLink(o, v.Key)
 	result.Raw = v

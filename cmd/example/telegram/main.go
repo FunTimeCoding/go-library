@@ -1,7 +1,14 @@
 package main
 
-import "github.com/funtimecoding/go-library/pkg/telegram"
+import "github.com/funtimecoding/go-library/pkg/telegram/example"
 
 func main() {
-	telegram.NewEnvironment().Example()
+	if true {
+		example.Update()
+	}
+
+	if false {
+		example.Echo()
+		example.User()
+	}
 }

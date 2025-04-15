@@ -65,7 +65,7 @@ func (c *Client) ReadDatabase() ([]*channel.Channel, []*user.User) {
 	}
 
 	for _, a := range channels {
-		fmt.Printf(a.Format())
+		fmt.Println(a.Format())
 	}
 
 	return channels, users

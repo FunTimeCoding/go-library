@@ -15,8 +15,8 @@ func main() {
 	b := bolt.New("tmp/bolt.db")
 	defer b.Close()
 	b.Update(
-		func(tx *bbolt.Tx) error {
-			b.Put(b.CreateBucket(tx, Bucket), Key, "value")
+		func(t *bbolt.Tx) error {
+			b.Put(b.CreateBucket(t, Bucket), Key, "value")
 
 			return nil
 		},

@@ -13,6 +13,8 @@ type Issue struct {
 
 	Link string
 
+	CommentNameFilter []string
+
 	Raw    *jira.Issue
 	Create *time.Time
 }

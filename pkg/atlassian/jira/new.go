@@ -4,6 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/andygrunwald/go-jira"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic_client"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/client"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/service_client"
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
@@ -17,12 +20,12 @@ func New(
 	errors.FatalOnEmpty(token, "token")
 	t := jira.BasicAuthTransport{Username: user, Password: token}
 	locator := fmt.Sprintf("https://%s", host)
-	client, e := jira.NewClient(t.Client(), locator)
-	errors.PanicOnError(e)
 
 	return &Client{
 		context: context.Background(),
-		client:  client,
+		client:  client.New(t, locator),
+		basic:   basic_client.New(locator, user, token),
+		service: service_client.New(locator, user, token),
 		locator: locator,
 		user:    user,
 	}

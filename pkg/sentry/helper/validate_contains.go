@@ -8,9 +8,9 @@ import (
 
 func ValidateContains(
 	valid []string,
-	element string,
+	s string,
 ) {
-	if !slices.Contains(valid, element) {
-		log.Panicf("%s not in %s", element, join.Comma(valid))
+	if !slices.Contains(valid, s) {
+		log.Panicf("%s not in %s", s, join.Comma(valid))
 	}
 }

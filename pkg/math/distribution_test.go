@@ -19,8 +19,8 @@ func assertDistribution(
 	t.Helper()
 	var sum float64
 
-	for _, element := range Distribution(all, steps) {
-		sum += element
+	for _, e := range Distribution(all, steps) {
+		sum += e
 	}
 
 	// Comparing all floats here is a lot of decimals

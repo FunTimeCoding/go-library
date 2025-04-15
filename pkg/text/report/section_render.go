@@ -9,8 +9,8 @@ func (s *Section) Render() string {
 
 	result := spaces(s.indent) + s.title
 
-	for _, element := range s.renderables {
-		result += fmt.Sprintf("\n%s", element.Render())
+	for _, e := range s.renderables {
+		result += fmt.Sprintf("\n%s", e.Render())
 	}
 
 	return result

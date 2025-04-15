@@ -13,8 +13,8 @@ func UpdateDirectDependencies(exclusiveMatches []string) {
 		if hasExclusive {
 			var found bool
 
-			for _, element := range exclusiveMatches {
-				if strings.Contains(dep.Mod.Path, element) {
+			for _, m := range exclusiveMatches {
+				if strings.Contains(dep.Mod.Path, m) {
 					found = true
 
 					break

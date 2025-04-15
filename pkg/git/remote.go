@@ -10,9 +10,9 @@ func Remote(
 	m *provider_map.Map,
 	name string,
 ) *remote.Remote {
-	for _, element := range Remotes(path, m) {
-		if element.Name == name {
-			return element
+	for _, e := range Remotes(path, m) {
+		if e.Name == name {
+			return e
 		}
 	}
 

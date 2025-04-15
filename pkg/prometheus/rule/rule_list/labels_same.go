@@ -10,8 +10,8 @@ func LabelsSame(
 		return false
 	}
 
-	for key, value := range a.Labels {
-		if b.Labels[key] != value {
+	for k, v := range a.Labels {
+		if b.Labels[k] != v {
 			return false
 		}
 	}

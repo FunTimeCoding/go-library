@@ -1,14 +1,13 @@
 package strings
 
 func ElementAfter(
-	elements []string,
+	v []string,
 	search string,
 ) string {
 	var result string
-	position := IndexOf(search, elements)
 
-	if position != -1 {
-		result = elements[position+1]
+	if p := IndexOf(search, v); p != -1 {
+		result = v[p+1]
 	}
 
 	return result

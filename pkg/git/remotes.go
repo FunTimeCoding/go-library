@@ -11,8 +11,8 @@ func Remotes(
 ) []*remote.Remote {
 	var result []*remote.Remote
 
-	for _, element := range RemotesRaw(path) {
-		c := element.Config()
+	for _, r := range RemotesRaw(path) {
+		c := r.Config()
 		locator := c.URLs[0]
 		result = append(
 			result,

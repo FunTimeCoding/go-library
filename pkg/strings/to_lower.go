@@ -5,8 +5,8 @@ import "strings"
 func ToLower(s []string) []string {
 	var result []string
 
-	for _, element := range s {
-		result = append(result, strings.ToLower(element))
+	for _, e := range s {
+		result = append(result, strings.ToLower(e))
 	}
 
 	return result

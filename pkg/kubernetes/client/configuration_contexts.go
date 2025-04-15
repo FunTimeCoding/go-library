@@ -17,19 +17,19 @@ func (c *Client) ConfigurationContexts(filterExtended bool) []string {
 	if filterExtended {
 		var filtered []string
 
-		for _, element := range result {
-			if slices.Contains(filtered, element) {
+		for _, e := range result {
+			if slices.Contains(filtered, e) {
 				continue
 			}
 
 			var isExtendedName bool
 
 			for _, inner := range result {
-				if element == inner {
+				if e == inner {
 					continue
 				}
 
-				if strings.HasPrefix(element, inner) {
+				if strings.HasPrefix(e, inner) {
 					isExtendedName = true
 				}
 			}
@@ -38,7 +38,7 @@ func (c *Client) ConfigurationContexts(filterExtended bool) []string {
 				continue
 			}
 
-			filtered = append(filtered, element)
+			filtered = append(filtered, e)
 		}
 
 		result = filtered

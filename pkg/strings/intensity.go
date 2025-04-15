@@ -3,16 +3,16 @@ package strings
 import "github.com/funtimecoding/go-library/pkg/math/normalize"
 
 func Intensity(
-	elements []string,
+	v []string,
 	intensity float64,
 ) string {
 	normalize.Float(&intensity, 0, 1)
-	length := len(elements)
+	length := len(v)
 	index := int(float64(length) * intensity)
 
 	if index == length {
 		index--
 	}
 
-	return elements[index]
+	return v[index]
 }

@@ -10,14 +10,14 @@ import (
 func Latest(v []*gitlab.Tag) *gitlab.Tag {
 	result := v[0]
 
-	for _, element := range v {
+	for _, e := range v {
 		// only consider tags with prefix
-		if !strings.HasPrefix(element.Name, constant.VersionPrefix) {
+		if !strings.HasPrefix(e.Name, constant.VersionPrefix) {
 			continue
 		}
 
-		if semver.Compare(element.Name, result.Name) > 0 {
-			result = element
+		if semver.Compare(e.Name, result.Name) > 0 {
+			result = e
 		}
 	}
 

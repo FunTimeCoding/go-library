@@ -9,8 +9,8 @@ import (
 func Latest(v []*gitlab.RegistryRepositoryTag) *gitlab.RegistryRepositoryTag {
 	result := v[0]
 
-	for _, element := range v {
-		current := Version(element)
+	for _, e := range v {
+		current := Version(e)
 
 		// skip latest
 		if current == library.LatestVersion {
@@ -18,7 +18,7 @@ func Latest(v []*gitlab.RegistryRepositoryTag) *gitlab.RegistryRepositoryTag {
 		}
 
 		if semver.Compare(current, Version(result)) > 0 {
-			result = element
+			result = e
 		}
 	}
 

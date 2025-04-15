@@ -6,9 +6,9 @@ func AnySub(
 	substrings []string,
 	valid []string,
 ) bool {
-	for _, element := range valid {
-		for _, match := range substrings {
-			if strings.Contains(element, match) {
+	for _, e := range valid {
+		for _, m := range substrings {
+			if strings.Contains(e, m) {
 				return true
 			}
 		}

@@ -1,12 +1,12 @@
 package strings
 
 func IndexOf(
-	element string,
-	elements []string,
+	value string,
+	s []string,
 ) int {
-	for key, value := range elements {
-		if element == value {
-			return key
+	for k, v := range s {
+		if value == v {
+			return k
 		}
 	}
 

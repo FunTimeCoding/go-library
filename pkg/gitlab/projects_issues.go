@@ -6,12 +6,12 @@ func (c *Client) ProjectsIssues() []*issue.Issue {
 	var result []*issue.Issue
 
 	for _, identifier := range c.projects {
-		for _, element := range c.ProjectIssues(identifier) {
-			if element.Done() {
+		for _, e := range c.ProjectIssues(identifier) {
+			if e.Done() {
 				continue
 			}
 
-			result = append(result, element)
+			result = append(result, e)
 		}
 	}
 

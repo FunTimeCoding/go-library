@@ -8,16 +8,16 @@ import (
 func FilterSevere(v []*Alert) []*Alert {
 	var result []*Alert
 
-	for _, element := range v {
-		if element.State != constant.ActiveState {
+	for _, e := range v {
+		if e.State != constant.ActiveState {
 			continue
 		}
 
-		if !slices.Contains(constant.SevereSeverities, element.Severity) {
+		if !slices.Contains(constant.SevereSeverities, e.Severity) {
 			continue
 		}
 
-		result = append(result, element)
+		result = append(result, e)
 	}
 
 	return result

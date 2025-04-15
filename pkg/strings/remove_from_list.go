@@ -1,12 +1,12 @@
 package strings
 
 func RemoveFromList(
-	elements []string,
+	v []string,
 	toRemove []string,
 ) []string {
 	var result []string
 
-	for i, value := range elements {
+	for i, value := range v {
 		keep := true
 
 		for _, remove := range toRemove {
@@ -16,7 +16,7 @@ func RemoveFromList(
 		}
 
 		if keep {
-			result = append(result, elements[i])
+			result = append(result, v[i])
 		}
 	}
 

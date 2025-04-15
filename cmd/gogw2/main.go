@@ -32,14 +32,14 @@ func main() {
 
 	var tagFound bool
 
-	for _, element := range account.GuildLeader {
-		g := c.Guild(element)
+	for _, l := range account.GuildLeader {
+		g := c.Guild(l)
 		fmt.Printf("Guild: %s\n", g.Name)
 		fmt.Printf("  Tag: %s\n", g.Tag)
 
 		if tag != "" && tag == g.Tag {
 			tagFound = true
-			members := c.Members(element)
+			members := c.Members(l)
 			fmt.Printf("  Members: %d\n", len(members))
 
 			for _, member := range members {

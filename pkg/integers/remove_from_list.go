@@ -1,22 +1,22 @@
 package integers
 
 func RemoveFromList(
-	elements []int,
+	v []int,
 	toRemove []int,
 ) []int {
 	var result []int
 
-	for i, value := range elements {
+	for i, a := range v {
 		keep := true
 
 		for _, remove := range toRemove {
-			if value == remove {
+			if a == remove {
 				keep = false
 			}
 		}
 
 		if keep {
-			result = append(result, elements[i])
+			result = append(result, v[i])
 		}
 	}
 

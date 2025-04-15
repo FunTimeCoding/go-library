@@ -7,9 +7,9 @@ import (
 )
 
 func DowngradeDependencies(v []string) {
-	for _, element := range v {
-		fmt.Printf("Downgrade: %s\n", element)
-		system.Run(constant.Go, constant.Get, element)
+	for _, e := range v {
+		fmt.Printf("Downgrade: %s\n", e)
+		system.Run(constant.Go, constant.Get, e)
 	}
 
 	if len(v) > 0 {

@@ -1,11 +1,11 @@
 package strings
 
 func Swap(
-	elements []string,
+	v []string,
 	posA int,
 	posB int,
 ) {
-	swap := elements[posA]
-	elements[posA] = elements[posB]
-	elements[posB] = swap
+	swap := v[posA]
+	v[posA] = v[posB]
+	v[posB] = swap
 }

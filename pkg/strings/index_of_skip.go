@@ -1,19 +1,19 @@
 package strings
 
 func IndexOfSkip(
-	element string,
-	elements []string,
+	value string,
+	s []string,
 	skip int,
 ) int {
-	for key, value := range elements {
-		if element == value {
+	for k, v := range s {
+		if value == v {
 			if skip > 0 {
 				skip--
 
 				continue
 			}
 
-			return key
+			return k
 		}
 	}
 

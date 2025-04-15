@@ -9,11 +9,11 @@ func LatestCompatible(
 	v []*Release,
 	other *semver.Version,
 ) *Release {
-	for _, element := range v {
-		s := semver.New(library.Trim(element.Name))
+	for _, e := range v {
+		s := semver.New(library.Trim(e.Name))
 
 		if s.Major == other.Major && s.Minor == other.Minor {
-			return element
+			return e
 		}
 	}
 

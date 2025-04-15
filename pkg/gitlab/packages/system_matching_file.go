@@ -7,11 +7,16 @@ import (
 )
 
 func SystemMatchingFile(v []*gitlab.PackageFile) *gitlab.PackageFile {
-	for _, element := range v {
-		if strings.Contains(element.FileName, runtime.GOARCH) &&
-			strings.Contains(element.FileName, runtime.GOOS) {
-			return element
+	for _, e := range v {
+		if !strings.Contains(e.FileName, runtime.GOARCH) {
+			continue
 		}
+
+		if !strings.Contains(e.FileName, runtime.GOOS) {
+			continue
+		}
+
+		return e
 	}
 
 	return nil

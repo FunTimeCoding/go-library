@@ -5,15 +5,13 @@ import "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/team"
 func New(v []*team.Team) *Map {
 	m := make(map[string]*team.Team, len(v))
 
-	for _, element := range v {
-		m[element.Identifier] = element
+	for _, e := range v {
+		m[e.Identifier] = e
 	}
 
-	result := &Map{
+	return &Map{
 		Teams:        v,
 		KeyByNameMap: make(map[string]string),
 		TeamMap:      m,
 	}
-
-	return result
 }

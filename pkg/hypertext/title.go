@@ -5,14 +5,14 @@ import (
 	"strings"
 )
 
-func Title(document *goquery.Document) string {
+func Title(d *goquery.Document) string {
 	var result string
-	document.Find("title").Each(
+	d.Find("title").Each(
 		func(
 			index int,
-			element *goquery.Selection,
+			s *goquery.Selection,
 		) {
-			result = strings.TrimSpace(element.Text())
+			result = strings.TrimSpace(s.Text())
 		},
 	)
 

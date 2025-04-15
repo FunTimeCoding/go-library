@@ -14,14 +14,14 @@ func MatrixTimeString(v model.Value) []*time_string.Result {
 		log.Panicf("not a matrix")
 	}
 
-	for _, element := range matrix {
-		for _, value := range element.Values {
+	for _, e := range matrix {
+		for _, v := range e.Values {
 			result = append(
 				result,
 				&time_string.Result{
-					Metric: element.Metric.String(),
-					Time:   value.Timestamp.Time(),
-					Value:  value.Value.String(),
+					Metric: e.Metric.String(),
+					Time:   v.Timestamp.Time(),
+					Value:  v.Value.String(),
 				},
 			)
 		}

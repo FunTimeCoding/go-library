@@ -10,8 +10,8 @@ func (c *Client) WatchedIssueKeys() []string {
 	errors.PanicOnError(e)
 	var result []string
 
-	for _, element := range issues {
-		result = append(result, element.Key)
+	for _, i := range issues {
+		result = append(result, i.Key)
 	}
 
 	return result

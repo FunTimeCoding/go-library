@@ -9,14 +9,12 @@ import (
 func DebianPackages() []string {
 	var result []string
 
-	for _, element := range system.Files(system.WorkingDirectory()) {
-		if !strings.HasSuffix(element, debian.PackageExtension) {
+	for _, d := range system.Files(system.WorkingDirectory()) {
+		if !strings.HasSuffix(d, debian.PackageExtension) {
 			continue
 		}
 
-		result = append(result, element)
-
-		return result
+		result = append(result, d)
 	}
 
 	return result

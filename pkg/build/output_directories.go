@@ -9,13 +9,15 @@ import (
 func OutputDirectories() []string {
 	var result []string
 
-	for _, element := range system.Subdirectories(constant.Temporary) {
-		if contains.Any(
+	for _, d := range system.Subdirectories(constant.Temporary) {
+		if !contains.Any(
 			constant.SystemArchitectures,
-			system.Subdirectories(system.Join(constant.Temporary, element)),
+			system.Subdirectories(system.Join(constant.Temporary, d)),
 		) {
-			result = append(result, element)
+			continue
 		}
+
+		result = append(result, d)
 	}
 
 	return result

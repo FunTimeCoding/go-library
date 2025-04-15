@@ -3,12 +3,12 @@ package strings
 import "sort"
 
 func Sort(
-	elements []string,
+	v []string,
 	ascending bool,
 ) {
-	sort.Strings(elements)
+	sort.Strings(v)
 
 	if !ascending {
-		Reverse(elements)
+		Reverse(v)
 	}
 }

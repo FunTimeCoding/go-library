@@ -16,6 +16,7 @@ require (
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
+	github.com/ctreminiom/go-atlassian v1.6.1
 	github.com/ctreminiom/go-atlassian/v2 v2.2.0
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/dimchansky/utfbom v1.1.1

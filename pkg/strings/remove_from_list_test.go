@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestRemoveElementsFromList(t *testing.T) {
+func TestRemoveFromList(t *testing.T) {
 	assert.Any(
 		t,
 		[]string{Bravo, Charlie},

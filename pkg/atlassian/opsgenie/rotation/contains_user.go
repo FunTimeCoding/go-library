@@ -7,13 +7,13 @@ func ContainsUser(
 	user string,
 	f face.StringAlias,
 ) bool {
-	for _, element := range r.Participants {
+	for _, e := range r.Participants {
 		if f == nil {
-			if element.Username == user {
+			if e.Username == user {
 				return true
 			}
 		} else {
-			if f(element.Username) == user {
+			if f(e.Username) == user {
 				return true
 			}
 		}

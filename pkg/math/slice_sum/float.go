@@ -13,8 +13,8 @@ func Float(
 		index = length
 	}
 
-	for _, element := range input[:index] {
-		result += element
+	for _, e := range input[:index] {
+		result += e
 	}
 
 	return result

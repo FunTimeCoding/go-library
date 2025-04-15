@@ -14,12 +14,12 @@ func (c *Client) TrackedIssues() []*issue.Issue {
 
 	organization := c.Organization(c.organization)
 
-	for _, element := range c.projects {
+	for _, p := range c.projects {
 		result = append(
 			result,
 			c.Issues(
 				organization,
-				c.Project(organization, element),
+				c.Project(organization, p),
 				constant.PeriodFortnight,
 			)...,
 		)

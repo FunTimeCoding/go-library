@@ -5,8 +5,8 @@ import "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/user"
 func New(v []*user.User) *Map {
 	m := make(map[string]*user.User, len(v))
 
-	for _, element := range v {
-		m[element.Identifier] = element
+	for _, e := range v {
+		m[e.Identifier] = e
 	}
 
 	return &Map{Users: v, UserMap: m}

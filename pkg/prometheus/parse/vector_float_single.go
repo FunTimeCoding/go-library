@@ -23,8 +23,8 @@ func VectorFloatSingle(v model.Value) float64 {
 		return float64(vector[0].Value)
 	}
 
-	for _, element := range vector {
-		fmt.Printf("Sample: %+v\n", element)
+	for _, l := range vector {
+		fmt.Printf("Sample: %+v\n", l)
 	}
 
 	log.Panicf("too many samples: %d", count)

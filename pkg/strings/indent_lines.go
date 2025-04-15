@@ -6,14 +6,14 @@ import (
 )
 
 func IndentLines(
-	input []string,
+	v []string,
 	count int,
 ) []string {
 	var result []string
 	indent := strings.Repeat(" ", count)
 
-	for _, element := range input {
-		result = append(result, fmt.Sprintf("%s%s", indent, element))
+	for _, e := range v {
+		result = append(result, fmt.Sprintf("%s%s", indent, e))
 	}
 
 	return result

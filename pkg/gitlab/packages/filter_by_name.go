@@ -8,9 +8,9 @@ func FilterByName(
 ) []*gitlab.Package {
 	var result []*gitlab.Package
 
-	for _, element := range v {
-		if element.Name == name {
-			result = append(result, element)
+	for _, e := range v {
+		if e.Name == name {
+			result = append(result, e)
 		}
 	}
 

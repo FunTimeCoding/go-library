@@ -1,11 +1,11 @@
 package integers
 
 func Contains(
-	elements []int,
-	element int,
+	v []int,
+	e int,
 ) bool {
-	for _, v := range elements {
-		if element == v {
+	for _, l := range v {
+		if e == l {
 			return true
 		}
 	}

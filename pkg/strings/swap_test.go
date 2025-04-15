@@ -6,7 +6,7 @@ import (
 )
 
 func TestSwapInList(t *testing.T) {
-	elements := []string{Alfa, Bravo, Charlie}
-	Swap(elements, 1, 2)
-	assert.Any(t, []string{Alfa, Charlie, Bravo}, elements)
+	actual := []string{Alfa, Bravo, Charlie}
+	Swap(actual, 1, 2)
+	assert.Any(t, []string{Alfa, Charlie, Bravo}, actual)
 }

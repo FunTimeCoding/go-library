@@ -8,8 +8,8 @@ import (
 func OutputToMap(s string) map[string]string {
 	result := make(map[string]string)
 
-	for _, element := range split.NewLine(s) {
-		k, v := key_value.Equals(element)
+	for _, l := range split.NewLine(s) {
+		k, v := key_value.Equals(l)
 		result[k] = v
 	}
 

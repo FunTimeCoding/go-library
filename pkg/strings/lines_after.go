@@ -1,18 +1,18 @@
 package strings
 
 func LinesAfter(
-	input []string,
+	v []string,
 	match string,
 ) []string {
 	var result []string
 	var found bool
 
-	for _, element := range input {
+	for _, e := range v {
 		if found {
-			result = append(result, element)
+			result = append(result, e)
 		}
 
-		if element == match {
+		if e == match {
 			found = true
 		}
 	}

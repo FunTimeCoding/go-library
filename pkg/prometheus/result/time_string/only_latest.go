@@ -4,20 +4,20 @@ func OnlyLatest(v []*Result) []*Result {
 	var result []*Result
 	sorted := make(map[string]*Result)
 
-	for _, element := range v {
-		value, exists := sorted[element.Metric]
+	for _, e := range v {
+		value, exists := sorted[e.Metric]
 
 		if exists {
-			if value.Time.Before(element.Time) {
-				sorted[element.Metric] = element
+			if value.Time.Before(e.Time) {
+				sorted[e.Metric] = e
 			}
 		} else {
-			sorted[element.Metric] = element
+			sorted[e.Metric] = e
 		}
 	}
 
-	for _, element := range sorted {
-		result = append(result, element)
+	for _, e := range sorted {
+		result = append(result, e)
 	}
 
 	return result

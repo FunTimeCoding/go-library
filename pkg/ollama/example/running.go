@@ -8,7 +8,7 @@ import (
 func Running() {
 	o := ollama.NewEnvironment()
 
-	for _, element := range o.Running() {
-		fmt.Printf("Running: %+v\n", element)
+	for _, m := range o.Running() {
+		fmt.Printf("Running: %+v\n", m)
 	}
 }

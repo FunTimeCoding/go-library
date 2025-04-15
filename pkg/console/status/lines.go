@@ -1,12 +1,12 @@
 package status
 
 func (s *Status) Lines(v ...string) *Status {
-	for _, element := range v {
-		if element == "" {
+	for _, e := range v {
+		if e == "" {
 			continue
 		}
 
-		s.Line("  %s", element)
+		s.Line("  %s", e)
 	}
 
 	return s

@@ -5,11 +5,11 @@ import "gitlab.com/gitlab-org/api/client-go"
 func Deduplicate(v []*gitlab.Job) []*gitlab.Job {
 	var result []*gitlab.Job
 
-	for _, element := range v {
+	for _, e := range v {
 		var found bool
 
 		for _, existing := range result {
-			if element.ID == existing.ID {
+			if e.ID == existing.ID {
 				found = true
 
 				break
@@ -17,7 +17,7 @@ func Deduplicate(v []*gitlab.Job) []*gitlab.Job {
 		}
 
 		if !found {
-			result = append(result, element)
+			result = append(result, e)
 		}
 	}
 

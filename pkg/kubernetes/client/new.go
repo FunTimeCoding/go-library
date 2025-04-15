@@ -20,14 +20,14 @@ func New(clusters []string) *Client {
 		clusters = result.ConfigurationContexts(true)
 	}
 
-	for _, element := range clusters {
-		c, e := NewContext(element)
+	for _, l := range clusters {
+		c, e := NewContext(l)
 
 		if e != nil {
 			continue
 		}
 
-		result.clients[element] = c
+		result.clients[l] = c
 	}
 
 	return result

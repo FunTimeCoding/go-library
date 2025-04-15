@@ -85,8 +85,8 @@ func Log(
 
 	var exceptionNames []string
 
-	for _, element := range exceptions.Parse("tmp/exception.json") {
-		exceptionNames = append(exceptionNames, element.Name)
+	for _, e := range exceptions.Parse("tmp/exception.json") {
+		exceptionNames = append(exceptionNames, e.Name)
 	}
 
 	t := tablewriter.NewWriter(os.Stdout)
@@ -192,10 +192,10 @@ func Log(
 
 	var uselessException []string
 
-	for _, element := range exceptionNames {
-		if !slices.Contains(members, element) {
-			uselessException = append(uselessException, element)
-			fmt.Printf("Useless exception: %s\n", element)
+	for _, e := range exceptionNames {
+		if !slices.Contains(members, e) {
+			uselessException = append(uselessException, e)
+			fmt.Printf("Useless exception: %s\n", e)
 		}
 	}
 
@@ -205,12 +205,12 @@ func Log(
 	if false {
 		// To maintain guilds.json
 		for guild, guildMembers := range guildReport {
-			for _, element := range guildMembers {
-				if !slices.Contains(members, element) {
+			for _, e := range guildMembers {
+				if !slices.Contains(members, e) {
 					fmt.Printf(
 						"Guild member not found: %s %s\n",
 						guild,
-						element,
+						e,
 					)
 				}
 			}
@@ -266,11 +266,11 @@ func Log(
 	var seenMembers []string
 	var lessThanFour []string
 
-	for _, element := range seenDays {
-		seenMembers = append(seenMembers, element.Name)
+	for _, e := range seenDays {
+		seenMembers = append(seenMembers, e.Name)
 
-		if len(element.Days) < 4 {
-			lessThanFour = append(lessThanFour, element.Name)
+		if len(e.Days) < 4 {
+			lessThanFour = append(lessThanFour, e.Name)
 		}
 	}
 
@@ -311,36 +311,36 @@ func Log(
 		noAleevaOrNotOnTeamCount-confirmedNotOnTeamCount,
 	)
 
-	for _, element := range seenDays {
-		labels := GuildsOfMember(guildReport, element.Name)
+	for _, e := range seenDays {
+		labels := GuildsOfMember(guildReport, e.Name)
 
 		if len(labels) == 0 {
 			labels = append(labels, "no-guild")
 		}
 
-		if slices.Contains(atRisk, element.Name) {
+		if slices.Contains(atRisk, e.Name) {
 			labels = append(labels, "at-risk")
 		}
 
 		fmt.Printf(
 			"Seen days: %d %s %s\n",
-			len(element.Days),
-			element.Name,
+			len(e.Days),
+			e.Name,
 			join.Space(labels...),
 		)
 	}
 
-	for _, element := range neverSeenDays {
-		labels := GuildsOfMember(guildReport, element)
+	for _, e := range neverSeenDays {
+		labels := GuildsOfMember(guildReport, e)
 
 		if len(labels) == 0 {
 			labels = append(labels, "no-guild")
 		}
 
-		if slices.Contains(atRisk, element) {
+		if slices.Contains(atRisk, e) {
 			labels = append(labels, "at-risk")
 		}
 
-		fmt.Printf("Seen days: 0 %s %s\n", element, join.Space(labels...))
+		fmt.Printf("Seen days: 0 %s %s\n", e, join.Space(labels...))
 	}
 }

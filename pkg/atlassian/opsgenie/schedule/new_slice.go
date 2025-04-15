@@ -11,13 +11,10 @@ func NewSlice(
 ) []*Schedule {
 	var result []*Schedule
 
-	for _, element := range v {
+	for _, e := range v {
 		result = append(
 			result,
-			New(
-				&element,
-				m.ByIdentifier(element.OwnerTeam.Id),
-			),
+			New(&e, m.ByIdentifier(e.OwnerTeam.Id)),
 		)
 	}
 

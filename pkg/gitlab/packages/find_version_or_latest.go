@@ -10,9 +10,9 @@ func FindVersionOrLatest(
 		return nil
 	}
 
-	for _, element := range v {
-		if element.Version == version {
-			return element
+	for _, e := range v {
+		if e.Version == version {
+			return e
 		}
 	}
 

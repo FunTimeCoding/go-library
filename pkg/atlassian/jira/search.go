@@ -12,12 +12,12 @@ func (c *Client) Search(
 	query string,
 	a ...any,
 ) []*issue.Issue {
-	var start int
-	var result []*issue.Issue
-
 	if len(a) > 0 {
 		query = fmt.Sprintf(query, a...)
 	}
+
+	var start int
+	var result []*issue.Issue
 
 	for {
 		page, _, e := c.client.Issue.Search(

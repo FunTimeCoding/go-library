@@ -6,13 +6,13 @@ import (
 )
 
 func NewSlice(
-	value []jira.Issue,
-	m *option.Issue,
+	v []jira.Issue,
+	o *option.Issue,
 ) []*Issue {
 	var result []*Issue
 
-	for _, element := range value {
-		result = append(result, New(&element, m))
+	for _, e := range v {
+		result = append(result, New(&e, o))
 	}
 
 	return result

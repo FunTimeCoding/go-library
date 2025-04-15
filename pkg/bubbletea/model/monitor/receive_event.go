@@ -9,21 +9,21 @@ import (
 
 func (m *Model) receiveEvent(s receive.Message) {
 	for _, line := range s.Text {
-		elements := split.Comma(line)
+		p := split.Comma(line)
 		log.Printf("receive event: %s\n", line)
-		command := elements[0]
+		command := p[0]
 
 		switch command {
 		case constant.FlagAddCommand:
-			handle := elements[1]
-			identifier := elements[2]
+			handle := p[1]
+			identifier := p[2]
 			rows := m.table.Rows()
 			rows[rowIndex(m.table, identifier)][2] = handle
 			m.table.SetRows(rows)
 			m.updateColumns()
 		case constant.FlagRemoveCommand:
-			handle := elements[1]
-			identifier := elements[2]
+			handle := p[1]
+			identifier := p[2]
 			rows := m.table.Rows()
 			i := rowIndex(m.table, identifier)
 

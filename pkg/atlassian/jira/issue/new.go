@@ -13,18 +13,19 @@ func New(
 	o *option.Issue,
 ) *Issue {
 	t := time.Time(v.Fields.Created)
+	result := Stub()
+	result.MonitorIdentifier = fmt.Sprintf(
+		"%s-%s",
+		constant.JiraPrefix,
+		v.Key,
+	)
+	result.Key = v.Key
+	result.Summary = v.Fields.Summary
+	result.Description = v.Fields.Description
+	result.Status = statusField(v)
+	result.Create = &t
+	result.Link = buildLink(o, v.Key)
+	result.Raw = v
 
-	return &Issue{
-		MonitorIdentifier: fmt.Sprintf(
-			"%s-%s",
-			constant.JiraPrefix,
-			v.Key,
-		),
-		Key:         v.Key,
-		Summary:     v.Fields.Summary,
-		Description: v.Fields.Description,
-		Create:      &t,
-		Link:        buildLink(o, v.Key),
-		Raw:         v,
-	}
+	return result
 }

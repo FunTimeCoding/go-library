@@ -2,8 +2,8 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/bolt"
 	"github.com/funtimecoding/go-library/pkg/ollama"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/telegram"
 	"github.com/funtimecoding/go-library/pkg/telegram/constant"
@@ -11,24 +11,15 @@ import (
 )
 
 func Ollama() {
-	b := bolt.New("tmp/telegram.db")
-	defer b.Close()
-
 	o := ollama.NewEnvironment()
 	t := telegram.NewEnvironment()
-	t.SetDatabase(b)
-	t.ReadDatabase()
-
-	if true {
-		return
-	}
-
+	defer t.Close()
 	f := constant.Format
 	c := environment.Get(constant.ChannelEnvironment, 1)
 
 	l := multi_line.New()
 	l.Add(
-		"You are a helpful assistant. Below is a conversation with a user in the format 'Timestamp Username: Message'. Please respond in a friendly and informative manner.",
+		"You are a helpful assistant. Below is a set of lines from a chat channel. Respond with a message in a friendly and informative manner. I will worry about the formatting, time and your name.",
 	)
 
 	for _, m := range t.MessagesByChannel(c) {
@@ -36,17 +27,27 @@ func Ollama() {
 			fmt.Println(m.Format(f))
 		}
 
-		if false {
-			fmt.Println(m.FormatChat())
+		if m.Text == "" {
+			continue
 		}
 
 		l.Add(m.FormatChat())
 	}
 
-	g := o.GenerateFast(l.Render())
-	fmt.Println(g.Text)
-	g.Print()
+	if l.Count() > 1 {
+		g := o.GenerateFast(l.Render())
 
-	// TODO: Look up channel to reply in
-	//t.SendMessage()
+		if false {
+			fmt.Println(g.Text)
+			g.Print()
+		}
+
+		t.SendMessage(t.ChannelByName(c).Identifier, g.Text)
+	} else {
+		fmt.Println("Chat empty")
+	}
+
+	if false {
+		system.KillSignalBlock()
+	}
 }

@@ -1,4 +1,4 @@
-package prompt
+package classify_prompt
 
 type Response struct {
 	Classified string

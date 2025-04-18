@@ -3,14 +3,13 @@ package example
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/ollama"
-	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/telegram"
 	"github.com/funtimecoding/go-library/pkg/telegram/constant"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
 )
 
-func Ollama() {
+func OllamaReply() {
 	o := ollama.NewEnvironment()
 	t := telegram.NewEnvironment()
 	defer t.Close()
@@ -18,8 +17,9 @@ func Ollama() {
 	c := environment.Get(constant.ChannelEnvironment, 1)
 
 	l := multi_line.New()
-	l.Add(
-		"You are a helpful assistant. Below is a set of lines from a chat channel. Respond with a message in a friendly and informative manner. I will worry about the formatting, time and your name.",
+	l.Format(
+		"You are a helpful assistant called %s. Below is a set of lines from a chat channel. Respond with a message in a friendly and informative manner. I will worry about the formatting, time and your name. Try to blend in with the message length and writing style. You can also choose to say nothing if you feel it is not appropriate.",
+		t.Self().UserName,
 	)
 
 	for _, m := range t.MessagesByChannel(c) {
@@ -45,9 +45,5 @@ func Ollama() {
 		t.SendMessage(t.ChannelByName(c).Identifier, g.Text)
 	} else {
 		fmt.Println("Chat empty")
-	}
-
-	if false {
-		system.KillSignalBlock()
 	}
 }

@@ -1,9 +1,9 @@
 package prompts
 
-import "github.com/funtimecoding/go-library/pkg/ollama/prompt"
+import "github.com/funtimecoding/go-library/pkg/ollama/classify_prompt"
 
-func ClassifyAlert() *prompt.Prompt {
-	p := prompt.New()
+func ClassifyAlert() *classify_prompt.Prompt {
+	p := classify_prompt.New()
 	p.Instructions(
 		"Decide if this Prometheus alert is already-broken or not-yet-broken",
 	)

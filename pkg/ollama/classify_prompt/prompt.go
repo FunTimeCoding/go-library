@@ -1,4 +1,4 @@
-package prompt
+package classify_prompt
 
 type Prompt struct {
 	instructions string

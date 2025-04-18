@@ -1,4 +1,4 @@
-package prompt
+package classify_prompt
 
 import "fmt"
 

@@ -19,6 +19,7 @@ func OllamaSession() {
 	o := ollama.NewEnvironment()
 	t := telegram.NewEnvironment()
 	defer t.Close()
+	t.PrintDatabase()
 	f := constant.Format
 	c := environment.Get(constant.ChannelEnvironment, 1)
 	verbose := true

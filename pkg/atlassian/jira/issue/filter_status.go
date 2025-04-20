@@ -8,12 +8,12 @@ func FilterStatus(
 ) []*Issue {
 	var result []*Issue
 
-	for _, element := range v {
-		if slices.Contains(status, element.Status) {
+	for _, i := range v {
+		if slices.Contains(status, i.Status) {
 			continue
 		}
 
-		result = append(result, element)
+		result = append(result, i)
 	}
 
 	return result

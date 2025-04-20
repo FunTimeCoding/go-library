@@ -1,7 +1,10 @@
 package channel
 
-import "fmt"
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
-func (c *Channel) Format() string {
-	return fmt.Sprintf("%d %s\n", c.Identifier, c.Name)
+func (c *Channel) Format(f *option.Format) string {
+	return status.New(f).Integer64(c.Identifier).String(c.Name).Format()
 }

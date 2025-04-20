@@ -3,10 +3,10 @@ package time
 import "time"
 
 func PublicHoliday(t time.Time) bool {
-	for _, element := range PublicHolidays {
-		if element.Year() == t.Year() &&
-			element.Month() == t.Month() &&
-			element.Day() == t.Day() {
+	for _, d := range PublicHolidays {
+		if d.Year() == t.Year() &&
+			d.Month() == t.Month() &&
+			d.Day() == t.Day() {
 			return true
 		}
 	}

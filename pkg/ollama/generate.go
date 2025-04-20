@@ -3,12 +3,15 @@ package ollama
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/ollama/constant"
+	"github.com/funtimecoding/go-library/pkg/ollama/generate_request"
 	"github.com/funtimecoding/go-library/pkg/ollama/generate_response"
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/ollama/ollama/api"
 )
 
-func (c *Client) Generate(r *api.GenerateRequest) *generate_response.Response {
+func (c *Client) Generate(v *generate_request.Request) *generate_response.Response {
+	r := v.Get()
+
 	if r.Model == "" {
 		r.Model = constant.Llama31
 	}

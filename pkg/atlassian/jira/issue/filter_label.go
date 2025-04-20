@@ -6,12 +6,12 @@ func FilterLabel(
 ) []*Issue {
 	var result []*Issue
 
-	for _, element := range v {
-		if element.HasLabel(labels...) {
+	for _, i := range v {
+		if i.HasLabel(labels...) {
 			continue
 		}
 
-		result = append(result, element)
+		result = append(result, i)
 	}
 
 	return result

@@ -7,11 +7,11 @@ import (
 
 func (c *Client) Embedding(
 	model string,
-	prompt string,
+	p string,
 ) []float64 {
 	result, e := c.client.Embeddings(
 		c.context,
-		&api.EmbeddingRequest{Model: model, Prompt: prompt},
+		&api.EmbeddingRequest{Model: model, Prompt: p},
 	)
 	errors.PanicOnError(e)
 

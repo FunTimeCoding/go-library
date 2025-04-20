@@ -1,12 +1,12 @@
 package issue
 
 func (i *Issue) Blocked() bool {
-	for _, element := range i.Raw.Fields.IssueLinks {
-		if element.InwardIssue == nil {
+	for _, l := range i.Raw.Fields.IssueLinks {
+		if l.InwardIssue == nil {
 			continue
 		}
 
-		if element.Type.Inward == BlockedBy {
+		if l.Type.Inward == BlockedBy {
 			return true
 		}
 	}

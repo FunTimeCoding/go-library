@@ -1,7 +1,10 @@
 package user
 
-import "fmt"
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
-func (u *User) Format() string {
-	return fmt.Sprintf("%d %s\n", u.Identifier, u.Name)
+func (u *User) Format(f *option.Format) string {
+	return status.New(f).Integer64(u.Identifier).String(u.Name).Format()
 }

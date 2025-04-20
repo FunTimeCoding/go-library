@@ -8,12 +8,12 @@ func ByInitials(
 ) []*Issue {
 	var result []*Issue
 
-	for _, element := range v {
-		if !slices.Contains(initials, element.Initials) {
+	for _, i := range v {
+		if !slices.Contains(initials, i.Initials) {
 			continue
 		}
 
-		result = append(result, element)
+		result = append(result, i)
 	}
 
 	return result

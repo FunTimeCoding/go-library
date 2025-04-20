@@ -8,12 +8,12 @@ func FilterType(
 ) []*Issue {
 	var result []*Issue
 
-	for _, element := range v {
-		if slices.Contains(issueType, element.Type) {
+	for _, i := range v {
+		if slices.Contains(issueType, i.Type) {
 			continue
 		}
 
-		result = append(result, element)
+		result = append(result, i)
 	}
 
 	return result

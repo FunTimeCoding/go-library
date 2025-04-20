@@ -6,10 +6,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/ollama/generate_response"
 )
 
-func (c *Client) GenerateFast(prompt string) *generate_response.Response {
+func (c *Client) GenerateFast(p string) *generate_response.Response {
 	return c.Generate(
-		generate_request.New().Prompt(
-			prompt,
-		).Model(constant.Llama321b).Get(),
+		generate_request.New().Prompt(p).Model(constant.Llama321b),
 	)
 }

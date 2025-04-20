@@ -18,18 +18,18 @@ func (i *Issue) PrintComments() {
 		return
 	}
 
-	for _, element := range i.Raw.Fields.Comments.Comments {
-		if slices.Contains(i.CommentNameFilter, element.Author.Name) {
+	for _, c := range i.Raw.Fields.Comments.Comments {
+		if slices.Contains(i.CommentNameFilter, c.Author.Name) {
 			continue
 		}
 
 		fmt.Printf(
 			"  Comment: %s | %s | %s\n",
-			element.Author.Name,
-			CommentTime(element).Format(time.DateMinute),
+			c.Author.Name,
+			CommentTime(c).Format(time.DateMinute),
 			console.Magenta(
 				"%s",
-				text.OptimizeWhitespace(element.Body, option.Compact()),
+				text.OptimizeWhitespace(c.Body, option.Compact()),
 			),
 		)
 	}

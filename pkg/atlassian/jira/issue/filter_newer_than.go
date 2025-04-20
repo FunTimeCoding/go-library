@@ -6,12 +6,12 @@ func FilterNewerThan(
 ) []*Issue {
 	var result []*Issue
 
-	for _, element := range v {
-		if element.NewerThanHours(hours) {
+	for _, i := range v {
+		if i.NewerThanHours(hours) {
 			continue
 		}
 
-		result = append(result, element)
+		result = append(result, i)
 	}
 
 	return result

@@ -5,6 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/ollama/generate_response"
 )
 
-func (c *Client) GenerateNotation(prompt string) *generate_response.Response {
-	return c.Generate(generate_request.New().Prompt(prompt).Notation().Get())
+func (c *Client) GenerateNotation(p string) *generate_response.Response {
+	return c.Generate(generate_request.New().Prompt(p).Notation())
 }

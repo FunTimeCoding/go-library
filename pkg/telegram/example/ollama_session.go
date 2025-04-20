@@ -77,7 +77,7 @@ func OllamaSession() {
 				fmt.Printf("Decision: %s\n", decision.Text)
 
 				if statistics {
-					decision.Print()
+					decision.Format()
 				}
 			}
 
@@ -102,7 +102,7 @@ func OllamaSession() {
 				fmt.Printf("Response: %s\n", response.Text)
 
 				if statistics {
-					response.Print()
+					response.Format()
 				}
 			}
 

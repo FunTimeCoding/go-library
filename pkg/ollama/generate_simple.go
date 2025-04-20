@@ -1,10 +1,10 @@
 package ollama
 
 import (
-	"github.com/funtimecoding/go-library/pkg/ollama/generate"
-	"github.com/funtimecoding/go-library/pkg/ollama/request"
+	"github.com/funtimecoding/go-library/pkg/ollama/generate_request"
+	"github.com/funtimecoding/go-library/pkg/ollama/generate_response"
 )
 
-func (c *Client) GenerateSimple(prompt string) *generate.Generate {
-	return generate.New(c.Generate(request.New(prompt)))
+func (c *Client) GenerateSimple(prompt string) *generate_response.Response {
+	return generate_response.New(c.Generate(generate_request.New(prompt)))
 }

@@ -1,6 +1,6 @@
-package generate
+package generate_response
 
-type Generate struct {
+type Response struct {
 	Text             string
 	Total            int64
 	Load             int64

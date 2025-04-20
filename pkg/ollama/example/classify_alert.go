@@ -13,7 +13,7 @@ func ClassifyAlert() {
 
 	if false {
 		alert := "ECCMemoryError"
-		// DiskNearFull answer is consistent not broken
+		// DiskNearFull answer is consistently "not broken"
 		// ECCMemoryError answer is inconsistent
 		r := o.GenerateNotation(
 			fmt.Sprintf(
@@ -22,7 +22,7 @@ func ClassifyAlert() {
 			),
 		)
 		fmt.Println(r.Text)
-		r.Print()
+		r.Format()
 	}
 
 	if true {

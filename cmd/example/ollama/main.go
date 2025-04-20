@@ -4,10 +4,11 @@ import "github.com/funtimecoding/go-library/pkg/ollama/example"
 
 func main() {
 	if true {
-		example.ClassifyAlert()
+		example.Chat()
 	}
 
 	if false {
+		example.ClassifyAlert()
 		example.Fast()
 		example.Stream()
 		example.Simple()

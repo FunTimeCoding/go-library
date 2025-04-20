@@ -1,9 +1,9 @@
-package generate
+package generate_response
 
 import "github.com/ollama/ollama/api"
 
-func New(r *api.GenerateResponse) *Generate {
-	return &Generate{
+func New(r *api.GenerateResponse) *Response {
+	return &Response{
 		Text:             r.Response,
 		Total:            r.TotalDuration.Milliseconds(),
 		Load:             r.LoadDuration.Milliseconds(),

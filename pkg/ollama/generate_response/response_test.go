@@ -1,4 +1,4 @@
-package generate
+package generate_response
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,6 +6,6 @@ import (
 	"testing"
 )
 
-func TestGenerate(t *testing.T) {
+func TestResponse(t *testing.T) {
 	assert.True(t, New(&api.GenerateResponse{}) != nil)
 }

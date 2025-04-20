@@ -1,4 +1,4 @@
-package request
+package generate_request
 
 import "github.com/ollama/ollama/api"
 

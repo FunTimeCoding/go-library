@@ -2,7 +2,7 @@ package generate_response
 
 import "fmt"
 
-func (r *Response) Format() {
+func (r *Response) Print() {
 	fmt.Printf("Total: %dms\n", r.Total)
 	fmt.Printf("  Load: %dms\n", r.Load)
 	fmt.Printf("  Prompt evaluation: %dms\n", r.PromptEvaluation)

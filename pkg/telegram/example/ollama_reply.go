@@ -39,7 +39,7 @@ func OllamaReply() {
 
 		if false {
 			fmt.Println(g.Text)
-			g.Format()
+			g.Print()
 		}
 
 		t.SendMessage(t.ChannelByName(c).Identifier, g.Text)

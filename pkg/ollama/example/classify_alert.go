@@ -22,7 +22,7 @@ func ClassifyAlert() {
 			),
 		)
 		fmt.Println(r.Text)
-		r.Format()
+		r.Print()
 	}
 
 	if true {

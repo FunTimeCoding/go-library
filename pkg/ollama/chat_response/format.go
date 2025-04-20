@@ -1,12 +1,13 @@
 package chat_response
 
-import "fmt"
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
-func (r *Response) Format() {
-	fmt.Printf("Total: %dms\n", r.Total)
-	fmt.Printf("  Load: %dms\n", r.Load)
-	fmt.Printf("  Prompt evaluation: %dms\n", r.PromptEvaluation)
-	fmt.Printf("    Tokens/s: %.0f\n", r.PromptTokens)
-	fmt.Printf("  Evaluation: %dms\n", r.Evaluation)
-	fmt.Printf("    Tokens/s: %.0f\n", r.Tokens)
+func (r *Response) Format(f *option.Format) string {
+	return status.New(f).String(
+		r.Message.Role,
+		r.Message.Content,
+	).RawList(r.Raw).Format()
 }

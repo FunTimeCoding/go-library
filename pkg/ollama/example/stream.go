@@ -23,5 +23,5 @@ func Stream() {
 	}
 
 	println()
-	generate_response.New(&r).Format()
+	generate_response.New(&r).Print()
 }

@@ -26,7 +26,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.8.1
 	github.com/getsentry/sentry-go v0.32.0
 	github.com/go-git/go-billy/v5 v5.6.2
-	github.com/go-git/go-git/v5 v5.15.0
+	github.com/go-git/go-git/v5 v5.16.0
 	github.com/go-openapi/runtime v0.28.0
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
@@ -40,7 +40,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.4
 	github.com/mattermost/mattermost-server/v6 v6.7.2
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/ollama/ollama v0.6.5
+	github.com/ollama/ollama v0.6.6
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.28.1

@@ -2,6 +2,6 @@ package generate_request
 
 import "github.com/ollama/ollama/api"
 
-func New(prompt string) *api.GenerateRequest {
-	return &api.GenerateRequest{Prompt: prompt}
+func New() *Request {
+	return &Request{request: &api.GenerateRequest{}}
 }

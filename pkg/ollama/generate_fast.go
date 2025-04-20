@@ -7,8 +7,11 @@ import (
 )
 
 func (c *Client) GenerateFast(prompt string) *generate_response.Response {
-	r := generate_request.New(prompt)
-	r.Model = constant.Llama321b
-
-	return generate_response.New(c.Generate(r))
+	return generate_response.New(
+		c.Generate(
+			generate_request.New().Prompt(
+				prompt,
+			).Model(constant.Llama321b).Get(),
+		),
+	)
 }

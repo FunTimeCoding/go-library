@@ -6,6 +6,7 @@ import (
 	"github.com/ctreminiom/go-atlassian/jira/sm"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic_client"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/field_map"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/issue_enricher"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/option"
 )
 
@@ -20,4 +21,5 @@ type Client struct {
 
 	fieldMap    *field_map.Map
 	issueOption *option.Issue
+	enricher    *issue_enricher.Enricher
 }

@@ -10,5 +10,5 @@ func (c *Client) SaveNative(i *jira.Issue) *issue.Issue {
 	result, _, e := c.client.Issue.UpdateWithContext(c.context, i)
 	errors.PanicOnError(e)
 
-	return issue.New(result, c.IssueOption())
+	return c.enrichOne(issue.New(result, c.IssueOption()))
 }

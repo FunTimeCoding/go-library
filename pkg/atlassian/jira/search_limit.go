@@ -22,5 +22,7 @@ func (c *Client) SearchLimit(
 	)
 	errors.PanicOnError(e)
 
-	return issue.NewSlice(page, c.IssueOption())
+	result := issue.NewSlice(page, c.IssueOption())
+
+	return c.enrichMany(result)
 }

@@ -17,5 +17,5 @@ func (c *Client) CreateNative(i *jira.Issue) *issue.Issue {
 
 	errors.PanicOnError(e)
 
-	return issue.New(result, c.IssueOption())
+	return c.enrichOne(issue.New(result, c.IssueOption()))
 }

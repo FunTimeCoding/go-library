@@ -18,9 +18,10 @@ type Issue struct {
 	Link              string
 
 	CommentNameFilter []string
+	Concerns          []string
+	score             float64
 
 	ShortStatus face.StringAlias
-	score       float64
 	scoreColor  face.SprintFunction
 	ageColor    face.SprintFunction
 

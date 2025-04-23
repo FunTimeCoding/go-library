@@ -37,5 +37,5 @@ func (c *Client) Search(
 		start += constant.SearchLimit
 	}
 
-	return result
+	return c.enrichMany(result)
 }

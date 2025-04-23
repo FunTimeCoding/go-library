@@ -516,8 +516,8 @@ github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ3
 github.com/creack/pty v1.1.11/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/ctreminiom/go-atlassian v1.6.1 h1:thH/oaWlvWLN5a4AcgQ30yPmnn0mQaTiqsq1M6bA9BY=
 github.com/ctreminiom/go-atlassian v1.6.1/go.mod h1:dd5M0O8Co3bALyLQqWxPXoBfQNr6FFlpzUrA19IpLEo=
-github.com/ctreminiom/go-atlassian/v2 v2.2.0 h1:7VrOTJmqv7UZ1zzUcJ/spV4CGIrDTh8u0L93KpujrGU=
-github.com/ctreminiom/go-atlassian/v2 v2.2.0/go.mod h1:qCQUluvDg8S77TNz466qcVIm1ghxwKgGQ7qnsbz8Ulc=
+github.com/ctreminiom/go-atlassian/v2 v2.3.1 h1:Ri1QEfYJhsaijfiNndc9YYTuHNx0t53mD5M5w7yuirM=
+github.com/ctreminiom/go-atlassian/v2 v2.3.1/go.mod h1:qCQUluvDg8S77TNz466qcVIm1ghxwKgGQ7qnsbz8Ulc=
 github.com/cyphar/filepath-securejoin v0.2.2/go.mod h1:FpkQEhXnPnOthhzymB7CGsFk2G9VLXONKD9G7QGMM+4=
 github.com/cyphar/filepath-securejoin v0.2.3/go.mod h1:aPGpWjXOXUn2NCNjFvBE6aRxGGx79pTxQpKOJNYHHl4=
 github.com/cyphar/filepath-securejoin v0.4.1 h1:JyxxyPEaktOD+GAnqIqTf9A8tHyAG22rowi7HkoSU1s=
@@ -2017,8 +2017,8 @@ github.com/valyala/tcplisten v0.0.0-20161114210144-ceec8f93295a/go.mod h1:v3UYOV
 github.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=
 github.com/viant/assertly v0.4.8/go.mod h1:aGifi++jvCrUaklKEKT0BU95igDNaqkvz+49uaYMPRU=
 github.com/viant/toolbox v0.24.0/go.mod h1:OxMCG57V0PXuIP2HNQrtJf2CjqdmbrOx5EkMILuUhzM=
-github.com/virtomize/confluence-go-api v1.5.0 h1:CRdlL6V/78szvTjZA6XBSevsmqxDkqbDkkrmyoLpa9Y=
-github.com/virtomize/confluence-go-api v1.5.0/go.mod h1:a96WPcok5g+7l5LC/ztcrp4cLmrIA1DHxxZSv/iqvsQ=
+github.com/virtomize/confluence-go-api v1.5.1 h1:/xgL/XFB0rcTp8xWw41wpWYTQ50X4BBx05jy+ZlB25A=
+github.com/virtomize/confluence-go-api v1.5.1/go.mod h1:a96WPcok5g+7l5LC/ztcrp4cLmrIA1DHxxZSv/iqvsQ=
 github.com/vishvananda/netlink v0.0.0-20181108222139-023a6dafdcdf/go.mod h1:+SR5DhBJrl6ZM7CoCKvpw5BKroDKQ+PJqOg65H/2ktk=
 github.com/vishvananda/netlink v1.1.0/go.mod h1:cTgwzPIzzgDAYoQrMm0EdrjRUBkTqKYppBueQtXaqoE=
 github.com/vishvananda/netlink v1.1.1-0.20201029203352-d40f9887b852/go.mod h1:twkDnbuQxJYemMlGd4JFIcuhgX83tXhKS2B/PRMpOho=

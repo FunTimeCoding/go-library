@@ -17,13 +17,12 @@ type Issue struct {
 	Create            *time.Time
 	Link              string
 
-	CommentNameFilter []string
-	Concerns          []string
+	concerns          []string
 	score             float64
-
-	ShortStatus face.StringAlias
-	scoreColor  face.SprintFunction
-	ageColor    face.SprintFunction
+	commentNameFilter []string
+	shortStatus       face.StringAlias
+	scoreColor        face.SprintFunction
+	ageColor          face.SprintFunction
 
 	Raw *jira.Issue
 }

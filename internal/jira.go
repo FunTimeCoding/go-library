@@ -13,6 +13,9 @@ func Jira() *jira.Client {
 			func(i *issue.Issue) []string {
 				return validator.New(i).Validate()
 			},
+			func(i *issue.Issue) float64 {
+				return 0
+			},
 		),
 	)
 }

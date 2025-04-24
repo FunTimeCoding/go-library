@@ -1,5 +1,8 @@
 package issue_enricher
 
-func New(v Validator) *Enricher {
-	return &Enricher{validator: v}
+func New(
+	concerns SliceResult,
+	score FloatResult,
+) *Enricher {
+	return &Enricher{concerns: concerns, score: score}
 }

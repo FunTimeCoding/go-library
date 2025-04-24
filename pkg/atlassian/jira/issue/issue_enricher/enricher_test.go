@@ -6,5 +6,5 @@ import (
 )
 
 func TestEnricher(t *testing.T) {
-	assert.True(t, New(nil) != nil)
+	assert.True(t, New(nil, nil) != nil)
 }

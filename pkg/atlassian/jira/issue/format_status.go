@@ -5,8 +5,8 @@ func (i *Issue) formatStatus() string {
 		return NoStatus
 	}
 
-	if i.ShortStatus != nil {
-		return i.ShortStatus(i.Status)
+	if i.shortStatus != nil {
+		return i.shortStatus(i.Status)
 	}
 
 	return i.Status

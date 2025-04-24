@@ -19,7 +19,7 @@ func (i *Issue) PrintComments() {
 	}
 
 	for _, c := range i.Raw.Fields.Comments.Comments {
-		if slices.Contains(i.CommentNameFilter, c.Author.Name) {
+		if slices.Contains(i.commentNameFilter, c.Author.Name) {
 			continue
 		}
 

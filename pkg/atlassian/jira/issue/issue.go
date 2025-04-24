@@ -2,6 +2,7 @@ package issue
 
 import (
 	"github.com/andygrunwald/go-jira"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/field_map"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"time"
 )
@@ -23,6 +24,7 @@ type Issue struct {
 	shortStatus       face.StringAlias
 	scoreColor        face.SprintFunction
 	ageColor          face.SprintFunction
+	fieldMap          *field_map.Map
 
 	Raw *jira.Issue
 }

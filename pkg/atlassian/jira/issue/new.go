@@ -27,6 +27,7 @@ func New(
 	result.Type = v.Fields.Type.Name
 	result.Create = &t
 	result.Link = buildLink(o, v.Key)
+	result.Labels = v.Fields.Labels
 	result.fieldMap = o.FieldMap
 	result.Raw = v
 

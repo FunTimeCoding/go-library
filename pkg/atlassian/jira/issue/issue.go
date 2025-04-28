@@ -17,6 +17,7 @@ type Issue struct {
 	Type              string
 	Create            *time.Time
 	Link              string
+	Labels            []string
 
 	concerns          []string
 	score             float64

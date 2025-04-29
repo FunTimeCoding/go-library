@@ -10,7 +10,7 @@ func (i *Issue) Format(f *option.Format) string {
 	s := status.New(f).String(
 		i.FormatStatus(),
 		i.FormatSummary(f),
-		i.FormatDescription(),
+		i.FormatDescription(f),
 	)
 	s.TagLine(tag.Link, "  %s", i.Link)
 	s.RawList(i)

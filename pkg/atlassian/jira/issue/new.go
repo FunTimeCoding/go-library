@@ -5,6 +5,7 @@ import (
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/option"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	"strings"
 	"time"
 )
 
@@ -20,8 +21,8 @@ func New(
 		v.Key,
 	)
 	result.Key = v.Key
-	result.Summary = v.Fields.Summary
-	result.Description = v.Fields.Description
+	result.Summary = strings.TrimSpace(v.Fields.Summary)
+	result.Description = strings.TrimSpace(v.Fields.Description)
 	result.Initials = initialsField(v)
 	result.Status = statusField(v)
 	result.Type = v.Fields.Type.Name
@@ -29,6 +30,7 @@ func New(
 	result.Link = buildLink(o, v.Key)
 	result.Labels = v.Fields.Labels
 	result.fieldMap = o.FieldMap
+	result.option = o
 	result.Raw = v
 
 	return result

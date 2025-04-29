@@ -1,6 +1,6 @@
 package issue
 
-func (i *Issue) formatStatus() string {
+func (i *Issue) FormatStatus() string {
 	if i.Status == "" {
 		return NoStatus
 	}

@@ -8,9 +8,9 @@ import (
 
 func (i *Issue) Format(f *option.Format) string {
 	s := status.New(f).String(
-		i.formatStatus(),
-		i.formatSummary(f),
-		i.formatDescription(),
+		i.FormatStatus(),
+		i.FormatSummary(f),
+		i.FormatDescription(),
 	)
 	s.TagLine(tag.Link, "  %s", i.Link)
 	s.RawList(i)

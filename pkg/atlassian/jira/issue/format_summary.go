@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 )
 
-func (i *Issue) formatSummary(f *option.Format) string {
+func (i *Issue) FormatSummary(f *option.Format) string {
 	if f.UseColor {
 		return console.Cyan(i.Summary)
 	}

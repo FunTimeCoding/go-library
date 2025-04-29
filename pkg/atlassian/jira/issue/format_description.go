@@ -1,6 +1,6 @@
 package issue
 
-func (i *Issue) formatDescription() string {
+func (i *Issue) FormatDescription() string {
 	if i.Description == "" {
 		return NoDescription
 	}

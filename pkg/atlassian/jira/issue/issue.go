@@ -15,6 +15,7 @@ type Issue struct {
 	Description       string
 	Initials          string
 	Status            string
+	Priority          string
 	Type              string
 	Create            *time.Time
 	Link              string

@@ -25,6 +25,7 @@ func New(
 	result.Description = strings.TrimSpace(v.Fields.Description)
 	result.Initials = initialsField(v)
 	result.Status = statusField(v)
+	result.Priority = priorityField(v)
 	result.Type = v.Fields.Type.Name
 	result.Create = &t
 	result.Link = buildLink(o, v.Key)

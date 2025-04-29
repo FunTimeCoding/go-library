@@ -16,6 +16,7 @@ func Jira() *jira.Client {
 			func(i *issue.Issue) float64 {
 				return 0
 			},
+			[]string{},
 		),
 	)
 }

@@ -10,4 +10,8 @@ func (e *Enricher) enrich(i *issue.Issue) {
 	if e.score != nil {
 		i.SetScore(e.score(i))
 	}
+
+	if len(e.commentNameFilter) > 0 {
+		i.SetCommentNameFilter(e.commentNameFilter)
+	}
 }

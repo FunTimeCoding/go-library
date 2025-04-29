@@ -1,13 +1,10 @@
 package issue
 
-import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/option"
-)
+import "fmt"
 
-func buildLink(
-	o *option.Issue,
+func BuildLink(
+	locator string,
 	key string,
 ) string {
-	return fmt.Sprintf("%s/browse/%s", o.Locator, key)
+	return fmt.Sprintf("%s/browse/%s", locator, key)
 }

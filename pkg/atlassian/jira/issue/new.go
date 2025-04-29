@@ -28,7 +28,7 @@ func New(
 	result.Priority = priorityField(v)
 	result.Type = v.Fields.Type.Name
 	result.Create = &t
-	result.Link = buildLink(o, v.Key)
+	result.Link = BuildLink(o.Locator, v.Key)
 	result.Labels = v.Fields.Labels
 	result.fieldMap = o.FieldMap
 	result.option = o

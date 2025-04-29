@@ -5,6 +5,8 @@ import "regexp"
 const (
 	NoStatus      = "no status"
 	NoDescription = "no description"
+	NoLink        = "no link"
+	NoAge         = "no age"
 
 	BlockedBy = "is blocked by"
 

@@ -7,6 +7,7 @@ const (
 	NoDescription = "no description"
 	NoLink        = "no link"
 	NoAge         = "no age"
+	NoScore       = "no score"
 
 	BlockedBy = "is blocked by"
 

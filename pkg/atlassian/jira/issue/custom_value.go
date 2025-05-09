@@ -41,11 +41,14 @@ func (i *Issue) CustomValue(field string) string {
 					fmt.Println("String-any map value")
 				}
 
-				fmt.Printf(
-					"String-any map value for %s: %+v\n",
-					k,
-					cast,
+				var custom custom_field_value.Value
+				notation.DecodeStrict(
+					notation.Encode(cast, false),
+					&custom,
+					verbose,
 				)
+
+				return custom.Value
 			case []any:
 				if verbose {
 					fmt.Println("Any slice value")

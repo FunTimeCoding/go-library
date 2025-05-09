@@ -29,7 +29,7 @@ func (i *Issue) CustomValue(field string) string {
 					fmt.Println("Float value")
 				}
 
-				return fmt.Sprintf("%.1f", cast)
+				return fmt.Sprintf("%v", v)
 			case string:
 				if verbose {
 					fmt.Println("String value")

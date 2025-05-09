@@ -15,6 +15,7 @@ type Client struct {
 	client  *jira.Client
 	locator string
 	user    string
+	verbose bool
 
 	basic   *basic_client.Client
 	service *sm.Client

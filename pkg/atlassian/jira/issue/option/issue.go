@@ -7,4 +7,5 @@ type Issue struct {
 	User          string
 	WatchedIssues []string
 	FieldMap      *field_map.Map
+	Verbose       bool
 }

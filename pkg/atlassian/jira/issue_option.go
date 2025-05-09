@@ -13,6 +13,7 @@ func (c *Client) IssueOption() *option.Issue {
 		c.WatchedIssueKeys(),
 		c.FieldMap(),
 	)
+	c.issueOption.Verbose = c.verbose
 
 	return c.issueOption
 }

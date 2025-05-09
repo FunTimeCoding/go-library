@@ -1,21 +1,69 @@
 package issue
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/custom_field_value"
+	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+)
 
-func (i *Issue) CustomValue(fieldName string) string {
-	field := i.fieldMap.ByName(fieldName)
+func (i *Issue) CustomValue(field string) string {
+	f := i.fieldMap.ByName(field)
 
-	if field == nil {
+	if f == nil {
 		return UnknownField
 	}
 
+	verbose := i.option.Verbose
+
 	for k, v := range i.Raw.Fields.Unknowns {
-		if k == field.ID {
+		if k == f.ID {
 			if v == nil {
 				return NilValue
 			}
 
-			return fmt.Sprintf("%+v", v)
+			switch cast := v.(type) {
+			case string:
+				if verbose {
+					fmt.Println("String value")
+				}
+
+				return cast
+			case []any:
+				if verbose {
+					fmt.Println("Any slice value")
+				}
+
+				var result []string
+
+				for _, item := range v.([]any) {
+					switch castInner := item.(type) {
+					case map[string]any:
+						if verbose {
+							fmt.Println("Map value")
+						}
+
+						var custom custom_field_value.Value
+						notation.DecodeStrict(
+							notation.Encode(castInner, false),
+							&custom,
+							verbose,
+						)
+						result = append(result, custom.Value)
+					default:
+						fmt.Printf("Unexpected type inner: %T\n", item)
+					}
+				}
+
+				strings.Sort(result, true)
+
+				return join.Comma(result)
+			default:
+				fmt.Printf("Unexpected type: %T\n", v)
+
+				return fmt.Sprintf("%+v", v)
+			}
 		}
 	}
 

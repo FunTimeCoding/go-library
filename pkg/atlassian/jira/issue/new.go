@@ -13,7 +13,8 @@ func New(
 	v *jira.Issue,
 	o *option.Issue,
 ) *Issue {
-	t := time.Time(v.Fields.Created)
+	create := time.Time(v.Fields.Created)
+	due := time.Time(v.Fields.Duedate)
 	result := Stub()
 	result.MonitorIdentifier = fmt.Sprintf(
 		"%s-%s",
@@ -27,7 +28,8 @@ func New(
 	result.Status = statusField(v)
 	result.Priority = priorityField(v)
 	result.Type = v.Fields.Type.Name
-	result.Create = &t
+	result.Create = &create
+	result.Due = &due
 	result.Link = BuildLink(o.Locator, v.Key)
 	result.Labels = v.Fields.Labels
 	result.fieldMap = o.FieldMap

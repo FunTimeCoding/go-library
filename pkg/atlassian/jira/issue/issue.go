@@ -18,6 +18,7 @@ type Issue struct {
 	Priority          string
 	Type              string
 	Create            *time.Time
+	Due               *time.Time
 	Link              string
 	Labels            []string
 

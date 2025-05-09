@@ -3,7 +3,6 @@ package issue
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/custom_field_value"
-	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
@@ -41,14 +40,7 @@ func (i *Issue) CustomValue(field string) string {
 					fmt.Println("String-any map value")
 				}
 
-				var custom custom_field_value.Value
-				notation.DecodeStrict(
-					notation.Encode(cast, false),
-					&custom,
-					verbose,
-				)
-
-				return custom.Value
+				return custom_field_value.FromMap(cast).Value
 			case []any:
 				if verbose {
 					fmt.Println("Any slice value")
@@ -63,13 +55,10 @@ func (i *Issue) CustomValue(field string) string {
 							fmt.Println("Map value")
 						}
 
-						var custom custom_field_value.Value
-						notation.DecodeStrict(
-							notation.Encode(castInner, false),
-							&custom,
-							verbose,
+						result = append(
+							result,
+							custom_field_value.FromMap(castInner).Value,
 						)
-						result = append(result, custom.Value)
 					default:
 						fmt.Printf("Unexpected type inner: %T\n", item)
 					}

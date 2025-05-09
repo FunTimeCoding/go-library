@@ -24,12 +24,28 @@ func (i *Issue) CustomValue(field string) string {
 			}
 
 			switch cast := v.(type) {
+			case float64:
+				if verbose {
+					fmt.Println("Float value")
+				}
+
+				return fmt.Sprintf("%.1f", cast)
 			case string:
 				if verbose {
 					fmt.Println("String value")
 				}
 
 				return cast
+			case map[string]any:
+				if verbose {
+					fmt.Println("String-any map value")
+				}
+
+				fmt.Printf(
+					"String-any map value for %s: %+v\n",
+					k,
+					cast,
+				)
 			case []any:
 				if verbose {
 					fmt.Println("Any slice value")

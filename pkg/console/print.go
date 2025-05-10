@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/face"
-	"github.com/funtimecoding/go-library/pkg/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"strings"
 )
 

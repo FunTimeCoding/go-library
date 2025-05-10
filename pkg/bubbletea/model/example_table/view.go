@@ -2,7 +2,7 @@ package example_table
 
 import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/constant"
-	"github.com/funtimecoding/go-library/pkg/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 )
 
 func (m *Model) View() string {

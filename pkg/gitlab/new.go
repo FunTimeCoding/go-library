@@ -1,6 +1,7 @@
 package gitlab
 
 import (
+	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"gitlab.com/gitlab-org/api/client-go"
@@ -22,7 +23,11 @@ func New(
 
 	client, e := gitlab.NewClient(token, options...)
 	errors.PanicOnError(e)
-	result := &Client{client: client, projects: projects}
+	result := &Client{
+		context:  context.Background(),
+		client:   client,
+		projects: projects,
+	}
 	result.user = result.CurrentUser()
 
 	return result

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/funtimecoding/go-library/pkg/ollama/example"
+import "github.com/funtimecoding/go-library/pkg/generative/ollama/example"
 
 func main() {
 	if true {

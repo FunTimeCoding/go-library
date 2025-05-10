@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"strings"
 )
 

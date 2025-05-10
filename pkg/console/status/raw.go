@@ -15,6 +15,10 @@ func (s *Status) Raw(
 
 	r := fmt.Sprintf("%+v", a)
 
+	if r == "<nil>" {
+		return s
+	}
+
 	if s.format.UseColor {
 		r = console.Magenta("%s", r)
 	}

@@ -2,8 +2,8 @@ package system
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/separator"
 	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"net"
 )
 

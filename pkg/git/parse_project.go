@@ -3,7 +3,7 @@ package git
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
-	"github.com/funtimecoding/go-library/pkg/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"strings"
 )
 

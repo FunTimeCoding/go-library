@@ -2,8 +2,8 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/ollama"
-	"github.com/funtimecoding/go-library/pkg/ollama/constant/prompts"
+	"github.com/funtimecoding/go-library/pkg/generative/ollama"
+	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant/prompts"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/telegram"

@@ -9,5 +9,5 @@ func (c *Client) Runner(identifier int) *runner.Runner {
 	result, _, e := c.client.Runners.GetRunnerDetails(identifier)
 	errors.PanicOnError(e)
 
-	return runner.FromDetail(result)
+	return c.enrichRunner(runner.FromDetail(result))
 }

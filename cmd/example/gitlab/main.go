@@ -11,6 +11,7 @@ func main() {
 	}
 
 	if false {
+		example.GraphQuery()
 		job.Check()
 		example.CloneAll()
 	}

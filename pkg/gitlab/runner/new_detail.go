@@ -7,7 +7,6 @@ func FromDetail(v *gitlab.RunnerDetails) *Runner {
 		Identifier:  v.ID,
 		Name:        v.Name,
 		Description: v.Description,
-		Address:     v.IPAddress,
 		Status:      v.Status,
 		Type:        v.RunnerType,
 		Online:      v.Online,

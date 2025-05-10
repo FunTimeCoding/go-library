@@ -13,7 +13,7 @@ func (i *Issue) Format(f *option.Format) string {
 	)
 
 	if d := i.FormatDescription(f); d != NoDescription {
-		s.Line(d)
+		s.Line("%s", d)
 	}
 
 	s.TagLine(tag.Link, "  %s", i.Link)

@@ -16,5 +16,5 @@ func (c *Client) RunnersByTag(tag string) []*runner.Runner {
 		}
 	}
 
-	return result
+	return c.enrichRunners(result)
 }

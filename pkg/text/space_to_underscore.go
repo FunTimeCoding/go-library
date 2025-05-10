@@ -1,7 +1,7 @@
 package text
 
 import (
-	"github.com/funtimecoding/go-library/pkg/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"regexp"
 	"strings"
 )

@@ -1,7 +1,7 @@
 package system
 
 import (
-	"github.com/funtimecoding/go-library/pkg/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"strings"
 )
 

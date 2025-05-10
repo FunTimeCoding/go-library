@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert/detail"
 	opsgenieConstant "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
-	"github.com/funtimecoding/go-library/pkg/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/strings/split/key_value"
 	"github.com/funtimecoding/go-library/pkg/system/environment"

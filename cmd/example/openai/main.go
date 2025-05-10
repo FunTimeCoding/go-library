@@ -1,13 +1,17 @@
 package main
 
-const TokenEnvironment = "OPENAI_TOKEN"
+import "github.com/funtimecoding/go-library/pkg/generative/openai/example"
 
 func main() {
-	if false {
-		official()
+	if true {
+		example.Token()
 	}
 
-	if true {
-		alternate()
+	if false {
+		example.Official()
+	}
+
+	if false {
+		example.Alternate()
 	}
 }

@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.24.2
+go 1.24.3
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown v1.6.0
@@ -37,11 +37,12 @@ require (
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250428202209-be3a35ff1dac
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
+	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.4
 	github.com/liushuangls/go-anthropic v1.6.0
 	github.com/mattermost/mattermost-server/v6 v6.7.2
-	github.com/olekukonko/tablewriter v0.0.5
+	github.com/olekukonko/tablewriter v1.0.2
 	github.com/ollama/ollama v0.6.8
 	github.com/openai/openai-go v0.1.0-beta.10
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
@@ -52,7 +53,7 @@ require (
 	github.com/rivo/tview v0.0.0-20250501113434-0c592cd31026
 	github.com/samber/slog-loki/v3 v3.5.4
 	github.com/sanity-io/litter v1.5.8
-	github.com/sashabaranov/go-openai v1.38.2
+	github.com/sashabaranov/go-openai v1.39.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/slok/go-http-metrics v0.13.0
 	github.com/spf13/cobra v1.9.1
@@ -141,7 +142,6 @@ require (
 	github.com/graph-gophers/graphql-go v1.3.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
-	github.com/hupe1980/go-tiktoken v0.0.10 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -183,6 +183,8 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
+	github.com/olekukonko/errors v0.0.0-20250405072817-4e6d85265da6 // indirect
+	github.com/olekukonko/ll v0.0.6-0.20250511102614-9564773e9d27 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/pborman/uuid v1.2.1 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect

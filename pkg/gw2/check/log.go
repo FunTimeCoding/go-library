@@ -2,6 +2,7 @@ package check
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gw2"
 	"github.com/funtimecoding/go-library/pkg/gw2/check/aleeva_report"
 	"github.com/funtimecoding/go-library/pkg/gw2/check/exceptions"
@@ -90,7 +91,7 @@ func Log(
 	}
 
 	t := tablewriter.NewWriter(os.Stdout)
-	t.SetHeader([]string{"Name", "Account(s)", "Team(s)"})
+	t.Header([]string{"Name", "Account(s)", "Team(s)"})
 	var verifiedAccounts []string
 	var rowCount int
 
@@ -125,12 +126,14 @@ func Log(
 		}
 
 		rowCount++
-		t.Append(
-			[]string{
-				r.DiscordName,
-				join.Comma(r.Gw2Accounts),
-				join.Comma(teams),
-			},
+		errors.PanicOnError(
+			t.Append(
+				[]string{
+					r.DiscordName,
+					join.Comma(r.Gw2Accounts),
+					join.Comma(teams),
+				},
+			),
 		)
 
 		for account, teamId := range r.WvwTeams {
@@ -148,7 +151,7 @@ func Log(
 
 	if rowCount > 0 {
 		fmt.Printf("Not on team members (%d):\n", rowCount)
-		t.Render()
+		errors.PanicOnError(t.Render())
 	}
 
 	fmt.Printf("Members: %s\n", join.Comma(members))

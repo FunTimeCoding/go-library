@@ -2,22 +2,21 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/hupe1980/go-tiktoken"
+	"github.com/funtimecoding/go-library/pkg/console/scanner"
+	"github.com/funtimecoding/go-library/pkg/generative/token"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func Token() {
-	encoding, e := tiktoken.NewEncodingForModel("gpt-4o")
-	errors.PanicOnError(e)
+	s := scanner.New()
+	fmt.Println("Paste text and press Ctrl+D to finish:")
+	lines := s.Scan()
 
-	ids, tokens, e2 := encoding.Encode(
-		"Explain a cat in 10 words.",
-		nil,
-		nil,
-	)
-	errors.PanicOnError(e2)
+	if false {
+		for _, l := range lines {
+			fmt.Printf("Line: %+v\n", l)
+		}
+	}
 
-	fmt.Printf("IDs: %+v\n", ids)
-	fmt.Printf("Tokens: %+v\n", tokens)
-	fmt.Printf("Token count: %d\n", len(tokens))
+	fmt.Printf("Token count: %d\n", token.Count(join.NewLine(lines)))
 }

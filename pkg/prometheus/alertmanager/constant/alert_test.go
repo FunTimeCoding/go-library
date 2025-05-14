@@ -67,6 +67,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Logon", Logon)
 	assert.String(t, "Low", Low)
 	assert.String(t, "Missing", Missing)
+	assert.String(t, "NearBroken", NearBroken)
 	assert.String(t, "NearExceeded", NearExceeded)
 	assert.String(t, "NearExpired", NearExpired)
 	assert.String(t, "NearFull", NearFull)

@@ -74,6 +74,7 @@ const (
 	Logon        = "Logon"
 	Low          = "Low"
 	Missing      = "Missing"
+	NearBroken   = "NearBroken"
 	NearExceeded = "NearExceeded"
 	NearExpired  = "NearExpired"
 	NearFull     = "NearFull"

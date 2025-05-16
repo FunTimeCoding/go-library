@@ -2,7 +2,7 @@ package option
 
 import "slices"
 
-func (f *Format) RemoveTag(v ...string) {
+func (f *Format) RemoveTag(v ...string) *Format {
 	var newTags []string
 
 	for i, tag := range f.Tags {
@@ -14,4 +14,6 @@ func (f *Format) RemoveTag(v ...string) {
 	}
 
 	f.Tags = newTags
+
+	return f
 }

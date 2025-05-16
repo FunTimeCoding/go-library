@@ -2,11 +2,10 @@ package alert
 
 import (
 	"fmt"
-	monitorConstant "github.com/funtimecoding/go-library/pkg/monitor/constant"
+	monitor "github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/openapi"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/prometheus/alertmanager/api/v2/models"
-	"net/url"
 	"slices"
 )
 
@@ -47,7 +46,7 @@ func New(
 	result := &Alert{
 		MonitorIdentifier: fmt.Sprintf(
 			"%s-%s",
-			monitorConstant.AlertPrefix,
+			monitor.AlertPrefix,
 			*v.Fingerprint,
 		),
 		Fingerprint: *v.Fingerprint,
@@ -62,22 +61,8 @@ func New(
 	extractKey(&remaining, constant.SeverityLabel, &result.Severity)
 	extractKey(&remaining, constant.SummaryLabel, &result.Summary)
 	extractKey(&remaining, constant.MessageLabel, &result.Message)
-	extractKey(
-		&remaining,
-		constant.PrometheusLabel,
-		&result.Prometheus,
-	)
-	result.Link = fmt.Sprintf(
-		"https://%s/#/alerts?filter=%s",
-		host,
-		url.QueryEscape(
-			fmt.Sprintf(
-				"{%s=\"%s\"}",
-				constant.AlertnameLabel,
-				result.Name,
-			),
-		),
-	)
+	extractKey(&remaining, constant.PrometheusLabel, &result.Prometheus)
+	result.Link = result.buildLink(host)
 
 	return result
 }

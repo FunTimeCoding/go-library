@@ -6,5 +6,6 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "  ", DoubleSpace)
+	assert.String(t, "#", Hash)
+	assert.String(t, "//", DoubleSlash)
 }

@@ -10,6 +10,17 @@ import (
 
 func main() {
 	if true {
+		macos.CreateBundle(
+			"Example",
+			"tmp",
+			"tmp/example",
+			"tmp/icon.icns",
+			"sh.s3n",
+			"1.0.0",
+		)
+	}
+
+	if false {
 		fmt.Println(system.Run(sound.Afplay, sound.SosumiPath))
 	}
 

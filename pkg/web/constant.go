@@ -18,11 +18,12 @@ const (
 	ObjectContentType   = "application/json"
 	TextContentType     = "text/plain"
 
-	DeleteMethod = "DELETE"
-	GetMethod    = "GET"
-	PatchMethod  = "PATCH"
-	PostMethod   = "POST"
-	PutMethod    = "PUT"
+	DeleteMethod   = "DELETE"
+	GetMethod      = "GET"
+	PatchMethod    = "PATCH"
+	PostMethod     = "POST"
+	PropfindMethod = "PROPFIND"
+	PutMethod      = "PUT"
 
 	Localhost = "localhost"
 

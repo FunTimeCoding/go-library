@@ -57,6 +57,9 @@ afplay
 sosumi
 tink
 
+# HTTP
+PROPFIND
+
 # Kubernetes
 apimachinery
 sigs

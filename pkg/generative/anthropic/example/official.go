@@ -24,7 +24,7 @@ func Official() {
 					Role: anthropic.MessageParamRoleUser,
 					Content: []anthropic.ContentBlockParamUnion{
 						{
-							OfRequestTextBlock: &anthropic.TextBlockParam{
+							OfText: &anthropic.TextBlockParam{
 								Text: "Explain a cat in 10 words.",
 							},
 						},

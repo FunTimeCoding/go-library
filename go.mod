@@ -9,13 +9,13 @@ require (
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/andygrunwald/go-jira v1.16.0
-	github.com/anthropics/anthropic-sdk-go v1.2.0
+	github.com/anthropics/anthropic-sdk-go v1.2.1
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20250509201441-70372ae9ef75
+	github.com/chromedp/cdproto v0.0.0-20250527225801-8f9bc3ce9e31
 	github.com/chromedp/chromedp v0.13.6
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
@@ -27,6 +27,7 @@ require (
 	github.com/essentialkaos/go-confluence/v6 v6.0.4
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.8.1
+	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.33.0
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.16.0
@@ -43,9 +44,10 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/liushuangls/go-anthropic v1.6.0
+	github.com/mark3labs/mcp-go v0.30.1
 	github.com/mattermost/mattermost-server/v6 v6.7.2
-	github.com/olekukonko/tablewriter v1.0.6
-	github.com/ollama/ollama v0.7.1
+	github.com/olekukonko/tablewriter v1.0.7
+	github.com/ollama/ollama v0.8.0
 	github.com/openai/openai-go v1.1.0
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -76,7 +78,7 @@ require (
 	golang.org/x/time v0.11.0
 	gonum.org/v1/gonum v0.16.0
 	gopkg.in/yaml.v3 v3.0.1
-	gorm.io/driver/postgres v1.5.11
+	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.0
 	gotest.tools/v3 v3.5.2
 	k8s.io/api v0.30.8
@@ -122,7 +124,6 @@ require (
 	github.com/getlantern/hex v0.0.0-20190417191902-c6586a6fe0b7 // indirect
 	github.com/getlantern/hidden v0.0.0-20190325191715-f02dbb02be55 // indirect
 	github.com/getlantern/ops v0.0.0-20190325191751-d70cb0d6f85f // indirect
-	github.com/getlantern/systray v1.2.2 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.3 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-json-experiment/json v0.0.0-20250417205406-170dfdcf87d1 // indirect
@@ -200,7 +201,7 @@ require (
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/olekukonko/errors v0.0.0-20250405072817-4e6d85265da6 // indirect
-	github.com/olekukonko/ll v0.0.8-0.20250516010636-22ea57d81985 // indirect
+	github.com/olekukonko/ll v0.0.8 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect
 	github.com/pborman/uuid v1.2.1 // indirect
@@ -238,6 +239,7 @@ require (
 	github.com/wiggin77/srslog v1.0.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
+	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	go.mongodb.org/mongo-driver v1.14.0 // indirect
 	go.opentelemetry.io/otel v1.29.0 // indirect
 	go.opentelemetry.io/otel/metric v1.29.0 // indirect

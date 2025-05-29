@@ -4,12 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 )
 
 func Local() {
-	c, newFail := ollama.New(ollama.WithModel("llama3.1"))
+	c, newFail := ollama.New(ollama.WithModel(constant.Llama31))
 	errors.PanicOnError(newFail)
 	query := "very briefly, tell me the difference between a comet and a meteor"
 	x := context.Background()

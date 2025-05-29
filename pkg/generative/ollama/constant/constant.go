@@ -12,4 +12,6 @@ const (
 	SystemRole    = "system"
 	UserRole      = "user"
 	AssistantRole = "assistant"
+
+	NotationFormat = "json"
 )

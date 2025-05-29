@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 	"log"
@@ -16,10 +17,9 @@ var flagVerbose = flag.Bool("v", false, "verbose mode")
 
 func Function() {
 	flag.Parse()
-	model := "llama3.1"
 	c, clientFail := ollama.New(
-		ollama.WithModel(model),
-		ollama.WithFormat("json"),
+		ollama.WithModel(constant.Llama31),
+		ollama.WithFormat(constant.NotationFormat),
 	)
 	errors.PanicOnError(clientFail)
 	var msgs []llms.MessageContent

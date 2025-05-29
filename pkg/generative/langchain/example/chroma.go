@@ -20,20 +20,22 @@ import (
 )
 
 func Chroma() {
-	c, clientFail := ollama.New(ollama.WithModel("llama3.1"))
+	c, clientFail := ollama.New(ollama.WithModel(constant.Llama31))
 	errors.PanicOnError(clientFail)
 	embedder, embedderFail := embeddings.NewEmbedder(c)
 	errors.PanicOnError(embedderFail)
-	store, errNs := chroma.New(
+	store, storeFail := chroma.New(
 		chroma.WithChromaURL(os.Getenv("CHROMA_LOCATOR")),
 		chroma.WithEmbedder(embedder),
 		chroma.WithDistanceFunction("cosine"),
 		chroma.WithNameSpace(uuid.New().String()),
 	)
-	errors.PanicOnError(errNs)
+	errors.PanicOnError(storeFail)
 	type meta = map[string]any
-	_, errAd := store.AddDocuments(
-		context.Background(), []schema.Document{
+	x := context.Background()
+	_, addFail := store.AddDocuments(
+		x,
+		[]schema.Document{
 			{
 				PageContent: "Tokyo",
 				Metadata:    meta{"population": 9.7, "area": 622},
@@ -88,8 +90,7 @@ func Chroma() {
 			},
 		},
 	)
-	errors.PanicOnError(errAd)
-	x := context.Background()
+	errors.PanicOnError(addFail)
 	type exampleCase struct {
 		name         string
 		query        string
@@ -97,7 +98,7 @@ func Chroma() {
 		options      []vectorstores.Option
 	}
 	type filter = map[string]any
-	exampleCases := []exampleCase{
+	cases := []exampleCase{
 		{
 			name:         "Up to 5 Cities in Japan",
 			query:        "Which of these are cities are located in Japan?",
@@ -130,22 +131,22 @@ func Chroma() {
 			},
 		},
 	}
-	results := make([][]schema.Document, len(exampleCases))
+	results := make([][]schema.Document, len(cases))
 
-	for ecI, ec := range exampleCases {
-		docs, errSs := store.SimilaritySearch(
+	for ecI, ec := range cases {
+		docs, searchFail := store.SimilaritySearch(
 			x,
 			ec.query,
 			ec.numDocuments,
 			ec.options...,
 		)
-		errors.PanicOnError(errSs)
+		errors.PanicOnError(searchFail)
 		results[ecI] = docs
 	}
 
 	fmt.Printf("Results:\n")
 
-	for ecI, ec := range exampleCases {
+	for ecI, ec := range cases {
 		texts := make([]string, len(results[ecI]))
 
 		for docI, doc := range results[ecI] {

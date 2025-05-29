@@ -8,6 +8,7 @@ func main() {
 	}
 
 	if false {
+		example.Benchmark()
 		example.ClassifyAlert()
 		example.Fast()
 		example.Stream()

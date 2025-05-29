@@ -12,7 +12,19 @@ func main() {
 		fmt.Printf("Models: %s\n", c.Models())
 	}
 
-	if true {
+	if false {
 		fmt.Printf("Chats: %s\n", c.Chats())
+	}
+
+	if false {
+		fmt.Printf("Memories: %s\n", c.Memories())
+	}
+
+	if false {
+		fmt.Printf("Notes: %s\n", c.Notes())
+	}
+
+	if true {
+		fmt.Printf("Prompts: %s\n", c.Prompts())
 	}
 }

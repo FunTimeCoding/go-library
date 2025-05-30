@@ -1,20 +1,16 @@
 package example
 
 import (
-	"context"
 	"fmt"
 	"github.com/amikos-tech/chroma-go/pkg/api/v2"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/generative/chroma"
 )
 
 func Client() {
-	c, clientFail := v2.NewHTTPClient()
-	errors.PanicOnError(clientFail)
-	defer errors.LogClose(c)
-	x := context.Background()
+	c := chroma.New()
+	defer c.Close()
 	// The default embedding function is used
-	l, collectionFail := c.GetOrCreateCollection(
-		x,
+	l := c.Collection(
 		"col1",
 		v2.WithCollectionMetadataCreate(
 			v2.NewMetadata(
@@ -24,37 +20,28 @@ func Client() {
 			),
 		),
 	)
-	errors.PanicOnError(collectionFail)
-
-	errors.PanicOnError(
-		l.Add(
-			x,
-			//v2.WithIDGenerator(v2.NewULIDGenerator()),
-			v2.WithIDs("1", "2"),
-			v2.WithTexts("hello world", "goodbye world"),
-			v2.WithMetadatas(
-				v2.NewDocumentMetadata(
-					v2.NewIntAttribute("int", 1),
-				),
-				v2.NewDocumentMetadata(
-					v2.NewStringAttribute("str", "hello"),
-				),
+	c.Add(
+		l,
+		//v2.WithIDGenerator(v2.NewULIDGenerator()),
+		v2.WithIDs("1", "2"),
+		v2.WithTexts("hello world", "goodbye world"),
+		v2.WithMetadatas(
+			v2.NewDocumentMetadata(
+				v2.NewIntAttribute("int", 1),
+			),
+			v2.NewDocumentMetadata(
+				v2.NewStringAttribute("str", "hello"),
 			),
 		),
 	)
-
-	n, countFail := l.Count(x)
-	errors.PanicOnError(countFail)
+	n := c.Count(l)
 	fmt.Printf("Count: %d\n", n)
 
-	r, queryFail := l.Query(x, v2.WithQueryTexts("say hello"))
-	errors.PanicOnError(queryFail)
-
-	for _, g := range r.GetDocumentsGroups() {
+	for _, g := range c.QueryText(l, "say hello").GetDocumentsGroups() {
 		for _, d := range g {
 			fmt.Printf("Document: %+v\n", d)
 		}
 	}
 
-	errors.PanicOnError(l.Delete(x, v2.WithIDsDelete("1", "2")))
+	c.DeleteIdentifiers(l, "1", "2")
 }

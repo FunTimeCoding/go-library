@@ -98,3 +98,6 @@ statefulset
 tinyui
 editui
 edituiv
+
+# LLM
+gguf

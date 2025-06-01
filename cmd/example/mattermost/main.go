@@ -1,8 +1,13 @@
 package main
 
-import "github.com/funtimecoding/go-library/pkg/mattermost"
+import "github.com/funtimecoding/go-library/pkg/mattermost/example"
 
 func main() {
-	m := mattermost.NewEnvironment()
-	m.PostDefault("Hello friend")
+	if true {
+		example.Support()
+	}
+
+	if false {
+		example.Post()
+	}
 }

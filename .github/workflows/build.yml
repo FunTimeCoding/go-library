@@ -24,6 +24,8 @@ jobs:
       - name: Dependency
         run: go mod tidy
 
+      # CGO_ENABLED=1 is required for Chroma
+      # TODO: Not working
       - name: Build
         run: CGO_ENABLED=1 go build -v ./...
 

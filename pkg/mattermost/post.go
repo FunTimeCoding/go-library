@@ -5,13 +5,8 @@ import (
 	"github.com/mattermost/mattermost-server/v6/model"
 )
 
-func (c *Client) Post(
-	h *model.Channel,
-	text string,
-) *model.Post {
-	result, _, e := c.client.CreatePost(
-		&model.Post{ChannelId: h.Id, Message: text},
-	)
+func (c *Client) Post(p *model.Post) *model.Post {
+	result, _, e := c.client.CreatePost(p)
 	errors.PanicOnError(e)
 
 	return result

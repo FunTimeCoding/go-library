@@ -1,7 +1,11 @@
 package mattermost
 
-func (c *Client) PostDefault(text string) {
+import "github.com/mattermost/mattermost-server/v6/model"
+
+func (c *Client) PostDefault(text string) *model.Post {
 	if c.channel != nil {
-		c.Post(c.channel, text)
+		return c.PostSimple(c.channel, text)
 	}
+
+	return nil
 }

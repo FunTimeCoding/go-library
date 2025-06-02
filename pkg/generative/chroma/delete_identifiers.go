@@ -1,5 +1,3 @@
-//go:build local
-
 package chroma
 
 import "github.com/amikos-tech/chroma-go/pkg/api/v2"

@@ -26,7 +26,7 @@ func Job() {
 			fmt.Printf("  Job: %s\n", j.Format(f))
 		}
 
-		if false {
+		if true {
 			c.DeleteRun(Owner, Repository, *r.Raw.ID)
 		}
 	}

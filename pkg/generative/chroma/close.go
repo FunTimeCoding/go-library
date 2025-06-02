@@ -1,5 +1,3 @@
-//go:build local
-
 package chroma
 
 import "github.com/funtimecoding/go-library/pkg/errors"

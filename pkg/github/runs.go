@@ -3,6 +3,7 @@ package github
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/github/run"
+	"github.com/google/go-github/v70/github"
 )
 
 func (c *Client) Runs(
@@ -13,7 +14,11 @@ func (c *Client) Runs(
 		c.context,
 		owner,
 		name,
-		nil,
+		&github.ListWorkflowRunsOptions{
+			ListOptions: github.ListOptions{
+				PerPage: 100, // Cannot go higher than 100
+			},
+		},
 	)
 	errors.PanicOnError(e)
 

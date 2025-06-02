@@ -5,4 +5,7 @@ const (
 
 	DelveNamespace  = "go-delve"
 	DelveRepository = "delve"
+
+	LibraryNamespace  = "funtimecoding"
+	LibraryRepository = "go-library"
 )

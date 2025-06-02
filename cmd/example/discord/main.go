@@ -16,7 +16,7 @@ func main() {
 		"",
 		"Delete messages in a loop, requires channel",
 	)
-	argument.ParseAndBind()
+	argument.ParseBind()
 
 	c := discord.NewEnvironment()
 	c.Listen(false)

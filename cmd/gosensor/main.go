@@ -17,7 +17,7 @@ func main() {
 		t := time.Now()
 		r.AddItem(
 			fmt.Sprintf("%s-%d", constant.ExamplePrefix, 1),
-			constant.ErrorType,
+			constant.ErrorLevel,
 			strings.Alfa,
 			"https://example.org/1",
 			&t,

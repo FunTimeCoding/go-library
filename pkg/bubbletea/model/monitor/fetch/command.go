@@ -13,6 +13,7 @@ func Command() tea.Cmd {
 	return func() tea.Msg {
 		commands := []string{
 			constant.GoAlert,
+			constant.GoFile,
 			constant.GoGenie,
 			constant.GoJira,
 			constant.GoKevt,
@@ -29,16 +30,17 @@ func Command() tea.Cmd {
 			}
 		}
 
-		for i, t := range result.Items {
-			alert := fmt.Sprintf("%s-", constant.AlertPrefix)
+		alert := fmt.Sprintf("%s-", constant.AlertPrefix)
+		silence := fmt.Sprintf("%s-", constant.SilencePrefix)
+		event := fmt.Sprintf("%s-", constant.KubernetesEventPrefix)
+		file := fmt.Sprintf("%s-", constant.FilePrefix)
 
+		for i, t := range result.Items {
 			if strings.HasPrefix(t.Identifier, alert) {
 				t.Identifier = fmt.Sprintf("%s%d", alert, i+1)
 
 				continue
 			}
-
-			silence := fmt.Sprintf("%s-", constant.SilencePrefix)
 
 			if strings.HasPrefix(t.Identifier, silence) {
 				t.Identifier = fmt.Sprintf("%s%d", silence, i+1)
@@ -46,10 +48,16 @@ func Command() tea.Cmd {
 				continue
 			}
 
-			event := fmt.Sprintf("%s-", constant.KubernetesEventPrefix)
-
 			if strings.HasPrefix(t.Identifier, event) {
 				t.Identifier = fmt.Sprintf("%s%d", event, i+1)
+
+				continue
+			}
+
+			if strings.HasPrefix(t.Identifier, file) {
+				t.Identifier = fmt.Sprintf("%s%d", file, i+1)
+
+				continue
 			}
 		}
 

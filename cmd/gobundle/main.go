@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	argument.ParseAndBind()
+	argument.ParseBind()
 	name := argument.RequiredPositional(0, "NAME", 1)
 	path := argument.RequiredPositional(1, "PATH", 1)
 	executable := argument.RequiredPositional(2, "EXECUTABLE", 1)

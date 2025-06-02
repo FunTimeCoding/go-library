@@ -14,7 +14,7 @@ func TestItem(t *testing.T) {
 		"example-1",
 		New(
 			fmt.Sprintf("%s-%d", constant.ExamplePrefix, 1),
-			constant.ErrorType,
+			constant.ErrorLevel,
 			strings.Alfa,
 			"https://example.org/1",
 			nil,

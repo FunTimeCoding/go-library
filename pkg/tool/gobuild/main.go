@@ -37,7 +37,7 @@ func Main() {
 	pflag.Bool(constant.LinuxAMD64, false, "Linux AMD64")
 	pflag.Bool(constant.DarwinARM64, false, "Darwin ARM64")
 	pflag.Bool(constant.DarwinAMD64, false, "Darwin AMD64")
-	argument.ParseAndBind()
+	argument.ParseBind()
 	linuxAMD64 := viper.GetBool(constant.LinuxAMD64)
 	darwinARM64 := viper.GetBool(constant.DarwinARM64)
 	darwinAMD64 := viper.GetBool(constant.DarwinAMD64)

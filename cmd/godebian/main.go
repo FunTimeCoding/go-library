@@ -45,7 +45,7 @@ func main() {
 		false,
 		"Create a systemd unit",
 	)
-	argument.ParseAndBind()
+	argument.ParseBind()
 	executable := viper.GetString(argument.Executable)
 	version := semver.Trim(viper.GetString(argument.Version))
 	maintainerName := viper.GetString(maintainerNameArgument)

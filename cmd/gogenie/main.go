@@ -11,7 +11,7 @@ import (
 func main() {
 	monitor.NotationArgument()
 	monitor.AllArgument()
-	argument.ParseAndBind()
+	argument.ParseBind()
 	o := option.New()
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)

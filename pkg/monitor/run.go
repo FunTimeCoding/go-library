@@ -3,6 +3,7 @@ package monitor
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/system/run"
@@ -12,7 +13,13 @@ import (
 func Run(name string) *report.Report {
 	r := run.New()
 	r.Panic = false
-	r.Start(name, fmt.Sprintf("--%s", argument.Notation))
+	arguments := []string{fmt.Sprintf("--%s", argument.Notation)}
+
+	if name == constant.GoFile {
+		arguments = append(arguments, fmt.Sprintf("--%s", argument.Verbose))
+	}
+
+	r.Start(append([]string{name}, arguments...)...)
 
 	if r.Error != nil {
 		log.Printf("run fail: %s %s", name, r.Error)

@@ -7,7 +7,7 @@ import (
 
 func BindGeneric() Option {
 	NotationArgument()
-	argument.ParseAndBind()
+	argument.ParseBind()
 
 	return Option{Notation: viper.GetBool(argument.Notation)}
 }

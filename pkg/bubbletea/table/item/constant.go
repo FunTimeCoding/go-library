@@ -2,7 +2,7 @@ package item
 
 const (
 	IdentifierColumn = "Identifier"
-	TypeColumn       = "Type"
+	LevelColumn      = "Level"
 	DetailColumn     = "Detail"
 	UserColumn       = "User"
 )

@@ -12,7 +12,7 @@ func printNotation(c *sentry.Client) {
 	for _, i := range c.IssuesSimple() {
 		r.AddItem(
 			i.MonitorIdentifier,
-			constant.ErrorType,
+			constant.ErrorLevel,
 			i.Title,
 			i.Link,
 			i.Create,

@@ -4,6 +4,7 @@ import "github.com/gorilla/websocket"
 
 const (
 	GoAlert   = "goalert"
+	GoFile    = "gofile"
 	GoGenie   = "gogenie"
 	GoJira    = "gojira"
 	GoKevt    = "gokevt"
@@ -13,14 +14,16 @@ const (
 
 	AlertPrefix           = "alert"
 	ExamplePrefix         = "example"
+	FilePrefix            = "file"
 	JiraPrefix            = "jira"
 	KubernetesEventPrefix = "event"
 	OpsgeniePrefix        = "opsgenie"
 	SentryPrefix          = "sentry"
 	SilencePrefix         = "silence"
 
-	WarningType = "warning"
-	ErrorType   = "error"
+	InformationLevel = "information"
+	WarningLevel     = "warning"
+	ErrorLevel       = "error"
 
 	Address = "localhost:8080"
 

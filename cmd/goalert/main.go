@@ -20,7 +20,7 @@ func main() {
 	pflag.Bool(argument.Rules, false, "Print rules")
 	pflag.Bool(argument.Firing, false, "Print firing rules")
 	pflag.Bool(argument.Fingerprint, false, "Fingerprint column")
-	argument.ParseAndBind()
+	argument.ParseBind()
 	o := option.New()
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)

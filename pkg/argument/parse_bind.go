@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func ParseAndBind() {
+func ParseBind() {
 	pflag.Parse()
 	errors.PanicOnError(viper.BindPFlags(pflag.CommandLine))
 }

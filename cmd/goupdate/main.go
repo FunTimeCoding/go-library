@@ -33,7 +33,7 @@ func main() {
 		nil,
 		"One or more downgrades to apply after update, comma separated",
 	)
-	argument.ParseAndBind()
+	argument.ParseBind()
 
 	if len(exclusives) > 0 {
 		fmt.Printf("Exclusive matches: %s\n", join.Comma(exclusives))

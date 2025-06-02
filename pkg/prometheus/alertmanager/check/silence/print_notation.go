@@ -20,7 +20,7 @@ func printNotation(
 		silences = silences[0:constant.NotationReport]
 		r.AddItem(
 			fmt.Sprintf("%s-0", constant.SilencePrefix),
-			constant.WarningType,
+			constant.WarningLevel,
 			fmt.Sprintf(
 				"Too many silences, showing only the newest %d",
 				constant.NotationReport,
@@ -33,7 +33,7 @@ func printNotation(
 	for _, s := range silences {
 		r.AddItem(
 			s.MonitorIdentifier,
-			constant.WarningType,
+			constant.WarningLevel,
 			s.Rule,
 			s.Link,
 			s.Start,

@@ -26,7 +26,7 @@ func printNotation(
 		issues = issues[0:constant.NotationReport]
 		r.AddItem(
 			constant.JiraPrefix+"-0",
-			constant.WarningType,
+			constant.WarningLevel,
 			fmt.Sprintf(
 				"Too many issues, showing only the newest %d",
 				constant.NotationReport,
@@ -39,7 +39,7 @@ func printNotation(
 	for _, i := range issues {
 		r.AddItem(
 			i.MonitorIdentifier,
-			constant.WarningType,
+			constant.WarningLevel,
 			i.Summary,
 			i.Link,
 			i.Create,

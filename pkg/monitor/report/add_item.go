@@ -7,10 +7,10 @@ import (
 
 func (r *Report) AddItem(
 	identifier string,
-	itemType string,
+	level string,
 	detail string,
 	link string,
 	t *time.Time,
 ) {
-	r.Add(item.New(identifier, itemType, detail, link, t))
+	r.Add(item.New(identifier, level, detail, link, t))
 }

@@ -4,14 +4,14 @@ import "time"
 
 func New(
 	identifier string,
-	itemType string,
+	level string,
 	detail string,
 	link string,
 	t *time.Time,
 ) *Item {
 	return &Item{
 		Identifier: identifier,
-		Type:       itemType,
+		Level:      level,
 		Detail:     detail,
 		Link:       link,
 		Create:     t,

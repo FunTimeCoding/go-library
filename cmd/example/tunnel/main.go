@@ -17,7 +17,7 @@ func main() {
 	pflag.String(argument.Host, "", "Relay host")
 	pflag.String(TargetHost, "", "Target host")
 	pflag.Int(TargetPort, 0, "Target port")
-	argument.ParseAndBind()
+	argument.ParseBind()
 	t := tunnel.New()
 
 	if false {

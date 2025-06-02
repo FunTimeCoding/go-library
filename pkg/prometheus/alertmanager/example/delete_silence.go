@@ -6,7 +6,7 @@ import (
 )
 
 func DeleteSilence() {
-	argument.ParseAndBind()
+	argument.ParseBind()
 	internal.Alertmanager().DeleteSilence(
 		argument.RequiredPositional(
 			0,

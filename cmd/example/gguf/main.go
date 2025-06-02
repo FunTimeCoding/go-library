@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	argument.ParseAndBind()
+	argument.ParseBind()
 	result, e := gguf_parser.ParseGGUFFile(
 		argument.RequiredPositional(0, "PATH", 1),
 		gguf_parser.SkipLargeMetadata(),

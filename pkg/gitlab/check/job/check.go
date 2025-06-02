@@ -10,7 +10,7 @@ func Check() {
 	pflag.String(argument.Namespace, "", "Namespace")
 	pflag.String(argument.Project, "", "Project")
 	pflag.String(argument.Match, "", "Description match")
-	argument.ParseAndBind()
+	argument.ParseBind()
 	g := gitlab.NewEnvironment()
 
 	if true {

@@ -32,7 +32,7 @@ func printNotation(
 		relevant = relevant[0:constant.NotationReport]
 		r.AddItem(
 			fmt.Sprintf("%s-0", constant.AlertPrefix),
-			constant.WarningType,
+			constant.WarningLevel,
 			fmt.Sprintf(
 				"Too many Prometheus alerts, showing only the top %d",
 				constant.NotationReport,
@@ -46,9 +46,9 @@ func printNotation(
 		var alertType string
 
 		if a.Severity == alertmanagerConstant.CriticalSeverity {
-			alertType = constant.ErrorType
+			alertType = constant.ErrorLevel
 		} else {
-			alertType = constant.WarningType
+			alertType = constant.WarningLevel
 		}
 
 		r.AddItem(

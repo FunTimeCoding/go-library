@@ -58,7 +58,7 @@ func Main() {
 		headerDefault,
 		"Header for authentication in key=value format",
 	)
-	argument.ParseAndBind()
+	argument.ParseBind()
 
 	locator := argument.RequiredStringFlag(argument.Locator, 1)
 	fmt.Printf("Locator: %s\n", locator)

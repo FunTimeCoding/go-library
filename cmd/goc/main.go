@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	argument.ParseAndBind()
+	argument.ParseBind()
 	goc.Run(argument.Positional(0), false)
 }

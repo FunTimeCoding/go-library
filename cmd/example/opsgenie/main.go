@@ -10,7 +10,7 @@ import (
 )
 
 func addResponder() {
-	argument.ParseAndBind()
+	argument.ParseBind()
 	responder := argument.RequiredPositional(
 		0,
 		"RESPONDER_NAME",
@@ -43,7 +43,7 @@ func main() {
 	pflag.String(argument.User, "", "User email for alert")
 	pflag.String(argument.Text, "", "Alert name")
 	pflag.String(argument.Close, "", "Alert ID")
-	argument.ParseAndBind()
+	argument.ParseBind()
 	c := internal.Opsgenie()
 
 	if viper.GetBool(argument.Create) {

@@ -14,6 +14,6 @@ func main() {
 		false,
 		"connect to the server",
 	)
-	argument.ParseAndBind()
+	argument.ParseBind()
 	bubbletea.Run(monitor.New(viper.GetBool(argument.Connect)), true)
 }

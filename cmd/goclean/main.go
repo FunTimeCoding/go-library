@@ -27,7 +27,7 @@ import (
 
 func main() {
 	pflag.Bool(argument.Verbose, false, "Verbose output")
-	argument.ParseAndBind()
+	argument.ParseBind()
 	verbose := viper.GetBool(argument.Verbose)
 
 	gitlabLocator := web.ParseLocator(

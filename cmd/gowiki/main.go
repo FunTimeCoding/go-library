@@ -11,7 +11,7 @@ import (
 
 func main() {
 	pflag.Bool(argument.Watched, false, "Favorites")
-	argument.ParseAndBind()
+	argument.ParseBind()
 	c := confluence.NewEnvironment()
 	f := constant.Format
 

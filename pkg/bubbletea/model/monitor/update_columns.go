@@ -15,7 +15,7 @@ func (m *Model) updateColumns() {
 			w := columnWidth(c, m.table, i)
 			m.table.Columns()[i].Width = w
 			remaining -= w + 2 // 2 for padding
-		case item.TypeColumn:
+		case item.LevelColumn:
 			w := columnWidth(c, m.table, i)
 			m.table.Columns()[i].Width = w
 			remaining -= w + 2 // 2 for padding

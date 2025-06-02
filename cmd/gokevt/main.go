@@ -17,7 +17,7 @@ func main() {
 		false,
 		"Delete events older than 7 days",
 	)
-	argument.ParseAndBind()
+	argument.ParseBind()
 	o := option.New()
 	o.All = viper.GetBool(argument.All)
 	o.Notation = viper.GetBool(argument.Notation)

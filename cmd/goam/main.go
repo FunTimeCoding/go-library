@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	argument.ParseAndBind()
+	argument.ParseBind()
 	amtool.Run(argument.Positional(0))
 }

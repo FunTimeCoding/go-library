@@ -23,7 +23,7 @@ func main() {
 		false,
 		"Verbose output",
 	)
-	argument.ParseAndBind()
+	argument.ParseBind()
 	lint.Lint(
 		viper.GetString(argument.Skip),
 		viper.GetBool(argument.Verbose),

@@ -8,7 +8,7 @@ import (
 func New(user bool) *table.Model {
 	columns := []table.Column{
 		{Title: IdentifierColumn},
-		{Title: TypeColumn},
+		{Title: LevelColumn},
 		{Title: DetailColumn},
 	}
 

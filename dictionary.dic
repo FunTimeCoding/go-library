@@ -3,6 +3,7 @@ colorable
 colorer
 enricher
 formattable
+positionals
 renderable
 renderables
 
@@ -33,6 +34,7 @@ gobuild
 gobump
 goclean
 godebian
+gofile
 gogenie
 gojira
 gokevt

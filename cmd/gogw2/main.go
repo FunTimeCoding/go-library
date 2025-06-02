@@ -15,7 +15,7 @@ func main() {
 	}
 
 	pflag.String(argument.Tag, "", "Guild tag")
-	argument.ParseAndBind()
+	argument.ParseBind()
 	c := gw2.New(environment.Get(gw2.TokenEnvironment, 1))
 	tag := viper.GetString(argument.Tag)
 	account := c.Account()

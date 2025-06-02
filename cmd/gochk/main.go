@@ -28,7 +28,7 @@ func main() {
 		"",
 		"Port, multiple values separated by comma",
 	)
-	argument.ParseAndBind()
+	argument.ParseBind()
 
 	switch runtime.GOOS {
 	case constant.Linux:

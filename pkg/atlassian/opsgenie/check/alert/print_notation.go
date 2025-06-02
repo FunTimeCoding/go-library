@@ -20,7 +20,7 @@ func printNotation(
 		alerts = alerts[0:constant.NotationReport]
 		r.AddItem(
 			constant.OpsgeniePrefix+"-0",
-			constant.WarningType,
+			constant.WarningLevel,
 			fmt.Sprintf(
 				"Too many Opsgenie alerts, showing only the newest %d",
 				constant.NotationReport,
@@ -34,9 +34,9 @@ func printNotation(
 		var itemType string
 
 		if a.Acknowledged {
-			itemType = constant.WarningType
+			itemType = constant.WarningLevel
 		} else {
-			itemType = constant.ErrorType
+			itemType = constant.ErrorLevel
 		}
 
 		r.AddItem(a.MonitorIdentifier, itemType, a.Name, a.Link, &a.Create)

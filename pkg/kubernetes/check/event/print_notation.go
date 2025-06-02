@@ -22,7 +22,7 @@ func printNotation(
 		events = events[0:constant.NotationReport]
 		r.AddItem(
 			fmt.Sprintf("%s-0", constant.KubernetesEventPrefix),
-			constant.WarningType,
+			constant.WarningLevel,
 			fmt.Sprintf(
 				"Too many events, showing only the newest %d",
 				constant.NotationReport,
@@ -42,7 +42,7 @@ func printNotation(
 
 		r.AddItem(
 			e.MonitorIdentifier,
-			constant.WarningType,
+			constant.WarningLevel,
 			e.Reason,
 			"",
 			e.Create,

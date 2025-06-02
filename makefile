@@ -4,12 +4,19 @@ all: test lint build
 
 tool:
 	@go install gotest.tools/gotestsum@latest
+	@go install github.com/boumenot/gocover-cobertura@latest
 	@GOPROXY=direct go install github.com/funtimecoding/go-library/cmd/gobuild@latest
 	@GOPROXY=direct go install github.com/funtimecoding/go-library/cmd/golint@latest
 	@GOPROXY=direct go install github.com/funtimecoding/go-library/cmd/goupdate@latest
 
 test:
 	@gotestsum --format standard-quiet -- ./...
+
+coverage:
+	@mkdir -p tmp
+    #@gotestsum --format standard-quiet -- -coverprofile=tmp/coverage.txt -covermode count ./...
+	@go test -coverprofile=tmp/coverage.txt -covermode count ./...
+	@gocover-cobertura <tmp/coverage.txt >tmp/coverage.xml
 
 lint:
 	@mkdir -p fixture/lint/empty_directory

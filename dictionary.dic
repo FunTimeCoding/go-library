@@ -24,6 +24,7 @@ xanzy
 
 # Go
 GOPROXY
+coverprofile
 nodename
 servname
 

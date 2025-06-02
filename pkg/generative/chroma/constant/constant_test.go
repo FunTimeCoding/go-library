@@ -1,3 +1,5 @@
+//go:build local
+
 package constant
 
 import (

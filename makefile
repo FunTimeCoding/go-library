@@ -14,7 +14,6 @@ test:
 
 coverage:
 	@mkdir -p tmp
-    #@gotestsum --format standard-quiet -- -coverprofile=tmp/coverage.txt -covermode count ./...
 	@go test -coverprofile=tmp/coverage.txt -covermode count ./...
 	@gocover-cobertura <tmp/coverage.txt >tmp/coverage.xml
 
@@ -25,9 +24,7 @@ lint:
 
 update:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
-    # sigs.k8s.io/structured-merge-diff/v4: IgnoredFields error in structuredmerge.go
-	@goupdate --downgrade k8s.io/apimachinery@v0.30.8 \
-		--downgrade sigs.k8s.io/structured-merge-diff/v4@v4.4.1
+	@goupdate --downgrade k8s.io/apimachinery@v0.30.8
 
 build:
 	@go run cmd/gobuild/main.go --all

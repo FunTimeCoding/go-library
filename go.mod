@@ -10,7 +10,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.2.3
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/andygrunwald/go-jira v1.16.0
-	github.com/anthropics/anthropic-sdk-go v1.2.2
+	github.com/anthropics/anthropic-sdk-go v1.4.0
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/charmbracelet/bubbles v0.21.0
@@ -31,7 +31,7 @@ require (
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.33.0
 	github.com/go-git/go-billy/v5 v5.6.2
-	github.com/go-git/go-git/v5 v5.16.0
+	github.com/go-git/go-git/v5 v5.16.1
 	github.com/go-openapi/runtime v0.28.0
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
@@ -50,7 +50,7 @@ require (
 	github.com/mattermost/mattermost-server/v6 v6.7.2
 	github.com/olekukonko/tablewriter v1.0.7
 	github.com/ollama/ollama v0.9.0
-	github.com/openai/openai-go v1.2.1
+	github.com/openai/openai-go v1.3.0
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.28.1

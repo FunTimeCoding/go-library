@@ -10,13 +10,13 @@ import (
 )
 
 func main() {
-	var skip []string
 	pflag.String(
 		argument.Skip,
 		"",
 		"Directory skip matches, comma-separated",
 	)
 	argument.ParseBind()
+	var skip []string
 
 	if s := viper.GetString(argument.Skip); s != "" {
 		skip = split.Comma(s)

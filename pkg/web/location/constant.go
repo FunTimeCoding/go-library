@@ -3,6 +3,7 @@ package location
 const (
 	Root = "/"
 
+	Callback = "/callback"
 	Favicon  = "/favicon.ico"
 	Login    = "/login"
 	Logout   = "/logout"

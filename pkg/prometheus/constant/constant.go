@@ -3,6 +3,7 @@ package constant
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+	"github.com/prometheus/common/model"
 )
 
 const (
@@ -14,7 +15,6 @@ const (
 
 // Metric
 const (
-	Name    = "__name__"
 	Up      = "up"
 	Restart = "kube_pod_container_status_restarts_total"
 	Load1   = "node_load1"
@@ -32,12 +32,14 @@ const (
 
 // Label
 const (
+	Name          = model.MetricNameLabel
+	InstanceLabel = model.InstanceLabel
+	JobLabel      = model.JobLabel
+
 	ContainerLabel   = "container"
 	DaemonSetLabel   = "daemonset"
 	DeploymentLabel  = "deployment"
 	EndpointLabel    = "endpoint"
-	InstanceLabel    = "instance"
-	JobLabel         = "job"
 	NamespaceLabel   = "namespace"
 	NodeLabel        = "node"
 	PodLabel         = "pod"

@@ -24,7 +24,7 @@ coverage:
 
 update:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
-	@goupdate --downgrade k8s.io/apimachinery@v0.30.8
+	@goupdate --downgrade k8s.io/apimachinery@v0.30.13
 
 build:
 	@go run cmd/gobuild/main.go --all

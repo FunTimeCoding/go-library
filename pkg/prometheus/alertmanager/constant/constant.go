@@ -3,6 +3,7 @@ package constant
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+	"github.com/prometheus/common/model"
 	"time"
 )
 
@@ -31,7 +32,8 @@ const (
 
 // Alert label
 const (
-	AlertnameLabel   = "alertname"
+	AlertnameLabel = model.AlertNameLabel
+
 	SummaryLabel     = "summary"
 	DescriptionLabel = "description"
 	PrometheusLabel  = "prometheus"

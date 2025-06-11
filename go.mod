@@ -17,7 +17,7 @@ require (
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20250530212709-4dcc110a7b92
+	github.com/chromedp/cdproto v0.0.0-20250611220608-a17eb1ae8ff0
 	github.com/chromedp/chromedp v0.13.6
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
@@ -48,7 +48,7 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/liushuangls/go-anthropic v1.6.0
-	github.com/mark3labs/mcp-go v0.31.0
+	github.com/mark3labs/mcp-go v0.32.0
 	github.com/mattermost/mattermost-server/v6 v6.7.2
 	github.com/olekukonko/tablewriter v1.0.7
 	github.com/ollama/ollama v0.9.0
@@ -74,7 +74,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.12
-	gitlab.com/gitlab-org/api/client-go v0.129.0
+	gitlab.com/gitlab-org/api/client-go v0.130.1
 	go.etcd.io/bbolt v1.4.1
 	golang.org/x/crypto v0.39.0
 	golang.org/x/mod v0.25.0

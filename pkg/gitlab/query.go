@@ -10,9 +10,9 @@ func (c *Client) Query(
 	r any,
 ) *gitlab.Response {
 	result, e := c.client.GraphQL.Do(
-		c.context,
 		gitlab.GraphQLQuery{Query: q},
 		r,
+		gitlab.WithContext(c.context),
 	)
 	errors.PanicOnError(e)
 

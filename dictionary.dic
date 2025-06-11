@@ -49,6 +49,7 @@ kevt
 
 # UNIX
 websocat
+whoami
 
 # Linux
 netns

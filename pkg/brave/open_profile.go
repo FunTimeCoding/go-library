@@ -12,10 +12,10 @@ import (
 func OpenProfile(profile string) {
 	errors.PanicOnError(
 		exec.Command(
-			constant.BraveMacPath,
+			constant.BravePath,
 			fmt.Sprintf(
 				"--user-data-dir=%s",
-				filepath.Join(system.Home(), constant.BraveMacSettings),
+				filepath.Join(system.Home(), constant.BraveSettings),
 			),
 			fmt.Sprintf("--profile-directory=%s", profile),
 		).Start(),

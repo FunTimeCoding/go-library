@@ -11,7 +11,7 @@ func Profiles() []string {
 	var result []string
 
 	for _, f := range system.ReadDirectory(
-		filepath.Join(system.Home(), constant.BraveMacSettings),
+		filepath.Join(system.Home(), constant.BraveSettings),
 	) {
 		if !f.IsDir() {
 			continue

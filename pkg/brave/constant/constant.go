@@ -1,9 +1,11 @@
 package constant
 
 const (
-	BraveMacPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+	BravePath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
 
-	BraveMacSettings = "Library/Application Support/BraveSoftware/Brave-Browser"
+	BraveSettings = "Library/Application Support/BraveSoftware/Brave-Browser"
+
+	PreferencesFile = "Preferences"
 
 	DefaultProfile = "Default"
 

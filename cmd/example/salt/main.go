@@ -10,12 +10,34 @@ func main() {
 	c := salt.NewEnvironment()
 
 	if false {
-		fmt.Println(c.Minions())
+		for _, m := range c.Minions() {
+			fmt.Printf("Minion: %+v\n", m)
+		}
+	}
+
+	if false {
+		for k, v := range c.Local(
+			"saltstack-test",
+			constant.Run,
+			[]string{"whoami"},
+		) {
+			fmt.Printf("%s: %+v\n", k, v)
+		}
+	}
+
+	if false {
+		identifier := c.LocalAsync(
+			"saltstack-test",
+			constant.Run,
+			[]string{"sleep 30 && echo hello"},
+		)
+		fmt.Printf("JID: %s\n", identifier)
+		fmt.Printf("Job: %+v", c.Job(identifier))
 	}
 
 	if true {
-		fmt.Println(
-			c.Local("saltstack-test", constant.Run, []string{"whoami"}),
-		)
+		for _, j := range c.Jobs() {
+			fmt.Printf("Job: %+v\n", j)
+		}
 	}
 }

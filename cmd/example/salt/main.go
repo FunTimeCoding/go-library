@@ -8,8 +8,14 @@ import (
 
 func main() {
 	c := salt.NewEnvironment()
-	fmt.Println(c.Minions())
-	fmt.Println(
-		c.Local("minion1", constant.Run, []string{"whoami"}),
-	)
+
+	if false {
+		fmt.Println(c.Minions())
+	}
+
+	if true {
+		fmt.Println(
+			c.Local("saltstack-test", constant.Run, []string{"whoami"}),
+		)
+	}
 }

@@ -10,18 +10,17 @@ import (
 
 func New(
 	host string,
+	port int,
 	user string,
 	password string,
 ) *Client {
 	x := context.Background()
 	c := salt.NewClient(
 		salt.WithEndpoint(
-			fmt.Sprintf("%s://%s", web.InsecureScheme, host),
+			fmt.Sprintf("%s://%s:%d", web.InsecureScheme, host, port),
 		),
 		salt.WithUsername(user),
 		salt.WithPassword(password),
-		salt.WithAuthBackend("pam"),
-		salt.WithInsecure(),
 	)
 	errors.PanicOnError(c.Login(x))
 

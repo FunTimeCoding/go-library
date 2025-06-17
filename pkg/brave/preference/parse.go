@@ -10,7 +10,7 @@ import (
 
 func Parse(profile string) *Preference {
 	var result Preference
-	notation.DecodeBytes(
+	notation.DecodeBytesStrict(
 		system.ReadBytes(
 			filepath.Join(
 				helper.SettingsPath(),
@@ -19,6 +19,7 @@ func Parse(profile string) *Preference {
 			),
 		),
 		&result,
+		false,
 	)
 
 	return &result

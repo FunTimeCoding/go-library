@@ -1,10 +1,8 @@
 package notation
 
-import "encoding/json"
-
 func Decode(
 	value string,
 	structure any,
 ) error {
-	return json.Unmarshal([]byte(value), structure)
+	return DecodeBytes([]byte(value), structure)
 }

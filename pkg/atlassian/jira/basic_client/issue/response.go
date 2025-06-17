@@ -4,6 +4,7 @@ type Values struct {
 	Expands       []string `json:"_expands"`
 	IssueId       string   `json:"issueId"`
 	IssueKey      string   `json:"issueKey"`
+	Summary       string   `json:"summary"`
 	RequestTypeId string   `json:"requestTypeId"`
 	ServiceDeskId string   `json:"serviceDeskId"`
 	CreatedDate   struct {
@@ -13,8 +14,7 @@ type Values struct {
 		EpochMillis int64  `json:"epochMillis"`
 	} `json:"createdDate"`
 	Reporter struct {
-		Name         string `json:"name"`
-		Key          string `json:"key"`
+		AccountId    string `json:"accountId"`
 		EmailAddress string `json:"emailAddress"`
 		DisplayName  string `json:"displayName"`
 		Active       bool   `json:"active"`
@@ -32,8 +32,9 @@ type Values struct {
 	} `json:"reporter"`
 	RequestFieldValues []RequestFieldValue `json:"requestFieldValues"`
 	CurrentStatus      struct {
-		Status     string `json:"status"`
-		StatusDate struct {
+		Status         string `json:"status"`
+		StatusCategory string `json:"statusCategory"`
+		StatusDate     struct {
 			Iso8601     string `json:"iso8601"`
 			Jira        string `json:"jira"`
 			Friendly    string `json:"friendly"`
@@ -41,8 +42,9 @@ type Values struct {
 		} `json:"statusDate"`
 	} `json:"currentStatus"`
 	Links struct {
-		Web  string `json:"web"`
-		Self string `json:"self"`
+		Web   string `json:"web"`
+		Agent string `json:"agent"`
+		Self  string `json:"self"`
 	} `json:"_links"`
 }
 
@@ -50,7 +52,9 @@ type RequestFieldValue struct {
 	FieldId       string `json:"fieldId"`
 	Label         string `json:"label"`
 	Value         any    `json:"value"`
-	RenderedValue []any  `json:"renderedValue,omitempty"`
+	RenderedValue struct {
+		Html string `json:"html"`
+	} `json:"renderedValue,omitempty"`
 }
 
 type Response struct {
@@ -60,9 +64,10 @@ type Response struct {
 	Limit      int      `json:"limit"`
 	IsLastPage bool     `json:"isLastPage"`
 	Links      struct {
+		Self    string `json:"self"`
 		Base    string `json:"base"`
 		Context string `json:"context"`
-		Self    string `json:"self"`
+		Next    string `json:"next"`
 	} `json:"_links"`
 	Values []Values `json:"values"`
 }

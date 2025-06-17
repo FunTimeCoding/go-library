@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
+	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 	"log"
@@ -88,7 +89,7 @@ type Call struct {
 func unmarshalCall(input string) *Call {
 	var c Call
 
-	if e := json.Unmarshal([]byte(input), &c); e == nil && c.Tool != "" {
+	if e := notation.Decode(input, &c); e == nil && c.Tool != "" {
 		return &c
 	}
 

@@ -3,6 +3,8 @@ package constant
 import "github.com/gorilla/websocket"
 
 const (
+	PluginEnvironment = "MONITOR_PLUGINS"
+
 	GoAlert   = "goalert"
 	GoFile    = "gofile"
 	GoGenie   = "gogenie"

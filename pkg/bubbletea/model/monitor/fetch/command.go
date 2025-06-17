@@ -5,6 +5,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	"github.com/funtimecoding/go-library/pkg/strings/split"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	"strings"
 )
@@ -20,6 +22,14 @@ func Command() tea.Cmd {
 			constant.GoSentry,
 			constant.GoSilence,
 		}
+
+		if s := environment.GetDefault(
+			constant.PluginEnvironment,
+			"",
+		); s != "" {
+			commands = append(commands, split.Comma(s)...)
+		}
+
 		result := Message{}
 
 		for _, c := range commands {

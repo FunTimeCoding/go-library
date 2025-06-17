@@ -17,7 +17,7 @@ require (
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20250611220608-a17eb1ae8ff0
+	github.com/chromedp/cdproto v0.0.0-20250615221225-2454e98bdb89
 	github.com/chromedp/chromedp v0.13.6
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
@@ -51,7 +51,7 @@ require (
 	github.com/mark3labs/mcp-go v0.32.0
 	github.com/mattermost/mattermost-server/v6 v6.7.2
 	github.com/olekukonko/tablewriter v1.0.7
-	github.com/ollama/ollama v0.9.0
+	github.com/ollama/ollama v0.9.1
 	github.com/openai/openai-go v1.5.0
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -61,7 +61,7 @@ require (
 	github.com/rivo/tview v0.0.0-20250501113434-0c592cd31026
 	github.com/samber/slog-loki/v3 v3.5.4
 	github.com/sanity-io/litter v1.5.8
-	github.com/sashabaranov/go-openai v1.40.1
+	github.com/sashabaranov/go-openai v1.40.2
 	github.com/sirupsen/logrus v1.9.3
 	github.com/slok/go-http-metrics v0.13.0
 	github.com/spf13/cobra v1.9.1

@@ -1,16 +1,13 @@
 package main
 
-import (
-	"fmt"
-	"github.com/funtimecoding/go-library/internal"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
-)
+import "github.com/funtimecoding/go-library/pkg/atlassian/jira/example"
 
 func main() {
-	issue := environment.Get("JIRA_TEST_ISSUE", 1)
-	field := environment.Get("JIRA_TEST_FIELD", 1)
-	fmt.Printf(
-		"Field value: %s\n",
-		internal.Jira().SetVerbose(true).Issue(issue).CustomValue(field),
-	)
+	if true {
+		example.Watch()
+	}
+
+	if false {
+		example.CustomValue()
+	}
 }

@@ -29,4 +29,6 @@ type Model struct {
 	nextToast int
 
 	initialResized bool
+
+	modal *Modal
 }

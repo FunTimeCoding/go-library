@@ -1,7 +1,8 @@
 package monitor
 
 import (
-	tea "github.com/charmbracelet/bubbletea"
+	"fmt"
+	"github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/receive"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"
@@ -48,6 +49,11 @@ func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 		m.table.UpdateViewport()
 
 		return m, nil
+	case viewDetailMessage:
+		i := m.selectedItem()
+		m.modal = &Modal{
+			content: fmt.Sprintf("Details: %+v", i),
+		}
 	}
 
 	t, result := m.table.Update(s)

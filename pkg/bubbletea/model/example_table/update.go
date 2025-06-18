@@ -1,7 +1,7 @@
 package example_table
 
 import (
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/key"
 )
 

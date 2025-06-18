@@ -9,6 +9,7 @@ const (
 	Up   = "up"
 	Down = "down"
 
+	D = "d"
 	J = "j"
 	K = "k"
 	O = "o"

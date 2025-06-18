@@ -2,8 +2,8 @@ package monitor
 
 import "github.com/charmbracelet/bubbletea"
 
-func addToast(m string) tea.Cmd {
+func viewDetail() func() tea.Msg {
 	return func() tea.Msg {
-		return addToastMessage(m)
+		return viewDetailMessage("")
 	}
 }

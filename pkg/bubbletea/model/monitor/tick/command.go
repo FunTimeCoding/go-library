@@ -1,7 +1,7 @@
 package tick
 
 import (
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/bubbletea"
 	"time"
 )
 

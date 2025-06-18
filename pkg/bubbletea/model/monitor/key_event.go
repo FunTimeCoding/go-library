@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/key"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
@@ -11,6 +11,12 @@ import (
 func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch g.String() {
 	case key.Escape:
+		if m.modal != nil {
+			m.modal = nil
+
+			return m, nil
+		}
+
 		if m.table.Focused() {
 			m.table.Blur()
 		} else {
@@ -25,6 +31,8 @@ func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 
 		return m, tea.Quit
+	case key.D:
+		return m, viewDetail()
 	case key.O:
 		system.OpenBrowser(m.selectedItem().Link)
 	case key.Enter:

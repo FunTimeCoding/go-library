@@ -1,6 +1,6 @@
 package monitor
 
-import tea "github.com/charmbracelet/bubbletea"
+import "github.com/charmbracelet/bubbletea"
 
 func (m *Model) resizeEvent(g tea.WindowSizeMsg) {
 	m.width = g.Width

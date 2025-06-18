@@ -2,7 +2,7 @@ package monitor
 
 import (
 	"fmt"
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/receive"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"

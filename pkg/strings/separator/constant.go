@@ -13,6 +13,7 @@ const (
 	Equals      = "="
 	Hash        = "#"
 	Pipe        = "|"
+	Plus        = "+"
 	Semicolon   = ";"
 	Slash       = "/"
 	Space       = " "

@@ -10,10 +10,21 @@ func (m *Model) View() string {
 		return "wait for screen size"
 	}
 
-	return lipgloss.JoinVertical(
-		lipgloss.Left, renderToasts(m.toast),
-		constant.Default.Render(m.topBar),
-		constant.Table.Render(m.table.View()),
-		constant.Default.Render(m.bottomBar),
+	if m.modal == nil {
+		return lipgloss.JoinVertical(
+			lipgloss.Left,
+			renderToasts(m.toast),
+			constant.Default.Render(m.topBar),
+			constant.Table.Render(m.table.View()),
+			constant.Default.Render(m.bottomBar),
+		)
+	}
+
+	return lipgloss.Place(
+		m.width,
+		m.height,
+		lipgloss.Center,
+		lipgloss.Center,
+		constant.Modal.Render(m.modal.content),
 	)
 }

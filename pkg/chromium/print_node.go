@@ -8,23 +8,25 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
-func (c *Client) PrintNodes(
+func (c *Client) PrintNode(
 	o context.Context,
 	selector string,
-	attributes []string,
+	attribute []string,
 ) {
-	var nodes []*cdp.Node
+	var node []*cdp.Node
 	errors.PanicOnError(
 		chromedp.Run(
 			o,
-			chromedp.Nodes(selector, &nodes, chromedp.ByQueryAll),
+			chromedp.Nodes(selector, &node, chromedp.ByQueryAll),
 		),
 	)
 
 	fmt.Printf("Selector: %s\n", selector)
 
-	for _, n := range nodes {
-		for _, a := range attributes {
+	for i, n := range node {
+		fmt.Printf("Index: %d\n", i)
+
+		for _, a := range attribute {
 			fmt.Printf("  %s: %s\n", a, n.AttributeValue(a))
 		}
 	}

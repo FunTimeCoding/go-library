@@ -9,6 +9,6 @@ import (
 func Tab() {
 	c := chromium.NewEnvironment()
 	defer c.Close()
-	t := c.TabByHost(environment.Get("CHROMIUM_EXAMPLE_TAB", 1))
+	t := c.TabByHost(environment.Get("CHROMIUM_EXAMPLE_TAB"))
 	fmt.Printf("Body: %+v", c.Body(t.Id))
 }

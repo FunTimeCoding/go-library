@@ -13,11 +13,11 @@ func NewEnvironment(o ...OptionFunc) *Client {
 	}
 
 	if t.Host == "" {
-		t.Host = environment.Get(constant.HostEnvironment, 1)
+		t.Host = environment.Get(constant.HostEnvironment)
 	}
 
 	if t.Token == "" {
-		t.Token = environment.Get(constant.TokenEnvironment, 1)
+		t.Token = environment.Get(constant.TokenEnvironment)
 	}
 
 	if t.Team == "" {

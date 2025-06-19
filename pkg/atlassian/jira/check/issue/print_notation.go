@@ -19,7 +19,7 @@ func printNotation(
 	r := report.New()
 	issues := query.Open(
 		c,
-		environment.Get(jiraConstant.ProjectEnvironment, 1),
+		environment.Get(jiraConstant.ProjectEnvironment),
 	)
 
 	if !o.All && len(issues) > constant.NotationReport {

@@ -8,12 +8,12 @@ import (
 
 func (c *Client) IssuesSimple() []*issue.Issue {
 	o := c.Organization(
-		environment.Get(constant.OrganizationEnvironment, 1),
+		environment.Get(constant.OrganizationEnvironment),
 	)
 
 	return c.Issues(
 		o,
-		c.Project(o, environment.Get(constant.ProjectEnvironment, 1)),
+		c.Project(o, environment.Get(constant.ProjectEnvironment)),
 		constant.PeriodFortnight,
 	)
 }

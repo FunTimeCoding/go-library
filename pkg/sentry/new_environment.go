@@ -7,7 +7,7 @@ import (
 
 func NewEnvironment() *Client {
 	return New(
-		environment.Get(constant.HostEnvironment, 1),
-		environment.Get(constant.TokenEnvironment, 1),
+		environment.Get(constant.HostEnvironment),
+		environment.Get(constant.TokenEnvironment),
 	)
 }

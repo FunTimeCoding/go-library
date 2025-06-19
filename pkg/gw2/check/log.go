@@ -26,14 +26,14 @@ func Log(
 	tag string,
 ) {
 	if tag == "" {
-		tag = environment.Get(gw2.AllianceEnvironment, 1)
+		tag = environment.Get(gw2.AllianceEnvironment)
 	}
 
-	atRiskCutOff := environment.Get(gw2.AtRiskCutOffEnvironment, 1)
-	currentTeam := environment.Get(gw2.TeamEnvironment, 1)
+	atRiskCutOff := environment.Get(gw2.AtRiskCutOffEnvironment)
+	currentTeam := environment.Get(gw2.TeamEnvironment)
 	start := timeLibrary.Parse(
 		"2006-01-02",
-		environment.Get(gw2.LinkStartDateEnvironment, 1),
+		environment.Get(gw2.LinkStartDateEnvironment),
 	)
 	matchUpStart := time.Date(
 		start.Year(),
@@ -52,7 +52,7 @@ func Log(
 	fmt.Printf("Alliance tag: %s\n", tag)
 	fmt.Printf("Team: %s\n", currentTeam)
 	fmt.Printf("At-risk cut-off member: %s\n", atRiskCutOff)
-	token := environment.Get(gw2.TokenEnvironment, 1)
+	token := environment.Get(gw2.TokenEnvironment)
 
 	if token == "" {
 		fmt.Println("No GW2 API token found")

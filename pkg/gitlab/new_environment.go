@@ -8,8 +8,8 @@ import (
 
 func NewEnvironment() *Client {
 	return New(
-		web.TrimScheme(environment.Get(constant.HostEnvironment, 1)),
-		environment.Get(constant.TokenEnvironment, 1),
+		web.TrimScheme(environment.Get(constant.HostEnvironment)),
+		environment.Get(constant.TokenEnvironment),
 		[]int{},
 	)
 }

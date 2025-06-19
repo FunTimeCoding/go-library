@@ -11,7 +11,7 @@ import (
 
 func Official() {
 	c := openai.NewClient(
-		option.WithAPIKey(environment.Get(constant.TokenEnvironment, 1)),
+		option.WithAPIKey(environment.Get(constant.TokenEnvironment)),
 	)
 	r, e := c.Chat.Completions.New(
 		context.Background(),

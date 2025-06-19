@@ -1,19 +1,13 @@
 package main
 
-import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/brave"
-	"github.com/funtimecoding/go-library/pkg/brave/constant"
-)
+import "github.com/funtimecoding/go-library/pkg/brave/example"
 
 func main() {
-	for _, p := range brave.Profiles() {
-		fmt.Printf("Profile: %+v\n", p)
+	if true {
+		example.Extract()
+	}
 
-		if false {
-			if p.Profile == constant.Profile2 {
-				brave.OpenProfile(p.Profile)
-			}
-		}
+	if false {
+		example.Profile()
 	}
 }

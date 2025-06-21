@@ -1,7 +1,7 @@
 package site
 
 func (s *Site) clickCloseMemories() {
-	n := s.protocol.Select(CloseDialogSelector, 2)
+	n := s.protocol.Select(CloseMemoriesSelector, 2)
 
 	if n == nil {
 		return

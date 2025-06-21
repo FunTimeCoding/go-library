@@ -11,14 +11,20 @@ func (s *Site) ExtractFlow(verbose bool) string {
 	s.clickNew()
 
 	if false {
-		s.printProfileButton()
+		s.printProfile()
 	}
 
 	s.clickProfile()
 
 	s.clickSettings()
 	s.clickPersonalize()
+
+	if false {
+		s.printMemories()
+	}
+
 	s.clickMemories()
+
 	result := s.readMemories()
 
 	if verbose {

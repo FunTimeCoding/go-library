@@ -1,5 +1,5 @@
 package site
 
-func (s *Site) printProfileButton() {
-	s.protocol.PrintNode(ProfileButtonSelector, usefulAttributes)
+func (s *Site) printProfile() {
+	s.protocol.PrintNode(ProfileSelector, usefulAttributes)
 }

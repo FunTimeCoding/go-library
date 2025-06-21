@@ -1,19 +1,19 @@
 package site
 
 const (
-	// NewChatSelector not unique, requires index
-	NewChatSelector = `a[data-testid="create-new-chat-button"]`
+	// NewSelector not unique, requires index
+	NewSelector = `a[data-testid="create-new-chat-button"]`
 
-	ProfileButtonSelector = `[data-testid="profile-button"]`
+	ProfileSelector = `[data-testid="profile-button"]`
 
-	SettingsButtonSelector = `[data-testid="settings-menu-item"]`
+	SettingsSelector = `[data-testid="settings-menu-item"]`
 
-	PersonalizationTabSelector = `[data-testid="personalization-tab"]`
+	PersonalizeSelector = `[data-testid="personalization-tab"]`
 
-	ManageMemoriesSelector = `//a[text()="Manage memories"]`
+	MemoriesSelector = `[class="flex items-center justify-center"]`
 
-	// CloseDialogSelector not unique, requires index
-	CloseDialogSelector = `div[role="dialog"] [data-testid="close-button"]`
+	// CloseMemoriesSelector not unique, requires index
+	CloseMemoriesSelector = `div[role="dialog"] [data-testid="close-button"]`
 
 	CloseSettingsSelector = `div[role="tablist"] [data-testid="close-button"]`
 )

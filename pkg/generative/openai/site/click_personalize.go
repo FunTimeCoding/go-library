@@ -1,5 +1,5 @@
 package site
 
 func (s *Site) clickPersonalize() {
-	s.protocol.ClickQuery(PersonalizationTabSelector)
+	s.protocol.ClickQuery(PersonalizeSelector)
 }

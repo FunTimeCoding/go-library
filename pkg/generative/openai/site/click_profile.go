@@ -1,5 +1,5 @@
 package site
 
 func (s *Site) clickProfile() {
-	s.protocol.ClickQuery(ProfileButtonSelector)
+	s.protocol.ClickQuery(ProfileSelector)
 }

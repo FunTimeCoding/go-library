@@ -11,7 +11,7 @@ import (
 
 func Print(o *option.Issue) {
 	c := internal.Jira()
-	project := environment.Get(constant.ProjectEnvironment, 1)
+	project := environment.Get(constant.ProjectEnvironment)
 
 	if o.Notation {
 		printNotation(c, o)

@@ -36,6 +36,8 @@ func Start(
 			),
 			EnableTracing:    true,
 			TracesSampleRate: 1.0,
+			AttachStacktrace: true,
+			SendDefaultPII:   true,
 		},
 	)
 	errors.FatalOnError(e)

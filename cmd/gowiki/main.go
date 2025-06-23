@@ -18,6 +18,7 @@ func main() {
 	if viper.GetBool(argument.Watched) {
 		for _, p := range c.Favorites() {
 			fmt.Println(p.Format(f))
+			p.PrintConsole()
 		}
 
 		return
@@ -25,5 +26,8 @@ func main() {
 
 	for _, p := range c.Pages() {
 		fmt.Println(p.Format(f))
+		p.PrintConsole()
 	}
+
+	// TODO: Synchronize runbooks after designing the runbook
 }

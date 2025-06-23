@@ -7,8 +7,8 @@ import (
 )
 
 func CustomValue() {
-	issue := environment.Get("JIRA_TEST_ISSUE", 1)
-	field := environment.Get("JIRA_TEST_FIELD", 1)
+	issue := environment.Get("JIRA_TEST_ISSUE")
+	field := environment.Get("JIRA_TEST_FIELD")
 	fmt.Printf(
 		"Field value: %s\n",
 		internal.Jira().SetVerbose(true).Issue(issue).CustomValue(field),

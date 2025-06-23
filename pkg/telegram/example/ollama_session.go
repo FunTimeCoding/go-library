@@ -21,7 +21,7 @@ func OllamaSession() {
 	defer t.Close()
 	t.PrintDatabase()
 	f := constant.Format
-	c := environment.Get(constant.ChannelEnvironment, 1)
+	c := environment.Get(constant.ChannelEnvironment)
 	verbose := true
 	statistics := false
 	ownName := t.Self().UserName

@@ -6,9 +6,7 @@ import (
 )
 
 func Example() {
-	c := New(environment.Get(TokenEnvironment, 1))
-
+	c := New(environment.Get(TokenEnvironment))
 	fmt.Printf("Worlds: %+v\n", c.Worlds())
-
 	fmt.Printf("Account: %+v\n", c.Account())
 }

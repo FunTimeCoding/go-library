@@ -7,20 +7,10 @@ import (
 
 func Support() {
 	user1 := mattermost.NewEnvironment(
-		mattermost.WithToken(
-			environment.Get(
-				"MATTERMOST_TOKEN_USER1",
-				1,
-			),
-		),
+		mattermost.WithToken(environment.Get("MATTERMOST_TOKEN_USER1")),
 	)
 	user2 := mattermost.NewEnvironment(
-		mattermost.WithToken(
-			environment.Get(
-				"MATTERMOST_TOKEN_USER2",
-				1,
-			),
-		),
+		mattermost.WithToken(environment.Get("MATTERMOST_TOKEN_USER2")),
 	)
 	h := user1.DefaultChannel()
 	t := user1.PostSimple(

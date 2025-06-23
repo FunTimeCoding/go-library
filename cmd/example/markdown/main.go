@@ -7,8 +7,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/yuin/goldmark"
-	"github.com/yuin/goldmark/text"
 )
 
 func main() {
@@ -24,20 +22,8 @@ func main() {
 				strings.PrefixMultiline(string(source), "> "),
 			),
 		)
-
 		f := file.New(&source)
 		f.Parse()
-
-		p := goldmark.DefaultParser()
-		o := p.Parse(text.NewReader(source))
-
-		if false {
-			file.Walk(&source, o)
-		}
-
-		if true {
-			file.WalkTree(&source, o)
-		}
 
 		if true {
 			break

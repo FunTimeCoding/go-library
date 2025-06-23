@@ -15,9 +15,16 @@ func TestFile(t *testing.T) {
 func TestParse(t *testing.T) {
 	s := "## Example\n\nList of files in the current directory:\n```sh\nls -alh\n```\n"
 	source := []byte(s)
-
 	f := New(&source)
-	f.Parse()
+	assert.Strings(
+		t,
+		[]string{
+			"Example",
+			"List of files in the current directory:",
+			"ls -alh\n",
+		},
+		f.Parse().Content(),
+	)
 }
 
 func TestFixture(t *testing.T) {

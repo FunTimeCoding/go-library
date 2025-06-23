@@ -1,15 +1,16 @@
 package file
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/markdown/file/flat"
 	"github.com/yuin/goldmark/ast"
 )
 
 func WalkTree(
 	s *[]byte,
 	n ast.Node,
-) {
+	l *flat.Flat,
+) *flat.Flat {
 	errors.PanicOnError(
 		ast.Walk(
 			n,
@@ -21,21 +22,17 @@ func WalkTree(
 					return ast.WalkContinue, nil
 				}
 
+				l.Add(NodeValue(s, n))
 				PrintNode(s, n)
 
 				if false {
-					if n.Kind() == ast.KindText {
-						textNode := n.(*ast.Text)
-						segment := textNode.Segment
-						fmt.Printf(
-							"Text kind: %s\n",
-							string(segment.Value(*s)),
-						)
-					}
+					PrintKind(s, n)
 				}
 
 				return ast.WalkContinue, nil
 			},
 		),
 	)
+
+	return l
 }

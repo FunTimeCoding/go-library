@@ -36,7 +36,6 @@ func main() {
 
 	sentry.Start("", "", "", "")
 	sentry.Flush(nil)
-	sentry.Recover(nil, nil)
 
 	markup.ToNotation("")
 

@@ -15,5 +15,9 @@ func TestDirectoryContent(t *testing.T) {
 		),
 		constant.FixturePath,
 	)
-	assert.Strings(t, []string{"lint", "notation"}, DirectoryContent(fixture))
+	assert.Strings(
+		t,
+		[]string{"hypertext", "lint", "markdown", "notation"},
+		DirectoryContent(fixture),
+	)
 }

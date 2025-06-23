@@ -1,7 +1,9 @@
 package hypertext
 
 import (
+	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"testing"
 )
 
@@ -16,6 +18,10 @@ func TestHeaders(t *testing.T) {
 			"Example h5",
 			"Example h6",
 		},
-		Headers(Document(fixtureFile("test.html"))),
+		Headers(
+			Document(
+				internal.FixtureFile(constant.HypertextPath, "test.html"),
+			),
+		),
 	)
 }

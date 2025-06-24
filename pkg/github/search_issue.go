@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github/issue"
 )
 
-func (c *Client) Search(
+func (c *Client) SearchIssue(
 	query string,
 	a ...any,
 ) []*issue.Issue {

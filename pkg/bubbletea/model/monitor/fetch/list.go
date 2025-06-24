@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func list() []string {
+func List() []string {
 	result := []string{
 		constant.GoAlert,
 		constant.GoFile,

@@ -9,8 +9,13 @@ func Generate(
 	f []float64,
 	values []string,
 ) []*Mapping {
-	sort.Float64s(f)
 	result := make([]*Mapping, 0)
+
+	if len(f) == 0 || len(values) == 0 {
+		return result
+	}
+
+	sort.Float64s(f)
 	rangeCount := len(values)
 
 	if rangeCount == 0 {

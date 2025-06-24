@@ -3,9 +3,7 @@ package fetch
 import (
 	"fmt"
 	"github.com/charmbracelet/bubbletea"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
-	"github.com/funtimecoding/go-library/pkg/system/run"
 	"strings"
 )
 
@@ -13,11 +11,9 @@ func Command() tea.Cmd {
 	return func() tea.Msg {
 		result := Message{}
 
-		for _, c := range list() {
-			if run.CommandExists(c) {
-				if m := monitor.Run(c); m != nil {
-					result.Items = append(result.Items, m.Items...)
-				}
+		for _, c := range List() {
+			if i := Run(c); len(i) > 0 {
+				result.Items = append(result.Items, i...)
 			}
 		}
 

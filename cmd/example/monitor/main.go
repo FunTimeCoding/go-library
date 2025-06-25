@@ -4,10 +4,11 @@ import "github.com/funtimecoding/go-library/pkg/monitor/check/collect"
 
 func main() {
 	if true {
-		collect.Loop()
+		collect.LoopIndividual()
 	}
 
 	if false {
+		collect.Loop()
 		collect.Check()
 	}
 }

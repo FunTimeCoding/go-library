@@ -1,7 +1,7 @@
 package alert
 
 func (a *Alert) Detail(key string) string {
-	if result, okay := a.Raw.Labels[key]; okay {
+	if result, okay := a.Labels[key]; okay {
 		return result
 	}
 

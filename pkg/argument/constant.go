@@ -28,6 +28,7 @@ const (
 	Fingerprint = "fingerprint"
 	Firing      = "firing"
 	Fix         = "fix"
+	Group       = "group"
 	Hardware    = "hardware"
 	Header      = "header"
 	Host        = "host"

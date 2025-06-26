@@ -34,6 +34,12 @@ func (a *Alert) Format(f *option.Format) string {
 
 	s.String(a.formatSeverity(f))
 
+	if f.HasTag(tag.Instance) {
+		if v := a.formatInstance(); v != "" {
+			s.String(v)
+		}
+	}
+
 	if a.Start != nil {
 		if false {
 			s.String(a.Start.Format(time.DateMinute))
@@ -43,10 +49,6 @@ func (a *Alert) Format(f *option.Format) string {
 	}
 
 	s.TagLine(tag.Link, "  %s", a.Link)
-
-	if i := a.formatInstance(); i != "" {
-		s.TagLine(tag.Instance, "  Instance: %s", i)
-	}
 
 	if a.Runbook != constant.None {
 		s.TagLine(

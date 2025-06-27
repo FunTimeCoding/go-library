@@ -7,33 +7,41 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github/job"
 )
 
-func Run() {
+func Run(verbose bool) {
 	c := github.NewEnvironment()
 	f := option.ExtendedColor.Copy()
 	owner := *c.User().Login
 
-	// TODO: Filter which repositories most recent conclusion is failed
+	if verbose {
+		fmt.Printf("Owner: %s\n", owner)
+	}
+
 	for _, a := range c.ActionRepository() {
 		repository := a.Name
-		fmt.Printf("Repository: %s/%s\n", owner, repository)
 
-		for _, r := range c.Runs(owner, repository) {
-			fmt.Printf("Run: %s\n", r.Format(f))
+		if verbose {
+			fmt.Printf("Repository: %s/%s\n", owner, repository)
+		}
 
-			for _, j := range c.Jobs(owner, repository, *r.Raw.ID) {
-				fmt.Printf("  Job: %s\n", j.Format(f))
+		for i, r := range c.Runs(owner, repository) {
+			if i > 0 {
+				c.DeleteRun(owner, repository, *r.Raw.ID)
 
-				if false {
-					fmt.Printf("    Conclusion: %+v\n", *j.Raw.Conclusion)
-				}
-
-				if *j.Raw.Conclusion == job.Failure {
-					fmt.Printf("    Failed\n")
-				}
+				continue
 			}
 
-			if false {
-				c.DeleteRun(owner, repository, *r.Raw.ID)
+			if verbose {
+				fmt.Printf("Run %d: %s\n", i, r.Format(f))
+			}
+
+			for _, j := range c.Jobs(owner, repository, *r.Raw.ID) {
+				if verbose {
+					fmt.Printf("  Job: %s\n", j.Format(f))
+				}
+
+				if j.Conclusion == job.Failure {
+					fmt.Printf("%s/%s fail\n", owner, repository)
+				}
 			}
 		}
 	}

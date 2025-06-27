@@ -7,6 +7,7 @@ import (
 
 type Repository struct {
 	Identifier int64
+	Owner      string
 	Name       string
 	CreatedAt  time.Time
 

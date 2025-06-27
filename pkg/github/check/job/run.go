@@ -39,6 +39,8 @@ func Run(verbose bool) {
 					fmt.Printf("  Job: %s\n", j.Format(f))
 				}
 
+				fmt.Printf("Repository: %+v\n", r.Repository().Raw)
+
 				if j.Conclusion == job.Failure {
 					fmt.Printf("%s/%s fail\n", owner, repository)
 				}

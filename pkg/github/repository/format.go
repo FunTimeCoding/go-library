@@ -8,6 +8,7 @@ import (
 
 func (r *Repository) Format(f *option.Format) string {
 	return status.New(f).String(
+		r.Owner,
 		r.Name,
 		r.CreatedAt.Format(time.DateMinute),
 	).RawList(r).Format()

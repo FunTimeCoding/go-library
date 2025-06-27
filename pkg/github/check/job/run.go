@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/github"
-	"github.com/funtimecoding/go-library/pkg/github/job"
 )
 
 func Run(verbose bool) {
@@ -39,10 +38,8 @@ func Run(verbose bool) {
 					fmt.Printf("  Job: %s\n", j.Format(f))
 				}
 
-				fmt.Printf("Repository: %+v\n", r.Repository().Raw)
-
-				if j.Conclusion == job.Failure {
-					fmt.Printf("%s/%s fail\n", owner, repository)
+				if j.Fail() {
+					fmt.Printf("%s fail\n", r.Repository().FullName)
 				}
 			}
 		}

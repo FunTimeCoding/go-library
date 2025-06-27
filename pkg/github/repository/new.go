@@ -16,6 +16,7 @@ func New(v *github.Repository) *Repository {
 		Identifier: v.GetID(),
 		Owner:      v.GetOwner().GetLogin(),
 		Name:       v.GetName(),
+		FullName:   v.GetFullName(),
 		CreatedAt:  create,
 		Raw:        v,
 	}

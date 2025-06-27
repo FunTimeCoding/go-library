@@ -19,8 +19,8 @@ func main() {
 	)
 	argument.ParseBind()
 	o := option.New()
-	o.All = viper.GetBool(argument.All)
 	o.Notation = viper.GetBool(argument.Notation)
+	o.All = viper.GetBool(argument.All)
 	o.Clean = viper.GetBool(argument.Clean)
 	event.Print(o)
 }

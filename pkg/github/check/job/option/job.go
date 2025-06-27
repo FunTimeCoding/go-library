@@ -1,7 +1,7 @@
 package option
 
-type Silence struct {
+type Job struct {
 	Notation bool
 	All      bool
-	Set      string
+	Verbose  bool
 }

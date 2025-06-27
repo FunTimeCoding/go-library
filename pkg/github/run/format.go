@@ -10,6 +10,6 @@ func (r *Run) Format(f *option.Format) string {
 	return status.New(f).String(
 		r.Name,
 		r.Status,
-		r.CreatedAt.Format(time.DateMinute),
-	).RawList(r).Format()
+		r.Create.Format(time.DateMinute),
+	).RawList(r.Raw).Format()
 }

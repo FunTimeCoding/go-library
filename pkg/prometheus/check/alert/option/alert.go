@@ -1,8 +1,8 @@
 package option
 
 type Alert struct {
-	All      bool
 	Notation bool
+	All      bool
 
 	Critical bool
 	Warning  bool

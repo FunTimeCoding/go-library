@@ -7,7 +7,7 @@ func (c *Client) ActionRepository() []*repository.Repository {
 
 	for _, o := range c.SearchCode(
 		"actions/checkout user:%s in:file language:yaml",
-		*c.User().Login,
+		c.User().Name,
 	) {
 		result = append(result, repository.New(o.Raw.Repository))
 	}

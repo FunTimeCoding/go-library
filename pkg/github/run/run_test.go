@@ -17,5 +17,5 @@ func TestRun(t *testing.T) {
 		},
 	)
 	r.Raw = nil
-	assert.Any(t, &Run{Name: "Alfa", CreatedAt: time.Time{}}, r)
+	assert.Any(t, &Run{Name: "Alfa", Create: time.Time{}}, r)
 }

@@ -17,6 +17,7 @@ const (
 	AlertPrefix           = "alert"
 	ExamplePrefix         = "example"
 	FilePrefix            = "file"
+	GitHubPrefix          = "github"
 	JiraPrefix            = "jira"
 	KubernetesEventPrefix = "event"
 	OpsgeniePrefix        = "opsgenie"

@@ -6,10 +6,12 @@ import (
 )
 
 type Run struct {
-	Identifier int64
-	Name       string
-	Status     string
-	CreatedAt  time.Time
+	MonitorIdentifier string
+	Identifier        int64
+	Name              string
+	Status            string
+	Create            time.Time
+	Update            time.Time
 
 	Raw *github.WorkflowRun
 }

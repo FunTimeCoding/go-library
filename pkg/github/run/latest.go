@@ -14,7 +14,7 @@ func Latest(v []*Run) *Run {
 			continue
 		}
 
-		if r.CreatedAt.After(latest.CreatedAt) {
+		if r.Create.After(latest.Create) {
 			latest = r
 		}
 	}

@@ -11,7 +11,7 @@ func Search() {
 	if false {
 		for _, r := range c.SearchRepository(
 			"user:%s",
-			*c.User().Login,
+			c.User().Name,
 		) {
 			fmt.Printf("Repository: %s\n", r.Name)
 		}

@@ -2,12 +2,12 @@ package github
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/google/go-github/v70/github"
+	"github.com/funtimecoding/go-library/pkg/github/user"
 )
 
-func (c *Client) User() *github.User {
+func (c *Client) User() *user.User {
 	result, _, e := c.client.Users.Get(c.context, "")
 	errors.PanicOnError(e)
 
-	return result
+	return user.New(result)
 }

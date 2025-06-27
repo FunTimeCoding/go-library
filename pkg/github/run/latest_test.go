@@ -13,19 +13,19 @@ func TestLatest(t *testing.T) {
 		Latest(
 			[]*Run{
 				{
-					Name:      strings.Alfa,
-					Status:    Completed,
-					CreatedAt: assert.NewDay(0),
+					Name:   strings.Alfa,
+					Status: Completed,
+					Create: assert.NewDay(0),
 				},
 				{
-					Name:      strings.Bravo,
-					Status:    Completed,
-					CreatedAt: assert.NewDay(1),
+					Name:   strings.Bravo,
+					Status: Completed,
+					Create: assert.NewDay(1),
 				},
 				{
-					Name:      strings.Charlie,
-					Status:    Completed,
-					CreatedAt: assert.NewDay(2),
+					Name:   strings.Charlie,
+					Status: Completed,
+					Create: assert.NewDay(2),
 				},
 			},
 		).Name,

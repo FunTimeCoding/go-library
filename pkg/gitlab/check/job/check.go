@@ -1,36 +1,32 @@
 package job
 
 import (
-	"github.com/funtimecoding/go-library/pkg/argument"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
-	"github.com/spf13/pflag"
+	"github.com/funtimecoding/go-library/pkg/project"
 )
 
 func Check() {
-	pflag.String(argument.Namespace, "", "Namespace")
-	pflag.String(argument.Project, "", "Project")
-	pflag.String(argument.Match, "", "Description match")
-	argument.ParseBind()
+	// TODO: Implement for GitLab like GitHub
 	g := gitlab.NewEnvironment()
 
 	if true {
-		RunnerWay(g, argument.RequiredStringFlag(argument.Match, 1))
+		for _, p := range g.ProjectsWithFile(project.GitLabFile) {
+			fmt.Printf("Project: %s\n", p.NameWithNamespace)
+		}
 	}
 
 	if false {
-		p := g.ProjectByName(
-			argument.RequiredStringFlag(argument.Namespace, 1),
-			argument.RequiredStringFlag(argument.Project, 1),
-		)
+		// Free version search is limited
 
-		if false {
-			PipelineWay(g, p)
+		for _, p := range g.SearchProject("") {
+			fmt.Printf("Project: %s\n", p.NameWithNamespace)
 		}
 
-		if false {
-			ProjectWay(g, p)
+		for _, b := range g.SearchBlob(
+			fmt.Sprintf("filename:%s", project.GitLabFile),
+		) {
+			fmt.Printf("Blob: %+v\n", b)
 		}
 	}
-
-	// TODO: Retry if failed, but only if not already retried and successful afterwards
 }

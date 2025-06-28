@@ -4,9 +4,23 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/google/go-github/v70/github"
+	"time"
 )
 
 func New(v *github.WorkflowRun) *Run {
+	var create time.Time
+	var update time.Time
+
+	if v.CreatedAt != nil {
+		create = v.CreatedAt.Time
+	}
+
+	if v.UpdatedAt == nil {
+		update = create
+	} else {
+		update = v.UpdatedAt.Time
+	}
+
 	return &Run{
 		MonitorIdentifier: fmt.Sprintf(
 			"%s-%d",
@@ -16,8 +30,8 @@ func New(v *github.WorkflowRun) *Run {
 		Identifier: v.GetID(),
 		Name:       v.GetName(),
 		Status:     v.GetStatus(),
-		Create:     v.CreatedAt.Time,
-		Update:     v.UpdatedAt.Time,
+		Create:     create,
+		Update:     update,
 		Raw:        v,
 	}
 }

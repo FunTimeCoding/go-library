@@ -2,7 +2,7 @@ package pipeline
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	gitlab "gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go"
 	"testing"
 )
 

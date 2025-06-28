@@ -1,4 +1,4 @@
-package job
+package clean_job
 
 import (
 	"fmt"

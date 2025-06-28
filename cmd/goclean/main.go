@@ -15,18 +15,18 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
 	"github.com/funtimecoding/go-library/pkg/gitlab/pipeline"
 	labTag "github.com/funtimecoding/go-library/pkg/gitlab/tag"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"slices"
 	"strings"
 )
 
 func main() {
-	pflag.Bool(argument.Verbose, false, "Verbose output")
+	monitor.VerboseArgument()
 	argument.ParseBind()
 	verbose := viper.GetBool(argument.Verbose)
 

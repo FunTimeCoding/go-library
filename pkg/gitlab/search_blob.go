@@ -10,7 +10,7 @@ func (c *Client) SearchBlob(query string) []*gitlab.Blob {
 
 	for _, p := range c.Projects() {
 		page, _, e := c.client.Search.BlobsByProject(
-			p.ID,
+			p.Identifier,
 			query,
 			&gitlab.SearchOptions{},
 		)

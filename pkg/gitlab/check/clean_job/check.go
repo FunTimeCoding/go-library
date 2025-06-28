@@ -3,6 +3,7 @@ package clean_job
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/spf13/pflag"
 )
 
@@ -12,6 +13,7 @@ func Check() {
 	pflag.String(argument.Match, "", "Description match")
 	argument.ParseBind()
 	g := gitlab.NewEnvironment()
+	f := constant.Format
 
 	if true {
 		RunnerWay(g, argument.RequiredStringFlag(argument.Match, 1))
@@ -24,11 +26,11 @@ func Check() {
 		)
 
 		if false {
-			PipelineWay(g, p)
+			PipelineWay(g, p, f)
 		}
 
 		if false {
-			ProjectWay(g, p)
+			ProjectWay(g, p, f)
 		}
 	}
 

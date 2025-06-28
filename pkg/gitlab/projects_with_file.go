@@ -2,18 +2,18 @@ package gitlab
 
 import (
 	"fmt"
-	"gitlab.com/gitlab-org/api/client-go"
+	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 )
 
-func (c *Client) ProjectsWithFile(path string) []*gitlab.Project {
-	var result []*gitlab.Project
+func (c *Client) ProjectsWithFile(path string) []*project.Project {
+	var result []*project.Project
 
 	for _, p := range c.Projects() {
 		if false {
-			fmt.Printf("Project: %s\n", p.NameWithNamespace)
+			fmt.Printf("Project: %s\n", p.Raw.NameWithNamespace)
 		}
 
-		for _, n := range c.Tree(p.ID) {
+		for _, n := range c.Tree(p.Identifier) {
 			if path == n.Path {
 				result = append(result, p)
 

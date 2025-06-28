@@ -2,13 +2,12 @@ package main
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/clean_job"
-	"github.com/funtimecoding/go-library/pkg/gitlab/check/job"
 	"github.com/funtimecoding/go-library/pkg/gitlab/example"
 )
 
 func main() {
 	if true {
-		job.Check()
+		example.Search()
 	}
 
 	if false {

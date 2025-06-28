@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/spf13/pflag"
@@ -30,7 +31,7 @@ func Main() {
 		DefaultOutput,
 		"Output directory for executable",
 	)
-	pflag.Bool(argument.Verbose, false, "Verbose output")
+	monitor.VerboseArgument()
 	common.ValidateArguments()
 
 	argument.RequiredStringFlag(argument.Package, 1)

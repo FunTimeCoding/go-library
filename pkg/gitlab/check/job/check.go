@@ -3,30 +3,30 @@ package job
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
-	"github.com/funtimecoding/go-library/pkg/project"
+	"github.com/funtimecoding/go-library/pkg/gitlab/check/job/option"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 )
 
-func Check() {
-	// TODO: Implement for GitLab like GitHub
+func Check(o *option.Job) {
 	g := gitlab.NewEnvironment()
+	relevant := g.FailedJobs(o.Verbose)
 
-	if true {
-		for _, p := range g.ProjectsWithFile(project.GitLabFile) {
-			fmt.Printf("Project: %s\n", p.NameWithNamespace)
-		}
+	if o.Notation {
+		printNotation(relevant, o)
+
+		return
 	}
 
-	if false {
-		// Free version search is limited
+	if len(relevant) == 0 {
+		fmt.Println("No failed jobs found.")
 
-		for _, p := range g.SearchProject("") {
-			fmt.Printf("Project: %s\n", p.NameWithNamespace)
-		}
+		return
+	}
 
-		for _, b := range g.SearchBlob(
-			fmt.Sprintf("filename:%s", project.GitLabFile),
-		) {
-			fmt.Printf("Blob: %+v\n", b)
-		}
+	f := constant.Format
+
+	for _, j := range relevant {
+		fmt.Printf("Project: %s\n", j.Project.Format(f))
+		fmt.Printf("  Job: %s\n", j.Format(f))
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github/constant"
 )
 
-func Print(o *option.Job) {
+func Check(o *option.Job) {
 	c := github.NewEnvironment()
 	f := constant.Format
 	owner := c.User().Name

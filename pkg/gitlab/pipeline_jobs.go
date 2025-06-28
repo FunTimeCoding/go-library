@@ -2,6 +2,7 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/gitlab/job"
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"gitlab.com/gitlab-org/api/client-go"
 )
@@ -9,7 +10,7 @@ import (
 func (c *Client) PipelineJobs(
 	project int,
 	pipeline int,
-) []*gitlab.Job {
+) []*job.Job {
 	result, _, e := c.client.Jobs.ListPipelineJobs(
 		project,
 		pipeline,
@@ -17,5 +18,5 @@ func (c *Client) PipelineJobs(
 	)
 	errors.PanicOnError(e)
 
-	return result
+	return job.NewSlice(result)
 }

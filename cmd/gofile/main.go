@@ -9,14 +9,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"time"
 )
 
 func main() {
 	monitor.NotationArgument()
-	pflag.Bool(argument.Verbose, false, "Verbose output")
+	monitor.VerboseArgument()
 	argument.ParseBind()
 	r := report.New()
 	verbose := viper.GetBool(argument.Verbose)

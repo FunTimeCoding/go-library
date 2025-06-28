@@ -2,12 +2,13 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"gitlab.com/gitlab-org/api/client-go"
+	"github.com/funtimecoding/go-library/pkg/gitlab/job"
+	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 )
 
-func (c *Client) ProjectJobs(project int) []*gitlab.Job {
-	result, _, e := c.client.Jobs.ListProjectJobs(project, nil)
+func (c *Client) ProjectJobs(p *project.Project) []*job.Job {
+	result, _, e := c.client.Jobs.ListProjectJobs(p.Identifier, nil)
 	errors.PanicOnError(e)
 
-	return result
+	return enrichJobs(job.NewSlice(result), p)
 }

@@ -3,11 +3,12 @@ package gitlab
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
+	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
-func (c *Client) Projects() []*gitlab.Project {
-	var result []*gitlab.Project
+func (c *Client) Projects() []*project.Project {
+	var result []*project.Project
 	var number int
 
 	for {
@@ -20,7 +21,7 @@ func (c *Client) Projects() []*gitlab.Project {
 			},
 		)
 		errors.PanicOnError(e)
-		result = append(result, page...)
+		result = append(result, project.NewSlice(page)...)
 
 		if len(page) < constant.PerPage100 {
 			break

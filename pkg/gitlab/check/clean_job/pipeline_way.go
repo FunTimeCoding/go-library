@@ -2,6 +2,7 @@ package clean_job
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 )
@@ -9,12 +10,13 @@ import (
 func PipelineWay(
 	g *gitlab.Client,
 	p *project.Project,
+	f *option.Format,
 ) {
-	for _, pipeline := range g.Pipelines(p.Identifier) {
-		fmt.Printf("Pipeline: %+v\n", pipeline.ID)
+	for _, i := range g.Pipelines(p.Identifier) {
+		fmt.Printf("Pipeline: %+v\n", i.ID)
 
-		for _, job := range g.PipelineJobs(p.Identifier, pipeline.ID) {
-			fmt.Printf("  Job: %s | %s\n", job.Name, job.Status)
+		for _, j := range g.PipelineJobs(p.Identifier, i.ID) {
+			fmt.Printf("  Job: %s\n", j.Format(f))
 		}
 	}
 }

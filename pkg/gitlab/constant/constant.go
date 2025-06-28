@@ -1,6 +1,9 @@
 package constant
 
-import "gitlab.com/gitlab-org/api/client-go"
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"gitlab.com/gitlab-org/api/client-go"
+)
 
 const (
 	OpenedState  = "opened"
@@ -46,3 +49,5 @@ const (
 	CommitTag         = "CI_COMMIT_TAG"
 	JobToken          = "CI_JOB_TOKEN"
 )
+
+var Format = option.Color.Copy()

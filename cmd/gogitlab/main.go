@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/github/check/job"
-	"github.com/funtimecoding/go-library/pkg/github/check/job/option"
+	"github.com/funtimecoding/go-library/pkg/gitlab/check/job"
+	"github.com/funtimecoding/go-library/pkg/gitlab/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/spf13/viper"
 )

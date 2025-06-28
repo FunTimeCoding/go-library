@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/lint"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -18,11 +19,7 @@ func main() {
 		"",
 		"Directories to skip, comma separated",
 	)
-	pflag.Bool(
-		argument.Verbose,
-		false,
-		"Verbose output",
-	)
+	monitor.VerboseArgument()
 	argument.ParseBind()
 	lint.Lint(
 		viper.GetString(argument.Skip),

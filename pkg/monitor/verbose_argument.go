@@ -6,5 +6,5 @@ import (
 )
 
 func VerboseArgument() {
-	pflag.Bool(argument.Notation, false, "Verbose output")
+	pflag.Bool(argument.Verbose, false, "Verbose output")
 }

@@ -1,7 +1,6 @@
 package alert
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
@@ -9,7 +8,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	alertmanagerConstant "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
-	"time"
 )
 
 func printNotation(
@@ -28,21 +26,13 @@ func printNotation(
 		relevant = append(relevant, a)
 	}
 
-	if !o.All && len(relevant) > constant.NotationReport {
-		relevant = relevant[0:constant.NotationReport]
-		r.AddItem(
-			fmt.Sprintf("%s-0", constant.AlertPrefix),
-			constant.WarningLevel,
-			fmt.Sprintf(
-				"Too many Prometheus alerts, showing only the top %d",
-				constant.NotationReport,
-			),
-			"",
-			&time.Time{},
-		)
-	}
-
-	for _, a := range relevant {
+	for _, a := range report.Trim(
+		relevant,
+		r,
+		o.All,
+		"Prometheus alerts",
+		constant.AlertPrefix,
+	) {
 		var alertType string
 
 		if a.Severity == alertmanagerConstant.CriticalSeverity {

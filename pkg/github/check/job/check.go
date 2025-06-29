@@ -10,8 +10,15 @@ import (
 func Check(o *option.Job) {
 	c := github.NewEnvironment()
 
+	if o.Notation && o.Verbose {
+		// Verbose would break JSON stdout
+		o.Verbose = false
+	}
+
+	jobs := c.FailedRuns(o.Verbose)
+
 	if o.Notation {
-		printNotation(c)
+		printNotation(jobs, o)
 
 		return
 	}
@@ -24,7 +31,7 @@ func Check(o *option.Job) {
 
 	f := constant.Format
 
-	for _, r := range c.FailedRuns(o.Verbose) {
+	for _, r := range jobs {
 		fmt.Printf("Run: %s\n", r.Format(f))
 		fmt.Printf("%s fail\n", r.Repository().FullName)
 	}

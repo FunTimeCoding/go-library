@@ -1,12 +1,10 @@
 package silence
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
-	"time"
 )
 
 func printNotation(
@@ -14,23 +12,14 @@ func printNotation(
 	o *option.Silence,
 ) {
 	r := report.New()
-	silences := c.Silences(false)
 
-	if !o.All && len(silences) > constant.NotationReport {
-		silences = silences[0:constant.NotationReport]
-		r.AddItem(
-			fmt.Sprintf("%s-0", constant.SilencePrefix),
-			constant.WarningLevel,
-			fmt.Sprintf(
-				"Too many silences, showing only the newest %d",
-				constant.NotationReport,
-			),
-			"",
-			&time.Time{},
-		)
-	}
-
-	for _, s := range silences {
+	for _, s := range report.Trim(
+		c.Silences(false),
+		r,
+		o.All,
+		"silences",
+		constant.SilencePrefix,
+	) {
 		r.AddItem(
 			s.MonitorIdentifier,
 			constant.WarningLevel,

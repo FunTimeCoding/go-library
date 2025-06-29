@@ -9,15 +9,15 @@ import (
 
 func Print(o *option.Alert) {
 	c := internal.Opsgenie()
+	alerts := c.Open()
 
 	if o.Notation {
-		printNotation(c, o)
+		printNotation(alerts, o)
 
 		return
 	}
 
 	f := constant.Format
-	alerts := c.Open()
 
 	for _, a := range alerts {
 		fmt.Println(a.Format(f))

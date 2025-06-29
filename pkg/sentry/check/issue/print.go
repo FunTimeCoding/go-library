@@ -11,15 +11,15 @@ import (
 
 func Print(o *option.Issue) {
 	c := sentry.NewEnvironment()
+	issues := c.IssuesSimple()
 
 	if o.Notation {
-		printNotation(c)
+		printNotation(issues, o)
 
 		return
 	}
 
 	f := statusOption.Color.Copy().Tag(tag.Link)
-	issues := c.IssuesSimple()
 	colorer := age_colorer.Default(issues...)
 
 	for _, i := range issues {

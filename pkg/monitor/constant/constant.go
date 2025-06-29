@@ -22,6 +22,7 @@ const (
 	JiraPrefix            = "jira"
 	KubernetesEventPrefix = "event"
 	OpsgeniePrefix        = "opsgenie"
+	PodManPrefix          = "podman"
 	SentryPrefix          = "sentry"
 	SilencePrefix         = "silence"
 

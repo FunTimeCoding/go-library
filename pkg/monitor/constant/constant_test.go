@@ -7,4 +7,5 @@ import (
 
 func TestConstant(t *testing.T) {
 	assert.String(t, "gosensor", GoSensor)
+	assert.String(t, "podman", PodManPrefix)
 }

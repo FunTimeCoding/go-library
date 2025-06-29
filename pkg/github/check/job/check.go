@@ -9,8 +9,6 @@ import (
 
 func Check(o *option.Job) {
 	c := github.NewEnvironment()
-	f := constant.Format
-	owner := c.User().Name
 
 	if o.Notation {
 		printNotation(c)
@@ -18,9 +16,13 @@ func Check(o *option.Job) {
 		return
 	}
 
+	owner := c.User().Name
+
 	if o.Verbose {
 		fmt.Printf("Owner: %s\n", owner)
 	}
+
+	f := constant.Format
 
 	for _, r := range c.FailedRuns(o.Verbose) {
 		fmt.Printf("Run: %s\n", r.Format(f))

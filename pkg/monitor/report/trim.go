@@ -19,8 +19,9 @@ func Trim[T any](
 			prefix+"-0",
 			constant.WarningLevel,
 			fmt.Sprintf(
-				"Too many %s, showing only the newest %d",
+				"Too many %s (%d), showing only the newest %d",
 				name,
+				len(v),
 				constant.NotationReport,
 			),
 			"",

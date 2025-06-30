@@ -13,7 +13,9 @@ func Trim[T any](
 	name string,
 	prefix string,
 ) []T {
-	if !all && len(v) > constant.NotationReport {
+	count := len(v)
+
+	if !all && count > constant.NotationReport {
 		v = v[0:constant.NotationReport]
 		r.AddItem(
 			prefix+"-0",
@@ -21,7 +23,7 @@ func Trim[T any](
 			fmt.Sprintf(
 				"Too many %s (%d), showing only the newest %d",
 				name,
-				len(v),
+				count,
 				constant.NotationReport,
 			),
 			"",

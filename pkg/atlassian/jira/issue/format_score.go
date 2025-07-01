@@ -20,7 +20,7 @@ func (i *Issue) FormatScore(f *option.Format) string {
 			return i.scoreColor(result)
 		}
 
-		return console.Yellow(result)
+		return console.Yellow("%s", result)
 	}
 
 	return result

@@ -46,6 +46,7 @@ const (
 	Service       = "Service"
 	StatefulSet   = "StatefulSet"
 	System        = "System"
+	Temperature   = "Temperature"
 	Token         = "Token"
 	Volume        = "Volume"
 )
@@ -67,6 +68,7 @@ const (
 	Frozen       = "Frozen"
 	Full         = "Full"
 	High         = "High"
+	Hot          = "Hot"
 	Imbalance    = "Imbalance"
 	Inconsistent = "Inconsistent"
 	Lag          = "Lag"

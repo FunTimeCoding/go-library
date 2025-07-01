@@ -17,12 +17,12 @@ require (
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20250625204652-ce640014f9ac
+	github.com/chromedp/cdproto v0.0.0-20250630014756-b7288190f53c
 	github.com/chromedp/chromedp v0.13.7
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
 	github.com/ctreminiom/go-atlassian v1.6.1
-	github.com/ctreminiom/go-atlassian/v2 v2.6.0
+	github.com/ctreminiom/go-atlassian/v2 v2.6.1
 	github.com/daixijun/go-salt/v2 v2.0.1
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/dimchansky/utfbom v1.1.1
@@ -41,7 +41,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/gpustack/gguf-parser-go v0.19.1
+	github.com/gpustack/gguf-parser-go v0.20.1
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
 	github.com/hupe1980/go-tiktoken v0.0.10

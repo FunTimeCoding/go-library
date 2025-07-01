@@ -375,8 +375,8 @@ github.com/checkpoint-restore/go-criu/v4 v4.1.0/go.mod h1:xUQBLp4RLc5zJtWY++yjOo
 github.com/checkpoint-restore/go-criu/v5 v5.0.0/go.mod h1:cfwC0EG7HMUenopBsUf9d89JlCLQIfgVcNsNN0t6T2M=
 github.com/checkpoint-restore/go-criu/v5 v5.3.0/go.mod h1:E/eQpaFtUKGOOSEBZgmKAcn+zUUwWxqcaKZlF54wK8E=
 github.com/cheekybits/is v0.0.0-20150225183255-68e9c0620927/go.mod h1:h/aW8ynjgkuj+NQRlZcDbAbM1ORAbXjXX77sX7T289U=
-github.com/chromedp/cdproto v0.0.0-20250625204652-ce640014f9ac h1:2OsE7x1DVHo+WDJDAzyPZGnaDcTDNMuIKEVE6WLh9ek=
-github.com/chromedp/cdproto v0.0.0-20250625204652-ce640014f9ac/go.mod h1:NItd7aLkcfOA/dcMXvl8p1u+lQqioRMq/SqDp71Pb/k=
+github.com/chromedp/cdproto v0.0.0-20250630014756-b7288190f53c h1:nv/Bg4th/XTlQJvpTMxlBG80g8Xr6+LN22nmkisyI1Q=
+github.com/chromedp/cdproto v0.0.0-20250630014756-b7288190f53c/go.mod h1:NItd7aLkcfOA/dcMXvl8p1u+lQqioRMq/SqDp71Pb/k=
 github.com/chromedp/chromedp v0.13.7 h1:vt+mslxscyvUr58eC+6DLSeeo74jpV/HI2nWetjv/W4=
 github.com/chromedp/chromedp v0.13.7/go.mod h1:h8GPP6ZtLMLsU8zFbTcb7ZDGCvCy8j/vRoFmRltQx9A=
 github.com/chromedp/sysutil v1.1.0 h1:PUFNv5EcprjqXZD9nJb9b/c9ibAbxiYo4exNWZyipwM=
@@ -552,8 +552,8 @@ github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ3
 github.com/creack/pty v1.1.11/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/ctreminiom/go-atlassian v1.6.1 h1:thH/oaWlvWLN5a4AcgQ30yPmnn0mQaTiqsq1M6bA9BY=
 github.com/ctreminiom/go-atlassian v1.6.1/go.mod h1:dd5M0O8Co3bALyLQqWxPXoBfQNr6FFlpzUrA19IpLEo=
-github.com/ctreminiom/go-atlassian/v2 v2.6.0 h1:QwgtRjVplT2jwmlZivC67ibBuPixluDIWF0LVA787nc=
-github.com/ctreminiom/go-atlassian/v2 v2.6.0/go.mod h1:H5YRqIQpUnyO8dsrVwF8ht5tGTrANFVoY0rwEdciqO8=
+github.com/ctreminiom/go-atlassian/v2 v2.6.1 h1:xkb6VkqWVK+UH3dU4v2KHLSKN1pI1pF5PnePHkTLeXI=
+github.com/ctreminiom/go-atlassian/v2 v2.6.1/go.mod h1:H5YRqIQpUnyO8dsrVwF8ht5tGTrANFVoY0rwEdciqO8=
 github.com/cyphar/filepath-securejoin v0.2.2/go.mod h1:FpkQEhXnPnOthhzymB7CGsFk2G9VLXONKD9G7QGMM+4=
 github.com/cyphar/filepath-securejoin v0.2.3/go.mod h1:aPGpWjXOXUn2NCNjFvBE6aRxGGx79pTxQpKOJNYHHl4=
 github.com/cyphar/filepath-securejoin v0.4.1 h1:JyxxyPEaktOD+GAnqIqTf9A8tHyAG22rowi7HkoSU1s=
@@ -1100,8 +1100,8 @@ github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/ad
 github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 h1:JeSE6pjso5THxAzdVpqr6/geYxZytqFMBCOtn/ujyeo=
 github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674/go.mod h1:r4w70xmWCQKmi1ONH4KIaBptdivuRPyosB9RmPlGEwA=
-github.com/gpustack/gguf-parser-go v0.19.1 h1:b3bWI+wbxmT23vVzlFT2zMszKhmQ5Nk10G2zb3rgTzw=
-github.com/gpustack/gguf-parser-go v0.19.1/go.mod h1:GvHh1Kvvq5ojCOsJ5UpwiJJmIjFw3Qk5cW7R+CZ3IJo=
+github.com/gpustack/gguf-parser-go v0.20.1 h1:3IzOrSQ4FP0WzSRB22wpRSY6nGfIj9+6ZJnUOGF4doE=
+github.com/gpustack/gguf-parser-go v0.20.1/go.mod h1:GvHh1Kvvq5ojCOsJ5UpwiJJmIjFw3Qk5cW7R+CZ3IJo=
 github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c h1:jox7J0BnJmcZJp8lp631u4gjDEoIfpi6O3yrpiXNTtg=
 github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c/go.mod h1:AOzHLStinAJHJmcih1eEbIRImxpT6enYUsZLnnOvhbo=
 github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5 h1:WnE53XyxJw1n9GRot6wlB2PhBuCS0BU4b+/V41z7EM4=

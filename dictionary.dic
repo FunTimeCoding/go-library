@@ -34,9 +34,11 @@ goalert
 gobuild
 gobump
 goclean
+gocontainer
 godebian
 gofile
 gogenie
+goimage
 gojira
 gokevt
 golint

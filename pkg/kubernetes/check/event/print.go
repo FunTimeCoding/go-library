@@ -9,36 +9,18 @@ import (
 )
 
 func Print(o *option.Event) {
-	c := client.NewEnvironment()
+	k := client.NewEnvironment()
+	cleanup(k, o, 7*24*time.Hour)
 
 	if o.Notation {
-		printNotation(c, o)
+		printNotation(k, o)
 
 		return
 	}
 
 	f := constant.Dense.Copy()
-	age := 7 * 24 * time.Hour
 
-	if o.Clean {
-		for _, e := range c.EventsSimple(true, false) {
-			if deleteOld(c, e, age) {
-				continue
-			}
-		}
-	}
-
-	for _, e := range c.EventsSimple(false, true) {
-		if o.Clean {
-			if deleteIrrelevant(c, e) {
-				continue
-			}
-
-			if deleteOld(c, e, age) {
-				continue
-			}
-		}
-
+	for _, e := range k.EventsSimple(false, true) {
 		fmt.Println(e.Format(f))
 	}
 }

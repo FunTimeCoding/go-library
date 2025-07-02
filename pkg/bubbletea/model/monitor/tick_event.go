@@ -28,13 +28,22 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 			m.client.Write(constant.PingCommand)
 		}
 
-		result = append(result, fetch.Command())
+		if m.auto {
+			result = append(result, fetch.Command())
+		}
 	}
 
 	f := option.ExtendedColor.Copy()
 
 	top := status.New(f).String()
 	top.String(fmt.Sprintf("items: %d", len(m.table.Rows())))
+
+	if m.auto {
+		top.String("auto")
+	} else {
+		top.String("manual")
+	}
+
 	m.topBar = top.Format()
 
 	bottom := status.New(f)

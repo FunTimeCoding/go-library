@@ -19,6 +19,14 @@ var (
 		Command:  constant.GoAlert,
 		Interval: 2 * time.Minute,
 	}
+	GoContainer = &Setting{
+		Command:  constant.GoContainer,
+		Interval: 5 * time.Minute,
+	}
+	GoImage = &Setting{
+		Command:  constant.GoImage,
+		Interval: 10 * time.Minute,
+	}
 	GoFile = &Setting{
 		Command:  constant.GoFile,
 		Interval: time.Minute,
@@ -45,6 +53,8 @@ var (
 	}
 	Settings = []*Setting{
 		GoAlert,
+		GoContainer,
+		GoImage,
 		GoFile,
 		GoGenie,
 		GoJira,

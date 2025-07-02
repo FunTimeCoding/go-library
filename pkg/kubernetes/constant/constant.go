@@ -2,7 +2,10 @@ package constant
 
 import "github.com/funtimecoding/go-library/pkg/console/status/option"
 
-const ContextEnvironment = "KUBERNETES_CONTEXT"
+const (
+	ContextEnvironment     = "KUBERNETES_CONTEXT"
+	AutoCleanupEnvironment = "KUBERNETES_AUTO_CLEANUP"
+)
 
 // NodeAll analogous to NamespaceAll
 const NodeAll = ""

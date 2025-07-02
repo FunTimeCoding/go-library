@@ -11,6 +11,8 @@ type Model struct {
 	width  int
 	height int
 
+	auto bool
+
 	topBar string
 
 	table *table.Model

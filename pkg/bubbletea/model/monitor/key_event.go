@@ -3,6 +3,7 @@ package monitor
 import (
 	"github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/key"
+	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -35,6 +36,18 @@ func (m *Model) keyEvent(g tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, viewDetail()
 	case key.O:
 		system.OpenBrowser(m.selectedItem().Link)
+	case key.R:
+		if !m.auto {
+			return m, fetch.Command()
+		}
+	case key.M:
+		if m.auto {
+			m.auto = false
+		} else {
+			m.auto = true
+		}
+
+		return m, nil
 	case key.Enter:
 		if m.connect {
 			r := m.table.SelectedRow()

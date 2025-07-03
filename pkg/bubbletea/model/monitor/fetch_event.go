@@ -1,6 +1,9 @@
 package monitor
 
-import "github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
+import (
+	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
+	"time"
+)
 
 func (m *Model) fetchEvent(g fetch.Message) {
 	m.items = g.Items
@@ -13,6 +16,7 @@ func (m *Model) fetchEvent(g fetch.Message) {
 		}
 	}
 
+	m.lastFetch = time.Now()
 	m.table.SetRows(rows)
 	m.updateColumns()
 }

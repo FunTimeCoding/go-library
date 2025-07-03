@@ -10,7 +10,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"github.com/funtimecoding/go-library/pkg/time"
+	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 )
 
 func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
@@ -42,6 +42,12 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 		top.String("auto")
 	} else {
 		top.String("manual")
+		top.String(
+			fmt.Sprintf(
+				"last fetch: %s",
+				m.lastFetch.Format(timeLibrary.DateMinute),
+			),
+		)
 	}
 
 	m.topBar = top.Format()
@@ -50,7 +56,7 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 	bottom.String(m.hostname)
 
 	if false {
-		bottom.String(g.Time.Format(time.DateSecond))
+		bottom.String(g.Time.Format(timeLibrary.DateSecond))
 	}
 
 	if false {

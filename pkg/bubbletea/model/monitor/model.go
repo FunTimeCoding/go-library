@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/toast"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/client"
 	"github.com/funtimecoding/go-library/pkg/monitor/item"
+	"time"
 )
 
 type Model struct {
@@ -33,4 +34,6 @@ type Model struct {
 	initialResized bool
 
 	modal *Modal
+
+	lastFetch time.Time
 }

@@ -14,18 +14,18 @@ func (c *Client) IssuesSimple() []*issue.Issue {
 		constant.OrganizationEnvironment,
 		"",
 	); o != "" {
-		r := c.Organization(environment.Get(constant.OrganizationEnvironment))
+		r := c.Organization(o)
 		var projects []sentry.Project
 
-		if s := environment.GetDefault(
+		if p := environment.GetDefault(
 			constant.ProjectEnvironment,
 			"",
-		); s != "" {
-			names := split.Comma(s)
+		); p != "" {
+			names := split.Comma(p)
 
-			for _, p := range c.OrganizationProjects(r) {
-				if slices.Contains(names, p.Name) {
-					projects = append(projects, p)
+			for _, j := range c.OrganizationProjects(r) {
+				if slices.Contains(names, j.Name) {
+					projects = append(projects, j)
 				}
 			}
 		} else {

@@ -11,7 +11,8 @@ import (
 
 func (c *Client) IssuesSimple() []*issue.Issue {
 	if o := environment.GetDefault(
-		constant.OrganizationEnvironment, "",
+		constant.OrganizationEnvironment,
+		"",
 	); o != "" {
 		r := c.Organization(environment.Get(constant.OrganizationEnvironment))
 		var projects []sentry.Project

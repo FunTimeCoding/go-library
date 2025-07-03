@@ -51,7 +51,7 @@ require (
 	github.com/mark3labs/mcp-go v0.32.0
 	github.com/mattermost/mattermost-server/v6 v6.7.2
 	github.com/olekukonko/tablewriter v1.0.7
-	github.com/ollama/ollama v0.9.3
+	github.com/ollama/ollama v0.9.5
 	github.com/openai/openai-go v1.8.2
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -74,7 +74,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.12
-	gitlab.com/gitlab-org/api/client-go v0.130.1
+	gitlab.com/gitlab-org/api/client-go v0.132.0
 	go.etcd.io/bbolt v1.4.2
 	golang.org/x/crypto v0.39.0
 	golang.org/x/mod v0.25.0
@@ -82,7 +82,7 @@ require (
 	golang.org/x/oauth2 v0.30.0
 	golang.org/x/time v0.12.0
 	gonum.org/v1/gonum v0.16.0
-	google.golang.org/api v0.239.0
+	google.golang.org/api v0.240.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.0
@@ -173,7 +173,7 @@ require (
 	github.com/grafana/regexp v0.0.0-20220304095617-2e8d9baf4ac2 // indirect
 	github.com/graph-gophers/graphql-go v1.3.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.8 // indirect
 	github.com/henvic/httpretty v0.1.4 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect

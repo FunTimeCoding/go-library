@@ -13,19 +13,19 @@ func printNotation(
 ) {
 	r := report.New()
 
-	for _, i := range report.Trim(
+	for _, e := range report.Trim(
 		v,
 		r,
 		o.All,
-		"Sentry issues",
+		Plural,
 		constant.SentryPrefix,
 	) {
 		r.AddItem(
-			i.MonitorIdentifier,
+			e.MonitorIdentifier,
 			constant.ErrorLevel,
-			i.Title,
-			i.Link,
-			i.Create,
+			e.Title,
+			e.Link,
+			e.Create,
 		)
 	}
 

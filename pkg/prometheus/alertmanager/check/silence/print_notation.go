@@ -13,19 +13,19 @@ func printNotation(
 ) {
 	r := report.New()
 
-	for _, s := range report.Trim(
+	for _, e := range report.Trim(
 		c.Silences(false),
 		r,
 		o.All,
-		"silences",
+		Plural,
 		constant.SilencePrefix,
 	) {
 		r.AddItem(
-			s.MonitorIdentifier,
+			e.MonitorIdentifier,
 			constant.WarningLevel,
-			s.Rule,
-			s.Link,
-			s.Start,
+			e.Rule,
+			e.Link,
+			e.Start,
 		)
 	}
 

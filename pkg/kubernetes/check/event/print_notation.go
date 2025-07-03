@@ -2,8 +2,7 @@ package event
 
 import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/check/event/option"
-	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
-	kubernetesConstant "github.com/funtimecoding/go-library/pkg/kubernetes/constant"
+	kubernetes "github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/types/native/event"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
@@ -11,15 +10,15 @@ import (
 )
 
 func printNotation(
-	c *client.Client,
+	v []*event.Event,
 	o *option.Event,
 ) {
 	r := report.New()
 	var relevant []*event.Event
 
-	for _, e := range c.EventsSimple(false, true) {
+	for _, e := range v {
 		if !o.All && slices.Contains(
-			kubernetesConstant.IrrelevantEventReason,
+			kubernetes.IrrelevantEventReason,
 			e.Reason,
 		) {
 			continue

@@ -5,25 +5,26 @@ import (
 	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 )
 
-func Print(o *option.Alert) {
+func Check(o *option.Alert) {
 	c := internal.Opsgenie()
-	alerts := c.Open()
+	elements := c.Open()
 
 	if o.Notation {
-		printNotation(alerts, o)
+		printNotation(elements, o)
 
 		return
 	}
 
 	f := constant.Format
 
-	for _, a := range alerts {
-		fmt.Println(a.Format(f))
+	for _, e := range elements {
+		fmt.Println(e.Format(f))
 	}
 
-	if len(alerts) == 0 {
-		fmt.Println("No relevant alerts")
+	if len(elements) == 0 {
+		monitor.NoRelevant(Plural)
 	}
 }

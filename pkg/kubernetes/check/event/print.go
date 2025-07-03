@@ -11,16 +11,17 @@ import (
 func Print(o *option.Event) {
 	k := client.NewEnvironment()
 	cleanup(k, o, 7*24*time.Hour)
+	events := k.EventsSimple(false, true)
 
 	if o.Notation {
-		printNotation(k, o)
+		printNotation(events, o)
 
 		return
 	}
 
 	f := constant.Dense.Copy()
 
-	for _, e := range k.EventsSimple(false, true) {
+	for _, e := range events {
 		fmt.Println(e.Format(f))
 	}
 }

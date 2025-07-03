@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/github/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/github/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 )
 
 func Check(o *option.Job) {
@@ -15,10 +16,10 @@ func Check(o *option.Job) {
 		o.Verbose = false
 	}
 
-	jobs := c.FailedRuns(o.Verbose)
+	elements := c.FailedRuns(o.Verbose)
 
 	if o.Notation {
-		printNotation(jobs, o)
+		printNotation(elements, o)
 
 		return
 	}
@@ -31,8 +32,12 @@ func Check(o *option.Job) {
 
 	f := constant.Format
 
-	for _, r := range jobs {
-		fmt.Printf("Run: %s\n", r.Format(f))
-		fmt.Printf("%s fail\n", r.Repository().FullName)
+	for _, e := range elements {
+		fmt.Printf("Run: %s\n", e.Format(f))
+		fmt.Printf("%s fail\n", e.Repository().FullName)
+	}
+
+	if len(elements) == 0 {
+		monitor.NoRelevant(Plural)
 	}
 }

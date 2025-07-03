@@ -1,34 +1,28 @@
 package issue
 
 import (
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/check/issue/option"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/query"
-	monitorConstant "github.com/funtimecoding/go-library/pkg/monitor/constant"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
+	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
 func printNotation(
-	c *jira.Client,
+	v []*issue.Issue,
 	o *option.Issue,
 ) {
 	r := report.New()
 
 	for _, i := range report.Trim(
-		query.Open(
-			c,
-			environment.Get(constant.ProjectEnvironment),
-		),
+		v,
 		r,
 		o.All,
-		"Jira issues",
-		monitorConstant.JiraPrefix,
+		Plural,
+		constant.JiraPrefix,
 	) {
 		r.AddItem(
 			i.MonitorIdentifier,
-			monitorConstant.WarningLevel,
+			constant.WarningLevel,
 			i.Summary,
 			i.Link,
 			i.Create,

@@ -5,28 +5,27 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 )
 
 func Check(o *option.Job) {
 	g := gitlab.NewEnvironment()
-	relevant := g.FailedJobs(o.Verbose)
+	elements := g.FailedJobs(o.Verbose)
 
 	if o.Notation {
-		printNotation(relevant, o)
-
-		return
-	}
-
-	if len(relevant) == 0 {
-		fmt.Println("No failed jobs found.")
+		printNotation(elements, o)
 
 		return
 	}
 
 	f := constant.Format
 
-	for _, j := range relevant {
-		fmt.Printf("Project: %s\n", j.Project.Format(f))
-		fmt.Printf("  Job: %s\n", j.Format(f))
+	for _, e := range elements {
+		fmt.Printf("Project: %s\n", e.Project.Format(f))
+		fmt.Printf("  Job: %s\n", e.Format(f))
+	}
+
+	if len(elements) == 0 {
+		monitor.NoRelevant(Plural)
 	}
 }

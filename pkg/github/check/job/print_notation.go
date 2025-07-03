@@ -18,7 +18,7 @@ func printNotation(
 		v,
 		r,
 		o.All,
-		"GitHub jobs",
+		Plural,
 		constant.GitHubPrefix,
 	) {
 		r.AddItem(

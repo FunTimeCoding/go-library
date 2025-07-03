@@ -32,5 +32,5 @@ func main() {
 	o.Rules = viper.GetBool(argument.Rules)
 	o.Firing = viper.GetBool(argument.Firing)
 	o.Fingerprint = viper.GetBool(argument.Fingerprint)
-	alert.Print(o)
+	alert.Check(o)
 }

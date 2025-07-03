@@ -19,5 +19,5 @@ func main() {
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)
 	o.Set = viper.GetString(argument.Set)
-	silence.Print(o)
+	silence.Check(o)
 }

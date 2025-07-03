@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/job"
-	monitorConstant "github.com/funtimecoding/go-library/pkg/monitor/constant"
+	monitor "github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 )
 
@@ -19,12 +19,12 @@ func printNotation(
 		v,
 		r,
 		o.All,
-		"GitLab jobs",
-		monitorConstant.GitLabPrefix,
+		Plural,
+		monitor.GitLabPrefix,
 	) {
 		r.AddItem(
 			e.MonitorIdentifier,
-			monitorConstant.WarningLevel,
+			monitor.WarningLevel,
 			e.Format(f),
 			e.Link,
 			e.Create,

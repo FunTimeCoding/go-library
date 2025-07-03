@@ -3,50 +3,47 @@ package alert
 import (
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
-	alertmanagerConstant "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
+	alertmanager "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
 )
 
 func printNotation(
-	c *alertmanager.Client,
+	v []*alert.Alert,
 	o *option.Alert,
 ) {
 	r := report.New()
-	alerts, _ := c.Alerts(advanced_option.New())
 	var relevant []*alert.Alert
 
-	for _, a := range alerts {
-		if !o.All && a.Severity == alertmanagerConstant.InfoSeverity {
+	for _, e := range v {
+		if !o.All && e.Severity == alertmanager.InfoSeverity {
 			continue
 		}
 
-		relevant = append(relevant, a)
+		relevant = append(relevant, e)
 	}
 
-	for _, a := range report.Trim(
+	for _, e := range report.Trim(
 		relevant,
 		r,
 		o.All,
-		"Prometheus alerts",
+		Plural,
 		constant.AlertPrefix,
 	) {
 		var alertType string
 
-		if a.Severity == alertmanagerConstant.CriticalSeverity {
+		if e.Severity == alertmanager.CriticalSeverity {
 			alertType = constant.ErrorLevel
 		} else {
 			alertType = constant.WarningLevel
 		}
 
 		r.AddItem(
-			a.MonitorIdentifier,
+			e.MonitorIdentifier,
 			alertType,
-			a.Name,
-			a.Link,
-			a.Start,
+			e.Name,
+			e.Link,
+			e.Start,
 		)
 	}
 

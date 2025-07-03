@@ -1,5 +1,10 @@
 package constant
 
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+)
+
 const (
 	UndefinedEnvironment = "undefined"
 	UndefinedVersion     = "undefined"
@@ -27,4 +32,6 @@ var (
 	}
 
 	UnresolvedFilter = "is:unresolved"
+
+	Format = option.Color.Copy().Tag(tag.Link)
 )

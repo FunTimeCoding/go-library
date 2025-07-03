@@ -17,7 +17,7 @@ func printNotation(
 		v,
 		r,
 		o.All,
-		"Opsgenie alerts",
+		Plural,
 		constant.OpsgeniePrefix,
 	) {
 		var itemType string

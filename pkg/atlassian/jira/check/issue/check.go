@@ -6,22 +6,29 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/check/issue/option"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/query"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
-func Print(o *option.Issue) {
-	c := internal.Jira()
-	project := environment.Get(constant.ProjectEnvironment)
+func Check(o *option.Issue) {
+	elements := query.Open(
+		internal.Jira(),
+		environment.Get(constant.ProjectEnvironment),
+	)
 
 	if o.Notation {
-		printNotation(c, o)
+		printNotation(elements, o)
 
 		return
 	}
 
 	f := constant.Format
 
-	for _, i := range query.Open(c, project) {
-		fmt.Println(i.Format(f))
+	for _, e := range elements {
+		fmt.Println(e.Format(f))
+	}
+
+	if len(elements) == 0 {
+		monitor.NoRelevant(Plural)
 	}
 }

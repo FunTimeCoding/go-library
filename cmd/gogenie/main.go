@@ -15,5 +15,5 @@ func main() {
 	o := option.New()
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)
-	alert.Print(o)
+	alert.Check(o)
 }

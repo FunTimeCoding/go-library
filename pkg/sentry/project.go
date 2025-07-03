@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) Project(
-	organization sentry.Organization,
+	o sentry.Organization,
 	projectSlug string,
 ) sentry.Project {
-	result, e := c.client.GetProject(organization, projectSlug)
+	result, e := c.client.GetProject(o, projectSlug)
 	errors.PanicOnError(e)
 
 	return result

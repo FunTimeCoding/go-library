@@ -9,14 +9,14 @@ import (
 )
 
 func (c *Client) Issues(
-	organization sentry.Organization,
-	project sentry.Project,
+	o sentry.Organization,
+	p sentry.Project,
 	period string,
 ) []*issue.Issue {
 	helper.ValidateContains(constant.Periods, period)
 	result, _, e := c.client.GetIssues(
-		organization,
-		project,
+		o,
+		p,
 		&period,
 		nil,
 		&constant.UnresolvedFilter,

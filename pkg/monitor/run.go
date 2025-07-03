@@ -15,11 +15,13 @@ func Run(name string) *report.Report {
 	r.Panic = false
 	arguments := []string{fmt.Sprintf("--%s", argument.Notation)}
 
-	if name == constant.GoFile {
-		arguments = append(
-			arguments,
-			fmt.Sprintf("--%s", argument.Verbose),
-		)
+	if false {
+		if name == constant.GoFile {
+			arguments = append(
+				arguments,
+				fmt.Sprintf("--%s", argument.Verbose),
+			)
+		}
 	}
 
 	r.Start(append([]string{name}, arguments...)...)

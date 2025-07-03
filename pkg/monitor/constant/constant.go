@@ -9,6 +9,8 @@ const (
 	GoContainer = "gocontainer"
 	GoFile      = "gofile"
 	GoGenie     = "gogenie"
+	GoGitHub    = "gogithub"
+	GoGitLab    = "gogitlab"
 	GoImage     = "goimage"
 	GoJira      = "gojira"
 	GoKevt      = "gokevt"

@@ -35,6 +35,14 @@ var (
 		Command:  constant.GoGenie,
 		Interval: 1 * time.Minute,
 	}
+	GoGitHub = &Setting{
+		Command:  constant.GoGitHub,
+		Interval: 5 * time.Minute,
+	}
+	GoGitLab = &Setting{
+		Command:  constant.GoGitLab,
+		Interval: 5 * time.Minute,
+	}
 	GoJira = &Setting{
 		Command:  constant.GoJira,
 		Interval: 5 * time.Minute,
@@ -54,9 +62,11 @@ var (
 	Settings = []*Setting{
 		GoAlert,
 		GoContainer,
-		GoImage,
 		GoFile,
 		GoGenie,
+		GoGitHub,
+		GoGitLab,
+		GoImage,
 		GoJira,
 		GoKevt,
 		GoSentry,

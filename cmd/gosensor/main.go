@@ -14,13 +14,12 @@ func main() {
 
 	if p.Notation {
 		r := report.New()
-		t := time.Now()
 		r.AddItem(
 			fmt.Sprintf("%s-%d", constant.ExamplePrefix, 1),
 			constant.ErrorLevel,
 			strings.Alfa,
 			"https://example.org/1",
-			&t,
+			&time.Time{},
 		)
 		r.Print()
 	}

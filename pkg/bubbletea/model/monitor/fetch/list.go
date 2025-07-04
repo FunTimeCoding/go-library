@@ -43,6 +43,10 @@ var (
 		Command:  constant.GoGitLab,
 		Interval: 5 * time.Minute,
 	}
+	GoGitStatus = &Setting{
+		Command:  constant.GoGitStatus,
+		Interval: 10 * time.Minute,
+	}
 	GoJira = &Setting{
 		Command:  constant.GoJira,
 		Interval: 5 * time.Minute,
@@ -66,6 +70,7 @@ var (
 		GoGenie,
 		GoGitHub,
 		GoGitLab,
+		//GoGitStatus,
 		GoImage,
 		GoJira,
 		GoKevt,

@@ -1,5 +1,7 @@
 package git
 
+import "github.com/funtimecoding/go-library/pkg/git/constant"
+
 func Fetch() {
-	Run("fetch", "--prune", "--prune-tags")
+	Run(constant.Fetch, constant.Prune, constant.PruneTags)
 }

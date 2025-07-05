@@ -1,5 +1,7 @@
 package git
 
+import "github.com/funtimecoding/go-library/pkg/git/constant"
+
 func Tag(name string) {
-	Run("tag", name)
+	Run(constant.Tag, name)
 }

@@ -2,8 +2,9 @@ package status
 
 import (
 	"github.com/funtimecoding/go-library/pkg/git/check/status/option"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/git/repository"
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	monitor "github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"time"
 )
@@ -13,12 +14,13 @@ func printNotation(
 	o *option.Status,
 ) {
 	r := report.New()
+	f := constant.Format
 
-	for _, e := range report.Trim(v, r, o.All, Plural, constant.GitPrefix) {
+	for _, e := range report.Trim(v, r, o.All, Plural, monitor.GitPrefix) {
 		r.AddItem(
 			e.MonitorIdentifier,
-			constant.WarningLevel,
-			e.Format(),
+			monitor.WarningLevel,
+			e.Format(f),
 			"",
 			&time.Time{},
 		)

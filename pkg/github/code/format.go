@@ -10,5 +10,5 @@ func (c *Code) Format(f *option.Format) string {
 		c.Hash,
 		c.Name,
 		c.Path,
-	).RawList(c).Format()
+	).RawList(c.Raw).Format()
 }

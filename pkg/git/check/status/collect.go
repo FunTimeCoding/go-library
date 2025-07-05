@@ -2,6 +2,7 @@ package status
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/git/repository"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -39,7 +40,7 @@ func collect(maxDepth int) []*repository.Repository {
 				if i.IsDir() && i.Name() == constant.Directory {
 					result = append(
 						result,
-						checkRepository(filepath.Dir(path)),
+						git.ReadRepository(filepath.Dir(path)),
 					)
 
 					return filepath.SkipDir
@@ -49,6 +50,10 @@ func collect(maxDepth int) []*repository.Repository {
 			},
 		),
 	)
+
+	for _, r := range result {
+		r.Validate()
+	}
 
 	return result
 }

@@ -3,6 +3,7 @@ package example
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/git"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/system"
 )
@@ -33,7 +34,7 @@ func CloneAll() {
 
 		if !system.DirectoryExists(repository) {
 			system.ChangeDirectory(group)
-			git.Run("clone", p.Raw.SSHURLToRepo)
+			git.Run(constant.Clone, p.Raw.SSHURLToRepo)
 
 			if false {
 				// Fails with SSH agent on Windows

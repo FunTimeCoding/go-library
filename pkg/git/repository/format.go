@@ -15,7 +15,7 @@ func (r *Repository) Format(f *option.Format) string {
 
 	if !r.IsClean && r.Status != "" {
 		for _, l := range split.NewLine(r.Status) {
-			s.TagLine(tag.Changes, l)
+			s.TagLine(tag.Changes, "%s", l)
 		}
 	}
 

@@ -70,7 +70,7 @@ var (
 		GoGenie,
 		GoGitHub,
 		GoGitLab,
-		//GoGitStatus,
+		GoGitStatus,
 		GoImage,
 		GoJira,
 		GoKevt,

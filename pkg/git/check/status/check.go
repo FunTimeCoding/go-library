@@ -2,13 +2,14 @@ package status
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/git/check/status/option"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"strings"
 )
 
 func Check(o *option.Status) {
-	elements := collect(3)
+	elements := monitor.OnlyConcerns(collect(o.Path, o.Depth), o.All)
 
 	if o.Notation {
 		printNotation(elements, o)
@@ -16,21 +17,14 @@ func Check(o *option.Status) {
 		return
 	}
 
+	f := constant.Format.Copy()
+
+	if o.Verbose {
+		f.Tag(tag.Changes)
+	}
+
 	for _, r := range elements {
-		if r.IsClean {
-			continue
-		}
-
-		fmt.Printf("%s\n", r.Path)
-
-		if !r.IsClean && r.Status != "" {
-			fmt.Printf(
-				"  Changes:\n%s\n",
-				strings.TrimSpace(r.Status),
-			)
-		}
-
-		fmt.Println()
+		fmt.Println(r.Format(f))
 	}
 
 	if len(elements) == 0 {

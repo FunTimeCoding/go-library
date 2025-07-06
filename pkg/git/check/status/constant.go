@@ -1,3 +1,7 @@
 package status
 
-const Plural = "Git repositories"
+const (
+	RepositoryRootEnvironment = "REPOSITORY_ROOT"
+
+	Plural = "Git repositories"
+)

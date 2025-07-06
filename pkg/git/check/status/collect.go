@@ -11,8 +11,14 @@ import (
 	"strings"
 )
 
-func collect(maxDepth int) []*repository.Repository {
-	root := system.WorkingDirectory()
+func collect(
+	root string,
+	depth int,
+) []*repository.Repository {
+	if root == "" {
+		root = system.WorkingDirectory()
+	}
+
 	var result []*repository.Repository
 	errors.PanicOnError(
 		filepath.Walk(
@@ -26,10 +32,10 @@ func collect(maxDepth int) []*repository.Repository {
 					return nil
 				}
 
-				relative, _ := filepath.Rel(root, path)
-				depth := strings.Count(relative, string(os.PathSeparator))
-
-				if depth > maxDepth {
+				if strings.Count(
+					system.RelativePath(root, path),
+					string(os.PathSeparator),
+				) > depth {
 					if i.IsDir() {
 						return filepath.SkipDir
 					}

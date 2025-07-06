@@ -17,9 +17,17 @@ func printNotation(
 	f := constant.Format
 
 	for _, e := range report.Trim(v, r, o.All, Plural, monitor.GitPrefix) {
+		var level string
+
+		if e.HasConcerns() {
+			level = monitor.WarningLevel
+		} else {
+			level = monitor.InformationLevel
+		}
+
 		r.AddItem(
 			e.MonitorIdentifier,
-			monitor.WarningLevel,
+			level,
 			e.Format(f),
 			"",
 			&time.Time{},

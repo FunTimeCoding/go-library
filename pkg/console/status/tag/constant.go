@@ -4,6 +4,7 @@ const (
 	Age         = "age"
 	Assignee    = "assignee"
 	Category    = "category"
+	Changes     = "changes"
 	Cluster     = "cluster"
 	Concerns    = "concerns"
 	Dense       = "dense"

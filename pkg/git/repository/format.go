@@ -3,11 +3,21 @@ package repository
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+	"github.com/funtimecoding/go-library/pkg/strings/split"
 )
 
 func (r *Repository) Format(f *option.Format) string {
-	return status.New(f).String(
+	s := status.New(f).String(
 		r.Path,
 		r.formatConcern(f),
-	).RawList(r).Format()
+	).RawList(r)
+
+	if !r.IsClean && r.Status != "" {
+		for _, l := range split.NewLine(r.Status) {
+			s.TagLine(tag.Changes, l)
+		}
+	}
+
+	return s.Format()
 }

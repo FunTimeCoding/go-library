@@ -16,6 +16,7 @@ const (
 	Create      = "create"
 	Critical    = "critical"
 	Dense       = "dense"
+	Depth       = "depth"
 	Disk        = "disk"
 	Downgrade   = "downgrade"
 	Download    = "download"

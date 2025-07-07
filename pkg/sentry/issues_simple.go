@@ -1,6 +1,7 @@
 package sentry
 
 import (
+	"fmt"
 	"github.com/atlassian/go-sentry-api"
 	"github.com/funtimecoding/go-library/pkg/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/sentry/issue"
@@ -9,7 +10,7 @@ import (
 	"slices"
 )
 
-func (c *Client) IssuesSimple() []*issue.Issue {
+func (c *Client) IssuesSimple(verbose bool) []*issue.Issue {
 	if o := environment.GetDefault(
 		constant.OrganizationEnvironment,
 		"",
@@ -35,6 +36,10 @@ func (c *Client) IssuesSimple() []*issue.Issue {
 		var result []*issue.Issue
 
 		for _, p := range projects {
+			if verbose {
+				fmt.Printf("Project: %s\n", p.Name)
+			}
+
 			result = append(
 				result,
 				c.Issues(r, p, constant.PeriodFortnight)...,

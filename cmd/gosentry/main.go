@@ -11,9 +11,11 @@ import (
 func main() {
 	monitor.NotationArgument()
 	monitor.AllArgument()
+	monitor.VerboseArgument()
 	argument.ParseBind()
 	p := option.New()
 	p.Notation = viper.GetBool(argument.Notation)
 	p.All = viper.GetBool(argument.All)
+	p.Verbose = viper.GetBool(argument.Verbose)
 	issue.Print(p)
 }

@@ -5,11 +5,17 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/git/check/status/option"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
+	"github.com/funtimecoding/go-library/pkg/git/repository"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
 func Check(o *option.Status) {
-	elements := monitor.OnlyConcerns(collect(o.Path, o.Depth), o.All)
+	elements := repository.Filter(
+		monitor.OnlyConcerns(collect(o.Path, o.Depth), o.All),
+		environment.GetSlice(RepositoryExcludeEnvironment),
+		o.All,
+	)
 
 	if o.Notation {
 		printNotation(elements, o)

@@ -15,6 +15,7 @@ const (
 
 	FormDataContentType = "multipart/form-data"
 	IconContentType     = "image/x-icon"
+	MarkdownContentType = "text/markdown"
 	ObjectContentType   = "application/json"
 	TextContentType     = "text/plain"
 

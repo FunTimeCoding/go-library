@@ -15,9 +15,9 @@ require (
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.5
+	github.com/charmbracelet/bubbletea v1.3.6
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20250630014756-b7288190f53c
+	github.com/chromedp/cdproto v0.0.0-20250706212322-41fb261d0659
 	github.com/chromedp/chromedp v0.13.7
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
@@ -31,7 +31,7 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.8.1
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.34.0
+	github.com/getsentry/sentry-go v0.34.1
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/go-openapi/runtime v0.28.0
@@ -41,14 +41,14 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/gpustack/gguf-parser-go v0.20.2
+	github.com/gpustack/gguf-parser-go v0.20.4
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/liushuangls/go-anthropic v1.6.0
-	github.com/mark3labs/mcp-go v0.32.0
+	github.com/mark3labs/mcp-go v0.33.0
 	github.com/mattermost/mattermost-server/v6 v6.7.2
 	github.com/olekukonko/tablewriter v1.0.8
 	github.com/ollama/ollama v0.9.5
@@ -74,7 +74,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.12
-	gitlab.com/gitlab-org/api/client-go v0.133.0
+	gitlab.com/gitlab-org/api/client-go v0.134.0
 	go.etcd.io/bbolt v1.4.2
 	golang.org/x/crypto v0.39.0
 	golang.org/x/mod v0.25.0
@@ -112,7 +112,7 @@ require (
 	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
-	github.com/charmbracelet/x/ansi v0.8.0 // indirect
+	github.com/charmbracelet/x/ansi v0.9.3 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect

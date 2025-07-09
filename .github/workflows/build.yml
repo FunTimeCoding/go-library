@@ -1,31 +1,15 @@
 name: Build
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  push: {branches: [main]}
+  pull_request: {branches: [main]}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Repository
-        uses: actions/checkout@v4
-
-      - name: Go
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-
-      - name: Dependency
-        run: go mod tidy
-
-      - name: Build
-        run: go build -v ./...
-
-      - name: Test
-        run: go test -v ./...
+      - {name: Repository, uses: actions/checkout@v4}
+      - {name: Go, uses: actions/setup-go@v5, with: {go-version-file: go.mod}}
+      - {name: Dependency, run: 'go mod tidy'}
+      - {name: Build, run: 'go build -v ./...'}
+      - {name: Test, run: 'go test -v ./...'}

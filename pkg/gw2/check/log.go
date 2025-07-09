@@ -7,11 +7,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gw2/check/aleeva_report"
 	"github.com/funtimecoding/go-library/pkg/gw2/check/exceptions"
 	"github.com/funtimecoding/go-library/pkg/gw2/check/guilds"
+	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
 	"github.com/funtimecoding/go-library/pkg/strings/contains"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/system/constant"
+	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/olekukonko/tablewriter"
@@ -26,14 +27,14 @@ func Log(
 	tag string,
 ) {
 	if tag == "" {
-		tag = environment.Get(gw2.AllianceEnvironment)
+		tag = environment.Get(constant.AllianceEnvironment)
 	}
 
-	atRiskCutOff := environment.Get(gw2.AtRiskCutOffEnvironment)
-	currentTeam := environment.Get(gw2.TeamEnvironment)
+	atRiskCutOff := environment.Get(constant.AtRiskCutOffEnvironment)
+	currentTeam := environment.Get(constant.TeamEnvironment)
 	start := timeLibrary.Parse(
 		"2006-01-02",
-		environment.Get(gw2.LinkStartDateEnvironment),
+		environment.Get(constant.LinkStartDateEnvironment),
 	)
 	matchUpStart := time.Date(
 		start.Year(),
@@ -52,16 +53,9 @@ func Log(
 	fmt.Printf("Alliance tag: %s\n", tag)
 	fmt.Printf("Team: %s\n", currentTeam)
 	fmt.Printf("At-risk cut-off member: %s\n", atRiskCutOff)
-	token := environment.Get(gw2.TokenEnvironment)
-
-	if token == "" {
-		fmt.Println("No GW2 API token found")
-
-		return
-	}
 
 	gw2.ImportAleevaFiles()
-	members := gw2.MembersOfGuild(gw2.New(token), tag)
+	members := gw2.MembersOfGuild(gw2.NewEnvironment(), tag)
 	fmt.Printf("Members count: %d\n", len(members))
 	var onTeam []string
 	var onDiscord []string
@@ -77,9 +71,12 @@ func Log(
 	}
 
 	aleevaPath := system.Join(
-		constant.Temporary,
+		systemConstant.Temporary,
 		gw2.LatestAleevaFile(
-			system.FilesMatching(constant.Temporary, gw2.AleevaPrefix),
+			system.FilesMatching(
+				systemConstant.Temporary,
+				constant.AleevaPrefix,
+			),
 		),
 	)
 	fmt.Printf("Latest Aleeva file: %s\n", aleevaPath)

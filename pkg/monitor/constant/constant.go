@@ -4,6 +4,8 @@ import "github.com/gorilla/websocket"
 
 const (
 	PluginEnvironment = "MONITOR_PLUGINS"
+	FileEnvironment   = "MONITOR_FILE"
+	ManualEnvironment = "MONITOR_MANUAL"
 
 	GoAlert     = "goalert"
 	GoContainer = "gocontainer"
@@ -15,7 +17,6 @@ const (
 	GoImage     = "goimage"
 	GoJira      = "gojira"
 	GoKevt      = "gokevt"
-	GoSensor    = "gosensor"
 	GoSentry    = "gosentry"
 	GoSilence   = "gosilence"
 

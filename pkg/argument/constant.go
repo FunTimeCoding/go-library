@@ -49,6 +49,7 @@ const (
 	Node        = "node"
 	Notation    = "notation"
 	Old         = "old"
+	Once        = "once"
 	Output      = "output"
 	Owner       = "owner"
 	Package     = "package"

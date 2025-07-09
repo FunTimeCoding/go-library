@@ -1,4 +1,4 @@
-package gw2
+package constant
 
 const (
 	TokenEnvironment         = "GW2_TOKEN"

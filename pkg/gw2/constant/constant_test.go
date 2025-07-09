@@ -6,5 +6,5 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "podman", PodManPrefix)
+	assert.String(t, "GW2_TOKEN", TokenEnvironment)
 }

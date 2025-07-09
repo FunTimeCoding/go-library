@@ -11,6 +11,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "concerns", Concerns)
 	assert.String(t, "description", Description)
 	assert.String(t, "graph", Graph)
+	assert.String(t, "identifier", Identifier)
 	assert.String(t, "key", Key)
 	assert.String(t, "link", Link)
 	assert.String(t, "markdown", Markdown)

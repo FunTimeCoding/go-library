@@ -13,6 +13,7 @@ const (
 	Filter      = "filter"
 	Fingerprint = "fingerprint"
 	Graph       = "graph"
+	Identifier  = "identifier"
 	Instance    = "instance"
 	Investigate = "investigate"
 	Key         = "key"

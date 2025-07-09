@@ -11,7 +11,7 @@ func Issue() {
 	c := sentry.NewEnvironment()
 	f := option.Color.Copy()
 
-	for _, i := range c.IssuesSimple() {
+	for _, i := range c.IssuesSimple(true) {
 		fmt.Printf("Issue: %s\n", i.Format(f))
 	}
 

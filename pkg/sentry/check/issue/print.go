@@ -11,7 +11,7 @@ import (
 
 func Print(o *option.Issue) {
 	c := sentry.NewEnvironment()
-	elements := c.IssuesSimple()
+	elements := c.IssuesSimple(o.Verbose)
 
 	if o.Notation {
 		printNotation(elements, o)

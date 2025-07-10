@@ -1,4 +1,4 @@
-package version_check
+package version
 
 import (
 	"path/filepath"

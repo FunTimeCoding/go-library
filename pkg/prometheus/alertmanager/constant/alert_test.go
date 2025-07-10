@@ -6,6 +6,7 @@ import (
 )
 
 func TestAlert(t *testing.T) {
+	assert.String(t, "AddressPool", AddressPool)
 	assert.String(t, "Backup", Backup)
 	assert.String(t, "Battery", Battery)
 	assert.String(t, "Cache", Cache)

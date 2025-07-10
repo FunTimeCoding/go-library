@@ -7,6 +7,7 @@ const (
 
 // Entity
 const (
+	AddressPool   = "AddressPool"
 	Backup        = "Backup"
 	Battery       = "Battery"
 	Cache         = "Cache"

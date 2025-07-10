@@ -1,8 +1,8 @@
-package version_check
+package version
 
 import "github.com/funtimecoding/go-library/pkg/system"
 
-func Scan(
+func Check(
 	root string,
 	skip []string,
 	installedVersion string,

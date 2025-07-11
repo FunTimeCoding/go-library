@@ -54,6 +54,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Broken", Broken)
 	assert.String(t, "Close", Close)
 	assert.String(t, "Corrupt", Corrupt)
+	assert.String(t, "Crashed", Crashed)
 	assert.String(t, "Disconnected", Disconnected)
 	assert.String(t, "Down", Down)
 	assert.String(t, "Empty", Empty)

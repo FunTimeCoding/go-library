@@ -60,6 +60,7 @@ const (
 	Broken       = "Broken"
 	Close        = "Close"
 	Corrupt      = "Corrupt"
+	Crashed      = "Crashed"
 	Disconnected = "Disconnected"
 	Down         = "Down"
 	Empty        = "Empty"

@@ -2,6 +2,7 @@ package ssh
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/ssh/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
 	"golang.org/x/crypto/ssh"
@@ -34,7 +35,9 @@ func New(
 				Auth: []ssh.AuthMethod{
 					ssh.PublicKeys(
 						secure_shell.Signers(
-							system.UnixSocket(os.Getenv("SSH_AUTH_SOCK")),
+							system.UnixSocket(
+								os.Getenv(constant.SocketEnvironment),
+							),
 						)...,
 					),
 				},

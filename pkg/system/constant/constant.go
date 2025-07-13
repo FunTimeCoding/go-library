@@ -42,6 +42,12 @@ const (
 	Temporary = "tmp"
 )
 
+// macOS specific paths
+const (
+	MacOSLibrary = "Library"
+	MacOsLogs    = "Logs"
+)
+
 var (
 	OperatingSystems    = []string{Linux, Darwin}
 	Architectures       = []string{AMD64, ARM64}

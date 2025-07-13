@@ -49,6 +49,7 @@ gomonitor
 gomonitord
 gosentry
 gosilence
+goversion
 kevt
 
 # UNIX

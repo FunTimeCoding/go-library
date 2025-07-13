@@ -63,6 +63,10 @@ var (
 		Command:  constant.GoSilence,
 		Interval: 1 * time.Minute,
 	}
+	GoVersion = &Setting{
+		Command:  constant.GoVersion,
+		Interval: 10 * time.Minute,
+	}
 	Settings = []*Setting{
 		GoAlert,
 		GoContainer,
@@ -76,6 +80,7 @@ var (
 		GoKevt,
 		GoSentry,
 		GoSilence,
+		GoVersion,
 	}
 )
 

@@ -1,4 +1,4 @@
-package version
+package go_mod
 
 import (
 	"bufio"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func readVersion(mod string) string {
+func ReadVersion(mod string) string {
 	f := system.Open(mod)
 	defer errors.PanicClose(f)
 	r := regexp.MustCompile(`^go\s+(\d+\.\d+(?:\.\d+)?)`)

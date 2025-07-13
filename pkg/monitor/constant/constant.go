@@ -19,6 +19,7 @@ const (
 	GoKevt      = "gokevt"
 	GoSentry    = "gosentry"
 	GoSilence   = "gosilence"
+	GoVersion   = "goversion"
 
 	AlertPrefix           = "alert"
 	ExamplePrefix         = "example"
@@ -26,8 +27,10 @@ const (
 	GitHubPrefix          = "github"
 	GitLabPrefix          = "gitlab"
 	GitPrefix             = "git"
+	GoPrefix              = "go"
 	JiraPrefix            = "jira"
 	KubernetesEventPrefix = "event"
+	MonitorPrefix         = "monitor"
 	OpsgeniePrefix        = "opsgenie"
 	PodManPrefix          = "podman"
 	SentryPrefix          = "sentry"

@@ -1,4 +1,4 @@
-package repository
+package project
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
@@ -6,12 +6,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
-func (r *Repository) formatConcern(f *option.Format) string {
-	if len(r.concern) == 0 {
+func (p *Project) formatConcern(f *option.Format) string {
+	if len(p.concern) == 0 {
 		return ""
 	}
 
-	result := join.Comma(r.concern)
+	result := join.Comma(p.concern)
 
 	if f.UseColor {
 		result = console.Yellow("%s", result)

@@ -23,4 +23,6 @@ type Client struct {
 	fieldMap    *field_map.Map
 	issueOption *option.Issue
 	enricher    *issue_enricher.Enricher
+
+	doneStatus []string
 }

@@ -24,12 +24,17 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 	}
 
 	if m.second%60 == 0 {
-		if m.connect {
-			m.client.Write(constant.PingCommand)
-		}
-
-		if m.auto {
+		if m.second == 0 {
+			// Load on startup
 			result = append(result, fetch.Command())
+		} else {
+			if m.connect {
+				m.client.Write(constant.PingCommand)
+			}
+
+			if m.auto {
+				result = append(result, fetch.Command())
+			}
 		}
 	}
 

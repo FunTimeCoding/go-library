@@ -2,6 +2,8 @@ package constant
 
 import "github.com/charmbracelet/lipgloss"
 
+const LogFile = "tea.txt"
+
 var (
 	Default = lipgloss.NewStyle()
 

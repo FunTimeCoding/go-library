@@ -38,6 +38,7 @@ const (
 	Issue       = "issue"
 	Key         = "key"
 	Locator     = "locator"
+	Log         = "log"
 	Loop        = "loop"
 	Main        = "main"
 	Match       = "match"

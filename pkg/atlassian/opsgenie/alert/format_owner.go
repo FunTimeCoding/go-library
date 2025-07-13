@@ -6,19 +6,19 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 )
 
-func (a *Alert) formatOwner(s *option.Format) string {
+func (a *Alert) formatOwner(f *option.Format) string {
 	var result string
 
 	if a.Owner != "" {
 		result = a.shortenUser(a.Owner)
 
-		if s.UseColor {
+		if f.UseColor {
 			result = console.Green("%s", result)
 		}
-	} else if !s.HasTag(tag.Dense) {
+	} else if !f.HasTag(tag.Dense) {
 		result = NoOwner
 
-		if s.UseColor {
+		if f.UseColor {
 			result = console.Red("%s", result)
 		}
 	}

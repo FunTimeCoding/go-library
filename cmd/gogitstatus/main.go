@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
 	"github.com/funtimecoding/go-library/pkg/git/check/status/option"
@@ -22,7 +23,10 @@ func main() {
 	pflag.Int(
 		argument.Depth,
 		3,
-		"Depth to scan for git repositories. Default is 3.",
+		fmt.Sprintf(
+			"Depth to scan for %s. Default is 3.",
+			status.Plural,
+		),
 	)
 	argument.ParseBind()
 	o := option.New()

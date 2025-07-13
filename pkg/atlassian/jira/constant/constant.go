@@ -14,7 +14,11 @@ const (
 
 const ParentEpic = "parentEpic" // Field
 
-const Closed = "Closed" // Status
+// Status
+const (
+	Closed = "Closed"
+	Done   = "Done"
+)
 
 var Format = option.ExtendedColor.Copy()
 

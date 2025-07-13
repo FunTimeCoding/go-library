@@ -1,42 +1,24 @@
 package version
 
-import "github.com/funtimecoding/go-library/pkg/system"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/go_mod"
+	"github.com/funtimecoding/go-library/pkg/go_mod/check/version/option"
+	"github.com/funtimecoding/go-library/pkg/monitor"
+)
 
-func Check(
-	root string,
-	skip []string,
-	installedVersion string,
-) {
-	for _, e := range system.ReadDirectory(root) {
-		if !e.IsDir() || exclude(e.Name(), skip) {
-			continue
-		}
+func Check(o *option.Version) {
+	elements := monitor.OnlyConcerns(collect(o), o.All)
 
-		depth1 := system.Join(root, e.Name())
-		checkMod(
-			depth1,
-			system.Join(".", e.Name()),
-			installedVersion,
-			root,
-		)
+	if o.Notation {
+		printNotation(elements, o)
 
-		for _, e2 := range system.ReadDirectory(depth1) {
-			if !e2.IsDir() {
-				continue
-			}
+		return
+	}
 
-			relative := system.Join(e.Name(), e2.Name())
+	f := go_mod.Format
 
-			if exclude(e2.Name(), skip) || exclude(relative, skip) {
-				continue
-			}
-
-			checkMod(
-				system.Join(depth1, e2.Name()),
-				system.Join(".", relative),
-				installedVersion,
-				root,
-			)
-		}
+	for _, e := range elements {
+		fmt.Println(e.Format(f))
 	}
 }

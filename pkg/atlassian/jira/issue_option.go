@@ -11,6 +11,7 @@ func (c *Client) IssueOption() *option.Issue {
 		c.locator,
 		c.user,
 		c.WatchedIssueKeys(),
+		c.doneStatus,
 		c.FieldMap(),
 	)
 	c.issueOption.Verbose = c.verbose

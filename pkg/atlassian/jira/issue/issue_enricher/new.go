@@ -1,13 +1,11 @@
 package issue_enricher
 
-func New(
-	concerns SliceResult,
-	score FloatResult,
-	commentNameFilter []string,
-) *Enricher {
-	return &Enricher{
-		concerns:          concerns,
-		score:             score,
-		commentNameFilter: commentNameFilter,
+func New(o ...OptionFunc) *Enricher {
+	result := &Enricher{}
+
+	for _, p := range o {
+		p(result)
 	}
+
+	return result
 }

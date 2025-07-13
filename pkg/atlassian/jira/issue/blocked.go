@@ -1,6 +1,6 @@
 package issue
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
+import "slices"
 
 func (i *Issue) Blocked() bool {
 	for _, l := range i.Raw.Fields.IssueLinks {
@@ -9,7 +9,10 @@ func (i *Issue) Blocked() bool {
 		}
 
 		if l.Type.Inward == BlockedBy {
-			if l.InwardIssue.Fields.Status.Name == constant.Closed {
+			if slices.Contains(
+				i.option.DoneStatus,
+				l.InwardIssue.Fields.Status.Name,
+			) {
 				continue
 			}
 

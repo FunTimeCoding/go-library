@@ -23,6 +23,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "investigate", Investigate)
 	assert.String(t, "issue", Issue)
 	assert.String(t, "key", Key)
+	assert.String(t, "log", Log)
 	assert.String(t, "loop", Loop)
 	assert.String(t, "memory", Memory)
 	assert.String(t, "mine", Mine)

@@ -41,7 +41,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/gpustack/gguf-parser-go v0.20.4
+	github.com/gpustack/gguf-parser-go v0.21.0
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
 	github.com/hupe1980/go-tiktoken v0.0.10
@@ -52,7 +52,7 @@ require (
 	github.com/mattermost/mattermost-server/v6 v6.7.2
 	github.com/olekukonko/tablewriter v1.0.8
 	github.com/ollama/ollama v0.9.6
-	github.com/openai/openai-go v1.8.3
+	github.com/openai/openai-go v1.10.1
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.28.1
@@ -61,7 +61,7 @@ require (
 	github.com/rivo/tview v0.0.0-20250625164341-a4a78f1e05cb
 	github.com/samber/slog-loki/v3 v3.5.4
 	github.com/sanity-io/litter v1.5.8
-	github.com/sashabaranov/go-openai v1.40.4
+	github.com/sashabaranov/go-openai v1.40.5
 	github.com/sirupsen/logrus v1.9.3
 	github.com/slok/go-http-metrics v0.13.0
 	github.com/spf13/cobra v1.9.1
@@ -76,13 +76,13 @@ require (
 	github.com/yuin/goldmark v1.7.12
 	gitlab.com/gitlab-org/api/client-go v0.134.0
 	go.etcd.io/bbolt v1.4.2
-	golang.org/x/crypto v0.39.0
-	golang.org/x/mod v0.25.0
-	golang.org/x/net v0.41.0
+	golang.org/x/crypto v0.40.0
+	golang.org/x/mod v0.26.0
+	golang.org/x/net v0.42.0
 	golang.org/x/oauth2 v0.30.0
 	golang.org/x/time v0.12.0
 	gonum.org/v1/gonum v0.16.0
-	google.golang.org/api v0.240.0
+	google.golang.org/api v0.241.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.0
@@ -272,11 +272,11 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
-	golang.org/x/sync v0.15.0 // indirect
-	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/term v0.32.0 // indirect
-	golang.org/x/text v0.26.0 // indirect
-	golang.org/x/tools v0.33.0 // indirect
+	golang.org/x/sync v0.16.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/term v0.33.0 // indirect
+	golang.org/x/text v0.27.0 // indirect
+	golang.org/x/tools v0.34.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect
 	google.golang.org/grpc v1.73.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect

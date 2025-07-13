@@ -8,6 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	"log"
+	"time"
 )
 
 func Run(name string) *report.Report {
@@ -25,19 +26,33 @@ func Run(name string) *report.Report {
 	}
 
 	r.Start(append([]string{name}, arguments...)...)
+	result := &report.Report{}
 
 	if r.Error != nil {
-		log.Printf("run fail: %s %s", name, r.Error)
+		s := fmt.Sprintf("run fail: %s %s", name, r.Error)
+		log.Print(s)
+		result.AddItem(
+			fmt.Sprintf("%s-%s", constant.MonitorPrefix, name),
+			constant.ErrorLevel,
+			s,
+			"",
+			&time.Time{},
+		)
 
-		return nil
+		return result
 	}
-
-	result := &report.Report{}
 
 	if e := notation.Decode(r.OutputString, &result); e != nil {
 		log.Printf("parse fail: %s %s", name, e)
+		result.AddItem(
+			fmt.Sprintf("%s-%s", constant.MonitorPrefix, name),
+			constant.ErrorLevel,
+			fmt.Sprintf("parse fail: %s %s", name, r.Error),
+			"",
+			&time.Time{},
+		)
 
-		return nil
+		return result
 	}
 
 	return result

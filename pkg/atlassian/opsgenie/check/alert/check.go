@@ -2,15 +2,13 @@ package alert
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 )
 
 func Check(o *option.Alert) {
-	c := internal.Opsgenie()
-	elements := c.Open()
+	elements := collect()
 
 	if o.Notation {
 		printNotation(elements, o)

@@ -22,9 +22,17 @@ func printNotation(
 		Plural,
 		monitor.GitLabPrefix,
 	) {
+		var level string
+
+		if e.Fail() {
+			level = monitor.ErrorLevel
+		} else {
+			level = monitor.InformationLevel
+		}
+
 		r.AddItem(
 			e.MonitorIdentifier,
-			monitor.WarningLevel,
+			level,
 			e.Format(f),
 			e.Link,
 			e.Create,

@@ -74,7 +74,7 @@ func main() {
 
 		git.Fetch()
 
-		runs := c.Runs(namespace, repository)
+		runs := c.ProjectRuns(namespace, repository)
 
 		if false {
 			latestRun := run.Latest(runs)

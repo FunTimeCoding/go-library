@@ -15,6 +15,8 @@ type Runner struct {
 
 	Address string // Loaded separately via GraphQL
 
+	concern []string
+
 	RawList   *gitlab.Runner
 	RawDetail *gitlab.RunnerDetails
 }

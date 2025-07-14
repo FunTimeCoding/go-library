@@ -2,15 +2,13 @@ package job
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 )
 
 func Check(o *option.Job) {
-	g := gitlab.NewEnvironment()
-	elements := g.FailedJobs(o.Verbose)
+	elements := collect(o)
 
 	if o.Notation {
 		printNotation(elements, o)

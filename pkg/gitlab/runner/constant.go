@@ -9,3 +9,5 @@ const (
 const (
 	OnlineStatus = "online"
 )
+
+const Paused = "paused"

@@ -1,26 +1,46 @@
 package github
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/forge"
+	"github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/github/run"
-	"github.com/google/go-github/v70/github"
 )
 
 func (c *Client) Runs(
-	owner string,
-	name string,
+	loadJobs bool,
+	verbose bool,
 ) []*run.Run {
-	result, _, e := c.client.Actions.ListRepositoryWorkflowRuns(
-		c.context,
-		owner,
-		name,
-		&github.ListWorkflowRunsOptions{
-			ListOptions: github.ListOptions{
-				PerPage: 100, // Cannot go higher than 100
-			},
-		},
-	)
-	errors.PanicOnError(e)
+	var result []*run.Run
+	cleanup := forge.AutoCleanup()
+	f := constant.Format
+	owner := c.User().Name
 
-	return run.NewSlice(result.WorkflowRuns)
+	for _, a := range c.ActionRepository() {
+		if verbose {
+			fmt.Printf("Repository: %s/%s\n", owner, a.Name)
+		}
+
+		for i, r := range c.ProjectRuns(owner, a.Name) {
+			if i > 0 {
+				if cleanup {
+					c.DeleteRun(owner, a.Name, r.Identifier)
+				}
+
+				continue
+			}
+
+			if verbose {
+				fmt.Printf("Run %d: %s\n", i, r.Format(f))
+			}
+
+			if loadJobs {
+				r.Jobs = c.Jobs(owner, a.Name, r.Identifier)
+			}
+
+			result = append(result, r)
+		}
+	}
+
+	return result
 }

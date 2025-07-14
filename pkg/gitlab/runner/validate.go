@@ -1,22 +1,7 @@
 package runner
 
-func (r *Runner) validate() []string {
-	var result []string
-
-	// TODO: Redundant? its already in the status bubbles
-	if false {
-		if !r.Online {
-			result = append(result, "offline")
-		}
-
-		if r.Status != OnlineStatus {
-			result = append(result, "not_online")
-		}
-	}
-
+func (r *Runner) Validate() {
 	if r.Paused {
-		result = append(result, "paused")
+		r.concern = append(r.concern, Paused)
 	}
-
-	return result
 }

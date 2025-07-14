@@ -17,7 +17,7 @@ func CleanJob() {
 		fmt.Printf("Workflow: %s\n", w.Format(f))
 	}
 
-	for _, r := range c.Runs(owner, repository) {
+	for _, r := range c.ProjectRuns(owner, repository) {
 		fmt.Printf("Run: %s\n", r.Format(f))
 
 		for _, j := range c.Jobs(owner, repository, *r.Raw.ID) {

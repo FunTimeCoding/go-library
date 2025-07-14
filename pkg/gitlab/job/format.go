@@ -11,5 +11,6 @@ func (j *Job) Format(f *option.Format) string {
 		j.Name,
 		j.Create.Format(time.DateMinute),
 		j.Status,
+		j.formatConcern(f),
 	).RawList(j.Raw).Format()
 }

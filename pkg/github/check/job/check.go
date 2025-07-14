@@ -10,13 +10,7 @@ import (
 
 func Check(o *option.Job) {
 	c := github.NewEnvironment()
-
-	if o.Notation && o.Verbose {
-		// Verbose would break JSON stdout
-		o.Verbose = false
-	}
-
-	elements := c.FailedRuns(o.Verbose)
+	elements := collect(c, o)
 
 	if o.Notation {
 		printNotation(elements, o)

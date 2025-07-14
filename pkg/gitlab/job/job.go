@@ -16,6 +16,7 @@ type Job struct {
 	Link              string
 
 	Project *project.Project
+	concern []string
 
 	Raw *gitlab.Job
 }

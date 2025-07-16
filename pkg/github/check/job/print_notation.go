@@ -1,7 +1,6 @@
 package job
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/github/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/github/run"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
@@ -21,10 +20,18 @@ func printNotation(
 		Plural,
 		constant.GitHubPrefix,
 	) {
+		var level string
+
+		if e.HasConcerns() {
+			level = constant.ErrorLevel
+		} else {
+			level = constant.InformationLevel
+		}
+
 		r.AddItem(
 			e.MonitorIdentifier,
-			constant.WarningLevel,
-			fmt.Sprintf("%s fail", e.Repository().FullName),
+			level,
+			e.Format(Notation),
 			*e.Raw.HTMLURL,
 			&e.Update,
 		)

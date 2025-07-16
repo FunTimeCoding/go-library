@@ -38,6 +38,7 @@ func (c *Client) Runs(
 				r.Jobs = c.Jobs(owner, a.Name, r.Identifier)
 			}
 
+			r.Validate()
 			result = append(result, r)
 		}
 	}

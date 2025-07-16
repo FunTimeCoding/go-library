@@ -7,7 +7,7 @@ import (
 
 func (r *Runner) Format(f *option.Format) string {
 	s := status.New(f).Integer(r.Identifier).String(
-		r.formatName(),
+		r.formatName(f),
 		r.formatDescription(),
 		r.hostname(),
 		r.Type,

@@ -12,10 +12,12 @@ import (
 func TestRun(t *testing.T) {
 	r := New(
 		&github.WorkflowRun{
-			Name:      ptr.To(strings.Alfa),
-			CreatedAt: &github.Timestamp{},
+			Name:       ptr.To(strings.Alfa),
+			CreatedAt:  &github.Timestamp{},
+			Repository: &github.Repository{},
 		},
 	)
+	r.Repository = nil
 	r.Raw = nil
 	assert.Any(
 		t,

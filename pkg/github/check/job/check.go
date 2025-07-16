@@ -2,6 +2,7 @@ package job
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/github/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/github/constant"
@@ -24,11 +25,10 @@ func Check(o *option.Job) {
 		fmt.Printf("Owner: %s\n", owner)
 	}
 
-	f := constant.Format
+	f := constant.Format.Copy().Tag(tag.Timestamp)
 
 	for _, e := range elements {
-		fmt.Printf("Run: %s\n", e.Format(f))
-		fmt.Printf("%s fail\n", e.Repository().FullName)
+		fmt.Println(e.Format(f))
 	}
 
 	if len(elements) == 0 {

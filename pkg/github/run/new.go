@@ -2,6 +2,7 @@ package run
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/github/repository"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/google/go-github/v70/github"
 	"time"
@@ -32,6 +33,7 @@ func New(v *github.WorkflowRun) *Run {
 		Status:     v.GetStatus(),
 		Create:     create,
 		Update:     update,
+		Repository: repository.New(v.Repository),
 		Raw:        v,
 	}
 }

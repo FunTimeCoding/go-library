@@ -2,6 +2,7 @@ package run
 
 import (
 	"github.com/funtimecoding/go-library/pkg/github/job"
+	"github.com/funtimecoding/go-library/pkg/github/repository"
 	"github.com/google/go-github/v70/github"
 	"time"
 )
@@ -14,7 +15,10 @@ type Run struct {
 	Create            time.Time
 	Update            time.Time
 
-	Jobs []*job.Job
+	concern []string
+
+	Repository *repository.Repository
+	Jobs       []*job.Job
 
 	Raw *github.WorkflowRun
 }

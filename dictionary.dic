@@ -116,3 +116,6 @@ gguf
 # ChatGPT
 tablist
 testid
+
+# n8n
+creds

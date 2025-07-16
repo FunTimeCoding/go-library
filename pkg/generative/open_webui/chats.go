@@ -1,5 +1,5 @@
 package open_webui
 
 func (c *Client) Chats() string {
-	return c.basic.Request("/api/v1/chats/all")
+	return c.basic.Get("/api/v1/chats/all")
 }

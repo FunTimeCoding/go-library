@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/github/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/github/run"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 )
 
 func collect(
@@ -15,14 +16,5 @@ func collect(
 		o.Verbose = false
 	}
 
-	var result []*run.Run
-
-	// TODO: Implement Validate() to check if a run is failed
-	if o.All {
-		result = c.Runs(true, o.Verbose)
-	} else {
-		result = c.FailedRuns(o.Verbose)
-	}
-
-	return result
+	return monitor.OnlyConcerns(c.Runs(true, o.Verbose), o.All)
 }

@@ -10,7 +10,7 @@ func (c *Client) ProjectRuns(
 	owner string,
 	name string,
 ) []*run.Run {
-	result, _, e := c.client.Actions.ListRepositoryWorkflowRuns(
+	page, _, e := c.client.Actions.ListRepositoryWorkflowRuns(
 		c.context,
 		owner,
 		name,
@@ -21,6 +21,11 @@ func (c *Client) ProjectRuns(
 		},
 	)
 	errors.PanicOnError(e)
+	result := run.NewSlice(page.WorkflowRuns)
 
-	return run.NewSlice(result.WorkflowRuns)
+	for _, r := range result {
+		r.Validate()
+	}
+
+	return result
 }

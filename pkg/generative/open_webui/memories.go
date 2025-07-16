@@ -1,5 +1,5 @@
 package open_webui
 
 func (c *Client) Memories() string {
-	return c.basic.Request("/api/v1/memories/")
+	return c.basic.Get("/api/v1/memories/")
 }

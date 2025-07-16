@@ -1,5 +1,5 @@
 package open_webui
 
 func (c *Client) Models() string {
-	return c.basic.Request("/api/models")
+	return c.basic.Get("/api/models")
 }

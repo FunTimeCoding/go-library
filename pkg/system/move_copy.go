@@ -16,5 +16,10 @@ func MoveCopy(
 	// Close before trying to remove for Windows
 	// https://stackoverflow.com/a/64943554/246801
 	errors.PanicClose(input)
+
+	if IsExecutable(source) {
+		Executable(destination)
+	}
+
 	errors.PanicOnError(os.Remove(source))
 }

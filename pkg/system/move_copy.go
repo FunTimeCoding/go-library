@@ -13,7 +13,6 @@ func MoveCopy(
 	output := Create(destination)
 	defer errors.LogClose(output)
 	Copy(output, input)
-
 	// Close before trying to remove for Windows
 	// https://stackoverflow.com/a/64943554/246801
 	errors.PanicClose(input)

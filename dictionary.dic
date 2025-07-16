@@ -36,6 +36,7 @@ gobump
 goclean
 gocontainer
 godebian
+godownload
 gofile
 gogenie
 gogithub

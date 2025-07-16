@@ -1,7 +1,6 @@
 package system
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"os"
 	"strings"
@@ -12,12 +11,10 @@ func Move(
 	to string,
 ) {
 	if e := os.Rename(from, to); e != nil {
-		if strings.Contains(e.Error(), "invalid cross-device link") {
-			fmt.Printf("Error: >%s<\n", e.Error())
-			fmt.Printf("Try MoveCopy from %s to %s\n", from, to)
+		// Example: "rename godownload /usr/local/bin/godownload: invalid cross-device link"
+		if strings.HasSuffix(e.Error(), "invalid cross-device link") {
 			MoveCopy(from, to)
 		} else {
-			fmt.Printf("Other error: >%s<\n", e.Error())
 			errors.PanicOnError(e)
 		}
 	}

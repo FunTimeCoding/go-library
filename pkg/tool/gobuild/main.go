@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/build"
 	"github.com/funtimecoding/go-library/pkg/build/option"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/spf13/pflag"
@@ -12,7 +13,11 @@ import (
 	"log"
 )
 
-func Main() {
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
 	pflag.String(
 		argument.Main,
 		"",
@@ -37,7 +42,9 @@ func Main() {
 	pflag.Bool(constant.LinuxAMD64, false, "Linux AMD64")
 	pflag.Bool(constant.DarwinARM64, false, "Darwin ARM64")
 	pflag.Bool(constant.DarwinAMD64, false, "Darwin AMD64")
+	monitor.VersionArgument()
 	argument.ParseBind()
+	monitor.VersionExit(version, gitHash, buildDate)
 	linuxAMD64 := viper.GetBool(constant.LinuxAMD64)
 	darwinARM64 := viper.GetBool(constant.DarwinARM64)
 	darwinAMD64 := viper.GetBool(constant.DarwinAMD64)

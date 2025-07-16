@@ -12,7 +12,6 @@ func Move(
 	to string,
 ) {
 	if e := os.Rename(from, to); e != nil {
-
 		if strings.Contains(e.Error(), "invalid cross-device link") {
 			fmt.Printf("Error: >%s<\n", e.Error())
 			fmt.Printf("Try MoveCopy from %s to %s\n", from, to)

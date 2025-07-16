@@ -1,5 +1,5 @@
 package runbook
 
-func New() *Runbook {
-	return &Runbook{}
+func New(b *[]byte) *Runbook {
+	return &Runbook{source: b}
 }

@@ -29,5 +29,5 @@ func main() {
 		p.PrintConsole()
 	}
 
-	// TODO: Synchronize runbooks after designing the runbook
+	// TODO: Synchronize runbooks
 }

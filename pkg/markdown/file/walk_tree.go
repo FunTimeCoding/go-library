@@ -23,9 +23,9 @@ func WalkTree(
 				}
 
 				l.Add(NodeValue(s, n))
-				PrintNode(s, n)
 
 				if false {
+					PrintNode(s, n)
 					PrintKind(s, n)
 				}
 

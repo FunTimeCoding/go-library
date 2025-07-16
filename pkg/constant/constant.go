@@ -27,9 +27,10 @@ const (
 	False  = "0"
 	Direct = "direct"
 
-	CurrentDirectory = "."
-	GoExtension      = ".go"
-	MarkupExtension  = ".yaml"
+	CurrentDirectory  = "."
+	GoExtension       = ".go"
+	MarkupExtension   = ".yaml"
+	MarkdownExtension = ".md"
 )
 
 var StartOfTime = assert.NewDay(1)

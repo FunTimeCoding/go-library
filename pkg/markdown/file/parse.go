@@ -7,17 +7,14 @@ import (
 )
 
 func (f *File) Parse() *flat.Flat {
-	p := goldmark.DefaultParser()
-	o := p.Parse(text.NewReader(*f.source))
+	o := goldmark.DefaultParser().Parse(text.NewReader(*f.source))
 	l := flat.New()
 
 	if false {
 		Walk(f.source, o, l)
 	}
 
-	if true {
-		WalkTree(f.source, o, l)
-	}
+	WalkTree(f.source, o, l)
 
 	return l
 }

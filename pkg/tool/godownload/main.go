@@ -18,11 +18,15 @@ const (
 	DefaultOutput = ""
 )
 
-func Main() {
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
 	common.Arguments()
 	pflag.String(argument.Package, "", "Package to download")
 	pflag.String(
-		argument.Version,
+		argument.PackageVersion,
 		LatestVersion,
 		"Version to download, falls back to latest if not found",
 	)
@@ -32,10 +36,13 @@ func Main() {
 		"Output directory for executable",
 	)
 	monitor.VerboseArgument()
+	monitor.VersionArgument()
+	argument.ParseBind()
+	monitor.VersionExit(version, gitHash, buildDate)
 	common.ValidateArguments()
 
 	argument.RequiredStringFlag(argument.Package, 1)
-	argument.RequiredStringFlag(argument.Version, 1)
+	argument.RequiredStringFlag(argument.PackageVersion, 1)
 
 	verbose := viper.GetBool(argument.Verbose)
 	host := viper.GetString(argument.Host)
@@ -47,13 +54,13 @@ func Main() {
 		viper.GetString(argument.Repository),
 	)
 	packageName := viper.GetString(argument.Package)
-	version := viper.GetString(argument.Version)
+	packageVersion := viper.GetString(argument.PackageVersion)
 	p := packages.FindVersionOrLatest(
 		packages.FilterByName(
 			client.Packages(project.Identifier, false),
 			packageName,
 		),
-		version,
+		packageVersion,
 	)
 
 	if p == nil {
@@ -62,10 +69,10 @@ func Main() {
 		os.Exit(1)
 	}
 
-	if version != LatestVersion && p.Version != version {
+	if packageVersion != LatestVersion && p.Version != packageVersion {
 		fmt.Printf(
 			"warning: version %s not found, using latest\n",
-			version,
+			packageVersion,
 		)
 	}
 

@@ -23,6 +23,7 @@ func Main() {
 		nil,
 		"One or more key-value pairs to replace (Example: FOO=BAR)",
 	)
+	argument.ParseBind()
 	common.ValidateArguments()
 
 	c := gitlab.New(

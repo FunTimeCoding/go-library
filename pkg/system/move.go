@@ -9,5 +9,11 @@ func Move(
 	from string,
 	to string,
 ) {
-	errors.PanicOnError(os.Rename(from, to))
+	if e := os.Rename(from, to); e != nil {
+		if e.Error() == "invalid cross-device link" {
+			MoveCopy(from, to)
+		} else {
+			errors.PanicOnError(e)
+		}
+	}
 }

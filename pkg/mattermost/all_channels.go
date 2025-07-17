@@ -5,8 +5,12 @@ import (
 	"github.com/mattermost/mattermost-server/v6/model"
 )
 
-func (c *Client) Team(name string) *model.Team {
-	result, r, e := c.client.GetTeamByName(name, constant.EmptyEntityTag)
+func (c *Client) AllChannels() []*model.ChannelWithTeamData {
+	result, r, e := c.client.GetAllChannels(
+		0,
+		100,
+		constant.EmptyEntityTag,
+	)
 	panicOnError(e, r)
 
 	return result

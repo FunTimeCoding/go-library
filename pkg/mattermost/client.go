@@ -1,9 +1,17 @@
 package mattermost
 
-import "github.com/mattermost/mattermost-server/v6/model"
+import (
+	"github.com/funtimecoding/go-library/pkg/mattermost/user_map"
+	"github.com/mattermost/mattermost-server/v6/model"
+)
 
 type Client struct {
-	client  *model.Client4
-	team    *model.Team
-	channel *model.Channel
+	host      string
+	token     string
+	client    *model.Client4
+	team      *model.Team
+	channel   *model.Channel
+	webSocket *model.WebSocketClient
+	meCache   *model.User
+	user      *user_map.Map
 }

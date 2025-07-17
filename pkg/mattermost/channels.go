@@ -5,9 +5,14 @@ import (
 	"github.com/mattermost/mattermost-server/v6/model"
 )
 
-func (c *Client) Channel(identifier string) *model.Channel {
-	result, r, e := c.client.GetChannel(
-		identifier,
+func (c *Client) Channels(
+	t *model.Team,
+	u *model.User,
+) []*model.Channel {
+	result, r, e := c.client.GetChannelsForTeamForUser(
+		t.Id,
+		u.Id,
+		false,
 		constant.EmptyEntityTag,
 	)
 	panicOnError(e, r)

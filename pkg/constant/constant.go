@@ -1,6 +1,9 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/assert"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/text/option"
+)
 
 const (
 	Go      = "go"
@@ -33,4 +36,7 @@ const (
 	MarkdownExtension = ".md"
 )
 
-var StartOfTime = assert.NewDay(1)
+var (
+	StartOfTime       = assert.NewDay(1)
+	CompactWhitespace = option.Compact()
+)

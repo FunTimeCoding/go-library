@@ -5,7 +5,7 @@ func DeleteDuplicates(values []string) []string {
 	result := make([]string, 0)
 
 	for _, value := range values {
-		if _, found := keys[value]; !found {
+		if _, okay := keys[value]; !okay {
 			keys[value] = true
 			result = append(result, value)
 		}

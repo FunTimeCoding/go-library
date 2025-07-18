@@ -95,7 +95,6 @@ func main() {
 		c := gitlab.New(
 			gitlabLocator.Host,
 			environment.Get(gitlabConstant.TokenEnvironment),
-			[]int{},
 		)
 		p := c.ProjectByName(namespace, repository)
 

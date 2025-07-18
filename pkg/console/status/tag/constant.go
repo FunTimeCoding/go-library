@@ -20,6 +20,7 @@ const (
 	Link        = "link"
 	Markdown    = "markdown"
 	Name        = "name"
+	Project     = "project"
 	Runbook     = "runbook"
 	Score       = "score"
 	State       = "state"

@@ -6,30 +6,33 @@ import (
 )
 
 func NewEnvironment(o ...OptionFunc) *Client {
-	t := &Option{}
-
-	for _, p := range o {
-		p(t)
+	if s := environment.GetDefault(
+		constant.HostEnvironment,
+		"",
+	); s == "" {
+		o = append(o, WithHost(s))
 	}
 
-	if t.Host == "" {
-		t.Host = environment.Get(constant.HostEnvironment)
+	if s := environment.GetDefault(
+		constant.TokenEnvironment,
+		"",
+	); s == "" {
+		o = append(o, WithToken(s))
 	}
 
-	if t.Token == "" {
-		t.Token = environment.Get(constant.TokenEnvironment)
+	if s := environment.GetDefault(
+		constant.TeamEnvironment,
+		"",
+	); s == "" {
+		o = append(o, WithTeam(s))
 	}
 
-	if t.Team == "" {
-		t.Team = environment.GetDefault(constant.TeamEnvironment, "")
+	if s := environment.GetDefault(
+		constant.ChannelEnvironment,
+		"",
+	); s == "" {
+		o = append(o, WithChannel(s))
 	}
 
-	if t.Channel == "" {
-		t.Channel = environment.GetDefault(
-			constant.ChannelEnvironment,
-			"",
-		)
-	}
-
-	return New(t.Host, t.Token, t.Team, t.Channel)
+	return New(o...)
 }

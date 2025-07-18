@@ -4,30 +4,36 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
 func New(
 	host string,
 	token string,
-	projects []int,
+	o ...OptionFunc,
 ) *Client {
-	var options []gitlab.ClientOptionFunc
+	result := &Client{
+		context:      context.Background(),
+		projectCache: make(map[int]*project.Project),
+	}
+
+	for _, p := range o {
+		p(result)
+	}
+
+	var p []gitlab.ClientOptionFunc
 
 	if host != "" {
-		options = append(
-			options,
+		p = append(
+			p,
 			gitlab.WithBaseURL(fmt.Sprintf("https://%s/api/v4", host)),
 		)
 	}
 
-	client, e := gitlab.NewClient(token, options...)
+	client, e := gitlab.NewClient(token, p...)
 	errors.PanicOnError(e)
-	result := &Client{
-		context:  context.Background(),
-		client:   client,
-		projects: projects,
-	}
+	result.client = client
 	result.user = result.CurrentUser()
 
 	return result

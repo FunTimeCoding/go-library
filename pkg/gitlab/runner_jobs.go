@@ -10,7 +10,7 @@ import (
 func (c *Client) RunnerJobs(
 	runner int,
 	stopAfter int,
-) []*gitlab.Job {
+) []*job.Job {
 	var result []*gitlab.Job
 	var number int
 
@@ -44,5 +44,5 @@ func (c *Client) RunnerJobs(
 		number++
 	}
 
-	return result
+	return c.enrichJobs(job.NewSlice(result))
 }

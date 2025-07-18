@@ -15,7 +15,10 @@ type Job struct {
 	Create            *time.Time
 	Link              string
 
-	Project *project.Project
+	Project *project.Project // nil unless enriched
+
+	Trace string // empty unless enriched and job failed
+
 	concern []string
 
 	Raw *gitlab.Job

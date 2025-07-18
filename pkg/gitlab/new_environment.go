@@ -6,10 +6,16 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func NewEnvironment() *Client {
+func NewEnvironment(o ...OptionFunc) *Client {
+	if s := environment.GetSliceInteger(
+		constant.GroupEnvironment,
+	); len(s) > 0 {
+		o = append(o, WithGroups(s))
+	}
+
 	return New(
 		web.TrimScheme(environment.Get(constant.HostEnvironment)),
 		environment.Get(constant.TokenEnvironment),
-		[]int{},
+		o...,
 	)
 }

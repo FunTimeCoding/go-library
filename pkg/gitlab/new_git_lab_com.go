@@ -2,7 +2,7 @@ package gitlab
 
 func NewGitLabCom(
 	token string,
-	projects []int,
+	o ...OptionFunc,
 ) *Client {
-	return New("", token, projects)
+	return New("", token, o...)
 }

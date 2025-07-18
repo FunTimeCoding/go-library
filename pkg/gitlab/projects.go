@@ -8,8 +8,12 @@ import (
 )
 
 func (c *Client) Projects() []*project.Project {
-	var result []*project.Project
+	var result []*gitlab.Project
 	var number int
+
+	if len(c.groups) > 0 {
+		return c.GroupProjects(c.groups...)
+	}
 
 	for {
 		page, _, e := c.client.Projects.ListProjects(
@@ -21,7 +25,7 @@ func (c *Client) Projects() []*project.Project {
 			},
 		)
 		errors.PanicOnError(e)
-		result = append(result, project.NewSlice(page)...)
+		result = append(result, page...)
 
 		if len(page) < constant.PerPage100 {
 			break
@@ -30,5 +34,5 @@ func (c *Client) Projects() []*project.Project {
 		number++
 	}
 
-	return result
+	return project.NewSlice(result)
 }

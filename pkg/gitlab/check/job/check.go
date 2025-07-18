@@ -19,8 +19,7 @@ func Check(o *option.Job) {
 	f := constant.Format
 
 	for _, e := range elements {
-		fmt.Printf("Project: %s\n", e.Project.Format(f))
-		fmt.Printf("  Job: %s\n", e.Format(f))
+		fmt.Println(e.Format(f))
 	}
 
 	if len(elements) == 0 {

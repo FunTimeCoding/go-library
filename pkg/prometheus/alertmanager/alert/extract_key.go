@@ -10,7 +10,7 @@ func extractKey(
 	k string,
 	to *string,
 ) {
-	if v, ok := (*remaining)[k]; ok {
+	if v, okay := (*remaining)[k]; okay {
 		*to = v
 		delete(*remaining, k)
 	} else {

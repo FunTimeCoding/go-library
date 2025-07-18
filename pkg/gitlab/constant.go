@@ -1,3 +1,3 @@
-package mattermost
+package gitlab
 
 type OptionFunc func(*Client)

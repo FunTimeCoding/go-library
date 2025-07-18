@@ -2,66 +2,37 @@ package clean_job
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
-	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
-	"github.com/funtimecoding/go-library/pkg/time"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/gitlab/job"
+	"github.com/funtimecoding/go-library/pkg/gitlab/runner"
 )
 
 func RunnerWay(
 	g *gitlab.Client,
-	match string,
+	r *runner.Runner,
+	f *option.Format,
 ) {
-	f := option.ExtendedColor.Copy()
-	runners := g.Runners(true)
-	fmt.Printf("Runners (%d):\n", len(runners))
+	fmt.Printf("Runner: %s\n", r.Format(f))
+	jobs := g.RunnerJobs(r.Identifier, 1000)
+	fmt.Printf("Job count: %d\n", len(jobs))
+	f2 := f.Copy().Extended().Tag(tag.Link)
 
-	for _, runner := range runners {
-		if !strings.Contains(runner.Description, match) {
-			continue
+	for _, j := range jobs {
+		if j.Fail() {
+			fmt.Println(j.Format(f2))
+		} else {
+			fmt.Println(j.Format(f))
 		}
 
-		fmt.Printf("  %s\n", runner.Format(f))
-		jobs := g.RunnerJobs(runner.Identifier, 1000)
-		fmt.Printf("  Jobs (%d):\n", len(jobs))
+		if j.HasConcern(job.Timeout) {
+			fmt.Printf("  Start timeout: %s\n", j.Stage)
 
-		for _, job := range jobs {
-			var jobUser string
-
-			if job.User != nil {
-				jobUser = job.User.Name
-			} else {
-				jobUser = "no user"
-			}
-
-			fmt.Printf(
-				"  Job: %s | %s | %s | %s\n",
-				job.CreatedAt.Format(time.DateMinute),
-				jobUser,
-				job.Name,
-				job.Status,
-			)
-
-			if job.Status == constant.Failed {
-				trace := g.Trace(job.Project.ID, job.ID)
-
-				if strings.Contains(
-					trace,
-					"ERROR: Job failed (system failure): prepare environment: waiting for pod running: timed out waiting for pod to start.",
-				) {
-					p := g.Project(job.Project.ID)
-					fmt.Printf(
-						"    Pod start timeout %s/%s in stage %s\n",
-						p.Raw.Namespace.FullPath,
-						p.Raw.Name,
-						job.Stage,
-					)
-
-					if false {
-						fmt.Printf("    Trace: %s\n", trace)
-					}
-				}
+			if console.AskConfirmation("Retry job?") {
+				// TODO: Untested
+				g.RetryJob(j)
 			}
 		}
 	}

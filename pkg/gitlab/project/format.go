@@ -9,7 +9,7 @@ import (
 func (p *Project) Format(f *option.Format) string {
 	s := status.New(f).Integer(
 		p.Identifier,
-	).String(p.CombinedName()).RawList(p.Raw)
+	).String(p.formatName(f)).RawList(p.Raw)
 
 	if !f.ShowExtended {
 		s.TagLine(tag.Link, "  %s", p.Link)

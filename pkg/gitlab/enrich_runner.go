@@ -3,10 +3,13 @@ package gitlab
 import "github.com/funtimecoding/go-library/pkg/gitlab/runner"
 
 func (c *Client) enrichRunner(r *runner.Runner) *runner.Runner {
-	r.Validate()
-	r.Address = c.GraphRunner(
+	if n := c.GraphRunner(
 		r.Identifier,
-	).Data.Runner.Managers.Nodes[0].IPAddress
+	).Data.Runner.Managers.Nodes; len(n) > 0 {
+		r.Address = n[0].IPAddress
+	}
+
+	r.Validate()
 
 	return r
 }

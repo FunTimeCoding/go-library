@@ -10,4 +10,8 @@ const (
 	OnlineStatus = "online"
 )
 
-const Paused = "paused"
+// Validation concern
+const (
+	Paused           = "paused"
+	NoAddressConcern = "no_address"
+)

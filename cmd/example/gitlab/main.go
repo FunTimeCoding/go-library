@@ -7,13 +7,14 @@ import (
 
 func main() {
 	if true {
-		example.Search()
+		clean_job.Check()
 	}
 
 	if false {
+		example.Project()
+		example.Search()
 		example.Runner()
 		example.GraphQuery()
-		clean_job.Check()
 		example.CloneAll()
 	}
 }

@@ -2,15 +2,15 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"gitlab.com/gitlab-org/api/client-go"
+	"github.com/funtimecoding/go-library/pkg/gitlab/job"
 )
 
 func (c *Client) Retry(
 	project int,
-	job int,
-) *gitlab.Job {
-	result, _, e := c.client.Jobs.RetryJob(project, job)
+	jobIdentifier int,
+) *job.Job {
+	result, _, e := c.client.Jobs.RetryJob(project, jobIdentifier)
 	errors.PanicOnError(e)
 
-	return result
+	return c.enrichJob(job.New(result))
 }

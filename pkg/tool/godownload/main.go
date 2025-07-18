@@ -47,7 +47,7 @@ func Main(
 	verbose := viper.GetBool(argument.Verbose)
 	host := viper.GetString(argument.Host)
 	token := viper.GetString(argument.Token)
-	client := gitlab.New(host, token, []int{})
+	client := gitlab.New(host, token)
 	project := common.FindProjectOrExit(
 		client,
 		viper.GetString(argument.Owner),

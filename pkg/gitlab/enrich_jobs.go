@@ -1,16 +1,10 @@
 package gitlab
 
-import (
-	"github.com/funtimecoding/go-library/pkg/gitlab/job"
-	"github.com/funtimecoding/go-library/pkg/gitlab/project"
-)
+import "github.com/funtimecoding/go-library/pkg/gitlab/job"
 
-func enrichJobs(
-	v []*job.Job,
-	p *project.Project,
-) []*job.Job {
+func (c *Client) enrichJobs(v []*job.Job) []*job.Job {
 	for _, j := range v {
-		j.Project = p
+		c.enrichJob(j)
 	}
 
 	return v

@@ -29,7 +29,6 @@ func Main() {
 	c := gitlab.New(
 		viper.GetString(argument.Host),
 		viper.GetString(argument.Token),
-		[]int{},
 	)
 	project := common.FindProjectOrExit(
 		c,

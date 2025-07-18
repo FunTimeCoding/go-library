@@ -82,7 +82,7 @@ func main() {
 
 	relational.New("")
 
-	gitlab.NewGitLabCom("", []int{})
+	gitlab.NewGitLabCom("")
 
 	git.ModifiedFiles("")
 

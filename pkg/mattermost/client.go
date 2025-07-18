@@ -6,8 +6,12 @@ import (
 )
 
 type Client struct {
-	host      string
-	token     string
+	host  string
+	token string
+
+	teamName    string
+	channelName string
+
 	client    *model.Client4
 	team      *model.Team
 	channel   *model.Channel

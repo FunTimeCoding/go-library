@@ -51,11 +51,7 @@ func (a *Alert) Format(f *option.Format) string {
 	s.TagLine(tag.Link, "  %s", a.Link)
 
 	if a.Runbook != constant.None {
-		s.TagLine(
-			tag.Runbook,
-			"  Runbook: %s",
-			a.Runbook,
-		)
+		s.TagLine(tag.Runbook, "  Runbook: %s", a.Runbook)
 	}
 
 	if f.ShowExtended {

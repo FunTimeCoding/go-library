@@ -14,7 +14,7 @@ func common(
 	result := make([]string, 0)
 
 	for _, x := range a {
-		if _, found := buffer[x]; found {
+		if _, okay := buffer[x]; okay {
 			result = append(result, x)
 		}
 	}

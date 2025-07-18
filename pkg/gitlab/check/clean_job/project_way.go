@@ -19,6 +19,9 @@ func ProjectWay(
 		}
 
 		fmt.Printf("Job: %s\n", j.Format(f))
-		fmt.Printf("Trace: %s\n", g.Trace(p.Identifier, j.Identifier))
+
+		if j.Trace != "" {
+			fmt.Printf("  Trace: %s\n", j.Trace)
+		}
 	}
 }

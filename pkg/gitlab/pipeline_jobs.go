@@ -18,5 +18,5 @@ func (c *Client) PipelineJobs(
 	)
 	errors.PanicOnError(e)
 
-	return job.NewSlice(result)
+	return c.enrichJobs(job.NewSlice(result))
 }

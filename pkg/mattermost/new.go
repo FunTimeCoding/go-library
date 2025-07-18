@@ -7,28 +7,34 @@ import (
 	"github.com/mattermost/mattermost-server/v6/model"
 )
 
-func New(
-	host string,
-	token string,
-	team string,
-	channel string,
-) *Client {
-	client := model.NewAPIv4Client(
-		fmt.Sprintf("%s://%s", web.SecureScheme, host),
-	)
-	client.SetOAuthToken(token)
-	result := &Client{
-		client: client,
-		host:   host,
-		token:  token,
-		user:   user_map.New(),
+func New(o ...OptionFunc) *Client {
+	result := &Client{user: user_map.New()}
+
+	for _, p := range o {
+		p(result)
 	}
 
-	if team != "" {
-		result.team = result.Team(team)
+	if result.host == "" {
+		panic("host required")
+	}
 
-		if channel != "" {
-			result.channel = result.ChannelByName(result.team, channel)
+	if result.token == "" {
+		panic("token required")
+	}
+
+	result.client = model.NewAPIv4Client(
+		fmt.Sprintf("%s://%s", web.SecureScheme, result.host),
+	)
+	result.client.SetOAuthToken(result.token)
+
+	if result.teamName != "" {
+		result.team = result.Team(result.teamName)
+
+		if result.channelName != "" {
+			result.channel = result.ChannelByName(
+				result.team,
+				result.channelName,
+			)
 		}
 	}
 

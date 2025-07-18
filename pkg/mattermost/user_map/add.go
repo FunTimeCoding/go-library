@@ -17,11 +17,11 @@ func (m *Map) Add(u *model.User) *model.User {
 		name = u.Username
 	}
 
-	if _, found := m.byDirectory[name]; !found {
+	if _, okay := m.byDirectory[name]; !okay {
 		m.byDirectory[name] = u
 	}
 
-	if _, found := m.byIdentifier[u.Id]; !found {
+	if _, okay := m.byIdentifier[u.Id]; !okay {
 		m.byIdentifier[u.Id] = u
 	}
 

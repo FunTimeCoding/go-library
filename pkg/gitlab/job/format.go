@@ -24,11 +24,7 @@ func (j *Job) Format(f *option.Format) string {
 		j.formatDate(f),
 		j.formatConcern(f),
 	)
-
-	if f.HasTag(tag.Link) {
-		s.TagLine(tag.Link, "  %s", j.Link)
-		s.Line("  Project: %s", j.ProjectLink())
-	}
+	s.TagLine(tag.Link, "  %s", j.Link)
 
 	return s.RawList(j.Raw).Format()
 }

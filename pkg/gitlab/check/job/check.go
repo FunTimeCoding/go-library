@@ -16,7 +16,7 @@ func Check(o *option.Job) {
 		return
 	}
 
-	f := constant.Format
+	f := constant.CheckFormat
 
 	for _, e := range elements {
 		fmt.Println(e.Format(f))

@@ -13,7 +13,7 @@ func printNotation(
 	o *option.Job,
 ) {
 	r := report.New()
-	f := constant.Format
+	f := constant.CheckFormat
 
 	for _, e := range report.Trim(
 		v,

@@ -2,6 +2,7 @@ package constant
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -51,4 +52,7 @@ const (
 	JobToken          = "CI_JOB_TOKEN"
 )
 
-var Format = option.Color.Copy()
+var (
+	Format      = option.Color.Copy()
+	CheckFormat = Format.Copy().Tag(tag.Project)
+)

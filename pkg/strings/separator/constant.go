@@ -17,6 +17,7 @@ const (
 	Semicolon   = ";"
 	Slash       = "/"
 	Space       = " "
+	Tab         = "\t"
 	Underscore  = "_"
 	Unix        = "\n"
 )

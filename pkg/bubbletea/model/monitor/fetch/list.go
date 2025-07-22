@@ -23,6 +23,10 @@ var (
 		Command:  constant.GoContainer,
 		Interval: 5 * time.Minute,
 	}
+	GoVolume = &Setting{
+		Command:  constant.GoVolume,
+		Interval: 10 * time.Minute,
+	}
 	GoImage = &Setting{
 		Command:  constant.GoImage,
 		Interval: 10 * time.Minute,
@@ -81,6 +85,7 @@ var (
 		GoSentry,
 		GoSilence,
 		GoVersion,
+		GoVolume,
 	}
 )
 

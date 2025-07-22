@@ -20,6 +20,7 @@ const (
 	GoSentry    = "gosentry"
 	GoSilence   = "gosilence"
 	GoVersion   = "goversion"
+	GoVolume    = "govolume"
 
 	AlertPrefix           = "alert"
 	ExamplePrefix         = "example"

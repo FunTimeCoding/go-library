@@ -30,10 +30,11 @@ const (
 	False  = "0"
 	Direct = "direct"
 
-	CurrentDirectory  = "."
-	GoExtension       = ".go"
-	MarkupExtension   = ".yaml"
-	MarkdownExtension = ".md"
+	CurrentDirectory     = "."
+	GoExtension          = ".go"
+	MarkdownExtension    = ".md"
+	MarkupExtension      = ".yaml"
+	ShortMarkupExtension = ".yml"
 )
 
 var (

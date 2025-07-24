@@ -4,11 +4,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"os"
 	"path/filepath"
+	"slices"
 )
 
 func FilesByExtension(
 	root string,
-	extension string,
+	extension ...string,
 ) []string {
 	var result []string
 	errors.PanicOnError(
@@ -23,7 +24,10 @@ func FilesByExtension(
 					return e
 				}
 
-				if !i.IsDir() && filepath.Ext(path) == extension {
+				if !i.IsDir() && slices.Contains(
+					extension,
+					filepath.Ext(path),
+				) {
 					result = append(result, path)
 				}
 

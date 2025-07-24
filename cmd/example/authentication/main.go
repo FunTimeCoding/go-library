@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/authenticator"
@@ -67,5 +66,5 @@ func main() {
 			c.Redirect(c.LastLocation())
 		},
 	)
-	errors.PanicOnError(http.ListenAndServe(web.ListenAddress, m))
+	web.Listen(m)
 }

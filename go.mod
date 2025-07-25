@@ -17,7 +17,7 @@ require (
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.6
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20250715215929-4738bcb231c7
+	github.com/chromedp/cdproto v0.0.0-20250724212937-08a3db8b4327
 	github.com/chromedp/chromedp v0.13.7
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
@@ -41,7 +41,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/gpustack/gguf-parser-go v0.21.2
+	github.com/gpustack/gguf-parser-go v0.21.3
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
 	github.com/hupe1980/go-tiktoken v0.0.10
@@ -85,13 +85,13 @@ require (
 	google.golang.org/api v0.243.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.30.0
+	gorm.io/gorm v1.30.1
 	gotest.tools/v3 v3.5.2
 	k8s.io/api v0.30.13
 	k8s.io/apimachinery v0.30.13
 	k8s.io/client-go v0.30.13
 	k8s.io/metrics v0.30.13
-	sigs.k8s.io/yaml v1.5.0
+	sigs.k8s.io/yaml v1.6.0
 )
 
 require (

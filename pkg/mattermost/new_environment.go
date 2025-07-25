@@ -9,28 +9,28 @@ func NewEnvironment(o ...OptionFunc) *Client {
 	if s := environment.GetDefault(
 		constant.HostEnvironment,
 		"",
-	); s == "" {
+	); s != "" {
 		o = append(o, WithHost(s))
 	}
 
 	if s := environment.GetDefault(
 		constant.TokenEnvironment,
 		"",
-	); s == "" {
+	); s != "" {
 		o = append(o, WithToken(s))
 	}
 
 	if s := environment.GetDefault(
 		constant.TeamEnvironment,
 		"",
-	); s == "" {
+	); s != "" {
 		o = append(o, WithTeam(s))
 	}
 
 	if s := environment.GetDefault(
 		constant.ChannelEnvironment,
 		"",
-	); s == "" {
+	); s != "" {
 		o = append(o, WithChannel(s))
 	}
 

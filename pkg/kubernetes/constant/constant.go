@@ -21,6 +21,8 @@ var (
 	Dense  = option.Color
 )
 
+const PodsResource = "pods"
+
 const DNSConfigForming = "DNSConfigForming" // Event reason
 
 var IrrelevantEventReason = []string{

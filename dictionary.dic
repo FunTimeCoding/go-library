@@ -120,3 +120,7 @@ testid
 
 # n8n
 creds
+
+# ChromeDP
+cdproto
+chromedp

@@ -87,10 +87,10 @@ require (
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.1
 	gotest.tools/v3 v3.5.2
-	k8s.io/api v0.30.13
-	k8s.io/apimachinery v0.30.13
-	k8s.io/client-go v0.30.13
-	k8s.io/metrics v0.30.13
+	k8s.io/api v0.30.14
+	k8s.io/apimachinery v0.30.14
+	k8s.io/client-go v0.30.14
+	k8s.io/metrics v0.30.14
 	sigs.k8s.io/yaml v1.6.0
 )
 

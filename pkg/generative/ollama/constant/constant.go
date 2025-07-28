@@ -14,4 +14,8 @@ const (
 	AssistantRole = "assistant"
 
 	NotationFormat = "json"
+
+	ContextSize = "num_ctx"
+	PredictSize = "num_predict"
+	Temperature = "temperature"
 )

@@ -3,9 +3,7 @@ package main
 import "github.com/funtimecoding/go-library/pkg/monitor/check/collect"
 
 func main() {
-	if true {
-		collect.LoopIndividual()
-	}
+	collect.LoopIndividual()
 
 	if false {
 		collect.Loop()

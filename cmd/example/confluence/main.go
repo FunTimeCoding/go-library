@@ -3,15 +3,14 @@ package main
 import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/example"
 
 func main() {
-	if true {
-		example.Page()
-	}
+	example.Search()
 
 	if false {
-		example.Label()
-		example.User()
 		example.Favorite()
+		example.Label()
+		example.Page()
 		example.Search()
 		example.Space()
+		example.User()
 	}
 }

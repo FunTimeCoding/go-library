@@ -16,7 +16,7 @@ func main() {
 	f := constant.Format
 
 	if viper.GetBool(argument.Watched) {
-		for _, p := range c.Favorites() {
+		for _, p := range c.Watched() {
 			fmt.Println(p.Format(f))
 			p.PrintConsole()
 		}

@@ -28,8 +28,6 @@ func Search() {
 		c.Search("creator=currentUser()")
 		c.Search("space=EXAMPLE")
 		c.Search("space=EXAMPLE")
-
-		// No result, watcher does not work, use favorite instead
 		c.Search("watcher=currentUser()")
 	}
 

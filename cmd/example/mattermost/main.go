@@ -3,11 +3,10 @@ package main
 import "github.com/funtimecoding/go-library/pkg/mattermost/example"
 
 func main() {
-	if true {
-		example.Support()
-	}
+	example.Dialog()
 
 	if false {
+		example.Support()
 		example.Post()
 	}
 }

@@ -6,9 +6,7 @@ import (
 )
 
 func main() {
-	if true {
-		prometheus.Label()
-	}
+	prometheus.Label()
 
 	if false {
 		prometheus.Query()

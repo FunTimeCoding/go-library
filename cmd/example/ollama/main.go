@@ -3,9 +3,7 @@ package main
 import "github.com/funtimecoding/go-library/pkg/generative/ollama/example"
 
 func main() {
-	if true {
-		example.Chat()
-	}
+	example.Chat()
 
 	if false {
 		example.Benchmark()

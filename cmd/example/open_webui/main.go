@@ -7,10 +7,7 @@ import (
 
 func main() {
 	c := open_webui.NewEnvironment()
-
-	if true {
-		fmt.Printf("Folders: %s\n", c.Folders())
-	}
+	fmt.Printf("Folders: %s\n", c.Folders())
 
 	if false {
 		fmt.Printf("Functions: %s\n", c.Functions())

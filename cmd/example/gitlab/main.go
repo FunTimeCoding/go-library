@@ -6,9 +6,7 @@ import (
 )
 
 func main() {
-	if true {
-		clean_job.Check()
-	}
+	clean_job.Check()
 
 	if false {
 		example.Project()

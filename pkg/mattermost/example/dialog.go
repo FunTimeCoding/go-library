@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/mattermost"
+	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
@@ -30,10 +31,25 @@ func Dialog() {
 				l.Format("Header: %s=%s", k, join.Comma(v))
 			}
 
-			l.Format("Body: %s", c.Body())
-			c.WriteOkay("Dialog request received.")
+			b := c.Body()
+			l.Format("Body: %s", b)
 
-			fmt.Println("Dialog request:")
+			r := &model.PostActionIntegrationRequest{}
+			notation.DecodeStrict(b, r, false)
+			l.Format("Decoded request: %+v", r)
+
+			response := &model.PostActionIntegrationResponse{
+				EphemeralText: "You updated the post!",
+			}
+
+			if false {
+				response.Update = &model.Post{
+					Message: "Updated message text!",
+				}
+			}
+
+			c.WriteOkay(notation.Encode(response, false))
+			fmt.Println("Request receive:")
 			fmt.Println(l.Render())
 		},
 	)
@@ -46,52 +62,59 @@ func Dialog() {
 			ChannelId: h.Id,
 			Message:   "Some message with buttons",
 		}
-		attachments := []map[string]any{
-			{
-				"color": "#36a64f",
-				"fields": []map[string]any{
-					{
-						"title": "Current Version",
-						"value": "v2.1.0",
-						"short": true,
-					},
-					{
-						"title": "Target Version",
-						"value": "v2.2.1",
-						"short": true,
-					},
-				},
-				"actions": []map[string]any{
-					{
-						"id":    "update_yes",
-						"name":  "✅ Yes, Update",
-						"type":  "button",
-						"style": "primary",
-						"integration": map[string]any{
-							"url": "http://localhost:8080/dialog",
-							"context": map[string]any{
-								"action":  "update_server",
-								"server":  "prod-web-01",
-								"version": "v2.2.1",
-							},
+		model.ParseSlackAttachment(
+			p,
+			[]*model.SlackAttachment{
+				{
+					AuthorName: "alpha",
+					Title:      "bravo",
+					Text:       "charlie",
+					Color:      "#36a64f",
+					Fields: []*model.SlackAttachmentField{
+						{
+							Title: "Current Version",
+							Value: "v2.1.0",
+							Short: true,
+						},
+						{
+							Title: "Target Version",
+							Value: "v2.2.1",
+							Short: true,
 						},
 					},
-					{
-						"id":    "update_cancel",
-						"name":  "❌ Cancel",
-						"type":  "button",
-						"style": "danger",
-						"integration": map[string]any{
-							"url": "http://localhost:8080/dialog",
-							"context": map[string]any{
-								"action": "cancel_update",
+					Actions: []*model.PostAction{
+						{
+							Id:    "yes", // Cannot contain underscore
+							Name:  "Yes",
+							Type:  model.PostActionTypeButton,
+							Style: "primary",
+							Integration: &model.PostActionIntegration{
+								Context: model.StringInterface{
+									"action":  "update_server",
+									"server":  "prod-web-01",
+									"version": "v2.2.1",
+								},
+								URL: "http://localhost:8080/callback", // Must return JSON
+							},
+						},
+						{
+							Id:    "cancel", // Cannot contain underscore
+							Name:  "Cancel",
+							Type:  model.PostActionTypeButton,
+							Style: "danger",
+							Integration: &model.PostActionIntegration{
+								Context: model.StringInterface{
+									"action":  "cancel_update",
+									"server":  "prod-web-01",
+									"version": "v2.2.1",
+								},
+								URL: "http://localhost:8080/callback", // Must return JSON
 							},
 						},
 					},
 				},
 			},
-		}
-		p.SetProps(map[string]any{"attachments": attachments})
+		)
 		m.Post(p)
 	}
 

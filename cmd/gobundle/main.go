@@ -8,12 +8,12 @@ import (
 
 func main() {
 	argument.ParseBind()
-	name := argument.RequiredPositional(0, "NAME", 1)
-	path := argument.RequiredPositional(1, "PATH", 1)
-	executable := argument.RequiredPositional(2, "EXECUTABLE", 1)
-	icon := argument.RequiredPositional(3, "ICON", 1)
-	vendor := argument.RequiredPositional(4, "VENDOR", 1)
-	version := argument.RequiredPositional(5, "VERSION", 1)
+	name := argument.RequiredPositional(0, "NAME")
+	path := argument.RequiredPositional(1, "PATH")
+	executable := argument.RequiredPositional(2, "EXECUTABLE")
+	icon := argument.RequiredPositional(3, "ICON")
+	vendor := argument.RequiredPositional(4, "VENDOR")
+	version := argument.RequiredPositional(5, "VERSION")
 	fmt.Printf("Name: %s\n", name)
 	fmt.Printf("Path: %s\n", path)
 	fmt.Printf("Executable: %s\n", executable)

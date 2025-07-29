@@ -8,10 +8,6 @@ import (
 func DeleteSilence() {
 	argument.ParseBind()
 	internal.Alertmanager().DeleteSilence(
-		argument.RequiredPositional(
-			0,
-			"SILENCE_IDENTIFIER",
-			1,
-		),
+		argument.RequiredPositional(0, "SILENCE_IDENTIFIER"),
 	)
 }

@@ -10,7 +10,7 @@ import (
 func main() {
 	argument.ParseBind()
 	result, e := gguf_parser.ParseGGUFFile(
-		argument.RequiredPositional(0, "PATH", 1),
+		argument.RequiredPositional(0, "PATH"),
 		gguf_parser.SkipLargeMetadata(),
 		gguf_parser.UseMMap(),
 	)

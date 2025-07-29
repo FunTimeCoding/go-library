@@ -85,7 +85,7 @@ func Main(
 		return
 	}
 
-	name := argument.RequiredPositional(0, "NAME", 1)
+	name := argument.RequiredPositional(0, "NAME")
 	mainPath := viper.GetString(argument.Main)
 
 	if mainPath == "" {

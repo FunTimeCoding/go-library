@@ -14,7 +14,6 @@ func addResponder() {
 	responder := argument.RequiredPositional(
 		0,
 		"RESPONDER_NAME",
-		1,
 	)
 	c := internal.Opsgenie()
 	f := option.ExtendedColor.Copy()

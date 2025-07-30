@@ -2,7 +2,7 @@ package mattermost
 
 import (
 	"github.com/funtimecoding/go-library/pkg/mattermost/constant"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 )
 
 func (c *Client) ChannelUsers(h *model.Channel) []*model.User {
@@ -11,6 +11,7 @@ func (c *Client) ChannelUsers(h *model.Channel) []*model.User {
 
 	for {
 		users, r, e := c.client.GetUsersInChannel(
+			c.context,
 			h.Id,
 			page,
 			constant.PerPage,

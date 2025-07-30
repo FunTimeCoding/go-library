@@ -3,7 +3,7 @@ package mattermost
 import (
 	"github.com/funtimecoding/go-library/pkg/mattermost/constant"
 	"github.com/funtimecoding/go-library/pkg/mattermost/post"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 )
 
 func (c *Client) Thread(p *model.Post) []*post.Post {
@@ -12,6 +12,7 @@ func (c *Client) Thread(p *model.Post) []*post.Post {
 	}
 
 	list, r, e := c.client.GetPostThread(
+		c.context,
 		p.Id,
 		constant.EmptyEntityTag,
 		false,

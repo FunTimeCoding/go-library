@@ -2,7 +2,7 @@ package post
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 	"testing"
 )
 

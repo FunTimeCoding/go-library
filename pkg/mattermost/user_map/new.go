@@ -1,6 +1,6 @@
 package user_map
 
-import "github.com/mattermost/mattermost-server/v6/model"
+import "github.com/mattermost/mattermost/server/public/model"
 
 func New() *Map {
 	return &Map{

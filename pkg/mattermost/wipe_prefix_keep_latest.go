@@ -2,7 +2,7 @@ package mattermost
 
 import (
 	"github.com/funtimecoding/go-library/pkg/mattermost/post"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 	"strings"
 )
 

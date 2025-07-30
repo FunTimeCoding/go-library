@@ -1,9 +1,9 @@
 package mattermost
 
-import "github.com/mattermost/mattermost-server/v6/model"
+import "github.com/mattermost/mattermost/server/public/model"
 
 func (c *Client) SubmitDialog(v model.SubmitDialogRequest) *model.SubmitDialogResponse {
-	result, r, e := c.client.SubmitInteractiveDialog(v)
+	result, r, e := c.client.SubmitInteractiveDialog(c.context, v)
 	panicOnError(e, r)
 
 	return result

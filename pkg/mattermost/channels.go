@@ -2,7 +2,7 @@ package mattermost
 
 import (
 	"github.com/funtimecoding/go-library/pkg/mattermost/constant"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 )
 
 func (c *Client) Channels(
@@ -10,6 +10,7 @@ func (c *Client) Channels(
 	u *model.User,
 ) []*model.Channel {
 	result, r, e := c.client.GetChannelsForTeamForUser(
+		c.context,
 		t.Id,
 		u.Id,
 		false,

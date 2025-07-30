@@ -1,14 +1,15 @@
 package mattermost
 
 import (
+	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/mattermost/user_map"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 )
 
 func New(o ...OptionFunc) *Client {
-	result := &Client{user: user_map.New()}
+	result := &Client{context: context.Background(), user: user_map.New()}
 
 	for _, p := range o {
 		p(result)

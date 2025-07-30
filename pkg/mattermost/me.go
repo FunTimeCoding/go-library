@@ -2,7 +2,7 @@ package mattermost
 
 import (
 	"github.com/funtimecoding/go-library/pkg/mattermost/constant"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 )
 
 func (c *Client) Me() *model.User {
@@ -10,7 +10,7 @@ func (c *Client) Me() *model.User {
 		return c.meCache
 	}
 
-	result, r, e := c.client.GetMe(constant.EmptyEntityTag)
+	result, r, e := c.client.GetMe(c.context, constant.EmptyEntityTag)
 	panicOnError(e, r)
 	c.meCache = result
 

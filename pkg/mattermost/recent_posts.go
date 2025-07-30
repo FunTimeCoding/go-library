@@ -2,7 +2,7 @@ package mattermost
 
 import (
 	"github.com/funtimecoding/go-library/pkg/mattermost/post"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 	"time"
 )
 
@@ -11,6 +11,7 @@ func (c *Client) RecentPosts(
 	sinceMilli int64,
 ) []*post.Post {
 	list, response, e := c.client.GetPostsSince(
+		c.context,
 		h.Id,
 		sinceMilli,
 		true,

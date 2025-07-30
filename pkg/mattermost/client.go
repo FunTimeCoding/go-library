@@ -1,11 +1,14 @@
 package mattermost
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/mattermost/user_map"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 )
 
 type Client struct {
+	context context.Context
+
 	host  string
 	token string
 

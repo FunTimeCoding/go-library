@@ -1,7 +1,7 @@
 package mattermost
 
 import (
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 	"strings"
 )
 
@@ -29,7 +29,7 @@ func (c *Client) UpdateChannelHeader(
 	}
 
 	h.Header = strings.Join(header, separator)
-	result, r, e := c.client.UpdateChannel(h)
+	result, r, e := c.client.UpdateChannel(c.context, h)
 	panicOnError(e, r)
 
 	return result

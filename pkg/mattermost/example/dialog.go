@@ -10,7 +10,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/request_context"
-	"github.com/mattermost/mattermost-server/v6/model"
+	"github.com/mattermost/mattermost/server/public/model"
 	"net/http"
 )
 

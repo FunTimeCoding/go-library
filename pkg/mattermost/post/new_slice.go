@@ -1,6 +1,6 @@
 package post
 
-import "github.com/mattermost/mattermost-server/v6/model"
+import "github.com/mattermost/mattermost/server/public/model"
 
 func NewSlice(v []*model.Post) []*Post {
 	var result []*Post

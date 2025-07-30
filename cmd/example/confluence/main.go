@@ -6,7 +6,7 @@ func main() {
 	example.Search()
 
 	if false {
-		example.Favorite()
+		example.Watch()
 		example.Label()
 		example.Page()
 		example.Search()

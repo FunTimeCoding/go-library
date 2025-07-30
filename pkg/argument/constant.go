@@ -24,6 +24,7 @@ const (
 	Exclusive      = "exclusive"
 	Executable     = "executable"
 	Extended       = "extended"
+	Favorites      = "favorites"
 	File           = "file"
 	Filter         = "filter"
 	Fingerprint    = "fingerprint"

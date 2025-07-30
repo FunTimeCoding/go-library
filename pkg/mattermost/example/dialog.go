@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/mattermost"
 	"github.com/funtimecoding/go-library/pkg/notation"
-	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -25,17 +24,9 @@ func Dialog() {
 			c := request_context.New(w, e)
 			c.SetLastLocation()
 			l := multi_line.New()
-			l.Format("Raw query: %s", c.Request().URL.RawQuery)
-
-			for k, v := range c.Request().Header {
-				l.Format("Header: %s=%s", k, join.Comma(v))
-			}
-
-			b := c.Body()
-			l.Format("Body: %s", b)
-
+			request_context.AppendDetail(l, c)
 			r := &model.PostActionIntegrationRequest{}
-			notation.DecodeStrict(b, r, false)
+			notation.DecodeStrict(c.Body(), r, false)
 			l.Format("Decoded request: %+v", r)
 
 			response := &model.PostActionIntegrationResponse{

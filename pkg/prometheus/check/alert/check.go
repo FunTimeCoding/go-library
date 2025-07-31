@@ -3,6 +3,7 @@ package alert
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/internal"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/constant"
@@ -60,7 +61,7 @@ func Check(o *option.Alert) {
 	if !o.All && statistic.Relevant == 0 {
 		fmt.Printf(
 			"No relevant %s, %d in total\n",
-			Plural,
+			item.GoAlert.Plural,
 			statistic.Total,
 		)
 	}

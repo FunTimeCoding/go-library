@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/go_mod/check/version"
 	"github.com/funtimecoding/go-library/pkg/go_mod/check/version/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/runtime"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
@@ -27,7 +28,7 @@ func main() {
 		3,
 		fmt.Sprintf(
 			"Depth to scan for %s. Default is 3.",
-			version.Plural,
+			item.GoVersion.Plural,
 		),
 	)
 	argument.ParseBind()

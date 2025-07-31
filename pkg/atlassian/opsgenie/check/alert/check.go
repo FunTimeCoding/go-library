@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 )
 
 func Check(o *option.Alert) {
@@ -23,6 +24,6 @@ func Check(o *option.Alert) {
 	}
 
 	if len(elements) == 0 {
-		monitor.NoRelevant(Plural)
+		monitor.NoRelevant(item.GoGenie.Plural)
 	}
 }

@@ -2,7 +2,7 @@ package silence
 
 import (
 	"fmt"
-	monitorConstant "github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/openapi"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
@@ -29,9 +29,7 @@ func New(
 	}
 
 	return &Silence{
-		MonitorIdentifier: fmt.Sprintf(
-			"%s-%s",
-			monitorConstant.SilencePrefix,
+		MonitorIdentifier: item.GoSilence.StringIdentifier(
 			*v.ID,
 		),
 		Identifier: *v.ID,

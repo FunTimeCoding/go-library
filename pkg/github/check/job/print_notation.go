@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/github/run"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 )
 
@@ -17,20 +18,20 @@ func printNotation(
 		v,
 		r,
 		o.All,
-		Plural,
-		constant.GitHubPrefix,
+		item.GoGitHub,
 	) {
-		var level string
+		var s constant.Severity
 
 		if e.HasConcerns() {
-			level = constant.ErrorLevel
+			s = constant.Critical
 		} else {
-			level = constant.InformationLevel
+			s = constant.Information
 		}
 
 		r.AddItem(
+			item.GoGitHub,
 			e.MonitorIdentifier,
-			level,
+			s,
 			e.Format(Notation),
 			*e.Raw.HTMLURL,
 			&e.Update,

@@ -1,8 +1,7 @@
 package event
 
 import (
-	"fmt"
-	monitorConstant "github.com/funtimecoding/go-library/pkg/monitor/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	event "k8s.io/api/events/v1"
 )
 
@@ -11,9 +10,7 @@ func New(
 	cluster string,
 ) *Event {
 	return &Event{
-		MonitorIdentifier: fmt.Sprintf(
-			"%s-%s",
-			monitorConstant.KubernetesEventPrefix,
+		MonitorIdentifier: constant.GoKevt.StringIdentifier(
 			v.Name,
 		),
 		Cluster:       cluster,

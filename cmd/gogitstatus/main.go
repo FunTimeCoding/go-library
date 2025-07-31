@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
 	"github.com/funtimecoding/go-library/pkg/git/check/status/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -25,7 +26,7 @@ func main() {
 		3,
 		fmt.Sprintf(
 			"Depth to scan for %s. Default is 3.",
-			status.Plural,
+			constant.GoGitStatus.Plural,
 		),
 	)
 	argument.ParseBind()

@@ -2,6 +2,7 @@ package alert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	alertmanager "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
@@ -27,20 +28,20 @@ func printNotation(
 		relevant,
 		r,
 		o.All,
-		Plural,
-		constant.AlertPrefix,
+		item.GoAlert,
 	) {
-		var alertType string
+		var s constant.Severity
 
 		if e.Severity == alertmanager.CriticalSeverity {
-			alertType = constant.ErrorLevel
+			s = constant.Critical
 		} else {
-			alertType = constant.WarningLevel
+			s = constant.Warning
 		}
 
 		r.AddItem(
+			item.GoAlert,
 			e.MonitorIdentifier,
-			alertType,
+			s,
 			e.Name,
 			e.Link,
 			e.Start,

@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/job"
 	monitor "github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 )
 
@@ -19,20 +20,20 @@ func printNotation(
 		v,
 		r,
 		o.All,
-		Plural,
-		monitor.GitLabPrefix,
+		item.GoGitLab,
 	) {
-		var level string
+		var s monitor.Severity
 
 		if e.Fail() {
-			level = monitor.ErrorLevel
+			s = monitor.Critical
 		} else {
-			level = monitor.InformationLevel
+			s = monitor.Information
 		}
 
 		r.AddItem(
+			item.GoGitLab,
 			e.MonitorIdentifier,
-			level,
+			s,
 			e.Format(f),
 			e.Link,
 			e.Create,

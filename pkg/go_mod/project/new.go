@@ -1,9 +1,6 @@
 package project
 
-import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
-)
+import "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 
 func New(
 	path string,
@@ -11,13 +8,9 @@ func New(
 	runtimeVersion string,
 ) *Project {
 	return &Project{
-		MonitorIdentifier: fmt.Sprintf(
-			"%s-%s",
-			constant.GoPrefix,
-			path,
-		),
-		Path:           path,
-		Version:        projectVersion,
-		runtimeVersion: runtimeVersion,
+		MonitorIdentifier: constant.GoVersion.StringIdentifier(path),
+		Path:              path,
+		Version:           projectVersion,
+		runtimeVersion:    runtimeVersion,
 	}
 }

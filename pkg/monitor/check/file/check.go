@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/monitor/check/file/option"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"time"
@@ -21,16 +22,18 @@ func Check(o *option.File) {
 
 		if time.Since(t) > 5*time.Minute {
 			r.AddItem(
-				fmt.Sprintf("%s-%d", constant.FilePrefix, i+1),
-				constant.WarningLevel,
+				item.GoFile,
+				item.GoFile.IntegerIdentifier(i+1),
+				constant.Warning,
 				fmt.Sprintf("File old: %s", p),
 				"",
 				&t,
 			)
 		} else if o.Verbose {
 			r.AddItem(
-				fmt.Sprintf("%s-%d", constant.FilePrefix, i+1),
-				constant.InformationLevel,
+				item.GoFile,
+				item.GoFile.IntegerIdentifier(i+1),
+				constant.Information,
 				fmt.Sprintf("File good: %s", p),
 				"",
 				&t,

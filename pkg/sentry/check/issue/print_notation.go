@@ -2,6 +2,7 @@ package issue
 
 import (
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"github.com/funtimecoding/go-library/pkg/sentry/check/issue/option"
 	"github.com/funtimecoding/go-library/pkg/sentry/issue"
@@ -17,12 +18,12 @@ func printNotation(
 		v,
 		r,
 		o.All,
-		Plural,
-		constant.SentryPrefix,
+		item.GoSentry,
 	) {
 		r.AddItem(
+			item.GoSentry,
 			e.MonitorIdentifier,
-			constant.ErrorLevel,
+			constant.Critical,
 			e.Title,
 			e.Link,
 			e.Create,

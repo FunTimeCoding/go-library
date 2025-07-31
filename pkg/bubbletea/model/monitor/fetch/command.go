@@ -3,7 +3,7 @@ package fetch
 import (
 	"fmt"
 	"github.com/charmbracelet/bubbletea"
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"strings"
 )
 
@@ -17,10 +17,10 @@ func Command() tea.Cmd {
 			}
 		}
 
-		alert := fmt.Sprintf("%s-", constant.AlertPrefix)
-		silence := fmt.Sprintf("%s-", constant.SilencePrefix)
-		event := fmt.Sprintf("%s-", constant.KubernetesEventPrefix)
-		file := fmt.Sprintf("%s-", constant.FilePrefix)
+		alert := fmt.Sprintf("%s-", constant.GoAlert.Prefix)
+		silence := fmt.Sprintf("%s-", constant.GoSilence.Prefix)
+		event := fmt.Sprintf("%s-", constant.GoKevt.Prefix)
+		file := fmt.Sprintf("%s-", constant.GoFile.Prefix)
 
 		for i, t := range result.Items {
 			if strings.HasPrefix(t.Identifier, alert) {

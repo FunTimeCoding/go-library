@@ -4,7 +4,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/go_mod"
 	"github.com/funtimecoding/go-library/pkg/go_mod/check/version/option"
 	"github.com/funtimecoding/go-library/pkg/go_mod/project"
-	monitor "github.com/funtimecoding/go-library/pkg/monitor/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"time"
 )
@@ -16,18 +17,24 @@ func printNotation(
 	r := report.New()
 	f := go_mod.Format
 
-	for _, e := range report.Trim(v, r, o.All, Plural, monitor.GitPrefix) {
-		var level string
+	for _, e := range report.Trim(
+		v,
+		r,
+		o.All,
+		item.GoGitStatus,
+	) {
+		var s constant.Severity
 
 		if e.HasConcerns() {
-			level = monitor.WarningLevel
+			s = constant.Warning
 		} else {
-			level = monitor.InformationLevel
+			s = constant.Information
 		}
 
 		r.AddItem(
+			item.GoGitStatus,
 			e.MonitorIdentifier,
-			level,
+			s,
 			e.Format(f),
 			"",
 			&time.Time{},

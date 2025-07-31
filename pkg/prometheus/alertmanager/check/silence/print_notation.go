@@ -2,6 +2,7 @@ package silence
 
 import (
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
@@ -17,12 +18,12 @@ func printNotation(
 		c.Silences(false),
 		r,
 		o.All,
-		Plural,
-		constant.SilencePrefix,
+		item.GoSilence,
 	) {
 		r.AddItem(
+			item.GoSilence,
 			e.MonitorIdentifier,
-			constant.WarningLevel,
+			constant.Warning,
 			e.Rule,
 			e.Link,
 			e.Start,

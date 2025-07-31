@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console/age_colorer"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/sentry"
 	"github.com/funtimecoding/go-library/pkg/sentry/check/issue/option"
 	"github.com/funtimecoding/go-library/pkg/sentry/constant"
@@ -28,6 +29,6 @@ func Print(o *option.Issue) {
 	}
 
 	if len(elements) == 0 {
-		monitor.NoRelevant(Plural)
+		monitor.NoRelevant(item.GoSentry.Plural)
 	}
 }

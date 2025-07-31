@@ -1,6 +1,9 @@
 package fetch
 
-import "github.com/charmbracelet/bubbles/table"
+import (
+	"fmt"
+	"github.com/charmbracelet/bubbles/table"
+)
 
 func (m *Message) Rows() []table.Row {
 	var result []table.Row
@@ -8,7 +11,13 @@ func (m *Message) Rows() []table.Row {
 	for _, i := range m.Items {
 		result = append(
 			result,
-			table.Row{i.Identifier, i.Level, i.Detail, ""},
+			table.Row{
+				i.Identifier,
+				fmt.Sprintf("%.1f", i.Score),
+				string(i.Severity),
+				i.Detail,
+				"",
+			},
 		)
 	}
 

@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 )
 
@@ -13,22 +14,28 @@ func printNotation(
 ) {
 	r := report.New()
 
-	for _, a := range report.Trim(
+	for _, e := range report.Trim(
 		v,
 		r,
 		o.All,
-		Plural,
-		constant.OpsgeniePrefix,
+		item.GoGenie,
 	) {
-		var itemType string
+		var s constant.Severity
 
-		if a.Acknowledged {
-			itemType = constant.WarningLevel
+		if e.Acknowledged {
+			s = constant.Warning
 		} else {
-			itemType = constant.ErrorLevel
+			s = constant.Critical
 		}
 
-		r.AddItem(a.MonitorIdentifier, itemType, a.Name, a.Link, &a.Create)
+		r.AddItem(
+			item.GoGenie,
+			e.MonitorIdentifier,
+			s,
+			e.Name,
+			e.Link,
+			&e.Create,
+		)
 	}
 
 	r.Print()

@@ -2,7 +2,8 @@ package item
 
 const (
 	IdentifierColumn = "Identifier"
-	LevelColumn      = "Level"
+	ScoreColumn      = "Score"
+	SeverityColumn   = "Severity"
 	DetailColumn     = "Detail"
 	UserColumn       = "User"
 )

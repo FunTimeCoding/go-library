@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 )
 
 func Check(o *option.Job) {
@@ -23,6 +24,6 @@ func Check(o *option.Job) {
 	}
 
 	if len(elements) == 0 {
-		monitor.NoRelevant(Plural)
+		monitor.NoRelevant(item.GoGitLab.Plural)
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/check/issue/option"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 )
 
@@ -13,19 +14,19 @@ func printNotation(
 ) {
 	r := report.New()
 
-	for _, i := range report.Trim(
+	for _, e := range report.Trim(
 		v,
 		r,
 		o.All,
-		Plural,
-		constant.JiraPrefix,
+		item.GoJira,
 	) {
 		r.AddItem(
-			i.MonitorIdentifier,
-			constant.WarningLevel,
-			i.Summary,
-			i.Link,
-			i.Create,
+			item.GoJira,
+			e.MonitorIdentifier,
+			constant.Warning,
+			e.Summary,
+			e.Link,
+			e.Create,
 		)
 	}
 

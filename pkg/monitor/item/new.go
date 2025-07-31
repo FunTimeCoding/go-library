@@ -1,19 +1,30 @@
 package item
 
-import "time"
+import (
+	"github.com/funtimecoding/go-library/pkg/monitor/collector"
+	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	"time"
+)
 
 func New(
+	c *collector.Collector,
 	identifier string,
-	level string,
+	s constant.Severity,
 	detail string,
 	link string,
-	t *time.Time,
+	create *time.Time,
 ) *Item {
+	if c == nil {
+		panic("nil collector")
+	}
+
 	return &Item{
+		collector:  c,
 		Identifier: identifier,
-		Level:      level,
+		Severity:   s,
 		Detail:     detail,
 		Link:       link,
-		Create:     t,
+		Create:     create,
+		Status:     constant.Open,
 	}
 }

@@ -3,6 +3,7 @@ package silence
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/internal"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 )
@@ -36,7 +37,7 @@ func Check(o *option.Silence) {
 	if !o.All && relevant == 0 {
 		fmt.Printf(
 			"No relevant %s, %d in total\n",
-			Plural,
+			item.GoSilence.Plural,
 			len(silences),
 		)
 	}

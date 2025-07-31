@@ -8,7 +8,8 @@ import (
 func New(user bool) *table.Model {
 	columns := []table.Column{
 		{Title: IdentifierColumn},
-		{Title: LevelColumn},
+		{Title: ScoreColumn},
+		{Title: SeverityColumn},
 		{Title: DetailColumn},
 	}
 

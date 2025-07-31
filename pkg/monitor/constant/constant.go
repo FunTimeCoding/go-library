@@ -7,42 +7,13 @@ const (
 	FileEnvironment   = "MONITOR_FILE"
 	ManualEnvironment = "MONITOR_MANUAL"
 
-	GoAlert     = "goalert"
-	GoContainer = "gocontainer"
-	GoFile      = "gofile"
-	GoGenie     = "gogenie"
-	GoGitHub    = "gogithub"
-	GoGitLab    = "gogitlab"
-	GoGitStatus = "gogitstatus"
-	GoImage     = "goimage"
-	GoJira      = "gojira"
-	GoKevt      = "gokevt"
-	GoSentry    = "gosentry"
-	GoSilence   = "gosilence"
-	GoVersion   = "goversion"
-	GoVolume    = "govolume"
-
-	AlertPrefix           = "alert"
-	ExamplePrefix         = "example"
-	FilePrefix            = "file"
-	GitHubPrefix          = "github"
-	GitLabPrefix          = "gitlab"
-	GitPrefix             = "git"
-	GoPrefix              = "go"
-	JiraPrefix            = "jira"
-	KubernetesEventPrefix = "event"
-	MonitorPrefix         = "monitor"
-	OpsgeniePrefix        = "opsgenie"
-	PodManPrefix          = "podman"
-	SentryPrefix          = "sentry"
-	SilencePrefix         = "silence"
-
-	InformationLevel = "information"
-	WarningLevel     = "warning"
-	ErrorLevel       = "error"
-
 	Address = "localhost:8080"
 
+	NotationReport int = 10 // Limit
+)
+
+// Command
+const (
 	LoginCommand  = "login"
 	LogoutCommand = "logout"
 	FlagCommand   = "flag"
@@ -54,6 +25,28 @@ const (
 	FlagRemoveCommand    = "flag-remove"
 )
 
-var Upgrader = websocket.Upgrader{}
+type (
+	Severity string
+	Status   string
+)
 
-const NotationReport int = 10
+const (
+	Critical    Severity = "critical"
+	Warning     Severity = "warning"
+	Information Severity = "information"
+)
+
+const (
+	Open       Status = "open"
+	InProgress Status = "in-progress"
+	Resolved   Status = "resolved"
+	Closed     Status = "closed"
+)
+
+var (
+	Upgrader = websocket.Upgrader{}
+
+	Severities = []Severity{Critical, Warning, Information}
+
+	Statuses = []Status{Open, InProgress, Resolved, Closed}
+)

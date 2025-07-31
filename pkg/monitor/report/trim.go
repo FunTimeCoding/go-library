@@ -2,6 +2,7 @@ package report
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/monitor/collector"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"time"
 )
@@ -10,20 +11,22 @@ func Trim[T any](
 	v []T,
 	r *Report,
 	all bool,
-	name string,
-	prefix string,
+	o *collector.Collector,
 ) []T {
-	count := len(v)
+	if all {
+		return v
+	}
 
-	if !all && count > constant.NotationReport {
+	if c := len(v); c > constant.NotationReport {
 		v = v[0:constant.NotationReport]
 		r.AddItem(
-			prefix+"-0",
-			constant.WarningLevel,
+			o,
+			o.IntegerIdentifier(0),
+			constant.Warning,
 			fmt.Sprintf(
 				"Too many %s (%d), showing only the newest %d",
-				name,
-				count,
+				o.Plural,
+				c,
 				constant.NotationReport,
 			),
 			"",

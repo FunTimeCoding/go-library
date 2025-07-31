@@ -2,7 +2,7 @@ package alert
 
 import (
 	"fmt"
-	monitor "github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/openapi"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/prometheus/alertmanager/api/v2/models"
@@ -44,9 +44,7 @@ func New(
 	}
 
 	result := &Alert{
-		MonitorIdentifier: fmt.Sprintf(
-			"%s-%s",
-			monitor.AlertPrefix,
+		MonitorIdentifier: item.GoAlert.StringIdentifier(
 			*v.Fingerprint,
 		),
 		Fingerprint: *v.Fingerprint,

@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 )
 
 func Check(o *option.Job) {
@@ -32,6 +33,6 @@ func Check(o *option.Job) {
 	}
 
 	if len(elements) == 0 {
-		monitor.NoRelevant(Plural)
+		monitor.NoRelevant(item.GoGitHub.Plural)
 	}
 }

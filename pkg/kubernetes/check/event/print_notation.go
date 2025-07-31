@@ -5,6 +5,7 @@ import (
 	kubernetes "github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/types/native/event"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
 	"slices"
 )
@@ -31,12 +32,12 @@ func printNotation(
 		relevant,
 		r,
 		o.All,
-		"Kubernetes events",
-		constant.KubernetesEventPrefix,
+		item.GoKevt,
 	) {
 		r.AddItem(
+			item.GoKevt,
 			e.MonitorIdentifier,
-			constant.WarningLevel,
+			constant.Warning,
 			e.Reason,
 			"",
 			e.Create,

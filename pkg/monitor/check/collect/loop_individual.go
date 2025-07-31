@@ -3,9 +3,11 @@ package collect
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
+	"github.com/funtimecoding/go-library/pkg/monitor/collector"
+	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"k8s.io/apimachinery/pkg/util/duration"
 	"time"
 )
@@ -39,28 +41,28 @@ func tick(
 	byName map[string]*LastRun,
 	t time.Time,
 ) {
-	for _, s := range fetch.Settings {
-		if r, okay := byName[s.Command]; okay {
+	for _, s := range constant.Collectors {
+		if r, okay := byName[s.Name]; okay {
 			if t.Sub(r.Time) >= s.Interval {
 				r.Time = t
 				runTime(s, t)
 			}
 		} else {
-			byName[s.Command] = &LastRun{Command: s.Command, Time: t}
+			byName[s.Name] = &LastRun{Command: s.Name, Time: t}
 			runTime(s, t)
 		}
 	}
 }
 
 func runTime(
-	s *fetch.Setting,
+	s *collector.Collector,
 	t time.Time,
 ) {
 	fmt.Printf(
 		"%s %s %s\n",
-		t.Format(timeLibrary.DateSecond),
-		s.Command,
+		t.Format(library.DateSecond),
+		s.Name,
 		duration.HumanDuration(s.Interval),
 	)
-	fetch.Run(s.Command)
+	fetch.Run(s.Name)
 }

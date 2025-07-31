@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/git/repository"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
@@ -34,6 +35,6 @@ func Check(o *option.Status) {
 	}
 
 	if len(elements) == 0 {
-		monitor.NoRelevant(Plural)
+		monitor.NoRelevant(item.GoGitStatus.Plural)
 	}
 }

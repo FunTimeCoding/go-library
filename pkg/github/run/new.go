@@ -1,9 +1,8 @@
 package run
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/github/repository"
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/google/go-github/v70/github"
 	"time"
 )
@@ -23,9 +22,7 @@ func New(v *github.WorkflowRun) *Run {
 	}
 
 	return &Run{
-		MonitorIdentifier: fmt.Sprintf(
-			"%s-%d",
-			constant.GitHubPrefix,
+		MonitorIdentifier: constant.GoGitHub.Integer64Identifier(
 			v.GetID(),
 		),
 		Identifier: v.GetID(),

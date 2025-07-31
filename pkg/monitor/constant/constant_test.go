@@ -6,5 +6,6 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "podman", PodManPrefix)
+	assert.Count(t, 3, Severities)
+	assert.Count(t, 4, Statuses)
 }

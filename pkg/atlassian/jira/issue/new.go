@@ -1,10 +1,9 @@
 package issue
 
 import (
-	"fmt"
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/option"
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"strings"
 	"time"
 )
@@ -16,9 +15,7 @@ func New(
 	create := time.Time(v.Fields.Created)
 	due := time.Time(v.Fields.Duedate)
 	result := Stub()
-	result.MonitorIdentifier = fmt.Sprintf(
-		"%s-%s",
-		constant.JiraPrefix,
+	result.MonitorIdentifier = item.GoJira.StringIdentifier(
 		v.Key,
 	)
 	result.Key = v.Key

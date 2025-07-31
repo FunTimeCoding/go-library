@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/check/issue/option"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 )
 
 func Check(o *option.Issue) {
@@ -23,6 +24,6 @@ func Check(o *option.Issue) {
 	}
 
 	if len(elements) == 0 {
-		monitor.NoRelevant(Plural)
+		monitor.NoRelevant(item.GoJira.Plural)
 	}
 }

@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/mattermost"
+	"github.com/funtimecoding/go-library/internal"
 	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"time"
 )
 
 func main() {
-	c := mattermost.NewEnvironment()
+	c := internal.Mattermost()
 
 	t := timeLibrary.Midnight(time.Now())
 	fmt.Printf(

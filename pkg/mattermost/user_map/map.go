@@ -1,8 +1,14 @@
 package user_map
 
-import "github.com/mattermost/mattermost/server/public/model"
+import (
+	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/mattermost/mattermost/server/public/model"
+)
 
 type Map struct {
-	byDirectory  map[string]*model.User
+	byName       map[string]*model.User
 	byIdentifier map[string]*model.User
+
+	administrator []string
+	userAlias     face.StringAlias
 }

@@ -6,5 +6,5 @@ import (
 )
 
 func (m *Map) IsAdministrator(u *model.User) bool {
-	return slices.Contains(Administrators, u.Username)
+	return slices.Contains(m.administrator, u.Username)
 }

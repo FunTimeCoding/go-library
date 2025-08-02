@@ -3,7 +3,7 @@ package example
 import (
 	"context"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/mattermost"
+	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
@@ -45,7 +45,7 @@ func Dialog() {
 		},
 	)
 	s := web.ListenAsynchronous(w)
-	m := mattermost.NewEnvironment()
+	m := internal.Mattermost()
 
 	if true {
 		h := m.DefaultChannel()

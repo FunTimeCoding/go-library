@@ -1,10 +1,18 @@
 package user_map
 
-import "github.com/mattermost/mattermost/server/public/model"
+import (
+	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/mattermost/mattermost/server/public/model"
+)
 
-func New() *Map {
+func New(
+	userAlias face.StringAlias,
+	administrator []string,
+) *Map {
 	return &Map{
-		byDirectory:  make(map[string]*model.User),
-		byIdentifier: make(map[string]*model.User),
+		byName:        make(map[string]*model.User),
+		byIdentifier:  make(map[string]*model.User),
+		administrator: administrator,
+		userAlias:     userAlias,
 	}
 }

@@ -9,10 +9,14 @@ import (
 )
 
 func New(o ...OptionFunc) *Client {
-	result := &Client{context: context.Background(), user: user_map.New()}
+	result := &Client{context: context.Background()}
 
 	for _, p := range o {
 		p(result)
+	}
+
+	if result.user == nil {
+		result.user = user_map.New(nil, []string{})
 	}
 
 	if result.host == "" {

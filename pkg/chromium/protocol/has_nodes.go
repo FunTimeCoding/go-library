@@ -10,7 +10,7 @@ func (p *Protocol) HasNodes(s string) bool {
 
 	p.client.RunContext(
 		p.context,
-		chromedp.Nodes(s, &nodes),
+		chromedp.Nodes(s, &nodes, chromedp.AtLeast(0)),
 	)
 
 	return len(nodes) > 0

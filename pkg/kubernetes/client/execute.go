@@ -23,11 +23,7 @@ func (c *Client) Execute(
 		constant.ExecuteSubResource,
 	)
 	r.VersionedParams(
-		&v1.PodExecOptions{
-			Command: command,
-			Stdout:  true,
-			Stderr:  true,
-		},
+		&v1.PodExecOptions{Command: command, Stdout: true, Stderr: true},
 		scheme.ParameterCodec,
 	)
 	errors.PanicOnError(

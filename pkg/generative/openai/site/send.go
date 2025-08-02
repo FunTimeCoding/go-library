@@ -9,5 +9,5 @@ func (s *Site) Send(t string) {
 		return
 	}
 
-	s.protocol.EnterText(`#prompt-textarea`, t)
+	s.protocol.EnterText(PromptSelector, t)
 }

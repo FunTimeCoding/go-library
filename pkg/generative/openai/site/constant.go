@@ -16,6 +16,8 @@ const (
 	CloseMemoriesSelector = `div[role="dialog"] [data-testid="close-button"]`
 
 	CloseSettingsSelector = `div[role="tablist"] [data-testid="close-button"]`
+
+	PromptSelector = `#prompt-textarea`
 )
 
 var usefulAttributes = []string{"data-testid", "aria-label"}

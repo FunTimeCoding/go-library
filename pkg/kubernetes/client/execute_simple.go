@@ -5,11 +5,11 @@ import "strings"
 func (c *Client) ExecuteSimple(
 	namespace string,
 	pod string,
-	command []string,
+	command ...string,
 ) (string, string) {
 	stdout := &strings.Builder{}
 	stderr := &strings.Builder{}
-	c.Execute(namespace, pod, command, stdout, stderr)
+	c.Execute(stdout, stderr, namespace, pod, "", command)
 
 	return stdout.String(), stderr.String()
 }

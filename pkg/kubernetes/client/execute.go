@@ -11,11 +11,12 @@ import (
 )
 
 func (c *Client) Execute(
-	namespace string,
-	pod string,
-	command []string,
 	stdout io.Writer,
 	stderr io.Writer,
+	namespace string,
+	pod string,
+	container string,
+	command ...string,
 ) {
 	r := c.client.CoreV1().RESTClient().Post().Resource(
 		constant.PodsResource,
@@ -23,7 +24,12 @@ func (c *Client) Execute(
 		constant.ExecuteSubResource,
 	)
 	r.VersionedParams(
-		&core.PodExecOptions{Command: command, Stdout: true, Stderr: true},
+		&core.PodExecOptions{
+			Command:   command,
+			Container: container,
+			Stdout:    true,
+			Stderr:    true,
+		},
 		scheme.ParameterCodec,
 	)
 	errors.PanicOnError(

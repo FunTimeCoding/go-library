@@ -9,7 +9,7 @@ func (c *Client) ExecuteSimple(
 ) (string, string) {
 	stdout := &strings.Builder{}
 	stderr := &strings.Builder{}
-	c.Execute(stdout, stderr, namespace, pod, "", command)
+	c.Execute(stdout, stderr, namespace, pod, "", command...)
 
 	return stdout.String(), stderr.String()
 }

@@ -8,5 +8,5 @@ func (c *Client) ExecuteStandard(
 	container string,
 	command ...string,
 ) {
-	c.Execute(os.Stdout, os.Stderr, namespace, pod, container, command)
+	c.Execute(os.Stdout, os.Stderr, namespace, pod, container, command...)
 }

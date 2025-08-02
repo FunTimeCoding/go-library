@@ -21,7 +21,10 @@ var (
 	Dense  = option.Color
 )
 
-const PodsResource = "pods"
+const (
+	PodsResource       = "pods"
+	ExecuteSubResource = "exec"
+)
 
 const DNSConfigForming = "DNSConfigForming" // Event reason
 

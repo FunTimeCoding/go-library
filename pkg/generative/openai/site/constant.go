@@ -4,7 +4,7 @@ const (
 	// NewSelector not unique, requires index
 	NewSelector = `a[data-testid="create-new-chat-button"]`
 
-	ProfileSelector = `[data-testid="profile-button"]`
+	ProfileSelector = `[data-testid="accounts-profile-button"]`
 
 	SettingsSelector = `[data-testid="settings-menu-item"]`
 

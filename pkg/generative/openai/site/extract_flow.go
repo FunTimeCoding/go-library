@@ -1,6 +1,9 @@
 package site
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func (s *Site) ExtractFlow(verbose bool) string {
 	s.NewChat()
@@ -19,6 +22,8 @@ func (s *Site) ExtractFlow(verbose bool) string {
 	}
 
 	s.clickMemories()
+
+	time.Sleep(2 * time.Second)
 
 	result := s.readMemories()
 

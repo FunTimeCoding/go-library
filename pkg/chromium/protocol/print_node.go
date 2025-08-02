@@ -7,15 +7,15 @@ import (
 )
 
 func (p *Protocol) PrintNode(
-	selector string,
+	s string,
 	attribute []string,
 ) {
 	var result []*cdp.Node
 	p.client.RunContext(
 		p.context,
-		chromedp.Nodes(selector, &result, chromedp.ByQueryAll),
+		chromedp.Nodes(s, &result, chromedp.ByQueryAll),
 	)
-	fmt.Printf("Selector: %s\n", selector)
+	fmt.Printf("Selector: %s\n", s)
 
 	for i, n := range result {
 		fmt.Printf("Index: %d\n", i)

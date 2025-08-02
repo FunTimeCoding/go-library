@@ -6,13 +6,13 @@ import (
 )
 
 func (p *Protocol) Select(
-	selector string,
+	s string,
 	index int,
 ) *cdp.Node {
 	var result []*cdp.Node
 	p.client.RunContext(
 		p.context,
-		chromedp.Nodes(selector, &result, chromedp.ByQueryAll),
+		chromedp.Nodes(s, &result, chromedp.ByQueryAll),
 	)
 
 	if index < 0 || index >= len(result) {

@@ -80,6 +80,7 @@ structuredmerge
 
 # HTML
 DOCTYPE
+tbody
 
 # JavaScript
 onopen

@@ -3,12 +3,7 @@ package site
 import "fmt"
 
 func (s *Site) ExtractFlow(verbose bool) string {
-	if false {
-		// Unstable selector
-		s.printNewButton()
-	}
-
-	s.clickNew()
+	s.NewChat()
 
 	if false {
 		s.printProfile()

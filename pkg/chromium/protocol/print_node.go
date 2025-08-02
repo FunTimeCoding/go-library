@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
-	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
 func (p *Protocol) PrintNode(
@@ -12,11 +11,9 @@ func (p *Protocol) PrintNode(
 	attribute []string,
 ) {
 	var result []*cdp.Node
-	errors.PanicOnError(
-		chromedp.Run(
-			p.context,
-			chromedp.Nodes(selector, &result, chromedp.ByQueryAll),
-		),
+	p.client.RunContext(
+		p.context,
+		chromedp.Nodes(selector, &result, chromedp.ByQueryAll),
 	)
 	fmt.Printf("Selector: %s\n", selector)
 

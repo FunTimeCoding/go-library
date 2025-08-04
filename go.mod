@@ -17,8 +17,8 @@ require (
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.6
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20250715215929-4738bcb231c7
-	github.com/chromedp/chromedp v0.13.7
+	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d
+	github.com/chromedp/chromedp v0.14.0
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
 	github.com/ctreminiom/go-atlassian v1.6.1

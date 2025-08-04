@@ -24,9 +24,7 @@ coverage:
 
 update:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
-    # github.com/chromedp/cdproto: currently broken
-	@goupdate --downgrade k8s.io/apimachinery@v0.30.14 \
-	--downgrade github.com/chromedp/cdproto@v0.0.0-20250715215929-4738bcb231c7
+	@goupdate --downgrade k8s.io/apimachinery@v0.30.14
 
 build:
 	@go run cmd/gobuild/main.go --all

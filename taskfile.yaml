@@ -15,7 +15,6 @@ tasks:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
     - goupdate --downgrade k8s.io/apimachinery@v0.30.14
     silent: true
-  update-library: {cmds: ['goupdate --exclusive funtimecoding'], silent: true}
   tool:
     cmds:
     - go install gotest.tools/gotestsum@latest

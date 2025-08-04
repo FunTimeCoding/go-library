@@ -13,6 +13,7 @@ Loopsies
 Ollama
 Opsgenie
 Samsa
+boumenot
 funtimecoding
 golangci
 kaos
@@ -22,17 +23,25 @@ treminio
 virtomize
 xanzy
 
+# Task
+cmds
+
 # Go
 GOPROXY
+covermode
 coverprofile
+gocover
+gotest
+gotestsum
 nodename
 servname
 
-# GoLibrary
+# go-library
 exitf
 goalert
 gobuild
 gobump
+gochk
 goclean
 gocontainer
 godebian
@@ -50,6 +59,7 @@ gomonitor
 gomonitord
 gosentry
 gosilence
+goupdate
 goversion
 govolume
 kevt

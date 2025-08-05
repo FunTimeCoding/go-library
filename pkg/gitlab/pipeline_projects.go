@@ -6,5 +6,5 @@ import (
 )
 
 func (c *Client) PipelineProjects() []*project.Project {
-	return c.ProjectsWithFile(library.GitLabFile)
+	return c.ProjectsWithFile(library.GitLabFile, false)
 }

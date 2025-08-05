@@ -2,10 +2,10 @@ package gitlab
 
 import "github.com/funtimecoding/go-library/pkg/gitlab/job"
 
-func (c *Client) FailedJobs(verbose bool) []*job.Job {
+func (c *Client) FailedJobs() []*job.Job {
 	var result []*job.Job
 
-	for _, j := range c.Jobs(verbose) {
+	for _, j := range c.Jobs() {
 		if j.Fail() {
 			result = append(result, j)
 		}

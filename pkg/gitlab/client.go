@@ -11,6 +11,8 @@ type Client struct {
 	client  *gitlab.Client
 	user    *gitlab.User
 
+	verbose bool
+
 	groups   []int
 	projects []int
 

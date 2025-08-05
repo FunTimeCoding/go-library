@@ -7,13 +7,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/job"
 )
 
-func (c *Client) Jobs(verbose bool) []*job.Job {
+func (c *Client) Jobs() []*job.Job {
 	var result []*job.Job
 	cleanup := forge.AutoCleanup()
 	f := constant.Format
 
 	for _, p := range c.PipelineProjects() {
-		if verbose {
+		if c.verbose {
 			fmt.Printf("Project: %s\n", p.Raw.NameWithNamespace)
 		}
 
@@ -26,7 +26,7 @@ func (c *Client) Jobs(verbose bool) []*job.Job {
 				continue
 			}
 
-			if verbose {
+			if c.verbose {
 				fmt.Printf("  Job: %s\n", j.Format(f))
 			}
 

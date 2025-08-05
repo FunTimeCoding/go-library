@@ -9,7 +9,7 @@ import (
 
 func collect(o *option.Job) []*job.Job {
 	return monitor.OnlyConcerns(
-		gitlab.NewEnvironment().Jobs(o.Verbose),
+		gitlab.NewEnvironment(gitlab.WithVerbose(o.Verbose)).Jobs(),
 		o.All,
 	)
 }

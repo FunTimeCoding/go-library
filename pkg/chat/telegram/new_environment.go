@@ -1,0 +1,13 @@
+package telegram
+
+import (
+	"github.com/funtimecoding/go-library/pkg/chat/telegram/constant"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
+)
+
+func NewEnvironment() *Client {
+	return New(
+		environment.Get(constant.TokenEnvironment),
+		environment.GetDefault(constant.DatabaseEnvironment, ""),
+	)
+}

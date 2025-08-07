@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.24.5
+go 1.24.6
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown v1.6.0
@@ -10,7 +10,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.2.3
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/andygrunwald/go-jira v1.16.0
-	github.com/anthropics/anthropic-sdk-go v1.6.2
+	github.com/anthropics/anthropic-sdk-go v1.7.0
 	github.com/apenella/go-ansible/v2 v2.2.0
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bwmarrin/discordgo v0.29.0
@@ -18,7 +18,7 @@ require (
 	github.com/charmbracelet/bubbletea v1.3.6
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d
-	github.com/chromedp/chromedp v0.14.0
+	github.com/chromedp/chromedp v0.14.1
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
 	github.com/ctreminiom/go-atlassian v1.6.1
@@ -41,17 +41,17 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/gpustack/gguf-parser-go v0.21.4
+	github.com/gpustack/gguf-parser-go v0.22.0
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/liushuangls/go-anthropic v1.6.0
-	github.com/mark3labs/mcp-go v0.36.0
+	github.com/mark3labs/mcp-go v0.37.0
 	github.com/mattermost/mattermost/server/public v0.1.16
 	github.com/olekukonko/tablewriter v1.0.9
-	github.com/ollama/ollama v0.10.1
+	github.com/ollama/ollama v0.11.3
 	github.com/openai/openai-go v1.12.0
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -82,7 +82,7 @@ require (
 	golang.org/x/oauth2 v0.30.0
 	golang.org/x/time v0.12.0
 	gonum.org/v1/gonum v0.16.0
-	google.golang.org/api v0.244.0
+	google.golang.org/api v0.246.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.1

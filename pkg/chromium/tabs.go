@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/chromium/tab"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 )
 
 func (c *Client) Tabs() []*tab.Tab {
@@ -14,7 +15,7 @@ func (c *Client) Tabs() []*tab.Tab {
 			web.Client(false),
 			fmt.Sprintf(
 				"%s://%s:%d/json",
-				web.InsecureScheme,
+				constant.InsecureScheme,
 				c.host,
 				c.port,
 			),

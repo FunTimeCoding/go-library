@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
-	"github.com/funtimecoding/go-library/pkg/web"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/ollama/ollama/api"
 	"net"
 	"net/http"

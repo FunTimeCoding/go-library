@@ -1,9 +1,11 @@
 package web
 
+import "github.com/funtimecoding/go-library/pkg/web/constant"
+
 func Scheme(secure bool) string {
 	if secure {
-		return SecureScheme
+		return constant.SecureScheme
 	}
 
-	return InsecureScheme
+	return constant.InsecureScheme
 }

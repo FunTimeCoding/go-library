@@ -2,7 +2,7 @@ package client
 
 import (
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
-	"github.com/funtimecoding/go-library/pkg/web"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"net/url"
 )

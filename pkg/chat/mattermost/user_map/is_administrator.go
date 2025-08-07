@@ -1,9 +1,8 @@
 package user_map
 
 import (
-	"slices"
-
 	"github.com/mattermost/mattermost/server/public/model"
+	"slices"
 )
 
 func (m *Map) IsAdministrator(u *model.User) bool {

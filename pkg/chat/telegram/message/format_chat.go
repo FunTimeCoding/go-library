@@ -2,7 +2,6 @@ package message
 
 import (
 	"fmt"
-
 	"github.com/funtimecoding/go-library/pkg/time"
 )
 

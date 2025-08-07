@@ -1,9 +1,8 @@
 package channel
 
 import (
-	"testing"
-
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
 )
 
 func TestChannel(t *testing.T) {

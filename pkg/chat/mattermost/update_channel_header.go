@@ -1,9 +1,8 @@
 package mattermost
 
 import (
-	"strings"
-
 	"github.com/mattermost/mattermost/server/public/model"
+	"strings"
 )
 
 func (c *Client) UpdateChannelHeader(

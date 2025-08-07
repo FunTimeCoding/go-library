@@ -3,9 +3,8 @@ package mattermost
 import (
 	"context"
 	"fmt"
-
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/user_map"
-	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
@@ -29,7 +28,7 @@ func New(o ...OptionFunc) *Client {
 	}
 
 	result.client = model.NewAPIv4Client(
-		fmt.Sprintf("%s://%s", web.SecureScheme, result.host),
+		fmt.Sprintf("%s://%s", constant.SecureScheme, result.host),
 	)
 	result.client.SetOAuthToken(result.token)
 

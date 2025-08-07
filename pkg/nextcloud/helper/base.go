@@ -2,9 +2,9 @@ package helper
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 )
 
 func Base(host string) string {
-	return fmt.Sprintf("%s://%s", web.SecureScheme, host)
+	return fmt.Sprintf("%s://%s", constant.SecureScheme, host)
 }

@@ -1,10 +1,9 @@
 package mattermost
 
 import (
-	"strings"
-
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/post"
 	"github.com/mattermost/mattermost/server/public/model"
+	"strings"
 )
 
 func (c *Client) WipePrefixKeepLatest(

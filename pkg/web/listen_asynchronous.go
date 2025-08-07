@@ -1,9 +1,12 @@
 package web
 
-import "net/http"
+import (
+	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"net/http"
+)
 
 func ListenAsynchronous(m *http.ServeMux) *http.Server {
-	s := &http.Server{Addr: ListenAddress, Handler: m}
+	s := &http.Server{Addr: constant.ListenAddress, Handler: m}
 	ServeAsynchronous(s)
 
 	return s

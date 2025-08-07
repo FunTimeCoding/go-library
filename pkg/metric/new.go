@@ -3,7 +3,7 @@ package metric
 import (
 	"context"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -18,7 +18,7 @@ func New(
 
 	if port == 0 {
 		port = 9090
-		address = web.MetricsAddress
+		address = constant.MetricsAddress
 	} else {
 		address = fmt.Sprintf(":%d", port)
 	}

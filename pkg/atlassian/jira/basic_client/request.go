@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
 func (c *Client) Request(path string) (int, string) {
 	client := web.Client(true)
 	request, e := http.NewRequest(
-		web.GetMethod,
+		constant.GetMethod,
 		fmt.Sprintf("%s%s", c.locator, path),
 		nil,
 	)

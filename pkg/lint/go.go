@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"io"
+	"slices"
 	"strings"
 )
 
@@ -19,6 +20,7 @@ func Go(
 	var inside bool
 	var start int
 	var blockText string
+	var reportedBlank bool
 
 	for result.Scan() {
 		line, number := result.Text()
@@ -30,6 +32,21 @@ func Go(
 		}
 
 		if inside {
+			if line == "" {
+				if !reportedBlank {
+					reportedBlank = true
+					result.AddConcern(
+						constant.ImportBlankKey,
+						constant.ImportBlankText,
+						path,
+						start,
+						blockText,
+					)
+				}
+
+				continue
+			}
+
 			block = append(block, line)
 
 			if strings.HasPrefix(line, ")") {
@@ -50,7 +67,23 @@ func Go(
 						blockText,
 					)
 				} else {
-					result.ChangedLine(join.NewLine(block))
+					sorted := make([]string, len(block)-2)
+					copy(sorted, block[1:len(block)-1])
+					SortImports(sorted)
+					sorted = append([]string{"import ("}, sorted...)
+					sorted = append(sorted, ")")
+
+					if !slices.Equal(block, sorted) {
+						result.AddConcern(
+							constant.UnsortedImportsKey,
+							constant.UnsortedImportsText,
+							path,
+							start,
+							blockText,
+						)
+					}
+
+					result.ChangedLine(join.NewLine(sorted))
 				}
 
 				block = block[:0]

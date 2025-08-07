@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
@@ -12,7 +13,7 @@ func (c *Client) Propfind() {
 
 	if false {
 		// WebDAV is XML
-		req.Header.Set(web.AcceptHeader, web.ObjectContentType)
+		req.Header.Set(constant.AcceptHeader, constant.ObjectContentType)
 	}
 
 	req.SetBasicAuth(c.user, c.password)

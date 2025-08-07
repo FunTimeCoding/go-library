@@ -2,11 +2,11 @@ package request_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/network"
-	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 )
 
 func (c *Context) Address() string {
-	if v, okay := c.Header()[web.RealAddressHeader]; okay {
+	if v, okay := c.Header()[constant.RealAddressHeader]; okay {
 		return v[0]
 	}
 

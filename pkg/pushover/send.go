@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/pushover/constant"
 	"github.com/funtimecoding/go-library/pkg/pushover/notification"
-	"github.com/funtimecoding/go-library/pkg/web"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 

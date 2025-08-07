@@ -1,9 +1,8 @@
 package post
 
 import (
-	"time"
-
 	"github.com/mattermost/mattermost/server/public/model"
+	"time"
 )
 
 func New(p *model.Post) *Post {

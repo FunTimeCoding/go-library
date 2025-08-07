@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/helper"
-	"github.com/funtimecoding/go-library/pkg/web"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"github.com/gorilla/websocket"
 	"log"

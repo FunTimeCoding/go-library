@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
 func (c *Client) Get(path string) string {
 	client := web.Client(true)
 	request, e := http.NewRequest(
-		web.GetMethod,
+		constant.GetMethod,
 		fmt.Sprintf(
 			"https://%s/loki/api/v1%s",
 			c.host,

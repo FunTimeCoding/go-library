@@ -1,9 +1,8 @@
 package user
 
 import (
-	"testing"
-
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
 )
 
 func TestUser(t *testing.T) {

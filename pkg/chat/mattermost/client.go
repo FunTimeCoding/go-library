@@ -2,7 +2,6 @@ package mattermost
 
 import (
 	"context"
-
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/user_map"
 	"github.com/mattermost/mattermost/server/public/model"
 )

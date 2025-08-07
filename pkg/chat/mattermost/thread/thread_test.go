@@ -1,9 +1,8 @@
 package thread
 
 import (
-	"testing"
-
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
 )
 
 func TestThread(t *testing.T) {

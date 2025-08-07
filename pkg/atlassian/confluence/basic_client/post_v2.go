@@ -3,6 +3,7 @@ package basic_client
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 )
 
 func (c *Client) PostV2(
@@ -14,8 +15,8 @@ func (c *Client) PostV2(
 		body,
 	)
 	r.SetBasicAuth(c.user, c.token)
-	r.Header[web.AcceptHeader] = []string{web.ObjectContentType}
-	r.Header[web.ContentTypeHeader] = []string{web.ObjectContentType}
+	r.Header[constant.AcceptHeader] = []string{constant.ObjectContentType}
+	r.Header[constant.ContentTypeHeader] = []string{constant.ObjectContentType}
 
 	return web.ReadString(web.Send(web.Client(true), r))
 }

@@ -3,7 +3,7 @@ package alertmanager
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/prometheus"
-	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	transport "github.com/go-openapi/runtime/client"
 	"github.com/prometheus/alertmanager/api/v2/client"
 )
@@ -21,7 +21,7 @@ func New(
 	t := transport.New(
 		host,
 		client.DefaultBasePath,
-		[]string{web.SecureScheme},
+		[]string{constant.SecureScheme},
 	)
 	t.DefaultAuthentication = transport.BasicAuth(user, password)
 	c.SetTransport(t)

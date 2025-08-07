@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/mime"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"mime/multipart"
 )
 
@@ -28,7 +29,7 @@ func PostFileMultipartBasic(
 		contentType = w.FormDataContentType()
 	}
 
-	request.Header.Add(ContentTypeHeader, contentType)
+	request.Header.Add(constant.ContentTypeHeader, contentType)
 	request.SetBasicAuth(user, password)
 
 	for k, v := range request.Header {

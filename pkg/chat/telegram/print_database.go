@@ -2,7 +2,6 @@ package telegram
 
 import (
 	"fmt"
-
 	"github.com/funtimecoding/go-library/pkg/chat/telegram/constant"
 )
 

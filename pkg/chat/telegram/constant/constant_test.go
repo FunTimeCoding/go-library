@@ -1,9 +1,8 @@
 package constant
 
 import (
-	"testing"
-
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
 )
 
 func TestConstant(t *testing.T) {

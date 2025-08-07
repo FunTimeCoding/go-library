@@ -2,9 +2,9 @@ package mattermost
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/mattermost/mattermost/server/public/model"
 	"log"
-	"net/http"
 	"slices"
 )
 
@@ -14,10 +14,7 @@ func panicOnError(
 ) {
 	errors.PanicOnError(e)
 
-	if !slices.Contains(
-		[]int{http.StatusOK, http.StatusCreated},
-		r.StatusCode,
-	) {
+	if !slices.Contains(constant.OkayStatusCodes, r.StatusCode) {
 		log.Panicf("unexpected response code: %+v\n", r)
 	}
 }

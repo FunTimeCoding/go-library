@@ -2,7 +2,6 @@ package post
 
 import (
 	"fmt"
-
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/text"
 	timeLibrary "github.com/funtimecoding/go-library/pkg/time"

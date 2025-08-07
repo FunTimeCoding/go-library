@@ -1,9 +1,8 @@
 package user_map
 
 import (
-	"testing"
-
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
 )
 
 func TestMap(t *testing.T) {

@@ -2,7 +2,6 @@ package discord
 
 import (
 	"fmt"
-
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 

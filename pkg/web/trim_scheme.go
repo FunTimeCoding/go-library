@@ -1,14 +1,17 @@
 package web
 
-import "strings"
+import (
+	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"strings"
+)
 
 func TrimScheme(s string) string {
-	if strings.HasPrefix(s, SecureSchemePrefix) {
-		return strings.TrimPrefix(s, SecureSchemePrefix)
+	if strings.HasPrefix(s, constant.SecureSchemePrefix) {
+		return strings.TrimPrefix(s, constant.SecureSchemePrefix)
 	}
 
-	if strings.HasPrefix(s, InsecureSchemePrefix) {
-		return strings.TrimPrefix(s, InsecureSchemePrefix)
+	if strings.HasPrefix(s, constant.InsecureSchemePrefix) {
+		return strings.TrimPrefix(s, constant.InsecureSchemePrefix)
 	}
 
 	return s

@@ -2,13 +2,14 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/url"
 	"strings"
 )
 
 func ParseLocator(s string) *url.URL {
-	if !strings.HasPrefix(s, SecureSchemePrefix) &&
-		!strings.HasPrefix(s, InsecureSchemePrefix) {
+	if !strings.HasPrefix(s, constant.SecureSchemePrefix) &&
+		!strings.HasPrefix(s, constant.InsecureSchemePrefix) {
 		panic("locator must have a scheme")
 	}
 

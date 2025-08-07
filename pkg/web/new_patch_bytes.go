@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"io"
 	"net/http"
 )
@@ -11,7 +12,7 @@ func NewPatchBytes(
 	body io.Reader,
 ) *http.Request {
 	result, e := http.NewRequest(
-		PatchMethod,
+		constant.PatchMethod,
 		locator,
 		body,
 	)

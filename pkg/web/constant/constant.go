@@ -1,4 +1,6 @@
-package web
+package constant
+
+import "net/http"
 
 // noinspection HttpUrlsUsage
 const (
@@ -42,3 +44,5 @@ const (
 
 // noinspection HttpUrlsUsage
 const InsecureSchemePrefix = "http://"
+
+var OkayStatusCodes = []int{http.StatusOK, http.StatusCreated}

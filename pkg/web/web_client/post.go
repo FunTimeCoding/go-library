@@ -3,7 +3,7 @@ package web_client
 import (
 	"bytes"
 	"github.com/funtimecoding/go-library/pkg/notation"
-	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/web_client/web_response"
 	"net/http"
 	"time"
@@ -17,7 +17,7 @@ func (c *Client) Post(
 	start := c.clock.Now()
 	response, e := http.Post(
 		locator,
-		web.ObjectContentType,
+		constant.ObjectContentType,
 		bytes.NewBuffer([]byte(encoded)),
 	)
 

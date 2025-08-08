@@ -10,7 +10,7 @@ func New(
 	status string,
 ) *Repository {
 	return &Repository{
-		MonitorIdentifier: constant.GoGitLab.StringIdentifier(path),
+		MonitorIdentifier: constant.GoGitStatus.StringIdentifier(path),
 		Path:              path,
 		IsClean:           len(strings.TrimSpace(status)) == 0,
 		Status:            status,

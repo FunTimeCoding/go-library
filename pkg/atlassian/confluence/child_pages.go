@@ -12,6 +12,12 @@ func (c *Client) ChildPages(
 	name string,
 ) []*page.Page {
 	parent := c.PageBySpaceAndName(space, name)
+	var result []*page.Page
+
+	if parent == nil {
+		return result
+	}
+
 	var children *response.Pages
 	notation.DecodeStrict(
 		c.basic.GetV2(
@@ -23,7 +29,6 @@ func (c *Client) ChildPages(
 		&children,
 		false,
 	)
-	var result []*page.Page
 
 	for _, p := range children.Results {
 		result = append(result, c.Page(p.Id))

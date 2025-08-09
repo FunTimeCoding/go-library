@@ -13,6 +13,11 @@ func (c *Client) PageBySpaceAndName(
 	name string,
 ) *page.Page {
 	s := c.SpaceByName(spaceName)
+
+	if s == nil {
+		return nil
+	}
+
 	var result *response.Pages
 	notation.DecodeStrict(
 		c.basic.GetV2(

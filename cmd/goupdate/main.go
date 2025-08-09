@@ -48,6 +48,13 @@ func main() {
 	go_mod.Tidy()
 
 	goVersion := runtime.ExecutableVersion()
+
+	if goVersion == nil {
+		system.Exitf(1, "could not determine Go version\n")
+
+		return
+	}
+
 	goString := goVersion.String()
 	system.Run(
 		constant.Go,

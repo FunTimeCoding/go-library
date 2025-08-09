@@ -25,6 +25,10 @@ func parseLines(
 			parent.Children = append(parent.Children, node)
 			lines = lines[1:]
 		} else if indent > currentIndent {
+			if node == nil {
+				panic("child node without parent")
+			}
+
 			parseLines(lines, node, indent)
 
 			return

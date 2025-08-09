@@ -10,5 +10,10 @@ func Tab() {
 	c := chromium.NewEnvironment()
 	defer c.Close()
 	t := c.TabByHost(environment.Get("CHROMIUM_EXAMPLE_TAB"))
+
+	if t == nil {
+		panic("tab not found")
+	}
+
 	fmt.Printf("Body: %+v", c.Body(t.Id))
 }

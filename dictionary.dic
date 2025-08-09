@@ -74,6 +74,7 @@ recv
 smartd
 
 # macOS
+APPL
 afplay
 icns
 sosumi
@@ -118,9 +119,10 @@ querier
 statefulset
 
 # Atlassian
-tinyui
 editui
 edituiv
+servicedeskapi
+tinyui
 
 # LLM
 gguf
@@ -135,3 +137,6 @@ creds
 # ChromeDP
 cdproto
 chromedp
+
+# Salt
+saltstack

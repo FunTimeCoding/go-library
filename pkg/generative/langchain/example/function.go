@@ -23,15 +23,15 @@ func Function() {
 		ollama.WithFormat(constant.NotationFormat),
 	)
 	errors.PanicOnError(clientFail)
-	var msgs []llms.MessageContent
+	var messages []llms.MessageContent
 
 	// system message defines the available tools.
-	msgs = append(
-		msgs,
+	messages = append(
+		messages,
 		llms.TextParts(llms.ChatMessageTypeSystem, systemMessage()),
 	)
-	msgs = append(
-		msgs,
+	messages = append(
+		messages,
 		llms.TextParts(
 			llms.ChatMessageTypeHuman,
 			"What's the weather like in Beijing?",
@@ -41,11 +41,11 @@ func Function() {
 	ctx := context.Background()
 
 	for retries := 3; retries > 0; retries -= 1 {
-		resp, generateFail := c.GenerateContent(ctx, msgs)
+		resp, generateFail := c.GenerateContent(ctx, messages)
 		errors.PanicOnError(generateFail)
 		choice1 := resp.Choices[0]
-		msgs = append(
-			msgs,
+		messages = append(
+			messages,
 			llms.TextParts(llms.ChatMessageTypeAI, choice1.Content),
 		)
 
@@ -62,12 +62,12 @@ func Function() {
 				break
 			}
 
-			msgs = append(msgs, msg)
+			messages = append(messages, msg)
 		} else {
 			// Ollama doesn't always respond with a function call, let it try again.
 			log.Printf("Not a call: %v", choice1.Content)
-			msgs = append(
-				msgs,
+			messages = append(
+				messages,
 				llms.TextParts(
 					llms.ChatMessageTypeHuman,
 					"Sorry, I don't understand. Please try again.",
@@ -75,7 +75,7 @@ func Function() {
 			)
 		}
 
-		if retries == 0 {
+		if retries == 1 {
 			log.Fatal("retries exhausted")
 		}
 	}

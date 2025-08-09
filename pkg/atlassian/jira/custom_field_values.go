@@ -13,6 +13,10 @@ func (c *Client) CustomFieldValues(
 ) []custom_field_value.Value {
 	f := c.FieldMap().ByName(fieldName)
 
+	if f == nil {
+		return nil
+	}
+
 	for _, m := range c.CreateMeta(key).Projects {
 		for _, t := range m.IssueTypes {
 			if t.Name != issueType {

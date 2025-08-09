@@ -41,6 +41,12 @@ func (r *Router) Monitor(
 		log.Printf("%s: %+v\n", address, arguments)
 		i := r.FindClient(address)
 
+		if i == nil {
+			log.Printf("client not found: %s\n", address)
+
+			continue
+		}
+
 		switch arguments[0] {
 		case constant.LoginCommand:
 			i = client.New(arguments[1], arguments[2], address, c)
@@ -68,6 +74,12 @@ func (r *Router) Monitor(
 
 			if r.HasFlag(identifier) {
 				l := r.FlagByIdentifier(identifier)
+
+				if l == nil {
+					log.Printf("flag not found: %s\n", identifier)
+
+					continue
+				}
 
 				if l.HasClient(i) {
 					operation = constant.FlagRemoveCommand

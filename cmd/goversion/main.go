@@ -10,6 +10,7 @@ import (
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/runtime"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -55,6 +56,17 @@ func main() {
 		o.Skip = argument.StringSlice(argument.Skip)
 	}
 
-	o.RuntimeVersion = runtime.ExecutableVersion().String()
+	v := runtime.ExecutableVersion()
+
+	if v == nil {
+		system.Exitf(
+			1,
+			"could not determine Go version\n",
+		)
+
+		return
+	}
+
+	o.RuntimeVersion = v.String()
 	version.Check(o)
 }

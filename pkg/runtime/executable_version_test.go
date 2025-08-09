@@ -5,6 +5,12 @@ import "testing"
 func TestExecutableVersion(t *testing.T) {
 	v := ExecutableVersion()
 
+	if v == nil {
+		t.Error("Expect version to be not nil")
+
+		return
+	}
+
 	if v.Major < 1 {
 		t.Errorf(
 			"Expect major to be at least 1, got %d",

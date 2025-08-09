@@ -6,16 +6,12 @@ import (
 )
 
 func ParseLocator(s string) *url.URL {
-	webLocator, webLocatorFail := url.Parse(s)
-
-	if webLocatorFail == nil {
-		return webLocator
+	if l, e := url.Parse(s); e == nil {
+		return l
 	}
 
-	gitLocator, gitLocatorFail := giturls.Parse(s)
-
-	if gitLocatorFail == nil {
-		return gitLocator
+	if l, e := giturls.Parse(s); e == nil {
+		return l
 	}
 
 	return nil

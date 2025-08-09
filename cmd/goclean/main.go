@@ -58,10 +58,32 @@ func main() {
 	switch origin.Provider {
 	case provider_map.GitHubProvider:
 		remoteLocator := git.ParseLocator(origin.Locator)
+
+		if remoteLocator == nil {
+			system.Exitf(
+				1,
+				"could not parse remote locator: %s\n",
+				origin.Locator,
+			)
+
+			return
+		}
+
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := github.NewEnvironment()
 		tags := c.Tags(namespace, repository)
 		latestTag := hubTag.Latest(tags)
+
+		if latestTag == nil {
+			system.Exitf(
+				1,
+				"could not find latest tag for %s/%s\n",
+				namespace,
+				repository,
+			)
+
+			return
+		}
 
 		for _, t := range tags {
 			if t.Name == latestTag.Name {
@@ -91,6 +113,17 @@ func main() {
 		}
 	case provider_map.GitLabProvider:
 		remoteLocator := git.ParseLocator(origin.Locator)
+
+		if remoteLocator == nil {
+			system.Exitf(
+				1,
+				"could not parse remote locator: %s\n",
+				origin.Locator,
+			)
+
+			return
+		}
+
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := gitlab.New(
 			gitlabLocator.Host,

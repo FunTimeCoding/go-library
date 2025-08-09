@@ -2,7 +2,7 @@ package jira
 
 import (
 	"github.com/ctreminiom/go-atlassian/pkg/infra/models"
-	basicIssues "github.com/funtimecoding/go-library/pkg/atlassian/jira/basic_client/issue/issues"
+	basic "github.com/funtimecoding/go-library/pkg/atlassian/jira/basic_client/issue/issues"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/customer"
 	"github.com/funtimecoding/go-library/pkg/errors"
@@ -17,13 +17,18 @@ func (c *Client) CustomerIssues(all bool) []*customer.Issue {
 		10,
 	)
 	errors.PanicOnError(e)
-	basicList := basicIssues.FromResponseScheme(r)
+	list := basic.FromResponseScheme(r)
 	var result []*customer.Issue
 
 	for _, i := range customer.NewSlice(issues.Values) {
-		basic := basicList.Key(i.Key)
-		i.Title = basic.Title
-		i.Body = basic.Body
+		b := list.Key(i.Key)
+
+		if b == nil {
+			continue
+		}
+
+		i.Title = b.Title
+		i.Body = b.Body
 
 		if all {
 			result = append(result, i)

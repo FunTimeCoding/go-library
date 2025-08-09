@@ -1,7 +1,7 @@
 package site
 
 func (s *Site) clickMemories() {
-	n := s.protocol.Select(MemoriesSelector, 1)
+	n := s.protocol.Select(MemoriesSelector, 0)
 
 	if n == nil {
 		return

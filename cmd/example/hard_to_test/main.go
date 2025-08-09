@@ -61,15 +61,7 @@ func main() {
 	web.Patch(nil, "", "")
 	web.PostBytes(nil, "", nil)
 	web.Download("", "")
-	web.PostFileMultipartBasic(
-		"",
-		"",
-		"",
-		"",
-		"",
-		nil,
-		"",
-	)
+	web.PostFile("", "", "", "")
 	web.WriteBytesSafe(nil, 0, nil)
 
 	push.Send(nil)

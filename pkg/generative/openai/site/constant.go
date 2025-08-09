@@ -10,7 +10,7 @@ const (
 
 	PersonalizeSelector = `[data-testid="personalization-tab"]`
 
-	MemoriesSelector = `[class="flex items-center justify-center"]`
+	MemoriesSelector = `[class="btn relative btn-secondary"]`
 
 	// CloseMemoriesSelector not unique, requires index
 	CloseMemoriesSelector = `div[role="dialog"] [data-testid="close-button"]`

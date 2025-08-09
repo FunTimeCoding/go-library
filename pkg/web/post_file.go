@@ -14,7 +14,12 @@ func PostFile(
 	password string,
 ) {
 	f := system.Open(name)
-	defer errors.PanicClose(f)
+
+	if false {
+		// Not sure why, but file is already closed at the end
+		defer errors.PanicClose(f)
+	}
+
 	r := NewPostBytes(url, f)
 	r.SetBasicAuth(user, password)
 	r.Header.Set(constant.ContentTypeHeader, constant.FormDataContentType)

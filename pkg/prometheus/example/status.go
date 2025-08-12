@@ -5,10 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus"
 )
 
-func Label() {
+func Status() {
 	c := prometheus.NewEnvironment()
 
-	for _, m := range c.AllLabels() {
-		fmt.Printf("Label: %s\n", m)
-	}
+	fmt.Printf("Status: %+v\n", c.Status())
 }

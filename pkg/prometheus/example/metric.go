@@ -5,10 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus"
 )
 
-func Label() {
+func Metric() {
 	c := prometheus.NewEnvironment()
 
-	for _, m := range c.AllLabels() {
-		fmt.Printf("Label: %s\n", m)
+	for _, m := range c.AllMetrics() {
+		fmt.Printf("Metric: %s\n", m)
 	}
 }

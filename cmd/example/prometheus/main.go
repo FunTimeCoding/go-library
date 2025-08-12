@@ -6,13 +6,17 @@ import (
 )
 
 func main() {
-	prometheus.Label()
+	prometheus.Status()
 
 	if false {
+		prometheus.Metric()
+		prometheus.Label()
+		prometheus.LabelName()
 		prometheus.Query()
+		prometheus.Rule()
+
 		alertmanager.Notify()
 		alertmanager.Create()
-		prometheus.Rule()
 		alertmanager.Alert()
 		alertmanager.Status()
 		alertmanager.SetSilence()

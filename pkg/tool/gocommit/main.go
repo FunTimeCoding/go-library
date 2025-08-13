@@ -35,17 +35,15 @@ func Main() {
 		viper.GetString(argument.Owner),
 		viper.GetString(argument.Repository),
 	)
-	branch := argument.RequiredStringFlag(argument.Branch, 1)
-	path := argument.RequiredStringFlag(argument.Path, 1)
+	branch := argument.RequiredStringFlag(argument.Branch)
+	path := argument.RequiredStringFlag(argument.Path)
 	c.Commit(
 		project.Identifier,
 		branch,
-		argument.RequiredStringFlag(argument.Message, 1),
+		argument.RequiredStringFlag(argument.Message),
 		path,
 		strings.ReplaceAllSlice(
-			system.ReadFile(
-				argument.RequiredStringFlag(argument.Template, 1),
-			),
+			system.ReadFile(argument.RequiredStringFlag(argument.Template)),
 			replaces,
 		),
 		c.FileExists(project, branch, path),

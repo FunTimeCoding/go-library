@@ -1,19 +1,5 @@
 package argument
 
-import (
-	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/spf13/viper"
-)
-
-func RequiredInteger64Flag(
-	name string,
-	exit int,
-) int64 {
-	if s := viper.GetInt64(name); s != 0 {
-		return s
-	}
-
-	system.Exitf(exit, "flag empty: %s\n", name)
-
-	return 0
+func RequiredInteger64Flag(name string) int64 {
+	return RequiredInteger64FlagExit(name, 1)
 }

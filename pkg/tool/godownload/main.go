@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -41,8 +42,19 @@ func Main(
 	monitor.VersionExit(version, gitHash, buildDate)
 	common.ValidateArguments()
 
-	argument.RequiredStringFlag(argument.Package, 1)
-	argument.RequiredStringFlag(argument.PackageVersion, 1)
+	argument.RequiredStringFlag(argument.Package)
+	argument.RequiredStringFlag(argument.PackageVersion)
+
+	if false {
+		// If both environment and argument are passed, use argument
+		// Fall back to environment
+		argument.RequiredPositional(0, "package")
+		environment.GetDefault("CI_SERVER_FQDN", "")
+		environment.GetDefault("TOKEN", "")
+		environment.GetDefault("OWNER", "")
+		environment.GetDefault("REPOSITORY", "")
+		environment.GetDefault("OUTPUT", "")
+	}
 
 	verbose := viper.GetBool(argument.Verbose)
 	host := viper.GetString(argument.Host)

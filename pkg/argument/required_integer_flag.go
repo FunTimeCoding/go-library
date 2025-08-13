@@ -1,19 +1,5 @@
 package argument
 
-import (
-	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/spf13/viper"
-)
-
-func RequiredIntegerFlag(
-	name string,
-	exit int,
-) int {
-	if s := viper.GetInt(name); s != 0 {
-		return s
-	}
-
-	system.Exitf(exit, "flag empty: %s\n", name)
-
-	return 0
+func RequiredIntegerFlag(name string) int {
+	return RequiredIntegerFlagExit(name, 1)
 }

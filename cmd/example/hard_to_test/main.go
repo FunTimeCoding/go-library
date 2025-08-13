@@ -68,7 +68,7 @@ func main() {
 
 	environment.Required("", 1)
 
-	argument.RequiredInteger64Flag("", 1)
+	argument.RequiredInteger64Flag("")
 
 	errors.NotFound("")
 

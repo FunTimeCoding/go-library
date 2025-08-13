@@ -60,13 +60,13 @@ func Main() {
 	)
 	argument.ParseBind()
 
-	locator := argument.RequiredStringFlag(argument.Locator, 1)
+	locator := argument.RequiredStringFlag(argument.Locator)
 	fmt.Printf("Locator: %s\n", locator)
 
-	project := argument.RequiredStringFlag(argument.Project, 1)
+	project := argument.RequiredStringFlag(argument.Project)
 	fmt.Printf("Project: %s\n", project)
 
-	tag := argument.RequiredStringFlag(argument.Tag, 1)
+	tag := argument.RequiredStringFlag(argument.Tag)
 	fmt.Printf("Tag: %s\n", tag)
 
 	headers := build.Headers(viper.GetString(argument.Header))

@@ -1,5 +1,7 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/console/status/option"
+
 const (
 	HostEnvironment    = "MATTERMOST_HOST"
 	TokenEnvironment   = "MATTERMOST_TOKEN"
@@ -17,3 +19,5 @@ const (
 	Construction = "construction"     // in progress
 	Repeat       = "repeat"           // forwarded
 )
+
+var Format = option.ExtendedColor.Copy()

@@ -12,10 +12,6 @@ import (
 
 func main() {
 	if false {
-		gguf.Read()
-	}
-
-	if false {
 		ollama.Chat()
 		ollama.Benchmark()
 		ollama.ClassifyAlert()
@@ -27,30 +23,22 @@ func main() {
 		ollama.Embed()
 		ollama.Running()
 		ollama.Heartbeat()
-	}
 
-	if false {
 		openai.Token()
 		openai.Official()
 		openai.Alternate()
-	}
 
-	if false {
 		anthropic.Official()
 		anthropic.Alternate()
-	}
 
-	if false {
 		langchain.Chroma()
 		langchain.Function()
 		langchain.Local()
-	}
 
-	if false {
 		openWebUI.Load()
-	}
 
-	if false {
 		modelContext.Server()
+
+		gguf.Read()
 	}
 }

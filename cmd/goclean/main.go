@@ -18,7 +18,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/spf13/viper"
 	"slices"
@@ -30,15 +29,13 @@ func main() {
 	argument.ParseBind()
 	verbose := viper.GetBool(argument.Verbose)
 
-	gitlabLocator := web.ParseLocator(
-		environment.Get(gitlabConstant.HostEnvironment),
-	)
+	gitlabHost := environment.Get(gitlabConstant.HostEnvironment)
 	m := provider_map.New()
-	m.Add(gitlabLocator.Host, provider_map.GitLabProvider)
+	m.Add(gitlabHost, provider_map.GitLabProvider)
 
-	if locator.HasDot(gitlabLocator.Host) {
+	if locator.HasDot(gitlabHost) {
 		m.Add(
-			locator.RemoveSubdomain(gitlabLocator.Host),
+			locator.RemoveSubdomain(gitlabHost),
 			provider_map.GitLabProvider,
 		)
 	}
@@ -49,7 +46,7 @@ func main() {
 		system.Exitf(
 			1,
 			"could not identify provider: %s\n",
-			gitlabLocator.Host,
+			gitlabHost,
 		)
 
 		return
@@ -126,7 +123,7 @@ func main() {
 
 		namespace, repository := git.ParseProject(remoteLocator.Path)
 		c := gitlab.New(
-			gitlabLocator.Host,
+			gitlabHost,
 			environment.Get(gitlabConstant.TokenEnvironment),
 		)
 		p := c.ProjectByName(namespace, repository)

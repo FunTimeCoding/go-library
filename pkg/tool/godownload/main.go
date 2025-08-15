@@ -51,7 +51,10 @@ func Main(
 		argument.RequiredPositional(0, "package")
 		environment.GetDefault("CI_SERVER_FQDN", "")
 		environment.GetDefault("TOKEN", "")
-		environment.GetDefault("OWNER", "")
+		environment.GetDefault(
+			"OWNER",
+			"",
+		) // needs defining manually as a variable, or even fall back to CI_PROJECT_NAMESPACE?
 		environment.GetDefault("REPOSITORY", "")
 		environment.GetDefault("OUTPUT", "")
 	}

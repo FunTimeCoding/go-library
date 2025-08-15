@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.24.6
+go 1.25.0
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown v1.6.0
@@ -10,7 +10,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.2.3
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/andygrunwald/go-jira v1.16.0
-	github.com/anthropics/anthropic-sdk-go v1.7.0
+	github.com/anthropics/anthropic-sdk-go v1.9.1
 	github.com/apenella/go-ansible/v2 v2.2.0
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bwmarrin/discordgo v0.29.0
@@ -22,7 +22,7 @@ require (
 	github.com/coder/websocket v1.8.13
 	github.com/coreos/go-semver v0.3.1
 	github.com/ctreminiom/go-atlassian v1.6.1
-	github.com/ctreminiom/go-atlassian/v2 v2.6.2
+	github.com/ctreminiom/go-atlassian/v2 v2.7.0
 	github.com/daixijun/go-salt/v2 v2.0.1
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/dimchansky/utfbom v1.1.1
@@ -31,7 +31,7 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.8.1
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.35.0
+	github.com/getsentry/sentry-go v0.35.1
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/go-openapi/runtime v0.28.0
@@ -51,7 +51,7 @@ require (
 	github.com/mark3labs/mcp-go v0.37.0
 	github.com/mattermost/mattermost/server/public v0.1.16
 	github.com/olekukonko/tablewriter v1.0.9
-	github.com/ollama/ollama v0.11.3
+	github.com/ollama/ollama v0.11.4
 	github.com/openai/openai-go v1.12.0
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -61,7 +61,7 @@ require (
 	github.com/rivo/tview v0.0.0-20250625164341-a4a78f1e05cb
 	github.com/samber/slog-loki/v3 v3.5.4
 	github.com/sanity-io/litter v1.5.8
-	github.com/sashabaranov/go-openai v1.40.5
+	github.com/sashabaranov/go-openai v1.41.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/slok/go-http-metrics v0.13.0
 	github.com/spf13/cobra v1.9.1
@@ -74,15 +74,15 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v0.137.0
+	gitlab.com/gitlab-org/api/client-go v0.139.2
 	go.etcd.io/bbolt v1.4.2
-	golang.org/x/crypto v0.40.0
-	golang.org/x/mod v0.26.0
-	golang.org/x/net v0.42.0
+	golang.org/x/crypto v0.41.0
+	golang.org/x/mod v0.27.0
+	golang.org/x/net v0.43.0
 	golang.org/x/oauth2 v0.30.0
 	golang.org/x/time v0.12.0
 	gonum.org/v1/gonum v0.16.0
-	google.golang.org/api v0.246.0
+	google.golang.org/api v0.247.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.1
@@ -95,9 +95,9 @@ require (
 )
 
 require (
-	cloud.google.com/go/auth v0.16.3 // indirect
+	cloud.google.com/go/auth v0.16.4 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
-	cloud.google.com/go/compute/metadata v0.7.0 // indirect
+	cloud.google.com/go/compute/metadata v0.8.0 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.1.6 // indirect
@@ -276,13 +276,13 @@ require (
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
 	golang.org/x/sync v0.16.0 // indirect
-	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/term v0.33.0 // indirect
-	golang.org/x/text v0.27.0 // indirect
-	golang.org/x/tools v0.34.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250728155136-f173205681a0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/term v0.34.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/tools v0.35.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250804133106-a7a43d27e69b // indirect
 	google.golang.org/grpc v1.74.2 // indirect
-	google.golang.org/protobuf v1.36.6 // indirect
+	google.golang.org/protobuf v1.36.7 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect

@@ -4,12 +4,13 @@ tasks:
   default: {cmds: [{task: lint}, {task: test}, {task: build}], silent: true}
   lint:
     cmds:
-    - mkdir -p fixture/lint/empty_directory
-    - golint --fix --skip fixture,tmp
-    - golangci-lint run
+    - |
+      mkdir -p fixture/lint/empty_directory
+      golint --fix --skip fixture,tmp
+      golangci-lint run
     silent: true
   test: {cmds: ['gotestsum --format standard-quiet'], silent: true}
-  build: {cmds: ['go run cmd/gobuild/main.go --all'], silent: true}
+  build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:
     cmds:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
@@ -17,23 +18,24 @@ tasks:
     silent: true
   tool:
     cmds:
-    - go install gotest.tools/gotestsum@latest
-    - go install github.com/boumenot/gocover-cobertura@latest
-    - export GOPROXY=direct
-    - go install github.com/funtimecoding/go-library/cmd/gobuild@latest
-    - go install github.com/funtimecoding/go-library/cmd/golint@latest
-    - go install github.com/funtimecoding/go-library/cmd/goupdate@latest
-    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.3.1
+    - |
+      go install gotest.tools/gotestsum@latest
+      go install github.com/boumenot/gocover-cobertura@latest
+      go install github.com/funtimecoding/go-library/cmd/golint@latest
+      go install github.com/funtimecoding/go-library/cmd/gobuild@latest
+      curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.4.0
     silent: true
   install:
     cmds:
-    - go run cmd/gobuild/main.go --copy-to-bin gobuild
-    - gobuild --all --copy-to-bin
+    - |
+      go run cmd/gobuild/main.go --copy-to-bin gobuild
+      gobuild --copy-to-bin
     silent: true
   coverage:
     cmds:
-    - mkdir -p tmp
-    - go test -coverprofile=tmp/coverage.txt -covermode count ./...
-    - gocover-cobertura <tmp/coverage.txt >tmp/coverage.xml
+    - |
+      mkdir -p tmp
+      go test -coverprofile=tmp/coverage.txt -covermode count ./...
+      gocover-cobertura <tmp/coverage.txt >tmp/coverage.xml
     silent: true
   check: {cmds: ['gobuild --copy-to-bin gochk', tmp/deploy.sh], silent: true}

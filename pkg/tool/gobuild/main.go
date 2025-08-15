@@ -38,7 +38,6 @@ func Main(
 		false,
 		"Copy to $HOME/bin",
 	)
-	pflag.Bool(argument.All, false, "Build all")
 	pflag.Bool(constant.LinuxAMD64, false, "Linux AMD64")
 	pflag.Bool(constant.DarwinARM64, false, "Darwin ARM64")
 	pflag.Bool(constant.DarwinAMD64, false, "Darwin AMD64")
@@ -55,23 +54,25 @@ func Main(
 		darwinAMD64 = true
 	}
 
-	if viper.GetBool(argument.All) {
-		for _, name := range system.Directories(
+	name := argument.Positional(0)
+
+	if name == "" {
+		for _, n := range system.Directories(
 			system.Join(system.WorkingDirectory(), constant.CommandPath),
 		) {
-			if name == build.ExamplePath {
+			if n == build.ExamplePath {
 				continue
 			}
 
-			fmt.Printf("Build %s\n", name)
-			mainPath := build.GuessMainPath(name)
+			fmt.Printf("Build %s\n", n)
+			mainPath := build.GuessMainPath(n)
 
 			if mainPath == "" {
-				log.Panicf("could not find main.go for %s", name)
+				log.Panicf("could not find main.go for %s", n)
 			}
 
 			o := option.New()
-			o.Name = name
+			o.Name = n
 			o.MainPath = mainPath
 			o.Output = viper.GetString(argument.Output)
 			o.BuildTags = viper.GetString(argument.BuildTags)
@@ -85,7 +86,6 @@ func Main(
 		return
 	}
 
-	name := argument.RequiredPositional(0, "NAME")
 	mainPath := viper.GetString(argument.Main)
 
 	if mainPath == "" {

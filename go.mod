@@ -7,7 +7,7 @@ require (
 	github.com/MrGunflame/gw2api v1.0.5
 	github.com/PuerkitoBio/goquery v1.10.3
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5
-	github.com/amikos-tech/chroma-go v0.2.3
+	github.com/amikos-tech/chroma-go v0.2.4
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/andygrunwald/go-jira v1.16.0
 	github.com/anthropics/anthropic-sdk-go v1.9.1
@@ -154,7 +154,7 @@ require (
 	github.com/go-openapi/swag v0.23.1 // indirect
 	github.com/go-openapi/validate v0.24.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
-	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect
 	github.com/gobwas/ws v1.4.0 // indirect

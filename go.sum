@@ -942,8 +942,8 @@ github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/ad
 github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 h1:JeSE6pjso5THxAzdVpqr6/geYxZytqFMBCOtn/ujyeo=
 github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674/go.mod h1:r4w70xmWCQKmi1ONH4KIaBptdivuRPyosB9RmPlGEwA=
-github.com/gpustack/gguf-parser-go v0.22.0 h1:Skh9bG/giQflmHi29R4IzqJJbL05qr3Gk8LPLfT5Y7U=
-github.com/gpustack/gguf-parser-go v0.22.0/go.mod h1:y4TwTtDqFWTK+xvprOjRUh+dowgU2TKCX37vRKvGiZ0=
+github.com/gpustack/gguf-parser-go v0.22.1 h1:FRnEDWqT0Rcplr/R9ctCRSN2+3DhVsf6dnR5/i9JA4E=
+github.com/gpustack/gguf-parser-go v0.22.1/go.mod h1:y4TwTtDqFWTK+xvprOjRUh+dowgU2TKCX37vRKvGiZ0=
 github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c h1:jox7J0BnJmcZJp8lp631u4gjDEoIfpi6O3yrpiXNTtg=
 github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c/go.mod h1:AOzHLStinAJHJmcih1eEbIRImxpT6enYUsZLnnOvhbo=
 github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5 h1:WnE53XyxJw1n9GRot6wlB2PhBuCS0BU4b+/V41z7EM4=
@@ -1877,8 +1877,8 @@ github.com/yusufpapurcu/wmi v1.2.4/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQ
 github.com/yvasiyarov/go-metrics v0.0.0-20140926110328-57bccd1ccd43/go.mod h1:aX5oPXxHm3bOH+xeAttToC8pqch2ScQN/JoXYupl6xs=
 github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50/go.mod h1:NUSPSUX/bi6SeDMUh6brw0nXpxHnc96TguQh0+r/ssA=
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go.mod h1:GlGEuHIJweS1mbCqG+7vt2nvWLzLLnRHbXz5JKd/Qbg=
-gitlab.com/gitlab-org/api/client-go v0.139.2 h1:Le1/q+ZBYSr3HG9mSJa+/ci36S9tFsa9nEG3b2Cq6kk=
-gitlab.com/gitlab-org/api/client-go v0.139.2/go.mod h1:vY0XbE86FvL7v5jCGDiaFgDyCV8YbmjIIkBhXx+ZDWM=
+gitlab.com/gitlab-org/api/client-go v0.141.1 h1:d27K2wKSAzp6ytoc7pwJrNGQy5PRAVNXgVav16KfEMg=
+gitlab.com/gitlab-org/api/client-go v0.141.1/go.mod h1:IVkgruxTxL3I9250JBxDeSS1gt+/OO5fQnQnMINMtZ0=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

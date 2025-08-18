@@ -29,6 +29,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "mine", Mine)
 	assert.String(t, "name", Name)
 	assert.String(t, "node", Node)
+	assert.String(t, "package", Package)
 	assert.String(t, "password", Password)
 	assert.String(t, "pod", Pod)
 	assert.String(t, "pretend", Pretend)

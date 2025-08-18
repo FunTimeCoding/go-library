@@ -41,7 +41,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/gpustack/gguf-parser-go v0.22.0
+	github.com/gpustack/gguf-parser-go v0.22.1
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250617151817-c0f8cbb88d5c
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
 	github.com/hupe1980/go-tiktoken v0.0.10
@@ -74,7 +74,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v0.139.2
+	gitlab.com/gitlab-org/api/client-go v0.141.1
 	go.etcd.io/bbolt v1.4.2
 	golang.org/x/crypto v0.41.0
 	golang.org/x/mod v0.27.0

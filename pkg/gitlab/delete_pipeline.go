@@ -6,6 +6,12 @@ func (c *Client) DeletePipeline(
 	project int,
 	pipeline int,
 ) {
-	_, e := c.client.Pipelines.DeletePipeline(project, pipeline)
+	r, e := c.client.Pipelines.DeletePipeline(project, pipeline)
+
+	if r != nil && r.StatusCode == 404 {
+		// Do not fail if pipeline does not exist
+		return
+	}
+
 	errors.PanicOnError(e)
 }

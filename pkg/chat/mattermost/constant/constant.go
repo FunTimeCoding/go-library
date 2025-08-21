@@ -18,6 +18,7 @@ const (
 	CheckMark    = "white_check_mark" // done
 	Construction = "construction"     // in progress
 	Repeat       = "repeat"           // forwarded
+	Thread       = "thread"           // belongs to above thread
 )
 
 var Format = option.ExtendedColor.Copy()

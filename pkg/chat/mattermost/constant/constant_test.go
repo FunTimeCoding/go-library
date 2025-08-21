@@ -13,4 +13,5 @@ func TestClient(t *testing.T) {
 
 	assert.String(t, "construction", Construction)
 	assert.String(t, "repeat", Repeat)
+	assert.String(t, "thread", Thread)
 }

@@ -11,19 +11,40 @@ import (
 	"net/url"
 )
 
-func New(host string) *Client {
-	// https://github.com/ollama/ollama/blob/main/docs/api.md
-	return &Client{
-		context: context.Background(),
-		client: api.NewClient(
-			&url.URL{
-				Scheme: web.InsecureScheme,
-				Host: net.JoinHostPort(
-					host,
-					fmt.Sprintf("%d", constant.Port),
-				),
-			},
-			http.DefaultClient,
-		),
+func New(o ...OptionFunc) *Client {
+	result := &Client{context: context.Background()}
+
+	for _, p := range o {
+		p(result)
 	}
+
+	if result.host == "" {
+		result.host = constant.Host
+	}
+
+	if result.port == 0 {
+		result.port = constant.Port
+	}
+
+	var scheme string
+
+	if result.secure {
+		scheme = web.SecureScheme
+	} else {
+		scheme = web.InsecureScheme
+	}
+
+	// https://github.com/ollama/ollama/blob/main/docs/api.md
+	result.client = api.NewClient(
+		&url.URL{
+			Scheme: scheme,
+			Host: net.JoinHostPort(
+				result.host,
+				fmt.Sprintf("%d", result.port),
+			),
+		},
+		http.DefaultClient,
+	)
+
+	return result
 }

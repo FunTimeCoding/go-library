@@ -16,6 +16,7 @@ func main() {
 		ollama.Benchmark()
 		ollama.ClassifyAlert()
 		ollama.Fast()
+		ollama.Custom()
 		ollama.Stream()
 		ollama.Simple()
 		ollama.Show()

@@ -8,4 +8,8 @@ import (
 type Client struct {
 	context context.Context
 	client  *api.Client
+
+	host   string
+	port   int
+	secure bool
 }

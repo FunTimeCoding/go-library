@@ -28,6 +28,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Forward", Forward)
 	assert.String(t, "Hardware", Hardware)
 	assert.String(t, "Interface", Interface)
+	assert.String(t, "Label", Label)
 	assert.String(t, "Latency", Latency)
 	assert.String(t, "Limit", Limit)
 	assert.String(t, "Measure", Measure)

@@ -30,6 +30,7 @@ const (
 	Hardware      = "Hardware"
 	Interface     = "Interface"
 	Job           = "Job"
+	Label         = "Label"
 	Latency       = "Latency"
 	Limit         = "Limit"
 	Measure       = "Measure"

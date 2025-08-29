@@ -43,6 +43,7 @@ goalert
 gobuild
 gobump
 gochk
+gochroma
 goclean
 gocontainer
 godebian

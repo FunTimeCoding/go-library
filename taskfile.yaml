@@ -14,7 +14,11 @@ tasks:
   update:
     cmds:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
-    - goupdate --downgrade k8s.io/apimachinery@v0.30.14
+    # github.com/google/gnostic-models: 0.7.0 has bad imports
+    - |
+      goupdate \
+        --downgrade k8s.io/apimachinery@v0.30.14 \
+        --downgrade github.com/google/gnostic-models@v0.6.9
     silent: true
   tool:
     cmds:

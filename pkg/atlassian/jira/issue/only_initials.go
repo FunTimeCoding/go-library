@@ -2,7 +2,7 @@ package issue
 
 import "slices"
 
-func ByInitials(
+func OnlyInitials(
 	v []*Issue,
 	initials ...string,
 ) []*Issue {

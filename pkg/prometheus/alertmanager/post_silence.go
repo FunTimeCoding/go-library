@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/system"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/prometheus/alertmanager/api/v2/client/silence"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"time"
@@ -35,8 +35,8 @@ func (c *Client) PostSilence(
 					IsRegex: ptr.To(false),
 				},
 			},
-			StartsAt: ptr.To(timeLibrary.Scan(start)),
-			EndsAt:   ptr.To(timeLibrary.Scan(end)),
+			StartsAt: ptr.To(library.Scan(start)),
+			EndsAt:   ptr.To(library.Scan(end)),
 		},
 	}
 

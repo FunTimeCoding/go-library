@@ -10,7 +10,7 @@ import (
 
 func Jira() *jira.Client {
 	return jira.NewEnvironment(
-		jira.WithDoneStatus([]string{constant.Done}),
+		jira.WithClosedStatus([]string{constant.Done}),
 	).Set(
 		issue_enricher.New(
 			issue_enricher.WithConcernFunction(

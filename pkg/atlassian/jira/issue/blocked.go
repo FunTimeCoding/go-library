@@ -10,7 +10,7 @@ func (i *Issue) Blocked() bool {
 
 		if l.Type.Inward == BlockedBy {
 			if slices.Contains(
-				i.option.DoneStatus,
+				i.option.ClosedStatus,
 				l.InwardIssue.Fields.Status.Name,
 			) {
 				continue

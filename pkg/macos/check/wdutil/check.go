@@ -3,7 +3,7 @@ package wdutil
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/system"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"time"
 )
 
@@ -23,7 +23,7 @@ func Check() {
 				if past != r.Sequence {
 					fmt.Printf(
 						"%s change %s\n",
-						t.Format(timeLibrary.DateSecond),
+						t.Format(library.DateSecond),
 						r.Sequence,
 					)
 				}

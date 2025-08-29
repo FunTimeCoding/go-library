@@ -3,23 +3,23 @@ package alert
 import (
 	"fmt"
 	"github.com/docker/go-units"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"time"
 )
 
 func condenseTime(t time.Time) string {
-	var clockFormat string
+	var format string
 	local := t.Local()
 
 	if time.Since(t) < 24*time.Hour {
-		clockFormat = local.Format(timeLibrary.HourMinute)
+		format = local.Format(library.HourMinute)
 	} else {
-		clockFormat = local.Format(timeLibrary.DateMinute)
+		format = local.Format(library.DateMinute)
 	}
 
 	return fmt.Sprintf(
 		"%s (%s ago)",
-		clockFormat,
+		format,
 		units.HumanDuration(time.Since(t)),
 	)
 }

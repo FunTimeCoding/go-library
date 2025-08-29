@@ -37,8 +37,8 @@ func New(
 		p(result)
 	}
 
-	if len(result.doneStatus) == 0 {
-		result.doneStatus = []string{constant.Closed}
+	if len(result.closedStatus) == 0 {
+		result.closedStatus = []string{constant.Closed}
 	}
 
 	return result

@@ -9,10 +9,10 @@ func New(
 	locator string,
 	user string,
 	watchedIssues []string,
-	doneStatus []string,
+	closedStatus []string,
 	m *field_map.Map,
 ) *Issue {
-	if len(doneStatus) == 0 {
+	if len(closedStatus) == 0 {
 		log.Panicf("done status cannot be empty")
 	}
 
@@ -20,7 +20,7 @@ func New(
 		Locator:       locator,
 		User:          user,
 		WatchedIssues: watchedIssues,
-		DoneStatus:    doneStatus,
+		ClosedStatus:  closedStatus,
 		FieldMap:      m,
 	}
 }

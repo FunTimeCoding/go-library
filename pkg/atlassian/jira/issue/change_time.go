@@ -1,7 +1,7 @@
 package issue
 
 import (
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"time"
 )
 
@@ -11,7 +11,7 @@ func (i *Issue) ChangeTime() time.Time {
 	if u := i.LatestComment(); u != nil {
 		result = CommentTime(u)
 	} else {
-		result = timeLibrary.PickLatest(
+		result = library.PickLatest(
 			time.Time(i.Raw.Fields.Created),
 			time.Time(i.Raw.Fields.Updated),
 		)

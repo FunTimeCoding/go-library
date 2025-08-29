@@ -24,5 +24,5 @@ type Client struct {
 	issueOption *option.Issue
 	enricher    *issue_enricher.Enricher
 
-	doneStatus []string
+	closedStatus []string
 }

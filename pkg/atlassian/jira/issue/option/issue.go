@@ -8,5 +8,5 @@ type Issue struct {
 	WatchedIssues []string
 	FieldMap      *field_map.Map
 	Verbose       bool
-	DoneStatus    []string
+	ClosedStatus  []string
 }

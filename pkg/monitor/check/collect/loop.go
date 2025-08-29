@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"time"
 )
 
@@ -31,7 +31,7 @@ func Loop() {
 func loopCheck(t time.Time) {
 	fmt.Printf(
 		"Time: %s\n",
-		t.Format(timeLibrary.DateMinute),
+		t.Format(library.DateMinute),
 	)
 	Check()
 }

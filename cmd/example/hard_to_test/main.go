@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/brave"
 	"github.com/funtimecoding/go-library/pkg/build"
+	"github.com/funtimecoding/go-library/pkg/chromium"
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
@@ -12,6 +14,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/markup"
 	"github.com/funtimecoding/go-library/pkg/metric"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/push"
 	"github.com/funtimecoding/go-library/pkg/relational"
 	"github.com/funtimecoding/go-library/pkg/sentry"
@@ -85,4 +88,10 @@ func main() {
 
 	client.NewContextStrict("")
 	client.NewInCLuster("")
+
+	chromium.NewCombined("")
+
+	monitor.BindGeneric()
+
+	brave.OpenProfileLink("", "")
 }

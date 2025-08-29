@@ -13,6 +13,6 @@ func Open(
 	return c.Search(
 		"project = '%s' AND status NOT IN (%s) ORDER BY key DESC",
 		project,
-		join.Comma(Quote(c.IssueOption().DoneStatus)),
+		join.Comma(Quote(c.IssueOption().ClosedStatus)),
 	)
 }

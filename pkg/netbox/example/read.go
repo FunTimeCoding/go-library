@@ -126,6 +126,10 @@ func Read() {
 		fmt.Printf("ModuleType: %s\n", t.Format(f))
 	}
 
+	for _, m := range n.Modules() {
+		fmt.Printf("Module: %s\n", m.Format(f))
+	}
+
 	for _, r := range n.InventoryItemRoles() {
 		fmt.Printf("InventoryItemRole: %s\n", r.Format(f))
 	}
@@ -174,7 +178,23 @@ func Read() {
 		fmt.Printf("VirtualDeviceContext: %s\n", c.Format(f))
 	}
 
+	for _, t := range n.Tags() {
+		fmt.Printf("Tag: %s\n", t.Format(f))
+	}
+
 	// TODO: How to create DeviceBay? "device not compatible"
+
+	for _, t := range n.DeviceBayTemplates() {
+		fmt.Printf("DeviceBayTemplate: %s\n", t.Format(f))
+	}
+
+	// TODO: ModuleTypeProfile
+
+	// TODO: ConfigContext, ConfigTemplate
+
+	// TODO: VLAN, VLANGroup
+
+	// TODO: ASN
 
 	// TODO: WirelessLan, WirelessLanGroup
 
@@ -183,4 +203,8 @@ func Read() {
 	// TODO: VPN Tunnel, TunnelGroup
 
 	// TODO: Circuits
+
+	// TODO: DataSource, then ExportTemplate
+
+	// TODO: CustomField, CustomFieldChoice, CustomLink
 }

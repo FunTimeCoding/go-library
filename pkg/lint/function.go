@@ -43,6 +43,8 @@ func Function(
 
 			if funcBraceDepth == 0 {
 				if isEmptyFunctionBody(funcLines) {
+					fixedFunction := convertToSingleLine(funcLines)
+					result.ChangedLine(fixedFunction)
 					result.AddConcern(
 						constant.EmptyFunctionBodyKey,
 						constant.EmptyFunctionBodyText,
@@ -50,13 +52,22 @@ func Function(
 						funcStart,
 						strings.Join(funcLines, "\n"),
 					)
+				} else {
+					for _, funcLine := range funcLines {
+						result.ChangedLine(funcLine)
+					}
 				}
+
 				inFuncBody = false
 				funcLines = nil
+
+				continue
 			}
 		}
 
-		result.ChangedLine(line)
+		if !inFuncBody {
+			result.ChangedLine(line)
+		}
 	}
 
 	result.Fix = func() {
@@ -67,6 +78,23 @@ func Function(
 	}
 
 	return result.Finalize()
+}
+
+func convertToSingleLine(lines []string) string {
+	if len(lines) == 0 {
+		return ""
+	}
+
+	firstLine := lines[0]
+	openBraceIdx := strings.Index(firstLine, "{")
+
+	if openBraceIdx == -1 {
+		return firstLine
+	}
+
+	signature := strings.TrimSpace(firstLine[:openBraceIdx])
+
+	return signature + " {}"
 }
 
 func isEmptyFunctionBody(lines []string) bool {

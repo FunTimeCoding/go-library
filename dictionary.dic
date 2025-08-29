@@ -148,3 +148,7 @@ datdba
 datistemplate
 datname
 rolname
+
+# NetBox
+dcim
+ipam

@@ -35,6 +35,16 @@ const (
 	MarkdownExtension    = ".md"
 	MarkupExtension      = ".yaml"
 	ShortMarkupExtension = ".yml"
+
+	PhysicalTest0 = "00:00:00:00:00:00"
+	PhysicalTest1 = "00:00:00:00:00:01"
+	PhysicalTest2 = "00:00:00:00:00:02"
+)
+
+// For console status option
+const (
+	LabelKey = "label"
+	TagKey   = "tag"
 )
 
 var (

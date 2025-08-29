@@ -4,7 +4,7 @@ package main
 
 import (
 	"fmt"
-	v2 "github.com/amikos-tech/chroma-go/pkg/api/v2"
+	"github.com/amikos-tech/chroma-go/pkg/api/v2"
 	"github.com/funtimecoding/go-library/pkg/generative/chroma"
 	"github.com/funtimecoding/go-library/pkg/generative/chroma/example"
 )

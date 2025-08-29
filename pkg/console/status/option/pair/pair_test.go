@@ -7,5 +7,5 @@ import (
 )
 
 func TestPair(t *testing.T) {
-	assert.True(t, New(strings.Alfa, strings.Bravo) != nil)
+	assert.NotNil(t, New(strings.Alfa, strings.Bravo))
 }

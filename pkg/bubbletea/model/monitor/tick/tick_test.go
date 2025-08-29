@@ -6,5 +6,5 @@ import (
 )
 
 func TestTick(t *testing.T) {
-	assert.True(t, Command() != nil)
+	assert.NotNil(t, Command())
 }

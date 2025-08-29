@@ -7,5 +7,5 @@ import (
 )
 
 func TestAssignment(t *testing.T) {
-	assert.True(t, New(strings.Alfa, nil) != nil)
+	assert.NotNil(t, New(strings.Alfa, nil))
 }

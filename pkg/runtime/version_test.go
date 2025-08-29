@@ -6,5 +6,5 @@ import (
 )
 
 func TestVersion(t *testing.T) {
-	assert.True(t, Version() != nil)
+	assert.NotNil(t, Version())
 }

@@ -6,5 +6,5 @@ import (
 )
 
 func TestGroceryList(t *testing.T) {
-	assert.True(t, New() != nil)
+	assert.NotNil(t, New())
 }

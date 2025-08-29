@@ -1,7 +1,10 @@
 package monitor
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestMonitor(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

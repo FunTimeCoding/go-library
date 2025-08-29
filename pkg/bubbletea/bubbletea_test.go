@@ -1,7 +1,10 @@
 package bubbletea
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestBubbleTea(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

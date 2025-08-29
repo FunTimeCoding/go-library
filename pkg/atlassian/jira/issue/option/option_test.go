@@ -8,7 +8,7 @@ import (
 )
 
 func TestOption(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			strings.Alfa,
@@ -16,6 +16,6 @@ func TestOption(t *testing.T) {
 			[]string{},
 			[]string{constant.Done},
 			nil,
-		) != nil,
+		),
 	)
 }

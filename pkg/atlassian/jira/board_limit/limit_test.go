@@ -1,7 +1,10 @@
 package board_limit
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestLimit(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

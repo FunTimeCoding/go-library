@@ -7,5 +7,5 @@ import (
 )
 
 func TestRotation(t *testing.T) {
-	assert.True(t, New(&schedule.Rotation{}) != nil)
+	assert.NotNil(t, New(&schedule.Rotation{}))
 }

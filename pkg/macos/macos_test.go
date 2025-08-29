@@ -1,7 +1,10 @@
 package macos
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestMacOS(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

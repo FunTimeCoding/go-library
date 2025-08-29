@@ -7,5 +7,5 @@ import (
 )
 
 func TestToast(t *testing.T) {
-	assert.True(t, New(0, strings.Alfa) != nil)
+	assert.NotNil(t, New(0, strings.Alfa))
 }

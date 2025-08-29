@@ -1,7 +1,10 @@
 package custom_field_value
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestValue(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

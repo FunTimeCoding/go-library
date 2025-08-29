@@ -1,7 +1,10 @@
 package discord
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestDiscord(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

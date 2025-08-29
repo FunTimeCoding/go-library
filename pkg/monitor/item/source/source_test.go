@@ -7,7 +7,7 @@ import (
 )
 
 func TestSource(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			0,
@@ -16,6 +16,6 @@ func TestSource(t *testing.T) {
 			0,
 			0,
 			helper.SeverityWeights(0, 0, 0),
-		) != nil,
+		),
 	)
 }

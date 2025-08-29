@@ -1,7 +1,10 @@
 package ollama
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestOllama(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

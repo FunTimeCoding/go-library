@@ -6,5 +6,5 @@ import (
 )
 
 func TestMap(t *testing.T) {
-	assert.True(t, New(nil, []string{}) != nil)
+	assert.NotNil(t, New(nil, []string{}))
 }

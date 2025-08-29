@@ -1,7 +1,10 @@
 package issues
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestIssues(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

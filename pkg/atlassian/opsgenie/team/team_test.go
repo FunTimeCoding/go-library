@@ -7,5 +7,5 @@ import (
 )
 
 func TestTeam(t *testing.T) {
-	assert.True(t, New(&team.ListedTeams{}) != nil)
+	assert.NotNil(t, New(&team.ListedTeams{}))
 }

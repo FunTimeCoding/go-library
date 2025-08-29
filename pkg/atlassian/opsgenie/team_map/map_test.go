@@ -7,5 +7,5 @@ import (
 )
 
 func TestMap(t *testing.T) {
-	assert.True(t, New([]*team.Team{}) != nil)
+	assert.NotNil(t, New([]*team.Team{}))
 }

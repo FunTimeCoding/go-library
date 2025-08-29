@@ -8,7 +8,7 @@ import (
 )
 
 func TestGo(t *testing.T) {
-	l := Go(
+	l := Import(
 		stringLibrary.Alfa,
 		strings.NewReader(
 			"package example\n\nimport (\n\t\"example.org/example/fmt\"\n)\n\nfunc Example() {\n\tfmt.Println(\"Hello friend.\")\n}\n",

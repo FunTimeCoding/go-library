@@ -1,7 +1,10 @@
 package brave
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestBrave(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

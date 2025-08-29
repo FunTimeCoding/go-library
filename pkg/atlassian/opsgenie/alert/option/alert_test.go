@@ -7,7 +7,7 @@ import (
 )
 
 func TestAlert(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			nil,
@@ -17,6 +17,6 @@ func TestAlert(t *testing.T) {
 			nil,
 			nil,
 			nil,
-		) != nil,
+		),
 	)
 }

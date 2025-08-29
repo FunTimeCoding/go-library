@@ -6,5 +6,5 @@ import (
 )
 
 func TestProcessor(t *testing.T) {
-	assert.True(t, New(nil, nil, nil, nil, nil, nil) != nil)
+	assert.NotNil(t, New(nil, nil, nil, nil, nil, nil))
 }

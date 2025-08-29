@@ -51,6 +51,8 @@ func Lint(
 		}
 	}
 
+	var goFiles []string
+
 	for _, p := range system.GoFiles(constant.CurrentDirectory) {
 		if Skipped(skip, p) {
 			if verbose {
@@ -60,8 +62,18 @@ func Lint(
 			continue
 		}
 
+		goFiles = append(goFiles, p)
+	}
+
+	for _, p := range goFiles {
 		f := system.Open(p)
-		Go(p, f).ProcessConcerns(fix)
+		Import(p, f).ProcessConcerns(fix)
+		errors.LogClose(f)
+	}
+
+	for _, p := range goFiles {
+		f := system.Open(p)
+		Function(p, f).ProcessConcerns(fix)
 		errors.LogClose(f)
 	}
 

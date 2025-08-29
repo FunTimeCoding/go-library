@@ -6,5 +6,5 @@ import (
 )
 
 func TestContext(t *testing.T) {
-	assert.True(t, New(nil, nil) != nil)
+	assert.NotNil(t, New(nil, nil))
 }

@@ -8,5 +8,5 @@ import (
 )
 
 func TestPage(t *testing.T) {
-	assert.True(t, New(&response.Page{}, strings.Alfa) != nil)
+	assert.NotNil(t, New(&response.Page{}, strings.Alfa))
 }

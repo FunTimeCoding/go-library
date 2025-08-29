@@ -6,5 +6,5 @@ import (
 )
 
 func TestNewGenericLogger(t *testing.T) {
-	assert.True(t, NewGenericLogger() != nil)
+	assert.NotNil(t, NewGenericLogger())
 }

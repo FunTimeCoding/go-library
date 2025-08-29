@@ -1,7 +1,10 @@
 package chromium
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestChromium(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

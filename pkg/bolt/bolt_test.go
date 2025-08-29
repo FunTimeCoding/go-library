@@ -1,7 +1,10 @@
 package bolt
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestBolt(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

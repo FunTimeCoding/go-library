@@ -1,7 +1,10 @@
 package common
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestCommon(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

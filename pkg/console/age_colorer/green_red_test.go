@@ -8,5 +8,5 @@ import (
 )
 
 func TestGreenRed(t *testing.T) {
-	assert.True(t, GreenRed(age_fixture.New(0*time.Hour)) != nil)
+	assert.NotNil(t, GreenRed(age_fixture.New(0*time.Hour)))
 }

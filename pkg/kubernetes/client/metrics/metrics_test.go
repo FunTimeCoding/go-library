@@ -1,7 +1,10 @@
 package metrics
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestMetrics(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

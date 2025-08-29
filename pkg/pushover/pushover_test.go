@@ -1,7 +1,10 @@
 package pushover
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestPushover(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

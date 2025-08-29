@@ -7,5 +7,5 @@ import (
 )
 
 func TestOpsgenie(t *testing.T) {
-	assert.True(t, New(strings.Alfa, strings.Bravo, strings.Charlie) != nil)
+	assert.NotNil(t, New(strings.Alfa, strings.Bravo, strings.Charlie))
 }

@@ -1,7 +1,10 @@
 package client_context
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestContext(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

@@ -1,7 +1,10 @@
 package integer
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestResult(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

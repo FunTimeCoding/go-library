@@ -7,5 +7,5 @@ import (
 )
 
 func TestOverride(t *testing.T) {
-	assert.True(t, New(&schedule.ScheduleOverride{}) != nil)
+	assert.NotNil(t, New(&schedule.ScheduleOverride{}))
 }

@@ -1,7 +1,10 @@
 package download
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestDownload(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

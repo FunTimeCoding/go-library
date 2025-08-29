@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func Go(
+func Import(
 	path string,
 	r io.Reader,
 ) *file_report.Report {

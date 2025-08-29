@@ -8,8 +8,8 @@ import (
 )
 
 func TestClient(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
-		New(constant.Localhost, strings.Alfa, strings.Bravo, nil) != nil,
+		New(constant.Localhost, strings.Alfa, strings.Bravo, nil),
 	)
 }

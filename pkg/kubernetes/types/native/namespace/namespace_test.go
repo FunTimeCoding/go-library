@@ -9,11 +9,11 @@ import (
 )
 
 func TestNamespace(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			&core.Namespace{ObjectMeta: meta.ObjectMeta{Name: strings.Alfa}},
 			"",
-		) != nil,
+		),
 	)
 }

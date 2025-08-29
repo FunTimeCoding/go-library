@@ -1,7 +1,10 @@
 package kubernetes
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestKubernetes(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

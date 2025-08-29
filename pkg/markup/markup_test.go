@@ -1,7 +1,10 @@
 package markup
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestMarkup(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

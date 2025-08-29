@@ -6,5 +6,5 @@ import (
 )
 
 func TestColorable(t *testing.T) {
-	assert.True(t, New(0) != nil)
+	assert.NotNil(t, New(0))
 }

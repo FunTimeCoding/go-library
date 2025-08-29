@@ -7,5 +7,5 @@ import (
 )
 
 func TestSchedule(t *testing.T) {
-	assert.True(t, New(&schedule.Schedule{}, nil) != nil)
+	assert.NotNil(t, New(&schedule.Schedule{}, nil))
 }

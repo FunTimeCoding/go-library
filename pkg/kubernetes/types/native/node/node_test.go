@@ -9,11 +9,11 @@ import (
 )
 
 func TestNode(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			&core.Node{ObjectMeta: meta.ObjectMeta{Name: strings.Alfa}},
 			"",
-		) != nil,
+		),
 	)
 }

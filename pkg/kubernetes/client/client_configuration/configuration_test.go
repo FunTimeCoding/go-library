@@ -1,7 +1,10 @@
 package client_configuration
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestConfiguration(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

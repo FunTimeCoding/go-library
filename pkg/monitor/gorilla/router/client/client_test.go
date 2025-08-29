@@ -8,5 +8,5 @@ import (
 )
 
 func TestClient(t *testing.T) {
-	assert.True(t, New(strings.Alfa, strings.Bravo, net.IP{}, nil) != nil)
+	assert.NotNil(t, New(strings.Alfa, strings.Bravo, net.IP{}, nil))
 }

@@ -8,10 +8,10 @@ import (
 )
 
 func TestMessage(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			&tgbotapi.Message{From: &tgbotapi.User{UserName: strings.Alfa}},
-		) != nil,
+		),
 	)
 }

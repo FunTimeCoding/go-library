@@ -7,8 +7,8 @@ import (
 )
 
 func TestEnricher(t *testing.T) {
-	assert.True(t, New() != nil)
-	assert.True(
+	assert.NotNil(t, New())
+	assert.NotNil(
 		t,
 		New(
 			WithConcernFunction(
@@ -22,6 +22,6 @@ func TestEnricher(t *testing.T) {
 				},
 			),
 			WithCommentNameFilter([]string{}),
-		) != nil,
+		),
 	)
 }

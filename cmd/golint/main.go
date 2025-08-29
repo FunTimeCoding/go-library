@@ -12,7 +12,7 @@ func main() {
 	pflag.Bool(
 		argument.Fix,
 		false,
-		"Go concerns that can be fixed",
+		"Fix concerns that can be fixed",
 	)
 	pflag.String(
 		argument.Skip,

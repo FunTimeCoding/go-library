@@ -1,7 +1,10 @@
 package log_manager
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestManager(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

@@ -1,7 +1,10 @@
 package status
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestCheck(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

@@ -6,5 +6,5 @@ import (
 )
 
 func TestRouter(t *testing.T) {
-	assert.True(t, New() != nil)
+	assert.NotNil(t, New())
 }

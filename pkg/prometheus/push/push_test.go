@@ -7,8 +7,5 @@ import (
 )
 
 func TestPush(t *testing.T) {
-	assert.True(
-		t,
-		New(strings.Alfa, 0, false, strings.Bravo) != nil,
-	)
+	assert.NotNil(t, New(strings.Alfa, 0, false, strings.Bravo))
 }

@@ -1,7 +1,10 @@
 package goc
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestGoc(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

@@ -9,11 +9,11 @@ import (
 )
 
 func TestPod(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			&core.Pod{ObjectMeta: meta.ObjectMeta{Name: strings.Alfa}},
 			"",
-		) != nil,
+		),
 	)
 }

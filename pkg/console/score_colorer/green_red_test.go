@@ -7,5 +7,5 @@ import (
 )
 
 func TestGreenRed(t *testing.T) {
-	assert.True(t, GreenRed(score_fixture.New(1)) != nil)
+	assert.NotNil(t, GreenRed(score_fixture.New(1)))
 }

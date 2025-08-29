@@ -7,7 +7,7 @@ import (
 )
 
 func TestPrometheus(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			constant.Localhost,
@@ -16,6 +16,6 @@ func TestPrometheus(t *testing.T) {
 			"",
 			"",
 			"",
-		) != nil,
+		),
 	)
 }

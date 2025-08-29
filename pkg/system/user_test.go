@@ -6,5 +6,5 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	assert.True(t, User() != nil)
+	assert.NotNil(t, User())
 }

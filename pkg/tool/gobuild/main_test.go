@@ -1,7 +1,10 @@
 package gobuild
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestStub(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

@@ -7,5 +7,5 @@ import (
 )
 
 func TestResponse(t *testing.T) {
-	assert.True(t, New(&api.ChatResponse{}) != nil)
+	assert.NotNil(t, New(&api.ChatResponse{}))
 }

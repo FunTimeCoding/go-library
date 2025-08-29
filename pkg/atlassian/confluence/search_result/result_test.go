@@ -7,5 +7,5 @@ import (
 )
 
 func TestResult(t *testing.T) {
-	assert.True(t, New(&response.Result{}) != nil)
+	assert.NotNil(t, New(&response.Result{}))
 }

@@ -14,4 +14,7 @@ const (
 
 	SingleMultiImportKey  = "single_multi_import"
 	SingleMultiImportText = "Single multi import"
+
+	EmptyFunctionBodyKey  = "empty-function-body"
+	EmptyFunctionBodyText = "Function body with only whitespace"
 )

@@ -1,7 +1,10 @@
 package github
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestGitHub(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

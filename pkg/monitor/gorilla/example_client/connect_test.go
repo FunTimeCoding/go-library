@@ -1,7 +1,10 @@
 package example_client
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestConnect(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

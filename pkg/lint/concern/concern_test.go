@@ -7,7 +7,7 @@ import (
 )
 
 func TestConcern(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			strings.Alfa,
@@ -15,6 +15,6 @@ func TestConcern(t *testing.T) {
 			strings.Charlie,
 			1,
 			strings.Charlie,
-		) != nil,
+		),
 	)
 }

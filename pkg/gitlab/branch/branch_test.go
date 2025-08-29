@@ -10,7 +10,7 @@ import (
 )
 
 func TestBranch(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			&gitlab.Branch{
@@ -20,6 +20,6 @@ func TestBranch(t *testing.T) {
 					CreatedAt: ptr.To(constant.StartOfTime),
 				},
 			},
-		) != nil,
+		),
 	)
 }

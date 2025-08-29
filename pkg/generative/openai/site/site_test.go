@@ -1,7 +1,10 @@
 package site
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestSite(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

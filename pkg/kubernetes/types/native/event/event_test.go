@@ -9,11 +9,11 @@ import (
 )
 
 func TestEvent(t *testing.T) {
-	assert.True(
+	assert.NotNil(
 		t,
 		New(
 			&events.Event{ObjectMeta: meta.ObjectMeta{Name: strings.Alfa}},
 			"",
-		) != nil,
+		),
 	)
 }

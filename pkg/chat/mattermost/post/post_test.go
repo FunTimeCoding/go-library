@@ -7,5 +7,5 @@ import (
 )
 
 func TestPost(t *testing.T) {
-	assert.True(t, New(&model.Post{}) != nil)
+	assert.NotNil(t, New(&model.Post{}))
 }

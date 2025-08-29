@@ -7,5 +7,5 @@ import (
 )
 
 func TestMap(t *testing.T) {
-	assert.True(t, New([]jira.Field{}) != nil)
+	assert.NotNil(t, New([]jira.Field{}))
 }

@@ -6,5 +6,5 @@ import (
 )
 
 func TestCollector(t *testing.T) {
-	assert.True(t, New("", "", "", 0, nil) != nil)
+	assert.NotNil(t, New("", "", "", 0, nil))
 }

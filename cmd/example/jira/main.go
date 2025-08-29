@@ -3,9 +3,7 @@ package main
 import "github.com/funtimecoding/go-library/pkg/atlassian/jira/example"
 
 func main() {
-	if true {
-		example.Customer()
-	}
+	example.Customer()
 
 	if false {
 		example.Watch()

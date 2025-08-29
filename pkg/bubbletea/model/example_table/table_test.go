@@ -7,5 +7,5 @@ import (
 )
 
 func TestTable(t *testing.T) {
-	assert.True(t, New(&table.Model{}) != nil)
+	assert.NotNil(t, New(&table.Model{}))
 }

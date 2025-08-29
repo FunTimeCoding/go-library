@@ -1,7 +1,10 @@
 package preference
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestPreference(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

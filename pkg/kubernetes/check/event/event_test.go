@@ -1,7 +1,10 @@
 package event
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestEvent(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

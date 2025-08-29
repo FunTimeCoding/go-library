@@ -9,7 +9,7 @@ import (
 )
 
 func TestFile(t *testing.T) {
-	assert.True(t, New(nil) != nil)
+	assert.NotNil(t, New(nil))
 }
 
 func TestParse(t *testing.T) {

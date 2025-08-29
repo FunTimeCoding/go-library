@@ -1,7 +1,10 @@
 package jc
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestJc(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

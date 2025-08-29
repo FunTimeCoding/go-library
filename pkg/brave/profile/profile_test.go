@@ -1,7 +1,10 @@
 package profile
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestProfile(t *testing.T) {
-	// Stub
+	assert.Stub(t)
 }

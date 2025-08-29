@@ -29,7 +29,7 @@ require (
 	github.com/docker/go-units v0.5.0
 	github.com/essentialkaos/go-confluence/v6 v6.0.4
 	github.com/fatih/color v1.18.0
-	github.com/gdamore/tcell/v2 v2.8.1
+	github.com/gdamore/tcell/v2 v2.9.0
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.35.1
 	github.com/go-git/go-billy/v5 v5.6.2
@@ -58,7 +58,7 @@ require (
 	github.com/prometheus/alertmanager v0.28.1
 	github.com/prometheus/client_golang v1.23.0
 	github.com/prometheus/common v0.65.0
-	github.com/rivo/tview v0.0.0-20250625164341-a4a78f1e05cb
+	github.com/rivo/tview v0.42.0
 	github.com/samber/slog-loki/v3 v3.5.4
 	github.com/sanity-io/litter v1.5.8
 	github.com/sashabaranov/go-openai v1.41.1

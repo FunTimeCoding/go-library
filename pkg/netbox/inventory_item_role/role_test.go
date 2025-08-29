@@ -1,4 +1,4 @@
-package device_type
+package inventory_item_role
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,6 +6,6 @@ import (
 	"testing"
 )
 
-func TestDeviceType(t *testing.T) {
-	assert.NotNil(t, New(&netbox.DeviceType{}))
+func TestRole(t *testing.T) {
+	assert.NotNil(t, New(&netbox.InventoryItemRole{}))
 }

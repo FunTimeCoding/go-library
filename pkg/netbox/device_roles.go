@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/netbox/device_role"
 )
 
-func (c *Client) DeviceRoles() []*device_role.DeviceRole {
+func (c *Client) DeviceRoles() []*device_role.Role {
 	if len(c.cache.DeviceRoles) != 0 {
 		return c.cache.DeviceRoles
 	}

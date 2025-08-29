@@ -1,10 +1,10 @@
-package device_type
+package module_type
 
 import "github.com/netbox-community/go-netbox/v4"
 
-type DeviceType struct {
+type Type struct {
 	Identifier int32
 	Model      string
 
-	Raw *netbox.DeviceType
+	Raw *netbox.ModuleType
 }

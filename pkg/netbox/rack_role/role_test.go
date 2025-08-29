@@ -1,4 +1,4 @@
-package device_role
+package rack_role
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,6 +6,6 @@ import (
 	"testing"
 )
 
-func TestDeviceRole(t *testing.T) {
-	assert.NotNil(t, New(&netbox.DeviceRole{}))
+func TestRole(t *testing.T) {
+	assert.NotNil(t, New(&netbox.RackRole{}))
 }

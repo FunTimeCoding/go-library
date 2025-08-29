@@ -6,7 +6,7 @@ import (
 )
 
 func TestFindByName(t *testing.T) {
-	interfaces := []*Interface{{Name: Eth0, Type: InterfaceTypeVirtual}}
+	interfaces := []*Interface{{Name: Eth0, Type: InterfaceVirtual}}
 
 	// Happy path
 	assert.Any(

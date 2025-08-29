@@ -1,10 +1,10 @@
-package device_role
+package service
 
 import "github.com/netbox-community/go-netbox/v4"
 
-type DeviceRole struct {
+type Service struct {
 	Identifier int32
 	Name       string
 
-	Raw *netbox.DeviceRole
+	Raw *netbox.Service
 }

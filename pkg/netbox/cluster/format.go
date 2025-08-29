@@ -6,5 +6,5 @@ import (
 )
 
 func (c *Cluster) Format(f *option.Format) string {
-	return status.New(f).String(c.Name).RawList(c.Raw).Format()
+	return status.New(f).String(c.formatName(f)).RawList(c.Raw).Format()
 }

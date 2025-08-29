@@ -12,9 +12,9 @@ import (
 
 func (c *Client) CreateDevice(
 	name string,
-	o *device_role.DeviceRole,
+	o *device_role.Role,
 	tags []string,
-	y *device_type.DeviceType,
+	y *device_type.Type,
 	s *site.Site,
 	n *tenant.Tenant,
 ) *device.Device {

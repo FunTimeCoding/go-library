@@ -6,14 +6,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 )
 
-func (d *DeviceType) Format(f *option.Format) string {
+func (t *Type) Format(f *option.Format) string {
 	s := status.New(f)
 
 	if f.HasTag(tag.Identifier) {
-		s.Integer32(d.Identifier)
+		s.Integer32(t.Identifier)
 	}
 
-	s.String(d.formatModel(f)).RawList(d.Raw)
+	s.String(t.formatModel(f)).RawList(t.Raw)
 
 	return s.Format()
 }

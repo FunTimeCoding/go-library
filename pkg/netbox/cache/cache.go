@@ -14,8 +14,8 @@ import (
 )
 
 type Cache struct {
-	DeviceTypes       []*device_type.DeviceType
-	DeviceRoles       []*device_role.DeviceRole
+	DeviceTypes       []*device_type.Type
+	DeviceRoles       []*device_role.Role
 	Tags              []*tag.Tag
 	Tenants           []*tenant.Tenant
 	Sites             []*site.Site

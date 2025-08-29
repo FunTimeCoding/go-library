@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/netbox/device_type"
 )
 
-func (c *Client) DeviceTypes() []*device_type.DeviceType {
+func (c *Client) DeviceTypes() []*device_type.Type {
 	if len(c.cache.DeviceTypes) != 0 {
 		return c.cache.DeviceTypes
 	}

@@ -85,7 +85,7 @@ require (
 	google.golang.org/api v0.248.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.30.1
+	gorm.io/gorm v1.30.2
 	gotest.tools/v3 v3.5.2
 	k8s.io/api v0.30.14
 	k8s.io/apimachinery v0.30.14

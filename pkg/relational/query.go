@@ -7,9 +7,9 @@ import (
 
 func (d *Database) Query(
 	sql string,
-	arguments ...any,
+	a ...any,
 ) pgx.Rows {
-	result, e := d.client.Query(d.context, sql, arguments...)
+	result, e := d.client.Query(d.context, sql, a...)
 
 	if errors.Is(e, pgx.ErrNoRows) {
 		return result

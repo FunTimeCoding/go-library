@@ -72,7 +72,7 @@ func main() {
 
 	errors.NotFound("")
 
-	relational.New("")
+	relational.NewEnvironment()
 
 	gitlab.NewGitLabCom("")
 

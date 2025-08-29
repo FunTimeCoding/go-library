@@ -4,8 +4,8 @@ import "github.com/funtimecoding/go-library/pkg/errors"
 
 func (d *Database) Execute(
 	sql string,
-	arguments ...any,
+	a ...any,
 ) {
-	_, e := d.client.Exec(d.context, sql, arguments...)
+	_, e := d.client.Exec(d.context, sql, a...)
 	errors.PanicOnError(e)
 }

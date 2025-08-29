@@ -141,3 +141,9 @@ chromedp
 
 # Salt
 saltstack
+
+# Postgres
+datdba
+datistemplate
+datname
+rolname

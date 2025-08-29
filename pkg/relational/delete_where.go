@@ -3,9 +3,9 @@ package relational
 import "github.com/funtimecoding/go-library/pkg/errors"
 
 func (d *Database) DeleteWhere(
-	a any,
+	t any,
 	query string,
-	arguments ...any,
+	a ...any,
 ) {
-	errors.PanicOnError(d.Mapper().Where(query, arguments...).Delete(a).Error)
+	errors.PanicOnError(d.Mapper().Where(query, a...).Delete(t).Error)
 }

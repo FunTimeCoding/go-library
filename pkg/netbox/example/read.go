@@ -49,8 +49,13 @@ func Read() {
 			fmt.Printf("  Interface: %s\n", i.Format(f))
 		}
 
-		for _, i := range n.DeviceModuleBays(d.Name) {
-			fmt.Printf("  ModuleBay: %s\n", i.Format(f))
+		if false {
+			// TODO: on load: panic: no value given for required property device
+			//  Even if name is set
+			//  But this worked yesterday..?
+			for _, i := range n.DeviceModuleBays(d.Name) {
+				fmt.Printf("  ModuleBay: %s\n", i.Format(f))
+			}
 		}
 	}
 
@@ -138,8 +143,12 @@ func Read() {
 		fmt.Printf("InventoryItem: %s\n", i.Format(f))
 	}
 
-	for _, i := range n.ModuleBays() {
-		fmt.Printf("ModuleBay: %s\n", i.Format(f))
+	if false {
+		// TODO: on load: panic: no value given for required property device
+		//  This also worked - is something corrupt in the devices?
+		for _, i := range n.ModuleBays() {
+			fmt.Printf("ModuleBay: %s\n", i.Format(f))
+		}
 	}
 
 	for _, e := range n.PowerFeeds() {
@@ -183,28 +192,89 @@ func Read() {
 	}
 
 	// TODO: How to create DeviceBay? "device not compatible"
+	//  And where to create DeviceBayTemplate? API only?
 
 	for _, t := range n.DeviceBayTemplates() {
 		fmt.Printf("DeviceBayTemplate: %s\n", t.Format(f))
 	}
 
-	// TODO: ModuleTypeProfile
+	for _, p := range n.ModuleTypeProfiles() {
+		fmt.Printf("ModuleTypeProfile: %s\n", p.Format(f))
+	}
 
-	// TODO: ConfigContext, ConfigTemplate
+	if false {
+		// TODO: on load: panic: no value given for required property data_path
+		for _, c := range n.ConfigContexts() {
+			fmt.Printf("ConfigContext: %s\n", c.Format(f))
+		}
+	}
 
-	// TODO: VLAN, VLANGroup
+	// TODO: Must specify either local content or a data file
+	//  How, what is this for?
+	for _, t := range n.ConfigTemplates() {
+		fmt.Printf("ConfigTemplate: %s\n", t.Format(f))
+	}
 
-	// TODO: ASN
+	if false {
+		// TODO: on load: panic: json: cannot unmarshal number into Go struct field _PaginatedVLANGroupList.results.vid_ranges of type []int32
+		for _, g := range n.VirtualNetworkGroups() {
+			fmt.Printf("VirtualNetworkGroup: %s\n", g.Format(f))
+		}
+	}
 
-	// TODO: WirelessLan, WirelessLanGroup
+	for _, e := range n.VirtualNetworks() {
+		fmt.Printf("VirtualNetwork: %s\n", e.Format(f))
+	}
 
-	// TODO: WirelessLink
+	for _, u := range n.SystemNumbers() {
+		fmt.Printf("SystemNumber: %s\n", u.Format(f))
+	}
 
-	// TODO: VPN Tunnel, TunnelGroup
+	for _, g := range n.WirelessNetworkGroups() {
+		fmt.Printf("WirelessNetworkGroup: %s\n", g.Format(f))
+	}
 
-	// TODO: Circuits
+	for _, e := range n.WirelessNetworks() {
+		fmt.Printf("WirelessNetwork: %s\n", e.Format(f))
+	}
 
-	// TODO: DataSource, then ExportTemplate
+	if false {
+		// TODO: What must devices have to show up in the picker?
+		for _, l := range n.WirelessLinks() {
+			fmt.Printf("WirelessLink: %s\n", l.Format(f))
+		}
+	}
+
+	for _, g := range n.TunnelGroups() {
+		fmt.Printf("TunnelGroup: %s\n", g.Format(f))
+	}
+
+	for _, t := range n.Tunnels() {
+		fmt.Printf("Tunnel: %s\n", t.Format(f))
+	}
+
+	// TODO: DataSource: Requires local, git or S3 source
+	//  Is this used to import entities?
+	for _, s := range n.DataSources() {
+		fmt.Printf("DataSource: %s\n", s.Format(f))
+	}
+	// TODO: ExportTemplate, this optionally depends on DataSource
+	//  Whats a good use case?
+	for _, t := range n.ExportTemplates() {
+		fmt.Printf("ExportTemplate: %s\n", t.Format(f))
+	}
 
 	// TODO: CustomField, CustomFieldChoice, CustomLink
+	//  Whats a good use case?
+	for _, i := range n.CustomFields() {
+		fmt.Printf("CustomField: %s\n", i.Format(f))
+	}
+	for _, c := range n.CustomFieldChoices() {
+		fmt.Printf("CustomFieldChoice: %s\n", c.Format(f))
+	}
+	for _, l := range n.CustomLinks() {
+		fmt.Printf("CustomLink: %s\n", l.Format(f))
+	}
+
+	// TODO: Circuits
 }

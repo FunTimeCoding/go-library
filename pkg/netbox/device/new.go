@@ -7,36 +7,36 @@ import (
 	"github.com/netbox-community/go-netbox/v4"
 )
 
-func New(d *netbox.DeviceWithConfigContext) *Device {
+func New(v *netbox.DeviceWithConfigContext) *Device {
 	var address string
 	var name string
 	var comment string
 
-	if d.PrimaryIp4.IsSet() {
-		address = d.PrimaryIp4.Get().GetDisplay()
+	if v.PrimaryIp4.IsSet() {
+		address = v.PrimaryIp4.Get().GetDisplay()
 	} else {
 		address = constant.NoPrimaryAddress
 	}
 
-	if d.Name.IsSet() {
-		name = d.GetName()
+	if v.Name.IsSet() {
+		name = v.GetName()
 	} else {
 		name = constant.NoName
 	}
 
-	if d.Comments == nil {
+	if v.Comments == nil {
 		comment = constant.NoComment
 	} else {
-		comment = d.GetComments()
+		comment = v.GetComments()
 	}
 
 	return &Device{
-		Identifier:     d.GetId(),
+		Identifier:     v.GetId(),
 		Name:           name,
 		Comment:        comment,
 		PrimaryAddress: address,
-		Tags:           tag.Names(d.Tags),
-		Link:           helper.ToWebLink(d.GetUrl()),
-		Raw:            d,
+		Tags:           tag.Names(v.Tags),
+		Link:           helper.ToWebLink(v.GetUrl()),
+		Raw:            v,
 	}
 }

@@ -2,6 +2,6 @@ package location
 
 import "github.com/netbox-community/go-netbox/v4"
 
-func New(d *netbox.Location) *Location {
-	return &Location{Identifier: d.GetId(), Name: d.GetDisplay(), Raw: d}
+func New(v *netbox.Location) *Location {
+	return &Location{Identifier: v.GetId(), Name: v.GetDisplay(), Raw: v}
 }

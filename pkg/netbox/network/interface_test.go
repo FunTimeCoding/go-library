@@ -6,6 +6,6 @@ import (
 	"testing"
 )
 
-func TestNetwork(t *testing.T) {
+func TestInterface(t *testing.T) {
 	assert.NotNil(t, New(&netbox.Interface{}, []netbox.InterfaceTypeValue{}))
 }

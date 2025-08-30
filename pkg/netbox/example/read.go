@@ -51,5 +51,11 @@ func Read() {
 		fmt.Printf("CustomLink: %s\n", l.Format(f))
 	}
 
-	// TODO: Circuits
+	// TODO: Circuits, CircuitTypes, VirtualCircuits, VirtualCircuitTypes, CircuitGroups, Providers, ProviderAccounts, ProviderNetworks
+
+	// TODO: Create CircuitTermination fails: A circuit termination must attach to a terminating object.
+
+	// TODO: Create VirtualCircuitTermination requires an interface somewhere
+
+	// TODO: Create GroupAssignment fails: null value in column "member_id" of relation "circuits_circuitgroupassignment" violates not-null constraint
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/build"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/spf13/pflag"
@@ -17,7 +18,11 @@ import (
 
 // TODO: What to do about Debian packages? Detect and upload to Nexus?
 
-func Main() {
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
 	locatorDefault := ""
 
 	if s := os.Getenv(constant.InterfaceLocator); s != "" {
@@ -58,7 +63,7 @@ func Main() {
 		headerDefault,
 		"Header for authentication in key=value format",
 	)
-	argument.ParseBind()
+	monitor.ParseBind(version, gitHash, buildDate)
 
 	locator := argument.RequiredStringFlag(argument.Locator)
 	fmt.Printf("Locator: %s\n", locator)

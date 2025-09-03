@@ -28,9 +28,7 @@ func Main(
 		"Output directory for executable",
 	)
 	monitor.VerboseArgument()
-	monitor.VersionArgument()
-	argument.ParseBind()
-	monitor.VersionExit(version, gitHash, buildDate)
+	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()
 	o.Host = viper.GetString(argument.Host)
 	o.Token = viper.GetString(argument.Token)

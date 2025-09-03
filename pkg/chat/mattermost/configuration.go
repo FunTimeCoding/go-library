@@ -3,7 +3,7 @@ package mattermost
 import "github.com/funtimecoding/go-library/pkg/chat/mattermost/constant"
 
 func (c *Client) Configuration() map[string]string {
-	result, r, e := c.client.GetOldClientConfig(
+	result, r, e := c.client.GetClientConfig(
 		c.context,
 		constant.EmptyEntityTag,
 	)

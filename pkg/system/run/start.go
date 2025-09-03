@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	errorLibrary "github.com/funtimecoding/go-library/pkg/errors"
+	library "github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"os"
 	"os/exec"
@@ -38,17 +38,7 @@ func (r *Run) Start(s ...string) string {
 	}
 
 	if r.Verbose {
-		if r.Error != nil {
-			fmt.Printf("Error: %s\n", r.Error)
-		}
-
-		if r.OutputString != "" {
-			fmt.Printf("Stdout:\n%s\n", r.OutputString)
-		}
-
-		if r.ErrorString != "" {
-			fmt.Printf("Stderr:\n%s\n", r.ErrorString)
-		}
+		r.Print()
 	}
 
 	var f *exec.ExitError
@@ -58,7 +48,7 @@ func (r *Run) Start(s ...string) string {
 	}
 
 	if r.Panic {
-		errorLibrary.PanicOnError(e)
+		library.PanicOnError(e)
 	}
 
 	return r.OutputString

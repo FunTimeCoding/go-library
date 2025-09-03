@@ -2,6 +2,7 @@ package gocommit
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/gocommit/commit"
 	"github.com/funtimecoding/go-library/pkg/tool/gocommit/commit/option"
@@ -9,7 +10,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Main() {
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
 	common.Arguments()
 	pflag.String(argument.Branch, "main", "Branch to commit to")
 	pflag.String(argument.Path, "", "Path in repository")
@@ -25,7 +30,7 @@ func Main() {
 		nil,
 		"One or more key-value pairs to replace (Example: FOO=BAR)",
 	)
-	argument.ParseBind()
+	monitor.ParseBind(version, gitHash, buildDate)
 	common.ValidateArguments()
 	o := option.New()
 	o.Host = viper.GetString(argument.Host)

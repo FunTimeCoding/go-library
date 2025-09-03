@@ -12,6 +12,7 @@ const (
 	Connect        = "connect"
 	Container      = "container"
 	Context        = "context"
+	Continue       = "continue"
 	Core           = "core"
 	Create         = "create"
 	Critical       = "critical"

@@ -2,7 +2,10 @@ package go_mod
 
 import "strings"
 
-func UpdateDirectDependencies(exclusiveMatches []string) {
+func UpdateDirectDependencies(
+	exclusiveMatches []string,
+	continueOnError bool,
+) {
 	hasExclusive := len(exclusiveMatches) > 0
 
 	for _, dep := range Read().Require {
@@ -26,6 +29,6 @@ func UpdateDirectDependencies(exclusiveMatches []string) {
 			}
 		}
 
-		Update(dep.Mod.Path, hasExclusive)
+		Update(dep.Mod.Path, hasExclusive, continueOnError)
 	}
 }

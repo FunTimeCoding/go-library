@@ -3,12 +3,18 @@ package gopackage
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/build"
+	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"os"
 )
 
-func Main() {
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
+	monitor.ParseBind(version, gitHash, buildDate)
 	var runs int
 
 	for _, name := range build.OutputDirectories() {

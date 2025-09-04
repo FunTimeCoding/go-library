@@ -49,5 +49,6 @@ func (c *Client) SearchV3(
 		fmt.Printf("Response: %d %s\n", status, r)
 	}
 
+	// Do not enrich, otherwise watchedIssueKeys will be recursive.
 	return result
 }

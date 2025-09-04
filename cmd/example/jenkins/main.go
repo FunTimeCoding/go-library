@@ -29,7 +29,7 @@ func main() {
 		fmt.Println(plugins)
 	}
 
-	if false {
+	if true {
 		root := system.Join(
 			system.WorkingDirectory(),
 			constant.Temporary,
@@ -40,13 +40,16 @@ func main() {
 		for _, o := range j.Jobs() {
 			name := o.GetName()
 			fmt.Println(name)
-			b := j.Basic().Get(
-				fmt.Sprintf("job/%s/config.xml", name),
-			)
-			system.SaveFile(
-				system.Join(root, fmt.Sprintf("%s.xml", name)),
-				b,
-			)
+
+			if false {
+				b := j.Basic().Get(
+					fmt.Sprintf("job/%s/config.xml", name),
+				)
+				system.SaveFile(
+					system.Join(root, fmt.Sprintf("%s.xml", name)),
+					b,
+				)
+			}
 		}
 	}
 

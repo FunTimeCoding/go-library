@@ -53,7 +53,7 @@ require (
 	github.com/mattermost/mattermost/server/public v0.1.17
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.0.9
-	github.com/ollama/ollama v0.11.8
+	github.com/ollama/ollama v0.11.9
 	github.com/openai/openai-go v1.12.0
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -73,6 +73,7 @@ require (
 	github.com/studio-b12/gowebdav v0.10.0
 	github.com/tmc/langchaingo v0.1.13
 	github.com/tobischo/gokeepasslib/v3 v3.6.1
+	github.com/trivago/tgo v1.0.7
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
@@ -262,7 +263,6 @@ require (
 	github.com/tidwall/sjson v1.2.5 // indirect
 	github.com/tinylib/msgp v1.2.5 // indirect
 	github.com/tobischo/argon2 v0.1.0 // indirect
-	github.com/trivago/tgo v1.0.7 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.61.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect

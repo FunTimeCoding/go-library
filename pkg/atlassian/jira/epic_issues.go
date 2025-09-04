@@ -6,5 +6,5 @@ import (
 )
 
 func (c *Client) EpicIssues(name string) []*issue.Issue {
-	return c.Search("%s = %s", constant.ParentEpic, name)
+	return c.SearchFull("%s = %s", constant.ParentEpic, name)
 }

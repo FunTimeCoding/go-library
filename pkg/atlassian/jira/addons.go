@@ -3,7 +3,7 @@ package jira
 import "fmt"
 
 func (c *Client) Addons() {
-	status, response := c.basic.Request(
+	status, response := c.basic.Get(
 		"/rest/atlassian-connect/1/addons",
 	)
 	// 403 {"message":"Client must be authenticated as a system administrator to access this resource.","status-code":403}

@@ -1,7 +1,7 @@
 package basic_client
 
 type Client struct {
-	locator  string
-	user     string
-	password string
+	locator string
+	user    string
+	token   string
 }

@@ -19,7 +19,10 @@ func (c *Client) Search(
 	var result *response.Search
 	notation.DecodeStrict(
 		c.basic.Get(
-			fmt.Sprintf("/content/search?cql=%s", url.QueryEscape(query)),
+			fmt.Sprintf(
+				"/content/search?cql=%s",
+				url.QueryEscape(query),
+			),
 		),
 		&result,
 		false,

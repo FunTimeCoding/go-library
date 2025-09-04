@@ -3,7 +3,7 @@ package basic_client
 func New(
 	locator string,
 	user string,
-	password string,
+	token string,
 ) *Client {
-	return &Client{user: user, password: password, locator: locator}
+	return &Client{user: user, token: token, locator: locator}
 }

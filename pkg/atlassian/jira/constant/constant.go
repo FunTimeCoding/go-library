@@ -7,6 +7,8 @@ const (
 
 	SearchLimit int = 100
 
+	BasicSearchLimit int = 5000
+
 	IssueCountType = "issueCount"
 
 	AllowedValuesKey = "allowedValues"

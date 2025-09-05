@@ -9,7 +9,7 @@ func (c *Client) DeviceInterfaceByName(
 	d *device.Device,
 	name string,
 ) *network.Interface {
-	for _, i := range c.DeviceInterfaces(d.Name) {
+	for _, i := range c.DeviceInterfaces(d.Identifier) {
 		if i.Name == name {
 			return i
 		}

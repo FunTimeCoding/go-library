@@ -39,7 +39,7 @@ func readDCIM(
 	for _, d := range n.Devices() {
 		fmt.Printf("Device: %s\n", d.Format(f))
 
-		for _, i := range n.DeviceInterfaces(d.Name) {
+		for _, i := range n.DeviceInterfaces(d.Identifier) {
 			fmt.Printf("  Interface: %s\n", i.Format(f))
 		}
 

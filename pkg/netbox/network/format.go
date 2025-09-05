@@ -15,16 +15,16 @@ func (i *Interface) Format(f *option.Format) string {
 
 	s.String(i.Description)
 
-	for _, element := range i.Contexts {
-		s.Line("  Context: %+v", element)
+	for _, c := range i.Contexts {
+		s.Line("  Context: %+v", c)
 	}
 
-	for _, element := range i.VirtualNetworks {
-		s.Line("  Virtual network: %+v", element)
+	for _, n := range i.VirtualNetworks {
+		s.Line("  Virtual network: %+v", n)
 	}
 
-	for _, element := range i.WirelessNetworks {
-		s.Line("  Wireless network: %+v", element)
+	for _, n := range i.WirelessNetworks {
+		s.Line("  Wireless network: %+v", n)
 	}
 
 	return s.Format()

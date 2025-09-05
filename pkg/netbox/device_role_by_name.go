@@ -6,9 +6,9 @@ import (
 )
 
 func (c *Client) DeviceRoleByName(n string) *device_role.Role {
-	for _, element := range c.DeviceRoles() {
-		if element.Name == n {
-			return element
+	for _, r := range c.DeviceRoles() {
+		if r.Name == n {
+			return r
 		}
 	}
 

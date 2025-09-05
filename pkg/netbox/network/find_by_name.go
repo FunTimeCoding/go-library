@@ -1,12 +1,12 @@
 package network
 
 func FindByName(
-	i []*Interface,
+	v []*Interface,
 	name string,
 ) *Interface {
-	for _, element := range i {
-		if element.Name == name {
-			return element
+	for _, i := range v {
+		if i.Name == name {
+			return i
 		}
 	}
 

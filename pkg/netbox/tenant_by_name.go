@@ -6,9 +6,9 @@ import (
 )
 
 func (c *Client) TenantByName(n string) *tenant.Tenant {
-	for _, element := range c.Tenants() {
-		if element.Name == n {
-			return element
+	for _, t := range c.Tenants() {
+		if t.Name == n {
+			return t
 		}
 	}
 

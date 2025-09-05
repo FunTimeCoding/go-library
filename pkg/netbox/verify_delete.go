@@ -3,6 +3,7 @@ package netbox
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -12,7 +13,13 @@ func verifyDelete(
 	e error,
 ) {
 	if r != nil {
-		fmt.Printf("Delete %s code: %d\n", entity, r.StatusCode)
+		b := web.ReadString(r)
+
+		if b == "" {
+			b = "empty body"
+		}
+
+		fmt.Printf("Delete %s (%d): %s\n", entity, r.StatusCode, b)
 	}
 
 	errors.PanicOnError(e)

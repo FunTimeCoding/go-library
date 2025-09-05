@@ -21,10 +21,10 @@ func (c *Client) DeviceByNames(
 		if len(devices) > 1 {
 			var identifiers []string
 
-			for _, element := range devices {
+			for _, d := range devices {
 				identifiers = append(
 					identifiers,
-					fmt.Sprintf("%d", element.Raw.Id),
+					fmt.Sprintf("%d", d.Raw.Id),
 				)
 			}
 

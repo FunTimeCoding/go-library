@@ -1,12 +1,12 @@
 package internet_address
 
 func FindByName(
-	i []*Address,
+	v []*Address,
 	name string,
 ) *Address {
-	for _, element := range i {
-		if element.Name == name {
-			return element
+	for _, e := range v {
+		if e.Name == name {
+			return e
 		}
 	}
 

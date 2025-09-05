@@ -6,9 +6,9 @@ import (
 )
 
 func (c *Client) DeviceTypeByName(n string) *device_type.Type {
-	for _, element := range c.DeviceTypes() {
-		if element.Model == n {
-			return element
+	for _, t := range c.DeviceTypes() {
+		if t.Model == n {
+			return t
 		}
 	}
 

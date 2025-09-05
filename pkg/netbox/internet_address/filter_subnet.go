@@ -3,14 +3,14 @@ package internet_address
 import "net"
 
 func FilterSubnet(
-	a []*Address,
+	v []*Address,
 	n *net.IPNet,
 ) []*Address {
 	var result []*Address
 
-	for _, element := range a {
-		if n.Contains(element.Address) {
-			result = append(result, element)
+	for _, e := range v {
+		if n.Contains(e.Address) {
+			result = append(result, e)
 		}
 	}
 

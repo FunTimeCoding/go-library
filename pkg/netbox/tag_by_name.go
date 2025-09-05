@@ -6,9 +6,9 @@ import (
 )
 
 func (c *Client) TagByName(n string) *tag.Tag {
-	for _, element := range c.Tags() {
-		if element.Name == n {
-			return element
+	for _, t := range c.Tags() {
+		if t.Name == n {
+			return t
 		}
 	}
 

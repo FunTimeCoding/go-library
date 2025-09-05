@@ -6,17 +6,17 @@ func FindDeletable(
 ) []*Interface {
 	var result []*Interface
 
-	for _, element := range known {
+	for _, i := range known {
 		var found bool
 
 		for _, inner := range expected {
-			if element.Name == inner.Name {
+			if i.Name == inner.Name {
 				found = true
 			}
 		}
 
 		if !found {
-			result = append(result, element)
+			result = append(result, i)
 		}
 	}
 

@@ -1,14 +1,9 @@
 package netbox
 
-import "github.com/funtimecoding/go-library/pkg/netbox/device"
-
-func (c *Client) DeleteInterface(
-	d *device.Device,
-	name string,
-) {
+func (c *Client) DeleteInterface(identifier int32) {
 	r, e := c.client.DcimAPI.DcimInterfacesDestroy(
 		c.context,
-		c.DeviceInterfaceByNameStrict(d, name).Identifier,
+		identifier,
 	).Execute()
 	verifyDelete("interface", r, e)
 }

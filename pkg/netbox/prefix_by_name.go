@@ -8,9 +8,9 @@ import (
 func (c *Client) PrefixByName(n string) *prefix.Prefix {
 	var result []*prefix.Prefix
 
-	for _, element := range c.Prefixes() {
-		if element.Name == n {
-			result = append(result, element)
+	for _, p := range c.Prefixes() {
+		if p.Name == n {
+			result = append(result, p)
 		}
 	}
 

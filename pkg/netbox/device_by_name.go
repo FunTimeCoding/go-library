@@ -1,22 +1,18 @@
 package netbox
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
-	"github.com/funtimecoding/go-library/pkg/netbox/device"
-)
+import "github.com/funtimecoding/go-library/pkg/netbox/device"
 
-func (c *Client) DeviceByName(
-	n string,
-	panic bool,
-) *device.Device {
+func (c *Client) DeviceByName(n string) *device.Device {
 	result := c.DevicesByName(n)
 
-	if panic {
-		unexpected.Count(1, len(result))
-	}
-
-	if len(result) > 0 {
+	if o := len(result); o == 1 {
 		return result[0]
+	} else if o > 1 {
+		for _, r := range result {
+			if r.Name == n {
+				return r
+			}
+		}
 	}
 
 	return nil

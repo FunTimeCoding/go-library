@@ -9,13 +9,7 @@ func (c *Client) RemoveTag(
 	deviceName string,
 	tag string,
 ) *device.Device {
-	d := c.DeviceByName(deviceName, true)
-
-	if d == nil {
-		// Does not happen because DeviceByName panics if not found
-
-		return nil
-	}
+	d := c.DeviceByNameStrict(deviceName)
 
 	if c.verbose {
 		fmt.Printf("REMOVE device: %+v\n", d)

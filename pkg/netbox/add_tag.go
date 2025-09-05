@@ -25,13 +25,7 @@ func (c *Client) AddTag(
 		)
 	}
 
-	d := c.DeviceByName(deviceName, true)
-
-	if d == nil {
-		// Does not happen because DeviceByName panics if not found
-
-		return nil
-	}
+	d := c.DeviceByNameStrict(deviceName)
 
 	if c.verbose {
 		fmt.Printf("ADD device: %+v\n", d)

@@ -10,6 +10,6 @@ func (c *Client) DeleteDevice(identifier int32) {
 		c.context,
 		identifier,
 	).Execute()
-	fmt.Printf("Delete device result: %+v\n", result)
+	fmt.Printf("Delete device: %+v\n", result)
 	errors.PanicOnError(e)
 }

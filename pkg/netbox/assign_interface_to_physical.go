@@ -15,9 +15,8 @@ func (c *Client) AssignInterfaceToPhysical(
 	r := netbox.NewMACAddressRequest(p.Name)
 
 	if i == nil {
-		// TODO: Is this how to unset?
-		r.UnsetAssignedObjectId()
-		r.UnsetAssignedObjectType()
+		r.SetAssignedObjectTypeNil()
+		r.SetAssignedObjectIdNil()
 	} else {
 		r.SetAssignedObjectType(constant.InterfaceAddress)
 		r.SetAssignedObjectId(int64(i.Identifier))

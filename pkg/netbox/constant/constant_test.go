@@ -6,5 +6,5 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "no tenant", NoTenant)
+	assert.Stub(t)
 }

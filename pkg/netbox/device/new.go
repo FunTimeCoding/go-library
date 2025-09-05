@@ -10,6 +10,7 @@ import (
 func New(v *netbox.DeviceWithConfigContext) *Device {
 	var address string
 	var name string
+	var tenant string
 	var comment string
 
 	if v.PrimaryIp4.IsSet() {
@@ -24,6 +25,12 @@ func New(v *netbox.DeviceWithConfigContext) *Device {
 		name = constant.NoName
 	}
 
+	if v.Tenant.IsSet() {
+		tenant = v.Tenant.Get().GetName()
+	} else {
+		tenant = constant.NoTenant
+	}
+
 	if v.Comments == nil {
 		comment = constant.NoComment
 	} else {
@@ -33,6 +40,10 @@ func New(v *netbox.DeviceWithConfigContext) *Device {
 	return &Device{
 		Identifier:     v.GetId(),
 		Name:           name,
+		Role:           v.Role.GetName(),
+		Type:           v.DeviceType.GetDisplay(),
+		Site:           v.Site.GetName(),
+		Tenant:         tenant,
 		Comment:        comment,
 		PrimaryAddress: address,
 		Tags:           tag.Names(v.Tags),

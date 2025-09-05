@@ -38,11 +38,15 @@ func (c *Client) CreateDevice(
 			netbox.NewBriefSiteRequest(s.Name, s.Raw.Slug),
 		),
 	)
-	r.SetTenant(
-		netbox.BriefTenantRequestAsASNRangeRequestTenant(
-			netbox.NewBriefTenantRequest(n.Name, n.Raw.Slug),
-		),
-	)
+
+	if n != nil {
+		r.SetTenant(
+			netbox.BriefTenantRequestAsASNRangeRequestTenant(
+				netbox.NewBriefTenantRequest(n.Name, n.Raw.Slug),
+			),
+		)
+	}
+
 	r.SetName(name)
 
 	if len(tags) > 0 {

@@ -8,7 +8,7 @@ func (c *Client) DeleteInterface(
 ) {
 	r, e := c.client.DcimAPI.DcimInterfacesDestroy(
 		c.context,
-		c.DeviceInterfaceByName(d, name, true).Identifier,
+		c.DeviceInterfaceByNameStrict(d, name).Identifier,
 	).Execute()
 	verifyDelete("interface", r, e)
 }

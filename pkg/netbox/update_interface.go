@@ -14,7 +14,7 @@ func (c *Client) UpdateInterface(
 	interfaceType netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
 ) *network.Interface {
-	i := c.DeviceInterfaceByName(d, name, true)
+	i := c.DeviceInterfaceByNameStrict(d, name)
 	r2 := netbox.NewBriefDeviceRequest()
 	r2.SetName(d.Name)
 	r := netbox.NewWritableInterfaceRequest(

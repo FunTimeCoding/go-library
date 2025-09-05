@@ -14,6 +14,11 @@ func (c *Client) CreateInterface(
 	n netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
 ) *network.Interface {
+	// If mac address is not assigned to device already, setting it as primary fails
+
+	// If mac address does not exist, create it or fail?
+	//  TODO: Start with AssignInterfaceToPhysical
+
 	r2 := netbox.NewBriefDeviceRequest()
 	r2.SetName(d.Name)
 	r := netbox.NewWritableInterfaceRequest(

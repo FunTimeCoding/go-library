@@ -1,11 +1,12 @@
 package netbox
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"github.com/funtimecoding/go-library/pkg/netbox/physical_address"
 	"net"
 )
 
-func (c *Client) PhysicalAddress(a net.HardwareAddr) *physical_address.Address {
+func (c *Client) PhysicalAddressStrict(a net.HardwareAddr) *physical_address.Address {
 	result := c.PhysicalAddressesByHardware(a)
 
 	if o := len(result); o > 1 {
@@ -14,9 +15,9 @@ func (c *Client) PhysicalAddress(a net.HardwareAddr) *physical_address.Address {
 				return r
 			}
 		}
-	} else if o == 1 {
-		return result[0]
 	}
 
-	return nil
+	unexpected.Count(1, len(result))
+
+	return result[0]
 }

@@ -4,4 +4,8 @@ import "github.com/funtimecoding/go-library/pkg/netbox/example"
 
 func main() {
 	example.Read()
+
+	if false {
+		example.Physical()
+	}
 }

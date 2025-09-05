@@ -9,7 +9,7 @@ import (
 func (c *Client) PhysicalAddressesByHardware(a net.HardwareAddr) []*physical_address.Address {
 	result, _, e := c.client.DcimAPI.DcimMacAddressesList(
 		c.context,
-	).MacAddressNic([]string{a.String()}).Execute()
+	).MacAddress([]string{a.String()}).Execute()
 	errors.PanicOnError(e)
 
 	return physical_address.NewSlice(result.Results)

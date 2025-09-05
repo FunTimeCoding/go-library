@@ -11,7 +11,7 @@ import (
 func (c *Client) CreateInterfacePhysical(
 	d *device.Device,
 	name string,
-	n netbox.InterfaceTypeValue,
+	t netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
 ) *network.Interface {
 	// Create interface with MAC address as primary
@@ -22,12 +22,12 @@ func (c *Client) CreateInterfacePhysical(
 	//  TODO: Start with AssignInterfaceToPhysical
 	//   Then create interface without MAC, then assign MAC to interface and make primary
 
-	r2 := netbox.NewBriefDeviceRequest()
-	r2.SetName(d.Name)
+	v := netbox.NewBriefDeviceRequest()
+	v.SetName(d.Name)
 	r := netbox.NewWritableInterfaceRequest(
-		netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(r2),
+		netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(v),
 		name,
-		n,
+		t,
 	)
 	r.SetPrimaryMacAddress(
 		netbox.BriefMACAddressRequestAsInterfaceRequestPrimaryMacAddress(
@@ -39,5 +39,5 @@ func (c *Client) CreateInterfacePhysical(
 	).WritableInterfaceRequest(*r).Execute()
 	errors.PanicOnError(e)
 
-	return network.New(result, c.interfaceTypes)
+	return network.New(result)
 }

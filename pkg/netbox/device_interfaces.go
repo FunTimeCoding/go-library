@@ -11,5 +11,5 @@ func (c *Client) DeviceInterfaces(device string) []*network.Interface {
 	).Device([]*string{&device}).Execute()
 	errors.PanicOnError(e)
 
-	return network.NewSlice(result.Results, c.interfaceTypes)
+	return network.NewSlice(result.Results)
 }

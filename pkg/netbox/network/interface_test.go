@@ -7,5 +7,5 @@ import (
 )
 
 func TestInterface(t *testing.T) {
-	assert.NotNil(t, New(&netbox.Interface{}, []netbox.InterfaceTypeValue{}))
+	assert.NotNil(t, New(&netbox.Interface{}))
 }

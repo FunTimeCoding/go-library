@@ -10,8 +10,5 @@ type Client struct {
 	context context.Context
 	client  *netbox.APIClient
 	cache   *cache.Cache
-
-	interfaceTypes []netbox.InterfaceTypeValue
-
 	verbose bool
 }

@@ -2,12 +2,12 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
+	"github.com/funtimecoding/go-library/pkg/netbox"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 )
 
 func Read() {
-	n := internal.NetBox()
+	n := netbox.NewEnvironment()
 	f := constant.Format
 
 	readTenant(n, f)

@@ -11,19 +11,16 @@ import (
 func (c *Client) UpdateInterface(
 	d *device.Device,
 	name string,
-	interfaceType netbox.InterfaceTypeValue,
+	t netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
 ) *network.Interface {
-	i := c.DeviceInterfaceByNameStrict(d, name)
-	r2 := netbox.NewBriefDeviceRequest()
-	r2.SetName(d.Name)
+	v := netbox.NewBriefDeviceRequest()
+	v.SetName(d.Name)
 	r := netbox.NewWritableInterfaceRequest(
-		netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(r2),
+		netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(v),
 		name,
-		interfaceType,
+		t,
 	)
-	r.SetType(interfaceType)
-	r.SetName(name)
 	r.SetPrimaryMacAddress(
 		netbox.BriefMACAddressRequestAsInterfaceRequestPrimaryMacAddress(
 			netbox.NewBriefMACAddressRequest(h.String()),
@@ -31,9 +28,9 @@ func (c *Client) UpdateInterface(
 	)
 	result, _, e := c.client.DcimAPI.DcimInterfacesUpdate(
 		c.context,
-		i.Identifier,
+		c.DeviceInterfaceByNameStrict(d, name).Identifier,
 	).WritableInterfaceRequest(*r).Execute()
 	errors.PanicOnError(e)
 
-	return network.New(result, c.interfaceTypes)
+	return network.New(result)
 }

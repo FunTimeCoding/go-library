@@ -6,11 +6,8 @@ import (
 	"slices"
 )
 
-func validateType(
-	interfaceTypes []netbox.InterfaceTypeValue,
-	t netbox.InterfaceTypeValue,
-) {
-	if !slices.Contains(interfaceTypes, t) {
+func validateType(t netbox.InterfaceTypeValue) {
+	if !slices.Contains(Interfaces, t) {
 		log.Panicf("unexpected interface type: %s", t)
 	}
 }

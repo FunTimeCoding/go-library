@@ -7,10 +7,7 @@ import (
 	"net"
 )
 
-func New(
-	i *netbox.Interface,
-	interfaceTypes []netbox.InterfaceTypeValue,
-) *Interface {
+func New(i *netbox.Interface) *Interface {
 	var name string
 
 	if s := i.GetName(); s != "" {
@@ -31,7 +28,7 @@ func New(
 
 	if i.Type.Value != nil {
 		t = *i.Type.Value
-		validateType(interfaceTypes, t)
+		validateType(t)
 	}
 
 	return &Interface{

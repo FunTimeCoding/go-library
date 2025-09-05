@@ -11,7 +11,7 @@ import (
 func (c *Client) AssignInterfaceToPhysical(
 	p *physical_address.Address,
 	i *network.Interface,
-) *netbox.MACAddress {
+) *physical_address.Address {
 	r := netbox.NewMACAddressRequest(p.Name)
 
 	if i == nil {
@@ -29,5 +29,5 @@ func (c *Client) AssignInterfaceToPhysical(
 	).MACAddressRequest(*r).Execute()
 	errors.PanicOnError(e)
 
-	return result
+	return physical_address.New(result)
 }

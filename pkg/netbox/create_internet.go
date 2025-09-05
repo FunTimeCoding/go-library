@@ -7,7 +7,7 @@ import (
 	"net"
 )
 
-func (c *Client) CreateInternetAddress(
+func (c *Client) CreateInternet(
 	objectType string,
 	objectIdentifier int64,
 	i net.IP,

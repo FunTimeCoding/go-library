@@ -1,6 +1,6 @@
 package netbox
 
-func (c *Client) DeletePhysicalAddress(identifier int32) {
+func (c *Client) DeletePhysical(identifier int32) {
 	r, e := c.client.DcimAPI.DcimMacAddressesDestroy(
 		c.context,
 		identifier,

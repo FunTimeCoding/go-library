@@ -7,7 +7,7 @@ import (
 	"net"
 )
 
-func (c *Client) CreatePhysicalAddress(
+func (c *Client) CreatePhysical(
 	a net.HardwareAddr,
 	description string,
 ) *physical_address.Address {

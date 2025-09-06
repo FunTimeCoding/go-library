@@ -10,17 +10,17 @@ require (
 	github.com/amikos-tech/chroma-go v0.2.4
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/andygrunwald/go-jira v1.16.0
-	github.com/anthropics/anthropic-sdk-go v1.10.0
+	github.com/anthropics/anthropic-sdk-go v1.11.0
 	github.com/apenella/go-ansible/v2 v2.2.0
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bndr/gojenkins v1.1.0
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.6
+	github.com/charmbracelet/bubbletea v1.3.7
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d
 	github.com/chromedp/chromedp v0.14.1
-	github.com/coder/websocket v1.8.13
+	github.com/coder/websocket v1.8.14
 	github.com/coreos/go-semver v0.3.1
 	github.com/ctreminiom/go-atlassian v1.6.1
 	github.com/ctreminiom/go-atlassian/v2 v2.8.0
@@ -48,18 +48,19 @@ require (
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.5
+	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20250903122039-ee62e5aef335
 	github.com/liushuangls/go-anthropic v1.6.0
 	github.com/mark3labs/mcp-go v0.39.1
 	github.com/mattermost/mattermost/server/public v0.1.17
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.0.9
-	github.com/ollama/ollama v0.11.9
+	github.com/ollama/ollama v0.11.10
 	github.com/openai/openai-go v1.12.0
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.28.1
-	github.com/prometheus/client_golang v1.23.0
-	github.com/prometheus/common v0.66.0
+	github.com/prometheus/client_golang v1.23.2
+	github.com/prometheus/common v0.66.1
 	github.com/rivo/tview v0.42.0
 	github.com/samber/slog-loki/v3 v3.5.4
 	github.com/sanity-io/litter v1.5.8
@@ -70,7 +71,7 @@ require (
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.20.1
 	github.com/stretchr/testify v1.11.1
-	github.com/studio-b12/gowebdav v0.10.0
+	github.com/studio-b12/gowebdav v0.11.0
 	github.com/tmc/langchaingo v0.1.13
 	github.com/tobischo/gokeepasslib/v3 v3.6.1
 	github.com/trivago/tgo v1.0.7
@@ -88,7 +89,7 @@ require (
 	google.golang.org/api v0.248.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.30.2
+	gorm.io/gorm v1.30.3
 	gotest.tools/v3 v3.5.2
 	k8s.io/api v0.30.14
 	k8s.io/apimachinery v0.30.14
@@ -117,7 +118,7 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
-	github.com/charmbracelet/x/ansi v0.9.3 // indirect
+	github.com/charmbracelet/x/ansi v0.10.1 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect

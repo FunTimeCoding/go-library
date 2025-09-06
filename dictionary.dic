@@ -153,3 +153,6 @@ rolname
 circuitgroupassignment
 dcim
 ipam
+
+# Kestra
+kestra

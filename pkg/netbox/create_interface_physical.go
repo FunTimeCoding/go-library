@@ -8,19 +8,19 @@ import (
 	"net"
 )
 
+// CreateInterfacePhysical Create new interface and assign MAC address to it
+// If MAC address does not exist, it will be created
 func (c *Client) CreateInterfacePhysical(
 	d *device.Device,
 	name string,
 	t netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
 ) *network.Interface {
-	// Create interface with MAC address as primary
+	p := c.PhysicalAddress(h)
 
-	// If mac address is not assigned to device already, setting it as primary fails
-
-	// If mac address does not exist, create it or fail?
-	//  TODO: Start with AssignInterfaceToPhysical
-	//   Then create interface without MAC, then assign MAC to interface and make primary
+	if p == nil {
+		p = c.CreatePhysical(h, "")
+	}
 
 	v := netbox.NewBriefDeviceRequest()
 	v.SetName(d.Name)
@@ -29,15 +29,18 @@ func (c *Client) CreateInterfacePhysical(
 		name,
 		t,
 	)
-	r.SetPrimaryMacAddress(
-		netbox.BriefMACAddressRequestAsInterfaceRequestPrimaryMacAddress(
-			netbox.NewBriefMACAddressRequest(h.String()),
-		),
-	)
+	// skip setting as primary, needs to be assigned first
 	result, _, e := c.client.DcimAPI.DcimInterfacesCreate(
 		c.context,
 	).WritableInterfaceRequest(*r).Execute()
 	errors.PanicOnError(e)
 
-	return network.New(result)
+	// assign
+	i := network.New(result)
+	c.AssignInterfaceToPhysical(p, i)
+
+	// set as primary
+	c.UpdateInterface(d, name, t, h)
+
+	return i
 }

@@ -7,10 +7,10 @@ import (
 )
 
 func Node() {
-	c := client.NewEnvironment()
+	k := client.NewEnvironment()
 	f := constant.Format
 
-	for _, n := range c.Nodes() {
+	for _, n := range k.Nodes() {
 		fmt.Println(n.Format(f))
 	}
 }

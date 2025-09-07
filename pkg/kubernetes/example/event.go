@@ -7,10 +7,10 @@ import (
 )
 
 func Event() {
-	c := client.NewEnvironment()
+	k := client.NewEnvironment()
 	f := constant.Format
 
-	for _, n := range c.EventsSimple(false, true) {
+	for _, n := range k.EventsSimple(false, true) {
 		fmt.Println(n.Format(f))
 	}
 }

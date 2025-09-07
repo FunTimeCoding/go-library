@@ -7,10 +7,10 @@ import (
 )
 
 func Pod() {
-	c := client.NewEnvironment()
+	k := client.NewEnvironment()
 	f := constant.Format
 
-	for _, n := range c.Pods(nil) {
+	for _, n := range k.Pods(nil) {
 		fmt.Println(n.Format(f))
 	}
 }

@@ -1,7 +1,14 @@
 package kestra
 
-import "github.com/kestra-io/client-sdk/go-sdk"
+import (
+	"context"
+	"github.com/kestra-io/client-sdk/go-sdk"
+)
 
 type Client struct {
-	client *kestra_api_client.APIClient
+	context  context.Context
+	client   *kestra_api_client.APIClient
+	token    string
+	user     string
+	password string
 }

@@ -47,8 +47,8 @@ require (
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
-	github.com/jackc/pgx/v5 v5.7.5
-	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20250903122039-ee62e5aef335
+	github.com/jackc/pgx/v5 v5.7.6
+	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20250908115236-b149566524bc
 	github.com/liushuangls/go-anthropic v1.6.0
 	github.com/mark3labs/mcp-go v0.39.1
 	github.com/mattermost/mattermost/server/public v0.1.17
@@ -78,18 +78,18 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v0.142.6
+	gitlab.com/gitlab-org/api/client-go v0.143.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.41.0
-	golang.org/x/mod v0.27.0
+	golang.org/x/mod v0.28.0
 	golang.org/x/net v0.43.0
-	golang.org/x/oauth2 v0.30.0
-	golang.org/x/time v0.12.0
+	golang.org/x/oauth2 v0.31.0
+	golang.org/x/time v0.13.0
 	gonum.org/v1/gonum v0.16.0
 	google.golang.org/api v0.248.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.30.3
+	gorm.io/gorm v1.30.5
 	gotest.tools/v3 v3.5.2
 	k8s.io/api v0.30.14
 	k8s.io/apimachinery v0.30.14
@@ -291,7 +291,7 @@ require (
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/term v0.34.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
-	golang.org/x/tools v0.35.0 // indirect
+	golang.org/x/tools v0.36.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250818200422-3122310a409c // indirect
 	google.golang.org/grpc v1.74.2 // indirect
 	google.golang.org/protobuf v1.36.8 // indirect

@@ -1,22 +1,60 @@
 package kestra
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/kestra-io/client-sdk/go-sdk"
+	"net/http"
 )
+
+type basicTransport struct {
+	username string
+	password string
+	r        http.RoundTripper
+}
+
+func (t *basicTransport) RoundTrip(e *http.Request) (*http.Response, error) {
+	e.SetBasicAuth(t.username, t.password)
+
+	return t.r.RoundTrip(e)
+}
 
 func New(
 	host string,
-	token string,
+	o ...OptionFunc,
 ) *Client {
-	// Currently locked behind EE: https://kestra.io/docs/enterprise/auth/api-tokens
+	// https://k.s3n.sh/api
+	// https://kestra.io/docs/how-to-guides/api
+	// Token authentication is EE only: https://kestra.io/docs/enterprise/auth/api-tokens
 	c := kestra_api_client.NewConfiguration()
+	c.Scheme = constant.SecureScheme
 	c.Host = host
-	c.DefaultHeader[constant.AuthorizationHeader] = key_value.Space(
-		constant.BearerPrefix,
-		token,
-	)
+	result := &Client{context: context.Background()}
 
-	return &Client{client: kestra_api_client.NewAPIClient(c)}
+	for _, f := range o {
+		f(result)
+	}
+
+	if result.token != "" {
+		c.DefaultHeader[constant.AuthorizationHeader] = key_value.Space(
+			constant.BearerPrefix,
+			result.token,
+		)
+	}
+
+	if result.user != "" && result.password != "" {
+		l := web.Client(true)
+		l.Transport = &basicTransport{
+			username: result.user,
+			password: result.password,
+			r:        http.DefaultTransport,
+		}
+		c.HTTPClient = l
+	}
+
+	result.client = kestra_api_client.NewAPIClient(c)
+
+	return result
 }

@@ -1,7 +1,20 @@
 package goclean
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclean/clean"
+import (
+	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goclean/clean"
+	"github.com/funtimecoding/go-library/pkg/tool/goclean/clean/option"
+	"github.com/spf13/viper"
+)
 
 func Main() {
-	clean.Run()
+	monitor.VerboseArgument()
+	argument.ParseBind()
+	o := option.New()
+	o.GitLabHost = environment.Get(constant.HostEnvironment)
+	o.Verbose = viper.GetBool(argument.Verbose)
+	clean.Run(o)
 }

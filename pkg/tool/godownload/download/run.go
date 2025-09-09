@@ -2,25 +2,31 @@ package download
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/godownload/download/option"
+	library "gitlab.com/gitlab-org/api/client-go"
 	"os"
 )
 
 func Run(o *option.Download) {
 	validate(o)
-	client := gitlab.New(o.Host, o.Token)
-	project := common.FindProjectOrExit(client, o.Owner, o.Repository)
-	p := packages.FindVersionOrLatest(
-		packages.FilterByName(
-			client.Packages(project.Identifier, false),
-			o.Package,
-		),
-		o.PackageVersion,
+	g := gitlab.New(o.Host, o.Token)
+	project := common.FindProjectOrExit(g, o.Owner, o.Repository)
+	filtered := packages.FilterByName(
+		g.Packages(project.Identifier, false),
+		o.Package,
 	)
+	var p *library.Package
+
+	if o.PackageVersion == constant.LatestVersion {
+		p = packages.FindLatest(filtered)
+	} else {
+		p = packages.FindVersionOrLatest(filtered, o.PackageVersion)
+	}
 
 	if p == nil {
 		fmt.Printf("package not found: %s\n", o.Package)
@@ -28,7 +34,8 @@ func Run(o *option.Download) {
 		os.Exit(1)
 	}
 
-	if o.PackageVersion != LatestVersion && p.Version != o.PackageVersion {
+	if o.PackageVersion != constant.LatestVersion &&
+		p.Version != o.PackageVersion {
 		fmt.Printf(
 			"warning: version %s not found, using latest\n",
 			o.PackageVersion,
@@ -36,7 +43,7 @@ func Run(o *option.Download) {
 	}
 
 	f := packages.SystemMatchingFile(
-		client.PackageFiles(project.Identifier, p.ID),
+		g.PackageFiles(project.Identifier, p.ID),
 	)
 
 	if f == nil {

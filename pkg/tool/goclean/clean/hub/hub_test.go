@@ -1,10 +1,10 @@
-package option
+package hub
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestClean(t *testing.T) {
-	assert.NotNil(t, New())
+func TestHub(t *testing.T) {
+	assert.Stub(t)
 }

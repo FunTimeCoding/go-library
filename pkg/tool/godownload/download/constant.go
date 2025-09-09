@@ -1,6 +1,3 @@
 package download
 
-const (
-	LatestVersion = "latest"
-	DefaultOutput = ""
-)
+const DefaultOutput = ""

@@ -2,6 +2,7 @@ package gocommit
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/gocommit/commit"
@@ -16,7 +17,11 @@ func Main(
 	buildDate string,
 ) {
 	common.Arguments()
-	pflag.String(argument.Branch, "main", "Branch to commit to")
+	pflag.String(
+		argument.Branch,
+		constant.MainBranch,
+		"Branch to commit to",
+	)
 	pflag.String(argument.Path, "", "Path in repository")
 	pflag.String(
 		argument.Template,

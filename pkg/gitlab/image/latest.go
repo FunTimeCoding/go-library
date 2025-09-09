@@ -1,7 +1,7 @@
 package image
 
 import (
-	library "github.com/funtimecoding/go-library/pkg/gitlab/constant"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"gitlab.com/gitlab-org/api/client-go"
 	"golang.org/x/mod/semver"
 )
@@ -13,7 +13,7 @@ func Latest(v []*gitlab.RegistryRepositoryTag) *gitlab.RegistryRepositoryTag {
 		current := Version(e)
 
 		// skip latest
-		if current == library.LatestVersion {
+		if current == constant.LatestVersion {
 			continue
 		}
 

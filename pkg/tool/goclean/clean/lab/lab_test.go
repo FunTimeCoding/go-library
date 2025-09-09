@@ -1,10 +1,10 @@
-package option
+package lab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestClean(t *testing.T) {
-	assert.NotNil(t, New())
+func TestLab(t *testing.T) {
+	assert.Stub(t)
 }

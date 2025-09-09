@@ -2,6 +2,7 @@ package godownload
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
@@ -19,7 +20,7 @@ func Main(
 	common.Arguments()
 	pflag.String(
 		argument.PackageVersion,
-		download.LatestVersion,
+		constant.LatestVersion,
 		"Version to download, falls back to latest if not found",
 	)
 	pflag.String(

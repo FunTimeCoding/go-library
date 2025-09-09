@@ -1,7 +1,7 @@
 package strings
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"strings"
 )
 
@@ -13,7 +13,7 @@ func IndentLines(
 	indent := strings.Repeat(" ", count)
 
 	for _, e := range v {
-		result = append(result, fmt.Sprintf("%s%s", indent, e))
+		result = append(result, key_value.Empty(indent, e))
 	}
 
 	return result

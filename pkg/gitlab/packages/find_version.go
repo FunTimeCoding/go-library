@@ -1,12 +1,12 @@
 package packages
 
 import (
-	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"gitlab.com/gitlab-org/api/client-go"
 	"log"
 )
 
-func FindVersionOrLatest(
+func FindVersion(
 	v []*gitlab.Package,
 	version string,
 ) *gitlab.Package {
@@ -14,13 +14,19 @@ func FindVersionOrLatest(
 		log.Panicf("empty version")
 	}
 
+	errors.PanicOnSemver(version)
+
 	if len(v) == 0 {
 		return nil
 	}
 
-	if version == constant.LatestVersion {
-		return FindLatest(v)
+	for _, e := range v {
+		errors.PanicOnSemver(e.Version)
+
+		if e.Version == version {
+			return e
+		}
 	}
 
-	return FindVersion(v, version)
+	return nil
 }

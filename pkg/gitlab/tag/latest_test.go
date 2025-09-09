@@ -9,7 +9,13 @@ import (
 func TestLatest(t *testing.T) {
 	assert.Any(
 		t,
-		&gitlab.Tag{Name: "1.0.0"},
-		Latest([]*gitlab.Tag{{Name: "1.0.0"}}),
+		&gitlab.Tag{Name: "v1.0.2"},
+		Latest(
+			[]*gitlab.Tag{
+				{Name: "v1.0.0"},
+				{Name: "v1.0.2"},
+				{Name: "v1.0.1"},
+			},
+		),
 	)
 }

@@ -36,8 +36,6 @@ const (
 	PrivateTokenHeader = "Private-Token"
 	JobTokenHeader     = "Job-Token"
 
-	LatestVersion = "latest"
-
 	LatestSuffix = ":latest"
 
 	PerPage1000 int = 1000

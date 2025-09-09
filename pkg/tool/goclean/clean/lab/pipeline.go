@@ -43,23 +43,31 @@ func Pipeline(
 	latestSemantic := pipeline.LatestSemantic(pipelines)
 	latestMain := pipeline.LatestMain(pipelines, mainHash)
 
-	for _, i := range pipelines {
-		if latestSemantic != nil && i.Ref == latestSemantic.Ref {
-			if i.SHA == mainHash {
-				if o.Verbose {
-					fmt.Printf(
-						"Skip pipeline (sematic): %s %s\n",
-						i.Ref,
-						i.SHA,
-					)
-				}
+	if latestSemantic == nil && o.Verbose {
+		fmt.Println("Warning: no latest semantic pipeline found")
+	}
 
-				continue
+	if latestMain == nil && o.Verbose {
+		fmt.Println("Warning: no latest main branch pipeline found")
+	}
+
+	for _, i := range pipelines {
+		if latestSemantic != nil &&
+			i.Ref == latestSemantic.Ref &&
+			i.SHA == mainHash {
+			if o.Verbose {
+				fmt.Printf(
+					"Skip pipeline (sematic): %s %s\n",
+					i.Ref,
+					i.SHA,
+				)
 			}
+
+			continue
 		}
 
 		if latestMain != nil &&
-			i.Ref == latestMain.Ref &&
+			i.Ref == mainBranch.Name &&
 			i.SHA == latestMain.SHA {
 			if o.Verbose {
 				fmt.Printf(
@@ -72,7 +80,12 @@ func Pipeline(
 			continue
 		}
 
-		fmt.Printf("Delete pipeline: %s\n", i.Ref)
+		if o.Verbose {
+			fmt.Printf("Delete pipeline: %s %s\n", i.Ref, i.SHA)
+		} else {
+			fmt.Printf("Delete pipeline: %s\n", i.Ref)
+		}
+
 		c.DeletePipeline(p.Identifier, i.ID)
 	}
 }

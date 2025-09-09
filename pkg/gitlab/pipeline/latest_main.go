@@ -1,9 +1,6 @@
 package pipeline
 
-import (
-	"gitlab.com/gitlab-org/api/client-go"
-	"log"
-)
+import "gitlab.com/gitlab-org/api/client-go"
 
 func LatestMain(
 	v []*gitlab.PipelineInfo,
@@ -15,7 +12,5 @@ func LatestMain(
 		}
 	}
 
-	log.Panicf("main hash not found for %s", mainHash)
-
-	return &gitlab.PipelineInfo{}
+	return nil
 }

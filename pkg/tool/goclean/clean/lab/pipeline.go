@@ -44,33 +44,23 @@ func Pipeline(
 	latestMain := pipeline.LatestMain(pipelines, mainHash)
 
 	for _, i := range pipelines {
-		if i.Ref == latestSemantic.Ref {
-			if mainHash == "" {
+		if latestSemantic != nil && i.Ref == latestSemantic.Ref {
+			if i.SHA == mainHash {
 				if o.Verbose {
 					fmt.Printf(
-						"Skip pipeline (ref): %s %s\n",
+						"Skip pipeline (sematic): %s %s\n",
 						i.Ref,
 						i.SHA,
 					)
 				}
 
 				continue
-			} else {
-				if i.SHA == mainHash {
-					if o.Verbose {
-						fmt.Printf(
-							"Skip pipeline (sha): %s %s\n",
-							i.Ref,
-							i.SHA,
-						)
-					}
-
-					continue
-				}
 			}
 		}
 
-		if i.Ref == latestMain.Ref && i.SHA == latestMain.SHA {
+		if latestMain != nil &&
+			i.Ref == latestMain.Ref &&
+			i.SHA == latestMain.SHA {
 			if o.Verbose {
 				fmt.Printf(
 					"Skip pipeline (main): %s %s\n",

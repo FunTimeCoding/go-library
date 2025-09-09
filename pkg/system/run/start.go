@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	library "github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"os"
 	"os/exec"
@@ -52,4 +53,8 @@ func (r *Run) Start(s ...string) string {
 	}
 
 	return r.OutputString
+}
+
+func (r *Run) ParseNotation(a any) {
+	notation.DecodeStrict(r.OutputString, &a, r.Verbose)
 }

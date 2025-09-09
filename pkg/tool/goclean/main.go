@@ -10,9 +10,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Main() {
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
 	monitor.VerboseArgument()
-	argument.ParseBind()
+	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()
 	o.GitLabHost = environment.Get(constant.HostEnvironment)
 	o.Verbose = viper.GetBool(argument.Verbose)

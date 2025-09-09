@@ -1,7 +1,6 @@
 package pipeline
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"gitlab.com/gitlab-org/api/client-go"
 	"golang.org/x/mod/semver"
 	"log"
@@ -12,11 +11,18 @@ func LatestSemantic(v []*gitlab.PipelineInfo) *gitlab.PipelineInfo {
 		log.Panic("empty slice")
 	}
 
-	result := v[0]
+	var result *gitlab.PipelineInfo
 
 	for _, e := range v {
-		errors.PanicOnSemver(e.Ref)
-		errors.PanicOnSemver(result.Ref)
+		if !semver.IsValid(e.Ref) {
+			continue
+		}
+
+		if result == nil {
+			result = e
+
+			continue
+		}
 
 		if semver.Compare(e.Ref, result.Ref) > 0 {
 			result = e

@@ -59,13 +59,7 @@ func Go(o *option.Build) {
 	r := run.New()
 	r.Verbose = true
 	r.Panic = false
-
-	if p.Cgo {
-		r.Environment(constant.NativeEnabled, constant.True)
-	} else {
-		r.Environment(constant.NativeEnabled, constant.False)
-	}
-
+	r.Environment(constant.NativeEnabled, constant.False)
 	r.Environment(constant.System, p.OperatingSystem)
 	r.Environment(constant.Architecture, p.Architecture)
 

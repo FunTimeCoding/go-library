@@ -30,7 +30,6 @@ func Main(
 	)
 	pflag.String(argument.BuildTags, "", "Build tags")
 	pflag.Bool(build.CopyToBinFlag, false, "Copy to $HOME/bin")
-	pflag.Bool(build.CgoFlag, false, "Enable CGO")
 	pflag.Bool(constant.LinuxAMD64, false, "Linux AMD64")
 	pflag.Bool(constant.DarwinARM64, false, "Darwin ARM64")
 	pflag.Bool(constant.DarwinAMD64, false, "Darwin AMD64")
@@ -68,7 +67,6 @@ func Main(
 			o.Output = viper.GetString(argument.Output)
 			o.BuildTags = viper.GetString(argument.BuildTags)
 			o.CopyToBin = viper.GetBool(build.CopyToBinFlag)
-			o.Cgo = viper.GetBool(build.CgoFlag)
 			o.LinuxAMD64 = linuxAMD64
 			o.DarwinARM64 = darwinARM64
 			o.DarwinAMD64 = darwinAMD64
@@ -92,7 +90,6 @@ func Main(
 	o.Output = viper.GetString(argument.Output)
 	o.BuildTags = viper.GetString(argument.BuildTags)
 	o.CopyToBin = viper.GetBool(build.CopyToBinFlag)
-	o.Cgo = viper.GetBool(build.CgoFlag)
 	o.LinuxAMD64 = linuxAMD64
 	o.DarwinARM64 = darwinARM64
 	o.DarwinAMD64 = darwinAMD64

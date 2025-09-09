@@ -28,7 +28,6 @@ const (
 	Proxy         = "GOPROXY"
 
 	False  = "0"
-	True   = "1"
 	Direct = "direct"
 
 	CurrentDirectory     = "."

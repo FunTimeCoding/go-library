@@ -6,7 +6,6 @@ type Build struct {
 	Output          string
 	BuildTags       string
 	CopyToBin       bool
-	Cgo             bool
 	OperatingSystem string
 	Architecture    string
 

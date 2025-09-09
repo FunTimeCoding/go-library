@@ -18,6 +18,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goclean/clean"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/spf13/viper"
 	"slices"
@@ -54,6 +55,7 @@ func Main() {
 
 	switch origin.Provider {
 	case provider_map.GitHubProvider:
+		clean.Hub()
 		remoteLocator := git.ParseLocator(origin.Locator)
 
 		if remoteLocator == nil {
@@ -109,6 +111,7 @@ func Main() {
 			c.DeleteRun(namespace, repository, r.Identifier)
 		}
 	case provider_map.GitLabProvider:
+		clean.Lab()
 		remoteLocator := git.ParseLocator(origin.Locator)
 
 		if remoteLocator == nil {

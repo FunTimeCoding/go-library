@@ -2,6 +2,7 @@
 version: '3'
 tasks:
   default: {cmds: [{task: lint}, {task: test}, {task: build}], silent: true}
+  pre-push: {cmds: [{task: lint}, {task: test}], silent: true}
   lint:
     cmds:
     - |

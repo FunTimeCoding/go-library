@@ -1,2 +1,2 @@
 ---
-pre-push: {jobs: [{run: task}]}
+pre-push: {jobs: [{run: task pre-push}]}

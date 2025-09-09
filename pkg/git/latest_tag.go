@@ -8,12 +8,11 @@ import (
 
 func LatestTag(path string) string {
 	r := Open(path)
-	t := TagsIterator(r)
 	var result string
 	var latest time.Time
 
 	errors.PanicOnError(
-		t.ForEach(
+		TagsIterator(r).ForEach(
 			func(t *plumbing.Reference) error {
 				commit := CommitObject(r, t.Hash())
 

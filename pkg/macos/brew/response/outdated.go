@@ -1,6 +1,6 @@
 package response
 
 type Outdated struct {
-	Formulae []string `json:"formulae"`
-	Casks    []string `json:"casks"`
+	Formulae []*Formula `json:"formulae"`
+	Casks    []*Cask    `json:"casks"`
 }

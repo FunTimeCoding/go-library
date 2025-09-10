@@ -6,10 +6,16 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/run"
 )
 
-func (c *Client) Outdated() *response.Outdated {
+func (c *Client) Installed() *response.Installed {
 	r := run.New()
-	r.Start(constant.Brew, constant.Outdated, constant.Notation2)
-	var result response.Outdated
+	r.Start(
+		constant.Brew,
+		constant.Info,
+		constant.Installed,
+		constant.Notation1,
+	)
+	r.Verbose = true
+	var result response.Installed
 	r.ParseNotation(&result)
 
 	return &result

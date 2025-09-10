@@ -7,11 +7,18 @@ import (
 )
 
 func Run(o *option.Brew) {
-	p := brew.New().Outdated()
+	b := brew.New()
 
 	if o.Notation {
 		printNotation(o)
 	}
 
-	fmt.Printf("Outdated: %+v\n", p)
+	if true {
+		// TODO: Unmarshal fails
+		fmt.Printf("Installed: %+v\n", b.Installed())
+	}
+
+	if false {
+		fmt.Printf("Outdated: %+v\n", b.Outdated())
+	}
 }

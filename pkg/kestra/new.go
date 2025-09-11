@@ -27,6 +27,7 @@ func New(
 ) *Client {
 	// https://k.s3n.sh/api
 	// https://kestra.io/docs/how-to-guides/api
+	// https://kestra.io/docs/api-reference/open-source
 	// Token authentication is EE only: https://kestra.io/docs/enterprise/auth/api-tokens
 	c := kestra_api_client.NewConfiguration()
 	c.Scheme = constant.SecureScheme

@@ -16,7 +16,7 @@ require (
 	github.com/bndr/gojenkins v1.1.0
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.8
+	github.com/charmbracelet/bubbletea v1.3.9
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d
 	github.com/chromedp/chromedp v0.14.1
@@ -51,7 +51,7 @@ require (
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20250910142051-84ddb8bf1c10
 	github.com/liushuangls/go-anthropic v1.6.0
 	github.com/mark3labs/mcp-go v0.39.1
-	github.com/mattermost/mattermost/server/public v0.1.18
+	github.com/mattermost/mattermost/server/public v0.1.19
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.0.9
 	github.com/ollama/ollama v0.11.10
@@ -64,7 +64,7 @@ require (
 	github.com/rivo/tview v0.42.0
 	github.com/samber/slog-loki/v3 v3.5.4
 	github.com/sanity-io/litter v1.5.8
-	github.com/sashabaranov/go-openai v1.41.1
+	github.com/sashabaranov/go-openai v1.41.2
 	github.com/sirupsen/logrus v1.9.4-0.20230606125235-dd1b4c2e81af
 	github.com/slok/go-http-metrics v0.13.0
 	github.com/spf13/cobra v1.10.1
@@ -78,7 +78,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v0.143.3
+	gitlab.com/gitlab-org/api/client-go v0.144.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.42.0
 	golang.org/x/mod v0.28.0
@@ -89,7 +89,7 @@ require (
 	google.golang.org/api v0.249.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.30.5
+	gorm.io/gorm v1.31.0
 	gotest.tools/v3 v3.5.2
 	k8s.io/api v0.30.14
 	k8s.io/apimachinery v0.30.14
@@ -106,7 +106,7 @@ require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.1.6 // indirect
 	github.com/afiskon/promtail-client v0.0.0-20190305142237-506f3f921e9c // indirect
-	github.com/andybalholm/brotli v1.1.1 // indirect
+	github.com/andybalholm/brotli v1.1.2-0.20250424173009-453214e765f3 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
 	github.com/apenella/go-common-utils/data v0.0.0-20220913191136-86daaa87e7df // indirect
 	github.com/apenella/go-common-utils/error v0.0.0-20220913191136-86daaa87e7df // indirect
@@ -211,6 +211,7 @@ require (
 	github.com/mattermost/go-i18n v1.11.1-0.20211013152124-5c415071e404 // indirect
 	github.com/mattermost/ldap v0.0.0-20231116144001-0f480c025956 // indirect
 	github.com/mattermost/logr/v2 v2.0.22 // indirect
+	github.com/mattermost/mattermost/server/v8 v8.0.0-20250912180947-f2f83187b8ab // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-localereader v0.0.1 // indirect
@@ -285,7 +286,7 @@ require (
 	go.uber.org/goleak v1.3.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
+	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6 // indirect
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/term v0.35.0 // indirect

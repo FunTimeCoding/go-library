@@ -16,25 +16,25 @@ func (c *Client) Search(
 		query = fmt.Sprintf(query, a...)
 	}
 
-	var start int
 	var result []*issue.Issue
+	var token string
 
 	for {
-		page, _, e := c.client.Issue.Search(
+		page, r, e := c.client.Issue.SearchV2JQL(
 			query,
-			&jira.SearchOptions{
-				StartAt:    start,
-				MaxResults: constant.SearchLimit,
+			&jira.SearchOptionsV2{
+				NextPageToken: token,
+				Fields:        []string{"*all"},
+				MaxResults:    constant.SearchLimit,
 			},
 		)
 		errors.PanicOnError(e)
+		token = r.NextPageToken
 		result = append(result, issue.NewSlice(page, c.IssueOption())...)
 
-		if len(page) < constant.SearchLimit {
+		if r.IsLast {
 			break
 		}
-
-		start += constant.SearchLimit
 	}
 
 	return c.enrichMany(result)

@@ -16,9 +16,9 @@ func (c *Client) SearchLimit(
 		query = fmt.Sprintf(query, a...)
 	}
 
-	page, _, e := c.client.Issue.Search(
+	page, _, e := c.client.Issue.SearchV2JQL(
 		query,
-		&jira.SearchOptions{MaxResults: limit},
+		&jira.SearchOptionsV2{Fields: []string{"*all"}, MaxResults: limit},
 	)
 	errors.PanicOnError(e)
 

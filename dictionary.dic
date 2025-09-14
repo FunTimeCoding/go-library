@@ -15,9 +15,9 @@ Opsgenie
 Samsa
 boumenot
 funtimecoding
-golangci
 jdoe
 kaos
+openvex
 osquery
 shiin
 treminio
@@ -32,8 +32,11 @@ GOPROXY
 covermode
 coverprofile
 gocover
+golangci
 gotest
 gotestsum
+govulncheck
+jsontext
 nodename
 servname
 

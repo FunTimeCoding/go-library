@@ -16,6 +16,9 @@ tasks:
     cmds:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
     # github.com/google/gnostic-models: 0.7.0 has bad imports
+    # github.com/chromedp/chromedp: 0.14.0 breaks govulncheck with github.com/go-json-experiment/json, 0.13.7 and earlier have a bad signature
+    #  panic: got github.com/go-json-experiment/json/jsontext.Value, want variadic parameter of unnamed slice or string type
+    #  TODO: How to fix or work around?
     - |
       goupdate \
         --downgrade k8s.io/apimachinery@v0.30.14 \

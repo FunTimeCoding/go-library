@@ -3,8 +3,12 @@ package constant
 import "github.com/funtimecoding/go-library/pkg/console/status/option"
 
 const (
-	ProjectEnvironment    = "JIRA_PROJECT"
-	ProjectKeyEnvironment = "JIRA_PROJECT_KEY"
+	DefaultProjectKeyEnvironment  = "JIRA_DEFAULT_PROJECT_KEY"
+	DefaultProjectNameEnvironment = "JIRA_DEFAULT_PROJECT_NAME"
+	DefaultIssueTypeEnvironment   = "JIRA_DEFAULT_ISSUE_TYPE"
+
+	TestIssueEnvironment = "JIRA_TEST_ISSUE"
+	TestFieldEnvironment = "JIRA_TEST_FIELD"
 
 	SearchLimit int = 100
 

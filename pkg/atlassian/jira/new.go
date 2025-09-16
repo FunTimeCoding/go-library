@@ -20,16 +20,16 @@ func New(
 	errors.FatalOnEmpty(host, "host")
 	errors.FatalOnEmpty(user, "user")
 	errors.FatalOnEmpty(token, "token")
-	locator := fmt.Sprintf("https://%s", host)
+	l := fmt.Sprintf("https://%s", host)
 	result := &Client{
 		context: context.Background(),
 		client: client.New(
 			jira.BasicAuthTransport{Username: user, Password: token},
-			locator,
+			l,
 		),
-		basic:   basic_client.New(locator, user, token),
-		service: service_client.New(locator, user, token),
-		locator: locator,
+		basic:   basic_client.New(l, user, token),
+		service: service_client.New(l, user, token),
+		locator: l,
 		user:    user,
 	}
 

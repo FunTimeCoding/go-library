@@ -1,4 +1,4 @@
-package main
+package example
 
 import (
 	"fmt"
@@ -9,35 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func addResponder() {
-	argument.ParseBind()
-	responder := argument.RequiredPositional(
-		0,
-		"RESPONDER_NAME",
-	)
-	c := internal.Opsgenie()
-	f := option.ExtendedColor.Copy()
-
-	for _, a := range c.Open() {
-		fmt.Println(a.Format(f))
-
-		if false {
-			c.AddResponderUser(a, responder)
-		}
-
-		if true {
-			break
-		}
-	}
-}
-
-func main() {
-	if true {
-		addResponder()
-
-		return
-	}
-
+func Alert() {
 	pflag.Bool(argument.Create, false, "Create alert")
 	pflag.String(argument.User, "", "User email for alert")
 	pflag.String(argument.Text, "", "Alert name")

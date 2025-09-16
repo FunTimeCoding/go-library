@@ -24,5 +24,8 @@ type Client struct {
 	issueOption *option.Issue
 	enricher    *issue_enricher.Enricher
 
-	closedStatus []string
+	closedStatus       []string
+	defaultIssueType   string
+	defaultProjectName string
+	defaultProjectKey  string
 }

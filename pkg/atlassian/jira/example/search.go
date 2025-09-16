@@ -10,7 +10,7 @@ import (
 )
 
 func Search() {
-	p := environment.Get(constant.ProjectEnvironment)
+	p := environment.Get(constant.DefaultProjectNameEnvironment)
 	j := internal.Jira()
 	f := constant.Format
 	searchAndy(j, p, f)

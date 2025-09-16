@@ -13,7 +13,7 @@ import (
 
 func Issue() {
 	j := internal.Jira()
-	project := environment.Get(constant.ProjectKeyEnvironment)
+	p := environment.Get(constant.DefaultProjectKeyEnvironment)
 	issueType := issue.TaskType
 	summary := "Stub summary"
 	description := "Stub description"
@@ -21,15 +21,15 @@ func Issue() {
 	var i *jira.Issue
 
 	if false {
-		j.PrintIssueFields(project, issueType)
+		j.PrintIssueFields(p, issueType)
 	}
 
 	if true {
-		i = j.NewIssue(project, issueType, summary, description)
+		i = j.NewIssue(p, issueType, summary, description)
 	}
 
 	if false {
-		i = j.NewIssueUnverified(project, issueType, summary, description)
+		i = j.NewIssueUnverified(p, issueType, summary, description)
 	}
 
 	fmt.Println("Prepared:")

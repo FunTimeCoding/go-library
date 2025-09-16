@@ -7,52 +7,28 @@ import (
 	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"log"
 )
 
 func Issue() {
 	j := internal.Jira()
-	key := environment.Get(constant.ProjectKeyEnvironment)
+	projectKey := environment.Get(constant.ProjectKeyEnvironment)
 	issueType := issue.TaskType
 	summary := "Stub summary"
 	description := "Stub description"
 	f := constant.Format
 
 	if true {
-		p := j.CreateMeta(key).GetProjectWithKey(key)
-
-		if p == nil {
-			log.Panicf("project not found: %s", key)
-		}
-
+		p := j.MetaProject(projectKey)
 		fmt.Printf("Project: %s\n", p.Name)
-		t := p.GetIssueTypeWithName(issueType)
-
-		if t == nil {
-			log.Panicf("issue type not found: %s", issueType)
-		}
-
+		t := j.MetaIssueType(p, issueType)
 		fmt.Printf("Issue type: %s\n", t.Name)
-		fields, fieldsFail := t.GetAllFields()
-		errors.PanicOnError(fieldsFail)
 
-		for k, v := range fields {
+		for k, v := range j.IssueTypeFields(t) {
 			fmt.Printf("Field: %s = %s\n", k, v)
 		}
 
-		r, e := jira.InitIssueWithMetaAndFields(
-			p,
-			p.GetIssueTypeWithName(issueType),
-			map[string]string{
-				"Project":     key,
-				"Issue Type":  issueType,
-				"Summary":     summary,
-				"Description": description,
-			},
-		)
-		errors.PanicOnError(e)
+		r := j.NewIssue(p, projectKey, issueType, summary, description)
 		fmt.Println("Prepared:")
 		spew.Dump(r)
 
@@ -66,7 +42,7 @@ func Issue() {
 	if true {
 		r := issue.RawStub()
 		r.Fields.Reporter = j.User()
-		r.Fields.Project = jira.Project{Key: key}
+		r.Fields.Project = jira.Project{Key: projectKey}
 		r.Fields.Type = jira.IssueType{Name: issueType}
 		r.Fields.Summary = summary
 		r.Fields.Description = description

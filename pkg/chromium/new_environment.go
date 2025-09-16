@@ -8,7 +8,7 @@ import (
 
 func NewEnvironment() *Client {
 	return New(
-		environment.Get(constant.HostEnvironment),
-		strings.ToIntegerStrict(environment.Get(constant.PortEnvironment)),
+		environment.Exit(constant.HostEnvironment),
+		strings.ToIntegerStrict(environment.Exit(constant.PortEnvironment)),
 	)
 }

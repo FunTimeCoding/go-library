@@ -6,5 +6,5 @@ import (
 )
 
 func NewAdministrator() *Database {
-	return New(environment.Get(postgres.AdministratorLocatorEnvironment))
+	return New(environment.Exit(postgres.AdministratorLocatorEnvironment))
 }

@@ -1,6 +1,6 @@
 package issue_enricher
 
-func New(o ...OptionFunc) *Enricher {
+func New(o ...Option) *Enricher {
 	result := &Enricher{}
 
 	for _, p := range o {

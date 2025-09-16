@@ -13,7 +13,7 @@ import (
 func Official() {
 	// https://github.com/anthropics/anthropic-sdk-go
 	c := anthropic.NewClient(
-		option.WithAPIKey(environment.Get(constant.TokenEnvironment)),
+		option.WithAPIKey(environment.Exit(constant.TokenEnvironment)),
 	)
 	r, e := c.Messages.New(
 		context.Background(),

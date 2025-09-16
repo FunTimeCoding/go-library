@@ -16,7 +16,7 @@ func List() []string {
 		result = append(result, c.Name)
 	}
 
-	if s := environment.GetDefault(
+	if s := environment.Default(
 		constant.PluginEnvironment,
 		"",
 	); s != "" {

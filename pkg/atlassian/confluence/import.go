@@ -18,7 +18,8 @@ func (c *Client) Import(
 	var result *response.Page
 	notation.DecodeStrict(
 		c.basic.PostV2(
-			"/pages", page_post.New(
+			"/pages",
+			page_post.New(
 				c.SpaceByName(space).Identifier,
 				c.PageBySpaceAndName(space, parent).Identifier,
 				f.Name,

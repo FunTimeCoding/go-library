@@ -1,3 +1,3 @@
 package netbox
 
-type OptionFunc func(*Client)
+type Option func(*Client)

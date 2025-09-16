@@ -1,3 +1,3 @@
 package gitlab
 
-type OptionFunc func(*Client)
+type Option func(*Client)

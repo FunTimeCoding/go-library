@@ -8,10 +8,10 @@ import (
 
 func Support() {
 	user1 := internal.Mattermost(
-		mattermost.WithToken(environment.Get("MATTERMOST_TOKEN_USER1")),
+		mattermost.WithToken(environment.Exit("MATTERMOST_TOKEN_USER1")),
 	)
 	user2 := internal.Mattermost(
-		mattermost.WithToken(environment.Get("MATTERMOST_TOKEN_USER2")),
+		mattermost.WithToken(environment.Exit("MATTERMOST_TOKEN_USER2")),
 	)
 	h := user1.DefaultChannel()
 	t := user1.PostSimple(

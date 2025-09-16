@@ -6,7 +6,7 @@ import (
 )
 
 func AutoCleanup() bool {
-	return environment.GetDefault(
+	return environment.Default(
 		constant.AutoCleanupEnvironment,
 		"",
 	) != ""

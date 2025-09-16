@@ -2,7 +2,7 @@ package environment
 
 import "os"
 
-func GetDefault(
+func Default(
 	name string,
 	fallback string,
 ) string {

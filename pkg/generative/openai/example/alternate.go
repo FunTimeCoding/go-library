@@ -10,7 +10,7 @@ import (
 )
 
 func Alternate() {
-	c := openai.NewClient(environment.Get(constant.TokenEnvironment))
+	c := openai.NewClient(environment.Exit(constant.TokenEnvironment))
 	r, e := c.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{

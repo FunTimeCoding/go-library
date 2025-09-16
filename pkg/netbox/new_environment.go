@@ -5,10 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
-func NewEnvironment(p ...OptionFunc) *Client {
+func NewEnvironment(p ...Option) *Client {
 	return New(
-		environment.Get(constant.HostEnvironment),
-		environment.Get(constant.TokenEnvironment),
+		environment.Exit(constant.HostEnvironment),
+		environment.Exit(constant.TokenEnvironment),
 		p...,
 	)
 }

@@ -1,3 +1,3 @@
 package ollama
 
-type OptionFunc func(*Client)
+type Option func(*Client)

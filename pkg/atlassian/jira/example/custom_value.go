@@ -8,8 +8,8 @@ import (
 )
 
 func CustomValue() {
-	i := environment.Get(constant.TestIssueEnvironment)
-	f := environment.Get(constant.TestFieldEnvironment)
+	i := environment.Exit(constant.TestIssueEnvironment)
+	f := environment.Exit(constant.TestFieldEnvironment)
 	fmt.Printf(
 		"Field value: %s\n",
 		internal.Jira().SetVerbose(true).Issue(i).CustomValue(f),

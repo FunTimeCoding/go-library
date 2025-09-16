@@ -8,11 +8,11 @@ import (
 
 func NewEnvironment() *Client {
 	return New(
-		environment.Get(constant.HostEnvironment),
+		environment.Exit(constant.HostEnvironment),
 		strings.ToIntegerStrict(
-			environment.GetDefault(constant.PortEnvironment, "8000"),
+			environment.Default(constant.PortEnvironment, "8000"),
 		),
-		environment.Get(constant.UserEnvironment),
-		environment.Get(constant.PasswordEnvironment),
+		environment.Exit(constant.UserEnvironment),
+		environment.Exit(constant.PasswordEnvironment),
 	)
 }

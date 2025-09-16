@@ -1,3 +1,3 @@
 package kestra
 
-type OptionFunc func(*Client)
+type Option func(*Client)

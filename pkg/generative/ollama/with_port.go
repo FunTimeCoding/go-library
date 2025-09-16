@@ -1,6 +1,6 @@
 package ollama
 
-func WithPort(s int) OptionFunc {
+func WithPort(s int) Option {
 	return func(c *Client) {
 		c.port = s
 	}

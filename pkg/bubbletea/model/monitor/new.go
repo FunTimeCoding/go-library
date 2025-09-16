@@ -11,7 +11,7 @@ import (
 func New(connect bool) *Model {
 	auto := true
 
-	if s := environment.GetDefault(
+	if s := environment.Default(
 		constant.ManualEnvironment,
 		"",
 	); s != "" {

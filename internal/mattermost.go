@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/user_map"
 )
 
-func Mattermost(o ...mattermost.OptionFunc) *mattermost.Client {
+func Mattermost(o ...mattermost.Option) *mattermost.Client {
 	return mattermost.NewEnvironment(
 		append(
 			o,

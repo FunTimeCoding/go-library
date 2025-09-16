@@ -10,7 +10,7 @@ import (
 func collect() []string {
 	result := argument.Positionals()
 
-	if s := environment.GetDefault(
+	if s := environment.Default(
 		constant.FileEnvironment,
 		"",
 	); s != "" {

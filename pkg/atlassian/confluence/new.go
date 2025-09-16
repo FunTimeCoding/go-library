@@ -13,15 +13,14 @@ func New(
 	host string,
 	user string,
 	token string,
-	labels []string,
+	o ...Option,
 ) *Client {
 	errors.FatalOnEmpty(host, "host")
 	errors.FatalOnEmpty(user, "user")
 	errors.FatalOnEmpty(token, "token")
 
-	return &Client{
+	result := &Client{
 		context:    context.Background(),
-		labels:     labels,
 		host:       host,
 		basic:      basic_client.New(host, user, token),
 		kaos:       kaos_client.New(host, user, token),
@@ -29,4 +28,10 @@ func New(
 		treminio:   treminio_client.New(host, user, token),
 		treminioV2: treminio_client.NewV2(host, user, token),
 	}
+
+	for _, f := range o {
+		f(result)
+	}
+
+	return result
 }

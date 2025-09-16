@@ -21,4 +21,7 @@ type Client struct {
 	virtomize  *virtomize.API
 	treminio   *treminio.Client
 	treminioV2 *treminioV2.Client
+
+	defaultSpace string
+	defaultPage  string
 }

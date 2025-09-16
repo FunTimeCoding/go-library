@@ -11,7 +11,7 @@ import (
 )
 
 func File() {
-	base := environment.Get(constant.WikiPathEnvironment)
+	base := environment.Exit(constant.WikiPathEnvironment)
 	f := option.Color
 
 	for _, n := range system.Files(base) {

@@ -7,6 +7,8 @@ const (
 	DefaultProjectNameEnvironment = "JIRA_DEFAULT_PROJECT_NAME"
 	DefaultIssueTypeEnvironment   = "JIRA_DEFAULT_ISSUE_TYPE"
 
+	ClosedStatusEnvironment = "JIRA_CLOSED_STATUS"
+
 	TestIssueEnvironment = "JIRA_TEST_ISSUE"
 	TestFieldEnvironment = "JIRA_TEST_FIELD"
 

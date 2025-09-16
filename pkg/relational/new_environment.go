@@ -6,5 +6,5 @@ import (
 )
 
 func NewEnvironment() *Database {
-	return New(environment.Get(postgres.LocatorEnvironment))
+	return New(environment.Exit(postgres.LocatorEnvironment))
 }

@@ -11,14 +11,14 @@ import (
 )
 
 func (c *Client) IssuesSimple(verbose bool) []*issue.Issue {
-	if o := environment.GetDefault(
+	if o := environment.Default(
 		constant.OrganizationEnvironment,
 		"",
 	); o != "" {
 		r := c.Organization(o)
 		var projects []sentry.Project
 
-		if p := environment.GetDefault(
+		if p := environment.Default(
 			constant.ProjectEnvironment,
 			"",
 		); p != "" {

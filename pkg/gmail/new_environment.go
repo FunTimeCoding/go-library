@@ -8,7 +8,7 @@ import (
 
 func NewEnvironment() *Client {
 	return New(
-		environment.GetDefault(
+		environment.Default(
 			constant.DirectoryEnvironment,
 			system.Join(system.Home(), constant.DefaultDirectory),
 		),

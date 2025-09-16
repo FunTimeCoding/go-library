@@ -1,6 +1,6 @@
 package ollama
 
-func WithHost(s string) OptionFunc {
+func WithHost(s string) Option {
 	return func(c *Client) {
 		c.host = s
 	}

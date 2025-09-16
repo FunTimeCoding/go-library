@@ -11,10 +11,7 @@ func Search() {
 	f := constant.Dense
 
 	if true {
-		for _, r := range c.Search(
-			"space=%s",
-			constant.OperationsSpace,
-		) {
+		for _, r := range c.Search("space=%s", c.DefaultSpace()) {
 			fmt.Println(r.Format(f))
 		}
 	}

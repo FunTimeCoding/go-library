@@ -15,7 +15,7 @@ func New(
 	host string,
 	user string,
 	token string,
-	o ...OptionFunc,
+	o ...Option,
 ) *Client {
 	errors.FatalOnEmpty(host, "host")
 	errors.FatalOnEmpty(user, "user")

@@ -8,7 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/text/option"
 )
 
-func (c *Client) SaveAsFile(
+func (c *Client) Export(
 	p *page.Page,
 	path string,
 ) {

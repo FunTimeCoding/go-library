@@ -11,7 +11,7 @@ import (
 func New(
 	host string,
 	token string,
-	o ...OptionFunc,
+	o ...Option,
 ) *Client {
 	result := &Client{
 		context:      context.Background(),

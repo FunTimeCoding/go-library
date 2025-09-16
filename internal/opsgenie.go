@@ -22,7 +22,7 @@ func Opsgenie() *opsgenie.Client {
 		),
 	)
 
-	if s := environment.GetDefault(
+	if s := environment.Default(
 		opsgenieConstant.TeamEnvironment,
 		"",
 	); s != "" {

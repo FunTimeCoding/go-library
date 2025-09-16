@@ -7,7 +7,7 @@ import (
 
 func NewEnvironment() *Client {
 	return New(
-		environment.Get(constant.TokenEnvironment),
-		environment.GetDefault(constant.DatabaseEnvironment, ""),
+		environment.Exit(constant.TokenEnvironment),
+		environment.Default(constant.DatabaseEnvironment, ""),
 	)
 }

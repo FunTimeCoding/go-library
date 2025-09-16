@@ -5,27 +5,27 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
-func NewEnvironment(o ...OptionFunc) *Client {
-	if s := environment.GetDefault(
+func NewEnvironment(o ...Option) *Client {
+	if s := environment.Default(
 		constant.TokenEnvironment,
 		"",
 	); s != "" {
 		o = append(o, WithToken(s))
 	}
 
-	if s := environment.GetDefault(
+	if s := environment.Default(
 		constant.UserEnvironment,
 		"",
 	); s != "" {
 		o = append(o, WithUser(s))
 	}
 
-	if s := environment.GetDefault(
+	if s := environment.Default(
 		constant.PasswordEnvironment,
 		"",
 	); s != "" {
 		o = append(o, WithPassword(s))
 	}
 
-	return New(environment.Get(constant.HostEnvironment), o...)
+	return New(environment.Exit(constant.HostEnvironment), o...)
 }

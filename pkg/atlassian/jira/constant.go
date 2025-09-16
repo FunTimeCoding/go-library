@@ -1,3 +1,3 @@
 package jira
 
-type OptionFunc func(*Client)
+type Option func(*Client)

@@ -9,7 +9,7 @@ import (
 func Tab() {
 	c := chromium.NewEnvironment()
 	defer c.Close()
-	t := c.TabByHost(environment.Get("CHROMIUM_EXAMPLE_TAB"))
+	t := c.TabByHost(environment.Exit("CHROMIUM_EXAMPLE_TAB"))
 
 	if t == nil {
 		panic("tab not found")

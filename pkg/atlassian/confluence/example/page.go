@@ -5,70 +5,51 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
-	"github.com/funtimecoding/go-library/pkg/system"
 )
 
 func Page() {
 	c := confluence.NewEnvironment()
+	s := c.DefaultSpace()
+	p := c.DefaultPage()
 	f := constant.Dense
 
-	if true {
-		p := c.PageBySpaceAndName(constant.OperationsSpace, "Delta")
+	if false {
+		// TODO: Expected page names: Alpha, Bravo, Charlie, Delta
+		a := c.PageBySpaceAndName(s, "Delta")
 
-		if p != nil {
-			c.Delete(p.Identifier)
+		if a != nil {
+			c.Delete(a.Identifier)
 		}
+		// TODO: Expected page names: Alpha, Bravo, Charlie
+
+		c.Import(s, p, "fixture/wiki/example/Delta.json")
+		// TODO: Expected page names: Alpha, Bravo, Charlie, Delta
 	}
 
 	if false {
-		c.Import(
-			constant.OperationsSpace,
-			constant.ExamplePage,
-			"tmp/wiki/Delta.json",
-		)
-	}
-
-	if false {
-		system.EnsurePathExists("tmp/wiki")
-
-		for _, p := range c.ChildPages(
-			constant.OperationsSpace,
-			constant.ExamplePage,
-		) {
-			fmt.Println(p.Format(f))
-			c.SaveAsFile(p, fmt.Sprintf("tmp/wiki/%s.json", p.Name))
-		}
-	}
-
-	if false {
-		a := c.PageBySpaceAndName(
-			constant.OperationsSpace,
-			constant.ExamplePage,
-		)
+		a := c.PageBySpaceAndName(s, p)
 		fmt.Println(a.Format(f))
 	}
 
 	if false {
-		s := c.SpaceByName(constant.OperationsSpace)
-
-		for _, p := range c.PagesBySpace(s.Identifier) {
-			fmt.Println(p.Format(f))
+		for _, g := range c.PagesBySpace(c.SpaceByName(s).Identifier) {
+			fmt.Println(g.Format(f))
 
 			if false {
-				if p.Name != constant.ExamplePage {
+				if g.Name != p {
 					continue
 				}
 			}
 
 			if false {
-				page.PrintBody(p.Raw.Body)
+				page.PrintBody(g.Raw.Body)
 			}
 		}
 	}
 
 	if false {
-		for _, p := range c.Pages() {
-			fmt.Println(p.Format(f))
+		for _, g := range c.Pages() {
+			fmt.Println(g.Format(f))
 		}
 	}
 }

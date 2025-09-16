@@ -1,6 +1,6 @@
 package mattermost
 
-func WithToken(s string) OptionFunc {
+func WithToken(s string) Option {
 	return func(c *Client) {
 		c.token = s
 	}

@@ -11,7 +11,7 @@ import (
 func Arguments() {
 	pflag.String(
 		argument.Host,
-		environment.GetDefault(constant.QualifiedName, ""),
+		environment.Default(constant.QualifiedName, ""),
 		fmt.Sprintf(
 			"Host, fallback: %s",
 			constant.QualifiedName,
@@ -19,9 +19,9 @@ func Arguments() {
 	)
 	pflag.String(
 		argument.Token,
-		environment.GetDefault(
+		environment.Default(
 			TokenEnvironment,
-			environment.GetDefault(constant.JobToken, ""),
+			environment.Default(constant.JobToken, ""),
 		),
 		fmt.Sprintf(
 			"Token, fallbacks: %s, %s",
@@ -31,9 +31,9 @@ func Arguments() {
 	)
 	pflag.String(
 		argument.Owner,
-		environment.GetDefault(
+		environment.Default(
 			OwnerEnvironment,
-			environment.GetDefault(constant.ProjectNamespace, ""),
+			environment.Default(constant.ProjectNamespace, ""),
 		),
 		fmt.Sprintf(
 			"Owner, fallbacks: %s, %s",
@@ -43,7 +43,7 @@ func Arguments() {
 	)
 	pflag.String(
 		argument.Repository,
-		environment.GetDefault(RepositoryEnvironment, ""),
+		environment.Default(RepositoryEnvironment, ""),
 		fmt.Sprintf("Repository, fallback: %s", RepositoryEnvironment),
 	)
 }

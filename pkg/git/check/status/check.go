@@ -14,7 +14,7 @@ import (
 func Check(o *option.Status) {
 	elements := repository.Filter(
 		monitor.OnlyConcerns(collect(o.Path, o.Depth), o.All),
-		environment.GetSlice(RepositoryExcludeEnvironment),
+		environment.Slice(RepositoryExcludeEnvironment),
 		o.All,
 	)
 

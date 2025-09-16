@@ -8,7 +8,7 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-func New(o ...OptionFunc) *Client {
+func New(o ...Option) *Client {
 	result := &Client{context: context.Background()}
 
 	for _, p := range o {

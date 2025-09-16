@@ -23,7 +23,7 @@ func (t *basicTransport) RoundTrip(e *http.Request) (*http.Response, error) {
 
 func New(
 	host string,
-	o ...OptionFunc,
+	o ...Option,
 ) *Client {
 	// https://k.s3n.sh/api
 	// https://kestra.io/docs/how-to-guides/api

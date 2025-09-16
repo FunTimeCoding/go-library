@@ -12,7 +12,7 @@ import (
 func New(
 	host string,
 	token string,
-	o ...OptionFunc,
+	o ...Option,
 ) *Client {
 	errors.FatalOnEmpty(host, "host")
 	errors.FatalOnEmpty(token, "token")

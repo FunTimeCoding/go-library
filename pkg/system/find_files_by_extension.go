@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func FindFilesByExtensions(
+func FindFilesByExtension(
 	root string,
 	extension string,
 ) []string {

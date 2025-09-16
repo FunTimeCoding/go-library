@@ -8,7 +8,7 @@ import (
 func NewEnvironment(verbose bool) *Server {
 	return New(
 		strings.ToIntegerStrict(
-			environment.GetDefault(PortEnvironment, "8080"),
+			environment.Default(PortEnvironment, "8080"),
 		),
 		verbose,
 	)

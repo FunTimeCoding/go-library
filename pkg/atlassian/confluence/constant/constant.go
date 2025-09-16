@@ -5,14 +5,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 )
 
-const NoSpace = "no space"
-
-const PageType = "page"
-
-// Fixture
 const (
-	OperationsSpace = "Operations"
-	ExamplePage     = "Example"
+	DefaultSpaceEnvironment = "CONFLUENCE_DEFAULT_SPACE"
+	DefaultPageEnvironment  = "CONFLUENCE_DEFAULT_PAGE"
+	LabelEnvironment        = "CONFLUENCE_LABEL"
+
+	NoSpace = "no space"
+
+	PageType = "page"
 )
 
 // Body format

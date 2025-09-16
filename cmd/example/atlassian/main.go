@@ -7,9 +7,10 @@ import (
 )
 
 func main() {
-	confluence.Page()
+	confluence.Export()
 
 	if false {
+		confluence.Page()
 		confluence.Search()
 		confluence.Watch()
 		confluence.Label()

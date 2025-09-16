@@ -1,7 +1,7 @@
 package issue_enricher
 
 type Enricher struct {
-	concerns          SliceResult
-	score             FloatResult
+	concerns          Slice
+	score             Float
 	commentNameFilter []string
 }

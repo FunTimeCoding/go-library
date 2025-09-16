@@ -13,7 +13,7 @@ import (
 
 func Issue() {
 	j := internal.Jira()
-	p := environment.Get(constant.DefaultProjectKeyEnvironment)
+	p := environment.Exit(constant.DefaultProjectKeyEnvironment)
 	issueType := issue.TaskType
 	summary := "Stub summary"
 	description := "Stub description"

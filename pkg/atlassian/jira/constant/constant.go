@@ -15,6 +15,14 @@ const (
 	AllowedValuesKey = "allowedValues"
 )
 
+// Field names
+const (
+	ProjectName     = "Project"
+	IssueTypeName   = "Issue Type"
+	SummaryName     = "Summary"
+	DescriptionName = "Description"
+)
+
 const ParentEpic = "parentEpic" // Field
 
 // Status

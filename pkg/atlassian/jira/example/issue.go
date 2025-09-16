@@ -7,52 +7,36 @@ import (
 	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
 func Issue() {
 	j := internal.Jira()
-	projectKey := environment.Get(constant.ProjectKeyEnvironment)
+	project := environment.Get(constant.ProjectKeyEnvironment)
 	issueType := issue.TaskType
 	summary := "Stub summary"
 	description := "Stub description"
-	f := constant.Format
+	f := constant.Format.Copy().Tag(tag.Link)
+	var i *jira.Issue
 
-	if true {
-		p := j.MetaProject(projectKey)
-		fmt.Printf("Project: %s\n", p.Name)
-		t := j.MetaIssueType(p, issueType)
-		fmt.Printf("Issue type: %s\n", t.Name)
-
-		for k, v := range j.IssueTypeFields(t) {
-			fmt.Printf("Field: %s = %s\n", k, v)
-		}
-
-		r := j.NewIssue(p, projectKey, issueType, summary, description)
-		fmt.Println("Prepared:")
-		spew.Dump(r)
-
-		if true {
-			i := j.CreateNative(r)
-			fmt.Println("Created:")
-			fmt.Println(i.Format(f))
-		}
+	if false {
+		j.PrintIssueFields(project, issueType)
 	}
 
 	if true {
-		r := issue.RawStub()
-		r.Fields.Reporter = j.User()
-		r.Fields.Project = jira.Project{Key: projectKey}
-		r.Fields.Type = jira.IssueType{Name: issueType}
-		r.Fields.Summary = summary
-		r.Fields.Description = description
-		fmt.Println("Prepared:")
-		spew.Dump(r)
+		i = j.NewIssue(project, issueType, summary, description)
+	}
 
-		if false {
-			i := j.CreateNative(r)
-			fmt.Println("Created:")
-			fmt.Println(i.Format(f))
-		}
+	if false {
+		i = j.NewIssueUnverified(project, issueType, summary, description)
+	}
+
+	fmt.Println("Prepared:")
+	spew.Dump(i)
+
+	if false {
+		fmt.Println("Created:")
+		fmt.Println(j.CreateNative(i).Format(f))
 	}
 }

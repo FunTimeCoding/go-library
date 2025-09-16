@@ -2,15 +2,14 @@ package example
 
 import (
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"log"
-
 	"github.com/andygrunwald/go-jira"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/funtimecoding/go-library/internal"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"log"
 )
 
 func Issue() {

@@ -9,7 +9,7 @@ require (
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5
 	github.com/amikos-tech/chroma-go v0.2.4
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
-	github.com/andygrunwald/go-jira v1.16.1
+	github.com/andygrunwald/go-jira v1.17.0
 	github.com/anthropics/anthropic-sdk-go v1.12.0
 	github.com/apenella/go-ansible/v2 v2.2.0
 	github.com/atlassian/go-sentry-api v1.0.0
@@ -32,7 +32,7 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.9.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.35.2
+	github.com/getsentry/sentry-go v0.35.3
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/go-openapi/runtime v0.28.0
@@ -54,9 +54,9 @@ require (
 	github.com/mattermost/mattermost/server/public v0.1.19
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.0.9
-	github.com/ollama/ollama v0.11.10
+	github.com/ollama/ollama v0.11.11
 	github.com/openai/openai-go v1.12.0
-	github.com/openvex/go-vex v0.2.6
+	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.28.1
@@ -79,7 +79,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v0.144.1
+	gitlab.com/gitlab-org/api/client-go v0.145.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.42.0
 	golang.org/x/mod v0.28.0

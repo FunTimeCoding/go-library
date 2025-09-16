@@ -58,7 +58,8 @@ func Issue() {
 
 		if true {
 			i := j.CreateNative(r)
-			fmt.Printf("Created: %s\n", i.Format(f))
+			fmt.Println("Created:")
+			fmt.Println(i.Format(f))
 		}
 	}
 
@@ -74,7 +75,8 @@ func Issue() {
 
 		if false {
 			i := j.CreateNative(r)
-			fmt.Printf("Created: %s\n", i.Format(f))
+			fmt.Println("Created:")
+			fmt.Println(i.Format(f))
 		}
 	}
 }

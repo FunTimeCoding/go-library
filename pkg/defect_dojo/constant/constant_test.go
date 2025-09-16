@@ -1,10 +1,10 @@
-package chroma
+package constant
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestClient(t *testing.T) {
+func TestConstant(t *testing.T) {
 	assert.Stub(t)
 }

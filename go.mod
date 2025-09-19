@@ -16,7 +16,7 @@ require (
 	github.com/bndr/gojenkins v1.1.0
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.9
+	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d
 	github.com/chromedp/chromedp v0.14.1
@@ -50,11 +50,11 @@ require (
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20250910142051-84ddb8bf1c10
 	github.com/liushuangls/go-anthropic v1.6.0
-	github.com/mark3labs/mcp-go v0.39.1
+	github.com/mark3labs/mcp-go v0.40.0
 	github.com/mattermost/mattermost/server/public v0.1.19
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.0.9
-	github.com/ollama/ollama v0.11.11
+	github.com/ollama/ollama v0.12.0
 	github.com/openai/openai-go v1.12.0
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
@@ -79,7 +79,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v0.145.0
+	gitlab.com/gitlab-org/api/client-go v0.146.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.42.0
 	golang.org/x/mod v0.28.0

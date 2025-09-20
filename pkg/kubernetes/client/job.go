@@ -2,7 +2,7 @@ package client
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	batch "k8s.io/api/batch/v1"
+	"github.com/funtimecoding/go-library/pkg/kubernetes/types/native/job"
 	kubernetes "k8s.io/apimachinery/pkg/api/errors"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -10,7 +10,7 @@ import (
 func (c *Client) Job(
 	namespace string,
 	name string,
-) *batch.Job {
+) *job.Job {
 	result, e := c.client.BatchV1().Jobs(namespace).Get(
 		c.context,
 		name,
@@ -25,5 +25,5 @@ func (c *Client) Job(
 
 	errors.PanicOnError(e)
 
-	return result
+	return job.New(result, c.cluster)
 }

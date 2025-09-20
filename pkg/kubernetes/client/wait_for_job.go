@@ -23,13 +23,13 @@ func (c *Client) WaitForJob(
 			return nil
 		}
 
-		if j.Status.CompletionTime != nil {
+		if j.Raw.Status.CompletionTime != nil {
 			fmt.Printf("job done: %s\n", name)
 
 			return nil
 		}
 
-		if j.Status.Failed > 0 {
+		if j.Raw.Status.Failed > 0 {
 			return fmt.Errorf("job fail: %s", name)
 		}
 

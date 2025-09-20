@@ -19,7 +19,7 @@ func (c *Client) CreateJobFromCron(
 				Namespace: namespace,
 				Labels:    map[string]string{"created-by": "manual-trigger"},
 			},
-			Spec: c.CronJob(namespace, cron).Spec.JobTemplate.Spec,
+			Spec: c.CronJob(namespace, cron).Raw.Spec.JobTemplate.Spec,
 		},
 		meta.CreateOptions{},
 	)

@@ -85,6 +85,7 @@ const (
 	User           = "user"
 	Verbose        = "verbose"
 	Version        = "version"
+	Wait           = "wait"
 	Warning        = "warning"
 	Watched        = "watched"
 )

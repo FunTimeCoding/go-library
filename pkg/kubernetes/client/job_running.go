@@ -10,5 +10,5 @@ func (c *Client) JobRunning(
 		return false
 	}
 
-	return j.Status.CompletionTime == nil && j.Status.Failed == 0
+	return j.Raw.Status.CompletionTime == nil && j.Raw.Status.Failed == 0
 }

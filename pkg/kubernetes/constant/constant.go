@@ -31,3 +31,13 @@ const DNSConfigForming = "DNSConfigForming" // Event reason
 var IrrelevantEventReason = []string{
 	DNSConfigForming,
 }
+
+const (
+	TrivyNamespace = "trivy"
+	TrivyCron      = "trivy"
+
+	RenovateNamespace = "renovate"
+	RenovateCron      = "renovate"
+
+	ManualCron = "manual"
+)

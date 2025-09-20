@@ -2,9 +2,12 @@ package client
 
 import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client/operation/list"
-	batch "k8s.io/api/batch/v1"
+	"github.com/funtimecoding/go-library/pkg/kubernetes/types/native/cron_job"
 )
 
-func (c *Client) CronJobs(namespace string) []batch.CronJob {
-	return list.CronJob(c.client, c.context, namespace, "")
+func (c *Client) CronJobs(namespace string) []*cron_job.Job {
+	return cron_job.NewSlice(
+		list.CronJob(c.client, c.context, namespace, ""),
+		c.cluster,
+	)
 }

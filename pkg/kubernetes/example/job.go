@@ -2,53 +2,104 @@ package example
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
+	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 )
 
 const (
-	TrivyNamespace    = "trivy"
-	TrivyCron         = "trivy"
-	RenovateNamespace = "renovate"
-	RenovateCron      = "renovate"
-	ManualCron        = "manual"
+	TrivyArgument    = "trivy"
+	RenovateArgument = "renovate"
 )
 
 func Job() {
+	pflag.Bool(TrivyArgument, false, "Run Trivy job")
+	pflag.Bool(RenovateArgument, false, "Run Renovate job")
+	pflag.Bool(argument.Wait, false, "Wait for job to complete")
+	argument.ParseBind()
+	runTrivy := viper.GetBool(TrivyArgument)
+	runRenovate := viper.GetBool(RenovateArgument)
+	wait := viper.GetBool(argument.Wait)
 	k := client.NewEnvironment()
 
-	trivy(k)
+	if !runTrivy && !runRenovate {
+		runTrivy = true
+		runRenovate = true
+	}
 
-	if false {
-		renovate(k)
+	if runTrivy {
+		trivy(k, wait)
+
+	}
+
+	if runRenovate {
+		renovate(k, wait)
 	}
 }
 
-func renovate(k *client.Client) {
-	for _, j := range k.CronJobs(RenovateNamespace) {
+func renovate(
+	k *client.Client,
+	wait bool,
+) {
+	for _, j := range k.CronJobs(constant.RenovateNamespace) {
 		fmt.Printf("Delete: %s\n", j.Name)
-		k.DeleteJobWatch(RenovateNamespace, j.Name)
+		k.DeleteJobWatch(constant.RenovateNamespace, j.Name)
 	}
 
-	if t := k.CronJob(RenovateNamespace, "missing"); t != nil {
+	if t := k.CronJob(constant.RenovateNamespace, "missing"); t != nil {
 		fmt.Printf("Job: %s\n", t.Name)
 	}
 
-	k.DeleteJobWatch(RenovateNamespace, ManualCron)
-	j := k.CreateJobFromCron(RenovateNamespace, RenovateCron, ManualCron)
+	k.DeleteJobWatch(constant.RenovateNamespace, constant.ManualCron)
+	j := k.CreateJobFromCron(
+		constant.RenovateNamespace,
+		constant.RenovateCron,
+		constant.ManualCron,
+	)
 	fmt.Printf("Job: %s\n", j.Name)
+
+	if wait {
+		errors.PanicOnError(
+			k.WaitForJob(
+				constant.RenovateNamespace,
+				constant.ManualCron,
+				0,
+			),
+		)
+	}
 }
 
-func trivy(k *client.Client) {
-	for _, j := range k.CronJobs(TrivyNamespace) {
+func trivy(
+	k *client.Client,
+	wait bool,
+) {
+	for _, j := range k.CronJobs(constant.TrivyNamespace) {
 		fmt.Printf("Delete: %s\n", j.Name)
-		k.DeleteJobWatch(TrivyNamespace, j.Name)
+		k.DeleteJobWatch(constant.TrivyNamespace, j.Name)
 	}
 
-	if t := k.CronJob(TrivyNamespace, "missing"); t != nil {
+	if t := k.CronJob(constant.TrivyNamespace, "missing"); t != nil {
 		fmt.Printf("Job: %s\n", t.Name)
 	}
 
-	k.DeleteJobWatch(TrivyNamespace, ManualCron)
-	j := k.CreateJobFromCron(TrivyNamespace, TrivyCron, ManualCron)
+	k.DeleteJobWatch(constant.TrivyNamespace, constant.ManualCron)
+	j := k.CreateJobFromCron(
+		constant.TrivyNamespace,
+		constant.TrivyCron,
+		constant.ManualCron,
+	)
 	fmt.Printf("Job: %s\n", j.Name)
+
+	if wait {
+		errors.PanicOnError(
+			k.WaitForJob(
+				constant.TrivyNamespace,
+				constant.ManualCron,
+				0,
+			),
+		)
+	}
 }

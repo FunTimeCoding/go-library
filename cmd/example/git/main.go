@@ -8,20 +8,18 @@ import (
 )
 
 func main() {
-	if false {
-		git.BuildInformation()
-	}
+	gitlab.Issue()
 
 	if false {
+		git.BuildInformation()
+
 		clean_job.Check()
 		gitlab.Project()
 		gitlab.Search()
 		gitlab.Runner()
 		gitlab.GraphQuery()
 		gitlab.CloneAll()
-	}
 
-	if false {
 		github.Search()
 		github.CleanJob()
 	}

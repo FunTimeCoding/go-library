@@ -7,10 +7,9 @@ import (
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
-func (c *Client) ProjectIssues(project int) []*issue.Issue {
-	result, _, e := c.client.Issues.ListProjectIssues(
-		project,
-		&gitlab.ListProjectIssuesOptions{
+func (c *Client) Issues() []*issue.Issue {
+	result, _, e := c.client.Issues.ListIssues(
+		&gitlab.ListIssuesOptions{
 			ListOptions: constant.DefaultListOptions,
 		},
 	)

@@ -9,8 +9,11 @@ func (c *Client) CronJob(
 	namespace string,
 	name string,
 ) *cron_job.Job {
-	return cron_job.New(
-		get.CronJob(c.client, c.context, namespace, name),
-		c.cluster,
-	)
+	result := get.CronJob(c.client, c.context, namespace, name)
+
+	if result == nil {
+		return nil
+	}
+
+	return cron_job.New(result, c.cluster)
 }

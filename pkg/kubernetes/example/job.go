@@ -6,8 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
+	"github.com/funtimecoding/go-library/pkg/kubernetes/filter"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"time"
 )
 
 const (
@@ -44,16 +46,7 @@ func renovate(
 	k *client.Client,
 	wait bool,
 ) {
-	for _, j := range k.CronJobs(constant.RenovateNamespace) {
-		fmt.Printf("Delete: %s\n", j.Name)
-		k.DeleteJobWatch(constant.RenovateNamespace, j.Name)
-	}
-
-	if t := k.CronJob(constant.RenovateNamespace, "missing"); t != nil {
-		fmt.Printf("Job: %s\n", t.Name)
-	}
-
-	k.DeleteJobWatch(constant.RenovateNamespace, constant.ManualCron)
+	deletePreviousManualJob(k, constant.RenovateNamespace)
 	j := k.CreateJobFromCron(
 		constant.RenovateNamespace,
 		constant.RenovateCron,
@@ -62,13 +55,8 @@ func renovate(
 	fmt.Printf("Job: %s\n", j.Name)
 
 	if wait {
-		errors.PanicOnError(
-			k.WaitForJob(
-				constant.RenovateNamespace,
-				constant.ManualCron,
-				0,
-			),
-		)
+		waitForFinish(k, constant.RenovateNamespace, j.Name)
+		printJobLog(k, constant.RenovateNamespace, j.Name)
 	}
 }
 
@@ -76,16 +64,7 @@ func trivy(
 	k *client.Client,
 	wait bool,
 ) {
-	for _, j := range k.CronJobs(constant.TrivyNamespace) {
-		fmt.Printf("Delete: %s\n", j.Name)
-		k.DeleteJobWatch(constant.TrivyNamespace, j.Name)
-	}
-
-	if t := k.CronJob(constant.TrivyNamespace, "missing"); t != nil {
-		fmt.Printf("Job: %s\n", t.Name)
-	}
-
-	k.DeleteJobWatch(constant.TrivyNamespace, constant.ManualCron)
+	deletePreviousManualJob(k, constant.TrivyNamespace)
 	j := k.CreateJobFromCron(
 		constant.TrivyNamespace,
 		constant.TrivyCron,
@@ -94,12 +73,92 @@ func trivy(
 	fmt.Printf("Job: %s\n", j.Name)
 
 	if wait {
-		errors.PanicOnError(
-			k.WaitForJob(
-				constant.TrivyNamespace,
-				constant.ManualCron,
-				0,
-			),
-		)
+		waitForFinish(k, constant.TrivyNamespace, j.Name)
+		printJobLog(k, constant.TrivyNamespace, j.Name)
+	}
+}
+
+func printJobs(
+	k *client.Client,
+	namespace string,
+) {
+	fmt.Printf("Jobs in %s:\n", namespace)
+
+	for _, j := range k.Jobs(namespace) {
+		fmt.Printf("  Job: %s\n", j.Name)
+	}
+}
+
+func deletePreviousManualJob(
+	k *client.Client,
+	namespace string,
+) {
+	if j := k.Job(
+		namespace,
+		constant.ManualCron,
+	); j != nil {
+		fmt.Printf("Delete job: %s\n", j.Name)
+		k.DeleteJobWatch(namespace, j.Name)
+	}
+}
+
+func waitForFinish(
+	k *client.Client,
+	namespace string,
+	job string,
+) {
+	time.Sleep(10 * time.Second)
+	printJobs(k, namespace)
+	errors.PanicOnError(k.WaitForJob(namespace, job, 0))
+}
+
+func printJobLog(
+	k *client.Client,
+	namespace string,
+	job string,
+) {
+	j := k.Job(namespace, job)
+
+	if j == nil {
+		fmt.Printf("Not found: %s/%s\n", namespace, job)
+
+		return
+	}
+
+	if len(j.Raw.Status.Conditions) > 0 {
+		for _, p := range j.Raw.Status.Conditions {
+			if p.Type != "Complete" {
+				continue
+			}
+
+			if p.Status != "True" {
+				continue
+			}
+
+			t := j.Raw.Status.CompletionTime.String()
+			fmt.Printf("Completed: %s\n", t)
+		}
+	}
+
+	if j.Raw.Status.Active > 0 {
+		fmt.Printf("Active: %d\n", j.Raw.Status.Active)
+	}
+
+	if j.Raw.Status.Failed > 0 {
+		fmt.Printf("Failed: %d\n", j.Raw.Status.Failed)
+	}
+
+	if j.Raw.Status.Succeeded > 0 {
+		fmt.Printf("Succeeded: %d\n", j.Raw.Status.Succeeded)
+	}
+
+	for _, p := range k.Pods(
+		filter.New().AddNamespaces(namespace).AddNames(j.Name),
+	) {
+		fmt.Printf("Pod: %s\n", p.Name)
+		log := k.Log(namespace, p.Name, "")
+		fmt.Println("Log:")
+		fmt.Println(log)
+		fmt.Println("-----")
 	}
 }

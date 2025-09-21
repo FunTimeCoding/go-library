@@ -13,7 +13,7 @@ func (c *Client) WaitForJob(
 	start := time.Now()
 
 	for {
-		if time.Since(start) > timeout {
+		if timeout > 0 && time.Since(start) > timeout {
 			return fmt.Errorf("job timeout: %s", name)
 		}
 

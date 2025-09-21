@@ -1,9 +1,8 @@
 package client
 
 import (
-	"bufio"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/system"
 	core "k8s.io/api/core/v1"
 )
 
@@ -23,14 +22,6 @@ func (c *Client) Log(
 	l, e := r.Stream(c.context)
 	errors.PanicOnError(e)
 	defer errors.LogClose(l)
-	s := bufio.NewScanner(l)
-	var lines []string
 
-	for s.Scan() {
-		lines = append(lines, s.Text())
-	}
-
-	errors.PanicOnError(s.Err())
-
-	return join.NewLine(lines)
+	return string(system.ReadAll(l))
 }

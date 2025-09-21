@@ -23,10 +23,20 @@ const (
 
 // Field names
 const (
-	ProjectName     = "Project"
-	IssueTypeName   = "Issue Type"
-	SummaryName     = "Summary"
-	DescriptionName = "Description"
+	AssigneeName     = "Assignee"
+	AttachmentName   = "Attachment"
+	DescriptionName  = "Description"
+	IssueTypeName    = "Issue Type"
+	LabelsName       = "Labels"
+	LinkedIssuesName = "Linked Issues"
+	ParentName       = "Parent"
+	ProjectName      = "Project"
+	ReporterName     = "Reporter"
+	SummaryName      = "Summary"
+	RankName         = "Rank"
+	FlaggedName      = "Flagged"
+	TeamName         = "Team"
+	DevelopmentName  = "Development"
 )
 
 const ParentEpic = "parentEpic" // Field

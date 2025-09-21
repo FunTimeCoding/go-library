@@ -14,7 +14,7 @@ func TestFindFilesByExtension(t *testing.T) {
 	)
 	assert.Count(
 		t,
-		6,
+		5,
 		FindFilesByExtension(fixture, ".json"),
 	)
 }

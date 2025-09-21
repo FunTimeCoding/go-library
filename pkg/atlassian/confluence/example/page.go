@@ -8,12 +8,10 @@ func Page() {
 	p := c.DefaultPage()
 
 	if false {
-		a := c.PageBySpaceAndName(s, "Delta")
-
-		if a != nil {
+		if a := c.PageBySpaceAndName(s, "Charlie"); a != nil {
 			c.Delete(a.Identifier)
 		}
 
-		c.Import(s, p, "fixture/wiki/example/Delta.json")
+		c.Import(s, p, "fixture/wiki/example/Charlie.json")
 	}
 }

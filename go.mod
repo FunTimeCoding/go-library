@@ -53,7 +53,7 @@ require (
 	github.com/mark3labs/mcp-go v0.40.0
 	github.com/mattermost/mattermost/server/public v0.1.19
 	github.com/netbox-community/go-netbox/v4 v4.3.0
-	github.com/olekukonko/tablewriter v1.0.9
+	github.com/olekukonko/tablewriter v1.1.0
 	github.com/ollama/ollama v0.12.0
 	github.com/openai/openai-go v1.12.0
 	github.com/openvex/go-vex v0.2.7

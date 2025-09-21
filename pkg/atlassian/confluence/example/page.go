@@ -14,21 +14,13 @@ func Page() {
 	f := constant.Dense
 
 	if false {
-		// TODO: Expected page names: Alpha, Bravo, Charlie, Delta
 		a := c.PageBySpaceAndName(s, "Delta")
 
 		if a != nil {
 			c.Delete(a.Identifier)
 		}
-		// TODO: Expected page names: Alpha, Bravo, Charlie
 
 		c.Import(s, p, "fixture/wiki/example/Delta.json")
-		// TODO: Expected page names: Alpha, Bravo, Charlie, Delta
-	}
-
-	if false {
-		a := c.PageBySpaceAndName(s, p)
-		fmt.Println(a.Format(f))
 	}
 
 	if false {

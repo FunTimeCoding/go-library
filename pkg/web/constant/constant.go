@@ -40,6 +40,7 @@ const (
 
 	BasicPrefix  = "Basic"
 	BearerPrefix = "Bearer"
+	TokenPrefix  = "Token"
 )
 
 // noinspection HttpUrlsUsage

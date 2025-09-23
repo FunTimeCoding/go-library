@@ -13,7 +13,7 @@ func Run(
 	selected string,
 	verbose bool,
 ) {
-	file := environment.Default(ConfigurationEnvironment, "")
+	file := environment.Fallback(ConfigurationEnvironment, "")
 
 	if verbose {
 		fmt.Printf("File: %s\n", file)

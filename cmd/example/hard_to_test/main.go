@@ -19,7 +19,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/relational"
 	"github.com/funtimecoding/go-library/pkg/sentry"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
 	"github.com/funtimecoding/go-library/pkg/web"
 )
@@ -68,8 +67,6 @@ func main() {
 	web.WriteBytesSafe(nil, 0, nil)
 
 	push.Send(nil)
-
-	environment.Required("", 1)
 
 	argument.RequiredInteger64Flag("")
 

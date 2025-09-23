@@ -9,7 +9,7 @@ import (
 func NewEnvironment() *Client {
 	var contexts []string
 
-	if s := environment.Default(
+	if s := environment.Fallback(
 		constant.ContextEnvironment,
 		"",
 	); s != "" {

@@ -7,14 +7,14 @@ import (
 )
 
 func NewEnvironment(o ...Option) *Client {
-	if s := environment.Default(
+	if s := environment.Fallback(
 		confluence.DefaultSpaceEnvironment,
 		"",
 	); s != "" {
 		o = append(o, WithDefaultSpace(s))
 	}
 
-	if s := environment.Default(
+	if s := environment.Fallback(
 		confluence.DefaultPageEnvironment,
 		"",
 	); s != "" {
@@ -26,9 +26,9 @@ func NewEnvironment(o ...Option) *Client {
 	}
 
 	return New(
-		environment.Exit(constant.HostEnvironment),
-		environment.Exit(constant.UserEnvironment),
-		environment.Exit(constant.TokenEnvironment),
+		environment.Required(constant.HostEnvironment),
+		environment.Required(constant.UserEnvironment),
+		environment.Required(constant.TokenEnvironment),
 		o...,
 	)
 }

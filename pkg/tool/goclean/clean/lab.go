@@ -31,7 +31,7 @@ func Lab(
 	namespace, repository := git.ParseProject(remoteLocator.Path)
 	c := gitlab.New(
 		o.GitLabHost,
-		environment.Exit(constant.TokenEnvironment),
+		environment.Required(constant.TokenEnvironment),
 	)
 	p := c.ProjectByName(namespace, repository)
 

@@ -25,7 +25,7 @@ func Main(
 	)
 	pflag.String(
 		argument.Output,
-		environment.Default("OUTPUT", download.DefaultOutput),
+		environment.Fallback("OUTPUT", download.DefaultOutput),
 		"Output directory for executable",
 	)
 	monitor.VerboseArgument()

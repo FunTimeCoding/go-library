@@ -37,7 +37,7 @@ func main() {
 	o.Path = viper.GetString(argument.Path)
 	o.Depth = viper.GetInt(argument.Depth)
 
-	if s := environment.Default(
+	if s := environment.Fallback(
 		status.RepositoryRootEnvironment,
 		"",
 	); s != "" {

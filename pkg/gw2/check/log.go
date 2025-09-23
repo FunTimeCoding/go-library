@@ -27,14 +27,14 @@ func Log(
 	tag string,
 ) {
 	if tag == "" {
-		tag = environment.Exit(constant.AllianceEnvironment)
+		tag = environment.Required(constant.AllianceEnvironment)
 	}
 
-	atRiskCutOff := environment.Exit(constant.AtRiskCutOffEnvironment)
-	currentTeam := environment.Exit(constant.TeamEnvironment)
+	atRiskCutOff := environment.Required(constant.AtRiskCutOffEnvironment)
+	currentTeam := environment.Required(constant.TeamEnvironment)
 	start := timeLibrary.Parse(
 		"2006-01-02",
-		environment.Exit(constant.LinkStartDateEnvironment),
+		environment.Required(constant.LinkStartDateEnvironment),
 	)
 	matchUpStart := time.Date(
 		start.Year(),

@@ -14,8 +14,8 @@ func NewEnvironment(o ...Option) *Client {
 	}
 
 	return New(
-		web.TrimScheme(environment.Exit(constant.HostEnvironment)),
-		environment.Exit(constant.TokenEnvironment),
+		web.TrimScheme(environment.Required(constant.HostEnvironment)),
+		environment.Required(constant.TokenEnvironment),
 		o...,
 	)
 }

@@ -7,8 +7,8 @@ import (
 
 func NewEnvironment() *Client {
 	return New(
-		environment.Exit(constant.UserKeyEnvironment),
-		environment.Exit(constant.TeamKeyEnvironment),
-		environment.Exit(constant.WebHostEnvironment),
+		environment.Required(constant.UserKeyEnvironment),
+		environment.Required(constant.TeamKeyEnvironment),
+		environment.Required(constant.WebHostEnvironment),
 	)
 }

@@ -10,7 +10,7 @@ func TestEnvironment(t *testing.T) {
 	assert.String(
 		t,
 		"Alfa",
-		Default("DOES_NOT_EXIST", strings.Alfa),
+		Fallback("DOES_NOT_EXIST", strings.Alfa),
 	)
 
 	EnsureUnset("NEVER_EXIST")

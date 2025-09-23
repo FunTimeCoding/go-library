@@ -6,5 +6,5 @@ import (
 )
 
 func NewEnvironment() *Client {
-	return New(environment.Exit(constant.InventoryEnvironment))
+	return New(environment.Required(constant.InventoryEnvironment))
 }

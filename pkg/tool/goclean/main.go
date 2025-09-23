@@ -18,7 +18,7 @@ func Main(
 	monitor.VerboseArgument()
 	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()
-	o.GitLabHost = environment.Exit(constant.HostEnvironment)
+	o.GitLabHost = environment.Required(constant.HostEnvironment)
 	o.Verbose = viper.GetBool(argument.Verbose)
 	clean.Run(o)
 }

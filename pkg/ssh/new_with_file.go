@@ -2,11 +2,10 @@ package ssh
 
 import (
 	"fmt"
-	"net"
-
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
 	"golang.org/x/crypto/ssh"
+	"net"
 )
 
 func NewWithFile(

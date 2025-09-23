@@ -26,9 +26,9 @@ func write() {
 		&hook.Config{
 			URL: fmt.Sprintf(
 				"https://%s:%s@%s/api/prom/push",
-				environment.Exit(constant.HostEnvironment),
-				environment.Exit(constant.UserEnvironment),
-				environment.Exit(constant.PasswordEnvironment),
+				environment.Required(constant.HostEnvironment),
+				environment.Required(constant.UserEnvironment),
+				environment.Required(constant.PasswordEnvironment),
 			),
 			LevelName: "severity",
 			Labels:    map[string]string{"application": "test"},

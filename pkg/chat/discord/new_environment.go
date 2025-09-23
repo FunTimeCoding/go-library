@@ -3,5 +3,5 @@ package discord
 import "github.com/funtimecoding/go-library/pkg/system/environment"
 
 func NewEnvironment() *Client {
-	return New(environment.Exit(TokenEnvironment))
+	return New(environment.Required(TokenEnvironment))
 }

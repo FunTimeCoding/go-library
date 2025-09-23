@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func ExitCode(
+func RequiredExit(
 	name string,
 	code int,
 ) string {

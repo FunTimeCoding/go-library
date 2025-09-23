@@ -11,6 +11,6 @@ import (
 func collect() []*issue.Issue {
 	return query.Open(
 		internal.Jira(),
-		environment.Exit(constant.DefaultProjectNameEnvironment),
+		environment.Required(constant.DefaultProjectNameEnvironment),
 	)
 }

@@ -14,7 +14,7 @@ func OllamaReply() {
 	t := telegram.NewEnvironment()
 	defer t.Close()
 	f := constant.Format
-	c := environment.Exit(constant.ChannelEnvironment)
+	c := environment.Required(constant.ChannelEnvironment)
 
 	l := multi_line.New()
 	l.Format(

@@ -6,26 +6,26 @@ import (
 )
 
 func NewEnvironment(o ...Option) *Client {
-	if s := environment.Default(
+	if s := environment.Fallback(
 		constant.TokenEnvironment,
 		"",
 	); s != "" {
 		o = append(o, WithToken(s))
 	}
 
-	if s := environment.Default(
+	if s := environment.Fallback(
 		constant.UserEnvironment,
 		"",
 	); s != "" {
 		o = append(o, WithUser(s))
 	}
 
-	if s := environment.Default(
+	if s := environment.Fallback(
 		constant.PasswordEnvironment,
 		"",
 	); s != "" {
 		o = append(o, WithPassword(s))
 	}
 
-	return New(environment.Exit(constant.HostEnvironment), o...)
+	return New(environment.Required(constant.HostEnvironment), o...)
 }

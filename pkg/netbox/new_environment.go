@@ -7,8 +7,8 @@ import (
 
 func NewEnvironment(p ...Option) *Client {
 	return New(
-		environment.Exit(constant.HostEnvironment),
-		environment.Exit(constant.TokenEnvironment),
+		environment.Required(constant.HostEnvironment),
+		environment.Required(constant.TokenEnvironment),
 		p...,
 	)
 }

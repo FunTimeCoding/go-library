@@ -38,14 +38,14 @@ func main() {
 	o.All = viper.GetBool(argument.All)
 	o.Path = argument.PositionalFallback(
 		0,
-		environment.Default(
+		environment.Fallback(
 			status.RepositoryRootEnvironment,
 			".",
 		),
 	)
 	o.Depth = viper.GetInt(argument.Depth)
 
-	if s := environment.Default(
+	if s := environment.Fallback(
 		version.SkipEnvironment,
 		"",
 	); s != "" {

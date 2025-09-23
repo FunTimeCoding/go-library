@@ -6,9 +6,9 @@ import (
 )
 
 func Label() {
-	c := prometheus.NewEnvironment()
+	fmt.Println("Label")
 
-	for _, m := range c.AllLabels() {
-		fmt.Printf("Label: %s\n", m)
+	for _, m := range prometheus.NewEnvironment().AllLabels() {
+		fmt.Printf("  %s\n", m)
 	}
 }

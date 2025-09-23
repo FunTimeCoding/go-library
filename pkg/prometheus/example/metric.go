@@ -6,9 +6,9 @@ import (
 )
 
 func Metric() {
-	c := prometheus.NewEnvironment()
+	fmt.Println("Metric")
 
-	for _, m := range c.AllMetrics() {
-		fmt.Printf("Metric: %s\n", m)
+	for _, m := range prometheus.NewEnvironment().AllMetrics() {
+		fmt.Printf("  %s\n", m)
 	}
 }

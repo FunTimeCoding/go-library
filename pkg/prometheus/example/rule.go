@@ -9,20 +9,20 @@ import (
 )
 
 func Rule() {
-	c := prometheus.NewEnvironment()
 	f := option.ExtendedColor.Copy()
 	var severities []string
+	fmt.Println("Rules")
 
-	for _, r := range c.Rules().Alert() {
+	for _, r := range prometheus.NewEnvironment().Rules().Alert() {
 		if r.RawAlert != nil {
 			fmt.Printf("Alert: %s\n", r.Format(f))
 
 			for k, v := range r.RawAlert.Labels {
 				if k == constant.SeverityLabel {
-					asString := string(v)
+					s := string(v)
 
-					if !slices.Contains(severities, asString) {
-						severities = append(severities, asString)
+					if !slices.Contains(severities, s) {
+						severities = append(severities, s)
 					}
 				}
 			}
@@ -31,10 +31,10 @@ func Rule() {
 
 			for k, v := range r.RawRecord.Labels {
 				if k == constant.SeverityLabel {
-					asString := string(v)
+					s := string(v)
 
-					if !slices.Contains(severities, asString) {
-						severities = append(severities, asString)
+					if !slices.Contains(severities, s) {
+						severities = append(severities, s)
 					}
 				}
 			}

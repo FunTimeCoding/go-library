@@ -120,6 +120,8 @@ alertname
 amtool
 daemonset
 ingester
+promhttp
+pushgateway
 querier
 statefulset
 

@@ -7,14 +7,14 @@ import (
 
 func main() {
 	prometheus.Status()
+	prometheus.Metric()
+	prometheus.Label()
+	prometheus.LabelName()
+	prometheus.Query()
+	prometheus.Rule()
+	prometheus.Meta()
 
 	if false {
-		prometheus.Metric()
-		prometheus.Label()
-		prometheus.LabelName()
-		prometheus.Query()
-		prometheus.Rule()
-
 		alertmanager.Notify()
 		alertmanager.Create()
 		alertmanager.Alert()

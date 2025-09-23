@@ -10,7 +10,7 @@ const (
 
 	PersonalizeSelector = `[data-testid="personalization-tab"]`
 
-	MemoriesSelector = `[class="btn relative btn-secondary"]`
+	MemoriesSelector = `[class="btn relative btn-secondary btn-small"]`
 
 	// CloseMemoriesSelector not unique, requires index
 	CloseMemoriesSelector = `div[role="dialog"] [data-testid="close-button"]`

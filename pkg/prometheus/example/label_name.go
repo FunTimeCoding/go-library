@@ -7,9 +7,12 @@ import (
 )
 
 func LabelName() {
-	c := prometheus.NewEnvironment()
+	fmt.Println("Label names")
 
-	for _, l := range c.LabelNames([]string{}, constant.StartOfTime) {
-		fmt.Printf("Label: %s\n", l)
+	for _, l := range prometheus.NewEnvironment().LabelNames(
+		[]string{},
+		constant.StartOfTime,
+	) {
+		fmt.Printf("  %s\n", l)
 	}
 }

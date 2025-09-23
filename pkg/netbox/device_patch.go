@@ -62,16 +62,16 @@ func devicePatch(d *device.Device) *netbox.PatchedWritableDeviceWithConfigContex
 		)
 	}
 
-	if s := d.Raw.GetSerial(); s != "" {
-		if d.Serial == "" {
-			fmt.Printf(
-				"warning: not unsetting serial %s %s\n",
-				d.Name,
-				s,
-			)
-		} else if d.Serial != s {
-			result.SetSerial(s)
-		}
+	if s := d.Raw.GetSerial(); s == "" && d.Serial != "" {
+		result.SetSerial(d.Serial)
+	} else if s != "" && d.Serial == "" {
+		fmt.Printf(
+			"warning: not unsetting serial %s %s\n",
+			d.Name,
+			s,
+		)
+	} else if s != "" && d.Serial != "" && s != d.Serial {
+		result.SetSerial(d.Serial)
 	}
 
 	return result

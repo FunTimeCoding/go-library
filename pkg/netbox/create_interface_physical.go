@@ -1,7 +1,6 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 	"github.com/funtimecoding/go-library/pkg/netbox/network"
 	"github.com/netbox-community/go-netbox/v4"
@@ -24,20 +23,17 @@ func (c *Client) CreateInterfacePhysical(
 
 	v := netbox.NewBriefDeviceRequest()
 	v.SetName(d.Name)
-	r := netbox.NewWritableInterfaceRequest(
-		netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(v),
-		name,
-		t,
+	// skip setting as primary, needs to be assigned first; then assign
+	c.AssignPhysicalToInterface(
+		p,
+		c.createInterfaceWriteable(
+			netbox.NewWritableInterfaceRequest(
+				netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(v),
+				name,
+				t,
+			),
+		),
 	)
-	// skip setting as primary, needs to be assigned first
-	result, _, e := c.client.DcimAPI.DcimInterfacesCreate(
-		c.context,
-	).WritableInterfaceRequest(*r).Execute()
-	errors.PanicOnError(e)
-
-	// assign
-	i := network.New(result)
-	c.AssignPhysicalToInterface(p, i)
 
 	// set as primary
 	return c.UpdateInterface(d, name, t, h)

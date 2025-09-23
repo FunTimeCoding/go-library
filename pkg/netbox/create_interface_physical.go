@@ -37,7 +37,7 @@ func (c *Client) CreateInterfacePhysical(
 
 	// assign
 	i := network.New(result)
-	c.AssignInterfaceToPhysical(p, i)
+	c.AssignPhysicalToInterface(p, i)
 
 	// set as primary
 	c.UpdateInterface(d, name, t, h)

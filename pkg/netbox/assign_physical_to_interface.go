@@ -8,7 +8,7 @@ import (
 	"github.com/netbox-community/go-netbox/v4"
 )
 
-func (c *Client) AssignInterfaceToPhysical(
+func (c *Client) AssignPhysicalToInterface(
 	p *physical_address.Address,
 	i *network.Interface,
 ) *physical_address.Address {

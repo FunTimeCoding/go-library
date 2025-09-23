@@ -33,7 +33,7 @@ func (c *Client) UpdateInterface(
 	}
 
 	if !assigned {
-		c.AssignInterfaceToPhysical(p, i)
+		c.AssignPhysicalToInterface(p, i)
 	}
 
 	v := netbox.NewBriefDeviceRequest()

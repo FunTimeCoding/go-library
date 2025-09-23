@@ -40,7 +40,5 @@ func (c *Client) CreateInterfacePhysical(
 	c.AssignPhysicalToInterface(p, i)
 
 	// set as primary
-	c.UpdateInterface(d, name, t, h)
-
-	return i
+	return c.UpdateInterface(d, name, t, h)
 }

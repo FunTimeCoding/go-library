@@ -36,7 +36,7 @@ func (d *Device) formatTags(f *option.Format) string {
 	result := join.Comma(filtered)
 
 	if f.UseColor {
-		result = console.Yellow(result)
+		result = console.Yellow("%s", result)
 	}
 
 	return result

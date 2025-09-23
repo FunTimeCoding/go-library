@@ -6,11 +6,9 @@ import (
 )
 
 func (j *Job) formatName(f *option.Format) string {
-	result := j.Name
-
 	if f.UseColor {
-		result = console.Cyan("%s", result)
+		return console.Cyan("%s", j.Name)
 	}
 
-	return result
+	return j.Name
 }

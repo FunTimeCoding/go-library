@@ -6,11 +6,9 @@ import (
 )
 
 func (p *Project) formatPath(f *option.Format) string {
-	result := p.Path
-
 	if f.UseColor {
-		result = console.Cyan("%s", result)
+		return console.Cyan("%s", p.Path)
 	}
 
-	return result
+	return p.Path
 }

@@ -7,7 +7,7 @@ import (
 
 func (i *Issue) FormatSummary(f *option.Format) string {
 	if f.UseColor {
-		return console.Cyan(i.Summary)
+		return console.Cyan("%s", i.Summary)
 	}
 
 	return i.Summary

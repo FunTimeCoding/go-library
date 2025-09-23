@@ -7,15 +7,15 @@ import (
 
 func formatLine(
 	f *option.Format,
-	s string,
+	result string,
 ) string {
-	if s == "" {
-		s = "(no text, image-only)"
+	if result == "" {
+		result = "(no text, image-only)"
 	}
 
 	if f.UseColor {
-		s = console.Cyan("%s", s)
+		result = console.Cyan("%s", result)
 	}
 
-	return s
+	return result
 }

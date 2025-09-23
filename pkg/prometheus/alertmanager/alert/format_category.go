@@ -6,11 +6,13 @@ import (
 )
 
 func (a *Alert) formatCategory(f *option.Format) string {
-	result := a.Category
-
-	if result != "" && f.UseColor {
-		result = console.Cyan("%s", result)
+	if a.Category == "" {
+		return ""
 	}
 
-	return result
+	if f.UseColor {
+		return console.Cyan("%s", a.Category)
+	}
+
+	return a.Category
 }

@@ -6,21 +6,17 @@ import (
 )
 
 func (d *Device) formatName(f *option.Format) string {
-	result := d.Name
-
-	if result == "" {
-		result = NoName
-
+	if d.Name == "" {
 		if f.UseColor {
-			result = console.Yellow(result)
+			return console.Yellow("%s", NoName)
 		}
 
-		return result
+		return NoName
 	}
 
 	if f.UseColor {
-		result = console.Cyan(result)
+		return console.Cyan("%s", d.Name)
 	}
 
-	return result
+	return d.Name
 }

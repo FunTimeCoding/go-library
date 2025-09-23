@@ -6,11 +6,9 @@ import (
 )
 
 func (c *Cluster) formatName(f *option.Format) string {
-	result := c.Name
-
 	if f.UseColor {
-		result = console.Cyan(result)
+		return console.Cyan("%s", c.Name)
 	}
 
-	return result
+	return c.Name
 }

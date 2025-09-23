@@ -6,11 +6,9 @@ import (
 )
 
 func (f *Field) formatName(o *option.Format) string {
-	result := f.Name
-
 	if o.UseColor {
-		result = console.Cyan(result)
+		return console.Cyan("%s", f.Name)
 	}
 
-	return result
+	return f.Name
 }

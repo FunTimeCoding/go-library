@@ -6,11 +6,9 @@ import (
 )
 
 func (t *Template) formatModel(f *option.Format) string {
-	result := t.Model
-
 	if f.UseColor {
-		result = console.Cyan(result)
+		return console.Cyan("%s", t.Model)
 	}
 
-	return result
+	return t.Model
 }

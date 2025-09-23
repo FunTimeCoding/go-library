@@ -33,7 +33,7 @@ func (d *Device) formatComment(f *option.Format) string {
 	}
 
 	if f.UseColor {
-		result = console.Magenta(result)
+		result = console.Magenta("%s", result)
 	}
 
 	return result

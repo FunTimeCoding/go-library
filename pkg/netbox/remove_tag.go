@@ -12,8 +12,8 @@ func (c *Client) RemoveTag(
 	d := c.DeviceByNameStrict(deviceName)
 
 	if c.verbose {
-		fmt.Printf("REMOVE device: %+v\n", d)
-		fmt.Printf("REMOVE raw device: %+v\n", d.Raw)
+		fmt.Printf("remove tag device: %+v\n", d)
+		fmt.Printf("remove tag raw device: %+v\n", d.Raw)
 	}
 
 	d.RemoveTag(tag)

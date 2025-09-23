@@ -13,7 +13,11 @@ func (d *Device) Format(f *option.Format) string {
 		s.Integer32(d.Identifier)
 	}
 
-	s.String(d.formatName(f), d.PrimaryAddress).RawList(d.Raw)
+	s.String(
+		d.formatName(f),
+		d.PrimaryAddress,
+		d.formatSerial(f),
+	).RawList(d.Raw)
 
 	if d.Link != "" {
 		s.TagLine(tag.Link, "  %s", d.Link)
@@ -24,7 +28,7 @@ func (d *Device) Format(f *option.Format) string {
 	}
 
 	if v := d.formatComment(f); v != "" {
-		s.Line("  Comment:%s", v)
+		s.Line("  Comment: %s", v)
 	}
 
 	return s.Format()

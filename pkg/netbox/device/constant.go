@@ -1,7 +1,8 @@
 package device
 
 const (
-	NoName = "no name"
+	NoName   = "no name"
+	NoSerial = "no serial"
 
 	ActiveStatus = "active"
 )

@@ -44,6 +44,7 @@ func New(v *netbox.DeviceWithConfigContext) *Device {
 		Type:           v.DeviceType.GetDisplay(),
 		Site:           v.Site.GetName(),
 		Tenant:         tenant,
+		Serial:         v.GetSerial(),
 		Comment:        comment,
 		PrimaryAddress: address,
 		Tags:           tag.Names(v.Tags),

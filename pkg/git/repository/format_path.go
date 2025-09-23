@@ -6,11 +6,9 @@ import (
 )
 
 func (r *Repository) formatPath(f *option.Format) string {
-	result := r.Path
-
 	if f.UseColor {
-		result = console.Cyan("%s", result)
+		return console.Cyan("%s", r.Path)
 	}
 
-	return result
+	return r.Path
 }

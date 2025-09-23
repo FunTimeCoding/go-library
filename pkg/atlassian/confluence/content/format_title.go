@@ -6,11 +6,9 @@ import (
 )
 
 func (c *Content) formatTitle(f *option.Format) string {
-	result := c.Title
-
 	if f.UseColor {
-		result = console.Cyan("%s", result)
+		return console.Cyan("%s", c.Title)
 	}
 
-	return result
+	return c.Title
 }

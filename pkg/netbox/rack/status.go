@@ -18,7 +18,7 @@ func (r *Rack) status(f *option.Format) string {
 			result = Deprecated
 
 			if f.UseColor {
-				result = console.Yellow(result)
+				result = console.Yellow("%s", result)
 			}
 		} else {
 			result = fmt.Sprintf(
@@ -29,14 +29,14 @@ func (r *Rack) status(f *option.Format) string {
 			)
 
 			if f.UseColor {
-				result = console.Red(result)
+				result = console.Red("%s", result)
 			}
 		}
 	} else {
 		result = Unknown
 
 		if f.UseColor {
-			result = console.Red(result)
+			result = console.Red("%s", result)
 		}
 	}
 

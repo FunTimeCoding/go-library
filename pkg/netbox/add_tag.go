@@ -28,8 +28,8 @@ func (c *Client) AddTag(
 	d := c.DeviceByNameStrict(deviceName)
 
 	if c.verbose {
-		fmt.Printf("ADD device: %+v\n", d)
-		fmt.Printf("ADD raw device: %+v\n", d.Raw)
+		fmt.Printf("add tag device: %+v\n", d)
+		fmt.Printf("add tag raw device: %+v\n", d.Raw)
 	}
 
 	d.AddTag(t.Name)

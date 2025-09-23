@@ -10,6 +10,7 @@ type Device struct {
 	Site           string
 	Tenant         string
 	Comment        string
+	Serial         string
 	PrimaryAddress string
 	Tags           []string
 	Link           string

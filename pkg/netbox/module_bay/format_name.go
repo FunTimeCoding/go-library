@@ -6,11 +6,9 @@ import (
 )
 
 func (b *Bay) formatName(f *option.Format) string {
-	result := b.Name
-
 	if f.UseColor {
-		result = console.Cyan(result)
+		return console.Cyan("%s", b.Name)
 	}
 
-	return result
+	return b.Name
 }

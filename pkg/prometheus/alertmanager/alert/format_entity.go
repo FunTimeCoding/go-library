@@ -6,11 +6,13 @@ import (
 )
 
 func (a *Alert) formatEntity(f *option.Format) string {
-	result := a.Entity
-
-	if result != "" && f.UseColor {
-		result = console.Cyan("%s", result)
+	if a.Entity == "" {
+		return ""
 	}
 
-	return result
+	if f.UseColor {
+		return console.Cyan("%s", a.Entity)
+	}
+
+	return a.Entity
 }

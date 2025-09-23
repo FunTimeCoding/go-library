@@ -1,6 +1,7 @@
 package netbox
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 	"github.com/netbox-community/go-netbox/v4"
 )
@@ -59,6 +60,18 @@ func devicePatch(d *device.Device) *netbox.PatchedWritableDeviceWithConfigContex
 				netbox.NewBriefIPAddressRequest(s),
 			),
 		)
+	}
+
+	if s := d.Raw.GetSerial(); s != "" {
+		if d.Serial == "" {
+			fmt.Printf(
+				"warning: not unsetting serial %s %s\n",
+				d.Name,
+				s,
+			)
+		} else if d.Serial != s {
+			result.SetSerial(s)
+		}
 	}
 
 	return result

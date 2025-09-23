@@ -6,11 +6,9 @@ import (
 )
 
 func (o *Outlet) formatName(f *option.Format) string {
-	result := o.Name
-
 	if f.UseColor {
-		result = console.Cyan(result)
+		return console.Cyan("%s", o.Name)
 	}
 
-	return result
+	return o.Name
 }

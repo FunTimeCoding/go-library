@@ -7,7 +7,7 @@ import (
 	"slices"
 )
 
-var groups = []string{
+var Groups = []string{
 	"alertmanager",
 	"events",
 	"go",
@@ -34,7 +34,7 @@ func Meta() {
 			fmt.Printf("  %s\n", k)
 			prefix, _ := key_value.Underscore(k)
 
-			if slices.Contains(groups, prefix) {
+			if slices.Contains(Groups, prefix) {
 				m[prefix] = append(m[prefix], k)
 			} else {
 				m["other"] = append(m["other"], k)

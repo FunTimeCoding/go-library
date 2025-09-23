@@ -20,6 +20,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/sentry"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
+	"github.com/funtimecoding/go-library/pkg/system/writer"
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
@@ -91,4 +92,6 @@ func main() {
 	monitor.BindGeneric()
 
 	brave.OpenProfileLink("", "")
+
+	writer.Print(nil, "")
 }

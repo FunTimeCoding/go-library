@@ -212,16 +212,11 @@ type Installed struct {
 			KeepAlive struct {
 				Always bool `json:"always"`
 			} `json:"keep_alive,omitempty"`
-			EnvironmentVariables struct {
-				ETCDUNSUPPORTEDARCH  string `json:"ETCD_UNSUPPORTED_ARCH,omitempty"`
-				PATH                 string `json:"PATH,omitempty"`
-				OLLAMAFLASHATTENTION string `json:"OLLAMA_FLASH_ATTENTION,omitempty"`
-				OLLAMAKVCACHETYPE    string `json:"OLLAMA_KV_CACHE_TYPE,omitempty"`
-			} `json:"environment_variables,omitempty"`
-			WorkingDir   string `json:"working_dir,omitempty"`
-			LogPath      string `json:"log_path,omitempty"`
-			ErrorLogPath string `json:"error_log_path,omitempty"`
-			RequireRoot  bool   `json:"require_root,omitempty"`
+			EnvironmentVariables map[string]string `json:"environment_variables,omitempty"`
+			WorkingDir           string            `json:"working_dir,omitempty"`
+			LogPath              string            `json:"log_path,omitempty"`
+			ErrorLogPath         string            `json:"error_log_path,omitempty"`
+			RequireRoot          bool              `json:"require_root,omitempty"`
 		} `json:"service"`
 		TapGitHead         string `json:"tap_git_head"`
 		RubySourcePath     string `json:"ruby_source_path"`

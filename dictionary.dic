@@ -22,7 +22,6 @@ osquery
 shiin
 treminio
 virtomize
-xanzy
 
 # Task
 cmds
@@ -44,12 +43,10 @@ servname
 exitf
 goalert
 gobuild
-gobump
 gochk
 gochroma
 goclean
 gocontainer
-godebian
 godownload
 gofile
 gogenie
@@ -92,22 +89,19 @@ PROPFIND
 # Kubernetes
 apimachinery
 sigs
-structuredmerge
 
 # HTML
 DOCTYPE
 tbody
 
 # JavaScript
-onopen
 onclose
-onmessage
 onerror
+onmessage
+onopen
 
 # Guild Wars 2
 Dragrimmar
-Ettin's
-Skrittsburgh
 aleeva
 evtc
 
@@ -126,10 +120,26 @@ querier
 statefulset
 
 # Atlassian
+aggregateprogress
+aggregatetimeestimate
+aggregatetimeoriginalestimate
+aggregatetimespent
+duedate
 editui
 edituiv
+issuelinks
+issuerestriction
+issuerestrictions
+issuetype
+resolutiondate
 servicedeskapi
+statuscategorychangedate
+timeestimate
+timeoriginalestimate
+timespent
+timetracking
 tinyui
+workratio
 
 # LLM
 gguf
@@ -161,3 +171,12 @@ ipam
 
 # Kestra
 kestra
+
+# Compliance
+SBOM
+
+# Homebrew
+autobump
+livecheck
+oldnames
+pkgutil

@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/brave"
 	"github.com/funtimecoding/go-library/pkg/build"
 	"github.com/funtimecoding/go-library/pkg/chromium"
@@ -18,6 +20,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/push"
 	"github.com/funtimecoding/go-library/pkg/relational"
 	"github.com/funtimecoding/go-library/pkg/sentry"
+	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
 	"github.com/funtimecoding/go-library/pkg/system/writer"
@@ -94,4 +97,7 @@ func main() {
 	brave.OpenProfileLink("", "")
 
 	writer.Print(nil, "")
+
+	page.PrintBody(response.Body{})
+	strings.PrintTrim("")
 }

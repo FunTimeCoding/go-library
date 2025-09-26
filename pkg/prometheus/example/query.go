@@ -43,6 +43,8 @@ func Query() {
 		)
 	}
 
+	// TODO: prometheus_tsdb_symbol_table_size_bytes
+
 	load1 := c.QueryFloat(constant.Load1, now)
 	load5 := c.QueryFloat(constant.Load5, now)
 	load15 := c.QueryFloat(constant.Load15, now)

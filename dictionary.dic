@@ -118,6 +118,7 @@ promhttp
 pushgateway
 querier
 statefulset
+tsdb
 
 # Atlassian
 aggregateprogress

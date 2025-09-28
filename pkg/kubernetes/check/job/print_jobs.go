@@ -1,0 +1,17 @@
+package job
+
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
+)
+
+func printJobs(
+	k *client.Client,
+	namespace string,
+) {
+	fmt.Printf("Jobs in %s:\n", namespace)
+
+	for _, j := range k.Jobs(namespace) {
+		fmt.Printf("  Job: %s\n", j.Name)
+	}
+}

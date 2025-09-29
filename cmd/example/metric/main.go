@@ -4,14 +4,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"log"
-	"sync"
 )
 
 func main() {
-	var g sync.WaitGroup
+	g := metric.NewWaitGroup()
 	m := metric.New(0, true)
 	log.Println("starting")
-	m.Run(&g)
+	m.Run(g)
 	log.Println("started")
 	system.KillSignalBlock()
 	log.Println("stopping")

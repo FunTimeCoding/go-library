@@ -7,6 +7,10 @@ import (
 )
 
 func (s *Server) Run(g *sync.WaitGroup) {
+	if g == nil {
+		g = NewWaitGroup()
+	}
+
 	if s.verbose {
 		fmt.Printf("metric server running on port %d\n", s.port)
 	}

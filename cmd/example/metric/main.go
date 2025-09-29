@@ -7,10 +7,9 @@ import (
 )
 
 func main() {
-	g := metric.NewWaitGroup()
 	m := metric.New(0, true)
 	log.Println("starting")
-	m.Run(g)
+	m.Run(nil)
 	log.Println("started")
 	system.KillSignalBlock()
 	log.Println("stopping")

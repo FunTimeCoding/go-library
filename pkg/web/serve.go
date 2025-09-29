@@ -2,7 +2,6 @@ package web
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"net/http"
 )
@@ -13,7 +12,7 @@ func Serve(
 	port int,
 	verbose bool,
 ) {
-	s := &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: r}
+	s := ServerPort(r, port)
 	ServeAsynchronous(s)
 	system.KillSignalBlock()
 	GracefulShutdown(c, s, verbose)

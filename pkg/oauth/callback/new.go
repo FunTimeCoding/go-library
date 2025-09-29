@@ -3,6 +3,7 @@ package callback
 import (
 	"context"
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"github.com/funtimecoding/go-library/pkg/web/request_context"
 	"net/http"
@@ -18,13 +19,10 @@ func New(
 
 	m := http.NewServeMux()
 	result := &Server{
-		verbose: verbose,
-		port:    port,
-		context: context.Background(),
-		server: &http.Server{
-			Addr:    fmt.Sprintf(":%d", port),
-			Handler: m,
-		},
+		verbose:    verbose,
+		port:       port,
+		context:    context.Background(),
+		server:     web.ServerPort(m, port),
 		callbackCh: make(chan string, 1),
 		errorCh:    make(chan error, 1),
 	}

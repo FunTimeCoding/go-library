@@ -69,6 +69,7 @@ func main() {
 	web.Download("", "")
 	web.PostFile("", "", "", "")
 	web.WriteBytesSafe(nil, 0, nil)
+	web.DefaultServer(nil)
 
 	push.Send(nil)
 

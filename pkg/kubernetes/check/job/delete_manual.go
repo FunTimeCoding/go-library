@@ -6,15 +6,15 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 )
 
-func deletePreviousManualJob(
+func deleteManual(
 	k *client.Client,
 	namespace string,
 ) {
-	if j := k.Job(
-		namespace,
-		constant.ManualCron,
-	); j != nil {
-		fmt.Printf("Delete job: %s\n", j.Name)
+	name := constant.ManualCron
+	fmt.Printf("Delete job %s in %s\n", name, namespace)
+
+	if j := k.Job(namespace, name); j != nil {
+		fmt.Printf("  %s\n", j.Name)
 		k.DeleteJobWatch(namespace, j.Name)
 	}
 }

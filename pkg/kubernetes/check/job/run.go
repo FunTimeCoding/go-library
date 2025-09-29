@@ -3,6 +3,7 @@ package job
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
+	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -12,22 +13,21 @@ func Run() {
 	pflag.Bool(RenovateArgument, false, "Run Renovate job")
 	pflag.Bool(argument.Wait, false, "Wait for job to complete")
 	argument.ParseBind()
-	runTrivy := viper.GetBool(TrivyArgument)
-	runRenovate := viper.GetBool(RenovateArgument)
+	trivy := viper.GetBool(TrivyArgument)
+	renovate := viper.GetBool(RenovateArgument)
 	wait := viper.GetBool(argument.Wait)
 	k := client.NewEnvironment()
 
-	if !runTrivy && !runRenovate {
-		runTrivy = true
-		runRenovate = true
+	if !trivy && !renovate {
+		trivy = true
+		renovate = true
 	}
 
-	if runTrivy {
-		trivy(k, wait)
-
+	if trivy {
+		start(k, wait, constant.TrivyNamespace, constant.TrivyCron)
 	}
 
-	if runRenovate {
-		renovate(k, wait)
+	if renovate {
+		start(k, wait, constant.RenovateNamespace, constant.RenovateCron)
 	}
 }

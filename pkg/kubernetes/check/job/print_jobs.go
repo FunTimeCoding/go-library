@@ -12,6 +12,6 @@ func printJobs(
 	fmt.Printf("Jobs in %s:\n", namespace)
 
 	for _, j := range k.Jobs(namespace) {
-		fmt.Printf("  Job: %s\n", j.Name)
+		fmt.Printf("  %s\n", j.Name)
 	}
 }

@@ -6,11 +6,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/filter"
 )
 
-func printJobLog(
+func printLog(
 	k *client.Client,
 	namespace string,
 	job string,
 ) {
+	fmt.Println("Fetch job log")
 	j := k.Job(namespace, job)
 
 	if j == nil {
@@ -46,9 +47,17 @@ func printJobLog(
 		fmt.Printf("Succeeded: %d\n", j.Raw.Status.Succeeded)
 	}
 
+	fmt.Printf("Job name: %s\n", j.Name)
+	controller := string(j.Raw.UID)
+
 	for _, p := range k.Pods(
 		filter.New().AddNamespaces(namespace).AddNames(j.Name),
 	) {
+
+		if p.Label("batch.kubernetes.io/controller-uid") != controller {
+			continue
+		}
+
 		fmt.Printf("Pod: %s\n", p.Name)
 		log := k.Log(namespace, p.Name, "")
 		fmt.Println("Log:")

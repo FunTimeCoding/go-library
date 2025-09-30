@@ -10,7 +10,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.2.5
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/andygrunwald/go-jira v1.17.0
-	github.com/anthropics/anthropic-sdk-go v1.12.0
+	github.com/anthropics/anthropic-sdk-go v1.13.0
 	github.com/apenella/go-ansible/v2 v2.2.0
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bndr/gojenkins v1.1.0
@@ -50,7 +50,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20250910142051-84ddb8bf1c10
 	github.com/liushuangls/go-anthropic v1.6.0
-	github.com/mark3labs/mcp-go v0.41.0
+	github.com/mark3labs/mcp-go v0.41.1
 	github.com/mattermost/mattermost/server/public v0.1.19
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.1.0
@@ -87,7 +87,7 @@ require (
 	golang.org/x/oauth2 v0.31.0
 	golang.org/x/time v0.13.0
 	gonum.org/v1/gonum v0.16.0
-	google.golang.org/api v0.250.0
+	google.golang.org/api v0.251.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.0
@@ -102,7 +102,7 @@ require (
 require (
 	cloud.google.com/go/auth v0.16.5 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
-	cloud.google.com/go/compute/metadata v0.8.4 // indirect
+	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.1.6 // indirect
@@ -304,7 +304,7 @@ require (
 	golang.org/x/term v0.35.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
 	golang.org/x/tools v0.36.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250908214217-97024824d090 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250929231259-57b25ae835d4 // indirect
 	google.golang.org/grpc v1.75.1 // indirect
 	google.golang.org/protobuf v1.36.9 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect

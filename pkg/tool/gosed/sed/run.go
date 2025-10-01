@@ -2,6 +2,7 @@ package sed
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab"
+	"github.com/funtimecoding/go-library/pkg/strings/base64"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/gosed/sed/option"
 )
@@ -21,7 +22,7 @@ func Run(o *option.Sed) {
 		o.Branch,
 		o.Message,
 		o.Path,
-		replaceLines(f.Content, o.Replaces),
+		replaceLines(base64.Decode(f.Content), o.Replaces),
 		true,
 	)
 }

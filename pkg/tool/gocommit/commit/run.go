@@ -11,9 +11,9 @@ import (
 func Run(o *option.Commit) {
 	validate(o)
 	c := gitlab.New(o.Host, o.Token)
-	project := common.FindProjectOrExit(c, o.Owner, o.Repository)
+	p := common.FindProjectOrExit(c, o.Owner, o.Repository)
 	c.Commit(
-		project.Identifier,
+		p.Identifier,
 		o.Branch,
 		o.Message,
 		o.Path,
@@ -21,6 +21,6 @@ func Run(o *option.Commit) {
 			system.ReadFile(o.Template),
 			o.Replace,
 		),
-		c.FileExists(project, o.Branch, o.Path),
+		c.FileExists(p, o.Branch, o.Path),
 	)
 }

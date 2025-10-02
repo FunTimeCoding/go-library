@@ -5,6 +5,6 @@ import (
 	"testing"
 )
 
-func TestCheck(t *testing.T) {
+func TestVersion(t *testing.T) {
 	assert.Stub(t)
 }

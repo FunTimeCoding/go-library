@@ -10,7 +10,7 @@ import (
 )
 
 func Netstat(verbose bool) []*jc.Output {
-	output := RunCommand(command.Netstat())
+	output := Execute(command.Netstat())
 
 	if verbose {
 		fmt.Printf("Netstat raw: %s\n", output)

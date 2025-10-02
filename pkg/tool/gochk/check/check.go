@@ -14,12 +14,12 @@ import (
 	"slices"
 )
 
-func Run() {
+func Check() {
 	switch runtime.GOOS {
 	case constant.Linux:
 		fmt.Println("Linux")
 		fmt.Printf("Cores: %d\n", runtime.NumCPU())
-		fmt.Printf("Failed: %s\n", RunCommand(command.Failed()))
+		fmt.Printf("Failed: %s\n", Execute(command.Failed()))
 		// TODO: Load average > CPU cores check
 		diskFull()
 		if run.CommandExists(linux.Jc) {

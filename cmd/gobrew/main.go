@@ -16,5 +16,5 @@ func main() {
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)
 	o.Verbose = viper.GetBool(argument.Verbose)
-	brew.Run(o)
+	brew.Check(o)
 }

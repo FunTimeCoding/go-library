@@ -5,6 +5,6 @@ import (
 	"strings"
 )
 
-func RunCommand(c []string) string {
+func Execute(c []string) string {
 	return strings.TrimSpace(run.New().Start(c...))
 }

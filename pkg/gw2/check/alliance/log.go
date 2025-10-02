@@ -1,12 +1,12 @@
-package check
+package alliance
 
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gw2"
-	"github.com/funtimecoding/go-library/pkg/gw2/check/aleeva_report"
-	"github.com/funtimecoding/go-library/pkg/gw2/check/exceptions"
-	"github.com/funtimecoding/go-library/pkg/gw2/check/guilds"
+	"github.com/funtimecoding/go-library/pkg/gw2/check/alliance/aleeva_report"
+	"github.com/funtimecoding/go-library/pkg/gw2/check/alliance/exceptions"
+	"github.com/funtimecoding/go-library/pkg/gw2/check/alliance/guilds"
 	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
 	"github.com/funtimecoding/go-library/pkg/strings/contains"

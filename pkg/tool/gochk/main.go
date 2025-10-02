@@ -13,5 +13,5 @@ func Main() {
 		"Port, multiple values separated by comma",
 	)
 	argument.ParseBind()
-	check.Run()
+	check.Check()
 }

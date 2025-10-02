@@ -1,10 +1,10 @@
-package job
+package file
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestCheck(t *testing.T) {
+func TestFile(t *testing.T) {
 	assert.Stub(t)
 }

@@ -18,14 +18,10 @@ func (a *Alert) Format(f *option.Format) string {
 		s.String(a.Fingerprint)
 	}
 
-	if v := a.formatEntity(f); v != "" {
-		s.String(v)
-	}
+	s.String(a.formatEntity(f))
 
 	if f.HasTag(tag.Category) {
-		if v := a.formatCategory(f); v != "" {
-			s.String(v)
-		}
+		s.String(a.formatCategory(f))
 	}
 
 	if a.Entity == "" && a.Category == "" {
@@ -35,9 +31,7 @@ func (a *Alert) Format(f *option.Format) string {
 	s.String(a.formatSeverity(f))
 
 	if f.HasTag(tag.Instance) {
-		if v := a.formatInstance(); v != "" {
-			s.String(v)
-		}
+		s.String(a.formatInstance())
 	}
 
 	if a.Start != nil {
@@ -48,6 +42,7 @@ func (a *Alert) Format(f *option.Format) string {
 		s.String(fmt.Sprintf("%s ago", units.HumanDuration(a.Age())))
 	}
 
+	s.String(a.formatConcern(f))
 	s.TagLine(tag.Link, "  %s", a.Link)
 
 	if a.Runbook != constant.None {

@@ -27,6 +27,7 @@ type Alert struct {
 	Remaining models.LabelSet
 
 	instance face.StringAlias
+	concern  []string
 
 	Raw *models.GettableAlert
 }

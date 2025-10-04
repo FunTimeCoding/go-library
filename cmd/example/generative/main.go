@@ -28,6 +28,7 @@ func main() {
 		openai.Token()
 		openai.Official()
 		openai.Alternate()
+		openai.Client()
 
 		anthropic.Official()
 		anthropic.Alternate()

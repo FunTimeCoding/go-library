@@ -1,10 +1,10 @@
-package grafana
+package example
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestGrafana(t *testing.T) {
+func TestExample(t *testing.T) {
 	assert.Stub(t)
 }

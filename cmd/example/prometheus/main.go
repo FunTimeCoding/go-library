@@ -1,20 +1,23 @@
 package main
 
 import (
+	grafana "github.com/funtimecoding/go-library/pkg/grafana/example"
 	alertmanager "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/example"
 	prometheus "github.com/funtimecoding/go-library/pkg/prometheus/example"
 )
 
 func main() {
-	prometheus.Status()
-	prometheus.Metric()
-	prometheus.Label()
-	prometheus.LabelName()
-	prometheus.Query()
-	prometheus.Rule()
-	prometheus.Meta()
+	grafana.Read()
 
 	if false {
+		prometheus.Status()
+		prometheus.Metric()
+		prometheus.Label()
+		prometheus.LabelName()
+		prometheus.Query()
+		prometheus.Rule()
+		prometheus.Meta()
+
 		alertmanager.Notify()
 		alertmanager.Create()
 		alertmanager.Alert()

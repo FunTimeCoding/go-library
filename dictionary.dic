@@ -66,6 +66,9 @@ goversion
 govolume
 kevt
 
+# OS
+aarch
+
 # UNIX
 websocat
 whoami
@@ -74,6 +77,7 @@ whoami
 netns
 recv
 smartd
+vmlinuz
 
 # macOS
 APPL
@@ -82,6 +86,9 @@ icns
 sosumi
 tink
 wdutil
+
+# Debian
+netinst
 
 # HTTP
 PROPFIND
@@ -181,3 +188,19 @@ autobump
 livecheck
 oldnames
 pkgutil
+
+# libvirt
+libvirt
+virt
+virtlogd
+
+# QEMU
+xhci
+virtio
+qcow
+chardev
+nographic
+
+# Packer
+HTTPIP
+qemuargs

@@ -1,9 +1,5 @@
 package debian
 
-const (
-	PackageConfigurationDirectory = "DEBIAN"
+import "github.com/funtimecoding/go-library/pkg/debian/release"
 
-	ControlFile = "control"
-
-	PackageExtension = ".deb"
-)
+var Bookworm = release.New("bookworm", 12, 1)

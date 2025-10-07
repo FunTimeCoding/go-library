@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/debian"
+	debianConstant "github.com/funtimecoding/go-library/pkg/debian/constant"
 	"github.com/funtimecoding/go-library/pkg/semver"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
@@ -62,11 +63,11 @@ func main() {
 
 	debianDirectory := system.Join(
 		packageDirectory,
-		debian.PackageConfigurationDirectory,
+		debianConstant.PackageConfigurationDirectory,
 	)
 	system.MakeDirectory(debianDirectory)
 	system.SaveFile(
-		system.Join(debianDirectory, debian.ControlFile),
+		system.Join(debianDirectory, debianConstant.ControlFile),
 		fmt.Sprintf(
 			"Package: %s"+
 				"\nVersion: %s"+

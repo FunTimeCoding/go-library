@@ -15,7 +15,7 @@ func Target() {
 	}
 
 	for _, t := range r.Dropped {
-		address, _ := t.DiscoveredLabels[model.AddressLabel]
+		address := t.DiscoveredLabels[model.AddressLabel]
 		fmt.Printf("Dropped: %+v\n", address)
 	}
 }

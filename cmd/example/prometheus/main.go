@@ -7,9 +7,12 @@ import (
 )
 
 func main() {
-	grafana.Read()
+	prometheus.Target()
+	prometheus.Series()
 
 	if false {
+		grafana.Read()
+
 		prometheus.Status()
 		prometheus.Metric()
 		prometheus.Label()

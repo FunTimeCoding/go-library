@@ -7,6 +7,6 @@ func main() {
 
 	if false {
 		collect.Loop()
-		collect.Check()
+		collect.Check(false, false)
 	}
 }

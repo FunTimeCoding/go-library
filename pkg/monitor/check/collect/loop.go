@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
-	library "github.com/funtimecoding/go-library/pkg/time"
 	"time"
 )
 
@@ -26,12 +25,4 @@ func Loop() {
 	}()
 	system.KillSignalBlock()
 	done <- true
-}
-
-func loopCheck(t time.Time) {
-	fmt.Printf(
-		"Time: %s\n",
-		t.Format(library.DateMinute),
-	)
-	Check()
 }

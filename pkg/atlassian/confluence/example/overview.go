@@ -2,7 +2,6 @@ package example
 
 import (
 	"fmt"
-
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 )

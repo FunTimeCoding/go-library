@@ -22,7 +22,6 @@ func New(
 	result := &Client{
 		context:    context.Background(),
 		host:       host,
-		basic:      basic_client.New(host, user, token),
 		kaos:       kaos_client.New(host, user, token),
 		virtomize:  virtomize_client.New(host, user, token),
 		treminio:   treminio_client.New(host, user, token),
@@ -32,6 +31,8 @@ func New(
 	for _, f := range o {
 		f(result)
 	}
+
+	result.basic = basic_client.New(result.host, user, token, result.verbose)
 
 	return result
 }

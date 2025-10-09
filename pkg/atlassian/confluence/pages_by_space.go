@@ -6,21 +6,30 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"strings"
 )
 
 func (c *Client) PagesBySpace(identifier string) []*page.Page {
-	var result *response.Pages
-	notation.DecodeStrict(
-		c.basic.GetV2(
-			fmt.Sprintf(
-				"/spaces/%s/pages?body-format=%s",
-				identifier,
-				constant.StorageFormat,
-			),
-		),
-		&result,
-		false,
+	var result []*response.Page
+	path := fmt.Sprintf(
+		"/spaces/%s/pages?body-format=%s",
+		identifier,
+		constant.StorageFormat,
 	)
+	// https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-spaces-id-pages-get
+	path += "&status=current"
 
-	return page.NewSlice(result.Results, c.host)
+	for {
+		var s *response.Pages
+		notation.DecodeStrict(c.basic.GetV2(path), &s, false)
+		result = append(result, s.Results...)
+
+		if s.Links.Next == "" {
+			break
+		}
+
+		path = strings.TrimPrefix(s.Links.Next, constant.PathPrefix)
+	}
+
+	return page.Sort(page.NewSlice(result, c.host))
 }

@@ -2,8 +2,9 @@ package basic_client
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 )
 
 func (c *Client) PostV2(
@@ -11,12 +12,22 @@ func (c *Client) PostV2(
 	body string,
 ) string {
 	r := web.NewPost(
-		fmt.Sprintf("https://%s/wiki/api/v2%s", c.host, path),
+		fmt.Sprintf(
+			"%s://%s%s%s",
+			c.scheme,
+			c.host,
+			constant.PathPrefix,
+			path,
+		),
 		body,
 	)
 	r.SetBasicAuth(c.user, c.token)
-	r.Header[constant.AcceptHeader] = []string{constant.ObjectContentType}
-	r.Header[constant.ContentTypeHeader] = []string{constant.ObjectContentType}
+	r.Header[webConstant.AcceptHeader] = []string{
+		webConstant.ObjectContentType,
+	}
+	r.Header[webConstant.ContentTypeHeader] = []string{
+		webConstant.ObjectContentType,
+	}
 
 	return web.ReadString(web.Send(web.Client(true), r))
 }

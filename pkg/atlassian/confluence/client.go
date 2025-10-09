@@ -24,4 +24,6 @@ type Client struct {
 
 	defaultSpace string
 	defaultPage  string
+
+	verbose bool
 }

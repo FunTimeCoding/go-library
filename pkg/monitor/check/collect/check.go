@@ -2,9 +2,8 @@ package collect
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/strings/join"
-
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func Check(

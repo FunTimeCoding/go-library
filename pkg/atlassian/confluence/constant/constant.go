@@ -13,6 +13,8 @@ const (
 	NoSpace = "no space"
 
 	PageType = "page"
+
+	PathPrefix = "/wiki/api/v2"
 )
 
 // Body format

@@ -11,6 +11,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/packer/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"log"
 )
 
@@ -34,7 +35,7 @@ func (c *Client) Packer(
 
 	v := r.Version()
 	outputImage := build.OutputFilename(v)
-	outputImagePath := system.Join(
+	outputImagePath := join.Absolute(
 		c.workDirectory,
 		constant.PackerDirectory,
 		constant.OutputDirectory,
@@ -58,7 +59,7 @@ func (c *Client) Packer(
 
 	n := Codename(v)
 	c.DownloadImage(r, architecture)
-	preseedPath := system.Join(c.workDirectory, preseed.Name(n))
+	preseedPath := join.Absolute(c.workDirectory, preseed.Name(n))
 	preseed.Download(n, preseedPath)
 	imageName := image.Name(v, architecture)
 	sum, found := checksum.Map(c.workDirectory)[imageName]

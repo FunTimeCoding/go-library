@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/debian/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"os"
 )
 
@@ -17,7 +18,7 @@ func PrepareNetBoot(
 	errors.PanicOnError(
 		os.Rename(
 			configurationPath,
-			system.Join(temporaryDirectory, constant.PreseedConfiguration),
+			join.Absolute(temporaryDirectory, constant.PreseedConfiguration),
 		),
 	)
 	system.CreateTarZip(temporaryDirectory, outputArchive)

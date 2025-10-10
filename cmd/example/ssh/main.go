@@ -5,6 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/ssh"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
+	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
 )
 
 func main() {
@@ -23,7 +25,12 @@ func main() {
 		s := ssh.NewWithFile(
 			system.User().Username,
 			n,
-			system.Join(system.Home(), ".ssh", "ansible", "id_rsa_insecure"),
+			join.Absolute(
+				system.Home(),
+				secure_shell.ConfigurationDirectory,
+				"ansible",
+				"id_rsa_insecure",
+			),
 			false,
 		)
 		defer s.Close()

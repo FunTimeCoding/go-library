@@ -1,5 +1,7 @@
 package system
 
+import "github.com/funtimecoding/go-library/pkg/system/join"
+
 func ParentDirectory(levels int) string {
 	var dots []string
 
@@ -7,5 +9,5 @@ func ParentDirectory(levels int) string {
 		dots = append(dots, "..")
 	}
 
-	return Join(append([]string{WorkingDirectory()}, dots...)...)
+	return join.Absolute(append([]string{WorkingDirectory()}, dots...)...)
 }

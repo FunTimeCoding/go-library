@@ -6,9 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/debian/constant"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/packer/build"
-	"github.com/funtimecoding/go-library/pkg/strings/join"
+	stringJoin "github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"log"
 	"runtime"
 )
@@ -29,7 +30,7 @@ func (c *Client) Run(
 
 	system.Move(
 		preseed,
-		system.Join(c.packerWebDirectory, constant.PreseedConfiguration),
+		join.Absolute(c.packerWebDirectory, constant.PreseedConfiguration),
 	)
 	// packer plugins install github.com/hashicorp/qemu
 	b := build.New(architecture, 4444, username, password)
@@ -37,15 +38,12 @@ func (c *Client) Run(
 		c.packerWebDirectory,
 		c.packerOutputDirectory,
 		headless,
-		system.Join(c.workDirectory, imageName),
+		join.Absolute(c.workDirectory, imageName),
 		checksum,
 		v,
 	)
-	template := system.Join(c.workDirectory, "debian.json")
-	system.SaveFile(
-		template,
-		fmt.Sprintf("%s\n", notation.Format(b)),
-	)
+	template := join.Absolute(c.workDirectory, "debian.json")
+	system.SaveFile(template, fmt.Sprintln(notation.Format(b)))
 	arguments := []string{
 		"packer",
 		"build",
@@ -54,7 +52,7 @@ func (c *Client) Run(
 		"cleanup",
 		template,
 	}
-	fmt.Printf("Command: %s\n", join.Space(arguments...))
+	fmt.Printf("Command: %s\n", stringJoin.Space(arguments...))
 
 	if headless {
 		var connectCommand string

@@ -1,7 +1,7 @@
 package alert
 
-import "github.com/funtimecoding/go-library/pkg/web/locator"
+import "github.com/funtimecoding/go-library/pkg/web/host"
 
 func (a *Alert) Host() string {
-	return locator.RemoveDomain(a.FullHost())
+	return host.StripDomain(a.FullHost())
 }

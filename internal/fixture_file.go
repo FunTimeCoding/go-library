@@ -4,15 +4,16 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"os"
 )
 
 func FixtureFile(path ...string) *os.File {
 	return system.Open(
-		system.Join(
+		join.Absolute(
 			git.FindDirectory(),
 			constant.FixturePath,
-			system.Join(path...),
+			join.Relative(path...),
 		),
 	)
 }

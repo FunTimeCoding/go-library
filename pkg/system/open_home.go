@@ -1,7 +1,10 @@
 package system
 
-import "os"
+import (
+	"github.com/funtimecoding/go-library/pkg/system/join"
+	"os"
+)
 
 func OpenHome(subPath string) *os.File {
-	return Open(Join(Home(), subPath))
+	return Open(join.Absolute(Home(), subPath))
 }

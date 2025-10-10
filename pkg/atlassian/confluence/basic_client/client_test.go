@@ -7,5 +7,8 @@ import (
 )
 
 func TestClient(t *testing.T) {
-	assert.NotNil(t, New(strings.Alfa, strings.Bravo, strings.Charlie, false))
+	assert.NotNil(
+		t,
+		New(strings.Alfa, strings.Bravo, strings.Charlie, false),
+	)
 }

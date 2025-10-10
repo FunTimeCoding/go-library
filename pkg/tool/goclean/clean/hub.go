@@ -9,9 +9,9 @@ import (
 )
 
 func Hub(r *remote.Remote) {
-	locator := git.ParseLocator(r.Locator)
+	l := git.ParseLocator(r.Locator)
 
-	if locator == nil {
+	if l == nil {
 		system.Exitf(
 			1,
 			"could not parse remote locator: %s\n",
@@ -21,7 +21,7 @@ func Hub(r *remote.Remote) {
 		return
 	}
 
-	namespace, repository := git.ParseProject(locator.Path)
+	namespace, repository := git.ParseProject(l.Path)
 	c := github.NewEnvironment()
 	hub.Tag(c, namespace, repository)
 	hub.Run(c, namespace, repository)

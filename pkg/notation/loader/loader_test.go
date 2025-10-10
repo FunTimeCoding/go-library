@@ -5,13 +5,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"testing"
 )
 
 func TestLoader(t *testing.T) {
 	l := New()
 	l.Load(
-		system.Join(
+		join.Absolute(
 			system.FindDirectoryUp(
 				system.WorkingDirectory(),
 				constant.Directory,

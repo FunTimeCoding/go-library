@@ -28,7 +28,7 @@ func (c *Client) PagesBySpace(identifier string) []*page.Page {
 			break
 		}
 
-		path = strings.TrimPrefix(s.Links.Next, constant.PathPrefix)
+		path = strings.TrimPrefix(s.Links.Next, constant.Base)
 	}
 
 	return page.Sort(page.NewSlice(result, c.host))

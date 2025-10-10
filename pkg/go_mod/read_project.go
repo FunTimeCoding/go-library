@@ -2,7 +2,7 @@ package go_mod
 
 import (
 	"github.com/funtimecoding/go-library/pkg/go_mod/project"
-	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func ReadProject(
@@ -11,7 +11,7 @@ func ReadProject(
 ) *project.Project {
 	return project.New(
 		path,
-		ReadVersion(system.Join(path, ModFile)),
+		ReadVersion(join.Absolute(path, ModFile)),
 		runtimeVersion,
 	)
 }

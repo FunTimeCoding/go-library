@@ -14,7 +14,8 @@ const (
 
 	PageType = "page"
 
-	PathPrefix = "/wiki/api/v2"
+	OldBase = "/wiki/rest/api"
+	Base    = "/wiki/api/v2"
 )
 
 // Body format

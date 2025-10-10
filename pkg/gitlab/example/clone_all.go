@@ -6,11 +6,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func CloneAll() {
 	g := gitlab.NewEnvironment()
-	base := system.Join(system.Home(), "gitlab-backup")
+	base := join.Absolute(system.Home(), "gitlab-backup")
 	projects := g.Projects()
 	count := len(projects)
 	var i int
@@ -23,9 +24,9 @@ func CloneAll() {
 			count,
 			p.Raw.PathWithNamespace,
 		)
-		group := system.Join(base, p.Raw.Namespace.Path)
+		group := join.Absolute(base, p.Raw.Namespace.Path)
 		system.EnsurePathExists(group)
-		repository := system.Join(group, p.Raw.Path)
+		repository := join.Absolute(group, p.Raw.Path)
 		fmt.Printf(
 			"  Clone %s to %s\n",
 			p.Raw.SSHURLToRepo,

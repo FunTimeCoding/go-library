@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/godownload/download/option"
 	library "gitlab.com/gitlab-org/api/client-go"
@@ -70,6 +71,6 @@ func Run(o *option.Download) {
 	system.Executable(o.Package)
 
 	if o.Output != DefaultOutput {
-		system.Move(o.Package, system.Join(o.Output, o.Package))
+		system.Move(o.Package, join.Absolute(o.Output, o.Package))
 	}
 }

@@ -7,6 +7,7 @@ import (
 	library "github.com/funtimecoding/go-library/pkg/runtime"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"runtime"
 )
 
@@ -20,20 +21,23 @@ func Run(
 		if library.RunningFromBinary() {
 			switch runtime.GOOS {
 			case systemConstant.Darwin:
-				path = system.Join(
+				path = join.Absolute(
 					system.Home(),
 					systemConstant.MacOSLibrary,
 					systemConstant.MacOsLogs,
 					constant.LogFile,
 				)
 			case systemConstant.Linux:
-				path = system.Join("/tmp", constant.LogFile)
+				path = join.Absolute(
+					systemConstant.Temporary,
+					constant.LogFile,
+				)
 			default:
 				path = constant.LogFile
 			}
 		} else {
 			system.EnsurePathExists(systemConstant.Temporary)
-			path = system.Join(systemConstant.Temporary, constant.LogFile)
+			path = join.Relative(systemConstant.Temporary, constant.LogFile)
 		}
 
 		f := Log(path)

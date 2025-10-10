@@ -3,8 +3,9 @@ package client_configuration
 import (
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func path() string {
-	return system.Join(system.Home(), constant.KubernetesConfigurationPath)
+	return join.Absolute(system.Home(), constant.KubernetesConfigurationPath)
 }

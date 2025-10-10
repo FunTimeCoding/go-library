@@ -3,27 +3,25 @@ package amtool
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/maps"
-	alertmanagerConstant "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
+	alertmanager "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/split/key_value"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	"slices"
 	"strings"
 )
 
 func Run(selected string) {
-	base := system.Join(
+	base := join.Absolute(
 		system.Home(),
 		constant.ConfigurationPath,
-		alertmanagerConstant.AmtoolPath,
+		alertmanager.AmtoolPath,
 	)
-	tool := system.Join(
-		base,
-		alertmanagerConstant.AmtoolConfiguration,
-	)
+	tool := join.Absolute(base, alertmanager.AmtoolConfiguration)
 
-	if !run.CommandExists(alertmanagerConstant.AmtoolCommand) {
+	if !run.CommandExists(alertmanager.AmtoolCommand) {
 		fmt.Println(
 			"amtool missing: go install github.com/prometheus/alertmanager/cmd/amtool@latest",
 		)
@@ -49,18 +47,15 @@ func Run(selected string) {
 
 		name, _ := key_value.Dot(f)
 
-		if strings.HasPrefix(
-			name,
-			alertmanagerConstant.AmtoolConfigurationPrefix,
-		) {
+		if strings.HasPrefix(name, alertmanager.AmtoolConfigurationPrefix) {
 			context := strings.TrimPrefix(
 				name,
-				alertmanagerConstant.AmtoolConfigurationPrefix,
+				alertmanager.AmtoolConfigurationPrefix,
 			)
 
 			if !slices.Contains(contexts, context) {
 				contexts = append(contexts, context)
-				p := system.Join(base, f)
+				p := join.Absolute(base, f)
 				c := Read(p)
 				locatorByContext[context] = c.Locator
 			}
@@ -100,11 +95,11 @@ func Run(selected string) {
 	}
 
 	system.CopyFile(
-		system.Join(
+		join.Absolute(
 			base,
 			fmt.Sprintf(
 				"%s%s.yml",
-				alertmanagerConstant.AmtoolConfigurationPrefix,
+				alertmanager.AmtoolConfigurationPrefix,
 				selected,
 			),
 		),

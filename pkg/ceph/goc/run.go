@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"slices"
 )
 
@@ -19,7 +20,7 @@ func Run(
 		fmt.Printf("File: %s\n", file)
 	}
 
-	base := system.Join(system.Home(), constant.ConfigurationPath, CephPath)
+	base := join.Absolute(system.Home(), constant.ConfigurationPath, CephPath)
 
 	if verbose {
 		fmt.Printf("Base: %s\n", base)
@@ -52,11 +53,11 @@ func Run(
 	}
 
 	name := configurationName(base, selected)
-	newConfiguration := system.Join(base, selected, clientConfiguration)
+	newConfiguration := join.Absolute(base, selected, clientConfiguration)
 	newArgument := fmt.Sprintf(
 		"-n %s --keyring=%s",
 		fmt.Sprintf("client.%s", name),
-		system.Join(
+		join.Absolute(
 			base,
 			selected,
 			fmt.Sprintf("ceph.client.%s.keyring", name),

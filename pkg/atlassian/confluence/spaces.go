@@ -23,7 +23,7 @@ func (c *Client) Spaces() []*space.Space {
 			break
 		}
 
-		path = strings.TrimPrefix(s.Links.Next, constant.PathPrefix)
+		path = strings.TrimPrefix(s.Links.Next, constant.Base)
 	}
 
 	return space.Sort(space.NewSlice(result))

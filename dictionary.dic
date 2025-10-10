@@ -195,11 +195,11 @@ virt
 virtlogd
 
 # QEMU
-xhci
-virtio
-qcow
 chardev
 nographic
+qcow
+virtio
+xhci
 
 # Packer
 HTTPIP

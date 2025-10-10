@@ -8,14 +8,14 @@ import (
 )
 
 func NewGet(
-	locator string,
+	format string,
 	a ...any,
 ) *http.Request {
 	if len(a) > 0 {
-		locator = fmt.Sprintf(locator, a...)
+		format = fmt.Sprintf(format, a...)
 	}
 
-	result, e := http.NewRequest(constant.GetMethod, locator, nil)
+	result, e := http.NewRequest(constant.GetMethod, format, nil)
 	errors.PanicOnError(e)
 
 	return result

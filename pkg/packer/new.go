@@ -3,10 +3,11 @@ package packer
 import (
 	"github.com/funtimecoding/go-library/pkg/packer/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func New(workDirectory string) *Client {
-	web := system.Join(
+	web := join.Absolute(
 		workDirectory,
 		constant.PackerDirectory,
 		constant.WebDirectory,
@@ -16,7 +17,7 @@ func New(workDirectory string) *Client {
 	return &Client{
 		workDirectory:      workDirectory,
 		packerWebDirectory: web,
-		packerOutputDirectory: system.Join(
+		packerOutputDirectory: join.Absolute(
 			workDirectory,
 			constant.PackerDirectory,
 			constant.OutputDirectory,

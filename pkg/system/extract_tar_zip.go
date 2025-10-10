@@ -3,6 +3,7 @@ package system
 import (
 	"archive/tar"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"io"
 	"os"
 )
@@ -31,7 +32,7 @@ func ExtractTarZip(
 		}
 
 		errors.PanicOnError(nextFail)
-		target := Join(destinationDirectory, header.Name)
+		target := join.Absolute(destinationDirectory, header.Name)
 
 		switch header.Typeflag {
 		case tar.TypeDir:

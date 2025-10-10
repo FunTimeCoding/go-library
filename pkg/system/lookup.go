@@ -1,8 +1,8 @@
 package system
 
 import (
-	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/strings/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/slice"
 	"net"
 )
 
@@ -13,5 +13,5 @@ func Lookup(address string) []string {
 		return []string{}
 	}
 
-	return strings.SliceTrimSuffix(result, separator.Dot)
+	return slice.TrimSuffix(result, separator.Dot)
 }

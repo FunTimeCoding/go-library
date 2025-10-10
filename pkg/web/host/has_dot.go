@@ -1,4 +1,4 @@
-package locator
+package host
 
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/separator"

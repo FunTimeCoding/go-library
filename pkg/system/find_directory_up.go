@@ -1,6 +1,7 @@
 package system
 
 import (
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"os"
 	"path/filepath"
 )
@@ -11,7 +12,7 @@ func FindDirectoryUp(
 ) string {
 	for {
 		if _, e := os.Stat(
-			Join(currentDirectory, nameToFind),
+			join.Absolute(currentDirectory, nameToFind),
 		); e == nil {
 			return currentDirectory
 		}

@@ -1,15 +1,15 @@
-package strings
+package slice
 
 import "strings"
 
-func SliceTrimSuffix(
+func Trim(
 	v []string,
-	suffix string,
+	set string,
 ) []string {
 	var result []string
 
 	for _, e := range v {
-		result = append(result, strings.TrimSuffix(e, suffix))
+		result = append(result, strings.Trim(e, set))
 	}
 
 	return result

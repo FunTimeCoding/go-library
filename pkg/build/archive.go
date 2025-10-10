@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func Archive(
@@ -18,7 +19,7 @@ func Archive(
 	archiveName := fmt.Sprintf("%s-%s.zip", name, systemArchitecture)
 	fmt.Printf("Archive name: %s\n", archiveName)
 
-	archive := system.Create(system.Join(constant.Temporary, archiveName))
+	archive := system.Create(join.Relative(constant.Temporary, archiveName))
 	defer errors.PanicClose(archive)
 	w := zip.NewWriter(archive)
 	f := system.Open(sourceFile)

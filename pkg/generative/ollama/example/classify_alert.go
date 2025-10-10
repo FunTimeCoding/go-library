@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant/prompts"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func ClassifyAlert() {
@@ -31,10 +32,10 @@ func ClassifyAlert() {
 		fmt.Printf("Response: %+v\n", r)
 		response := p.ParseResponse(r.Text)
 		fmt.Printf("To save: %s", response)
-		base := system.Join(constant.Temporary, "ollama")
+		base := join.Absolute(constant.Temporary, "ollama")
 		system.EnsurePathExists(base)
 		system.SaveFile(
-			system.Join(
+			join.Absolute(
 				base,
 				fmt.Sprintf(
 					"response-%d.json",

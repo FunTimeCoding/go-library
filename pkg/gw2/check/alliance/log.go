@@ -10,10 +10,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
 	"github.com/funtimecoding/go-library/pkg/strings/contains"
-	"github.com/funtimecoding/go-library/pkg/strings/join"
+	stringJoin "github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/olekukonko/tablewriter"
 	"os"
@@ -70,7 +71,7 @@ func Log(
 		}
 	}
 
-	aleevaPath := system.Join(
+	aleevaPath := join.Absolute(
 		systemConstant.Temporary,
 		gw2.LatestAleevaFile(
 			system.FilesMatching(
@@ -127,8 +128,8 @@ func Log(
 			t.Append(
 				[]string{
 					r.DiscordName,
-					join.Comma(r.Gw2Accounts),
-					join.Comma(teams),
+					stringJoin.Comma(r.Gw2Accounts),
+					stringJoin.Comma(teams),
 				},
 			),
 		)
@@ -151,7 +152,7 @@ func Log(
 		errors.PanicOnError(t.Render())
 	}
 
-	fmt.Printf("Members: %s\n", join.Comma(members))
+	fmt.Printf("Members: %s\n", stringJoin.Comma(members))
 	logs := log.NewSlice(gw2.ParseLogs(system.ReadBytes(path), false))
 	var unverified []string
 
@@ -221,7 +222,7 @@ func Log(
 	fmt.Printf(
 		"Exceptions (%d): %s\n",
 		len(foundExceptions),
-		join.Comma(foundExceptions),
+		stringJoin.Comma(foundExceptions),
 	)
 
 	fmt.Printf("Never seen count: %d\n", len(neverSeen))
@@ -250,7 +251,7 @@ func Log(
 			labels = append(labels, "at-risk")
 		}
 
-		fmt.Printf("Never seen: %s %s\n", name, join.Space(labels...))
+		fmt.Printf("Never seen: %s %s\n", name, stringJoin.Space(labels...))
 	}
 
 	daysAgo := 56
@@ -326,7 +327,7 @@ func Log(
 			"Seen days: %d %s %s\n",
 			len(e.Days),
 			e.Name,
-			join.Space(labels...),
+			stringJoin.Space(labels...),
 		)
 	}
 
@@ -341,6 +342,6 @@ func Log(
 			labels = append(labels, "at-risk")
 		}
 
-		fmt.Printf("Seen days: 0 %s %s\n", e, join.Space(labels...))
+		fmt.Printf("Seen days: 0 %s %s\n", e, stringJoin.Space(labels...))
 	}
 }

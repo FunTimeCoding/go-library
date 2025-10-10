@@ -1,11 +1,11 @@
 package gmail
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gmail/constant"
+	keyValueJoin "github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/strings/split/key_value"
-	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"google.golang.org/api/gmail/v1"
 	"google.golang.org/api/option"
 	"strings"
@@ -23,13 +23,9 @@ func (c *Client) loadService() *gmail.Service {
 	name, _ := key_value.At(c.profile(result).EmailAddress)
 	c.saveToken(
 		token,
-		system.Join(
+		join.Absolute(
 			c.directory,
-			fmt.Sprintf(
-				"%s%s",
-				strings.ToLower(name),
-				constant.TokenSuffix,
-			),
+			keyValueJoin.Empty(strings.ToLower(name), constant.TokenSuffix),
 		),
 	)
 

@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"os"
 	"path/filepath"
 )
@@ -40,7 +41,9 @@ func CreateTarZip(
 				header, headerFail := tar.FileInfoHeader(i, i.Name())
 				errors.PanicOnError(headerFail)
 
-				header.Name = filepath.ToSlash(Join(sourceDirectory, path))
+				header.Name = filepath.ToSlash(
+					join.Absolute(sourceDirectory, path),
+				)
 				errors.PanicOnError(writer.WriteHeader(header))
 
 				if !i.Mode().IsRegular() {

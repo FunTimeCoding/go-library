@@ -5,17 +5,18 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func ImportAleevaFiles() {
-	downloads := system.Join(system.Home(), systemConstant.DownloadsPath)
+	downloads := join.Absolute(system.Home(), systemConstant.DownloadsPath)
 
 	for _, file := range system.FilesMatching(
 		downloads,
 		constant.MembersPrefix,
 	) {
-		source := system.Join(downloads, file)
-		destination := system.Join(
+		source := join.Absolute(downloads, file)
+		destination := join.Absolute(
 			systemConstant.Temporary,
 			fmt.Sprintf(
 				"%s%s%s",

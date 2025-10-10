@@ -3,6 +3,7 @@ package macos
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"strings"
 )
 
@@ -17,16 +18,16 @@ func CreateBundle(
 	lowerName := strings.ToLower(name)
 	identifier := fmt.Sprintf("%s.%s", vendor, lowerName)
 	fullName := fmt.Sprintf("%s.app", name)
-	base := system.Join(system.WorkingDirectory(), path, fullName)
-	contents := system.Join(base, "Contents")
-	macos := system.Join(contents, "MacOS")
-	resources := system.Join(contents, "Resources")
-	executable := system.Join(macos, lowerName)
+	base := join.Absolute(system.WorkingDirectory(), path, fullName)
+	contents := join.Absolute(base, "Contents")
+	macos := join.Absolute(contents, "MacOS")
+	resources := join.Absolute(contents, "Resources")
+	executable := join.Absolute(macos, lowerName)
 	system.MakeDirectory(macos)
 	system.MakeDirectory(resources)
 	system.CopyFile(executablePath, executable)
 	system.Executable(executable)
-	system.CopyFile(iconPath, system.Join(resources, "icon.icns"))
+	system.CopyFile(iconPath, join.Absolute(resources, "icon.icns"))
 	info := fmt.Sprintf(
 		`<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
@@ -69,5 +70,5 @@ func CreateBundle(
 		version,
 		lowerName,
 	)
-	system.SaveFile(system.Join(contents, "Info.plist"), info)
+	system.SaveFile(join.Absolute(contents, "Info.plist"), info)
 }

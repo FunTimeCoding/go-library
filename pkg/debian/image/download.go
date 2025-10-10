@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/coreos/go-semver/semver"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
@@ -13,7 +14,7 @@ func Download(
 	workDirectory string,
 ) {
 	i := Name(v, architecture)
-	path := system.Join(workDirectory, i)
+	path := join.Absolute(workDirectory, i)
 
 	if system.FileExists(path) {
 		fmt.Printf("Image exists: %s\n", path)

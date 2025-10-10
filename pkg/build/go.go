@@ -5,9 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/build/option"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/strings/join"
+	stringJoin "github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	"os"
 	"path/filepath"
@@ -21,7 +22,7 @@ func Go(o *option.Build) {
 		if p.Name == "" {
 			panic("output empty and main not specified")
 		} else {
-			p.Output = system.Join(
+			p.Output = join.Relative(
 				systemConstant.Temporary,
 				p.Name,
 				SystemArchitecture(p.OperatingSystem, p.Architecture),
@@ -40,7 +41,7 @@ func Go(o *option.Build) {
 		constant.Go,
 		constant.Build,
 		constant.LinkerFlagsArgument,
-		join.Space(
+		stringJoin.Space(
 			constant.LinkerSetVariable,
 			fmt.Sprintf("main.Version=%s", GitTag()),
 			constant.LinkerSetVariable,
@@ -72,7 +73,7 @@ func Go(o *option.Build) {
 	if p.CopyToBin &&
 		runtime.GOOS == p.OperatingSystem &&
 		runtime.GOARCH == p.Architecture {
-		destination := system.Join(
+		destination := join.Absolute(
 			system.Home(),
 			systemConstant.Binary,
 			p.Name,

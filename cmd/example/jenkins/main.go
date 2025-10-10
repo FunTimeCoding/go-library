@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/jenkins"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func main() {
@@ -30,7 +31,7 @@ func main() {
 	}
 
 	if true {
-		root := system.Join(
+		root := join.Absolute(
 			system.WorkingDirectory(),
 			constant.Temporary,
 			"jenkins",
@@ -46,7 +47,7 @@ func main() {
 					fmt.Sprintf("job/%s/config.xml", name),
 				)
 				system.SaveFile(
-					system.Join(root, fmt.Sprintf("%s.xml", name)),
+					join.Absolute(root, fmt.Sprintf("%s.xml", name)),
 					b,
 				)
 			}

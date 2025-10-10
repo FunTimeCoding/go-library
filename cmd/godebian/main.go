@@ -8,6 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/semver"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -59,15 +60,15 @@ func main() {
 		1,
 		architecture,
 	)
-	packageDirectory := system.Join(system.WorkingDirectory(), packageName)
+	packageDirectory := join.Absolute(system.WorkingDirectory(), packageName)
 
-	debianDirectory := system.Join(
+	debianDirectory := join.Absolute(
 		packageDirectory,
 		debianConstant.PackageConfigurationDirectory,
 	)
 	system.MakeDirectory(debianDirectory)
 	system.SaveFile(
-		system.Join(debianDirectory, debianConstant.ControlFile),
+		join.Absolute(debianDirectory, debianConstant.ControlFile),
 		fmt.Sprintf(
 			"Package: %s"+
 				"\nVersion: %s"+
@@ -85,7 +86,7 @@ func main() {
 	)
 
 	if createUnit {
-		unit := system.Join(
+		unit := join.Absolute(
 			packageDirectory,
 			constant.Library,
 			"systemd",
@@ -93,7 +94,7 @@ func main() {
 		)
 		system.MakeDirectory(unit)
 		system.SaveFile(
-			system.Join(unit, fmt.Sprintf("%s.service", executable)),
+			join.Absolute(unit, fmt.Sprintf("%s.service", executable)),
 			fmt.Sprintf(
 				"[Unit]"+
 					"\nDescription=%s stub description"+
@@ -112,14 +113,14 @@ func main() {
 		)
 	}
 
-	bin := system.Join(
+	bin := join.Absolute(
 		packageDirectory,
 		constant.Resources,
 		constant.Local,
 		constant.Binary,
 	)
 	system.MakeDirectory(bin)
-	system.Move(executable, system.Join(bin, executable))
+	system.Move(executable, join.Absolute(bin, executable))
 
 	fmt.Println(
 		system.Run(

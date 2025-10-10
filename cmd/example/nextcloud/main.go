@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/nextcloud"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func main() {
@@ -28,14 +29,22 @@ func main() {
 	if false {
 		n.DownloadFile(
 			"example.png",
-			system.Join(system.Home(), constant.DownloadsPath, "example.png"),
+			join.Absolute(
+				system.Home(),
+				constant.DownloadsPath,
+				"example.png",
+			),
 		)
 	}
 
 	if false {
 		n.UploadFile(
 			"example2.png",
-			system.Join(system.Home(), constant.DownloadsPath, "example.png"),
+			join.Absolute(
+				system.Home(),
+				constant.DownloadsPath,
+				"example.png",
+			),
 		)
 	}
 }

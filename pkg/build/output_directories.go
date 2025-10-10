@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/contains"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func OutputDirectories() []string {
@@ -12,7 +13,7 @@ func OutputDirectories() []string {
 	for _, d := range system.Subdirectories(constant.Temporary) {
 		if !contains.Any(
 			constant.SystemArchitectures,
-			system.Subdirectories(system.Join(constant.Temporary, d)),
+			system.Subdirectories(join.Relative(constant.Temporary, d)),
 		) {
 			continue
 		}

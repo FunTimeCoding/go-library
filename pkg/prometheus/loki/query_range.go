@@ -1,7 +1,7 @@
 package loki
 
 import (
-	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/response"
 	"time"
 )
 

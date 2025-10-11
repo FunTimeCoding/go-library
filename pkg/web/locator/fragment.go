@@ -1,7 +1,16 @@
 package locator
 
-func (l *Locator) Fragment(s string) *Locator {
-	l.fragment = s
+import "fmt"
+
+func (l *Locator) Fragment(
+	f string,
+	a ...any,
+) *Locator {
+	if len(a) > 0 {
+		f = fmt.Sprintf(f, a...)
+	}
+
+	l.fragment = f
 
 	return l
 }

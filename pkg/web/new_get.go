@@ -15,7 +15,7 @@ func NewGet(
 		format = fmt.Sprintf(format, a...)
 	}
 
-	result, e := http.NewRequest(constant.GetMethod, format, nil)
+	result, e := http.NewRequest(constant.Get, format, nil)
 	errors.PanicOnError(e)
 
 	return result

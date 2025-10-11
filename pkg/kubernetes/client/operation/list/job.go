@@ -23,8 +23,8 @@ func Job(
 		o.FieldSelector = fmt.Sprintf("spec.nodeName=%s", node)
 	}
 
-	result, e := operation.Job(c, namespace).List(x, o)
+	r, e := operation.Job(c, namespace).List(x, o)
 	errors.PanicOnError(e)
 
-	return result.Items
+	return r.Items
 }

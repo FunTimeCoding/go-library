@@ -12,16 +12,16 @@ func Markup(
 	path string,
 	r io.Reader,
 ) *file_report.Report {
-	result := file_report.New(path, r)
+	s := file_report.New(path, r)
 
-	for result.Scan() {
-		line, number := result.Text()
+	for s.Scan() {
+		line, number := s.Text()
 
 		if number == 1 {
 			if line != constant.FrontMatterDelimiter {
-				result.ChangedLine(constant.FrontMatterDelimiter)
-				result.ChangedLine(line)
-				result.AddConcern(
+				s.ChangedLine(constant.FrontMatterDelimiter)
+				s.ChangedLine(line)
+				s.AddConcern(
 					constant.FrontMatterDelimiterKey,
 					constant.FrontMatterDelimiterText,
 					path,
@@ -30,16 +30,16 @@ func Markup(
 				)
 			}
 		} else {
-			result.ChangedLine(line)
+			s.ChangedLine(line)
 		}
 	}
 
-	result.Fix = func() {
-		if result.Fixed != "" {
+	s.Fix = func() {
+		if s.Fixed != "" {
 			fmt.Printf("Add front matter delimiter %s\n", path)
-			system.SaveFile(path, result.Fixed)
+			system.SaveFile(path, s.Fixed)
 		}
 	}
 
-	return result.Finalize()
+	return s.Finalize()
 }

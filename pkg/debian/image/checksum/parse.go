@@ -9,8 +9,8 @@ import (
 func Parse(input string) map[string]string {
 	result := make(map[string]string)
 
-	for _, element := range split.NewLine(input) {
-		parts := strings.Split(element, separator.DoubleSpace)
+	for _, l := range split.NewLine(input) {
+		parts := strings.Split(l, separator.DoubleSpace)
 		result[parts[1]] = parts[0]
 	}
 

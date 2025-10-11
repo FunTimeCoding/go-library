@@ -1,8 +1,10 @@
 package constant
 
 const (
-	Locator = "https://api.pushover.net/1/messages.json"
-
 	UserEnvironment  = "PUSHOVER_USER"
 	TokenEnvironment = "PUSHOVER_TOKEN"
+
+	Host    = "api.pushover.net"
+	Base    = "/1"
+	Message = "/messages.json"
 )

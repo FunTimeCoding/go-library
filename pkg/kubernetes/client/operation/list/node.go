@@ -13,8 +13,8 @@ func Node(
 	c *kubernetes.Clientset,
 	x context.Context,
 ) []core.Node {
-	result, e := operation.Node(c).List(x, meta.ListOptions{})
+	r, e := operation.Node(c).List(x, meta.ListOptions{})
 	errors.PanicOnError(e)
 
-	return result.Items
+	return r.Items
 }

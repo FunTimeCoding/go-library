@@ -27,9 +27,9 @@ func main() {
 
 	fmt.Printf("Start: %+v\n", t)
 	t.Start(
-		argument.RequiredStringFlag(argument.Host),
-		argument.RequiredStringFlag(TargetHost),
-		argument.RequiredIntegerFlag(TargetPort),
+		argument.Required(argument.Host),
+		argument.Required(TargetHost),
+		argument.RequiredInteger(TargetPort),
 		0,
 	)
 	defer t.Stop()

@@ -1,15 +1,19 @@
 package netboot
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
+)
 
 func Link(
 	release string,
 	architecture string,
 ) string {
-	// noinspection HttpUrlsUsage
-	return fmt.Sprintf(
-		"http://ftp.debian.org/debian/dists/%s/main/installer-%s/current/images/netboot/netboot.tar.gz",
-		release,
-		architecture,
-	)
+	return locator.New("ftp.debian.org").Insecure().Path(
+		fmt.Sprintf(
+			"debian/dists/%s/main/installer-%s/current/images/netboot/netboot.tar.gz",
+			release,
+			architecture,
+		),
+	).String()
 }

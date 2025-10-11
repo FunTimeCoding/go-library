@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) Home() *models.GetHomeDashboardResponse {
-	result, e := c.client.Dashboards.GetHomeDashboard()
+	r, e := c.client.Dashboards.GetHomeDashboard()
 	errors.PanicOnError(e)
 
-	return result.Payload
+	return r.Payload
 }

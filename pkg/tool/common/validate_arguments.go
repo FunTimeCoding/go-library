@@ -3,8 +3,8 @@ package common
 import "github.com/funtimecoding/go-library/pkg/argument"
 
 func ValidateArguments() {
-	argument.RequiredStringFlag(argument.Host)
-	argument.RequiredStringFlag(argument.Token)
-	argument.RequiredStringFlag(argument.Owner)
-	argument.RequiredStringFlag(argument.Repository)
+	argument.Required(argument.Host)
+	argument.Required(argument.Token)
+	argument.Required(argument.Owner)
+	argument.Required(argument.Repository)
 }

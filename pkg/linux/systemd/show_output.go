@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) ShowOutput(name string) string {
-	result := c.ssh.Run(join.Space(constant.Command, constant.Show, name))
-
-	return result.OutputString
+	return c.ssh.Run(
+		join.Space(constant.Command, constant.Show, name),
+	).OutputString
 }

@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) GroupsKaos() []*kaos.Group {
-	result, e := c.kaos.GetGroups(kaos.CollectionParameters{})
+	r, e := c.kaos.GetGroups(kaos.CollectionParameters{})
 	errors.PanicOnError(e)
 
-	return result.Results
+	return r.Results
 }

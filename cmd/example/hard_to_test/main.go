@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/brave"
 	"github.com/funtimecoding/go-library/pkg/build"
@@ -73,7 +73,7 @@ func main() {
 
 	push.Send(nil)
 
-	argument.RequiredInteger64Flag("")
+	argument.RequiredInteger64("")
 
 	errors.NotFound("")
 

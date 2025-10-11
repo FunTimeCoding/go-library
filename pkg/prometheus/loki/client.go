@@ -1,7 +1,7 @@
 package loki
 
-import "github.com/funtimecoding/go-library/pkg/prometheus/loki/basic_client"
+import "github.com/funtimecoding/go-library/pkg/prometheus/loki/basic"
 
 type Client struct {
-	basic *basic_client.Client
+	basic *basic.Client
 }

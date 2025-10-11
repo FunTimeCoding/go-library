@@ -11,7 +11,7 @@ func Token(
 	token string,
 ) {
 	r.Header.Set(
-		constant.AuthorizationHeader,
-		key_value.Space(constant.TokenPrefix, token),
+		constant.Authorization,
+		key_value.Space(constant.Token, token),
 	)
 }

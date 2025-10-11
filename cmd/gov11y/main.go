@@ -15,6 +15,6 @@ func main() {
 	argument.ParseBind()
 	o := option.New()
 	o.Verbose = viper.GetBool(argument.Verbose)
-	o.Filter = argument.StringSlice(argument.Filter)
+	o.Filter = argument.Slice(argument.Filter)
 	vulnerability.Check(o)
 }

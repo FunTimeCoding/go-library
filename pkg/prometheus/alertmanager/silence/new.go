@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/openapi"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/prometheus/alertmanager/api/v2/models"
 )
 
@@ -40,11 +41,9 @@ func New(
 		Author:     *v.CreatedBy,
 		Comment:    *v.Comment,
 		Rule:       rule,
-		Link: fmt.Sprintf(
-			"https://%s/#/silences/%s",
+		Link: locator.New(
 			host,
-			*v.ID,
-		),
+		).Trail().Fragment("/silences/%s", *v.ID).String(),
 		Raw: v,
 	}
 }

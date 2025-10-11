@@ -14,13 +14,13 @@ func Event(
 	x context.Context,
 	namespace string,
 	limit int,
-	fieldSelector string,
+	selector string,
 ) []event.Event {
-	result, e := operation.Event(c, namespace).List(
+	r, e := operation.Event(c, namespace).List(
 		x,
-		meta.ListOptions{Limit: int64(limit), FieldSelector: fieldSelector},
+		meta.ListOptions{Limit: int64(limit), FieldSelector: selector},
 	)
 	errors.PanicOnError(e)
 
-	return result.Items
+	return r.Items
 }

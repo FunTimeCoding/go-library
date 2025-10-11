@@ -1,5 +1,5 @@
 package sentry
 
 func (c *Client) Favourites() string {
-	return c.basicClient.Get("/users/favorites/")
+	return c.basic.Get("/users/favorites/")
 }

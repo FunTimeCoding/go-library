@@ -2,9 +2,10 @@ package gitlab
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -27,7 +28,9 @@ func New(
 	if host != "" {
 		p = append(
 			p,
-			gitlab.WithBaseURL(fmt.Sprintf("https://%s/api/v4", host)),
+			gitlab.WithBaseURL(
+				locator.New(host).Base(constant.Base).String(),
+			),
 		)
 	}
 

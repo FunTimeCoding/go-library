@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) MembersKaos(group string) []*kaos.User {
-	result, e := c.kaos.GetGroupMembers(group, kaos.CollectionParameters{})
+	r, e := c.kaos.GetGroupMembers(group, kaos.CollectionParameters{})
 	errors.PanicOnError(e)
 
-	return result.Results
+	return r.Results
 }

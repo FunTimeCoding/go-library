@@ -2,14 +2,22 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"testing"
 )
 
 func TestGetList(t *testing.T) {
-	r, e := http.NewRequest(
-		http.MethodGet, "http://localhost?a=1,2,3", nil,
+	assert.Any(
+		t,
+		[]string{"1", "2", "3"},
+		GetList(
+			NewGet(
+				locator.New(
+					constant.Localhost,
+				).Insecure().Set("a", "1,2,3").String(),
+			),
+			"a",
+		),
 	)
-	assert.FatalOnError(t, e)
-	assert.Any(t, []string{"1", "2", "3"}, GetList(r, "a"))
 }

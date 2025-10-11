@@ -1,9 +1,8 @@
 package search_result
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 
 type Result struct {
 	Name string
-
-	Raw *response.Result
+	Raw  *response.Result
 }

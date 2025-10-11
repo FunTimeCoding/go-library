@@ -1,10 +1,7 @@
 package user
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 
 func New(r *response.User) *User {
-	return &User{
-		Name: r.DisplayName,
-		Raw:  r,
-	}
+	return &User{Name: r.DisplayName, Raw: r}
 }

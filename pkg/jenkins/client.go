@@ -3,11 +3,11 @@ package jenkins
 import (
 	"context"
 	"github.com/bndr/gojenkins"
-	"github.com/funtimecoding/go-library/pkg/jenkins/basic_client"
+	"github.com/funtimecoding/go-library/pkg/jenkins/basic"
 )
 
 type Client struct {
-	basic   *basic_client.Client
+	basic   *basic.Client
 	context context.Context
 	client  *gojenkins.Jenkins
 }

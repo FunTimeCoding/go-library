@@ -53,7 +53,7 @@ func main() {
 	}
 
 	if len(o.Skip) == 0 {
-		o.Skip = argument.StringSlice(argument.Skip)
+		o.Skip = argument.Slice(argument.Skip)
 	}
 
 	v := runtime.ExecutableVersion()

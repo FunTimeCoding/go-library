@@ -7,7 +7,7 @@ import (
 )
 
 func NewDelete(locator string) *http.Request {
-	result, e := http.NewRequest(constant.DeleteMethod, locator, nil)
+	result, e := http.NewRequest(constant.Delete, locator, nil)
 	errors.PanicOnError(e)
 
 	return result

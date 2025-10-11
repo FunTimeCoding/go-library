@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) Plugins() []gojenkins.Plugin {
-	result, e := c.client.GetPlugins(c.context, 2)
+	r, e := c.client.GetPlugins(c.context, 2)
 	errors.PanicOnError(e)
 
-	return result.Raw.Plugins
+	return r.Raw.Plugins
 }

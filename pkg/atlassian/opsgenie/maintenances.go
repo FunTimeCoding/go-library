@@ -6,11 +6,11 @@ import (
 )
 
 func (c *Client) Maintenances() []maintenance.Maintenance {
-	result, e := c.userClient.Maintenance.List(
+	r, e := c.userClient.Maintenance.List(
 		c.context,
 		&maintenance.ListRequest{Type: maintenance.All},
 	)
 	errors.PanicOnError(e)
 
-	return result.Maintenances
+	return r.Maintenances
 }

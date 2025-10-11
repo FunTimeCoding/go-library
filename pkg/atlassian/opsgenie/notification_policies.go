@@ -6,11 +6,11 @@ import (
 )
 
 func (c *Client) NotificationPolicies(team string) []policy.PolicyProps {
-	result, e := c.userClient.Policy.ListNotificationPolicies(
+	r, e := c.userClient.Policy.ListNotificationPolicies(
 		c.context,
 		&policy.ListNotificationPoliciesRequest{TeamId: team},
 	)
 	errors.PanicOnError(e)
 
-	return result.Policies
+	return r.Policies
 }

@@ -21,7 +21,7 @@ func New(
 	t := transport.New(
 		host,
 		client.DefaultBasePath,
-		[]string{constant.SecureScheme},
+		[]string{constant.Secure},
 	)
 	t.DefaultAuthentication = transport.BasicAuth(user, password)
 	c.SetTransport(t)

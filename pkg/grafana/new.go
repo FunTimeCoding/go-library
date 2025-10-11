@@ -18,7 +18,7 @@ func New(
 			&client.TransportConfig{
 				Host:     fmt.Sprintf("%s:%s", host, port),
 				BasePath: "/api",
-				Schemes:  []string{constant.SecureScheme},
+				Schemes:  []string{constant.Secure},
 				APIKey:   token,
 				//BasicAuth: url.UserPassword("admin", "admin"),
 				OrgID: 1,

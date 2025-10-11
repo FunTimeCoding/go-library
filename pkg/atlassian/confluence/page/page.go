@@ -1,6 +1,6 @@
 package page
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 
 type Page struct {
 	Identifier string

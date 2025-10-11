@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	prometheus "github.com/funtimecoding/go-library/pkg/prometheus/constant"
-	"net/url"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
 func (a *Alert) buildLink(host string) string {
@@ -26,9 +26,7 @@ func (a *Alert) buildLink(host string) string {
 		)
 	}
 
-	return fmt.Sprintf(
-		"https://%s/#/alerts?filter=%s",
-		host,
-		url.QueryEscape(query),
-	)
+	return locator.New(host).Trail().Fragment(
+		constant.Alerts,
+	).FragmentSet("filter", query).String()
 }

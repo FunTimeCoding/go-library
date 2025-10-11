@@ -4,8 +4,8 @@ import "github.com/funtimecoding/go-library/pkg/web/constant"
 
 func SchemePrefix(secure bool) string {
 	if secure {
-		return constant.SecureSchemePrefix
+		return constant.SecurePrefix
 	}
 
-	return constant.InsecureSchemePrefix
+	return constant.InsecurePrefix
 }

@@ -19,7 +19,7 @@ func New(
 
 	if port == 0 {
 		port = Port
-		address = constant.MetricsAddress
+		address = constant.Metric
 	} else {
 		address = fmt.Sprintf(":%d", port)
 	}

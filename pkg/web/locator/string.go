@@ -1,40 +1,50 @@
 package locator
 
 import (
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"github.com/funtimecoding/go-library/pkg/system/join"
 	"net"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 func (l *Locator) String() string {
-	result := &url.URL{}
+	o := &url.URL{Scheme: l.scheme}
 
 	if l.host != "" {
-		result.Host = l.host
+		if l.port != 0 {
+			o.Host = net.JoinHostPort(l.host, strconv.Itoa(l.port))
+		} else {
+			o.Host = l.host
+		}
 	}
 
-	if l.port != 0 {
-		result.Host = net.JoinHostPort(l.host, strconv.Itoa(l.port))
+	if l.basePath != "" || l.path != "" {
+		o.Path = join.Absolute(l.basePath, l.path)
 	}
 
-	if l.scheme != "" {
-		result.Scheme = l.scheme
+	if l.trail && !strings.HasSuffix(o.Path, separator.Slash) {
+		o.Path += separator.Slash
 	}
 
-	if l.basePath != "" && l.path != "" {
-		result.Path = join.Absolute(l.basePath, l.path)
-	} else if l.basePath != "" && l.path == "" {
-		result.Path = l.basePath
-	} else if l.path != "" {
-		result.Path = l.path
+	o.RawQuery = l.value.Encode()
+
+	if l.user != "" && l.password == "" {
+		o.User = url.User(l.user)
+	} else if l.user != "" && l.password != "" {
+		o.User = url.UserPassword(l.user, l.password)
 	}
 
-	result.RawQuery = l.values.Encode()
+	result := o.String()
 
 	if l.fragment != "" {
-		result.Fragment = l.fragment
+		if len(l.fragmentValue) > 0 {
+			result += "#" + l.fragment + "?" + l.fragmentValue.Encode()
+		} else {
+			result += "#" + l.fragment
+		}
 	}
 
-	return result.String()
+	return result
 }

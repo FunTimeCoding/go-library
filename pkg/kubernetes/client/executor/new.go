@@ -13,7 +13,7 @@ func New(
 ) remotecommand.Executor {
 	result, e := remotecommand.NewSPDYExecutor(
 		c,
-		constant.PostMethod,
+		constant.Post,
 		r.URL(),
 	)
 	errors.PanicOnError(e)

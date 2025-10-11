@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Context) Address() string {
-	if v, okay := c.Header()[constant.RealAddressHeader]; okay {
+	if v, okay := c.Header()[constant.RealAddress]; okay {
 		return v[0]
 	}
 

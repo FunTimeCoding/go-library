@@ -4,7 +4,7 @@ func (l *Locator) Set(
 	k string,
 	v string,
 ) *Locator {
-	l.values.Set(k, v)
+	l.value.Set(k, v)
 
 	return l
 }

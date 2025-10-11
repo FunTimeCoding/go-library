@@ -1,7 +1,7 @@
 package open_webui
 
-import "github.com/funtimecoding/go-library/pkg/generative/open_webui/basic_client"
+import "github.com/funtimecoding/go-library/pkg/generative/open_webui/basic"
 
 type Client struct {
-	basic *basic_client.Client
+	basic *basic.Client
 }

@@ -1,8 +1,9 @@
 package page
 
 import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
 func link(
@@ -12,19 +13,15 @@ func link(
 ) string {
 	if tiny {
 		if p.Links.WebUI != "" {
-			return fmt.Sprintf(
-				"https://%s/wiki%s",
+			return locator.New(
 				host,
-				p.Links.TinyUI,
-			)
+			).Base(constant.Wiki).Path(p.Links.TinyUI).String()
 		}
 	} else {
 		if p.Links.WebUI != "" {
-			return fmt.Sprintf(
-				"https://%s/wiki%s",
+			return locator.New(
 				host,
-				p.Links.WebUI,
-			)
+			).Base(constant.Wiki).Path(p.Links.WebUI).String()
 		}
 	}
 

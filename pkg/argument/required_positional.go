@@ -2,7 +2,7 @@ package argument
 
 func RequiredPositional(
 	n int,
-	description string,
+	name string,
 ) string {
-	return RequiredPositionalExit(n, description, 1)
+	return RequiredPositionalExit(n, name, 1)
 }

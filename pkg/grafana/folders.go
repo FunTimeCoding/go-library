@@ -7,8 +7,8 @@ import (
 )
 
 func (c *Client) Folders() []*models.FolderSearchHit {
-	result, e := c.client.Folders.GetFolders(&folders.GetFoldersParams{})
+	r, e := c.client.Folders.GetFolders(&folders.GetFoldersParams{})
 	errors.PanicOnError(e)
 
-	return result.Payload
+	return r.Payload
 }

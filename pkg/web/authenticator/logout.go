@@ -6,8 +6,8 @@ import (
 )
 
 func (a *Authenticator) Logout(c *request_context.Context) {
-	if s := c.Cookie(constant.SessionCookie); s != nil {
+	if s := c.Cookie(constant.Session); s != nil {
 		a.store.Remove(s.Value)
-		c.UnsetCookie(constant.SessionCookie)
+		c.UnsetCookie(constant.Session)
 	}
 }

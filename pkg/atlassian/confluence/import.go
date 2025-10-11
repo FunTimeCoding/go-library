@@ -1,7 +1,7 @@
 package confluence
 
 import (
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page/page_file"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page/page_post"

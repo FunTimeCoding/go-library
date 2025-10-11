@@ -1,9 +1,10 @@
 package loki
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic_client"
+	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic"
+	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/grafana/loki-client-go/loki"
 	"github.com/samber/slog-loki/v3"
 	"log/slog"
@@ -23,13 +24,13 @@ func New(
 		slogWay(host)
 	}
 
-	return &Client{basic: basic_client.New(host, user, password)}
+	return &Client{basic: basic.New(host, user, password)}
 }
 
 func slogWay(host string) {
 	// Another way to log, not to read
 	configuration, e := loki.NewDefaultConfig(
-		fmt.Sprintf("https://%s/loki/api/v1/push", host),
+		locator.New(host).Base(constant.Base).Path(constant.Push).String(),
 	)
 	errors.PanicOnError(e)
 	configuration.TenantID = "exampleTenant"

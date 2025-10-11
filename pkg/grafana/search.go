@@ -7,8 +7,8 @@ import (
 )
 
 func (c *Client) Search() models.HitList {
-	result, e := c.client.Search.Search(&search.SearchParams{})
+	r, e := c.client.Search.Search(&search.SearchParams{})
 	errors.PanicOnError(e)
 
-	return result.Payload
+	return r.Payload
 }

@@ -5,6 +5,8 @@ import (
 	"errors"
 	errorLibrary "github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/monitor/coder/server"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"log"
 	"net"
 	"net/http"
@@ -20,7 +22,11 @@ func Run() error {
 
 	l, listenFail := net.Listen("tcp", os.Args[1])
 	errorLibrary.PanicOnError(listenFail)
-	log.Printf("listen on ws://%v", l.Addr())
+
+	log.Printf(
+		"listen on %s",
+		locator.New(l.Addr().String()).Scheme(constant.Socket).String(),
+	)
 	s := &http.Server{
 		Handler:      server.Server{Logf: log.Printf},
 		ReadTimeout:  time.Second * 10,

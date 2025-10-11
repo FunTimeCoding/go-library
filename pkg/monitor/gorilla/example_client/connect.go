@@ -18,7 +18,7 @@ func Run() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 	u := url.URL{
-		Scheme: web.SocketScheme,
+		Scheme: web.Socket,
 		Host:   constant.Address,
 		Path:   location.Echo,
 	}

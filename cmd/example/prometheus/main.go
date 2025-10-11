@@ -4,6 +4,7 @@ import (
 	grafana "github.com/funtimecoding/go-library/pkg/grafana/example"
 	alertmanager "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/example"
 	prometheus "github.com/funtimecoding/go-library/pkg/prometheus/example"
+	loki "github.com/funtimecoding/go-library/pkg/prometheus/loki/example"
 )
 
 func main() {
@@ -12,6 +13,9 @@ func main() {
 
 	if false {
 		grafana.Read()
+
+		loki.Load()
+		loki.Write()
 
 		prometheus.Status()
 		prometheus.Metric()

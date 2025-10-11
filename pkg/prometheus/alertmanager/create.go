@@ -1,10 +1,10 @@
 package alertmanager
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	prometheusConstant "github.com/funtimecoding/go-library/pkg/prometheus/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/go-openapi/strfmt"
 	rawAlert "github.com/prometheus/alertmanager/api/v2/client/alert"
 	"github.com/prometheus/alertmanager/api/v2/models"
@@ -31,11 +31,12 @@ func (c *Client) Create(
 					prometheusConstant.InstanceLabel: instance,
 				},
 				GeneratorURL: strfmt.URI(
-					fmt.Sprintf(
-						"https://%s/graph?g0.expr=%s",
+					locator.New(
 						c.prometheus.Host(),
+					).Path(prometheusConstant.Graph).Set(
+						prometheusConstant.Graph0Expression,
 						expression,
-					),
+					).String(),
 				),
 			},
 			Annotations: map[string]string{

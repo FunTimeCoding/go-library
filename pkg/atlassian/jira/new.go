@@ -2,13 +2,13 @@ package jira
 
 import (
 	"context"
-	"fmt"
 	"github.com/andygrunwald/go-jira"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic_client"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/client"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/service_client"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
 func New(
@@ -20,16 +20,15 @@ func New(
 	errors.FatalOnEmpty(host, "host")
 	errors.FatalOnEmpty(user, "user")
 	errors.FatalOnEmpty(token, "token")
-	l := fmt.Sprintf("https://%s", host)
 	result := &Client{
 		context: context.Background(),
 		client: client.New(
 			jira.BasicAuthTransport{Username: user, Password: token},
-			l,
+			host,
 		),
-		basic:   basic_client.New(l, user, token),
-		service: service_client.New(l, user, token),
-		locator: l,
+		basic:   basic.New(host, user, token),
+		service: service_client.New(host, user, token),
+		locator: locator.New(host).String(),
 		user:    user,
 	}
 

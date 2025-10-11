@@ -9,7 +9,7 @@ func (c *Client) NotificationRuleSteps(
 	user string,
 	rule string,
 ) []notification.RuleStep {
-	result, e := c.userClient.Notification.ListRuleStep(
+	r, e := c.userClient.Notification.ListRuleStep(
 		c.context,
 		&notification.ListRuleStepsRequest{
 			UserIdentifier: user,
@@ -18,5 +18,5 @@ func (c *Client) NotificationRuleSteps(
 	)
 	errors.PanicOnError(e)
 
-	return result.RuleSteps
+	return r.RuleSteps
 }

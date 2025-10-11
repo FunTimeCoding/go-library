@@ -9,11 +9,11 @@ func (c *Client) Embedding(
 	model string,
 	p string,
 ) []float64 {
-	result, e := c.client.Embeddings(
+	r, e := c.client.Embeddings(
 		c.context,
 		&api.EmbeddingRequest{Model: model, Prompt: p},
 	)
 	errors.PanicOnError(e)
 
-	return result.Embedding
+	return r.Embedding
 }

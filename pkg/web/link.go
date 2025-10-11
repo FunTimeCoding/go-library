@@ -1,17 +1,17 @@
 package web
 
-import "fmt"
+import "github.com/funtimecoding/go-library/pkg/web/locator"
 
 func Link(
 	host string,
 	port int,
 	secure bool,
 ) string {
-	scheme := Scheme(secure)
+	l := locator.New(host).Port(port)
 
-	if port != 0 {
-		return fmt.Sprintf("%s://%s:%d", scheme, host, port)
+	if !secure {
+		l = l.Insecure()
 	}
 
-	return fmt.Sprintf("%s://%s", scheme, host)
+	return l.String()
 }

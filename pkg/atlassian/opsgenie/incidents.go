@@ -6,11 +6,11 @@ import (
 )
 
 func (c *Client) Incidents(query string) []incident.Incident {
-	result, e := c.userClient.Incident.List(
+	r, e := c.userClient.Incident.List(
 		c.context,
 		&incident.ListRequest{Query: query},
 	)
 	errors.PanicOnError(e)
 
-	return result.Incidents
+	return r.Incidents
 }

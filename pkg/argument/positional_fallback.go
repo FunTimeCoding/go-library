@@ -6,11 +6,9 @@ func PositionalFallback(
 	number int,
 	fallback string,
 ) string {
-	value := pflag.Arg(number)
-
-	if value == "" {
-		return fallback
+	if s := pflag.Arg(number); s == "" {
+		return s
 	}
 
-	return value
+	return fallback
 }

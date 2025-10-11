@@ -6,11 +6,11 @@ import (
 )
 
 func (c *Client) Contacts(user string) []contact.Contact {
-	result, e := c.userClient.Contact.List(
+	r, e := c.userClient.Contact.List(
 		c.context,
 		&contact.ListRequest{UserIdentifier: user},
 	)
 	errors.PanicOnError(e)
 
-	return result.Contact
+	return r.Contact
 }

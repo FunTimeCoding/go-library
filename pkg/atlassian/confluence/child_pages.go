@@ -2,7 +2,7 @@ package confluence
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/notation"
 )

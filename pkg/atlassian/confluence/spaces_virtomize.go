@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) SpacesVirtomize() []goconfluence.Space {
-	result, e := c.virtomize.GetAllSpaces(goconfluence.AllSpacesQuery{})
+	r, e := c.virtomize.GetAllSpaces(goconfluence.AllSpacesQuery{})
 	errors.PanicOnError(e)
 
-	return result.Results
+	return r.Results
 }

@@ -6,14 +6,11 @@ import (
 )
 
 func (u *User) Format(f *option.Format) string {
-	result := status.New(f).String(
-		u.Name,
-		u.Identifier,
-	).RawList(u.Raw)
+	r := status.New(f).String(u.Name, u.Identifier).RawList(u.Raw)
 
 	if u.FullName != "" {
-		result.String(u.FullName)
+		r.String(u.FullName)
 	}
 
-	return result.Format()
+	return r.Format()
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) AlertAttachments(identifier string) []alert.ListedAttachment {
-	result, e := c.userClient.Alert.ListAlertsAttachments(
+	r, e := c.userClient.Alert.ListAlertsAttachments(
 		c.context,
 		&alert.ListAttachmentsRequest{
 			IdentifierType:  alert.ALERTID,
@@ -15,5 +15,5 @@ func (c *Client) AlertAttachments(identifier string) []alert.ListedAttachment {
 	)
 	errors.PanicOnError(e)
 
-	return result.Attachment
+	return r.Attachment
 }

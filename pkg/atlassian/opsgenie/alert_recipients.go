@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) AlertRecipients(identifier string) []alert.AlertRecipient {
-	result, e := c.userClient.Alert.ListAlertRecipients(
+	r, e := c.userClient.Alert.ListAlertRecipients(
 		c.context,
 		&alert.ListAlertRecipientRequest{
 			IdentifierType:  alert.ALERTID,
@@ -15,5 +15,5 @@ func (c *Client) AlertRecipients(identifier string) []alert.AlertRecipient {
 	)
 	errors.PanicOnError(e)
 
-	return result.AlertRecipients
+	return r.AlertRecipients
 }

@@ -1,13 +1,8 @@
 package locator
 
-import (
-	"github.com/funtimecoding/go-library/pkg/web/constant"
-	"net/url"
-)
+func New(h string) *Locator {
+	result := Stub()
+	result.host = h
 
-func New() *Locator {
-	return &Locator{
-		values: url.Values{},
-		scheme: constant.SecureScheme,
-	}
+	return result
 }

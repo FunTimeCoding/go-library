@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"testing"
 )
 
@@ -105,7 +106,7 @@ func TestStatusNested(t *testing.T) {
 		assert.String(
 			t,
 			"1 | a | b\n  line1\n  line2\n  2 | c | d\n    line1\n    line2\n",
-			fmt.Sprintf("%s%s", appleOutput, orangeOutput),
+			key_value.Empty(appleOutput, orangeOutput),
 		)
 	}
 }

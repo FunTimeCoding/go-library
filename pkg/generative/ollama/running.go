@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) Running() []api.ProcessModelResponse {
-	result, e := c.client.ListRunning(c.context)
+	r, e := c.client.ListRunning(c.context)
 	errors.PanicOnError(e)
 
-	return result.Models
+	return r.Models
 }

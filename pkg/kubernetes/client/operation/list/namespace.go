@@ -13,8 +13,8 @@ func Namespace(
 	c *kubernetes.Clientset,
 	x context.Context,
 ) []core.Namespace {
-	result, e := operation.Namespace(c).List(x, meta.ListOptions{})
+	r, e := operation.Namespace(c).List(x, meta.ListOptions{})
 	errors.PanicOnError(e)
 
-	return result.Items
+	return r.Items
 }

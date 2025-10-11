@@ -6,12 +6,12 @@ import (
 )
 
 func TrimScheme(s string) string {
-	if strings.HasPrefix(s, constant.SecureSchemePrefix) {
-		return strings.TrimPrefix(s, constant.SecureSchemePrefix)
+	if strings.HasPrefix(s, constant.SecurePrefix) {
+		return strings.TrimPrefix(s, constant.SecurePrefix)
 	}
 
-	if strings.HasPrefix(s, constant.InsecureSchemePrefix) {
-		return strings.TrimPrefix(s, constant.InsecureSchemePrefix)
+	if strings.HasPrefix(s, constant.InsecurePrefix) {
+		return strings.TrimPrefix(s, constant.InsecurePrefix)
 	}
 
 	return s

@@ -12,7 +12,7 @@ func NewPutBytes(
 	body io.Reader,
 ) *http.Request {
 	result, e := http.NewRequest(
-		constant.PutMethod,
+		constant.Put,
 		locator,
 		body,
 	)

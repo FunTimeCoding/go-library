@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/andygrunwald/go-jira"
 	"github.com/ctreminiom/go-atlassian/jira/sm"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic_client"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/field_map"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/issue_enricher"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/option"
@@ -17,7 +17,7 @@ type Client struct {
 	user    string
 	verbose bool
 
-	basic   *basic_client.Client
+	basic   *basic.Client
 	service *sm.Client
 
 	fieldMap    *field_map.Map

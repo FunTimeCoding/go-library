@@ -12,7 +12,7 @@ func NewPatchBytes(
 	body io.Reader,
 ) *http.Request {
 	result, e := http.NewRequest(
-		constant.PatchMethod,
+		constant.Patch,
 		locator,
 		body,
 	)

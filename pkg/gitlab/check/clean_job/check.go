@@ -45,8 +45,8 @@ func Check() {
 
 	if false {
 		p := g.ProjectByName(
-			argument.RequiredStringFlag(argument.Namespace),
-			argument.RequiredStringFlag(argument.Project),
+			argument.Required(argument.Namespace),
+			argument.Required(argument.Project),
 		)
 
 		if false {

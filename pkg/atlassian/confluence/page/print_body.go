@@ -2,7 +2,7 @@ package page
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 )
 
 func PrintBody(b response.Body) {

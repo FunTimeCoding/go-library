@@ -6,11 +6,11 @@ import (
 )
 
 func (c *Client) Logs(marker string) []logs.Log {
-	result, e := c.userClient.Log.ListLogFiles(
+	r, e := c.userClient.Log.ListLogFiles(
 		c.context,
 		&logs.ListLogFilesRequest{Marker: marker},
 	)
 	errors.PanicOnError(e)
 
-	return result.Logs
+	return r.Logs
 }

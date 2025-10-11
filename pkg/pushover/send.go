@@ -7,13 +7,16 @@ import (
 	"github.com/funtimecoding/go-library/pkg/pushover/constant"
 	"github.com/funtimecoding/go-library/pkg/pushover/notification"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"net/http"
 )
 
 func (c *Client) Send(s string) *http.Response {
 	result, e := http.Post(
-		constant.Locator,
-		web.ObjectContentType,
+		locator.New(
+			constant.Host,
+		).Base(constant.Base).Path(constant.Message).String(),
+		web.Object,
 		bytes.NewBuffer(
 			[]byte(
 				notation.Encode(

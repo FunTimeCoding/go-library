@@ -8,7 +8,7 @@ import (
 
 func (a *Credential) Encode() string {
 	return key_value.Space(
-		constant.BasicPrefix,
+		constant.Basic,
 		base64.Encode(key_value.Colon(a.User, a.Token)),
 	)
 }

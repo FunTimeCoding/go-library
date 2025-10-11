@@ -12,11 +12,11 @@ func (a *Authenticator) AddressLogin(c *request_context.Context) string {
 		return ""
 	}
 
-	s := c.Cookie(constant.SessionCookie)
+	s := c.Cookie(constant.Session)
 
 	if s == nil {
 		identifier := a.store.Create(address)
-		s = c.SetCookie(constant.SessionCookie, identifier)
+		s = c.SetCookie(constant.Session, identifier)
 	}
 
 	return s.Value

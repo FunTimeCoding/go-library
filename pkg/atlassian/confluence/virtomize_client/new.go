@@ -1,8 +1,9 @@
 package virtomize_client
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	virtomize "github.com/virtomize/confluence-go-api"
 )
 
@@ -12,7 +13,7 @@ func New(
 	token string,
 ) *virtomize.API {
 	result, e := virtomize.NewAPI(
-		fmt.Sprintf("https://%s/wiki/rest/api", host),
+		locator.New(host).Base(constant.OldBase).String(),
 		user,
 		token,
 	)

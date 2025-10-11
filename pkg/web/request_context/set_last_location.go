@@ -4,9 +4,9 @@ import "github.com/funtimecoding/go-library/pkg/web/constant"
 
 func (c *Context) SetLastLocation() {
 	// Ignore if the referer header is set, favicon.ico is a common example.
-	if _, okay := c.Header()[constant.RefererHeader]; okay {
+	if _, okay := c.Header()[constant.Referer]; okay {
 		return
 	}
 
-	c.SetCookie(constant.LastLocationCookie, c.request.URL.Path)
+	c.SetCookie(constant.LastLocation, c.request.URL.Path)
 }

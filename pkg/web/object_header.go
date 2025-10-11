@@ -6,5 +6,5 @@ import (
 )
 
 func ObjectHeader(w http.ResponseWriter) {
-	w.Header().Set(constant.ContentTypeHeader, constant.ObjectContentType)
+	w.Header().Set(constant.ContentType, constant.Object)
 }

@@ -22,7 +22,7 @@ func PostFile(
 
 	r := NewPostBytes(url, f)
 	r.SetBasicAuth(user, password)
-	r.Header.Set(constant.ContentTypeHeader, constant.FormDataContentType)
+	r.Header.Set(constant.ContentType, constant.Form)
 	r.ContentLength = system.FileStat(f).Size()
 	s := Send(Client(true), r)
 	defer errors.PanicClose(s.Body)

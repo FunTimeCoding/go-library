@@ -2,7 +2,9 @@ package packages
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -19,15 +21,14 @@ func Link(
 		fmt.Printf("file: %+v\n", f)
 	}
 
-	result := fmt.Sprintf(
-		"https://%s/api/v4/projects/%d/packages/%s/%s/%s/%s",
-		host,
+	result := locator.New(host).Base(constant.Base).Path(
+		"projects/%d/packages/%s/%s/%s/%s",
 		project.Identifier,
 		p.PackageType,
 		p.Name,
 		p.Version,
 		f.FileName,
-	)
+	).String()
 
 	if verbose {
 		fmt.Printf("link: %s\n", result)

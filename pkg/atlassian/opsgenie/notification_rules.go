@@ -6,11 +6,11 @@ import (
 )
 
 func (c *Client) NotificationRules(user string) []notification.SimpleNotificationRuleResult {
-	result, e := c.userClient.Notification.ListRule(
+	r, e := c.userClient.Notification.ListRule(
 		c.context,
 		&notification.ListRuleRequest{UserIdentifier: user},
 	)
 	errors.PanicOnError(e)
 
-	return result.SimpleNotificationRules
+	return r.SimpleNotificationRules
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) ListOutput() string {
-	result := c.ssh.Run(
+	return c.ssh.Run(
 		join.Space(
 			constant.Command,
 			constant.ListUnits,
@@ -17,7 +17,5 @@ func (c *Client) ListOutput() string {
 			constant.Plain,
 			constant.NoLegend,
 		),
-	)
-
-	return result.OutputString
+	).OutputString
 }

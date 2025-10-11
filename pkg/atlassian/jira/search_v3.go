@@ -2,8 +2,8 @@ package jira
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic_client/request"
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic_client/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic/request"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/notation"
 )

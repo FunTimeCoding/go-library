@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) Integrations() []integration.GenericFields {
-	result, e := c.userClient.Integration.List(c.context)
+	r, e := c.userClient.Integration.List(c.context)
 	errors.PanicOnError(e)
 
-	return result.Integrations
+	return r.Integrations
 }

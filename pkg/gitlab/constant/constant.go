@@ -6,6 +6,8 @@ import (
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
+const Base = "/api/v4"
+
 const (
 	OpenedState  = "opened"
 	PendingState = "pending"

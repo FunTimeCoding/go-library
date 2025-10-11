@@ -6,8 +6,12 @@ import (
 )
 
 func (c *Client) SearchTreminio(query string) []*models.SearchResultScheme {
-	result, _, e := c.treminio.Search.Content(c.context, query, nil)
+	r, _, e := c.treminio.Search.Content(
+		c.context,
+		query,
+		&models.SearchContentOptions{},
+	)
 	errors.PanicOnError(e)
 
-	return result.Results
+	return r.Results
 }

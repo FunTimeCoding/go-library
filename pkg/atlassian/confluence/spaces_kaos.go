@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) SpacesKaos(keys []string) []*kaos.Space {
-	result, e := c.kaos.GetSpaces(kaos.SpaceParameters{SpaceKey: keys})
+	r, e := c.kaos.GetSpaces(kaos.SpaceParameters{SpaceKey: keys})
 	errors.PanicOnError(e)
 
-	return result.Results
+	return r.Results
 }

@@ -30,7 +30,7 @@ func New(
 	// https://kestra.io/docs/api-reference/open-source
 	// Token authentication is EE only: https://kestra.io/docs/enterprise/auth/api-tokens
 	c := kestra_api_client.NewConfiguration()
-	c.Scheme = constant.SecureScheme
+	c.Scheme = constant.Secure
 	c.Host = host
 	result := &Client{context: context.Background()}
 
@@ -39,8 +39,8 @@ func New(
 	}
 
 	if result.token != "" {
-		c.DefaultHeader[constant.AuthorizationHeader] = key_value.Space(
-			constant.BearerPrefix,
+		c.DefaultHeader[constant.Authorization] = key_value.Space(
+			constant.Bearer,
 			result.token,
 		)
 	}

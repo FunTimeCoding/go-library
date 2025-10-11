@@ -16,6 +16,8 @@ const (
 
 	// InterfaceAddress when assigning an IP or MAC address to a network device
 	InterfaceAddress = "dcim.interface"
+
+	Interface = "/api"
 )
 
 var Format = option.Color.Copy()

@@ -14,8 +14,9 @@ const (
 
 	PageType = "page"
 
-	OldBase = "/wiki/rest/api"
+	Wiki    = "/wiki"
 	Base    = "/wiki/api/v2"
+	OldBase = "/wiki/rest/api"
 )
 
 // Body format

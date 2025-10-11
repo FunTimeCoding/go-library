@@ -28,6 +28,8 @@ const (
 	KubernetesPrefix = "Kube"
 
 	HighMemoryUsage = "HighMemoryUsage" // Test alert name
+
+	Alerts = "/alerts"
 )
 
 // Alert label

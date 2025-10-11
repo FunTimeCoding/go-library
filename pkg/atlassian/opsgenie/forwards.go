@@ -6,11 +6,11 @@ import (
 )
 
 func (c *Client) Forwards() []forwarding_rule.ForwardingRule {
-	result, e := c.userClient.Forward.List(
+	r, e := c.userClient.Forward.List(
 		c.context,
 		&forwarding_rule.ListRequest{},
 	)
 	errors.PanicOnError(e)
 
-	return result.ForwardingRule
+	return r.ForwardingRule
 }

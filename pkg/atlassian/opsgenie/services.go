@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) Services() []service.Service {
-	result, e := c.userClient.Service.List(c.context, &service.ListRequest{})
+	r, e := c.userClient.Service.List(c.context, &service.ListRequest{})
 	errors.PanicOnError(e)
 
-	return result.Services
+	return r.Services
 }

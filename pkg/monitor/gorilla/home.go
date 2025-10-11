@@ -1,9 +1,10 @@
 package gorilla
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"net/http"
 )
 
@@ -14,7 +15,9 @@ func home(
 	errors.PanicOnError(
 		homeTemplate.Execute(
 			w,
-			fmt.Sprintf("ws://%s%s", r.Host, location.Echo),
+			locator.New(
+				r.Host,
+			).Scheme(constant.Socket).Path(location.Echo).String(),
 		),
 	)
 }

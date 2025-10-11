@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Context) LastLocation() string {
-	if s := c.Cookie(constant.LastLocationCookie); s != nil {
+	if s := c.Cookie(constant.LastLocation); s != nil {
 		return s.Value
 	}
 

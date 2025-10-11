@@ -4,4 +4,6 @@ const (
 	HostEnvironment     = "LOKI_HOST"
 	UserEnvironment     = "LOKI_USER"
 	PasswordEnvironment = "LOKI_PASSWORD"
+
+	BasePath = "/loki/api/v1"
 )

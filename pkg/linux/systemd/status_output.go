@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) StatusOutput(name string) string {
-	result := c.ssh.Run(
+	return c.ssh.Run(
 		join.Space(
 			constant.Command,
 			constant.Status,
@@ -14,7 +14,5 @@ func (c *Client) StatusOutput(name string) string {
 			constant.Notation,
 			name,
 		),
-	)
-
-	return result.OutputString
+	).OutputString
 }

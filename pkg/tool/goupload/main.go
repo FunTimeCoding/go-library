@@ -65,13 +65,13 @@ func Main(
 	)
 	monitor.ParseBind(version, gitHash, buildDate)
 
-	locator := argument.RequiredStringFlag(argument.Locator)
+	locator := argument.Required(argument.Locator)
 	fmt.Printf("Locator: %s\n", locator)
 
-	project := argument.RequiredStringFlag(argument.Project)
+	project := argument.Required(argument.Project)
 	fmt.Printf("Project: %s\n", project)
 
-	tag := argument.RequiredStringFlag(argument.Tag)
+	tag := argument.Required(argument.Tag)
 	fmt.Printf("Tag: %s\n", tag)
 
 	headers := build.Headers(viper.GetString(argument.Header))

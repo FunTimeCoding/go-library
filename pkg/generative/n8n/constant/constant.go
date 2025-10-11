@@ -5,4 +5,8 @@ const (
 	TokenEnvironment = "N8N_TOKEN"
 
 	TokenHeader = "X-N8N-API-KEY"
+
+	Workflows = "/workflows"
+
+	Base = "/api/v1"
 )

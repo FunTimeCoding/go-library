@@ -6,7 +6,7 @@ import (
 )
 
 func (a *Authenticator) Session(c *request_context.Context) string {
-	if s := c.Cookie(constant.SessionCookie); s != nil {
+	if s := c.Cookie(constant.Session); s != nil {
 		return s.Value
 	}
 

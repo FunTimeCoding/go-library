@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) InternetAddressRanges() []netbox.IPRange {
-	result, _, e := c.client.IpamAPI.IpamIpRangesList(
+	r, _, e := c.client.IpamAPI.IpamIpRangesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
 	errors.PanicOnError(e)
 
-	return result.Results
+	return r.Results
 }

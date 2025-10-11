@@ -11,7 +11,7 @@ func Bearer(
 	token string,
 ) {
 	r.Header.Set(
-		constant.AuthorizationHeader,
-		key_value.Space(constant.BearerPrefix, token),
+		constant.Authorization,
+		key_value.Space(constant.Bearer, token),
 	)
 }

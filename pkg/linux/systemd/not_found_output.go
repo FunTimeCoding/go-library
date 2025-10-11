@@ -6,14 +6,12 @@ import (
 )
 
 func (c *Client) NotFoundOutput() string {
-	result := c.ssh.Run(
+	return c.ssh.Run(
 		join.Space(
 			constant.Command,
 			constant.State,
 			constant.NotFound,
 			constant.NoLegend,
 		),
-	)
-
-	return result.OutputString
+	).OutputString
 }

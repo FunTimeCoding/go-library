@@ -23,8 +23,8 @@ func Pod(
 		o.FieldSelector = fmt.Sprintf("spec.nodeName=%s", node)
 	}
 
-	result, e := operation.Pod(c, namespace).List(x, o)
+	r, e := operation.Pod(c, namespace).List(x, o)
 	errors.PanicOnError(e)
 
-	return result.Items
+	return r.Items
 }

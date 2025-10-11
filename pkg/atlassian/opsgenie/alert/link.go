@@ -1,14 +1,12 @@
 package alert
 
-import "fmt"
+import "github.com/funtimecoding/go-library/pkg/web/locator"
 
 func link(
 	identifier string,
 	webHost string,
 ) string {
-	return fmt.Sprintf(
-		"https://%s/alert/detail/%s/details",
+	return locator.New(
 		webHost,
-		identifier,
-	)
+	).Path("/alert/detail/%s/details", identifier).String()
 }

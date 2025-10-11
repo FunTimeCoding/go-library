@@ -11,11 +11,7 @@ func RequiredPositionalExit(
 		return s
 	}
 
-	system.Exitf(
-		exit,
-		"positional argument empty: %s\n",
-		description,
-	)
+	system.Exitf(exit, "positional empty: %s\n", description)
 
 	return ""
 }

@@ -2,8 +2,9 @@ package chromium
 
 import (
 	"context"
-	"fmt"
 	"github.com/chromedp/chromedp"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
 func New(
@@ -12,7 +13,7 @@ func New(
 ) *Client {
 	allocator, allocatorCancel := chromedp.NewRemoteAllocator(
 		context.Background(),
-		fmt.Sprintf("ws://%s:%d", host, port),
+		locator.New(host).Port(port).Scheme(constant.Socket).String(),
 	)
 	c, cancel := chromedp.NewContext(allocator)
 

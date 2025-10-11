@@ -3,6 +3,7 @@ package example
 import (
 	"github.com/chromedp/chromedp"
 	"github.com/funtimecoding/go-library/pkg/chromium"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"log"
 	"strings"
 	"time"
@@ -13,7 +14,9 @@ func Open() {
 	defer c.Close()
 	var result string
 	c.Run(
-		chromedp.Navigate(`https://pkg.go.dev/time`),
+		chromedp.Navigate(
+			locator.New("pkg.go.dev").Path("/time").String(),
+		),
 		//chromedp.Text(
 		//	`.Documentation-overview`,
 		//	&result,

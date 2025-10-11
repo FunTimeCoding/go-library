@@ -5,7 +5,7 @@ import (
 	treminio "github.com/ctreminiom/go-atlassian/v2/confluence"
 	treminioV2 "github.com/ctreminiom/go-atlassian/v2/confluence/v2"
 	kaos "github.com/essentialkaos/go-confluence/v6"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic"
 	virtomize "github.com/virtomize/confluence-go-api"
 )
 
@@ -15,7 +15,7 @@ type Client struct {
 
 	context context.Context
 
-	basic *basic_client.Client
+	basic *basic.Client
 
 	kaos       *kaos.API
 	virtomize  *virtomize.API

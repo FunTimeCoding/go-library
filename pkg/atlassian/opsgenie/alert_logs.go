@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) AlertLogs(identifier string) []alert.AlertLog {
-	result, e := c.userClient.Alert.ListAlertLogs(
+	r, e := c.userClient.Alert.ListAlertLogs(
 		c.context,
 		&alert.ListAlertLogsRequest{
 			IdentifierType:  alert.ALERTID,
@@ -15,5 +15,5 @@ func (c *Client) AlertLogs(identifier string) []alert.AlertLog {
 	)
 	errors.PanicOnError(e)
 
-	return result.AlertLog
+	return r.AlertLog
 }

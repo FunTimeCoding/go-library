@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) internetAddressesOffset(offset int32) []netbox.IPAddress {
-	result, _, e := c.client.IpamAPI.IpamIpAddressesList(
+	r, _, e := c.client.IpamAPI.IpamIpAddressesList(
 		c.context,
 	).Limit(constant.PageLimit).Offset(offset).Execute()
 	errors.PanicOnError(e)
 
-	return result.Results
+	return r.Results
 }

@@ -8,4 +8,7 @@ const (
 	ControlFile = "control"
 
 	PackageExtension = ".deb"
+
+	Web   = "www.debian.org"
+	Image = "cdimage.debian.org"
 )

@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) Heartbeats() []heartbeat.Heartbeat {
-	result, e := c.userClient.Heartbeat.List(c.context)
+	r, e := c.userClient.Heartbeat.List(c.context)
 	errors.PanicOnError(e)
 
-	return result.Heartbeats
+	return r.Heartbeats
 }

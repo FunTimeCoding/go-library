@@ -10,7 +10,7 @@ import (
 func New() *Client {
 	return &Client{
 		locator: url.URL{
-			Scheme: web.SocketScheme,
+			Scheme: web.Socket,
 			Host:   constant.Address,
 			Path:   location.Monitor,
 		},

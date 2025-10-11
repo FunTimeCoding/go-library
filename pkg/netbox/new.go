@@ -2,10 +2,9 @@ package netbox
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/cache"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/netbox-community/go-netbox/v4"
 )
 
@@ -18,11 +17,8 @@ func New(
 	errors.FatalOnEmpty(token, "token")
 	result := &Client{
 		context: context.Background(),
-		client: netbox.NewAPIClientFor(
-			fmt.Sprintf("%s://%s", constant.SecureScheme, host),
-			token,
-		),
-		cache: cache.New(),
+		client:  netbox.NewAPIClientFor(locator.New(host).String(), token),
+		cache:   cache.New(),
 	}
 
 	for _, f := range o {

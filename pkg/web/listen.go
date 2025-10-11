@@ -7,5 +7,5 @@ import (
 )
 
 func Listen(m *http.ServeMux) {
-	errors.PanicOnError(http.ListenAndServe(constant.ListenAddress, m))
+	errors.PanicOnError(http.ListenAndServe(constant.Listen, m))
 }

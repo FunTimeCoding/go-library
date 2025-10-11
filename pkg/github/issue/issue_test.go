@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/google/go-github/v70/github"
 	"testing"
 )
@@ -11,9 +12,9 @@ import (
 func TestIssue(t *testing.T) {
 	i := New(
 		&github.Issue{
-			RepositoryURL: ptr.To(
-				"https://api.github.com/repos/funtimecoding/go-library",
-			),
+			RepositoryURL: locator.New(
+				"api.github.com",
+			).Path("/repos/funtimecoding/go-library").Pointer(),
 			Title:   ptr.To(strings.Alfa),
 			HTMLURL: ptr.To(strings.Bravo),
 		},

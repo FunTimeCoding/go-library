@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) Escalations() []escalation.Escalation {
-	result, e := c.userClient.Escalation.List(c.context)
+	r, e := c.userClient.Escalation.List(c.context)
 	errors.PanicOnError(e)
 
-	return result.Escalations
+	return r.Escalations
 }

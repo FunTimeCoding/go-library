@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) List() []api.ListModelResponse {
-	result, e := c.client.List(c.context)
+	r, e := c.client.List(c.context)
 	errors.PanicOnError(e)
 
-	return result.Models
+	return r.Models
 }

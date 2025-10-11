@@ -6,13 +6,13 @@ import (
 )
 
 func (c *Client) SpacesTreminio() []*models.SpaceScheme {
-	result, _, e := c.treminio.Space.Gets(
+	r, _, e := c.treminio.Space.Gets(
 		c.context,
-		nil,
+		&models.GetSpacesOptionScheme{},
 		0,
 		25,
 	)
 	errors.PanicOnError(e)
 
-	return result.Results
+	return r.Results
 }

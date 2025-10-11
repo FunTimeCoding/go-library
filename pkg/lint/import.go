@@ -15,15 +15,15 @@ func Import(
 	path string,
 	r io.Reader,
 ) *file_report.Report {
-	result := file_report.New(path, r)
+	s := file_report.New(path, r)
 	var block []string
 	var inside bool
 	var start int
 	var blockText string
 	var reportedBlank bool
 
-	for result.Scan() {
-		line, number := result.Text()
+	for s.Scan() {
+		line, number := s.Text()
 
 		if !inside && strings.HasPrefix(line, "import (") {
 			inside = true
@@ -35,7 +35,7 @@ func Import(
 			if line == "" {
 				if !reportedBlank {
 					reportedBlank = true
-					result.AddConcern(
+					s.AddConcern(
 						constant.ImportBlankKey,
 						constant.ImportBlankText,
 						path,
@@ -53,13 +53,13 @@ func Import(
 				inside = false
 
 				if len(block) == 3 {
-					result.ChangedLine(
+					s.ChangedLine(
 						fmt.Sprintf(
 							"import %s",
 							strings.TrimSpace(block[1]),
 						),
 					)
-					result.AddConcern(
+					s.AddConcern(
 						constant.SingleMultiImportKey,
 						constant.SingleMultiImportText,
 						path,
@@ -74,7 +74,7 @@ func Import(
 					sorted = append(sorted, ")")
 
 					if !slices.Equal(block, sorted) {
-						result.AddConcern(
+						s.AddConcern(
 							constant.UnsortedImportsKey,
 							constant.UnsortedImportsText,
 							path,
@@ -83,22 +83,22 @@ func Import(
 						)
 					}
 
-					result.ChangedLine(join.NewLine(sorted))
+					s.ChangedLine(join.NewLine(sorted))
 				}
 
 				block = block[:0]
 			}
 		} else {
-			result.ChangedLine(line)
+			s.ChangedLine(line)
 		}
 	}
 
-	result.Fix = func() {
-		if result.Fixed != "" {
+	s.Fix = func() {
+		if s.Fixed != "" {
 			fmt.Printf("Simplify import %s\n", path)
-			system.SaveFile(path, result.Fixed)
+			system.SaveFile(path, s.Fixed)
 		}
 	}
 
-	return result.Finalize()
+	return s.Finalize()
 }

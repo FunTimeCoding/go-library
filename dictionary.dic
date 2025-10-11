@@ -69,7 +69,8 @@ kevt
 # OS
 aarch
 
-# UNIX
+# Unix
+envrc
 websocat
 whoami
 
@@ -88,6 +89,7 @@ tink
 wdutil
 
 # Debian
+cdimage
 netinst
 
 # HTTP

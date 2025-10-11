@@ -2,88 +2,130 @@ package locator
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"net/url"
-	"path"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"testing"
 )
 
 func TestLocator(t *testing.T) {
-	assert.NotNil(t, New())
+	assert.String(
+		t,
+		"https://example.org",
+		New(constant.Example).String(),
+	)
+	assert.String(
+		t,
+		"http://example.org",
+		Stub().Insecure().Host(constant.Example).String(),
+	)
+	assert.String(
+		t,
+		"wss://example.org",
+		Stub().Insecure().Host(
+			constant.Example,
+		).Scheme(constant.SecureSocket).String(),
+	)
 }
 
-func TestParse(t *testing.T) {
-	u, _ := url.Parse("https://example.org")
-	u.Path = path.Join(u.Path, "/u", "1", "p")
-	v := url.Values{}
-	v.Add("a", "1")
-	v.Add("b", "2")
-	u.RawQuery = v.Encode()
-	assert.String(t, "https://example.org/u/1/p?a=1&b=2", u.String())
-}
-
-func TestNew(t *testing.T) {
-	l := NewHost("example.org")
-	assert.String(t, "https://example.org", l.String())
-}
-
-func TestPath(t *testing.T) {
-	l := NewHost("example.org").Path("/path")
-	assert.String(t, "https://example.org/path", l.String())
-}
-
-func TestBasePath(t *testing.T) {
-	l := NewHost("example.org").Base("/base").Path("/path")
-	assert.String(t, "https://example.org/base/path", l.String())
-
-	l = NewHost("example.org").Base("base").Path("/path")
-	assert.String(t, "https://example.org/base/path", l.String())
-
-	l = NewHost("example.org").Base("/base/").Path("/path")
-	assert.String(t, "https://example.org/base/path", l.String())
-
-	l = NewHost("example.org").Base("/base").Path("path")
-	assert.String(t, "https://example.org/base/path", l.String())
-}
-
-func TestValue(t *testing.T) {
-	l := NewHost("example.org").Add("a", "1").Add("b", "2")
-	assert.String(t, "https://example.org?a=1&b=2", l.String())
-}
-
-func TestValuePath(t *testing.T) {
-	l := NewHost("example.org").Path("/path").Add(
-		"a",
-		"1",
-	).Add("b", "2")
-	assert.String(t, "https://example.org/path?a=1&b=2", l.String())
+func TestUser(t *testing.T) {
+	assert.String(
+		t,
+		"https://u@example.org",
+		New(constant.Example).User("u").String(),
+	)
+	assert.String(
+		t,
+		"https://u:p@example.org",
+		New(constant.Example).UserPassword("u", "p").String(),
+	)
 }
 
 func TestPort(t *testing.T) {
-	l := NewHost("example.org").Port(8443)
-	assert.String(t, "https://example.org:8443", l.String())
+	assert.String(
+		t,
+		"https://example.org:8443",
+		New(constant.Example).Port(8443).String(),
+	)
+	assert.String(
+		t,
+		"https://example.org:8443/p",
+		New(constant.Example).Port(8443).Path("/p").String(),
+	)
 }
 
-func TestPortPath(t *testing.T) {
-	l := NewHost("example.org").Port(8443).Path("/path")
-	assert.String(t, "https://example.org:8443/path", l.String())
+func TestPath(t *testing.T) {
+	assert.String(
+		t,
+		"https://example.org/p",
+		New(constant.Example).Path("/p").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org/b/p",
+		New(constant.Example).Base("/b").Path("/p").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org/b/p",
+		New(constant.Example).Base("b").Path("/p").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org/b/p",
+		New(constant.Example).Base("/b/").Path("/p").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org/b/p",
+		New(constant.Example).Base("/b").Path("p").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org/p/",
+		New(constant.Example).Path("/p/").Trail().String(),
+	)
 }
 
-func TestInsecure(t *testing.T) {
-	l := New().Insecure().Host("example.org")
-	assert.String(t, "http://example.org", l.String())
+func TestParameter(t *testing.T) {
+	assert.String(
+		t,
+		"https://example.org?a=1&b=2",
+		New(constant.Example).Add("a", "1").Add("b", "2").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org/p?a=1&b=2",
+		New(constant.Example).Path(
+			"/p",
+		).Add("a", "1").Add("b", "2").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org?a=1&a=2",
+		New(constant.Example).Add("a", "1").Add("a", "2").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org?a=2",
+		New(constant.Example).Set("a", "1").Set("a", "2").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org/p?a=b%3Dc",
+		New(constant.Example).Path("/p").Set("a", `b=c`).String(),
+	)
 }
 
 func TestFragment(t *testing.T) {
-	l := NewHost("example.org").Fragment("section1")
-	assert.String(t, "https://example.org#section1", l.String())
-}
-
-func TestAdd(t *testing.T) {
-	l := NewHost("example.org").Add("a", "10").Add("a", "20")
-	assert.String(t, "https://example.org?a=10&a=20", l.String())
-}
-
-func TestSet(t *testing.T) {
-	l := NewHost("example.org").Set("a", "1").Set("a", "2")
-	assert.String(t, "https://example.org?a=2", l.String())
+	assert.String(
+		t,
+		"https://example.org#a",
+		New(constant.Example).Fragment("a").String(),
+	)
+	assert.String(
+		t,
+		"https://example.org/#/a?b=c%3Dd",
+		New(
+			constant.Example,
+		).Trail().Fragment("/a").FragmentSet("b", "c=d").String(),
+	)
 }

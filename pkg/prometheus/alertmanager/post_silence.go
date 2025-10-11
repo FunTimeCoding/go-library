@@ -39,9 +39,8 @@ func (c *Client) PostSilence(
 			EndsAt:   ptr.To(library.Scan(end)),
 		},
 	}
-
-	result, e := c.client.Silence.PostSilences(p)
+	r, e := c.client.Silence.PostSilences(p)
 	errors.PanicOnError(e)
 
-	return result.Payload.SilenceID
+	return r.Payload.SilenceID
 }

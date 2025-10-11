@@ -8,8 +8,8 @@ import (
 )
 
 func ParseLocator(s string) *url.URL {
-	if !strings.HasPrefix(s, constant.SecureSchemePrefix) &&
-		!strings.HasPrefix(s, constant.InsecureSchemePrefix) {
+	if !strings.HasPrefix(s, constant.SecurePrefix) &&
+		!strings.HasPrefix(s, constant.InsecurePrefix) {
 		panic("locator must have a scheme")
 	}
 

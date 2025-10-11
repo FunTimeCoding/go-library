@@ -17,7 +17,7 @@ func (c *Client) Post(
 	start := c.clock.Now()
 	response, e := http.Post(
 		locator,
-		constant.ObjectContentType,
+		constant.Object,
 		bytes.NewBuffer([]byte(encoded)),
 	)
 

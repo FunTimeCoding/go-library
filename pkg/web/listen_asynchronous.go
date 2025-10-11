@@ -6,7 +6,7 @@ import (
 )
 
 func ListenAsynchronous(m *http.ServeMux) *http.Server {
-	s := Server(m, constant.ListenAddress)
+	s := Server(m, constant.Listen)
 	ServeAsynchronous(s)
 
 	return s

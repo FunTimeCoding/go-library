@@ -2,7 +2,7 @@ package confluence
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic_client"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/kaos_client"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/treminio_client"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/virtomize_client"
@@ -32,7 +32,7 @@ func New(
 		f(result)
 	}
 
-	result.basic = basic_client.New(result.host, user, token, result.verbose)
+	result.basic = basic.New(result.host, user, token, result.verbose)
 
 	return result
 }

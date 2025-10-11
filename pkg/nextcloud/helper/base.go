@@ -1,10 +1,7 @@
 package helper
 
-import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
-)
+import "github.com/funtimecoding/go-library/pkg/web/locator"
 
 func Base(host string) string {
-	return fmt.Sprintf("%s://%s", constant.SecureScheme, host)
+	return locator.New(host).String()
 }

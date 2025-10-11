@@ -6,14 +6,11 @@ import (
 )
 
 func (t *Team) Format(f *option.Format) string {
-	result := status.New(f).String(
-		t.Name,
-		t.Identifier,
-	).RawList(t.Raw)
+	r := status.New(f).String(t.Name, t.Identifier).RawList(t.Raw)
 
 	if t.Description != "" {
-		result.String(t.Description)
+		r.String(t.Description)
 	}
 
-	return result.Format()
+	return r.Format()
 }

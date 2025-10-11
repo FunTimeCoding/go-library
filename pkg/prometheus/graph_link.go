@@ -1,8 +1,8 @@
 package prometheus
 
 import (
-	"fmt"
-	"net/url"
+	"github.com/funtimecoding/go-library/pkg/prometheus/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
 func (c *Client) GraphLink(expression string) string {
@@ -14,9 +14,7 @@ func (c *Client) GraphLink(expression string) string {
 		host = c.host
 	}
 
-	return fmt.Sprintf(
-		"https://%s/graph?g0.expr=%s",
+	return locator.New(
 		host,
-		url.QueryEscape(expression),
-	)
+	).Path(constant.Graph).Set(constant.Graph0Expression, expression).String()
 }

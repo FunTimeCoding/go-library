@@ -6,6 +6,8 @@ import (
 )
 
 const (
+	Base = "/api/0"
+
 	UndefinedEnvironment = "undefined"
 	UndefinedVersion     = "undefined"
 

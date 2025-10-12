@@ -16,9 +16,9 @@ func (c *Client) PagesBySpace(identifier string) []*page.Page {
 		identifier,
 		constant.Page,
 	).Set(
-		constant.BodyFormatKey,
+		constant.BodyFormat,
 		constant.StorageFormat,
-	).Set(constant.StatusKey, constant.CurrentStatus).String()
+	).Set(constant.Status, constant.CurrentStatus).String()
 	var result []*response.Page
 
 	for {

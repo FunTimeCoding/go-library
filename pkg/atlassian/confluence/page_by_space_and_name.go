@@ -1,7 +1,6 @@
 package confluence
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
@@ -20,13 +19,14 @@ func (c *Client) PageBySpaceAndName(
 
 	var result *response.Pages
 	notation.DecodeStrict(
-		c.basic.GetV2Path(
-			fmt.Sprintf(
-				"/pages?body-format=%s&space-id=%s&title=%s",
+		c.basic.GetV2(
+			c.basic.Base().Copy().Path(constant.Page).Set(
+				constant.BodyFormat,
 				constant.StorageFormat,
+			).Set(
+				constant.SpaceIdentifier,
 				s.Identifier,
-				name,
-			),
+			).Set(constant.Title, name).String(),
 		),
 		&result,
 		false,

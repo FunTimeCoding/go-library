@@ -1,8 +1,8 @@
 package confluence
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
@@ -20,11 +20,13 @@ func (c *Client) ChildPages(
 
 	var children *response.Pages
 	notation.DecodeStrict(
-		c.basic.GetV2Path(
-			fmt.Sprintf(
-				"/pages/%s/direct-children",
+		c.basic.GetV2(
+			c.basic.Base().Copy().Path(
+				"%s/%s%s",
+				constant.Page,
 				parent.Identifier,
-			),
+				constant.Children,
+			).String(),
 		),
 		&children,
 		false,

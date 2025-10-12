@@ -11,7 +11,7 @@ import (
 func (c *Client) Spaces() []*space.Space {
 	// https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api-spaces-get
 	l := c.basic.Base().Copy().Path(constant.Space).Set(
-		constant.StatusKey,
+		constant.Status,
 		constant.CurrentStatus,
 	).String()
 	var result []*response.Space

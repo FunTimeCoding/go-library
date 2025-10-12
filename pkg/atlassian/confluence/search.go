@@ -21,7 +21,7 @@ func (c *Client) Search(
 		c.basic.Get(
 			c.basic.Base().Copy().Path(
 				constant.Search,
-			).Set(constant.QueryKey, query).String(),
+			).Set(constant.Query, query).String(),
 		),
 		&result,
 		false,

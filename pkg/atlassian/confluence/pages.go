@@ -9,7 +9,7 @@ import (
 
 func (c *Client) Pages() []*page.Page {
 	l := c.basic.Base().Copy().Path(constant.Page).Set(
-		constant.BodyFormatKey,
+		constant.BodyFormat,
 		constant.StorageFormat,
 	).String()
 	var result *response.Pages

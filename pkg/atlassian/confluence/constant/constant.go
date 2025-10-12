@@ -19,13 +19,18 @@ const (
 
 	OldBase = "/wiki/rest/api"
 	Search  = "/content/search"
+	User    = "/user/current"
 
-	Page  = "/pages"
-	Space = "/spaces"
+	Page     = "/pages"
+	Space    = "/spaces"
+	Label    = "/labels"
+	Children = "/direct-children"
 
-	BodyFormatKey = "body-format"
-	StatusKey     = "status"
-	QueryKey      = "cql"
+	BodyFormat      = "body-format"
+	Status          = "status"
+	Query           = "cql"
+	SpaceIdentifier = "space-id"
+	Title           = "title"
 
 	CurrentStatus = "current"
 )

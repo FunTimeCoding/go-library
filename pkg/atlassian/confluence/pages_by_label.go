@@ -1,7 +1,6 @@
 package confluence
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
@@ -11,12 +10,13 @@ import (
 func (c *Client) PagesByLabel(labelIdentifier string) []*page.Page {
 	var result *response.Pages
 	notation.DecodeStrict(
-		c.basic.GetV2Path(
-			fmt.Sprintf(
-				"/labels/%s/pages?body-format=%s",
+		c.basic.GetV2(
+			c.basic.Base().Copy().Path(
+				"%s/%s%s",
+				constant.Label,
 				labelIdentifier,
-				constant.StorageFormat,
-			),
+				constant.Page,
+			).Set(constant.BodyFormat, constant.StorageFormat).String(),
 		),
 		&result,
 		false,

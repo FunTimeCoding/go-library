@@ -1,5 +1,10 @@
 package basic
 
+import (
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
+)
+
 func New(
 	host string,
 	user string,
@@ -12,5 +17,6 @@ func New(
 		user:    user,
 		token:   token,
 		verbose: verbose,
+		base:    locator.New(host).Base(constant.Base),
 	}
 }

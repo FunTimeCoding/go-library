@@ -9,7 +9,7 @@ import (
 func (c *Client) User() *user.User {
 	var result *response.User
 	notation.DecodeStrict(
-		c.basic.Get("/user/current"),
+		c.basic.GetPath("/user/current"),
 		&result,
 		false,
 	)

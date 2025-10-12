@@ -20,7 +20,7 @@ func (c *Client) PageBySpaceAndName(
 
 	var result *response.Pages
 	notation.DecodeStrict(
-		c.basic.GetV2(
+		c.basic.GetV2Path(
 			fmt.Sprintf(
 				"/pages?body-format=%s&space-id=%s&title=%s",
 				constant.StorageFormat,

@@ -14,9 +14,20 @@ const (
 
 	PageType = "page"
 
-	Wiki    = "/wiki"
-	Base    = "/wiki/api/v2"
+	Wiki = "/wiki"
+	Base = "/wiki/api/v2"
+
 	OldBase = "/wiki/rest/api"
+	Search  = "/content/search"
+
+	Page  = "/pages"
+	Space = "/spaces"
+
+	BodyFormatKey = "body-format"
+	StatusKey     = "status"
+	QueryKey      = "cql"
+
+	CurrentStatus = "current"
 )
 
 // Body format

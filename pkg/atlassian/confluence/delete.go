@@ -1,7 +1,13 @@
 package confluence
 
-import "fmt"
+import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 
 func (c *Client) Delete(pageIdentifier string) {
-	c.basic.DeleteV2(fmt.Sprintf("/pages/%s", pageIdentifier))
+	c.basic.DeleteV2Path(
+		c.basic.Base().Copy().Path(
+			"%s/%s",
+			constant.Page,
+			pageIdentifier,
+		).String(),
+	)
 }

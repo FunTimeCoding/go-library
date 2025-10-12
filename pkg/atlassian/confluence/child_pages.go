@@ -20,7 +20,7 @@ func (c *Client) ChildPages(
 
 	var children *response.Pages
 	notation.DecodeStrict(
-		c.basic.GetV2(
+		c.basic.GetV2Path(
 			fmt.Sprintf(
 				"/pages/%s/direct-children",
 				parent.Identifier,

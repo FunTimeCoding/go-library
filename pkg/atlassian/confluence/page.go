@@ -11,7 +11,7 @@ import (
 func (c *Client) Page(identifier string) *page.Page {
 	var result *response.Page
 	notation.DecodeStrict(
-		c.basic.GetV2(
+		c.basic.GetV2Path(
 			fmt.Sprintf(
 				"/pages/%s?body-format=%s",
 				identifier,

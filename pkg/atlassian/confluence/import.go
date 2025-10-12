@@ -2,6 +2,7 @@ package confluence
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page/page_file"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page/page_post"
@@ -17,8 +18,8 @@ func (c *Client) Import(
 	f := page_file.Decode(system.ReadFile(path))
 	var result *response.Page
 	notation.DecodeStrict(
-		c.basic.PostV2(
-			"/pages",
+		c.basic.PostV2Path(
+			constant.Page,
 			page_post.New(
 				c.SpaceByName(space).Identifier,
 				c.PageBySpaceAndName(space, parent).Identifier,

@@ -3,9 +3,9 @@ package confluence
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/search_result"
 	"github.com/funtimecoding/go-library/pkg/notation"
-	"net/url"
 )
 
 func (c *Client) Search(
@@ -19,10 +19,9 @@ func (c *Client) Search(
 	var result *response.Search
 	notation.DecodeStrict(
 		c.basic.Get(
-			fmt.Sprintf(
-				"/content/search?cql=%s",
-				url.QueryEscape(query),
-			),
+			c.basic.Base().Copy().Path(
+				constant.Search,
+			).Set(constant.QueryKey, query).String(),
 		),
 		&result,
 		false,

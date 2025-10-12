@@ -7,12 +7,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
-func (c *Client) PostV2(
-	path string,
+func (c *Client) PostV2Path(
+	p string,
 	body string,
 ) string {
 	r := web.NewPost(
-		locator.New(c.host).Base(constant.Base).Path(path).String(),
+		locator.New(c.host).Base(constant.Base).Path(p).String(),
 		body,
 	)
 	r.SetBasicAuth(c.user, c.token)

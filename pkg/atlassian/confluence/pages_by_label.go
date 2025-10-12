@@ -11,7 +11,7 @@ import (
 func (c *Client) PagesByLabel(labelIdentifier string) []*page.Page {
 	var result *response.Pages
 	notation.DecodeStrict(
-		c.basic.GetV2(
+		c.basic.GetV2Path(
 			fmt.Sprintf(
 				"/labels/%s/pages?body-format=%s",
 				labelIdentifier,

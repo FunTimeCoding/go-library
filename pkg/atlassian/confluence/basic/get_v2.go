@@ -2,13 +2,10 @@ package basic
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
-func (c *Client) GetV2(path string) string {
-	l := locator.New(c.host).Base(constant.Base).Path(path).String()
+func (c *Client) GetV2(l string) string {
 	r := web.NewGet(l)
 	r.SetBasicAuth(c.user, c.token)
 	response := web.Send(web.Client(true), r)

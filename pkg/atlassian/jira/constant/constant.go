@@ -21,6 +21,31 @@ const (
 	AllowedValuesKey = "allowedValues"
 )
 
+// API paths
+const (
+	Base   = "/rest/api/3"
+	Issue  = "/issue"
+	Search = "/search/jql"
+
+	ServiceDesk = "/rest/servicedeskapi"
+	Request     = "/request"
+
+	Dynamic = "/rest/atlassian-connect/1/app/module/dynamic"
+	Addon   = "/rest/atlassian-connect/1/addons"
+)
+
+// Query parameter keys
+const (
+	FieldsKey         = "fields"
+	MaximumResultsKey = "maxResults"
+	NextPageTokenKey  = "nextPageToken"
+	QueryKey          = "jql"
+	LimitKey          = "limit"
+	StartKey          = "start"
+)
+
+const AllFields = "*all" // Query parameter value
+
 // Field names
 const (
 	AssigneeName     = "Assignee"

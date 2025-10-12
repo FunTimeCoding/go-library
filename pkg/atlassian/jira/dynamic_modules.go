@@ -1,11 +1,12 @@
 package jira
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
+)
 
 func (c *Client) DynamicModules() {
-	status, response := c.basic.GetPath(
-		"/rest/atlassian-connect/1/app/module/dynamic",
-	)
+	status, response := c.basic.GetPath(constant.Dynamic)
 	// 401 {"message":"The request is not from a Connect app."}
-	fmt.Printf("Basic response: %d %s", status, response)
+	fmt.Printf("DynamicModule: %d %s\n", status, response)
 }

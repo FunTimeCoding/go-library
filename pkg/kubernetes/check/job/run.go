@@ -10,24 +10,31 @@ import (
 
 func Run() {
 	pflag.Bool(TrivyArgument, false, "Run Trivy job")
-	pflag.Bool(RenovateArgument, false, "Run Renovate job")
+	pflag.Bool(LabArgument, false, "Renovate GitLab")
+	pflag.Bool(HubArgument, false, "Renovate GitHub")
 	pflag.Bool(argument.Wait, false, "Wait for job to complete")
 	argument.ParseBind()
 	trivy := viper.GetBool(TrivyArgument)
-	renovate := viper.GetBool(RenovateArgument)
+	lab := viper.GetBool(LabArgument)
+	hub := viper.GetBool(HubArgument)
 	wait := viper.GetBool(argument.Wait)
 	k := client.NewEnvironment()
 
-	if !trivy && !renovate {
+	if !trivy && !lab && !hub {
 		trivy = true
-		renovate = true
+		lab = true
+		hub = true
 	}
 
 	if trivy {
 		start(k, wait, constant.TrivyNamespace, constant.TrivyCron)
 	}
 
-	if renovate {
-		start(k, wait, constant.RenovateNamespace, constant.RenovateCron)
+	if lab {
+		start(k, wait, constant.RenovateNamespace, constant.LabCron)
+	}
+
+	if hub {
+		start(k, wait, constant.RenovateNamespace, constant.HubCron)
 	}
 }

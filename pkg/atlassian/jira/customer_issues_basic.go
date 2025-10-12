@@ -1,15 +1,18 @@
 package jira
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
+)
 
 func (c *Client) CustomerIssuesBasic() {
 	status, response := c.basic.Get(
 		c.basic.Base().Copy().Base(
-			"/rest/servicedeskapi",
-		).Path("/request").Set(
-			"limit",
-			"10",
-		).Set("start", "0").String(),
+			constant.ServiceDesk,
+		).Path(constant.Request).SetInteger(
+			constant.LimitKey,
+			10,
+		).SetInteger(constant.StartKey, 0).String(),
 	)
 	fmt.Printf("Basic response: %d %s", status, response)
 }

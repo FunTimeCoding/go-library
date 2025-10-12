@@ -1,11 +1,12 @@
 package jira
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
+)
 
 func (c *Client) Addons() {
-	status, response := c.basic.GetPath(
-		"/rest/atlassian-connect/1/addons",
-	)
+	status, response := c.basic.GetPath(constant.Addon)
 	// 403 {"message":"Client must be authenticated as a system administrator to access this resource.","status-code":403}
-	fmt.Printf("Basic response: %d %s", status, response)
+	fmt.Printf("Addon: %d %s\n", status, response)
 }

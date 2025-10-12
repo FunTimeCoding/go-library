@@ -1,6 +1,7 @@
 package job
 
 const (
-	TrivyArgument    = "trivy"
-	RenovateArgument = "renovate"
+	TrivyArgument = "trivy"
+	LabArgument   = "lab"
+	HubArgument   = "hub"
 )

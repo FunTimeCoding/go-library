@@ -3,14 +3,13 @@ package job
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
-	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 )
 
-func deleteManual(
+func deleteJob(
 	k *client.Client,
 	namespace string,
+	name string,
 ) {
-	name := constant.ManualCron
 	fmt.Printf("Delete job %s in %s\n", name, namespace)
 
 	if j := k.Job(namespace, name); j != nil {

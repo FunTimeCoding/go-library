@@ -27,14 +27,32 @@ func Run() {
 	}
 
 	if trivy {
-		start(k, wait, constant.TrivyNamespace, constant.TrivyCron)
+		start(
+			k,
+			wait,
+			constant.TrivyNamespace,
+			constant.TrivyCron,
+			constant.ManualJob,
+		)
 	}
 
 	if lab {
-		start(k, wait, constant.RenovateNamespace, constant.LabCron)
+		start(
+			k,
+			wait,
+			constant.RenovateNamespace,
+			constant.LabCron,
+			constant.ManualLabJob,
+		)
 	}
 
 	if hub {
-		start(k, wait, constant.RenovateNamespace, constant.HubCron)
+		start(
+			k,
+			wait,
+			constant.RenovateNamespace,
+			constant.HubCron,
+			constant.ManualHubJob,
+		)
 	}
 }

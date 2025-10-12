@@ -7,9 +7,10 @@ func start(
 	wait bool,
 	namespace string,
 	cron string,
+	name string,
 ) {
-	deleteManual(k, namespace)
-	j := createManual(k, namespace, cron)
+	deleteJob(k, namespace, name)
+	j := createJob(k, namespace, cron, name)
 
 	if wait {
 		waitForDone(k, namespace, j.Name)

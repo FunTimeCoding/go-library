@@ -38,5 +38,7 @@ const (
 	LabCron           = "lab"
 	HubCron           = "hub"
 
-	ManualCron = "manual"
+	ManualJob    = "manual"
+	ManualLabJob = "manual-lab"
+	ManualHubJob = "manual-hub"
 )

@@ -4,7 +4,12 @@ import "fmt"
 
 func (c *Client) IssueV3(key string) {
 	status, response := c.basic.Get(
-		fmt.Sprintf("/rest/api/3/issue/%s?fields=*all", key),
+		c.basic.Base().Copy().Base(
+			"/rest/api/3",
+		).Path("/issue/%s", key).Set(
+			"fields",
+			"*all",
+		).String(),
 	)
 	fmt.Printf("Response: %d %s", status, response)
 }

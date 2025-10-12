@@ -4,7 +4,12 @@ import "fmt"
 
 func (c *Client) CustomerIssuesBasic() {
 	status, response := c.basic.Get(
-		"/rest/servicedeskapi/request?limit=10&start=0",
+		c.basic.Base().Copy().Base(
+			"/rest/servicedeskapi",
+		).Path("/request").Set(
+			"limit",
+			"10",
+		).Set("start", "0").String(),
 	)
 	fmt.Printf("Basic response: %d %s", status, response)
 }

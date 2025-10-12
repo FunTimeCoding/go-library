@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic/response"
 	"github.com/funtimecoding/go-library/pkg/notation"
-	"net/url"
 )
 
 func (c *Client) searchV3Page(
@@ -14,12 +13,18 @@ func (c *Client) searchV3Page(
 ) *response.Search {
 	var result response.Search
 	status, r := c.basic.Get(
-		fmt.Sprintf(
-			"/rest/api/3/search/jql?fields=*all&maxResults=%d&nextPageToken=%s&jql=%s",
-			maximumResults,
+		c.basic.Base().Copy().Base(
+			"/rest/api/3",
+		).Path("/search/jql").Set(
+			"fields",
+			"*all",
+		).Set(
+			"maxResults",
+			fmt.Sprintf("%d", maximumResults),
+		).Set(
+			"nextPageToken",
 			nextPageToken,
-			url.QueryEscape(query),
-		),
+		).Set("jql", query).String(),
 	)
 	notation.DecodeStrict(r, &result, true)
 

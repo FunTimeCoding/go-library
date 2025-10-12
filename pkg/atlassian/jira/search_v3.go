@@ -36,7 +36,7 @@ func (c *Client) SearchV3(
 
 	if false {
 		// Response: 500 {"message":"Cannot invoke \"java.util.List.size()\" because \"reconcileIssues\" is null","status-code":500,"stack-trace":""}
-		status, r := c.basic.Post(
+		status, r := c.basic.PostPath(
 			"/rest/api/3/search/jql",
 			notation.Encode(
 				request.Search{

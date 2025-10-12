@@ -3,14 +3,13 @@ package basic
 import (
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
 func (c *Client) Post(
-	path string,
+	l string,
 	body string,
 ) (int, string) {
-	r := web.NewPost(locator.New(c.host).Path(path).String(), body)
+	r := web.NewPost(l, body)
 	r.SetBasicAuth(c.user, c.token)
 	r.Header.Add(constant.ContentType, constant.Object)
 	r.Header.Add(constant.Accept, constant.Object)

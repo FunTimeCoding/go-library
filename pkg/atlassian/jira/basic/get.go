@@ -1,12 +1,9 @@
 package basic
 
-import (
-	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
-)
+import "github.com/funtimecoding/go-library/pkg/web"
 
-func (c *Client) Get(path string) (int, string) {
-	r := web.NewGet(locator.New(c.host).Path(path).String())
+func (c *Client) Get(l string) (int, string) {
+	r := web.NewGet(l)
 	r.SetBasicAuth(c.user, c.token)
 	response := web.Send(web.Client(true), r)
 

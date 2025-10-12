@@ -12,7 +12,7 @@
     },
     {
       "matchPackageNames": ["github.com/google/gnostic-models"],
-      "allowedVersions": "<= 0.6.9"
+      "allowedVersions": "<= v0.6.9"
     }
   ]
 }

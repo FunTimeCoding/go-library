@@ -51,10 +51,10 @@ require (
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251007165341-617fbb705da1
 	github.com/liushuangls/go-anthropic v1.6.0
 	github.com/mark3labs/mcp-go v0.41.1
-	github.com/mattermost/mattermost/server/public v0.1.19
+	github.com/mattermost/mattermost/server/public v0.1.20
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.1.0
-	github.com/ollama/ollama v0.12.3
+	github.com/ollama/ollama v0.12.5
 	github.com/openai/openai-go v1.12.0
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
@@ -79,7 +79,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v0.154.0
+	gitlab.com/gitlab-org/api/client-go v0.156.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.43.0
 	golang.org/x/mod v0.29.0

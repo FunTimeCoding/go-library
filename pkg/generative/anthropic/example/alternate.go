@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/liushuangls/go-anthropic"
+	"github.com/liushuangls/go-anthropic/v2"
 )
 
 func Alternate() {

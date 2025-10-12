@@ -2,7 +2,7 @@ package github
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/google/go-github/v70/github"
+	"github.com/google/go-github/v75/github"
 )
 
 func (c *Client) Notifications() []*github.Notification {

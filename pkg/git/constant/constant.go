@@ -33,6 +33,8 @@ const (
 
 	Push = "push"
 	Tags = "--tags"
+
+	HeadReference = "HEAD"
 )
 
 var (

@@ -1,6 +1,6 @@
 package job
 
-import "github.com/google/go-github/v70/github"
+import "github.com/google/go-github/v75/github"
 
 func NewSlice(v []*github.WorkflowJob) []*Job {
 	var result []*Job

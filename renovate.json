@@ -9,6 +9,10 @@
         "k8s.io/apimachinery"
       ],
       "allowedVersions": "<= v0.30.14"
+    },
+    {
+      "matchPackageNames": ["github.com/google/gnostic-models"],
+      "allowedVersions": "<= 0.6.9"
     }
   ]
 }

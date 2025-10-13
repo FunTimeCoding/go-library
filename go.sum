@@ -1913,6 +1913,8 @@ github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50/go.mod h1:NUSPS
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go.mod h1:GlGEuHIJweS1mbCqG+7vt2nvWLzLLnRHbXz5JKd/Qbg=
 gitlab.com/gitlab-org/api/client-go v0.156.0 h1:dHgFtA9Z28Oz6veBYR09SQ7eT3qof9ZsY9QMH3D9KaA=
 gitlab.com/gitlab-org/api/client-go v0.156.0/go.mod h1:CQVoxjEswJZeXft4Mi+H+OF1MVrpNVF6m4xvlPTQ2J4=
+gitlab.com/gitlab-org/api/client-go v0.157.0 h1:B+/Ku1ek3V/MInR/SmvL4FOqE0YYx51u7lBVYIHC2ic=
+gitlab.com/gitlab-org/api/client-go v0.157.0/go.mod h1:CQVoxjEswJZeXft4Mi+H+OF1MVrpNVF6m4xvlPTQ2J4=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

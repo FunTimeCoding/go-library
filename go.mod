@@ -22,7 +22,6 @@ require (
 	github.com/chromedp/chromedp v0.14.2
 	github.com/coder/websocket v1.8.14
 	github.com/coreos/go-semver v0.3.1
-	github.com/ctreminiom/go-atlassian v1.6.1
 	github.com/ctreminiom/go-atlassian/v2 v2.8.0
 	github.com/daixijun/go-salt/v2 v2.0.1
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc

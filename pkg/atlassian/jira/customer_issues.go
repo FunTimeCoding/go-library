@@ -1,7 +1,7 @@
 package jira
 
 import (
-	"github.com/ctreminiom/go-atlassian/pkg/infra/models"
+	"github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
 	basic "github.com/funtimecoding/go-library/pkg/atlassian/jira/basic/issue/issues"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/customer"

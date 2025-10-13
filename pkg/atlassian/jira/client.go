@@ -3,7 +3,7 @@ package jira
 import (
 	"context"
 	"github.com/andygrunwald/go-jira"
-	"github.com/ctreminiom/go-atlassian/jira/sm"
+	"github.com/ctreminiom/go-atlassian/v2/jira/sm"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/field_map"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/issue_enricher"

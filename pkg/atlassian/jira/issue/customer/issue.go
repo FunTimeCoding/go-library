@@ -1,6 +1,6 @@
 package customer
 
-import "github.com/ctreminiom/go-atlassian/pkg/infra/models"
+import "github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
 
 type Issue struct {
 	Key    string

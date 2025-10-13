@@ -1143,8 +1143,8 @@ github.com/kataras/neffos v0.0.21/go.mod h1:FeGka8lu8cjD2H+0OpBvW8c6xXawy3fj5VX6
 github.com/kataras/pio v0.0.11/go.mod h1:38hH6SWH6m4DKSYmRhlrCJ5WItwWgCVrTNU62XZyUvI=
 github.com/kataras/sitemap v0.0.6/go.mod h1:dW4dOCNs896OR1HmG+dMLdT7JjDk7mYBzoIRwuj5jA4=
 github.com/kataras/tunnel v0.0.4/go.mod h1:9FkU4LaeifdMWqZu7o20ojmW4B7hdhv2CMLwfnHGpYw=
-github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251007165341-617fbb705da1 h1:g2YtzJi/eyYuVBBv57URsv3b8k42t374+T99B7h0yc4=
-github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251007165341-617fbb705da1/go.mod h1:KB3usr30HBYygB1o2uml1biwOk8y+6ICo8QthCnKdpw=
+github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251013164319-da4cf3e11fe1 h1:c2fxux30vBmegVcd5bqrIW/cow6v5MN5RVw3ha2Ivc0=
+github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251013164319-da4cf3e11fe1/go.mod h1:KB3usr30HBYygB1o2uml1biwOk8y+6ICo8QthCnKdpw=
 github.com/kevinburke/ssh_config v1.2.0 h1:x584FjTGwHzMwvHx18PXxbBVzfnxogHaAReU4gf13a4=
 github.com/kevinburke/ssh_config v1.2.0/go.mod h1:CT57kijsi8u/K/BOFA39wgDQJ9CxiF4nAY/ojJ6r6mM=
 github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvWXihfKN4Q=
@@ -1911,8 +1911,8 @@ github.com/yusufpapurcu/wmi v1.2.4/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQ
 github.com/yvasiyarov/go-metrics v0.0.0-20140926110328-57bccd1ccd43/go.mod h1:aX5oPXxHm3bOH+xeAttToC8pqch2ScQN/JoXYupl6xs=
 github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50/go.mod h1:NUSPSUX/bi6SeDMUh6brw0nXpxHnc96TguQh0+r/ssA=
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go.mod h1:GlGEuHIJweS1mbCqG+7vt2nvWLzLLnRHbXz5JKd/Qbg=
-gitlab.com/gitlab-org/api/client-go v0.156.0 h1:dHgFtA9Z28Oz6veBYR09SQ7eT3qof9ZsY9QMH3D9KaA=
-gitlab.com/gitlab-org/api/client-go v0.156.0/go.mod h1:CQVoxjEswJZeXft4Mi+H+OF1MVrpNVF6m4xvlPTQ2J4=
+gitlab.com/gitlab-org/api/client-go v0.157.0 h1:B+/Ku1ek3V/MInR/SmvL4FOqE0YYx51u7lBVYIHC2ic=
+gitlab.com/gitlab-org/api/client-go v0.157.0/go.mod h1:CQVoxjEswJZeXft4Mi+H+OF1MVrpNVF6m4xvlPTQ2J4=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

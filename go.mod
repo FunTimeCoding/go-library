@@ -31,7 +31,7 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.9.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.35.3
+	github.com/getsentry/sentry-go v0.36.0
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.16.3
 	github.com/go-openapi/runtime v0.29.0

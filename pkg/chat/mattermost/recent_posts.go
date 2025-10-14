@@ -20,7 +20,7 @@ func (c *Client) RecentPosts(
 	t := time.UnixMilli(sinceMilli)
 	var posts []*model.Post
 
-	for _, v := range post.FromList(list) {
+	for _, v := range post.FromList(list, true) {
 		if v.Message == "" {
 			continue
 		}

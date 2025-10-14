@@ -20,7 +20,7 @@ func (c *Client) Thread(p *model.Post) []*post.Post {
 	panicOnError(e, r)
 	var posts []*model.Post
 
-	for i, o := range post.FromList(list) {
+	for i, o := range post.FromList(list, true) {
 		if i == 0 {
 			continue
 		}

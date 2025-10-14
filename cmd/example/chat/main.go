@@ -7,17 +7,15 @@ import (
 )
 
 func main() {
-	if false {
-		discord.DeleteLoop()
-	}
+	mattermost.Before()
 
 	if false {
+		discord.DeleteLoop()
+
 		mattermost.Dialog()
 		mattermost.Support()
 		mattermost.Post()
-	}
 
-	if false {
 		telegram.OllamaSession()
 		telegram.OllamaReply()
 		telegram.Update()

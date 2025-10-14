@@ -15,7 +15,7 @@ func (p *Post) Format(f *option.Format) string {
 	)
 	s := status.New(f).String(
 		p.Create.Format(time.HourMinute),
-		p.User.Username,
+		p.formatUser(),
 		formatLine(f, lines[0]),
 	).RawList(p.Raw)
 

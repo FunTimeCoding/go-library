@@ -10,7 +10,7 @@ func (c *Client) Posts(h *model.Channel) *model.PostList {
 		c.context,
 		h.Id,
 		0,
-		100,
+		constant.PerPage,
 		constant.EmptyEntityTag,
 		true,
 		false,

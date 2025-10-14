@@ -9,7 +9,7 @@ func (c *Client) AllChannels() []*model.ChannelWithTeamData {
 	result, r, e := c.client.GetAllChannels(
 		c.context,
 		0,
-		100,
+		constant.PerPage,
 		constant.EmptyEntityTag,
 	)
 	panicOnError(e, r)

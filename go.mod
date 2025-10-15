@@ -10,7 +10,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.2.5
 	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
 	github.com/andygrunwald/go-jira v1.17.0
-	github.com/anthropics/anthropic-sdk-go v1.13.0
+	github.com/anthropics/anthropic-sdk-go v1.14.0
 	github.com/apenella/go-ansible/v2 v2.2.0
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bndr/gojenkins v1.1.0
@@ -31,7 +31,7 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.9.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.35.3
+	github.com/getsentry/sentry-go v0.36.0
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.16.3
 	github.com/go-openapi/runtime v0.29.0
@@ -43,11 +43,11 @@ require (
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/gpustack/gguf-parser-go v0.22.1
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250925215610-d92957c70d5c
-	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
+	github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.6
-	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251013164319-da4cf3e11fe1
+	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251014075331-9805c6e35b60
 	github.com/liushuangls/go-anthropic/v2 v2.16.1
 	github.com/mark3labs/mcp-go v0.41.1
 	github.com/mattermost/mattermost/server/public v0.1.20

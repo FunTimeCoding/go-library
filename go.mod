@@ -43,7 +43,7 @@ require (
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/gpustack/gguf-parser-go v0.22.1
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250925215610-d92957c70d5c
-	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
+	github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.6

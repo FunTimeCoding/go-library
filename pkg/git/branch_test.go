@@ -9,12 +9,8 @@ import (
 )
 
 func TestBranch(t *testing.T) {
-	actual := Branch(system.ParentDirectory(constant.Depth))
+	system.PrintEnvironment()
 	var e string
-
-	if actual != constant.MainBranch {
-		system.PrintEnvironment()
-	}
 
 	if action.IsActionRun() {
 		e = constant.HeadReference
@@ -22,5 +18,5 @@ func TestBranch(t *testing.T) {
 		e = constant.MainBranch
 	}
 
-	assert.String(t, e, actual)
+	assert.String(t, e, Branch(system.ParentDirectory(constant.Depth)))
 }

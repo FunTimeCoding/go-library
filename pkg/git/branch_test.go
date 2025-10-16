@@ -4,7 +4,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/github/action"
+	github "github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"testing"
 )
 
@@ -13,7 +15,7 @@ func TestBranch(t *testing.T) {
 	var e string
 
 	if action.IsActionRun() {
-		e = constant.HeadReference
+		e = environment.Required(github.ReferenceName)
 	} else {
 		e = constant.MainBranch
 	}

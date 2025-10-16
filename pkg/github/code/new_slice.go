@@ -1,6 +1,6 @@
 package code
 
-import "github.com/google/go-github/v75/github"
+import "github.com/google/go-github/v76/github"
 
 func NewSlice(v []*github.CodeResult) []*Code {
 	var result []*Code

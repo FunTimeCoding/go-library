@@ -2,13 +2,15 @@ package system
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"os"
 	"strings"
 )
 
 func PrintEnvironment() {
 	for _, e := range os.Environ() {
-		p := strings.SplitN(e, "=", 2)
-		fmt.Printf("ENV: %s=%s\n", p[0], p[1])
+		p := strings.SplitN(e, separator.Equals, 2)
+		fmt.Printf("ENV: %s\n", key_value.Equals(p[0], p[1]))
 	}
 }

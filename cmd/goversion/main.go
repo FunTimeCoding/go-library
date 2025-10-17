@@ -19,16 +19,12 @@ import (
 func main() {
 	monitor.NotationArgument()
 	monitor.AllArgument()
-	pflag.String(
-		argument.Skip,
-		"",
-		"Directory skip matches, comma-separated",
-	)
+	pflag.String(argument.Skip, "", "Skip matches")
 	pflag.Int(
 		argument.Depth,
 		3,
 		fmt.Sprintf(
-			"Depth to scan for %s. Default is 3.",
+			"Depth to scan for %s. Default: 3",
 			item.GoVersion.Plural,
 		),
 	)
@@ -38,10 +34,7 @@ func main() {
 	o.All = viper.GetBool(argument.All)
 	o.Path = argument.PositionalFallback(
 		0,
-		environment.Fallback(
-			status.RepositoryRootEnvironment,
-			".",
-		),
+		environment.Fallback(status.RepositoryRootEnvironment, "."),
 	)
 	o.Depth = viper.GetInt(argument.Depth)
 
@@ -59,10 +52,7 @@ func main() {
 	v := runtime.ExecutableVersion()
 
 	if v == nil {
-		system.Exitf(
-			1,
-			"could not determine Go version\n",
-		)
+		system.Exitf(1, "could not get Go version\n")
 
 		return
 	}

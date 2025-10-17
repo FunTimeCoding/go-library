@@ -1200,6 +1200,8 @@ github.com/linode/linodego v1.4.0/go.mod h1:PVsRxSlOiJyvG4/scTszpmZDTdgS+to3X6eS
 github.com/linuxkit/virtsock v0.0.0-20201010232012-f8cee7dfc7a3/go.mod h1:3r6x7q95whyfWQpmGZTu3gk3v2YkMi05HEzl7Tf7YEo=
 github.com/liushuangls/go-anthropic/v2 v2.16.1 h1:7s8hTOQaZVxyepYlq8vsLQReg1cIi6sv8yBBSHAnJLw=
 github.com/liushuangls/go-anthropic/v2 v2.16.1/go.mod h1:a550cJXPoTG2FL3DvfKG2zzD5O2vjgvo4tHtoGPzFLU=
+github.com/liushuangls/go-anthropic/v2 v2.16.2 h1:eK2tdDTKlMiHEdTKhbSUf11dgY0K//PulXDFAj2EeHQ=
+github.com/liushuangls/go-anthropic/v2 v2.16.2/go.mod h1:a550cJXPoTG2FL3DvfKG2zzD5O2vjgvo4tHtoGPzFLU=
 github.com/lucasb-eyer/go-colorful v1.2.0 h1:1nnpGOrhyZZuNyfu1QjKiUICQ74+3FNCN69Aj6K7nkY=
 github.com/lucasb-eyer/go-colorful v1.2.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
 github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 h1:6E+4a0GO5zZEnZ81pIr0yLvtUWk2if982qA3F3QD6H4=

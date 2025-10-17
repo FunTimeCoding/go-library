@@ -49,7 +49,7 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251014075331-9805c6e35b60
-	github.com/liushuangls/go-anthropic/v2 v2.16.1
+	github.com/liushuangls/go-anthropic/v2 v2.16.2
 	github.com/mark3labs/mcp-go v0.41.1
 	github.com/mattermost/mattermost/server/public v0.1.21
 	github.com/netbox-community/go-netbox/v4 v4.3.0

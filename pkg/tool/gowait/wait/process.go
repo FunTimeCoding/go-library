@@ -21,8 +21,10 @@ func Process(o *option.Wait) {
 		cmd := exec.Command("pgrep", "-f", o.Process)
 
 		if e := cmd.Run(); e != nil {
-			elapsed := time.Since(start)
-			fmt.Printf("Done after %v\n", elapsed.Round(time.Second))
+			fmt.Printf(
+				"Done after %v\n",
+				time.Since(start).Round(time.Second),
+			)
 
 			return
 		}

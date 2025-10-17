@@ -1,0 +1,3 @@
+---
+version: '2'
+run: {allow-serial-runners: true}

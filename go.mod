@@ -48,13 +48,13 @@ require (
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.6
-	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251014075331-9805c6e35b60
-	github.com/liushuangls/go-anthropic/v2 v2.16.1
+	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251017100157-2eb8b9e1bc8b
+	github.com/liushuangls/go-anthropic/v2 v2.16.2
 	github.com/mark3labs/mcp-go v0.41.1
 	github.com/mattermost/mattermost/server/public v0.1.21
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.1.0
-	github.com/ollama/ollama v0.12.5
+	github.com/ollama/ollama v0.12.6
 	github.com/openai/openai-go/v3 v3.4.0
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23

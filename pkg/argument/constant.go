@@ -65,6 +65,7 @@ const (
 	Pod            = "pod"
 	Port           = "port"
 	Pretend        = "pretend"
+	Process        = "process"
 	Project        = "project"
 	Replace        = "replace"
 	Repository     = "repository"

@@ -35,7 +35,7 @@ func Registry(
 				continue
 			}
 
-			fmt.Printf("Delete image: %s\n", i.Name)
+			fmt.Printf("Image: %s\n", i.Name)
 			c.DeleteImage(p.Identifier, r.ID, i.Name)
 		}
 	}

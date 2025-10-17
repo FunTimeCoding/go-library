@@ -30,11 +30,7 @@ func Package(
 				continue
 			}
 
-			fmt.Printf(
-				"Delete package: %s %s\n",
-				a.Name,
-				a.Version,
-			)
+			fmt.Printf("Package: %s %s\n", a.Name, a.Version)
 			c.DeletePackage(p.Identifier, a.ID)
 		}
 	}

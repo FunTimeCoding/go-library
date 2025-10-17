@@ -81,9 +81,9 @@ func Pipeline(
 		}
 
 		if o.Verbose {
-			fmt.Printf("Delete pipeline: %s %s\n", i.Ref, i.SHA)
+			fmt.Printf("Pipeline: %s %s\n", i.Ref, i.SHA)
 		} else {
-			fmt.Printf("Delete pipeline: %s\n", i.Ref)
+			fmt.Printf("Pipeline: %s\n", i.Ref)
 		}
 
 		c.DeletePipeline(p.Identifier, i.ID)

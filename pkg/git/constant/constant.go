@@ -35,6 +35,8 @@ const (
 	Tags = "--tags"
 
 	HeadReference = "HEAD"
+
+	HashLength = 7
 )
 
 var (

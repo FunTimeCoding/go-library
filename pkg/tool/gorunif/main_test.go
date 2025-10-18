@@ -1,10 +1,10 @@
-package option
+package gorunif
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestWait(t *testing.T) {
-	assert.NotNil(t, New())
+func TestStub(t *testing.T) {
+	assert.Stub(t)
 }

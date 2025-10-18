@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/gowait/wait/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gowait/wait/option"
 	"io"
 	"net/http"
@@ -67,7 +68,7 @@ func Locator(o *option.Wait) {
 		select {
 		case <-x.Done():
 			panic("timeout")
-		case <-time.After(interval):
+		case <-time.After(constant.interval):
 			// Continue
 		}
 	}

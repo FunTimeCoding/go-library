@@ -1,10 +1,10 @@
-package option
+package constant
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestWait(t *testing.T) {
-	assert.NotNil(t, New())
+func TestConstant(t *testing.T) {
+	assert.Stub(t)
 }

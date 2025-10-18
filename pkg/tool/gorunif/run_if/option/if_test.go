@@ -5,6 +5,6 @@ import (
 	"testing"
 )
 
-func TestWait(t *testing.T) {
+func TestIf(t *testing.T) {
 	assert.NotNil(t, New())
 }

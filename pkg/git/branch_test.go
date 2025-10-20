@@ -15,7 +15,7 @@ func TestBranch(t *testing.T) {
 	var e string
 
 	if action.IsActionRun() {
-		e = environment.Required(github.ReferenceName)
+		e = environment.Required(github.ReferenceEnvironment)
 	} else {
 		e = constant.MainBranch
 	}

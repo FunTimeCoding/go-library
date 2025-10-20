@@ -18,6 +18,8 @@ const (
 	InterfaceAddress = "dcim.interface"
 
 	Interface = "/api"
+
+	SignatureHeader = "X-Hook-Signature"
 )
 
 var Format = option.Color.Copy()

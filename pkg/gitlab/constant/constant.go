@@ -42,6 +42,8 @@ const (
 
 	PerPage1000 int = 1000
 	PerPage100  int = 100
+
+	TokenHeader = "X-Gitlab-Token"
 )
 
 // Environment variables during jobs

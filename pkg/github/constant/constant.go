@@ -12,6 +12,8 @@ const (
 
 	LibraryNamespace  = "funtimecoding"
 	LibraryRepository = "go-library"
+
+	SignatureHeader = "X-Hub-Signature-256"
 )
 
 var Format = option.ExtendedColor.Copy()

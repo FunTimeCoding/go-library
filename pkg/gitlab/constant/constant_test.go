@@ -6,5 +6,5 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "id", Identifier)
+	assert.String(t, "X-Gitlab-Token", TokenHeader)
 }

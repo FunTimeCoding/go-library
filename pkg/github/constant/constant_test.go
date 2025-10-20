@@ -6,5 +6,5 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "GITHUB_TOKEN", TokenEnvironment)
+	assert.String(t, "X-Hub-Signature-256", SignatureHeader)
 }

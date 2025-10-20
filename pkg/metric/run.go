@@ -12,7 +12,7 @@ func (s *Server) Run(g *sync.WaitGroup) {
 	}
 
 	if s.verbose {
-		fmt.Printf("metric server running on port %d\n", s.port)
+		fmt.Printf("start metric server on %d\n", s.port)
 	}
 
 	g.Add(1)

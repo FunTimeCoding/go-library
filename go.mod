@@ -32,7 +32,7 @@ require (
 	github.com/gage-technologies/mistral-go v1.1.0
 	github.com/gdamore/tcell/v2 v2.9.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.36.0
+	github.com/getsentry/sentry-go v0.36.1
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.16.3
 	github.com/go-openapi/runtime v0.29.0
@@ -48,14 +48,14 @@ require (
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.7.6
-	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251017100157-2eb8b9e1bc8b
+	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251021141016-55b42ea6093f
 	github.com/liushuangls/go-anthropic/v2 v2.16.2
-	github.com/mark3labs/mcp-go v0.41.1
+	github.com/mark3labs/mcp-go v0.42.0
 	github.com/mattermost/mattermost/server/public v0.1.21
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.1.0
 	github.com/ollama/ollama v0.12.6
-	github.com/openai/openai-go/v3 v3.6.0
+	github.com/openai/openai-go/v3 v3.6.1
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2

@@ -176,6 +176,8 @@ github.com/andybalholm/cascadia v1.3.3 h1:AG2YHrzJIm4BZ19iwJ/DAua6Btl3IwJX+VI4kk
 github.com/andybalholm/cascadia v1.3.3/go.mod h1:xNd9bqTn98Ln4DwST8/nG+H0yuB8Hmgu1YHNnWw0GeA=
 github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af h1:PNE0xdyuLeOTujftqZs8DlhDoi+T54ONZhiGOxH5t2A=
 github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af/go.mod h1:oUO968BJnuljnB5tntrY3w3zDfI5/PqnQ+RuiZ8aFhk=
+github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447 h1:k6+jpIs9ursGz+y7nkcM8wKbcuhHUciAG0K8iJc0Q7U=
+github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447/go.mod h1:pPGkS23qg1oDBM+DTLoAN8B4k6EH1zYBWwqwvP7nMi0=
 github.com/andygrunwald/go-jira v1.17.0 h1:bbu5H676l6MaNcV6A7VDIAjIOQVgzNGEhNAwNI/Cjgo=
 github.com/andygrunwald/go-jira v1.17.0/go.mod h1:tiZsPUu9824bwcI2BUXatE4hJbs9rUOif0nv1lkq1hQ=
 github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239/go.mod h1:2FmKhYUyUczH0OGQWaF5ceTx0UBShxjsH6f8oGKYe2c=

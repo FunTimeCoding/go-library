@@ -8,7 +8,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.10.3
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5
 	github.com/amikos-tech/chroma-go v0.2.5
-	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
+	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447
 	github.com/andygrunwald/go-jira v1.17.0
 	github.com/anthropics/anthropic-sdk-go v1.14.0
 	github.com/apenella/go-ansible/v2 v2.2.0

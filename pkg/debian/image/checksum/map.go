@@ -6,5 +6,5 @@ import (
 )
 
 func Map(workDirectory string) map[string]string {
-	return Parse(strings.TrimSpace(system.ReadFile(Path(workDirectory))))
+	return Parse(strings.TrimSpace(system.ReadFile(workDirectory, File)))
 }

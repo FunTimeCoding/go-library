@@ -1,18 +1,7 @@
 package web
 
-import (
-	"crypto/tls"
-	"net/http"
-)
+import "net/http"
 
-func Client(secure bool) *http.Client {
-	c := &http.Client{}
-
-	if !secure {
-		c.Transport = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
-	}
-
-	return c
+func Client() *http.Client {
+	return &http.Client{}
 }

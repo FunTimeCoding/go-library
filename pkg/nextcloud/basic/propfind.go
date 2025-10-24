@@ -17,7 +17,7 @@ func (c *Client) Propfind() {
 	}
 
 	req.SetBasicAuth(c.user, c.password)
-	res := web.Send(web.Client(true), req)
+	res := web.Send(web.Client(), req)
 	defer errors.LogClose(res.Body)
 
 	switch res.StatusCode {

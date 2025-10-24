@@ -15,6 +15,6 @@ func Page() {
 			c.Delete(a.Identifier)
 		}
 
-		c.Import(s, p, "fixture/wiki/example/Charlie.json")
+		c.Import(s, p, "fixture/wiki/example/", "Charlie.json")
 	}
 }

@@ -2,6 +2,7 @@ package netbox
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/integers64"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 	"github.com/funtimecoding/go-library/pkg/netbox/network"
@@ -27,7 +28,7 @@ func (c *Client) UpdateInterface(
 	var assigned bool
 
 	if p.ObjectType == constant.InterfaceAddress {
-		if int32(p.ObjectIdentifier) == i.Identifier {
+		if integers64.To32(p.ObjectIdentifier) == i.Identifier {
 			assigned = true
 		}
 	}

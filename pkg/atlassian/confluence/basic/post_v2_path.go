@@ -23,5 +23,5 @@ func (c *Client) PostV2Path(
 		webConstant.Object,
 	}
 
-	return web.ReadString(web.Send(web.Client(true), r))
+	return web.ReadString(web.Send(web.Client(), r))
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/markdown/runbook"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func Runbook() {
@@ -17,7 +16,7 @@ func Runbook() {
 
 	for _, n := range system.Files(base) {
 		fmt.Printf("File: %s\n", n)
-		source := system.ReadBytes(join.Absolute(base, n))
+		source := system.ReadBytes(base, n)
 
 		if false {
 			markdown.Print(source, f)

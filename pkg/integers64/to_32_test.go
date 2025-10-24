@@ -1,4 +1,4 @@
-package integers
+package integers64
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"

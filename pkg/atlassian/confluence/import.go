@@ -13,9 +13,10 @@ import (
 func (c *Client) Import(
 	space string,
 	parent string,
-	path string,
+	base string,
+	name string,
 ) *page.Page {
-	f := page_file.Decode(system.ReadFile(path))
+	f := page_file.Decode(system.ReadFile(base, name))
 	var result *response.Page
 	notation.DecodeStrict(
 		c.basic.PostV2Path(

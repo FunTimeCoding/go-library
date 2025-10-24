@@ -7,19 +7,19 @@ import (
 
 func PutFile(
 	locator string,
-	headers map[string]string,
+	header map[string]string,
 	b []byte,
 ) (int, string) {
-	var buffer = new(bytes.Buffer)
-	buffer.Write(b)
-	request := NewPutBytes(locator, buffer)
+	var u = new(bytes.Buffer)
+	u.Write(b)
+	r := NewPutBytes(locator, u)
 
-	for k, v := range headers {
-		request.Header.Add(k, v)
+	for k, v := range header {
+		r.Header.Add(k, v)
 	}
 
-	response := Send(Client(true), request)
-	defer errors.PanicClose(response.Body)
+	s := Send(Client(), r)
+	defer errors.PanicClose(s.Body)
 
-	return response.StatusCode, ReadString(response)
+	return s.StatusCode, ReadString(s)
 }

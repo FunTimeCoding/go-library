@@ -1,7 +1,10 @@
 package integers
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestFromUnsigned64(t *testing.T) {
-	FromUnsigned64(0)
+	assert.Integer(t, 0, FromUnsigned64(0))
 }

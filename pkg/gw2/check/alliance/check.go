@@ -15,15 +15,12 @@ func Check() {
 	)
 
 	if false {
-		Guild(fmt.Sprintf("%s\\ApiDataCache.json", path))
+		Guild(path)
 	}
 
 	if true {
 		pflag.String(argument.Tag, "", "Guild tag")
 		argument.ParseBind()
-		Log(
-			fmt.Sprintf("%s\\LogDataCache.json", path),
-			viper.GetString(argument.Tag),
-		)
+		Log(path, viper.GetString(argument.Tag))
 	}
 }

@@ -4,7 +4,7 @@ import "github.com/funtimecoding/go-library/pkg/console/status/option"
 
 const (
 	HostEnvironment  = "NET_BOX_HOST"
-	TokenEnvironment = "NET_BOX_TOKEN"
+	TokenEnvironment = "NET_BOX_TOKEN" // #nosec G101 not a hardcoded secret
 
 	NoName           = "no name"
 	NoGroup          = "no group"

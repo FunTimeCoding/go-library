@@ -71,20 +71,20 @@ func Log(
 		}
 	}
 
-	aleevaPath := join.Absolute(
-		systemConstant.Temporary,
-		gw2.LatestAleevaFile(
-			system.FilesMatching(
-				systemConstant.Temporary,
-				constant.AleevaPrefix,
-			),
+	aleevaFile := gw2.LatestAleevaFile(
+		system.FilesMatching(
+			systemConstant.Temporary,
+			constant.AleevaPrefix,
 		),
 	)
-	fmt.Printf("Latest Aleeva file: %s\n", aleevaPath)
+	fmt.Printf(
+		"Latest Aleeva file: %s\n",
+		join.Absolute(systemConstant.Temporary, aleevaFile),
+	)
 
 	var exceptionNames []string
 
-	for _, e := range exceptions.Parse("tmp/exception.json") {
+	for _, e := range exceptions.Parse(systemConstant.Temporary) {
 		exceptionNames = append(exceptionNames, e.Name)
 	}
 
@@ -93,7 +93,10 @@ func Log(
 	var verifiedAccounts []string
 	var rowCount int
 
-	for _, r := range aleeva_report.Parse(aleevaPath) {
+	for _, r := range aleeva_report.Parse(
+		systemConstant.Temporary,
+		aleevaFile,
+	) {
 		if len(r.WvwTeams) == 0 || len(r.Gw2Accounts) == 0 {
 			continue
 		}
@@ -153,7 +156,12 @@ func Log(
 	}
 
 	fmt.Printf("Members: %s\n", stringJoin.Comma(members))
-	logs := log.NewSlice(gw2.ParseLogs(system.ReadBytes(path), false))
+	logs := log.NewSlice(
+		gw2.ParseLogs(
+			system.ReadBytes(path, constant.LogFile),
+			false,
+		),
+	)
 	var unverified []string
 
 	for _, member := range members {
@@ -201,7 +209,7 @@ func Log(
 	}
 
 	fmt.Printf("Useless exceptions: %d\n", len(uselessException))
-	guildReport := guilds.Parse("tmp/guild.json")
+	guildReport := guilds.Parse(systemConstant.Temporary)
 
 	if false {
 		// To maintain guilds.json

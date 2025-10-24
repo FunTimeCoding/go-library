@@ -43,8 +43,8 @@ func main() {
 			join.Absolute(
 				system.Home(),
 				constant.DownloadsPath,
-				"example.png",
 			),
+			"example.png",
 		)
 	}
 }

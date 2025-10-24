@@ -7,5 +7,5 @@ import (
 )
 
 func TestClient(t *testing.T) {
-	assert.Any(t, &http.Client{}, Client(true))
+	assert.Any(t, &http.Client{}, Client())
 }

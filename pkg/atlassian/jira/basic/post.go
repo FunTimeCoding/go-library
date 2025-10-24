@@ -13,7 +13,7 @@ func (c *Client) Post(
 	r.SetBasicAuth(c.user, c.token)
 	r.Header.Add(constant.ContentType, constant.Object)
 	r.Header.Add(constant.Accept, constant.Object)
-	response := web.Send(web.Client(true), r)
+	response := web.Send(web.Client(), r)
 
 	return response.StatusCode, web.ReadString(response)
 }

@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system/join"
 	"io"
-	"os"
 )
 
 func ExtractTarZip(
@@ -17,35 +16,30 @@ func ExtractTarZip(
 		errors.LogClose(f)
 	}()
 
-	zip := GnuZipReader(f)
+	z := GnuZipReader(f)
 	defer func() {
-		errors.LogClose(zip)
+		errors.LogClose(z)
 	}()
 
-	reader := tar.NewReader(zip)
+	r := tar.NewReader(z)
 
 	for {
-		header, nextFail := reader.Next()
+		h, e := r.Next()
 
-		if nextFail == io.EOF {
+		if e == io.EOF {
 			break
 		}
 
-		errors.PanicOnError(nextFail)
-		target := join.Absolute(destinationDirectory, header.Name)
+		errors.PanicOnError(e)
+		path := join.Absolute(destinationDirectory, h.Name)
 
-		switch header.Typeflag {
+		switch h.Typeflag {
 		case tar.TypeDir:
-			MakeDirectory(target)
+			MakeDirectory(path)
 		case tar.TypeReg:
-			file := OpenFile(target, os.FileMode(header.Mode))
-
-			if _, g := io.Copy(file, reader); g != nil {
-				errors.PanicClose(file)
-				errors.PanicOnError(g)
-			}
-
-			errors.PanicClose(file)
+			output := OpenFile(path, HeaderFileMode(h))
+			Copy(r, output)
+			errors.PanicClose(output)
 		}
 	}
 }

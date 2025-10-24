@@ -10,7 +10,7 @@ import (
 )
 
 func CheckLatestImage() {
-	c := web.Client(true)
+	c := web.Client()
 
 	for _, i := range strings.DeleteDuplicates(
 		image.FindNames(

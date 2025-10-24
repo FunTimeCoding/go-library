@@ -12,6 +12,7 @@ func NewWithFile(
 	user string,
 	host string,
 	keyPath string,
+	keyName string,
 	secure bool,
 ) *Client {
 	var callback func(
@@ -34,7 +35,7 @@ func NewWithFile(
 				Auth: []ssh.AuthMethod{
 					ssh.PublicKeys(
 						secure_shell.ParsePrivateKey(
-							system.ReadBytes(keyPath),
+							system.ReadBytes(keyPath, keyName),
 						),
 					),
 				},

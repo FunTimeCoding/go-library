@@ -29,8 +29,8 @@ func main() {
 				system.Home(),
 				secure_shell.ConfigurationDirectory,
 				"ansible",
-				"id_rsa_insecure",
 			),
+			"id_rsa_insecure",
 			false,
 		)
 		defer s.Close()

@@ -7,12 +7,14 @@ import (
 )
 
 func TestFile(t *testing.T) {
-	path := join.Absolute(WorkingDirectory(), "test.txt")
-	SaveFile(path, "test content")
+	SaveFile(
+		join.Absolute(WorkingDirectory(), "test.txt"),
+		"test content",
+	)
 	assert.String(
 		t,
 		"test content",
-		ReadFile(path),
+		ReadFile(WorkingDirectory(), "test.txt"),
 	)
 	DeleteFile("test.txt")
 }

@@ -31,7 +31,7 @@ func main() {
 	var codeLines []string
 
 	for _, file := range files {
-		lines := split.NewLine(system.ReadFile(file))
+		lines := split.NewLine(system.ReadFileUnsafe(file))
 		inImportBlock := false
 		skipEmptyLines := true
 

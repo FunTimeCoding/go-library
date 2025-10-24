@@ -4,7 +4,8 @@ import "github.com/funtimecoding/go-library/pkg/system"
 
 func (c *Client) UploadFile(
 	path string,
-	source string,
+	sourcePath string,
+	sourceName string,
 ) {
-	c.authoring.WriteFile(path, system.ReadBytes(source))
+	c.authoring.WriteFile(path, system.ReadBytes(sourcePath, sourceName))
 }

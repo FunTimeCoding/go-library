@@ -35,7 +35,7 @@ func Run(selected string) {
 		return
 	}
 
-	active := Read(tool)
+	active := Read(base, alertmanager.AmtoolConfiguration)
 	files := system.Files(base)
 	var contexts []string
 	locatorByContext := make(map[string]string)
@@ -55,8 +55,7 @@ func Run(selected string) {
 
 			if !slices.Contains(contexts, context) {
 				contexts = append(contexts, context)
-				p := join.Absolute(base, f)
-				c := Read(p)
+				c := Read(base, f)
 				locatorByContext[context] = c.Locator
 			}
 		}

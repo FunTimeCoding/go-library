@@ -6,5 +6,5 @@ func (c *Client) DeleteV2(l string) string {
 	r := web.NewDelete(l)
 	r.SetBasicAuth(c.user, c.token)
 
-	return web.ReadString(web.Send(web.Client(true), r))
+	return web.ReadString(web.Send(web.Client(), r))
 }

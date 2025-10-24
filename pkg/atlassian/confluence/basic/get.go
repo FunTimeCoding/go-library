@@ -6,5 +6,5 @@ func (c *Client) Get(l string) string {
 	r := web.NewGet(l)
 	r.SetBasicAuth(c.user, c.token)
 
-	return web.ReadString(web.Send(web.Client(true), r))
+	return web.ReadString(web.Send(web.Client(), r))
 }

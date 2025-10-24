@@ -12,7 +12,7 @@ func (c *Client) Get(path string) string {
 	r.SetBasicAuth(c.user, c.password)
 	r.Header.Add(constant.ContentType, constant.Object)
 	r.Header.Add(constant.Accept, constant.Object)
-	response := web.Send(web.Client(true), r)
+	response := web.Send(web.Client(), r)
 
 	if false {
 		fmt.Println(r)

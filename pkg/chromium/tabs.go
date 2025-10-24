@@ -11,7 +11,7 @@ func (c *Client) Tabs() []*tab.Tab {
 	var result []*tab.Tab
 	notation.DecodeStrict(
 		web.GetString(
-			web.Client(false),
+			web.InsecureClient(),
 			locator.New(
 				c.host,
 			).Port(c.port).Path("/json").Insecure().String(),

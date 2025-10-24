@@ -46,7 +46,7 @@ func New(
 	}
 
 	if result.user != "" && result.password != "" {
-		l := web.Client(true)
+		l := web.Client()
 		l.Transport = &basicTransport{
 			username: result.user,
 			password: result.password,

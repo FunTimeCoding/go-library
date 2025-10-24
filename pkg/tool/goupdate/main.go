@@ -73,7 +73,7 @@ func Main(
 
 	if system.FileExists(project.DockerFile) {
 		d := project.ReplaceGoFromVersion(
-			system.ReadFile(project.DockerFile),
+			system.ReadFile(system.WorkingDirectory(), project.DockerFile),
 			goString,
 		)
 
@@ -96,7 +96,7 @@ func Main(
 
 	if system.FileExists(project.GitLabFile) {
 		d := project.ReplaceGoImageVersion(
-			system.ReadFile(project.GitLabFile),
+			system.ReadFile(system.WorkingDirectory(), project.GitLabFile),
 			goString,
 		)
 

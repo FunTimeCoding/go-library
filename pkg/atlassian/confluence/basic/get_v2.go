@@ -8,7 +8,7 @@ import (
 func (c *Client) GetV2(l string) string {
 	r := web.NewGet(l)
 	r.SetBasicAuth(c.user, c.token)
-	response := web.Send(web.Client(true), r)
+	response := web.Send(web.Client(), r)
 	result := web.ReadString(response)
 
 	if response.StatusCode >= 400 {

@@ -6,9 +6,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 )
 
-func Parse(path string) []*Report {
+func Parse(base string, name string) []*Report {
 	var result []*Report
-	s := system.ReadFile(path)
+	s := system.ReadFile(base, name)
 
 	if false {
 		fmt.Printf("Parsing: %s\n", s)

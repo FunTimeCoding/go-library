@@ -12,6 +12,10 @@ tasks:
       golangci-lint run
     silent: true
   test: {cmds: ['gotestsum --format standard-quiet'], silent: true}
+  check:
+    cmds:
+    - gosec -fmt=json -out=tmp/gosec.json -stdout -verbose=text -no-fail ./...
+    silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:
     cmds:
@@ -46,4 +50,8 @@ tasks:
       go test -coverprofile=tmp/coverage.txt -covermode count ./...
       gocover-cobertura <tmp/coverage.txt >tmp/coverage.xml
     silent: true
-  check: {cmds: ['gobuild --copy-to-bin gochk', tmp/deploy.sh], silent: true}
+  server-check:
+    cmds:
+    - gobuild --copy-to-bin gochk
+    - tmp/deploy.sh
+    silent: true

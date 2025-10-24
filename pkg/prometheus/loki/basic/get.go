@@ -12,7 +12,7 @@ func (c *Client) Get(path string) string {
 		locator.New(c.host).Base(constant.Base).Path(path).String(),
 	)
 	r.SetBasicAuth(c.user, c.password)
-	response := web.Send(web.Client(true), r)
+	response := web.Send(web.Client(), r)
 
 	if false {
 		fmt.Println(r)

@@ -59,7 +59,8 @@ func (c *Client) Packer(
 
 	n := Codename(v)
 	c.DownloadImage(r, architecture)
-	preseedPath := join.Absolute(c.workDirectory, preseed.Name(n))
+	preseedName := preseed.Name(n)
+	preseedPath := join.Absolute(c.workDirectory, preseedName)
 	preseed.Download(n, preseedPath)
 	imageName := image.Name(v, architecture)
 	sum, found := checksum.Map(c.workDirectory)[imageName]
@@ -96,7 +97,7 @@ func (c *Client) Packer(
 				"\nd-i preseed/late_command string \\"+
 				"\n  %s"+
 				"\n",
-			system.ReadFile(preseedPath),
+			system.ReadFile(c.workDirectory, preseedName),
 			rootPassword,
 			rootPassword,
 			userFullName,

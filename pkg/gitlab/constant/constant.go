@@ -43,14 +43,14 @@ const (
 	PerPage1000 int = 1000
 	PerPage100  int = 100
 
-	TokenHeader = "X-Gitlab-Token"
+	TokenHeader = "X-Gitlab-Token" // #nosec G101 not a hardcoded secret
 )
 
 // Environment variables during jobs
 const (
 	CommitTag         = "CI_COMMIT_TAG"
 	InterfaceLocator  = "CI_API_V4_URL"
-	JobToken          = "CI_JOB_TOKEN"
+	JobToken          = "CI_JOB_TOKEN" // #nosec G101 not a hardcoded secret
 	ProjectIdentifier = "CI_PROJECT_ID"
 	ProjectNamespace  = "CI_PROJECT_NAMESPACE"
 	QualifiedName     = "CI_SERVER_FQDN"

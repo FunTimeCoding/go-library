@@ -19,7 +19,7 @@ func (c *Client) Get(path string) string {
 		key_value.Space(webConstant.Bearer, c.token),
 	)
 	r.Header.Add(webConstant.Accept, webConstant.Object)
-	response := web.Send(web.Client(true), r)
+	response := web.Send(web.Client(), r)
 	fmt.Println(r)
 	fmt.Println(response)
 

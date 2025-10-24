@@ -11,4 +11,10 @@ const (
 	NotationSuffix = ".json"
 
 	MembersPrefix = "members_"
+
+	RemoteFile = "ApiDataCache.json"
+	LogFile    = "LogDataCache.json"
+
+	ExceptionFile = "exception.json"
+	GuildFile = "guild.json"
 )

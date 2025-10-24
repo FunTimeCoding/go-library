@@ -1,5 +1,8 @@
 package system
 
-func ReadFile(name string) string {
-	return string(ReadBytes(name))
+func ReadFile(
+	base string,
+	name string,
+) string {
+	return string(ReadBytes(base, name))
 }

@@ -32,10 +32,10 @@ covermode
 coverprofile
 gocover
 golangci
+gosec
 gotest
 gotestsum
 govulncheck
-jsontext
 nodename
 servname
 
@@ -111,7 +111,6 @@ onmessage
 onopen
 
 # Guild Wars 2
-Dragrimmar
 aleeva
 evtc
 

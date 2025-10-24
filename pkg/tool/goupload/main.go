@@ -16,8 +16,6 @@ import (
 	"path/filepath"
 )
 
-// TODO: What to do about Debian packages? Detect and upload to Nexus?
-
 func Main(
 	version string,
 	gitHash string,
@@ -89,7 +87,11 @@ func Main(
 				fmt.Printf("Archive: %s\n", file)
 				l := packages.UploadLink(locator, project, name, tag, file)
 				fmt.Printf("Link: %s\n", l)
-				status, body := web.PutFile(l, headers, system.ReadBytes(p))
+				status, body := web.PutFile(
+					l,
+					headers,
+					system.ReadBytesUnsafe(p),
+				)
 
 				if status != http.StatusCreated {
 					fmt.Printf("Upload failed: %d %s\n", status, body)

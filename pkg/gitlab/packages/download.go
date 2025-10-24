@@ -14,7 +14,7 @@ func Download(
 ) {
 	r := web.NewGet(link)
 	request.PrivateToken(r, token)
-	response := web.Send(web.Client(true), r)
+	response := web.Send(web.Client(), r)
 	defer errors.PanicClose(response.Body)
 	errors.PanicStatus(response)
 	f := system.Create(outputFile)

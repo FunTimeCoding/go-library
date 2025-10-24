@@ -3,7 +3,7 @@ package constant
 import "github.com/funtimecoding/go-library/pkg/console/status/option"
 
 const (
-	TokenEnvironment     = "GITHUB_TOKEN"
+	TokenEnvironment     = "GITHUB_TOKEN" // #nosec G101 not a hardcoded secret
 	RunEnvironment       = "GITHUB_RUN_ID"
 	ReferenceEnvironment = "GITHUB_REF_NAME"
 

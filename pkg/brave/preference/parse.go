@@ -12,11 +12,8 @@ func Parse(profile string) *Preference {
 	var result Preference
 	notation.DecodeBytesStrict(
 		system.ReadBytes(
-			filepath.Join(
-				helper.SettingsPath(),
-				profile,
-				constant.PreferencesFile,
-			),
+			filepath.Join(helper.SettingsPath(), profile),
+			constant.PreferencesFile,
 		),
 		&result,
 		false,

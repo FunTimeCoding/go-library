@@ -5,9 +5,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 )
 
-func Read(path string) *Option {
+func Read(
+	base string,
+	name string,
+) *Option {
 	c := &Option{}
-	content := system.ReadFile(path)
+	content := system.ReadFile(base, name)
 	markup.DecodeStrict(content, &c)
 
 	return c

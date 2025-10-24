@@ -8,7 +8,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.10.3
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5
 	github.com/amikos-tech/chroma-go v0.2.5
-	github.com/andybrewer/mack v0.0.0-20220307193339-22e922cc18af
+	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447
 	github.com/andygrunwald/go-jira v1.17.0
 	github.com/anthropics/anthropic-sdk-go v1.14.0
 	github.com/apenella/go-ansible/v2 v2.2.0
@@ -87,7 +87,7 @@ require (
 	golang.org/x/oauth2 v0.32.0
 	golang.org/x/time v0.14.0
 	gonum.org/v1/gonum v0.16.0
-	google.golang.org/api v0.252.0
+	google.golang.org/api v0.253.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.0
@@ -301,7 +301,7 @@ require (
 	golang.org/x/term v0.36.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	golang.org/x/tools v0.38.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251007200510-49b9836ed3ff // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251014184007-4626949a642f // indirect
 	google.golang.org/grpc v1.76.0 // indirect
 	google.golang.org/protobuf v1.36.10 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect

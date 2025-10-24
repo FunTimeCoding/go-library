@@ -46,4 +46,6 @@ const (
 	ManualHubJob = "manual-hub"
 )
 
-var NameExpression = regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`)
+var NameExpression = regexp.MustCompile(
+	`^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`,
+) // DNS-1123

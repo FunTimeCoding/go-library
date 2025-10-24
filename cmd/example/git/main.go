@@ -14,6 +14,7 @@ func main() {
 		git.BuildInformation()
 
 		clean_job.Check()
+		gitlab.File()
 		gitlab.Project()
 		gitlab.Search()
 		gitlab.Runner()

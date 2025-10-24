@@ -12,7 +12,7 @@ import (
 
 func TestBranch(t *testing.T) {
 	system.PrintEnvironment()
-	e := constant.HeadReference
+	e := constant.MainBranch
 
 	if action.IsActionRun() {
 		if r := environment.Required(
@@ -20,8 +20,6 @@ func TestBranch(t *testing.T) {
 		); r != constant.MainBranch {
 			e = r
 		}
-	} else {
-		e = constant.MainBranch
 	}
 
 	assert.String(t, e, Branch(system.ParentDirectory(constant.Depth)))

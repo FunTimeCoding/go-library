@@ -6,8 +6,5 @@ import (
 )
 
 func AutoCleanup() bool {
-	return environment.Fallback(
-		constant.AutoCleanupEnvironment,
-		"",
-	) != ""
+	return environment.Exists(constant.AutoCleanupEnvironment)
 }

@@ -16,10 +16,7 @@ func List() []string {
 		result = append(result, c.Name)
 	}
 
-	if s := environment.Fallback(
-		constant.PluginEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.PluginEnvironment); s != "" {
 		if strings.HasPrefix(s, separator.Plus) {
 			result = append(result, split.Comma(s)...)
 		} else {

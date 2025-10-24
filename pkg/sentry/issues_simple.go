@@ -11,17 +11,11 @@ import (
 )
 
 func (c *Client) IssuesSimple(verbose bool) []*issue.Issue {
-	if o := environment.Fallback(
-		constant.OrganizationEnvironment,
-		"",
-	); o != "" {
+	if o := environment.Optional(constant.OrganizationEnvironment); o != "" {
 		r := c.Organization(o)
 		var projects []sentry.Project
 
-		if p := environment.Fallback(
-			constant.ProjectEnvironment,
-			"",
-		); p != "" {
+		if p := environment.Optional(constant.ProjectEnvironment); p != "" {
 			names := split.Comma(p)
 
 			for _, j := range c.OrganizationProjects(r) {

@@ -9,10 +9,7 @@ import (
 func NewEnvironment() *Client {
 	var contexts []string
 
-	if s := environment.Fallback(
-		constant.ContextEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.ContextEnvironment); s != "" {
 		contexts = split.Comma(s)
 	}
 

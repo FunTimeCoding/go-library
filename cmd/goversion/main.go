@@ -38,10 +38,7 @@ func main() {
 	)
 	o.Depth = viper.GetInt(argument.Depth)
 
-	if s := environment.Fallback(
-		version.SkipEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(version.SkipEnvironment); s != "" {
 		o.Skip = split.Comma(s)
 	}
 

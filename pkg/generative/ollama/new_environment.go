@@ -7,17 +7,11 @@ import (
 )
 
 func NewEnvironment(o ...Option) *Client {
-	if s := environment.Fallback(
-		constant.HostEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.HostEnvironment); s != "" {
 		o = append(o, WithHost(s))
 	}
 
-	if s := environment.Fallback(
-		constant.PortEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.PortEnvironment); s != "" {
 		o = append(o, WithPort(strings.ToIntegerStrict(s)))
 	}
 

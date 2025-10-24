@@ -6,31 +6,19 @@ import (
 )
 
 func NewEnvironment(o ...Option) *Client {
-	if s := environment.Fallback(
-		constant.HostEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.HostEnvironment); s != "" {
 		o = append(o, WithHost(s))
 	}
 
-	if s := environment.Fallback(
-		constant.TokenEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.TokenEnvironment); s != "" {
 		o = append(o, WithToken(s))
 	}
 
-	if s := environment.Fallback(
-		constant.TeamEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.TeamEnvironment); s != "" {
 		o = append(o, WithTeam(s))
 	}
 
-	if s := environment.Fallback(
-		constant.ChannelEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.ChannelEnvironment); s != "" {
 		o = append(o, WithChannel(s))
 	}
 

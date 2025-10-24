@@ -6,5 +6,5 @@ import (
 )
 
 func IsActionRun() bool {
-	return environment.Fallback(constant.RunEnvironment, "") != ""
+	return environment.Exists(constant.RunEnvironment)
 }

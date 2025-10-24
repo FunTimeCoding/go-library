@@ -22,10 +22,7 @@ func Opsgenie() *opsgenie.Client {
 		),
 	)
 
-	if s := environment.Fallback(
-		opsgenieConstant.TeamEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(opsgenieConstant.TeamEnvironment); s != "" {
 		for _, pair := range split.Semicolon(s) {
 			if len(pair) == 0 {
 				continue

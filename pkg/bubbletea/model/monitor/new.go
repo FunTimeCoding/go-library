@@ -9,21 +9,13 @@ import (
 )
 
 func New(connect bool) *Model {
-	auto := true
-
-	if s := environment.Fallback(
-		constant.ManualEnvironment,
-		"",
-	); s != "" {
-		auto = false
-	}
-
 	return &Model{
 		table:    item.New(connect),
 		client:   client.New(),
 		connect:  connect,
 		user:     system.User().Username,
 		hostname: system.Hostname(),
-		auto:     auto,
+
+		auto: !environment.Exists(constant.ManualEnvironment),
 	}
 }

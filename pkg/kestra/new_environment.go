@@ -6,24 +6,15 @@ import (
 )
 
 func NewEnvironment(o ...Option) *Client {
-	if s := environment.Fallback(
-		constant.TokenEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.TokenEnvironment); s != "" {
 		o = append(o, WithToken(s))
 	}
 
-	if s := environment.Fallback(
-		constant.UserEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.UserEnvironment); s != "" {
 		o = append(o, WithUser(s))
 	}
 
-	if s := environment.Fallback(
-		constant.PasswordEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(constant.PasswordEnvironment); s != "" {
 		o = append(o, WithPassword(s))
 	}
 

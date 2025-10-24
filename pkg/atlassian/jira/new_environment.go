@@ -7,24 +7,17 @@ import (
 )
 
 func NewEnvironment(o ...Option) *Client {
-	if s := environment.Fallback(
-		jira.DefaultProjectKeyEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(jira.DefaultProjectKeyEnvironment); s != "" {
 		o = append(o, WithDefaultProjectKey(s))
 	}
 
-	if s := environment.Fallback(
+	if s := environment.Optional(
 		jira.DefaultProjectNameEnvironment,
-		"",
 	); s != "" {
 		o = append(o, WithDefaultProjectName(s))
 	}
 
-	if s := environment.Fallback(
-		jira.DefaultIssueTypeEnvironment,
-		"",
-	); s != "" {
+	if s := environment.Optional(jira.DefaultIssueTypeEnvironment); s != "" {
 		o = append(o, WithDefaultIssueType(s))
 	}
 

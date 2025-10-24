@@ -14,7 +14,7 @@ func Run(
 	selected string,
 	verbose bool,
 ) {
-	file := environment.Fallback(ConfigurationEnvironment, "")
+	file := environment.Required(ConfigurationEnvironment)
 
 	if verbose {
 		fmt.Printf("File: %s\n", file)

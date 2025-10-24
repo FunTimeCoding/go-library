@@ -8,6 +8,6 @@ import (
 func NewEnvironment() *Client {
 	return New(
 		environment.Required(constant.TokenEnvironment),
-		environment.Fallback(constant.DatabaseEnvironment, ""),
+		environment.Optional(constant.DatabaseEnvironment),
 	)
 }

@@ -1,6 +1,9 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/console/status/option"
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"regexp"
+)
 
 const (
 	ContextEnvironment     = "KUBERNETES_CONTEXT"
@@ -42,3 +45,5 @@ const (
 	ManualLabJob = "manual-lab"
 	ManualHubJob = "manual-hub"
 )
+
+var NameExpression = regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`)

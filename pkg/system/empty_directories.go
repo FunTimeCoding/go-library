@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"os"
@@ -8,7 +9,10 @@ import (
 	"strings"
 )
 
-func EmptyDirectories(root string) []string {
+func EmptyDirectories(
+	root string,
+	verbose bool,
+) []string {
 	var result []string
 
 	errors.PanicOnError(
@@ -21,6 +25,10 @@ func EmptyDirectories(root string) []string {
 			) error {
 				if e != nil {
 					return e
+				}
+
+				if verbose {
+					fmt.Printf("EmptyDirectories walk: %s\n", path)
 				}
 
 				if i.IsDir() {

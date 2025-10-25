@@ -15,7 +15,10 @@ func Lint(
 ) {
 	skip := option.New(skipString, verbose)
 
-	for _, p := range system.EmptyDirectories(constant.CurrentDirectory) {
+	for _, p := range system.EmptyDirectories(
+		constant.CurrentDirectory,
+		verbose,
+	) {
 		if Skipped(skip, p) {
 			if verbose {
 				fmt.Printf("Skip empty directory: %s\n", p)
@@ -31,7 +34,10 @@ func Lint(
 		}
 	}
 
-	for _, p := range system.FilesRecursive(constant.CurrentDirectory) {
+	for _, p := range system.FilesRecursive(
+		constant.CurrentDirectory,
+		verbose,
+	) {
 		if Skipped(skip, p) {
 			if verbose {
 				fmt.Printf("Skip file: %s\n", p)
@@ -41,6 +47,10 @@ func Lint(
 		}
 
 		if !system.FileEmpty(p) {
+			if verbose {
+				fmt.Printf("Non empty file: %s\n", p)
+			}
+
 			continue
 		}
 
@@ -62,16 +72,28 @@ func Lint(
 			continue
 		}
 
+		if verbose {
+			fmt.Printf("Select go file: %s\n", p)
+		}
+
 		goFiles = append(goFiles, p)
 	}
 
 	for _, p := range goFiles {
+		if verbose {
+			fmt.Printf("Process import: %s\n", p)
+		}
+
 		f := system.Open(p)
 		Import(p, f).ProcessConcerns(fix)
 		errors.LogClose(f)
 	}
 
 	for _, p := range goFiles {
+		if verbose {
+			fmt.Printf("Process function: %s\n", p)
+		}
+
 		f := system.Open(p)
 		Function(p, f).ProcessConcerns(fix)
 		errors.LogClose(f)
@@ -84,6 +106,10 @@ func Lint(
 			}
 
 			continue
+		}
+
+		if verbose {
+			fmt.Printf("Process markup: %s\n", p)
 		}
 
 		f := system.Open(p)

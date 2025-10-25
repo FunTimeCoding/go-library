@@ -1,12 +1,16 @@
 package system
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"os"
 	"path/filepath"
 )
 
-func FilesRecursive(root string) []string {
+func FilesRecursive(
+	root string,
+	verbose bool,
+) []string {
 	var result []string
 	errors.PanicOnError(
 		filepath.Walk(
@@ -18,6 +22,10 @@ func FilesRecursive(root string) []string {
 			) error {
 				if e != nil {
 					return e
+				}
+
+				if verbose {
+					fmt.Printf("FilesRecursive walk: %s\n", path)
 				}
 
 				if !i.IsDir() {

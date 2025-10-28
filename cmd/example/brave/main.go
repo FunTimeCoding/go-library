@@ -6,6 +6,7 @@ func main() {
 	example.Extract()
 
 	if false {
+		example.Bookmark()
 		example.Open()
 		example.Send()
 		example.Profile()

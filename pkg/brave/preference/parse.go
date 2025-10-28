@@ -5,19 +5,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/brave/helper"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"path/filepath"
+	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
 func Parse(profile string) *Preference {
 	var result Preference
-	notation.DecodeBytesStrict(
-		system.ReadBytes(
-			filepath.Join(helper.SettingsPath(), profile),
-			constant.PreferencesFile,
-		),
-		&result,
-		false,
-	)
+	p := join.Absolute(helper.SettingsPath(), profile)
+	b := system.ReadBytes(p, constant.PreferencesFile)
+	notation.DecodeBytesStrict(b, &result, false)
 
 	return &result
 }

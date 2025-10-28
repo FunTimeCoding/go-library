@@ -5,7 +5,7 @@ func (s *Site) readMemories() string {
 		return ""
 	}
 
-	s.protocol.WaitVisible(`//table//tbody/tr[1]`)
+	s.protocol.WaitVisible(`//table//tbody/div[1]`)
 
 	return s.protocol.Outer("table")
 }

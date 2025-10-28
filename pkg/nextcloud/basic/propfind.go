@@ -9,29 +9,28 @@ import (
 )
 
 func (c *Client) Propfind() {
-	req := web.NewPropfind(c.fileRoot)
+	r := web.NewPropfind(c.fileRoot)
 
 	if false {
 		// WebDAV is XML
-		req.Header.Set(constant.Accept, constant.Object)
+		r.Header.Set(constant.Accept, constant.Object)
 	}
 
-	req.SetBasicAuth(c.user, c.password)
-	res := web.Send(web.Client(), req)
-	defer errors.LogClose(res.Body)
+	r.SetBasicAuth(c.user, c.password)
+	s := web.Send(web.Client(), r)
+	defer errors.LogClose(s.Body)
 
-	switch res.StatusCode {
+	switch s.StatusCode {
 	case http.StatusMultiStatus:
 		fmt.Println("success")
 
 		if false {
 			// A lot of XML
-			body := web.ReadString(res)
-			fmt.Println("response body:", body)
+			fmt.Println("response body:", web.ReadString(s))
 		}
 	case http.StatusUnauthorized:
 		fmt.Println("unauthorized")
 	default:
-		fmt.Printf("unexpected status: %d\n", res.StatusCode)
+		fmt.Printf("unexpected status: %d\n", s.StatusCode)
 	}
 }

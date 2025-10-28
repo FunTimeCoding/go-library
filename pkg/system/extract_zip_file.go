@@ -10,18 +10,10 @@ func ExtractZipFile(
 	f *zip.File,
 	directory string,
 ) {
-	reader, e := f.Open()
+	r, e := f.Open()
 	errors.PanicOnError(e)
-
-	defer func() {
-		errors.PanicClose(reader)
-	}()
-
-	out := Create(filepath.Join(directory, f.Name))
-
-	defer func() {
-		errors.PanicClose(out)
-	}()
-
-	Copy(reader, out)
+	defer errors.PanicClose(r)
+	o := Create(filepath.Join(directory, f.Name))
+	defer errors.PanicClose(o)
+	Copy(r, o)
 }

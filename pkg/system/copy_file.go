@@ -8,9 +8,7 @@ func CopyFile(
 ) {
 	s := Open(source)
 	defer errors.LogClose(s)
-
 	d := Create(destination)
 	defer errors.LogClose(d)
-
 	Copy(s, d)
 }

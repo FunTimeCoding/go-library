@@ -9,7 +9,7 @@ import (
 
 func Write(
 	file string,
-	v []Category,
+	v []*Category,
 ) {
 	f := system.Create(file)
 	defer errors.LogClose(f)

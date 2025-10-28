@@ -7,36 +7,36 @@ import (
 	"strings"
 )
 
-func Read(file string) []Category {
+func Read(file string) []*Category {
 	f := system.Open(file)
 	defer errors.LogClose(f)
-	var categories []Category
-	var category *Category
+	var result []*Category
+	var c *Category
 	s := bufio.NewScanner(f)
 
 	for s.Scan() {
-		line := strings.TrimSpace(s.Text())
+		l := strings.TrimSpace(s.Text())
 
-		if line == "" {
+		if l == "" {
 			continue
 		}
 
-		if strings.HasPrefix(line, "# ") {
-			if category != nil {
-				categories = append(categories, *category)
+		if strings.HasPrefix(l, "# ") {
+			if c != nil {
+				result = append(result, c)
 			}
 
-			category = &Category{Name: strings.TrimPrefix(line, "# ")}
-		} else if category != nil {
-			category.Words = append(category.Words, line)
+			c = &Category{Name: strings.TrimPrefix(l, "# ")}
+		} else if c != nil {
+			c.Words = append(c.Words, l)
 		}
 	}
 
 	errors.PanicOnError(s.Err())
 
-	if category != nil {
-		categories = append(categories, *category)
+	if c != nil {
+		result = append(result, c)
 	}
 
-	return categories
+	return result
 }

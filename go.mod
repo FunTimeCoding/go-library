@@ -32,7 +32,7 @@ require (
 	github.com/gage-technologies/mistral-go v1.1.0
 	github.com/gdamore/tcell/v2 v2.9.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.36.1
+	github.com/getsentry/sentry-go v0.36.2
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.16.3
 	github.com/go-openapi/runtime v0.29.0
@@ -61,7 +61,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.28.1
 	github.com/prometheus/client_golang v1.23.2
-	github.com/prometheus/common v0.67.1
+	github.com/prometheus/common v0.67.2
 	github.com/rivo/tview v0.42.0
 	github.com/samber/slog-loki/v3 v3.6.0
 	github.com/sanity-io/litter v1.5.8

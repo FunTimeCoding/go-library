@@ -27,12 +27,7 @@ func TestServer(t *testing.T) {
 	)
 	assert.FatalOnError(t, err)
 	defer func() {
-		errors.LogOnError(
-			c.Close(
-				websocket.StatusInternalError,
-				"the sky is falling",
-			),
-		)
+		errors.LogOnError(c.CloseNow())
 	}()
 
 	for i := 0; i < 5; i++ {

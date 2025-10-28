@@ -29,6 +29,7 @@ func Run() {
 
 	go func() {
 		defer close(done)
+
 		for {
 			_, message, e := l.ReadMessage()
 

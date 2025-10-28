@@ -26,12 +26,11 @@ func (s Server) ServeHTTP(
 		return
 	}
 
-	defer func(c *websocket.Conn) {
-		err := c.CloseNow()
-		if err != nil {
-			s.Logf("failed to close connection: %v", err)
+	defer func() {
+		if e := c.CloseNow(); e != nil {
+			s.Logf("failed to close connection: %v", e)
 		}
-	}(c)
+	}()
 
 	log.Printf("subprotocol: %v\n", c.Subprotocol())
 

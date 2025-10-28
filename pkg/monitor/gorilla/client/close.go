@@ -12,10 +12,7 @@ func (c *Client) Close() {
 
 	if e := c.connection.WriteMessage(
 		websocket.CloseMessage,
-		websocket.FormatCloseMessage(
-			websocket.CloseNormalClosure,
-			"",
-		),
+		websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
 	); e != nil {
 		log.Printf("write close: %s\n", e)
 

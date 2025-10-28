@@ -10,15 +10,9 @@ func Download(
 	output string,
 ) {
 	r := BasicGet(locator)
-	defer func() {
-		errors.LogClose(r.Body)
-	}()
-
+	defer errors.LogClose(r.Body)
 	errors.PanicStatus(r)
 	f := system.Create(output)
-	defer func() {
-		errors.LogClose(f)
-	}()
-
+	defer errors.LogClose(f)
 	system.Copy(r.Body, f)
 }

@@ -9,10 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
-func Archive(
-	name string,
-	systemArchitecture string,
-) {
+func Archive(name string, systemArchitecture string) {
 	sourceFile := GuessBinaryPath(name, systemArchitecture)
 	fmt.Printf("Source file: %s\n", sourceFile)
 
@@ -22,9 +19,8 @@ func Archive(
 	archive := system.Create(join.Relative(constant.Temporary, archiveName))
 	defer errors.PanicClose(archive)
 	w := zip.NewWriter(archive)
+	defer errors.PanicClose(w)
 	f := system.Open(sourceFile)
 	defer errors.PanicClose(f)
 	system.ZipAdd(w, f, name)
-
-	errors.PanicClose(w)
 }

@@ -9,9 +9,7 @@ import (
 
 func ToNotation(filePath string) []byte {
 	f := system.Open(filePath)
-	defer func() {
-		errors.LogOnError(f.Close())
-	}()
+	defer errors.LogClose(f)
 	var a any
 	errors.PanicOnError(yaml.NewYAMLToJSONDecoder(f).Decode(&a))
 

@@ -61,7 +61,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.28.1
 	github.com/prometheus/client_golang v1.23.2
-	github.com/prometheus/common v0.67.1
+	github.com/prometheus/common v0.67.2
 	github.com/rivo/tview v0.42.0
 	github.com/samber/slog-loki/v3 v3.6.0
 	github.com/sanity-io/litter v1.5.8

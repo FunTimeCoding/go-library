@@ -13,6 +13,12 @@
     {
       "matchPackageNames": ["github.com/google/gnostic-models"],
       "allowedVersions": "<= v0.6.9"
+    },
+    {
+      "matchDatasources": ["go"],
+      "matchPackageNames": ["github.com/kestra-io/client-sdk/go-sdk"],
+      "matchUpdateTypes": ["digest"],
+      "automerge": true
     }
   ]
 }

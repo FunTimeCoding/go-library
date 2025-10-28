@@ -11,7 +11,6 @@ import (
 )
 
 func Official() {
-	// https://github.com/anthropics/anthropic-sdk-go
 	c := anthropic.NewClient(
 		option.WithAPIKey(environment.Required(constant.TokenEnvironment)),
 	)
@@ -31,7 +30,7 @@ func Official() {
 					},
 				},
 			},
-			Model: anthropic.ModelClaude3_7SonnetLatest,
+			Model: anthropic.ModelClaudeSonnet4_5,
 		},
 	)
 	errors.PanicOnError(e)

@@ -186,8 +186,8 @@ github.com/anthropics/anthropic-sdk-go v1.16.0/go.mod h1:WTz31rIUHUHqai2UslPpw5C
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/apache/thrift v0.13.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
-github.com/apenella/go-ansible/v2 v2.2.0 h1:IldFymiRy9hc+rCyZ0dj4jJfLUmW9wjzU4JxoOMy9KE=
-github.com/apenella/go-ansible/v2 v2.2.0/go.mod h1:G3JNiTazO5t/PEriJFywV/4RFu2RtzAxxR7Z5SoYF78=
+github.com/apenella/go-ansible/v2 v2.3.0 h1:CUHJnwQzvf2JqkDwrrzvXtjudv8hybd89ovgElnsqlE=
+github.com/apenella/go-ansible/v2 v2.3.0/go.mod h1:BOWgAJiWXFgcCLm+9PSl9sX20gDEeT3AFbygdgQ4Vo8=
 github.com/apenella/go-common-utils/data v0.0.0-20220913191136-86daaa87e7df h1:sEikY2P+NZK/7VZUwIsnXIGElhsuFDSxh1bZYwHxdcI=
 github.com/apenella/go-common-utils/data v0.0.0-20220913191136-86daaa87e7df/go.mod h1:cLVL6GjUiKG/WyBzX+KD6h/XRV/HnNZIZbMNNiBgQ9o=
 github.com/apenella/go-common-utils/error v0.0.0-20220913191136-86daaa87e7df h1:SvlYbjlsSQDS7hbVT1h012/zdgvcwWJ+Yd9XRiiY/8s=

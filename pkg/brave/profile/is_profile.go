@@ -1,4 +1,4 @@
-package brave
+package profile
 
 import (
 	"github.com/funtimecoding/go-library/pkg/brave/constant"

@@ -3,10 +3,12 @@ package main
 import "github.com/funtimecoding/go-library/pkg/brave/example"
 
 func main() {
-	example.Extract()
+	example.BookmarkSearch()
 
 	if false {
-		example.Bookmark()
+		example.BookmarkNode()
+		example.BookmarkFile()
+		example.Extract()
 		example.Open()
 		example.Send()
 		example.Profile()

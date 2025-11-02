@@ -1,5 +1,7 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/console/status/option"
+
 const (
 	BravePath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
 
@@ -12,4 +14,8 @@ const (
 	ProfilePrefix = "Profile "
 
 	Profile2 = "Profile 2"
+
+	BookmarksFile = "Bookmarks"
 )
+
+var Format = option.ExtendedColor.Copy()

@@ -11,7 +11,7 @@ func (d *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	reqDump, requestFail := httputil.DumpRequestOut(r, true)
 	errors.PanicOnError(requestFail)
 	log.Printf("REQUEST:\n%s\n", string(reqDump))
-	s, e := d.transport.RoundTrip(r)
+	s, e := d.base.RoundTrip(r)
 
 	if s != nil {
 		respDump, responseFail := httputil.DumpResponse(s, true)

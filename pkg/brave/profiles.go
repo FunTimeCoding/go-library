@@ -1,7 +1,6 @@
 package brave
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/brave/helper"
 	"github.com/funtimecoding/go-library/pkg/brave/preference"
 	"github.com/funtimecoding/go-library/pkg/brave/profile"
@@ -13,13 +12,11 @@ func Profiles() []*profile.Profile {
 	p := helper.SettingsPath()
 
 	for _, f := range system.ReadDirectory(p) {
-		if !IsProfile(f) {
+		if !profile.IsProfile(f) {
 			continue
 		}
 
 		if r := preference.Parse(f.Name()); r.Cookie.Accounts != "" {
-			fmt.Printf("File: %+v\n", f)
-
 			result = append(
 				result,
 				profile.Parse(p, f.Name(), r.Cookie.Accounts),

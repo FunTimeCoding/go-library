@@ -50,7 +50,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251027154531-4f34ecde71bf
 	github.com/liushuangls/go-anthropic/v2 v2.16.2
-	github.com/mark3labs/mcp-go v0.42.0
+	github.com/mark3labs/mcp-go v0.43.0
 	github.com/mattermost/mattermost/server/public v0.1.21
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.1.0
@@ -91,7 +91,7 @@ require (
 	google.golang.org/protobuf v1.36.10
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.31.0
+	gorm.io/gorm v1.31.1
 	gotest.tools/v3 v3.5.2
 	k8s.io/api v0.30.14
 	k8s.io/apimachinery v0.30.14

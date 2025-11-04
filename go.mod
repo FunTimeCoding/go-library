@@ -53,6 +53,7 @@ require (
 	github.com/liushuangls/go-anthropic/v2 v2.16.2
 	github.com/mark3labs/mcp-go v0.43.0
 	github.com/mattermost/mattermost/server/public v0.1.21
+	github.com/mitchellh/go-ps v1.0.0
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.1.0
 	github.com/ollama/ollama v0.12.9

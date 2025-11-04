@@ -1,6 +1,6 @@
 package user
 
-import "github.com/google/go-github/v76/github"
+import "github.com/google/go-github/v77/github"
 
 type User struct {
 	Name string

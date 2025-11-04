@@ -3,7 +3,7 @@ package run
 import (
 	"github.com/funtimecoding/go-library/pkg/github/job"
 	"github.com/funtimecoding/go-library/pkg/github/repository"
-	"github.com/google/go-github/v76/github"
+	"github.com/google/go-github/v77/github"
 	"time"
 )
 

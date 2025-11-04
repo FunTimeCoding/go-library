@@ -3,7 +3,7 @@ package github
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/github/issue"
-	"github.com/google/go-github/v76/github"
+	"github.com/google/go-github/v77/github"
 )
 
 func (c *Client) Issues() []*issue.Issue {

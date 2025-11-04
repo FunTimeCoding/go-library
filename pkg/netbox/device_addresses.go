@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) DeviceAddresses(device string) []*internet_address.Address {
-	result, _, e := c.client.IpamAPI.IpamIpAddressesList(
+	result, r, e := c.client.IpamAPI.IpamIpAddressesList(
 		c.context,
 	).Device([]string{device}).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return internet_address.NewSlice(result.Results)
 }

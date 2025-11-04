@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) VirtualNetworkGroups() []*virtual_network_group.Group {
-	result, _, e := c.client.IpamAPI.IpamVlanGroupsList(
+	result, r, e := c.client.IpamAPI.IpamVlanGroupsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return virtual_network_group.NewSlice(result.Results)
 }

@@ -5,7 +5,7 @@ import "github.com/funtimecoding/go-library/pkg/chat/mattermost/verbose_transpor
 func WithVerbose(v bool) Option {
 	return func(c *Client) {
 		if v {
-			c.client.HTTPClient = verbose_transport.Client()
+			c.client.HTTPClient = verbose_transport.New()
 		}
 	}
 }

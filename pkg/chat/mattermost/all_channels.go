@@ -12,7 +12,7 @@ func (c *Client) AllChannels() []*model.ChannelWithTeamData {
 		constant.PerPage,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(e, r)
+	panicOnError(r, e)
 
 	return result
 }

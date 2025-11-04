@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) Cables() []*cable.Cable {
-	result, _, e := c.client.DcimAPI.DcimCablesList(
+	result, r, e := c.client.DcimAPI.DcimCablesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return cable.NewSlice(result.Results)
 }

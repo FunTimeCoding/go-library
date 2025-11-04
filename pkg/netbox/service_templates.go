@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) ServiceTemplates() []*service_template.Template {
-	result, _, e := c.client.IpamAPI.IpamServiceTemplatesList(
+	result, r, e := c.client.IpamAPI.IpamServiceTemplatesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return service_template.NewSlice(result.Results)
 }

@@ -11,10 +11,10 @@ func (c *Client) Tenants() []*tenant.Tenant {
 		return c.cache.Tenants
 	}
 
-	result, _, e := c.client.TenancyAPI.TenancyTenantsList(
+	result, r, e := c.client.TenancyAPI.TenancyTenantsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 	c.cache.Tenants = tenant.NewSlice(result.Results)
 
 	return c.cache.Tenants

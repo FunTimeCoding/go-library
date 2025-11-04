@@ -22,7 +22,7 @@ func TestRun(t *testing.T) {
 	assert.Any(
 		t,
 		&Run{
-			MonitorIdentifier: "github-0",
+			MonitorIdentifier: "ghjob-0",
 			Name:              "Alfa",
 			Create:            time.Time{},
 		},

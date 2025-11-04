@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) Locations() []*location.Location {
-	result, _, e := c.client.DcimAPI.DcimLocationsList(
+	result, r, e := c.client.DcimAPI.DcimLocationsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return location.NewSlice(result.Results)
 }

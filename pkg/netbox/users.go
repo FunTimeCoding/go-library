@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) Users() []*user.User {
-	result, _, e := c.client.UsersAPI.UsersUsersList(
+	result, r, e := c.client.UsersAPI.UsersUsersList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return user.NewSlice(result.Results)
 }

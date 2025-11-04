@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) DeviceBayTemplates() []*device_bay_template.Template {
-	result, _, e := c.client.DcimAPI.DcimDeviceBayTemplatesList(
+	result, r, e := c.client.DcimAPI.DcimDeviceBayTemplatesList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return device_bay_template.NewSlice(result.Results)
 }

@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) ExportTemplates() []*export_template.Template {
-	result, _, e := c.client.ExtrasAPI.ExtrasExportTemplatesList(
+	result, r, e := c.client.ExtrasAPI.ExtrasExportTemplatesList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return export_template.NewSlice(result.Results)
 }

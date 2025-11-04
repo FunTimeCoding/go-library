@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) RearPorts() []*rear_port.Port {
-	result, _, e := c.client.DcimAPI.DcimRearPortsList(
+	result, r, e := c.client.DcimAPI.DcimRearPortsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return rear_port.NewSlice(result.Results)
 }

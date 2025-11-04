@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) NotificationGroups() []*notification_group.Group {
-	result, _, e := c.client.ExtrasAPI.ExtrasNotificationGroupsList(
+	result, r, e := c.client.ExtrasAPI.ExtrasNotificationGroupsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return notification_group.NewSlice(result.Results)
 }

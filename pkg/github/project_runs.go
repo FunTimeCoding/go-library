@@ -1,7 +1,6 @@
 package github
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/github/run"
 	"github.com/google/go-github/v77/github"
 )
@@ -10,7 +9,7 @@ func (c *Client) ProjectRuns(
 	owner string,
 	name string,
 ) []*run.Run {
-	page, _, e := c.client.Actions.ListRepositoryWorkflowRuns(
+	page, r, e := c.client.Actions.ListRepositoryWorkflowRuns(
 		c.context,
 		owner,
 		name,
@@ -20,11 +19,11 @@ func (c *Client) ProjectRuns(
 			},
 		},
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 	result := run.NewSlice(page.WorkflowRuns)
 
-	for _, r := range result {
-		r.Validate()
+	for _, s := range result {
+		s.Validate()
 	}
 
 	return result

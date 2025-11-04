@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) RacksByName(n string) []*rack.Rack {
-	result, _, e := c.client.DcimAPI.DcimRacksList(
+	result, r, e := c.client.DcimAPI.DcimRacksList(
 		c.context,
 	).Name([]string{n}).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return rack.NewSlice(result.Results)
 }

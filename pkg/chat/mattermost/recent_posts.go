@@ -16,7 +16,7 @@ func (c *Client) RecentPosts(
 		sinceMilli,
 		true,
 	)
-	panicOnError(e, response)
+	panicOnError(response, e)
 	t := time.UnixMilli(sinceMilli)
 	var posts []*model.Post
 

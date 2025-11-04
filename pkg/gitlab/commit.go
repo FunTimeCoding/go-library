@@ -1,9 +1,6 @@
 package gitlab
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"gitlab.com/gitlab-org/api/client-go"
-)
+import "gitlab.com/gitlab-org/api/client-go"
 
 func (c *Client) Commit(
 	project int,
@@ -21,7 +18,7 @@ func (c *Client) Commit(
 		action = gitlab.FileCreate
 	}
 
-	result, _, e := c.client.Commits.CreateCommit(
+	result, r, e := c.client.Commits.CreateCommit(
 		project,
 		&gitlab.CreateCommitOptions{
 			Branch:        &branch,
@@ -35,7 +32,7 @@ func (c *Client) Commit(
 			},
 		},
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
 	return result
 }

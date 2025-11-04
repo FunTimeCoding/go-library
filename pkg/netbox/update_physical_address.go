@@ -12,14 +12,14 @@ func (c *Client) UpdatePhysicalAddress(
 	a *physical_address.Address,
 	i *network.Interface,
 ) *physical_address.Address {
-	r := netbox.NewMACAddressRequest(a.Name)
-	r.SetAssignedObjectType(constant.InterfaceAddress)
-	r.SetAssignedObjectId(int64(i.Identifier))
-	result, _, e := c.client.DcimAPI.DcimMacAddressesUpdate(
+	q := netbox.NewMACAddressRequest(a.Name)
+	q.SetAssignedObjectType(constant.InterfaceAddress)
+	q.SetAssignedObjectId(int64(i.Identifier))
+	result, r, e := c.client.DcimAPI.DcimMacAddressesUpdate(
 		c.context,
 		a.Identifier,
-	).MACAddressRequest(*r).Execute()
-	errors.PanicOnError(e)
+	).MACAddressRequest(*q).Execute()
+	errors.PanicOnWebError(r, e)
 
 	return physical_address.New(result)
 }

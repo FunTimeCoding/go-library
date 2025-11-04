@@ -2,7 +2,6 @@ package gitlab
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"gitlab.com/gitlab-org/api/client-go"
 )
@@ -25,7 +24,7 @@ func (c *Client) Packages(
 		return result
 	}
 
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
 	return result
 }

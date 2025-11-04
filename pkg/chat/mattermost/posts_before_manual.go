@@ -27,7 +27,7 @@ func (c *Client) PostsBeforeManual(
 			false,
 			false,
 		)
-		panicOnError(e, response)
+		panicOnError(response, e)
 
 		if len(list.Order) == 0 {
 			break

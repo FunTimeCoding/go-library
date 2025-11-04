@@ -24,7 +24,7 @@ func (c *Client) FirstPostBefore(
 			true,
 			false,
 		)
-		panicOnError(e, response)
+		panicOnError(response, e)
 
 		if len(list.Order) == 0 {
 			return nil

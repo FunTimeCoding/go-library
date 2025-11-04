@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) CustomLinks() []*custom_link.Link {
-	result, _, e := c.client.ExtrasAPI.ExtrasCustomLinksList(
+	result, r, e := c.client.ExtrasAPI.ExtrasCustomLinksList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return custom_link.NewSlice(result.Results)
 }

@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) SitesByName(n string) []*site.Site {
-	result, _, e := c.client.DcimAPI.DcimSitesList(
+	result, r, e := c.client.DcimAPI.DcimSitesList(
 		c.context,
 	).Name([]string{n}).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return site.NewSlice(result.Results)
 }

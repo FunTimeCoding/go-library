@@ -1,7 +1,6 @@
 package gitlab
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/job"
 	"gitlab.com/gitlab-org/api/client-go"
@@ -15,7 +14,7 @@ func (c *Client) RunnerJobs(
 	var number int
 
 	for {
-		page, _, e := c.client.Runners.ListRunnerJobs(
+		page, r, e := c.client.Runners.ListRunnerJobs(
 			runner,
 			&gitlab.ListRunnerJobsOptions{
 				ListOptions: gitlab.ListOptions{
@@ -26,7 +25,7 @@ func (c *Client) RunnerJobs(
 				Sort:    gitlab.Ptr(constant.Descending),
 			},
 		)
-		errors.PanicOnError(e)
+		panicOnError(r, e)
 		result = append(result, page...)
 
 		if len(page) < constant.PerPage100 {

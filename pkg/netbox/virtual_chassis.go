@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) VirtualChassis() []*virtual_chassis.Chassis {
-	result, _, e := c.client.DcimAPI.DcimVirtualChassisList(
+	result, r, e := c.client.DcimAPI.DcimVirtualChassisList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return virtual_chassis.NewSlice(result.Results)
 }

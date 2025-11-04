@@ -11,16 +11,16 @@ func (c *Client) CreatePhysical(
 	a net.HardwareAddr,
 	description string,
 ) *physical_address.Address {
-	r := netbox.NewMACAddressRequest(a.String())
+	q := netbox.NewMACAddressRequest(a.String())
 
 	if description != "" {
-		r.SetDescription(description)
+		q.SetDescription(description)
 	}
 
-	result, _, e := c.client.DcimAPI.DcimMacAddressesCreate(
+	result, r, e := c.client.DcimAPI.DcimMacAddressesCreate(
 		c.context,
-	).MACAddressRequest(*r).Execute()
-	errors.PanicOnError(e)
+	).MACAddressRequest(*q).Execute()
+	errors.PanicOnWebError(r, e)
 
 	return physical_address.New(result)
 }

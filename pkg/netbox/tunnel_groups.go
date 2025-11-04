@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) TunnelGroups() []*tunnel_group.Group {
-	result, _, e := c.client.VpnAPI.VpnTunnelGroupsList(
+	result, r, e := c.client.VpnAPI.VpnTunnelGroupsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return tunnel_group.NewSlice(result.Results)
 }

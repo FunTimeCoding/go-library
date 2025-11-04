@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) ModuleBays() []*module_bay.Bay {
-	result, _, e := c.client.DcimAPI.DcimModuleBaysList(
+	result, r, e := c.client.DcimAPI.DcimModuleBaysList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return module_bay.NewSlice(result.Results)
 }

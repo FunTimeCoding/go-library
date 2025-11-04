@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) ClusterGroups() []*cluster_group.Group {
-	result, _, e := c.client.VirtualizationAPI.VirtualizationClusterGroupsList(
+	result, r, e := c.client.VirtualizationAPI.VirtualizationClusterGroupsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return cluster_group.NewSlice(result.Results)
 }

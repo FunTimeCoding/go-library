@@ -1,17 +1,14 @@
 package confluence
 
-import (
-	"github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
 
 func (c *Client) SearchTreminio(query string) []*models.SearchResultScheme {
-	r, _, e := c.treminio.Search.Content(
+	result, r, e := c.treminio.Search.Content(
 		c.context,
 		query,
 		&models.SearchContentOptions{},
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
-	return r.Results
+	return result.Results
 }

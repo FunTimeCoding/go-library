@@ -11,7 +11,7 @@ func (c *Client) Me() *model.User {
 	}
 
 	result, r, e := c.client.GetMe(c.context, constant.EmptyEntityTag)
-	panicOnError(e, r)
+	panicOnError(r, e)
 	c.meCache = result
 
 	return c.meCache

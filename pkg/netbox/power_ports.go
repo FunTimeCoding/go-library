@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) PowerPorts() []*power_port.Port {
-	result, _, e := c.client.DcimAPI.DcimPowerPortsList(
+	result, r, e := c.client.DcimAPI.DcimPowerPortsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return power_port.NewSlice(result.Results)
 }

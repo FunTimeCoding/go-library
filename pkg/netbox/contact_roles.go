@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) ContactRoles() []*contact_role.Role {
-	result, _, e := c.client.TenancyAPI.TenancyContactRolesList(
+	result, r, e := c.client.TenancyAPI.TenancyContactRolesList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return contact_role.NewSlice(result.Results)
 }

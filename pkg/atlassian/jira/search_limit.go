@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
-	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
 func (c *Client) SearchLimit(
@@ -16,11 +15,11 @@ func (c *Client) SearchLimit(
 		query = fmt.Sprintf(query, a...)
 	}
 
-	page, _, e := c.client.Issue.SearchV2JQL(
+	page, r, e := c.client.Issue.SearchV2JQL(
 		query,
 		&jira.SearchOptionsV2{Fields: []string{"*all"}, MaxResults: limit},
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
 	result := issue.NewSlice(page, c.IssueOption())
 

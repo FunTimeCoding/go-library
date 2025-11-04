@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) ModuleTypeProfiles() []*module_type_profile.Profile {
-	result, _, e := c.client.DcimAPI.DcimModuleTypeProfilesList(
+	result, r, e := c.client.DcimAPI.DcimModuleTypeProfilesList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return module_type_profile.NewSlice(result.Results)
 }

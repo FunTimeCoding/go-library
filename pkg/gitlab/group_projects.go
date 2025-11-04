@@ -1,7 +1,6 @@
 package gitlab
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"github.com/gpustack/gguf-parser-go/util/ptr"
@@ -15,7 +14,7 @@ func (c *Client) GroupProjects(identifier ...int) []*project.Project {
 		var number int
 
 		for {
-			page, _, e := c.client.Groups.ListGroupProjects(
+			page, r, e := c.client.Groups.ListGroupProjects(
 				i,
 				&gitlab.ListGroupProjectsOptions{
 					ListOptions: gitlab.ListOptions{
@@ -25,7 +24,7 @@ func (c *Client) GroupProjects(identifier ...int) []*project.Project {
 					Archived: ptr.Bool(false),
 				},
 			)
-			errors.PanicOnError(e)
+			panicOnError(r, e)
 			result = append(result, page...)
 
 			if len(page) < constant.PerPage100 {

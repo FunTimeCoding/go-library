@@ -2,7 +2,6 @@ package github
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/github/code"
 )
 
@@ -14,8 +13,8 @@ func (c *Client) SearchCode(
 		query = fmt.Sprintf(query, a...)
 	}
 
-	result, _, e := c.client.Search.Code(c.context, query, nil)
-	errors.PanicOnError(e)
+	result, r, e := c.client.Search.Code(c.context, query, nil)
+	panicOnError(r, e)
 
 	return code.NewSlice(result.CodeResults)
 }

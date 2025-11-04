@@ -9,8 +9,10 @@ func WriteBytesSafe(
 	w http.ResponseWriter,
 	code int,
 	b []byte,
-) {
+) int {
 	w.WriteHeader(code)
-	_, e := w.Write(b)
+	result, e := w.Write(b)
 	errors.LogOnError(e)
+
+	return result
 }

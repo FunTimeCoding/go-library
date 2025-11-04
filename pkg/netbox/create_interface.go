@@ -14,15 +14,15 @@ func (c *Client) CreateInterface(
 ) *network.Interface {
 	v := netbox.NewBriefDeviceRequest()
 	v.SetName(d.Name)
-	r := netbox.NewWritableInterfaceRequest(
+	q := netbox.NewWritableInterfaceRequest(
 		netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(v),
 		name,
 		t,
 	)
-	result, _, e := c.client.DcimAPI.DcimInterfacesCreate(
+	result, r, e := c.client.DcimAPI.DcimInterfacesCreate(
 		c.context,
-	).WritableInterfaceRequest(*r).Execute()
-	errors.PanicOnError(e)
+	).WritableInterfaceRequest(*q).Execute()
+	errors.PanicOnWebError(r, e)
 
 	return network.New(result)
 }

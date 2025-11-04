@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) ClusterTypes() []*cluster_type.Type {
-	result, _, e := c.client.VirtualizationAPI.VirtualizationClusterTypesList(
+	result, r, e := c.client.VirtualizationAPI.VirtualizationClusterTypesList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return cluster_type.NewSlice(result.Results)
 }

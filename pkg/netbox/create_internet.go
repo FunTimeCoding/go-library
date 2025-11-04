@@ -15,14 +15,14 @@ func (c *Client) CreateInternet(
 ) *netbox.IPAddress {
 	address := AddressMask(i, m)
 	fmt.Printf("Address: %s\n", address)
-	r := netbox.NewWritableIPAddressRequest(address)
-	r.SetAssignedObjectType(objectType)
-	r.SetAssignedObjectId(objectIdentifier)
-	result, _, e := c.client.IpamAPI.IpamIpAddressesCreate(
+	q := netbox.NewWritableIPAddressRequest(address)
+	q.SetAssignedObjectType(objectType)
+	q.SetAssignedObjectId(objectIdentifier)
+	result, r, e := c.client.IpamAPI.IpamIpAddressesCreate(
 		c.context,
-	).WritableIPAddressRequest(*r).Execute()
+	).WritableIPAddressRequest(*q).Execute()
 	fmt.Printf("Create address result: %+v\n", result)
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return result
 }

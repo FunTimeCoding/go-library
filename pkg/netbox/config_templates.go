@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) ConfigTemplates() []*config_template.Template {
-	result, _, e := c.client.ExtrasAPI.ExtrasConfigTemplatesList(
+	result, r, e := c.client.ExtrasAPI.ExtrasConfigTemplatesList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return config_template.NewSlice(result.Results)
 }

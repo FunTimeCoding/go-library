@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) DevicesByMatch(s string) []*device.Device {
-	result, _, e := c.client.DcimAPI.DcimDevicesList(
+	result, r, e := c.client.DcimAPI.DcimDevicesList(
 		c.context,
 	).NameIc([]string{s}).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return device.NewSlice(result.Results)
 }

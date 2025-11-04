@@ -17,7 +17,7 @@ func (c *Client) ChannelUsers(h *model.Channel) []*model.User {
 			constant.PerPage,
 			constant.EmptyEntityTag,
 		)
-		panicOnError(e, r)
+		panicOnError(r, e)
 
 		if len(users) == 0 {
 			break

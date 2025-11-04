@@ -10,8 +10,8 @@ func (c *Client) DeviceRoles() []*device_role.Role {
 		return c.cache.DeviceRoles
 	}
 
-	result, _, e := c.client.DcimAPI.DcimDeviceRolesList(c.context).Execute()
-	errors.PanicOnError(e)
+	result, r, e := c.client.DcimAPI.DcimDeviceRolesList(c.context).Execute()
+	errors.PanicOnWebError(r, e)
 	c.cache.DeviceRoles = device_role.NewSlice(result.Results)
 
 	return c.cache.DeviceRoles

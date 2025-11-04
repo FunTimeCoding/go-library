@@ -7,7 +7,7 @@ func (c *Client) Configuration() map[string]string {
 		c.context,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(e, r)
+	panicOnError(r, e)
 
 	return result
 }

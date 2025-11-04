@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) VirtualMachines() []*virtual_machine.Machine {
-	result, _, e := c.client.VirtualizationAPI.VirtualizationVirtualMachinesList(
+	result, r, e := c.client.VirtualizationAPI.VirtualizationVirtualMachinesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return virtual_machine.NewSlice(result.Results)
 }

@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) UserGroups() []*user_group.Group {
-	result, _, e := c.client.UsersAPI.UsersGroupsList(
+	result, r, e := c.client.UsersAPI.UsersGroupsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return user_group.NewSlice(result.Results)
 }

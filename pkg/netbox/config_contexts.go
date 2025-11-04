@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) ConfigContexts() []*config_context.Context {
-	result, _, e := c.client.ExtrasAPI.ExtrasConfigContextsList(
+	result, r, e := c.client.ExtrasAPI.ExtrasConfigContextsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return config_context.NewSlice(result.Results)
 }

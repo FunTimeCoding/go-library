@@ -1,13 +1,10 @@
 package jira
 
-import (
-	"github.com/andygrunwald/go-jira"
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/andygrunwald/go-jira"
 
 func (c *Client) CreateMeta(key string) *jira.CreateMetaInfo {
-	result, _, e := c.client.Issue.GetCreateMeta(key)
-	errors.PanicOnError(e)
+	result, r, e := c.client.Issue.GetCreateMeta(key)
+	panicOnError(r, e)
 
 	return result
 }

@@ -8,11 +8,13 @@ import (
 func Clone(
 	locator string,
 	path string,
-) {
-	_, e := git.PlainClone(
+) *git.Repository {
+	result , e := git.PlainClone(
 		path,
 		false,
 		&git.CloneOptions{URL: locator},
 	)
 	errors.FatalOnError(e)
+
+	return result
 }

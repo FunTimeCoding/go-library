@@ -1,6 +1,7 @@
 package kestra
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/kestra/constant"
 	"github.com/kestra-io/client-sdk/go-sdk"
 )
@@ -11,7 +12,7 @@ func (c *Client) Executions(namespace string) []kestra_api_client.FlowForExecuti
 		namespace,
 		constant.MainTenant,
 	).Execute()
-	panicOnError(e, r)
+	errors.PanicOnWebError(r, e)
 
 	return result
 }

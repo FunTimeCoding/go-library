@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) PowerOutlets() []*power_outlet.Outlet {
-	result, _, e := c.client.DcimAPI.DcimPowerOutletsList(
+	result, r, e := c.client.DcimAPI.DcimPowerOutletsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return power_outlet.NewSlice(result.Results)
 }

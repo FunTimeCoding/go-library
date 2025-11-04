@@ -11,7 +11,7 @@ func (c *Client) Teams(userIdentifier string) []*model.Team {
 		userIdentifier,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(e, r)
+	panicOnError(r, e)
 
 	return result
 }

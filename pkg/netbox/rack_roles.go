@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) RackRoles() []*rack_role.Role {
-	result, _, e := c.client.DcimAPI.DcimRackRolesList(
+	result, r, e := c.client.DcimAPI.DcimRackRolesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return rack_role.NewSlice(result.Results)
 }

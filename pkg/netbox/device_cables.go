@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) DeviceCables(device string) []*cable.Cable {
-	result, _, e := c.client.DcimAPI.DcimCablesList(
+	result, r, e := c.client.DcimAPI.DcimCablesList(
 		c.context,
 	).Device([]string{device}).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return cable.NewSlice(result.Results)
 }

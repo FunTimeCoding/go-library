@@ -13,10 +13,10 @@ func (c *Client) DevicesByCluster(s string) []*device.Device {
 		log.Panicf("unexpected: %d", len(clusters))
 	}
 
-	result, _, e := c.client.DcimAPI.DcimDevicesList(
+	result, r, e := c.client.DcimAPI.DcimDevicesList(
 		c.context,
 	).ClusterId([]*int32{&clusters[0].Identifier}).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return device.NewSlice(result.Results)
 }

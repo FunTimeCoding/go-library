@@ -18,7 +18,7 @@ func printNotation(
 		v,
 		r,
 		o.All,
-		item.GoGitHub,
+		item.GoGitHubJob,
 	) {
 		var s constant.Severity
 
@@ -29,7 +29,7 @@ func printNotation(
 		}
 
 		r.AddItem(
-			item.GoGitHub,
+			item.GoGitHubJob,
 			e.MonitorIdentifier,
 			s,
 			e.Format(Notation),

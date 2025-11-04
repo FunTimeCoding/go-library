@@ -30,7 +30,7 @@ func (c *Client) UpdateChannelHeader(
 
 	h.Header = strings.Join(header, separator)
 	result, r, e := c.client.UpdateChannel(c.context, h)
-	panicOnError(e, r)
+	panicOnError(r, e)
 
 	return result
 }

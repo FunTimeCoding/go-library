@@ -8,10 +8,10 @@ import (
 
 func (c *Client) DeviceModuleBays(device string) []*module_bay.Bay {
 	fmt.Printf("Name: %s\n", device)
-	result, _, e := c.client.DcimAPI.DcimModuleBaysList(
+	result, r, e := c.client.DcimAPI.DcimModuleBaysList(
 		c.context,
 	).Device([]*string{&device}).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return module_bay.NewSlice(result.Results)
 }

@@ -1,18 +1,15 @@
 package confluence
 
-import (
-	"github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
 
 func (c *Client) SpacesTreminio() []*models.SpaceScheme {
-	r, _, e := c.treminio.Space.Gets(
+	result, r, e := c.treminio.Space.Gets(
 		c.context,
 		&models.GetSpacesOptionScheme{},
 		0,
 		25,
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
-	return r.Results
+	return result.Results
 }

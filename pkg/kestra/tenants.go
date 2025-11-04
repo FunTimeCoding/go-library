@@ -1,12 +1,15 @@
 package kestra
 
-import "github.com/kestra-io/client-sdk/go-sdk"
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/kestra-io/client-sdk/go-sdk"
+)
 
 func (c *Client) Tenants() []kestra_api_client.Tenant {
-	r, s, e := c.client.TenantsAPI.Find(
+	result, r, e := c.client.TenantsAPI.Find(
 		c.context,
 	).Page(0).Size(10).Execute()
-	panicOnError(e, s)
+	errors.PanicOnWebError(r, e)
 
-	return r.Results
+	return result.Results
 }

@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) InventoryItems() []*inventory_item.Item {
-	result, _, e := c.client.DcimAPI.DcimInventoryItemsList(
+	result, r, e := c.client.DcimAPI.DcimInventoryItemsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return inventory_item.NewSlice(result.Results)
 }

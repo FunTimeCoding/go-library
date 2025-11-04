@@ -15,7 +15,7 @@ func (c *Client) Posts(h *model.Channel) *model.PostList {
 		true,
 		false,
 	)
-	panicOnError(e, r)
+	panicOnError(r, e)
 
 	return result
 }

@@ -1,21 +1,18 @@
 package gitlab
 
-import (
-	"bytes"
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "bytes"
 
 func (c *Client) ArtifactFile(
 	project int,
 	job int,
 	path string,
 ) *bytes.Reader {
-	result, _, e := c.client.Jobs.DownloadSingleArtifactsFile(
+	result, r, e := c.client.Jobs.DownloadSingleArtifactsFile(
 		project,
 		job,
 		path,
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
 	return result
 }

@@ -18,7 +18,7 @@ func (c *Client) CreateDevice(
 	s *site.Site,
 	n *tenant.Tenant,
 ) *device.Device {
-	r := netbox.NewWritableDeviceWithConfigContextRequest(
+	q := netbox.NewWritableDeviceWithConfigContextRequest(
 		netbox.BriefDeviceTypeRequestAsDeviceBayTemplateRequestDeviceType(
 			netbox.NewBriefDeviceTypeRequest(
 				netbox.BriefManufacturerRequestAsBriefDeviceTypeRequestManufacturer(
@@ -40,24 +40,24 @@ func (c *Client) CreateDevice(
 	)
 
 	if n != nil {
-		r.SetTenant(
+		q.SetTenant(
 			netbox.BriefTenantRequestAsASNRangeRequestTenant(
 				netbox.NewBriefTenantRequest(n.Name, n.Raw.Slug),
 			),
 		)
 	}
 
-	r.SetName(name)
+	q.SetName(name)
 
 	if len(tags) > 0 {
-		r.SetTags(c.tagsNestedRequest(tags))
+		q.SetTags(c.tagsNestedRequest(tags))
 	}
 
-	r.SetStatus(device.ActiveStatus)
-	result, _, e := c.client.DcimAPI.DcimDevicesCreate(
+	q.SetStatus(device.ActiveStatus)
+	result, r, e := c.client.DcimAPI.DcimDevicesCreate(
 		c.context,
-	).WritableDeviceWithConfigContextRequest(*r).Execute()
-	errors.PanicOnError(e)
+	).WritableDeviceWithConfigContextRequest(*q).Execute()
+	errors.PanicOnWebError(r, e)
 
 	return device.New(result)
 }

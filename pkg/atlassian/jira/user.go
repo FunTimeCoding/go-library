@@ -1,13 +1,10 @@
 package jira
 
-import (
-	"github.com/andygrunwald/go-jira"
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/andygrunwald/go-jira"
 
 func (c *Client) User() *jira.User {
-	result, _, e := c.client.User.GetSelf()
-	errors.PanicOnError(e)
+	result, r, e := c.client.User.GetSelf()
+	panicOnError(r, e)
 
 	return result
 }

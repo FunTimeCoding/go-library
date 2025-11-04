@@ -1,13 +1,10 @@
 package gitlab
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/gitlab/runner"
-)
+import "github.com/funtimecoding/go-library/pkg/gitlab/runner"
 
 func (c *Client) Runner(identifier int) *runner.Runner {
-	result, _, e := c.client.Runners.GetRunnerDetails(identifier)
-	errors.PanicOnError(e)
+	result, r, e := c.client.Runners.GetRunnerDetails(identifier)
+	panicOnError(r, e)
 
 	return c.enrichRunner(runner.FromDetail(result))
 }

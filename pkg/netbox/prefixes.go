@@ -11,10 +11,10 @@ func (c *Client) Prefixes() []*prefix.Prefix {
 		return c.cache.Prefixes
 	}
 
-	result, _, e := c.client.IpamAPI.IpamPrefixesList(
+	result, r, e := c.client.IpamAPI.IpamPrefixesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 	c.cache.Prefixes = prefix.NewSlice(result.Results)
 
 	return c.cache.Prefixes

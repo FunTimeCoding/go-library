@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) TenantGroups() []*tenant_group.Group {
-	result, _, e := c.client.TenancyAPI.TenancyTenantGroupsList(
+	result, r, e := c.client.TenancyAPI.TenancyTenantGroupsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return tenant_group.NewSlice(result.Results)
 }

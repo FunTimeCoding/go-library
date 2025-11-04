@@ -11,10 +11,10 @@ func (c *Client) Sites() []*site.Site {
 		return c.cache.Sites
 	}
 
-	result, _, e := c.client.DcimAPI.DcimSitesList(
+	result, r, e := c.client.DcimAPI.DcimSitesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 	c.cache.Sites = site.NewSlice(result.Results)
 
 	return c.cache.Sites

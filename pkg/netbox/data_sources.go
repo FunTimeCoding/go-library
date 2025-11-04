@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) DataSources() []*data_source.Source {
-	result, _, e := c.client.CoreAPI.CoreDataSourcesList(
+	result, r, e := c.client.CoreAPI.CoreDataSourcesList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return data_source.NewSlice(result.Results)
 }

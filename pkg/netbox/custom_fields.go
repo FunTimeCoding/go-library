@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) CustomFields() []*custom_field.Field {
-	result, _, e := c.client.ExtrasAPI.ExtrasCustomFieldsList(
+	result, r, e := c.client.ExtrasAPI.ExtrasCustomFieldsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return custom_field.NewSlice(result.Results)
 }

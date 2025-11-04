@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) PowerFeeds() []*power_feed.Feed {
-	result, _, e := c.client.DcimAPI.DcimPowerFeedsList(
+	result, r, e := c.client.DcimAPI.DcimPowerFeedsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return power_feed.NewSlice(result.Results)
 }

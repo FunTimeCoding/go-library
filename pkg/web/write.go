@@ -6,6 +6,6 @@ func Write(
 	w http.ResponseWriter,
 	code int,
 	s string,
-) {
-	WriteBytes(w, code, []byte(s))
+) int {
+	return WriteBytes(w, code, []byte(s))
 }

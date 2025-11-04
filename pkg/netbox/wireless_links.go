@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) WirelessLinks() []*wireless_link.Link {
-	result, _, e := c.client.WirelessAPI.WirelessWirelessLinksList(
+	result, r, e := c.client.WirelessAPI.WirelessWirelessLinksList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return wireless_link.NewSlice(result.Results)
 }

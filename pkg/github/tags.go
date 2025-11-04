@@ -1,21 +1,18 @@
 package github
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/google/go-github/v77/github"
-)
+import "github.com/google/go-github/v77/github"
 
 func (c *Client) Tags(
 	owner string,
 	repository string,
 ) []*github.RepositoryTag {
-	result, _, e := c.client.Repositories.ListTags(
+	result, r, e := c.client.Repositories.ListTags(
 		c.context,
 		owner,
 		repository,
 		&github.ListOptions{PerPage: 1000},
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
 	return result
 }

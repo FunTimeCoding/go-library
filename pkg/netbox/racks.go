@@ -11,10 +11,10 @@ func (c *Client) Racks() []*rack.Rack {
 		return c.cache.Racks
 	}
 
-	result, _, e := c.client.DcimAPI.DcimRacksList(
+	result, r, e := c.client.DcimAPI.DcimRacksList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 	c.cache.Racks = rack.NewSlice(result.Results)
 
 	return c.cache.Racks

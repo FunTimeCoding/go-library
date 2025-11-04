@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) ConsolePorts() []*console_port.Port {
-	result, _, e := c.client.DcimAPI.DcimConsolePortsList(
+	result, r, e := c.client.DcimAPI.DcimConsolePortsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return console_port.NewSlice(result.Results)
 }

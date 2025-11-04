@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) VirtualDeviceContexts() []*virtual_device_context.Context {
-	result, _, e := c.client.DcimAPI.DcimVirtualDeviceContextsList(
+	result, r, e := c.client.DcimAPI.DcimVirtualDeviceContextsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return virtual_device_context.NewSlice(result.Results)
 }

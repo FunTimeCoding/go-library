@@ -70,6 +70,8 @@ func main() {
 	web.PostFile("", "", "", "")
 	web.WriteBytesSafe(nil, 0, nil)
 	web.DefaultServer(nil)
+	_, e := web.VerboseTrip(nil, nil)
+	errors.PanicOnError(e)
 
 	push.Send(nil)
 

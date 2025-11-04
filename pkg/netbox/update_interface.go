@@ -39,21 +39,21 @@ func (c *Client) UpdateInterface(
 
 	v := netbox.NewBriefDeviceRequest()
 	v.SetName(d.Name)
-	r := netbox.NewWritableInterfaceRequest(
+	q := netbox.NewWritableInterfaceRequest(
 		netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(v),
 		name,
 		t,
 	)
-	r.SetPrimaryMacAddress(
+	q.SetPrimaryMacAddress(
 		netbox.BriefMACAddressRequestAsInterfaceRequestPrimaryMacAddress(
 			netbox.NewBriefMACAddressRequest(h.String()),
 		),
 	)
-	result, _, e := c.client.DcimAPI.DcimInterfacesUpdate(
+	result, r, e := c.client.DcimAPI.DcimInterfacesUpdate(
 		c.context,
 		c.DeviceInterfaceByNameStrict(d, name).Identifier,
-	).WritableInterfaceRequest(*r).Execute()
-	errors.PanicOnError(e)
+	).WritableInterfaceRequest(*q).Execute()
+	errors.PanicOnWebError(r, e)
 
 	return network.New(result)
 }

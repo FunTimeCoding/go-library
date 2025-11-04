@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) InventoryItemRoles() []*inventory_item_role.Role {
-	result, _, e := c.client.DcimAPI.DcimInventoryItemRolesList(
+	result, r, e := c.client.DcimAPI.DcimInventoryItemRolesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return inventory_item_role.NewSlice(result.Results)
 }

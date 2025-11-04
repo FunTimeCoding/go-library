@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) Tunnels() []*tunnel.Tunnel {
-	result, _, e := c.client.VpnAPI.VpnTunnelsList(
+	result, r, e := c.client.VpnAPI.VpnTunnelsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return tunnel.NewSlice(result.Results)
 }

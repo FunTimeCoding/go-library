@@ -15,7 +15,7 @@ func (c *Client) ChannelByName(
 		t.Id,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(e, r)
+	panicOnError(r, e)
 
 	return result
 }

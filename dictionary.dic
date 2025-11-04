@@ -41,6 +41,8 @@ servname
 
 # go-library
 exitf
+ghjob
+ghpr
 goalert
 gobuild
 gochk
@@ -50,6 +52,8 @@ gocontainer
 godownload
 gofile
 gogenie
+goghjob
+goghpr
 gogithub
 gogitlab
 gogitstatus

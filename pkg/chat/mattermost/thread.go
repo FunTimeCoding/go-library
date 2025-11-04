@@ -17,7 +17,7 @@ func (c *Client) Thread(p *model.Post) []*post.Post {
 		constant.EmptyEntityTag,
 		false,
 	)
-	panicOnError(e, r)
+	panicOnError(r, e)
 	var posts []*model.Post
 
 	for i, o := range post.FromList(list, true) {

@@ -11,8 +11,8 @@ import (
 )
 
 func panicOnError(
-	e error,
 	r *model.Response,
+	e error,
 ) {
 	if e != nil && r != nil {
 		fmt.Printf("Status: %d\n", r.StatusCode)

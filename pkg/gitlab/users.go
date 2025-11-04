@@ -1,13 +1,10 @@
 package gitlab
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"gitlab.com/gitlab-org/api/client-go"
-)
+import "gitlab.com/gitlab-org/api/client-go"
 
 func (c *Client) Users() []*gitlab.User {
-	u, _, e := c.client.Users.ListUsers(&gitlab.ListUsersOptions{})
-	errors.PanicOnError(e)
+	result, r, e := c.client.Users.ListUsers(&gitlab.ListUsersOptions{})
+	panicOnError(r, e)
 
-	return u
+	return result
 }

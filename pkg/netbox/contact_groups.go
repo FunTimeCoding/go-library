@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) ContactGroups() []*contact_group.Group {
-	result, _, e := c.client.TenancyAPI.TenancyContactGroupsList(
+	result, r, e := c.client.TenancyAPI.TenancyContactGroupsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return contact_group.NewSlice(result.Results)
 }

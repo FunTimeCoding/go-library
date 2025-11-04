@@ -12,7 +12,7 @@ func (c *Client) User(identifier string) *model.User {
 			identifier,
 			constant.EmptyEntityTag,
 		)
-		panicOnError(e, r)
+		panicOnError(r, e)
 		c.user.Add(result)
 	}
 

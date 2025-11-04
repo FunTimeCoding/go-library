@@ -1,7 +1,6 @@
 package gitlab
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/merge_request"
 	"github.com/funtimecoding/go-library/pkg/ptr"
@@ -9,7 +8,7 @@ import (
 )
 
 func (c *Client) AssignedReviews(all bool) []*merge_request.Request {
-	requests, _, e := c.client.MergeRequests.ListMergeRequests(
+	requests, r, e := c.client.MergeRequests.ListMergeRequests(
 		&gitlab.ListMergeRequestsOptions{
 			ReviewerID:  gitlab.ReviewerID(c.user.ID),
 			State:       ptr.To[string](constant.OpenedState),
@@ -17,7 +16,7 @@ func (c *Client) AssignedReviews(all bool) []*merge_request.Request {
 		},
 		nil,
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 	result := merge_request.NewSlice(requests)
 
 	if all {

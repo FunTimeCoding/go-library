@@ -1,7 +1,6 @@
 package gitlab
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"gitlab.com/gitlab-org/api/client-go"
 	"log"
@@ -11,10 +10,10 @@ func (c *Client) ProjectByName(
 	namespace string,
 	name string,
 ) *project.Project {
-	result, _, e := c.client.Projects.ListProjects(
+	result, r, e := c.client.Projects.ListProjects(
 		&gitlab.ListProjectsOptions{Search: &name},
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 	count := len(result)
 	var p *gitlab.Project
 

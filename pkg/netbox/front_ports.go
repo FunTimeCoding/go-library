@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) FrontPorts() []*front_port.Port {
-	result, _, e := c.client.DcimAPI.DcimFrontPortsList(
+	result, r, e := c.client.DcimAPI.DcimFrontPortsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return front_port.NewSlice(result.Results)
 }

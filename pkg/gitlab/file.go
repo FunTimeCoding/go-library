@@ -1,9 +1,6 @@
 package gitlab
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"gitlab.com/gitlab-org/api/client-go"
-)
+import "gitlab.com/gitlab-org/api/client-go"
 
 func (c *Client) File(
 	project int,
@@ -16,11 +13,12 @@ func (c *Client) File(
 		&gitlab.GetFileOptions{Ref: &branch},
 	)
 
-	if e != nil && r != nil && r.StatusCode == 404 {
+	if r != nil && r.StatusCode == 404 {
+		// Do not panic
 		return nil
 	}
 
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
 	return result
 }

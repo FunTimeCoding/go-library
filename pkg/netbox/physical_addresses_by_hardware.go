@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) PhysicalAddressesByHardware(a net.HardwareAddr) []*physical_address.Address {
-	result, _, e := c.client.DcimAPI.DcimMacAddressesList(
+	result, r, e := c.client.DcimAPI.DcimMacAddressesList(
 		c.context,
 	).MacAddress([]string{a.String()}).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return physical_address.NewSlice(result.Results)
 }

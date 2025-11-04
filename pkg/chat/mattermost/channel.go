@@ -11,7 +11,7 @@ func (c *Client) Channel(identifier string) *model.Channel {
 		identifier,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(e, r)
+	panicOnError(r, e)
 
 	return result
 }

@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) Services() []*service.Service {
-	result, _, e := c.client.IpamAPI.IpamServicesList(
+	result, r, e := c.client.IpamAPI.IpamServicesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return service.NewSlice(result.Results)
 }

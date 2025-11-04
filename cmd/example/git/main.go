@@ -9,6 +9,8 @@ import (
 
 func main() {
 	gitlab.Issue()
+	github.PullRequest()
+	gitlab.MergeRequest()
 
 	if false {
 		git.BuildInformation()

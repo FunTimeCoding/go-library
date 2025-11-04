@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) Reservations() []*reservation.Reservation {
-	result, _, e := c.client.DcimAPI.DcimRackReservationsList(
+	result, r, e := c.client.DcimAPI.DcimRackReservationsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return reservation.NewSlice(result.Results)
 }

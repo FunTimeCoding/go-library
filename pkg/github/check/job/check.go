@@ -33,6 +33,6 @@ func Check(o *option.Job) {
 	}
 
 	if len(elements) == 0 {
-		monitor.NoRelevant(item.GoGitHub.Plural)
+		monitor.NoRelevant(item.GoGitHubJob.Plural)
 	}
 }

@@ -11,10 +11,10 @@ func (c *Client) Tags() []*tag.Tag {
 		return c.cache.Tags
 	}
 
-	result, _, e := c.client.ExtrasAPI.ExtrasTagsList(
+	result, r, e := c.client.ExtrasAPI.ExtrasTagsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 	c.cache.Tags = tag.NewSlice(result.Results)
 
 	return c.cache.Tags

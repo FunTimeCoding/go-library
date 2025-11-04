@@ -55,10 +55,17 @@ var (
 		time.Minute,
 		DefaultSource,
 	)
-	GoGitHub = collector.New(
-		"gogithub",
-		"github",
+	GoGitHubJob = collector.New(
+		"goghjob",
+		"ghjob",
 		"GitHub jobs",
+		5*time.Minute,
+		DefaultSource,
+	)
+	GoGitHubPullRequest = collector.New(
+		"goghpr",
+		"ghpr",
+		"GitHub pull requests",
 		5*time.Minute,
 		DefaultSource,
 	)
@@ -131,7 +138,7 @@ var (
 		GoContainer,
 		GoFile,
 		GoGenie,
-		GoGitHub,
+		GoGitHubJob,
 		GoGitLab,
 		GoGitStatus,
 		GoImage,

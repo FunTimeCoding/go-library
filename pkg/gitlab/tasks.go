@@ -1,7 +1,6 @@
 package gitlab
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/task"
 	"github.com/funtimecoding/go-library/pkg/ptr"
@@ -9,14 +8,14 @@ import (
 )
 
 func (c *Client) Tasks() []*task.Task {
-	t, _, e := c.client.Todos.ListTodos(
+	result, r, e := c.client.Todos.ListTodos(
 		&gitlab.ListTodosOptions{
 			State:       ptr.To[string](constant.PendingState),
 			ListOptions: constant.DefaultListOptions,
 		},
 		nil,
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
-	return task.NewSlice(t)
+	return task.NewSlice(result)
 }

@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) SystemNumbers() []*system_number.Number {
-	result, _, e := c.client.IpamAPI.IpamAsnsList(
+	result, r, e := c.client.IpamAPI.IpamAsnsList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return system_number.NewSlice(result.Results)
 }

@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) Modules() []*module.Module {
-	result, _, e := c.client.DcimAPI.DcimModulesList(
+	result, r, e := c.client.DcimAPI.DcimModulesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return module.NewSlice(result.Results)
 }

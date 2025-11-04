@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) VirtualNetworks() []*virtual_network.Network {
-	result, _, e := c.client.IpamAPI.IpamVlansList(
+	result, r, e := c.client.IpamAPI.IpamVlansList(
 		c.context,
 	).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return virtual_network.NewSlice(result.Results)
 }

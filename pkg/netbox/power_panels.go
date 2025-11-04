@@ -7,10 +7,10 @@ import (
 )
 
 func (c *Client) PowerPanels() []*power_panel.Panel {
-	result, _, e := c.client.DcimAPI.DcimPowerPanelsList(
+	result, r, e := c.client.DcimAPI.DcimPowerPanelsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnError(e)
+	errors.PanicOnWebError(r, e)
 
 	return power_panel.NewSlice(result.Results)
 }

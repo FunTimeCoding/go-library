@@ -1,7 +1,6 @@
 package gitlab
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"gitlab.com/gitlab-org/api/client-go"
@@ -16,7 +15,7 @@ func (c *Client) Projects() []*project.Project {
 	}
 
 	for {
-		page, _, e := c.client.Projects.ListProjects(
+		page, r, e := c.client.Projects.ListProjects(
 			&gitlab.ListProjectsOptions{
 				ListOptions: gitlab.ListOptions{
 					PerPage: constant.PerPage100,
@@ -24,7 +23,7 @@ func (c *Client) Projects() []*project.Project {
 				},
 			},
 		)
-		errors.PanicOnError(e)
+		panicOnError(r, e)
 		result = append(result, page...)
 
 		if len(page) < constant.PerPage100 {

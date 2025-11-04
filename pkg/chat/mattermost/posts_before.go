@@ -32,7 +32,7 @@ func (c *Client) PostsBefore(
 			true,
 			false,
 		)
-		panicOnError(e, response)
+		panicOnError(response, e)
 
 		if len(before.Order) == 0 {
 			break

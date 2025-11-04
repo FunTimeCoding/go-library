@@ -2,7 +2,6 @@ package gitlab
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -22,7 +21,7 @@ func (c *Client) RegistryRepositories(
 		return result
 	}
 
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 
 	return result
 }

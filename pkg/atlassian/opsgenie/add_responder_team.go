@@ -9,8 +9,8 @@ import (
 func (c *Client) AddResponderTeam(
 	a *alert.Alert,
 	team string,
-) {
-	_, e := c.teamClient.Alert.AddResponder(
+) *rawAlert.AsyncAlertResult {
+	result, e := c.teamClient.Alert.AddResponder(
 		c.context,
 		&rawAlert.AddResponderRequest{
 			IdentifierType:  rawAlert.ALERTID,
@@ -22,4 +22,6 @@ func (c *Client) AddResponderTeam(
 		},
 	)
 	errors.PanicOnError(e)
+
+	return result
 }

@@ -1,20 +1,19 @@
 package jira
 
 import (
-	"fmt"
 	"github.com/andygrunwald/go-jira"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/integers"
 )
 
 func (c *Client) BoardSprints(identifier int) []*jira.Sprint {
-	response, _, e := c.client.Board.GetAllSprints(
-		fmt.Sprintf("%d", identifier),
+	response, r, e := c.client.Board.GetAllSprints(
+		integers.ToString(identifier),
 	)
-	errors.PanicOnError(e)
+	panicOnError(r, e)
 	var result []*jira.Sprint
 
-	for _, r := range response {
-		result = append(result, &r)
+	for _, s := range response {
+		result = append(result, &s)
 	}
 
 	return result

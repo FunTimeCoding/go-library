@@ -8,13 +8,13 @@ import (
 
 func (c *Client) updateDevice(
 	d *device.Device,
-	r *netbox.PatchedWritableDeviceWithConfigContextRequest,
+	q *netbox.PatchedWritableDeviceWithConfigContextRequest,
 ) *device.Device {
-	result, _, e := c.client.DcimAPI.DcimDevicesPartialUpdate(
+	result, r, e := c.client.DcimAPI.DcimDevicesPartialUpdate(
 		c.context,
 		d.Identifier,
-	).PatchedWritableDeviceWithConfigContextRequest(*r).Execute()
-	errors.PanicOnError(e)
+	).PatchedWritableDeviceWithConfigContextRequest(*q).Execute()
+	errors.PanicOnWebError(r, e)
 
 	return device.New(result)
 }

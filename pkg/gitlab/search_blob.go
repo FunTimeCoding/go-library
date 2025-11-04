@@ -1,20 +1,17 @@
 package gitlab
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"gitlab.com/gitlab-org/api/client-go"
-)
+import "gitlab.com/gitlab-org/api/client-go"
 
 func (c *Client) SearchBlob(query string) []*gitlab.Blob {
 	var result []*gitlab.Blob
 
 	for _, p := range c.Projects() {
-		page, _, e := c.client.Search.BlobsByProject(
+		page, r, e := c.client.Search.BlobsByProject(
 			p.Identifier,
 			query,
 			&gitlab.SearchOptions{},
 		)
-		errors.PanicOnError(e)
+		panicOnError(r, e)
 		result = append(result, page...)
 	}
 

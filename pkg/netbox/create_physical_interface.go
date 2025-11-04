@@ -15,19 +15,19 @@ func (c *Client) CreatePhysicalInterface(
 	description string,
 	i *network.Interface,
 ) *physical_address.Address {
-	r := netbox.NewMACAddressRequest(a.String())
+	q := netbox.NewMACAddressRequest(a.String())
 
 	if description != "" {
-		r.SetDescription(description)
+		q.SetDescription(description)
 	}
 
-	r.SetAssignedObjectType(constant.InterfaceAddress)
-	r.SetAssignedObjectId(int64(i.Identifier))
+	q.SetAssignedObjectType(constant.InterfaceAddress)
+	q.SetAssignedObjectId(int64(i.Identifier))
 
-	result, _, e := c.client.DcimAPI.DcimMacAddressesCreate(
+	result, r, e := c.client.DcimAPI.DcimMacAddressesCreate(
 		c.context,
-	).MACAddressRequest(*r).Execute()
-	errors.PanicOnError(e)
+	).MACAddressRequest(*q).Execute()
+	errors.PanicOnWebError(r, e)
 
 	return physical_address.New(result)
 }

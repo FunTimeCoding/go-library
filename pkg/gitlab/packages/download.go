@@ -14,10 +14,10 @@ func Download(
 ) {
 	r := web.NewGet(link)
 	request.PrivateToken(r, token)
-	response := web.Send(web.Client(), r)
-	defer errors.PanicClose(response.Body)
-	errors.PanicStatus(response)
+	p := web.Send(web.Client(), r)
+	defer errors.PanicClose(p.Body)
+	errors.PanicStatus(p)
 	f := system.Create(outputFile)
 	defer errors.PanicClose(f)
-	system.Copy(response.Body, f)
+	system.Copy(p.Body, f)
 }

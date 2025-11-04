@@ -10,8 +10,10 @@ func (c *Client) Manufacturers() []*manufacturer.Manufacturer {
 		return c.cache.Manufacturers
 	}
 
-	result, _, e := c.client.DcimAPI.DcimManufacturersList(c.context).Execute()
-	errors.PanicOnError(e)
+	result, r, e := c.client.DcimAPI.DcimManufacturersList(
+		c.context,
+	).Execute()
+	errors.PanicOnWebError(r, e)
 	c.cache.Manufacturers = manufacturer.NewSlice(result.Results)
 
 	return c.cache.Manufacturers

@@ -21,10 +21,12 @@ tasks:
     cmds:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
     # github.com/google/gnostic-models: 0.7.0 has bad imports
+    # github.com/kestra-io/client-sdk/go-sdk: broken due to rework
     - |
       goupdate \
         --downgrade k8s.io/apimachinery@v0.30.14 \
-        --downgrade github.com/google/gnostic-models@v0.6.9
+        --downgrade github.com/google/gnostic-models@v0.6.9 \
+        --downgrade github.com/kestra-io/client-sdk/go-sdk@v0.0.0-20251027154531-4f34ecde71bf
     silent: true
   tool:
     cmds:

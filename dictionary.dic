@@ -213,3 +213,6 @@ qemuargs
 
 # Linkwarden
 linkwarden
+
+# Renovate
+datasources

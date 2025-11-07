@@ -7,9 +7,10 @@ import (
 )
 
 func main() {
-	confluence.Overview()
+	jira.Customer()
 
 	if false {
+		confluence.Overview()
 		confluence.Export()
 		confluence.Page()
 		confluence.Search()
@@ -21,7 +22,6 @@ func main() {
 
 		jira.Issue()
 		jira.Search()
-		jira.Customer()
 		jira.Watch()
 		jira.CustomValue()
 

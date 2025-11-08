@@ -1,6 +1,6 @@
 package code
 
-import "github.com/google/go-github/v77/github"
+import "github.com/google/go-github/v78/github"
 
 func New(v *github.CodeResult) *Code {
 	return &Code{

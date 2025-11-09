@@ -11,15 +11,15 @@ import (
 
 func Query() {
 	c := prometheus.NewEnvironment()
-	now := time.Now()
+	t := time.Now()
 
-	for _, k := range maps.StringKeys(c.QueryIntegers("up", now)) {
+	for _, k := range maps.StringKeys(c.QueryIntegers("up", t)) {
 		fmt.Printf("Up: %s\n", k)
 	}
 
 	countPerScrapeJob := c.QueryIntegers(
 		`count by (job)({__name__=~".+"})`,
-		now,
+		t,
 	)
 
 	for _, k := range maps.StringKeys(countPerScrapeJob) {
@@ -32,7 +32,7 @@ func Query() {
 
 	cardinalityPerMetric := c.QueryIntegers(
 		`count by (__name__)({__name__=~".+"})`,
-		now,
+		t,
 	)
 
 	for _, k := range maps.StringKeys(cardinalityPerMetric) {
@@ -45,12 +45,14 @@ func Query() {
 
 	// TODO: prometheus_tsdb_symbol_table_size_bytes
 
-	load1 := c.QueryFloat(constant.Load1, now)
-	load5 := c.QueryFloat(constant.Load5, now)
-	load15 := c.QueryFloat(constant.Load15, now)
-	fmt.Printf("Load: %.1f %.1f %.1f\n", load1, load5, load15)
+	fmt.Printf(
+		"Load: %.1f %.1f %.1f\n",
+		c.QueryFloat(constant.Load1, t),
+		c.QueryFloat(constant.Load5, t),
+		c.QueryFloat(constant.Load15, t),
+	)
 
-	for _, r := range parse.Generic(c.Query(constant.Load1, now)) {
+	for _, r := range parse.Generic(c.Query(constant.Load1, t)) {
 		fmt.Printf("  %s %s %s\n", r.Metric, r.Time, r.Value)
 	}
 }

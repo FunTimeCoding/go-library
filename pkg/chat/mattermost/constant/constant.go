@@ -11,6 +11,8 @@ const (
 	PerPage int = 1000
 
 	EmptyEntityTag = ""
+
+	PostField = "post"
 )
 
 // Emoji

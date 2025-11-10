@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/base64"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/gosed/sed/option"
+	"log"
 )
 
 func Run(o *option.Sed) {
@@ -14,7 +15,7 @@ func Run(o *option.Sed) {
 	f := c.File(p.Identifier, o.Branch, o.Path)
 
 	if f == nil {
-		panic("file does not exist: " + o.Path)
+		log.Panicf("file does not exist: %s", o.Path)
 	}
 
 	c.Commit(

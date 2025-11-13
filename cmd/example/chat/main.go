@@ -12,6 +12,7 @@ func main() {
 	if false {
 		discord.DeleteLoop()
 
+		mattermost.Team()
 		mattermost.Dialog()
 		mattermost.Support()
 		mattermost.Post()

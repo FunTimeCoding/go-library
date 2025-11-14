@@ -8,7 +8,7 @@ import (
 )
 
 func Client() {
-	c := chroma.New()
+	c := chroma.NewEnvironment()
 	defer c.Close()
 	// The default embedding function is used
 	l := c.Collection(

@@ -12,7 +12,7 @@ import (
 func main() {
 	// Cannot make cmd/gochroma package because it would require CGO_ENABLED=1
 	//  Solve CGO requirement in chroma library or create own chroma project which uses CGO_ENABLED=1
-	c := chroma.New()
+	c := chroma.NewEnvironment()
 	defer c.Close()
 
 	for _, d := range c.Databases(v2.NewDefaultTenant()) {

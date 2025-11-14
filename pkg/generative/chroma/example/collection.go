@@ -6,7 +6,7 @@ import (
 )
 
 func Collection() {
-	c := chroma.New()
+	c := chroma.NewEnvironment()
 
 	for _, l := range c.Collections() {
 		fmt.Printf("Collection: %s\n", l.Name())

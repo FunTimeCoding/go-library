@@ -22,7 +22,7 @@
     },
     {
       "matchPackageNames": ["github.com/kestra-io/client-sdk/go-sdk"],
-      "allowedVersions": "<= v0.0.0-20251027154531-4f34ecde71bf"
+      "enabled": false
     }
   ]
 }

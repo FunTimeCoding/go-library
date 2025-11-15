@@ -34,6 +34,7 @@ func Main(
 	pflag.Bool(constant.LinuxAMD64, false, "Linux AMD64")
 	pflag.Bool(constant.DarwinARM64, false, "Darwin ARM64")
 	pflag.Bool(constant.DarwinAMD64, false, "Darwin AMD64")
+	pflag.Bool(build.Native, false, "Enable CGO")
 	monitor.ParseBind(version, gitHash, buildDate)
 	linuxAMD64 := viper.GetBool(constant.LinuxAMD64)
 	darwinARM64 := viper.GetBool(constant.DarwinARM64)
@@ -68,6 +69,7 @@ func Main(
 			o.Output = viper.GetString(argument.Output)
 			o.BuildTags = viper.GetString(argument.BuildTags)
 			o.CopyToBin = viper.GetBool(build.CopyToBinFlag)
+			o.Native = viper.GetBool(build.Native)
 			o.LinuxAMD64 = linuxAMD64
 			o.DarwinARM64 = darwinARM64
 			o.DarwinAMD64 = darwinAMD64
@@ -91,6 +93,7 @@ func Main(
 	o.Output = viper.GetString(argument.Output)
 	o.BuildTags = viper.GetString(argument.BuildTags)
 	o.CopyToBin = viper.GetBool(build.CopyToBinFlag)
+	o.Native = viper.GetBool(build.Native)
 	o.LinuxAMD64 = linuxAMD64
 	o.DarwinARM64 = darwinARM64
 	o.DarwinAMD64 = darwinAMD64

@@ -6,6 +6,7 @@ const (
 	DefaultDate    = "empty"
 
 	CopyToBinFlag = "copy-to-bin"
+	Native        = "native"
 
 	ExamplePath = "example"
 )

@@ -6,6 +6,7 @@ type Build struct {
 	Output          string
 	BuildTags       string
 	CopyToBin       bool
+	Native          bool
 	OperatingSystem string
 	Architecture    string
 

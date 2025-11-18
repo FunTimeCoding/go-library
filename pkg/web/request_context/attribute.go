@@ -6,10 +6,9 @@ import (
 	"log/slog"
 	"net/http"
 	"strings"
-	"time"
 )
 
-func (c *Context) Attribute(t time.Time) []slog.Attr {
+func (c *Context) Attribute() []slog.Attr {
 	b := c.Body()
 	result := []slog.Attr{
 		slog.String(constant.RequestMethod, c.request.Method),
@@ -24,7 +23,6 @@ func (c *Context) Attribute(t time.Time) []slog.Attr {
 		slog.String(constant.UserAgent, c.request.UserAgent()),
 		slog.Int(constant.BodySize, len(b)),
 		slog.String(constant.Body, b),
-		slog.Time(constant.Timestamp, t),
 	}
 
 	for k, v := range c.request.Header {

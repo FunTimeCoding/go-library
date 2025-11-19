@@ -30,7 +30,7 @@ require (
 	github.com/essentialkaos/go-confluence/v6 v6.0.4
 	github.com/fatih/color v1.18.0
 	github.com/gage-technologies/mistral-go v1.1.0
-	github.com/gdamore/tcell/v2 v2.9.0
+	github.com/gdamore/tcell/v2 v2.10.0
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.38.0
 	github.com/go-git/go-billy/v5 v5.6.2
@@ -223,7 +223,7 @@ require (
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
-	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
+	github.com/lucasb-eyer/go-colorful v1.3.0 // indirect
 	github.com/magefile/mage v1.14.0 // indirect
 	github.com/mailru/easyjson v0.9.0 // indirect
 	github.com/mattermost/go-i18n v1.11.1-0.20211013152124-5c415071e404 // indirect

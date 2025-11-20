@@ -984,8 +984,8 @@ github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 h1:JeSE6pjso5T
 github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674/go.mod h1:r4w70xmWCQKmi1ONH4KIaBptdivuRPyosB9RmPlGEwA=
 github.com/gpustack/gguf-parser-go v0.22.1 h1:FRnEDWqT0Rcplr/R9ctCRSN2+3DhVsf6dnR5/i9JA4E=
 github.com/gpustack/gguf-parser-go v0.22.1/go.mod h1:y4TwTtDqFWTK+xvprOjRUh+dowgU2TKCX37vRKvGiZ0=
-github.com/grafana/grafana-openapi-client-go v0.0.0-20250925215610-d92957c70d5c h1:55vWLZG/i92lrRIfsGScIyvnIOYZEqJv+I715dMCUSE=
-github.com/grafana/grafana-openapi-client-go v0.0.0-20250925215610-d92957c70d5c/go.mod h1:sMcpxegie6TcvI6eVm+MbNneNC249GGWRcEO1M+UfSE=
+github.com/grafana/grafana-openapi-client-go v0.0.0-20251118002049-9bc70ad4530f h1:DhNnHTM4r9hKt7qbCPl0qQd+MOq+KxmDV7n2CweoH40=
+github.com/grafana/grafana-openapi-client-go v0.0.0-20251118002049-9bc70ad4530f/go.mod h1:sMcpxegie6TcvI6eVm+MbNneNC249GGWRcEO1M+UfSE=
 github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a h1:iiKc9C+1uNztJlrm+87u0yyxV3DK2nqskFncdFuSTQ8=
 github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a/go.mod h1:ZXSe0Hy5fQPZP6B9134/g33za4TTEJm4yj0utRb8H+8=
 github.com/grafana/loki/pkg/push v0.0.0-20240912152814-63e84b476a9a h1:azssgwCZo0RpSGECl9oi8mqv/x1yCkMh1B7WxjCWk/w=

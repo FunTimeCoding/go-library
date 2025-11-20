@@ -83,7 +83,7 @@ require (
 	github.com/yuin/goldmark v1.7.13
 	gitlab.com/gitlab-org/api/client-go v0.160.1
 	go.etcd.io/bbolt v1.4.3
-	golang.org/x/crypto v0.44.0
+	golang.org/x/crypto v0.45.0
 	golang.org/x/mod v0.30.0
 	golang.org/x/net v0.47.0
 	golang.org/x/oauth2 v0.33.0

@@ -7,7 +7,8 @@ import (
 
 func (p *Project) Format(f *option.Format) string {
 	return status.New(f).String(
-		p.formatPath(f),
+		p.formatName(f),
+		p.Path,
 		p.formatConcern(f),
 	).RawList(p).Format()
 }

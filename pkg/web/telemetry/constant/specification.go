@@ -12,6 +12,7 @@ const (
 // Conditionally required
 const (
 	Query  = "url.query"
+	Route  = "http.route"
 	Status = "http.response.status_code"
 )
 

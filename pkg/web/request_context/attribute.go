@@ -4,7 +4,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/web/telemetry/constant"
 	"log/slog"
-	"net/http"
 	"strings"
 )
 
@@ -15,7 +14,7 @@ func (c *Context) Attribute() []slog.Attr {
 		slog.String(constant.Path, c.request.URL.Path),
 		slog.String(constant.Scheme, c.Scheme()),
 		slog.String(constant.Query, c.request.URL.RawQuery),
-		slog.Int(constant.Status, http.StatusOK),
+		slog.String(constant.Route, c.request.Pattern),
 		slog.String(constant.Client, c.ClientAddress()),
 		slog.String(constant.Peer, c.request.RemoteAddr),
 		slog.String(constant.Protocol, c.ProtocolVersion()),

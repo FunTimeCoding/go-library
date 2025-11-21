@@ -29,7 +29,7 @@ func (c *Client) Propfind() {
 			fmt.Println("response body:", web.ReadString(s))
 		}
 	case http.StatusUnauthorized:
-		fmt.Println("unauthorized")
+		fmt.Println(constant.Unauthorized)
 	default:
 		fmt.Printf("unexpected status: %d\n", s.StatusCode)
 	}

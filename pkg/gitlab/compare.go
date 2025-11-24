@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) Compare(
-	project int,
+	project int64,
 	from, to string,
 ) *gitlab.Compare {
 	result, r, e := c.client.Repositories.Compare(

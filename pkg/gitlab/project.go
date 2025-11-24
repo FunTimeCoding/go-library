@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 )
 
-func (c *Client) Project(identifier int) *project.Project {
+func (c *Client) Project(identifier int64) *project.Project {
 	if p, okay := c.projectCache[identifier]; okay {
 		return p
 	}

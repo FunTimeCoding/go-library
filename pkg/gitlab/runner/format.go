@@ -10,7 +10,7 @@ func (r *Runner) Format(f *option.Format) string {
 	s := status.New(f)
 
 	if f.HasTag(tag.Identifier) {
-		s.Integer(r.Identifier)
+		s.Integer64(r.Identifier)
 	}
 
 	s.String(

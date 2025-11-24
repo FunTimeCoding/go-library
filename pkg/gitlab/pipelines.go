@@ -5,7 +5,7 @@ import (
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
-func (c *Client) Pipelines(project int) []*gitlab.PipelineInfo {
+func (c *Client) Pipelines(project int64) []*gitlab.PipelineInfo {
 	result, r, e := c.client.Pipelines.ListProjectPipelines(
 		project,
 		&gitlab.ListProjectPipelinesOptions{

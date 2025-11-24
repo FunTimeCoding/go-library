@@ -10,7 +10,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.2.5
 	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447
 	github.com/andygrunwald/go-jira v1.17.0
-	github.com/anthropics/anthropic-sdk-go v1.18.1
+	github.com/anthropics/anthropic-sdk-go v1.19.0
 	github.com/apenella/go-ansible/v2 v2.4.1
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bndr/gojenkins v1.1.0
@@ -81,7 +81,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v0.161.1
+	gitlab.com/gitlab-org/api/client-go v1.0.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.45.0
 	golang.org/x/mod v0.30.0

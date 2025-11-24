@@ -10,7 +10,7 @@ import (
 
 func (c *Client) Runners(all bool) []*runner.Runner {
 	var result []*gitlab.Runner
-	var number int
+	var number int64
 
 	for {
 		var page []*gitlab.Runner
@@ -50,7 +50,7 @@ func (c *Client) Runners(all bool) []*runner.Runner {
 
 		result = append(result, page...)
 
-		if len(page) < constant.PerPage100 {
+		if int64(len(page)) < constant.PerPage100 {
 			break
 		}
 

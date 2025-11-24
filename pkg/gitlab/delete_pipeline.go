@@ -1,8 +1,8 @@
 package gitlab
 
 func (c *Client) DeletePipeline(
-	project int,
-	pipeline int,
+	project int64,
+	pipeline int64,
 ) {
 	r, e := c.client.Pipelines.DeletePipeline(project, pipeline)
 

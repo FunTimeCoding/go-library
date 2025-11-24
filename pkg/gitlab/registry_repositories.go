@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) RegistryRepositories(
-	project int,
+	project int64,
 	panicOnForbidden bool,
 ) []*gitlab.RegistryRepository {
 	result, r, e := c.client.ContainerRegistry.ListProjectRegistryRepositories(

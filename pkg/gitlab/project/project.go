@@ -3,7 +3,7 @@ package project
 import "gitlab.com/gitlab-org/api/client-go"
 
 type Project struct {
-	Identifier int
+	Identifier int64
 	Namespace  string
 	Name       string
 	Link       string

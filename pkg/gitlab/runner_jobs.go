@@ -7,11 +7,11 @@ import (
 )
 
 func (c *Client) RunnerJobs(
-	runner int,
+	runner int64,
 	stopAfter int,
 ) []*job.Job {
 	var result []*gitlab.Job
-	var number int
+	var number int64
 
 	for {
 		page, r, e := c.client.Runners.ListRunnerJobs(
@@ -28,7 +28,7 @@ func (c *Client) RunnerJobs(
 		panicOnError(r, e)
 		result = append(result, page...)
 
-		if len(page) < constant.PerPage100 {
+		if int64(len(page)) < constant.PerPage100 {
 			break
 		}
 

@@ -3,7 +3,7 @@ package gitlab
 import "gitlab.com/gitlab-org/api/client-go"
 
 func (c *Client) ReadCommit(
-	project int,
+	project int64,
 	sha string,
 ) *gitlab.Commit {
 	result, r, e := c.client.Commits.GetCommit(

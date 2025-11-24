@@ -8,7 +8,7 @@ import (
 
 type Job struct {
 	MonitorIdentifier string
-	Identifier        int
+	Identifier        int64
 	Name              string
 	Status            string
 	Stage             string

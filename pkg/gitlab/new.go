@@ -16,7 +16,7 @@ func New(
 ) *Client {
 	result := &Client{
 		context:      context.Background(),
-		projectCache: make(map[int]*project.Project),
+		projectCache: make(map[int64]*project.Project),
 	}
 
 	for _, p := range o {

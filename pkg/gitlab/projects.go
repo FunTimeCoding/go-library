@@ -8,7 +8,7 @@ import (
 
 func (c *Client) Projects() []*project.Project {
 	var result []*gitlab.Project
-	var number int
+	var number int64
 
 	if len(c.groups) > 0 {
 		return c.GroupProjects(c.groups...)
@@ -26,7 +26,7 @@ func (c *Client) Projects() []*project.Project {
 		panicOnError(r, e)
 		result = append(result, page...)
 
-		if len(page) < constant.PerPage100 {
+		if int64(len(page)) < constant.PerPage100 {
 			break
 		}
 

@@ -8,11 +8,11 @@ import (
 )
 
 func (c *Client) ProjectMergeRequests(
-	project int,
+	project int64,
 	all bool,
 ) []*merge_request.Request {
 	var result []*gitlab.BasicMergeRequest
-	var number int
+	var number int64
 
 	for {
 		o := &gitlab.ListProjectMergeRequestsOptions{
@@ -34,7 +34,7 @@ func (c *Client) ProjectMergeRequests(
 		panicOnError(r, e)
 		result = append(result, page...)
 
-		if len(page) < constant.PerPage100 {
+		if int64(len(page)) < constant.PerPage100 {
 			break
 		}
 

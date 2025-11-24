@@ -3,7 +3,7 @@ package gitlab
 import "gitlab.com/gitlab-org/api/client-go"
 
 func (c *Client) File(
-	project int,
+	project int64,
 	branch string,
 	name string,
 ) *gitlab.File {

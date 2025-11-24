@@ -3,8 +3,8 @@ package issue
 import "gitlab.com/gitlab-org/api/client-go"
 
 type Issue struct {
-	Project    int
-	Identifier int
+	Project    int64
+	Identifier int64
 	Title      string
 	State      string
 	Link       string

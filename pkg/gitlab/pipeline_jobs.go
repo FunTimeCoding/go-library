@@ -7,8 +7,8 @@ import (
 )
 
 func (c *Client) PipelineJobs(
-	project int,
-	pipeline int,
+	project int64,
+	pipeline int64,
 ) []*job.Job {
 	result, r, e := c.client.Jobs.ListPipelineJobs(
 		project,

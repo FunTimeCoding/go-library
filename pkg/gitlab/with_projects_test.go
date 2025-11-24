@@ -6,5 +6,5 @@ import (
 )
 
 func TestWithProjects(t *testing.T) {
-	assert.NotNil(t, WithProjects([]int{}))
+	assert.NotNil(t, WithProjects([]int64{}))
 }

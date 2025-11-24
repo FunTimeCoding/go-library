@@ -5,7 +5,7 @@ import (
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
-func (c *Client) Tags(project int) []*gitlab.Tag {
+func (c *Client) Tags(project int64) []*gitlab.Tag {
 	result, r, e := c.client.Tags.ListTags(
 		project,
 		&gitlab.ListTagsOptions{

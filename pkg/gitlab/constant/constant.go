@@ -40,8 +40,8 @@ const (
 
 	LatestSuffix = ":latest"
 
-	PerPage1000 int = 1000
-	PerPage100  int = 100
+	PerPage1000 int64 = 1000
+	PerPage100  int64   = 100
 
 	TokenHeader = "X-Gitlab-Token" // #nosec G101 not a hardcoded secret
 )

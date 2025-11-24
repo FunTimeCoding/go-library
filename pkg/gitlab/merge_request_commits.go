@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) MergeRequestCommits(
-	project int,
-	request int,
+	project int64,
+	request int64,
 ) []*commit.Commit {
 	result, r, e := c.client.MergeRequests.GetMergeRequestCommits(
 		project,

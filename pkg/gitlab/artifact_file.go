@@ -3,8 +3,8 @@ package gitlab
 import "bytes"
 
 func (c *Client) ArtifactFile(
-	project int,
-	job int,
+	project int64,
+	job int64,
 	path string,
 ) *bytes.Reader {
 	result, r, e := c.client.Jobs.DownloadSingleArtifactsFile(

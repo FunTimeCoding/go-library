@@ -2,7 +2,7 @@ package gitlab
 
 import "gitlab.com/gitlab-org/api/client-go"
 
-func (c *Client) Tree(project int) []*gitlab.TreeNode {
+func (c *Client) Tree(project int64) []*gitlab.TreeNode {
 	result, r, e := c.client.Repositories.ListTree(
 		project,
 		&gitlab.ListTreeOptions{},

@@ -7,8 +7,8 @@ import (
 )
 
 type Request struct {
-	Project    int
-	Identifier int
+	Project    int64
+	Identifier int64
 	Title      string
 	State      string
 	Link       string

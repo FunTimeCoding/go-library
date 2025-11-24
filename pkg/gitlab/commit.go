@@ -3,7 +3,7 @@ package gitlab
 import "gitlab.com/gitlab-org/api/client-go"
 
 func (c *Client) Commit(
-	project int,
+	project int64,
 	branch string,
 	text string,
 	path string,

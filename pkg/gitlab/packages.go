@@ -7,7 +7,7 @@ import (
 )
 
 func (c *Client) Packages(
-	project int,
+	project int64,
 	panicOnForbidden bool,
 ) []*gitlab.Package {
 	result, r, e := c.client.Packages.ListProjectPackages(

@@ -3,7 +3,7 @@ package runner
 import "gitlab.com/gitlab-org/api/client-go"
 
 type Runner struct {
-	Identifier  int
+	Identifier  int64
 	Name        string
 	Description string
 	Status      string

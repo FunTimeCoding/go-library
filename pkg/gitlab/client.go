@@ -13,8 +13,8 @@ type Client struct {
 
 	verbose bool
 
-	groups   []int
-	projects []int
+	groups   []int64
+	projects []int64
 
-	projectCache map[int]*project.Project
+	projectCache map[int64]*project.Project
 }

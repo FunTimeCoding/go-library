@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/response"
 )
 
-func (c *Client) GraphRunner(identifier int) *response.Runner {
+func (c *Client) GraphRunner(identifier int64) *response.Runner {
 	result := &response.Runner{}
 	c.Query(
 		fmt.Sprintf(

@@ -5,7 +5,7 @@ import (
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
-func (c *Client) Branches(project int) []*branch.Branch {
+func (c *Client) Branches(project int64) []*branch.Branch {
 	result, r, e := c.client.Branches.ListBranches(
 		project,
 		&gitlab.ListBranchesOptions{},

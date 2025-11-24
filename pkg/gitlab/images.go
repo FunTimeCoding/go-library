@@ -7,14 +7,16 @@ import (
 )
 
 func (c *Client) Images(
-	project int,
-	repository int,
+	project int64,
+	repository int64,
 ) []*gitlab.RegistryRepositoryTag {
 	result, r, e := c.client.ContainerRegistry.ListRegistryRepositoryTags(
 		project,
 		repository,
 		&gitlab.ListRegistryRepositoryTagsOptions{
-			PerPage: constant.PerPage1000,
+			ListOptions: gitlab.ListOptions{
+				PerPage: constant.PerPage1000,
+			},
 		},
 	)
 	panicOnError(r, e)

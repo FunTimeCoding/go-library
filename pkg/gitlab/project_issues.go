@@ -6,7 +6,7 @@ import (
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
-func (c *Client) ProjectIssues(project int) []*issue.Issue {
+func (c *Client) ProjectIssues(project int64) []*issue.Issue {
 	result, r, e := c.client.Issues.ListProjectIssues(
 		project,
 		&gitlab.ListProjectIssuesOptions{

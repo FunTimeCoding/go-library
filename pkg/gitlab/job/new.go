@@ -7,7 +7,7 @@ import (
 
 func New(v *gitlab.Job) *Job {
 	return &Job{
-		MonitorIdentifier: constant.GoGitLab.IntegerIdentifier(v.ID),
+		MonitorIdentifier: constant.GoGitLab.Integer64Identifier(v.ID),
 		Identifier:        v.ID,
 		Name:              v.Name,
 		Status:            v.Status,

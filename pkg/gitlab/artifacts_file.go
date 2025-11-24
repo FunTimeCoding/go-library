@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) ArtifactsFile(
-	project int,
+	project int64,
 	reference string,
 	job string,
 ) string {

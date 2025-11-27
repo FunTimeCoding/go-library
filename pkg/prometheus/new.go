@@ -15,6 +15,7 @@ func New(
 	user string,
 	password string,
 	alternateGraphHost string,
+	o ...Option,
 ) *Client {
 	errors.FatalOnEmpty(host, "host")
 

@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
-func NewEnvironment() *Client {
+func NewEnvironment(o ...Option) *Client {
 	return New(
 		environment.Required(constant.HostEnvironment),
 		strings.ToInteger(
@@ -17,5 +17,6 @@ func NewEnvironment() *Client {
 		environment.Required(constant.UserEnvironment),
 		environment.Required(constant.PasswordEnvironment),
 		"",
+		o...,
 	)
 }

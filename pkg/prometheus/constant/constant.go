@@ -57,4 +57,5 @@ var Format = option.Color.Copy().Tag(
 	tag.Runbook,
 	tag.Category,
 	tag.Emoji,
+	tag.Instance,
 )

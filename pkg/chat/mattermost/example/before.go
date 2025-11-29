@@ -17,7 +17,7 @@ func Before() {
 	f := constant.Format
 	fmt.Printf("Channel: %s %s\n", c.Name, c.DisplayName)
 	t := time.Now().Add(-30 * 24 * time.Hour)
-	reference := m.FirstPostBefore(c, t.UnixMilli())
+	reference := m.PostBefore(c, t)
 
 	if reference == nil {
 		fmt.Printf("No post before %s\n", t.Format(library.DateMinute))
@@ -31,7 +31,7 @@ func Before() {
 		time.UnixMilli(reference.Raw.CreateAt).Format(library.DateMinute),
 	)
 
-	posts := m.PostsBeforeMilli(c, t.UnixMilli(), 2)
+	posts := m.PostsBefore(c, t)
 	fmt.Printf(
 		"Posts before %s (%d)\n",
 		t.Format(library.DateMinute),

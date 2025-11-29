@@ -7,38 +7,37 @@ import (
 	"time"
 )
 
-func (c *Client) FirstPostBefore(
+func (c *Client) PostBefore(
 	h *model.Channel,
-	beforeMilli int64,
+	t time.Time,
 ) *post.Post {
-	t := time.UnixMilli(beforeMilli)
-	page := 0
+	pageNumber := 0
 
 	for {
-		list, response, e := c.client.GetPostsForChannel(
+		page, r, e := c.client.GetPostsForChannel(
 			c.context,
 			h.Id,
-			page,
+			pageNumber,
 			constant.PerPage,
 			constant.EmptyEntityTag,
 			true,
 			false,
 		)
-		panicOnError(response, e)
+		panicOnError(r, e)
 
-		if len(list.Order) == 0 {
+		if len(page.Order) == 0 {
 			return nil
 		}
 
-		wrapped := post.NewSlice(post.FromList(list, false))
+		wrapped := post.NewSlice(post.FromList(page, false))
 		c.Enrich(wrapped)
 
 		for _, v := range wrapped {
-			if i := time.UnixMilli(v.Raw.CreateAt); i.Before(t) {
+			if v.Create.Before(t) {
 				return v
 			}
 		}
 
-		page++
+		pageNumber++
 	}
 }

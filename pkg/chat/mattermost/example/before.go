@@ -15,7 +15,7 @@ func Before() {
 	m := mattermost.NewEnvironment(mattermost.WithVerbose(false))
 	c := m.Channel(channel)
 	f := constant.Format
-	fmt.Printf("Channel: %s %s\n", c.Name, c.DisplayName)
+	fmt.Printf("Channel: %s\n", c.Name)
 	t := time.Now().Add(-30 * 24 * time.Hour)
 	reference := m.PostBefore(c, t)
 

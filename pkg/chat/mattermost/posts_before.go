@@ -9,59 +9,27 @@ import (
 
 func (c *Client) PostsBefore(
 	h *model.Channel,
-	beforeMilli int64,
+	t time.Time,
 ) []*post.Post {
-	reference := c.FirstPostBefore(h, beforeMilli)
+	page, r, e := c.client.GetPostsForChannel(
+		c.context,
+		h.Id,
+		0,
+		constant.PerPage,
+		constant.EmptyEntityTag,
+		false,
+		false,
+	)
+	panicOnError(r, e)
+	wrapped := post.NewSlice(post.FromList(page, false))
+	c.Enrich(wrapped)
+	var result []*post.Post
 
-	if reference == nil {
-		return nil
+	for _, v := range wrapped {
+		if v.Create.Before(t) {
+			result = append(result, v)
+		}
 	}
-
-	t := time.UnixMilli(beforeMilli)
-	var old []*model.Post
-	page := 0
-
-	for {
-		before, response, e := c.client.GetPostsBefore(
-			c.context,
-			h.Id,
-			reference.Identifier,
-			page,
-			constant.PerPage,
-			constant.EmptyEntityTag,
-			true,
-			false,
-		)
-		panicOnError(response, e)
-
-		if len(before.Order) == 0 {
-			break
-		}
-
-		found := false
-
-		for _, v := range post.FromList(before, false) {
-			postTime := time.UnixMilli(v.CreateAt)
-
-			if postTime.Before(t) {
-				old = append(old, v)
-
-				if v.CreateAt < reference.Raw.CreateAt {
-					reference = post.New(v)
-					found = true
-				}
-			}
-		}
-
-		if !found {
-			break
-		}
-
-		page++
-	}
-
-	result := post.NewSlice(old)
-	c.Enrich(result)
 
 	return result
 }

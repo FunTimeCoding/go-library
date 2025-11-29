@@ -31,7 +31,7 @@ func Before() {
 		time.UnixMilli(reference.Raw.CreateAt).Format(library.DateMinute),
 	)
 
-	posts := m.PostsBeforeManual(c, t.UnixMilli(), 2)
+	posts := m.PostsBeforeMilli(c, t.UnixMilli(), 2)
 	fmt.Printf(
 		"Posts before %s (%d)\n",
 		t.Format(library.DateMinute),

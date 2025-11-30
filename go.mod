@@ -3,7 +3,7 @@ module github.com/funtimecoding/go-library
 go 1.25.4
 
 require (
-	github.com/JohannesKaufmann/html-to-markdown/v2 v2.4.0
+	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.0
 	github.com/MrGunflame/gw2api v1.0.5
 	github.com/PuerkitoBio/goquery v1.11.0
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5

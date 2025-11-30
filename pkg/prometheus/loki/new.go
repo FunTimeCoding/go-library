@@ -17,6 +17,7 @@ func New(
 	host string,
 	user string,
 	password string,
+	verbose bool,
 ) *Client {
 	//client.New()
 
@@ -24,7 +25,7 @@ func New(
 		slogWay(host)
 	}
 
-	return &Client{basic: basic.New(host, user, password)}
+	return &Client{basic: basic.New(host, user, password, verbose)}
 }
 
 func slogWay(host string) {

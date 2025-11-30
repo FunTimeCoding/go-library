@@ -1,4 +1,4 @@
-package constant
+package parameter
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,5 +6,5 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, Stderr, "stderr")
+	assert.Stub(t)
 }

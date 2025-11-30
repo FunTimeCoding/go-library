@@ -3,6 +3,7 @@ package jira
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
+	"github.com/funtimecoding/go-library/pkg/web/parameter"
 )
 
 func (c *Client) IssueV3(key string) {
@@ -10,7 +11,7 @@ func (c *Client) IssueV3(key string) {
 		c.basic.Base().Copy().Base(
 			constant.Base,
 		).Path("%s/%s", constant.Issue, key).Set(
-			constant.FieldsKey,
+			parameter.Fields,
 			constant.AllFields,
 		).String(),
 	)

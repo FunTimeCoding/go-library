@@ -1,10 +1,10 @@
 package basic
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/response"
+	"github.com/funtimecoding/go-library/pkg/web/parameter"
 	"log"
 	"time"
 )
@@ -17,12 +17,18 @@ func (c *Client) LabelValues(
 	r := &response.List{}
 	notation.DecodeStrict(
 		c.Get(
-			fmt.Sprintf(
-				"/label/%s/values?start=%d&end=%d",
+			c.base.Copy().Path(
+				"%s/%s%s",
+				constant.Label,
 				label,
+				constant.Values,
+			).SetInteger64(
+				parameter.Start,
 				start.Unix(),
+			).SetInteger64(
+				parameter.End,
 				end.Unix(),
-			),
+			).String(),
 		),
 		&r,
 		true,

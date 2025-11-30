@@ -1,7 +1,7 @@
 package loki
 
 import (
-	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/response"
+	"github.com/funtimecoding/go-library/pkg/prometheus/loki/message"
 	"time"
 )
 
@@ -9,6 +9,6 @@ func (c *Client) QueryRange(
 	query string,
 	start time.Time,
 	end time.Time,
-) response.Data {
-	return c.basic.QueryRange(query, start, end)
+) ([]*message.Message, *message.Meta) {
+	return message.NewSlice(c.basic.QueryRange(query, start, end))
 }

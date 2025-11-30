@@ -8,29 +8,34 @@ import (
 )
 
 func main() {
-	prometheus.Target()
-	prometheus.Series()
+	loki.QueryRange()
+	//prometheus.Target()
+	//prometheus.Series()
 
 	if false {
+		alertmanager.Alert()
+		alertmanager.Create()
+		alertmanager.DeleteSilence()
+		alertmanager.Notify()
+		alertmanager.SetSilence()
+		alertmanager.Silence()
+		alertmanager.Status()
+
 		grafana.Read()
 
-		loki.Load()
+		loki.Label()
+		loki.Official()
+		loki.Query()
+		loki.Series()
+		loki.Statistic()
 		loki.Write()
 
-		prometheus.Status()
-		prometheus.Metric()
 		prometheus.Label()
 		prometheus.LabelName()
+		prometheus.Meta()
+		prometheus.Metric()
 		prometheus.Query()
 		prometheus.Rule()
-		prometheus.Meta()
-
-		alertmanager.Notify()
-		alertmanager.Create()
-		alertmanager.Alert()
-		alertmanager.Status()
-		alertmanager.SetSilence()
-		alertmanager.DeleteSilence()
-		alertmanager.Silence()
+		prometheus.Status()
 	}
 }

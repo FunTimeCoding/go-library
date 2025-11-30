@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/web/parameter"
 )
 
 func (c *Client) searchV3Page(
@@ -15,7 +16,7 @@ func (c *Client) searchV3Page(
 	var result response.Search
 	status, r := c.basic.Get(
 		c.basic.Base().Copy().Base(constant.Base).Path(constant.Search).Set(
-			constant.FieldsKey,
+			parameter.Fields,
 			constant.AllFields,
 		).SetInteger(constant.MaximumResultsKey, maximumResults).Set(
 			constant.NextPageTokenKey,

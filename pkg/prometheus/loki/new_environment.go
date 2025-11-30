@@ -5,10 +5,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
-func NewEnvironment() *Client {
+func NewEnvironment(verbose bool) *Client {
 	return New(
 		environment.Required(constant.HostEnvironment),
 		environment.Required(constant.UserEnvironment),
 		environment.Required(constant.PasswordEnvironment),
+		verbose,
 	)
 }

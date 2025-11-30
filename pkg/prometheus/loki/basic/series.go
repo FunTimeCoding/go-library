@@ -1,7 +1,8 @@
 package basic
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/constant"
+	"github.com/funtimecoding/go-library/pkg/web/parameter"
 	"time"
 )
 
@@ -9,14 +10,14 @@ func (c *Client) Series(series string) string {
 	now := time.Now()
 	oneWeekAgo := now.AddDate(0, 0, -7)
 	result := c.Get(
-		fmt.Sprintf(
-			"/series?start=%d&end=%d&match[]=%s",
+		c.base.Copy().Path(constant.Series).SetInteger64(
+			parameter.Start,
 			oneWeekAgo.Unix(),
+		).SetInteger64(
+			parameter.End,
 			now.Unix(),
-			series,
-		),
+		).Set("match[]", series).String(),
 	)
-	fmt.Printf("Series: %s\n", result)
 
 	return result
 }

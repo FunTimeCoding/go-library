@@ -36,12 +36,9 @@ const (
 
 // Query parameter keys
 const (
-	FieldsKey         = "fields"
 	MaximumResultsKey = "maxResults"
 	NextPageTokenKey  = "nextPageToken"
 	QueryKey          = "jql"
-	LimitKey          = "limit"
-	StartKey          = "start"
 )
 
 const AllFields = "*all" // Query parameter value

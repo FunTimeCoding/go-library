@@ -1,12 +1,11 @@
 package basic
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/response"
+	"github.com/funtimecoding/go-library/pkg/web/parameter"
 	"log"
-	"net/url"
 	"time"
 )
 
@@ -14,11 +13,10 @@ func (c *Client) Query(query string) response.Data {
 	r := &response.Query{}
 	notation.DecodeStrict(
 		c.Get(
-			fmt.Sprintf(
-				"/query?time=%d&query=%s",
+			c.base.Copy().Path(constant.Query).SetInteger64(
+				parameter.Time,
 				time.Now().Unix(),
-				url.QueryEscape(query),
-			),
+			).Set(parameter.Query, query).String(),
 		),
 		&r,
 		false,

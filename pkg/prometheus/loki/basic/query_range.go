@@ -1,12 +1,11 @@
 package basic
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/response"
+	"github.com/funtimecoding/go-library/pkg/web/parameter"
 	"log"
-	"net/url"
 	"time"
 )
 
@@ -18,15 +17,22 @@ func (c *Client) QueryRange(
 	r := &response.Query{}
 	notation.DecodeStrict(
 		c.Get(
-			fmt.Sprintf(
-				"/query_range?start=%d&end=%d&query=%s",
-				start.Unix(),
-				end.Unix(),
-				url.QueryEscape(query),
-			),
+			c.base.Copy().Path(constant.QueryRange).SetInteger64(
+				parameter.Start,
+				start.UnixNano(),
+			).SetInteger64(
+				parameter.End,
+				end.UnixNano(),
+			).Set(
+				parameter.Query,
+				query,
+			).SetInteger(
+				parameter.Limit,
+				5000, // maximum is 5000
+			).String(),
 		),
 		&r,
-		false,
+		true,
 	)
 
 	if r.Status != constant.Success {

@@ -14,9 +14,9 @@ import (
 func QueryRange() {
 	c := loki.NewEnvironment(false)
 	end := time.Now()
-	start := end.Add(-2 * time.Hour)
+	start := end.Add(-24 * time.Hour)
 	r, m := c.QueryRange(
-		`{namespace="bot"} | json | msg="request_start"`,
+		`{namespace="bot"} | json | msg="request_start", http_route="/github"`,
 		start,
 		end,
 	)
@@ -32,8 +32,8 @@ func QueryRange() {
 			}
 		}
 
-		route := v.ValueString(telemetry.Route)
-		body := v.ValueString(telemetry.Body)
+		route := v.Value(telemetry.Route)
+		body := v.Value(telemetry.Body)
 
 		if strings.HasPrefix(route, "/test-") {
 			continue
@@ -46,6 +46,12 @@ func QueryRange() {
 			v.Stream,
 			body,
 		)
+
+		h := v.ReadHeader()
+
+		for k := range h {
+			fmt.Printf("  Header %s: %s\n", k, h.Get(k))
+		}
 
 		if v.Text != "" {
 			fmt.Printf("  Text: >%s<\n", v.Text)

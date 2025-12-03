@@ -984,8 +984,8 @@ github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 h1:JeSE6pjso5T
 github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674/go.mod h1:r4w70xmWCQKmi1ONH4KIaBptdivuRPyosB9RmPlGEwA=
 github.com/gpustack/gguf-parser-go v0.22.1 h1:FRnEDWqT0Rcplr/R9ctCRSN2+3DhVsf6dnR5/i9JA4E=
 github.com/gpustack/gguf-parser-go v0.22.1/go.mod h1:y4TwTtDqFWTK+xvprOjRUh+dowgU2TKCX37vRKvGiZ0=
-github.com/grafana/grafana-openapi-client-go v0.0.0-20251118002049-9bc70ad4530f h1:DhNnHTM4r9hKt7qbCPl0qQd+MOq+KxmDV7n2CweoH40=
-github.com/grafana/grafana-openapi-client-go v0.0.0-20251118002049-9bc70ad4530f/go.mod h1:sMcpxegie6TcvI6eVm+MbNneNC249GGWRcEO1M+UfSE=
+github.com/grafana/grafana-openapi-client-go v0.0.0-20251202103709-7ef691d4df1d h1:7md403wbIZGk39todORDDUF/NY2oveyKqcNpsa0snzs=
+github.com/grafana/grafana-openapi-client-go v0.0.0-20251202103709-7ef691d4df1d/go.mod h1:sMcpxegie6TcvI6eVm+MbNneNC249GGWRcEO1M+UfSE=
 github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a h1:iiKc9C+1uNztJlrm+87u0yyxV3DK2nqskFncdFuSTQ8=
 github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a/go.mod h1:ZXSe0Hy5fQPZP6B9134/g33za4TTEJm4yj0utRb8H+8=
 github.com/grafana/loki/pkg/push v0.0.0-20240912152814-63e84b476a9a h1:azssgwCZo0RpSGECl9oi8mqv/x1yCkMh1B7WxjCWk/w=
@@ -1937,8 +1937,8 @@ github.com/yusufpapurcu/wmi v1.2.4/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQ
 github.com/yvasiyarov/go-metrics v0.0.0-20140926110328-57bccd1ccd43/go.mod h1:aX5oPXxHm3bOH+xeAttToC8pqch2ScQN/JoXYupl6xs=
 github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50/go.mod h1:NUSPSUX/bi6SeDMUh6brw0nXpxHnc96TguQh0+r/ssA=
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go.mod h1:GlGEuHIJweS1mbCqG+7vt2nvWLzLLnRHbXz5JKd/Qbg=
-gitlab.com/gitlab-org/api/client-go v1.4.1 h1:IP5VD9oCRjBsdm5DSTQ1YxhA95qU00Ud8YvRy6rBMN0=
-gitlab.com/gitlab-org/api/client-go v1.4.1/go.mod h1:RQfw64j1FE+KMZUAKsi1ZOOvwbWxHn9SkyZg+IAvjk4=
+gitlab.com/gitlab-org/api/client-go v1.5.0 h1:kEHoqgNywPXV+I0oORiaOqy4hnWuqbUyPnl0tAF7anM=
+gitlab.com/gitlab-org/api/client-go v1.5.0/go.mod h1:RQfw64j1FE+KMZUAKsi1ZOOvwbWxHn9SkyZg+IAvjk4=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

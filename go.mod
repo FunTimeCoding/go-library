@@ -1,6 +1,6 @@
 module github.com/funtimecoding/go-library
 
-go 1.25.4
+go 1.25.5
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.0
@@ -43,7 +43,7 @@ require (
 	github.com/google/go-github/v79 v79.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/gpustack/gguf-parser-go v0.22.1
-	github.com/grafana/grafana-openapi-client-go v0.0.0-20251118002049-9bc70ad4530f
+	github.com/grafana/grafana-openapi-client-go v0.0.0-20251202103709-7ef691d4df1d
 	github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a
 	github.com/hashicorp/vault-client-go v0.4.3
 	github.com/hupe1980/go-tiktoken v0.0.10
@@ -81,7 +81,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.7.13
-	gitlab.com/gitlab-org/api/client-go v1.4.1
+	gitlab.com/gitlab-org/api/client-go v1.5.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.45.0
 	golang.org/x/mod v0.30.0

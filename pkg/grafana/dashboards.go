@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) Dashboards() []*models.PublicDashboardListResponse {
-	r, e := c.client.DashboardPublic.ListPublicDashboards()
+	r, e := c.client.Dashboards.ListPublicDashboards()
 	errors.PanicOnError(e)
 
 	return r.Payload.PublicDashboards

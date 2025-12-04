@@ -9,5 +9,11 @@ func panicOnError(
 	r *github.Response,
 	e error,
 ) {
+	if r == nil {
+		errors.PanicOnError(e)
+
+		return
+	}
+
 	errors.PanicOnWebError(r.Response, e)
 }

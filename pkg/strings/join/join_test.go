@@ -7,7 +7,7 @@ import (
 
 func TestJoin(t *testing.T) {
 	s := []string{"a", "b"}
-	assert.String(t, "a:b", Colon(s))
+	assert.String(t, "a:b", Colon(s...))
 	assert.String(t, "a,b", Comma(s))
 	assert.String(t, "a, b", CommaSpace(s))
 	assert.String(t, "a-b", Dash(s))

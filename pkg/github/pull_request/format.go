@@ -1,4 +1,4 @@
-package release
+package pull_request
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/time"
 )
 
-func (r *Release) Format(f *option.Format) string {
+func (r *Request) Format(f *option.Format) string {
 	return status.New(f).String(
 		r.formatName(f),
 		r.Create.Format(time.DateMinute),

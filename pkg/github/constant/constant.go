@@ -18,3 +18,10 @@ const (
 )
 
 var Format = option.ExtendedColor.Copy()
+
+// Pull request state
+const (
+	All    = "all"
+	Open   = "open"
+	Closed = "closed"
+)

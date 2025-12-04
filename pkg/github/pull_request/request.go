@@ -1,13 +1,13 @@
-package release
+package pull_request
 
 import (
 	"github.com/google/go-github/v79/github"
 	"time"
 )
 
-type Release struct {
+type Request struct {
 	Name   string
 	Create time.Time
 
-	Raw *github.RepositoryRelease
+	Raw *github.PullRequest
 }

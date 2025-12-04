@@ -13,9 +13,12 @@ func BranchRequest() {
 	pflag.Int64(argument.Project, 0, "Project ID")
 	pflag.String(argument.Branch, "", "Branch name")
 	argument.ParseBind()
-	project := viper.GetInt64(argument.Project)
-	branch := viper.GetString(argument.Branch)
 	g := gitlab.NewEnvironment()
 	f := constant.Format
-	fmt.Println(g.BranchRequest(project, branch).Format(f))
+	fmt.Println(
+		g.BranchRequest(
+			viper.GetInt64(argument.Project),
+			viper.GetString(argument.Branch),
+		).Format(f),
+	)
 }

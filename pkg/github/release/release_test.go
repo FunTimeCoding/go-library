@@ -19,7 +19,7 @@ func TestRelease(t *testing.T) {
 	r.Raw = nil
 	assert.Any(
 		t,
-		&Release{Name: "Alfa", CreatedAt: time.Time{}},
+		&Release{Name: "Alfa", Create: time.Time{}},
 		r,
 	)
 }

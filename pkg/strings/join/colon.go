@@ -5,6 +5,6 @@ import (
 	"strings"
 )
 
-func Colon(s []string) string {
+func Colon(s ...string) string {
 	return strings.Join(s, separator.Colon)
 }

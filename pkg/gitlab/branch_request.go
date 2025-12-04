@@ -1,7 +1,6 @@
 package gitlab
 
 import (
-	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/merge_request"
 	"github.com/funtimecoding/go-library/pkg/ptr"
 	"gitlab.com/gitlab-org/api/client-go"
@@ -15,7 +14,6 @@ func (c *Client) BranchRequest(
 		project,
 		&gitlab.ListProjectMergeRequestsOptions{
 			SourceBranch: ptr.To[string](branch),
-			State:        ptr.To[string](constant.OpenedState),
 			ListOptions:  gitlab.ListOptions{PerPage: 1},
 		},
 	)

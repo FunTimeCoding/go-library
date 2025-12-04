@@ -1,11 +1,13 @@
 package merge_request
 
+import "github.com/funtimecoding/go-library/pkg/gitlab/constant"
+
 func (r *Request) Done() bool {
-	if r.State == MergedState {
+	if r.State == constant.MergedState {
 		return true
 	}
 
-	if r.State == ClosedState {
+	if r.State == constant.ClosedState {
 		return true
 	}
 

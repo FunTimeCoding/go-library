@@ -8,14 +8,14 @@ import (
 )
 
 func main() {
-	gitlab.Issue()
-	github.PullRequest()
-	gitlab.MergeRequest()
+	gitlab.BranchRequest()
 
 	if false {
 		git.BuildInformation()
 
 		clean_job.Check()
+		gitlab.Issue()
+		gitlab.MergeRequest()
 		gitlab.Feature()
 		gitlab.File()
 		gitlab.Project()
@@ -24,6 +24,7 @@ func main() {
 		gitlab.GraphQuery()
 		gitlab.CloneAll()
 
+		github.PullRequest()
 		github.Search()
 		github.CleanJob()
 	}

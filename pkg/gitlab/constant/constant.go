@@ -11,7 +11,15 @@ const Base = "/api/v4"
 const (
 	OpenedState  = "opened"
 	PendingState = "pending"
+	MergedState  = "merged"
+	ClosedState  = "closed"
 )
+
+var RequestStates = []string{
+	OpenedState,
+	MergedState,
+	ClosedState,
+}
 
 // Identifier Sort field
 const Identifier = "id"
@@ -41,7 +49,7 @@ const (
 	LatestSuffix = ":latest"
 
 	PerPage1000 int64 = 1000
-	PerPage100  int64   = 100
+	PerPage100  int64 = 100
 
 	TokenHeader = "X-Gitlab-Token" // #nosec G101 not a hardcoded secret
 )

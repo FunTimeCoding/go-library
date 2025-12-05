@@ -41,6 +41,7 @@ require (
 	github.com/go-test/deep v1.1.1
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v79 v79.0.0
+	github.com/google/go-github/v80 v80.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/gpustack/gguf-parser-go v0.22.1
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20251202103709-7ef691d4df1d

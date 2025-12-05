@@ -2,7 +2,7 @@ package github
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/google/go-github/v79/github"
+	"github.com/google/go-github/v80/github"
 )
 
 func panicOnError(

@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/github/pull_request"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"github.com/google/go-github/v79/github"
+	"github.com/google/go-github/v80/github"
 )
 
 func (c *Client) BranchRequest(

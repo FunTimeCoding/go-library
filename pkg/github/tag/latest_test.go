@@ -3,7 +3,7 @@ package tag
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/ptr"
-	"github.com/google/go-github/v79/github"
+	"github.com/google/go-github/v80/github"
 	"testing"
 )
 

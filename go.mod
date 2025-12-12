@@ -90,7 +90,7 @@ require (
 	golang.org/x/time v0.14.0
 	gonum.org/v1/gonum v0.16.0
 	google.golang.org/api v0.257.0
-	google.golang.org/protobuf v1.36.10
+	google.golang.org/protobuf v1.36.11
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.1

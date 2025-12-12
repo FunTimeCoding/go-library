@@ -56,7 +56,7 @@ require (
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.1.2
-	github.com/ollama/ollama v0.13.2
+	github.com/ollama/ollama v0.13.3
 	github.com/openai/openai-go/v3 v3.12.0
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23

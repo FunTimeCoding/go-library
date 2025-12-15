@@ -9,6 +9,7 @@ import (
 func (c *Client) PostsBeforeMilli(
 	h *model.Channel,
 	beforeMilli int64,
+	keep int,
 ) []*post.Post {
-	return c.PostsBefore(h, time.UnixMilli(beforeMilli))
+	return c.PostsBefore(h, time.UnixMilli(beforeMilli), keep)
 }

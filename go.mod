@@ -57,7 +57,7 @@ require (
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/olekukonko/tablewriter v1.1.2
 	github.com/ollama/ollama v0.13.5
-	github.com/openai/openai-go/v3 v3.14.0
+	github.com/openai/openai-go/v3 v3.15.0
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2

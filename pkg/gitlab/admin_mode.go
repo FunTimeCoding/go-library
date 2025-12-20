@@ -8,7 +8,7 @@ import (
 func (c *Client) AdminMode(on bool) *gitlab.Settings {
 	// AdminMode is persisted
 	result, r, e := c.client.Settings.UpdateSettings(
-		&gitlab.UpdateSettingsOptions{AdminMode: ptr.To[bool](on)},
+		&gitlab.UpdateSettingsOptions{AdminMode: ptr.To(on)},
 	)
 	panicOnError(r, e)
 

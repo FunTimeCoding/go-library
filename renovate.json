@@ -16,7 +16,7 @@
     },
     {
       "matchPackageNames": ["github.com/gdamore/tcell/v2"],
-      "allowedVersions": "<= v2.13.2"
+      "allowedVersions": "<= v2.13.5"
     },
     {
       "matchDatasources": ["go"],

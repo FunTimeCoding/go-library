@@ -10,7 +10,7 @@ import (
 func (c *Client) Tasks() []*task.Task {
 	result, r, e := c.client.Todos.ListTodos(
 		&gitlab.ListTodosOptions{
-			State:       ptr.To[string](constant.PendingState),
+			State:       ptr.To(constant.PendingState),
 			ListOptions: constant.DefaultListOptions,
 		},
 		nil,

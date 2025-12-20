@@ -16,7 +16,7 @@ func (c *Client) Chat(v *chat_request.Request) *chat_response.Response {
 		r.Model = constant.Llama31
 	}
 
-	r.Stream = ptr.To[bool](false)
+	r.Stream = ptr.To(false)
 	var result *api.ChatResponse
 	errors.PanicOnError(
 		c.client.Chat(

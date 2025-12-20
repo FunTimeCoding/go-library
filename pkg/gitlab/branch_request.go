@@ -13,7 +13,7 @@ func (c *Client) BranchRequest(
 	result, r, e := c.client.MergeRequests.ListProjectMergeRequests(
 		project,
 		&gitlab.ListProjectMergeRequestsOptions{
-			SourceBranch: ptr.To[string](branch),
+			SourceBranch: ptr.To(branch),
 			ListOptions:  gitlab.ListOptions{PerPage: 1},
 		},
 	)

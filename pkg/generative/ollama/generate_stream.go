@@ -16,7 +16,7 @@ func (c *Client) GenerateStream(
 		r.Model = constant.Llama31
 	}
 
-	r.Stream = ptr.To[bool](true)
+	r.Stream = ptr.To(true)
 	errors.PanicOnError(
 		c.client.Generate(
 			c.context,

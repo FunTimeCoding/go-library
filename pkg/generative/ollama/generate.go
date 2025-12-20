@@ -16,7 +16,7 @@ func (c *Client) Generate(v *generate_request.Request) *generate_response.Respon
 		r.Model = constant.Llama31
 	}
 
-	r.Stream = ptr.To[bool](false)
+	r.Stream = ptr.To(false)
 	var result *api.GenerateResponse
 	errors.PanicOnError(
 		c.client.Generate(

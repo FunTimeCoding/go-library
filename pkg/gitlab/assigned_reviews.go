@@ -11,7 +11,7 @@ func (c *Client) AssignedReviews(all bool) []*merge_request.Request {
 	requests, r, e := c.client.MergeRequests.ListMergeRequests(
 		&gitlab.ListMergeRequestsOptions{
 			ReviewerID:  gitlab.ReviewerID(c.user.ID),
-			State:       ptr.To[string](constant.OpenedState),
+			State:       ptr.To(constant.OpenedState),
 			ListOptions: constant.DefaultListOptions,
 		},
 		nil,

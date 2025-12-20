@@ -16,7 +16,7 @@ func (c *Client) ProjectMergeRequests(
 
 	for {
 		o := &gitlab.ListProjectMergeRequestsOptions{
-			State: ptr.To[string](constant.OpenedState),
+			State: ptr.To(constant.OpenedState),
 			ListOptions: gitlab.ListOptions{
 				PerPage: constant.PerPage100,
 				Page:    number,
@@ -24,7 +24,7 @@ func (c *Client) ProjectMergeRequests(
 		}
 
 		if all {
-			o.State = ptr.To[string]("all")
+			o.State = ptr.To("all")
 		}
 
 		page, r, e := c.client.MergeRequests.ListProjectMergeRequests(

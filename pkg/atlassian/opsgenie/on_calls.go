@@ -11,7 +11,7 @@ func (c *Client) OnCalls(scheduleName string) *schedule.GetOnCallsResult {
 		c.context,
 		&schedule.GetOnCallsRequest{
 			ScheduleIdentifier: scheduleName,
-			Flat:               ptr.To[bool](true),
+			Flat:               ptr.To(true),
 		},
 	)
 	errors.PanicOnError(e)

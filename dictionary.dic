@@ -216,4 +216,5 @@ qemuargs
 linkwarden
 
 # Renovate
+automerge
 datasources

@@ -30,7 +30,7 @@ require (
 	github.com/essentialkaos/go-confluence/v6 v6.0.4
 	github.com/fatih/color v1.18.0
 	github.com/gage-technologies/mistral-go v1.1.0
-	github.com/gdamore/tcell/v2 v2.13.2
+	github.com/gdamore/tcell/v2 v2.13.5
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.40.0
 	github.com/go-git/go-billy/v5 v5.7.0
@@ -250,8 +250,8 @@ require (
 	github.com/olekukonko/cat v0.0.0-20250911104152-50322a0618f6 // indirect
 	github.com/olekukonko/errors v1.1.0 // indirect
 	github.com/olekukonko/ll v0.1.3 // indirect
-	github.com/onsi/ginkgo/v2 v2.21.0 // indirect
-	github.com/onsi/gomega v1.36.1 // indirect
+	github.com/onsi/ginkgo/v2 v2.27.2 // indirect
+	github.com/onsi/gomega v1.38.2 // indirect
 	github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect
 	github.com/package-url/packageurl-go v0.1.3 // indirect
@@ -320,7 +320,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340 // indirect
-	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
-	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
+	k8s.io/utils v0.0.0-20251002143259-bc988d571ff4 // indirect
+	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.7.0 // indirect
 )

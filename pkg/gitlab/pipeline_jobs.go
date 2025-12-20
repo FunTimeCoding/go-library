@@ -13,7 +13,7 @@ func (c *Client) PipelineJobs(
 	result, r, e := c.client.Jobs.ListPipelineJobs(
 		project,
 		pipeline,
-		&gitlab.ListJobsOptions{IncludeRetried: ptr.To[bool](true)},
+		&gitlab.ListJobsOptions{IncludeRetried: ptr.To(true)},
 	)
 	panicOnError(r, e)
 

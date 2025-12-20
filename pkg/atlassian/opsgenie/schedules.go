@@ -11,7 +11,7 @@ import (
 func (c *Client) Schedules() []*schedule.Schedule {
 	response, e := c.userClient.Schedule.List(
 		c.context,
-		&rawSchedule.ListRequest{Expand: ptr.To[bool](true)},
+		&rawSchedule.ListRequest{Expand: ptr.To(true)},
 	)
 	errors.PanicOnError(e)
 	result := schedule.NewSlice(response.Schedule, c.TeamMap())

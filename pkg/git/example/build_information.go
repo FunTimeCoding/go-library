@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/system"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"time"
 )
 
 func BuildInformation() {
-	r := git.Open(system.WorkingDirectory())
+	p := system.WorkingDirectory()
+	r := git.Open(p)
 	h := git.Head(r).Hash()
 	fmt.Printf("Short hash: %s\n", h.String()[:8])
 
@@ -21,9 +22,12 @@ func BuildInformation() {
 		fmt.Printf("Message: %s", c.Message)
 	}
 
-	fmt.Printf(
-		"Latest: %s\n",
-		git.LatestTag(system.WorkingDirectory()),
-	)
-	fmt.Printf("Date: %s\n", time.Now().Format(timeLibrary.DateMinute))
+	latest := git.LatestTag(p)
+
+	if latest == "" {
+		fmt.Printf("No tag found: %s\n", p)
+	}
+
+	fmt.Printf("Latest: %s\n", latest)
+	fmt.Printf("Date: %s\n", time.Now().Format(library.DateMinute))
 }

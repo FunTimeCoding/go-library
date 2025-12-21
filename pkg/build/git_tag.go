@@ -1,7 +1,17 @@
 package build
 
-import "github.com/funtimecoding/go-library/pkg/git"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/git"
+)
 
 func GitTag() string {
-	return git.LatestTag(git.FindDirectory())
+	p := git.FindDirectory()
+	result := git.LatestTag(p)
+
+	if result == "" {
+		fmt.Printf("No tag found: %s\n", p)
+	}
+
+	return result
 }

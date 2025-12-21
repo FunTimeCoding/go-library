@@ -11,8 +11,8 @@ func CommitObject(
 	r *git.Repository,
 	h plumbing.Hash,
 ) *object.Commit {
-	commit, e := r.CommitObject(h)
+	result, e := r.CommitObject(h)
 	errors.PanicOnError(e)
 
-	return commit
+	return result
 }

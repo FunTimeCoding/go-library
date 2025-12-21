@@ -1,7 +1,7 @@
 package physical_address
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/network"
 	"github.com/funtimecoding/go-library/pkg/notation"
@@ -17,8 +17,8 @@ func New(a *netbox.MACAddress) *Address {
 		if objectType != "" {
 			validateObjectType(objectType)
 		} else {
-			fmt.Printf(
-				"Warning: Empty object type for physical address %s\n",
+			errors.Warning(
+				"empty object type for physical address %s\n",
 				a.Display,
 			)
 		}

@@ -8,9 +8,9 @@ import (
 )
 
 func main() {
-	if false {
-		git.BuildInformation()
+	git.BuildInformation()
 
+	if false {
 		clean_job.Check()
 		gitlab.BranchRequest()
 		gitlab.CloneAll()

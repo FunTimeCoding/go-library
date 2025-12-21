@@ -26,7 +26,7 @@ func ParseLogs(
 
 	for k, v := range f.LogsByFilename {
 		if v == nil {
-			errors.Warning(fmt.Sprintf("no data: %s", k))
+			errors.Warning("no data: %s", k)
 
 			continue
 		}

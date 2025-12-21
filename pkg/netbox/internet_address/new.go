@@ -1,7 +1,6 @@
 package internet_address
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/netbox-community/go-netbox/v4"
 	"net"
@@ -18,8 +17,8 @@ func New(a *netbox.IPAddress) *Address {
 		if objectType != "" {
 			validateObjectType(objectType)
 		} else {
-			fmt.Printf(
-				"Warning: Empty object type for internet address %s\n",
+			errors.Warning(
+				"empty object type for internet address %s\n",
 				a.Display,
 			)
 		}

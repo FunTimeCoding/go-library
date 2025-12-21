@@ -2,6 +2,7 @@ package lab
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/branch"
 	"github.com/funtimecoding/go-library/pkg/gitlab/pipeline"
@@ -44,11 +45,11 @@ func Pipeline(
 	latestMain := pipeline.LatestMain(pipelines, mainHash)
 
 	if latestSemantic == nil && o.Verbose {
-		fmt.Println("Warning: no latest semantic pipeline found")
+		errors.Warning("no latest semantic pipeline found")
 	}
 
 	if latestMain == nil && o.Verbose {
-		fmt.Println("Warning: no latest main branch pipeline found")
+		errors.Warning("no latest main pipeline found")
 	}
 
 	for _, i := range pipelines {

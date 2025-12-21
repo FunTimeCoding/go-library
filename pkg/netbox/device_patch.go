@@ -1,7 +1,7 @@
 package netbox
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 	"github.com/netbox-community/go-netbox/v4"
 )
@@ -65,8 +65,8 @@ func devicePatch(d *device.Device) *netbox.PatchedWritableDeviceWithConfigContex
 	if s := d.Raw.GetSerial(); s == "" && d.Serial != "" {
 		result.SetSerial(d.Serial)
 	} else if s != "" && d.Serial == "" {
-		fmt.Printf(
-			"warning: not unsetting serial %s %s\n",
+		errors.Warning(
+			"not unsetting serial %s %s\n",
 			d.Name,
 			s,
 		)

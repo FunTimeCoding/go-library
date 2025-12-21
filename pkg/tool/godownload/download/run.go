@@ -3,6 +3,7 @@ package download
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -37,8 +38,8 @@ func Run(o *option.Download) {
 
 	if o.PackageVersion != constant.LatestVersion &&
 		p.Version != o.PackageVersion {
-		fmt.Printf(
-			"warning: version %s not found, using latest\n",
+		errors.Warning(
+			"version %s not found, using latest\n",
 			o.PackageVersion,
 		)
 	}

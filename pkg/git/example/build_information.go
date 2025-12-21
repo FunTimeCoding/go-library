@@ -15,7 +15,7 @@ func BuildInformation() {
 	fmt.Printf("Short hash: %s\n", h.String()[:8])
 
 	if false {
-		c := git.CommitObject(r, h)
+		c := git.CommitFromHash(r, h)
 		fmt.Printf("Long hash: %s\n", h)
 		fmt.Printf("Author: %s\n", c.Author.Name)
 		fmt.Printf("Date: %s\n", c.Author.When)

@@ -13,13 +13,17 @@ func LatestTag(path string) string {
 
 	errors.PanicOnError(
 		TagsIterator(r).ForEach(
-			func(t *plumbing.Reference) error {
-				// TODO: Under what conditions does CommitObject fail?
-				c, _ := r.CommitObject(t.Hash())
+			func(f *plumbing.Reference) error {
+				c := CommitFromHash(r, f.Hash())
 
-				if c != nil && c.Committer.When.After(latest) {
+				if c == nil {
+					// Skip
+					return nil
+				}
+
+				if c.Committer.When.After(latest) {
 					latest = c.Committer.When
-					result = t.Name().Short()
+					result = f.Name().Short()
 				}
 
 				return nil

@@ -1,7 +1,7 @@
 package build
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/git"
 )
 
@@ -10,7 +10,7 @@ func GitTag() string {
 	result := git.LatestTag(p)
 
 	if result == "" {
-		fmt.Printf("No tag found: %s\n", p)
+		errors.Warning("no tag found: %s", p)
 	}
 
 	return result

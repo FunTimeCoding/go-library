@@ -8,8 +8,8 @@ import (
 )
 
 func (c *Client) Alerts(p *advanced_option.Alert) ([]*alert.Alert, *statistic.Statistic) {
-	response, e := c.client.Alert.GetAlerts(nil)
+	result, e := c.client.Alert.GetAlerts(nil)
 	errors.PanicOnError(e)
 
-	return c.processor(p).Process(alert.NewSlice(response.GetPayload(), c.host))
+	return c.processor(p).Process(alert.NewSlice(result.GetPayload(), c.host))
 }

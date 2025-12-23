@@ -28,5 +28,9 @@ func (s *Silence) Format(f *option.Format) string {
 
 	t.TagLine(tag.Link, "  %s", s.Link)
 
+	if v := s.formatComment(f); v != "" {
+		t.TagLine(tag.Comment, "  %s", v)
+	}
+
 	return t.Format()
 }

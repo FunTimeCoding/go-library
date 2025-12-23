@@ -6,6 +6,7 @@ const (
 	Category    = "category"
 	Changes     = "changes"
 	Cluster     = "cluster"
+	Comment     = "comment"
 	Concerns    = "concerns"
 	Dense       = "dense"
 	Description = "description"

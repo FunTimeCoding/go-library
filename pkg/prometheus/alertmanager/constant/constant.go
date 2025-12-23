@@ -30,6 +30,8 @@ const (
 	HighMemoryUsage = "HighMemoryUsage" // Test alert name
 
 	Alerts = "/alerts"
+
+	PermanentTag = "#permanent"
 )
 
 // Alert label
@@ -63,7 +65,7 @@ const ExpiredState = "expired" // Silence state
 const NodeNotReady = "KubeNodeNotReady" // Alert name
 
 var (
-	Format = option.Color.Copy().Tag(tag.Link)
+	Format = option.Color.Copy().Tag(tag.Link, tag.Comment)
 
 	AlertStates = []string{
 		ActiveState,

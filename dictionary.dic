@@ -8,7 +8,6 @@ renderable
 renderables
 
 # Names
-Juliett
 Loopsies
 Ollama
 Opsgenie
@@ -16,8 +15,10 @@ Samsa
 boumenot
 funtimecoding
 gdamore
+homeassistant
 jdoe
 kaos
+mattermost
 openvex
 osquery
 shiin
@@ -220,3 +221,6 @@ linkwarden
 # Renovate
 automerge
 datasources
+
+# Anthropic
+mcpjson

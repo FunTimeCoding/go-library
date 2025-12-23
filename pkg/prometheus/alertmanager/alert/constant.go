@@ -1,5 +1,3 @@
 package alert
 
-const (
-	Silent = "silent"
-)
+const Silent = "silent"

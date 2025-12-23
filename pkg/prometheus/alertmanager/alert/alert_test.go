@@ -20,6 +20,7 @@ func TestAlert(t *testing.T) {
 		},
 		strings.Bravo,
 	)
+	actual.instance = nil
 	actual.Raw = nil
 	assert.Any(
 		t,

@@ -1,7 +1,16 @@
 package alert
 
-import "github.com/funtimecoding/go-library/pkg/web/host"
+import (
+	"github.com/funtimecoding/go-library/pkg/web/address"
+	"github.com/funtimecoding/go-library/pkg/web/host"
+)
 
 func (a *Alert) Host() string {
-	return host.StripDomain(a.FullHost())
+	result := a.FullHost()
+
+	if address.IsInternet(result) {
+		return result
+	}
+
+	return host.StripDomain(result)
 }

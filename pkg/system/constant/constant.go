@@ -30,6 +30,8 @@ const (
 	QuerySocketPath             = ".osquery/shell.em"
 
 	Transmission = "tcp"
+
+	UnknownHost = "unknown"
 )
 
 // File hierarchy system

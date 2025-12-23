@@ -44,16 +44,15 @@ func New(
 	}
 
 	result := &Alert{
-		MonitorIdentifier: item.GoAlert.StringIdentifier(
-			*v.Fingerprint,
-		),
-		Fingerprint: *v.Fingerprint,
-		State:       state,
-		Labels:      v.Labels,
-		Receivers:   receivers,
-		Remaining:   remaining,
-		Raw:         v,
-		Start:       openapi.ConvertTime(v.StartsAt),
+		MonitorIdentifier: item.GoAlert.StringIdentifier(*v.Fingerprint),
+		Fingerprint:       *v.Fingerprint,
+		State:             state,
+		Labels:            v.Labels,
+		Receivers:         receivers,
+		Remaining:         remaining,
+		Raw:               v,
+		Start:             openapi.ConvertTime(v.StartsAt),
+		instance:          StripColon,
 	}
 	extractKey(&remaining, constant.AlertnameLabel, &result.Name)
 	extractKey(&remaining, constant.SeverityLabel, &result.Severity)

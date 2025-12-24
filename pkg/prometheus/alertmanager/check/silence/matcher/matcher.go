@@ -16,7 +16,8 @@ func Matches(
 ) []*alert.Alert {
 	var result []*alert.Alert
 
-	if now.Before(*s.Start) || now.After(*s.End) {
+	// Silence is active in the range [start, end) - inclusive start, exclusive end
+	if now.Before(*s.Start) || !now.Before(*s.End) {
 		return result
 	}
 
@@ -34,7 +35,7 @@ func matchesAlert(
 	a *alert.Alert,
 ) bool {
 	for _, m := range s.Raw.Matchers {
-		if !matchesLabels(m, a.Labels) {
+		if !matchesLabels(m, a.Raw.Labels) {
 			return false
 		}
 	}
@@ -57,7 +58,8 @@ func matchesLabels(
 		fmt.Printf("LabelSet: %+v\n", l)
 	}
 
-	value, exists := l[*m.Name]
+	// Missing labels are treated as empty strings, matching Alertmanager behavior
+	value := l[*m.Name]
 
 	if *m.IsRegex {
 		r, e := regexp.Compile(*m.Value)
@@ -68,18 +70,18 @@ func matchesLabels(
 
 		if *m.IsEqual {
 			// =~
-			return exists && r.MatchString(value)
+			return r.MatchString(value)
 		}
 
 		// !~
-		return !exists || !r.MatchString(value)
+		return !r.MatchString(value)
 	}
 
 	if *m.IsEqual {
 		// =
-		return exists && value == *m.Value
+		return value == *m.Value
 	}
 
 	// !=
-	return !exists || value != *m.Value
+	return value != *m.Value
 }

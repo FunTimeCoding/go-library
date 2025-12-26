@@ -11,11 +11,10 @@ import (
 )
 
 func Run() {
-	f := constant.File
 	wordUsage := make(map[string]*dictionary.WordUsage)
 	totalWords := 0
 
-	for _, category := range dictionary.Read(f) {
+	for _, category := range dictionary.Read(constant.File) {
 		for _, word := range category.Words {
 			wordKey := strings.ToLower(word)
 			wordUsage[wordKey] = &dictionary.WordUsage{

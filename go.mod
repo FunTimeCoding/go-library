@@ -48,7 +48,7 @@ require (
 	github.com/hashicorp/vault-client-go v0.4.3
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
-	github.com/jackc/pgx/v5 v5.7.6
+	github.com/jackc/pgx/v5 v5.8.0
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251027154531-4f34ecde71bf
 	github.com/liushuangls/go-anthropic/v2 v2.17.0
 	github.com/mark3labs/mcp-go v0.43.2

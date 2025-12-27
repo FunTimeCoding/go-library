@@ -1,7 +1,9 @@
 package notation
 
 import (
+	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"testing"
 )
 
@@ -15,4 +17,32 @@ func TestDecodeStrict(t *testing.T) {
 	var actual []int
 	DecodeStrict("[1]", &actual, false)
 	assert.Any(t, []int{1}, actual)
+}
+
+type User struct {
+	Name    string         `json:"name"`
+	Unknown map[string]any `json:"-"`
+}
+
+func (u *User) UnmarshalJSON(b []byte) error {
+	// Prevent recursion
+	type Alias User
+	v := (*Alias)(u)
+
+	return UnmarshalUnknown(b, v, "Unknown")
+}
+
+func TestUnknown(t *testing.T) {
+	raw := `{
+		"name": "jdoe",
+		"department": "Development",
+		"location": "Earth",
+		"skills": ["Go", "Kubernetes"]
+	}`
+	var u User
+	errors.PanicOnError(json.Unmarshal([]byte(raw), &u))
+	assert.String(t, "jdoe", u.Name)
+	assert.Any(t, "Development", u.Unknown["department"])
+	assert.Any(t, "Earth", u.Unknown["location"])
+	assert.Any(t, []any{"Go", "Kubernetes"}, u.Unknown["skills"])
 }

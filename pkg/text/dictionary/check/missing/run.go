@@ -11,33 +11,32 @@ import (
 )
 
 func Run() {
-	wordUsage := make(map[string]*dictionary.WordUsage)
-	totalWords := 0
+	usage := make(map[string]*dictionary.WordUsage)
+	total := 0
 
-	for _, category := range dictionary.Read(constant.File) {
-		for _, word := range category.Words {
-			wordKey := strings.ToLower(word)
-			wordUsage[wordKey] = &dictionary.WordUsage{
-				Word:     word,
-				Category: category.Name,
+	for _, c := range dictionary.Read(constant.File) {
+		for _, w := range c.Words {
+			usage[strings.ToLower(w)] = &dictionary.WordUsage{
+				Word:     w,
+				Category: c.Name,
 				Used:     false,
 			}
-			totalWords++
+			total++
 		}
 	}
 
-	fmt.Printf("Check %d words\n", totalWords)
-	filesScanned := 0
+	fmt.Printf("Check %d words\n", total)
+	scanned := 0
 	errors.PanicOnError(
 		filepath.WalkDir(
 			".",
 			func(
 				path string,
 				d fs.DirEntry,
-				err error,
+				e error,
 			) error {
-				if err != nil {
-					return err
+				if e != nil {
+					return e
 				}
 
 				if d.IsDir() {
@@ -52,28 +51,28 @@ func Run() {
 					return nil
 				}
 
-				dictionary.ScanFile(path, wordUsage)
-				filesScanned++
+				dictionary.ScanFile(path, usage)
+				scanned++
 
 				return nil
 			},
 		),
 	)
 
-	fmt.Printf("Scanned %d files\n", filesScanned)
+	fmt.Printf("Scanned %d files\n", scanned)
 	unused := make(map[string][]string)
-	usedCount := 0
+	used := 0
 
-	for _, usage := range wordUsage {
-		if usage.Used {
-			usedCount++
+	for _, u := range usage {
+		if u.Used {
+			used++
 		} else {
-			if unused[usage.Category] == nil {
-				unused[usage.Category] = make([]string, 0)
+			if unused[u.Category] == nil {
+				unused[u.Category] = make([]string, 0)
 			}
-			unused[usage.Category] = append(
-				unused[usage.Category],
-				usage.Word,
+			unused[u.Category] = append(
+				unused[u.Category],
+				u.Word,
 			)
 		}
 	}
@@ -81,11 +80,11 @@ func Run() {
 	fmt.Printf("Results:\n")
 	fmt.Printf(
 		"Used: %d/%d words (%.1f%%)\n",
-		usedCount,
-		totalWords,
-		float64(usedCount)/float64(totalWords)*100,
+		used,
+		total,
+		float64(used)/float64(total)*100,
 	)
-	fmt.Printf("Unused: %d words\n", totalWords-usedCount)
+	fmt.Printf("Unused: %d words\n", total-used)
 
 	if len(unused) == 0 {
 		fmt.Println("No unused dictionary words")
@@ -95,11 +94,11 @@ func Run() {
 
 	fmt.Println("Unused words by category:")
 
-	for category, words := range unused {
-		fmt.Printf("\n# %s (%d unused):\n", category, len(words))
+	for c, words := range unused {
+		fmt.Printf("\n# %s (%d unused):\n", c, len(words))
 
-		for _, word := range words {
-			fmt.Printf("  %s\n", word)
+		for _, w := range words {
+			fmt.Printf("  %s\n", w)
 		}
 	}
 }

@@ -6,7 +6,9 @@ const (
 
 	OmitEmpty = "omitempty"
 
-	Primary = "primaryKey"
-	NotNull = "not null"
+	Skip = "-"
+
+	Primary       = "primaryKey"
+	NotNull       = "not null"
 	DefaultPrefix = "default:"
 )

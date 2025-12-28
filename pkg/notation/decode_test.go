@@ -32,6 +32,10 @@ func (u *User) UnmarshalJSON(b []byte) error {
 	return UnmarshalUnknown(b, v, UnknownField)
 }
 
+func (u *User) UnknownField() map[string]any {
+	return u.Unknown
+}
+
 func TestUnknown(t *testing.T) {
 	raw := `{
 		"name": "jdoe",

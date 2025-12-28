@@ -1,4 +1,4 @@
-package internal
+package fixture
 
 import (
 	"github.com/funtimecoding/go-library/pkg/git"
@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func Fixture(path ...string) *os.File {
+func File(path ...string) *os.File {
 	return system.Open(
 		join.Absolute(
 			git.FindDirectory(),

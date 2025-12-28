@@ -1,8 +1,8 @@
 package hypertext
 
 import (
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/fixture"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"testing"
 )
@@ -12,9 +12,7 @@ func TestTitle(t *testing.T) {
 		t,
 		"Test Title",
 		Title(
-			Document(
-				internal.Fixture(constant.HypertextPath, "test.html"),
-			),
+			Document(fixture.File(constant.HypertextPath, "test.html")),
 		),
 	)
 }

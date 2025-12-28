@@ -1,8 +1,8 @@
 package file
 
 import (
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/fixture"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"testing"
@@ -28,10 +28,9 @@ func TestParse(t *testing.T) {
 }
 
 func TestFixture(t *testing.T) {
-	f := internal.Fixture(constant.MarkdownPath, "1.md")
 	assert.String(
 		t,
 		"## Example\n\nList of files in the current directory:\n```sh\nls -alh\n```\n",
-		string(system.ReadAll(f)),
+		string(system.ReadAll(fixture.File(constant.MarkdownPath, "1.md"))),
 	)
 }

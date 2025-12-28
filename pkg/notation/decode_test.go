@@ -29,7 +29,7 @@ func (u *User) UnmarshalJSON(b []byte) error {
 	type Alias User
 	v := (*Alias)(u)
 
-	return UnmarshalUnknown(b, v, "Unknown")
+	return UnmarshalUnknown(b, v, UnknownField)
 }
 
 func TestUnknown(t *testing.T) {

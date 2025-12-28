@@ -13,7 +13,7 @@ func TestDivisions(t *testing.T) {
 		[]string{"Example DT", "Example DD"},
 		Divisions(
 			Document(
-				internal.FixtureFile(constant.HypertextPath, "test.html"),
+				internal.Fixture(constant.HypertextPath, "test.html"),
 			),
 		),
 	)

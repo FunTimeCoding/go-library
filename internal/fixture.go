@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func FixtureFile(path ...string) *os.File {
+func Fixture(path ...string) *os.File {
 	return system.Open(
 		join.Absolute(
 			git.FindDirectory(),

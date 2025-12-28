@@ -28,7 +28,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestFixture(t *testing.T) {
-	f := internal.FixtureFile(constant.MarkdownPath, "1.md")
+	f := internal.Fixture(constant.MarkdownPath, "1.md")
 	assert.String(
 		t,
 		"## Example\n\nList of files in the current directory:\n```sh\nls -alh\n```\n",

@@ -13,7 +13,7 @@ func TestTitle(t *testing.T) {
 		"Test Title",
 		Title(
 			Document(
-				internal.FixtureFile(constant.HypertextPath, "test.html"),
+				internal.Fixture(constant.HypertextPath, "test.html"),
 			),
 		),
 	)

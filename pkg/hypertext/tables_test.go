@@ -13,7 +13,7 @@ func TestTables(t *testing.T) {
 		[]string{"Example TD"},
 		Tables(
 			Document(
-				internal.FixtureFile(constant.HypertextPath, "test.html"),
+				internal.Fixture(constant.HypertextPath, "test.html"),
 			),
 		),
 	)

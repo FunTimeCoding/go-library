@@ -20,7 +20,7 @@ func TestHeaders(t *testing.T) {
 		},
 		Headers(
 			Document(
-				internal.FixtureFile(constant.HypertextPath, "test.html"),
+				internal.Fixture(constant.HypertextPath, "test.html"),
 			),
 		),
 	)

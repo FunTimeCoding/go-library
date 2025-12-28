@@ -34,6 +34,7 @@ covermode
 coverprofile
 gocover
 golangci
+gorm
 gosec
 gotest
 gotestsum

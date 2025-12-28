@@ -8,20 +8,11 @@ import (
 	"testing"
 )
 
-type Fixture1 struct {
-	Name string `json:"name" gorm:"primaryKey"`
-}
-
-type Fixture2 struct {
-	Age int `json:"age,omitempty" gorm:"not null"`
-}
-
-type Fixture3 struct {
-	Mail string `json:"mail" gorm:"not null;default:jdoe@example.org"`
-}
-
-func TestFixture1(t *testing.T) {
-	v := reflect.TypeOf(Fixture1{})
+func TestPrimary(t *testing.T) {
+	type Test struct {
+		Name string `json:"name" gorm:"primaryKey"`
+	}
+	v := reflect.TypeOf(Test{})
 	assert.Integer(t, 1, v.NumField())
 
 	for i := 0; i < v.NumField(); i++ {
@@ -37,8 +28,11 @@ func TestFixture1(t *testing.T) {
 	}
 }
 
-func TestFixture2(t *testing.T) {
-	v := reflect.TypeOf(Fixture2{})
+func TestOmit(t *testing.T) {
+	type Test struct {
+		Age int `json:"age,omitempty" gorm:"not null"`
+	}
+	v := reflect.TypeOf(Test{})
 	assert.Integer(t, 1, v.NumField())
 
 	for i := 0; i < v.NumField(); i++ {
@@ -54,8 +48,11 @@ func TestFixture2(t *testing.T) {
 	}
 }
 
-func TestFixture3(t *testing.T) {
-	v := reflect.TypeOf(Fixture3{})
+func TestNotNullDefault(t *testing.T) {
+	type Test struct {
+		Mail string `json:"mail" gorm:"not null;default:jdoe@example.org"`
+	}
+	v := reflect.TypeOf(Test{})
 	assert.Integer(t, 1, v.NumField())
 
 	for i := 0; i < v.NumField(); i++ {
@@ -69,5 +66,17 @@ func TestFixture3(t *testing.T) {
 		assert.False(t, r.Primary())
 		assert.True(t, !r.Nullable())
 		assert.String(t, "jdoe@example.org", r.Default())
+	}
+}
+
+func TestSkip(t *testing.T) {
+	type Test struct {
+		Unknown string `json:"-"`
+	}
+	v := reflect.TypeOf(Test{})
+	assert.Integer(t, 1, v.NumField())
+
+	for i := 0; i < v.NumField(); i++ {
+		assert.Nil(t, notation_tag.FromField(v.Field(i)))
 	}
 }

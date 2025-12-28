@@ -17,6 +17,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/markup"
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/notifier/mattermost_notifier"
 	"github.com/funtimecoding/go-library/pkg/prometheus/push"
 	"github.com/funtimecoding/go-library/pkg/relational"
 	"github.com/funtimecoding/go-library/pkg/sentry"
@@ -101,4 +102,6 @@ func main() {
 
 	page.PrintBody(response.Body{})
 	strings.PrintTrim("")
+
+	mattermost_notifier.New(nil, "", "")
 }

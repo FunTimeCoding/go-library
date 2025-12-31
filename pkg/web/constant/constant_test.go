@@ -7,6 +7,7 @@ import (
 
 func TestConstant(t *testing.T) {
 	assert.String(t, "*", OriginAll)
+	assert.String(t, "8080", ListenPort)
 	assert.String(t, "Access-Control-Allow-Methods", AccessMethod)
 	assert.String(t, "Access-Control-Allow-Origin", AccessOrigin)
 	assert.String(t, "User-Agent", UserAgent)

@@ -1,9 +1,8 @@
 package maintenance_log
 
 import (
-	"testing"
-
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
 )
 
 func TestLog(t *testing.T) {

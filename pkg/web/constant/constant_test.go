@@ -6,7 +6,10 @@ import (
 )
 
 func TestConstant(t *testing.T) {
+	assert.String(t, "*", OriginAll)
+	assert.String(t, "Access-Control-Allow-Methods", AccessMethod)
+	assert.String(t, "Access-Control-Allow-Origin", AccessOrigin)
 	assert.String(t, "User-Agent", UserAgent)
-	assert.String(t, "text/markdown", Markdown)
 	assert.String(t, "image/x-icon", Icon)
+	assert.String(t, "text/markdown", Markdown)
 }

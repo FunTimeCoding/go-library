@@ -7,6 +7,7 @@ const (
 	HourMinuteSecond = "15:04:05"
 	DateMinute       = "2006-01-02 15:04"
 	DateSecond       = "2006-01-02 15:04:05"
+	Micro            = "15:04:05.000000"
 
 	HourInMinutes  int = 60
 	DayInMinutes       = HourInMinutes * 24

@@ -1,6 +1,7 @@
 package chromium
 
 import (
+	"github.com/funtimecoding/go-library/pkg/chromium/constant"
 	"github.com/funtimecoding/go-library/pkg/chromium/tab"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -14,7 +15,7 @@ func (c *Client) Tabs() []*tab.Tab {
 			web.InsecureClient(),
 			locator.New(
 				c.host,
-			).Port(c.port).Path("/json").Insecure().String(),
+			).Port(c.port).Path(constant.NotationPath).Insecure().String(),
 		),
 		&result,
 		true,

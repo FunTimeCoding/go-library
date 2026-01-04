@@ -32,6 +32,7 @@ const (
 
 	CurrentDirectory     = "."
 	GoExtension          = ".go"
+	GraphicExtension     = ".png"
 	MarkdownExtension    = ".md"
 	MarkupExtension      = ".yaml"
 	ShortMarkupExtension = ".yml"

@@ -3,9 +3,10 @@ package main
 import "github.com/funtimecoding/go-library/pkg/chromium/example"
 
 func main() {
-	example.Tab()
+	example.Tabs()
 
 	if false {
+		example.Tab()
 		example.Open()
 	}
 }

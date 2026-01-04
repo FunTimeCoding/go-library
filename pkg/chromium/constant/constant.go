@@ -1,4 +1,12 @@
 package constant
 
-const HostEnvironment = "CHROMIUM_HOST"
-const PortEnvironment = "CHROMIUM_PORT"
+const (
+	HostEnvironment = "CHROMIUM_HOST"
+	PortEnvironment = "CHROMIUM_PORT"
+
+	BodySelector = "body"
+
+	PageTabType = "page"
+
+	NotationPath = "/json"
+)

@@ -3,6 +3,7 @@ package chromium
 import (
 	"github.com/chromedp/cdproto/target"
 	"github.com/chromedp/chromedp"
+	"github.com/funtimecoding/go-library/pkg/chromium/constant"
 )
 
 func (c *Client) Body(identifier string) string {
@@ -14,11 +15,11 @@ func (c *Client) Body(identifier string) string {
 		c.RunContext(
 			o,
 			target.ActivateTarget(target.ID(identifier)), // Steals focus
-			chromedp.OuterHTML("body", &result),
+			chromedp.OuterHTML(constant.BodySelector, &result),
 		)
 	}
 
-	c.RunContext(o, chromedp.OuterHTML("body", &result))
+	c.RunContext(o, chromedp.OuterHTML(constant.BodySelector, &result))
 
 	return result
 }

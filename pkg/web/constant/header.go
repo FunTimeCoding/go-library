@@ -3,6 +3,8 @@ package constant
 // Header
 const (
 	Accept            = "Accept"
+	AccessExpose      = "Access-Control-Expose-Headers"
+	AccessHeader      = "Access-Control-Allow-Headers"
 	AccessMethod      = "Access-Control-Allow-Methods"
 	AccessOrigin      = "Access-Control-Allow-Origin"
 	Authenticate      = "WWW-Authenticate"

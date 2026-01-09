@@ -2,7 +2,7 @@ package github
 
 import (
 	"github.com/funtimecoding/go-library/pkg/github/issue"
-	"github.com/google/go-github/v80/github"
+	"github.com/google/go-github/v81/github"
 )
 
 func (c *Client) Issues() []*issue.Issue {

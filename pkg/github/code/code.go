@@ -1,6 +1,6 @@
 package code
 
-import "github.com/google/go-github/v80/github"
+import "github.com/google/go-github/v81/github"
 
 type Code struct {
 	Hash string

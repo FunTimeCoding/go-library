@@ -3,7 +3,7 @@ package run
 import (
 	"github.com/funtimecoding/go-library/pkg/github/repository"
 	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
-	"github.com/google/go-github/v80/github"
+	"github.com/google/go-github/v81/github"
 	"time"
 )
 

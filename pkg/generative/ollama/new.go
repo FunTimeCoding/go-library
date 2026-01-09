@@ -2,9 +2,9 @@ package ollama
 
 import (
 	"context"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/ollama/ollama/api"
 	"net/http"
 	"net/url"
@@ -33,15 +33,12 @@ func New(o ...Option) *Client {
 		scheme = web.Insecure
 	}
 
-	l := locator.New(result.host).Port(result.port)
-
-	if !result.secure {
-		l.Insecure()
-	}
-
 	// https://github.com/ollama/ollama/blob/main/docs/api.md
 	result.client = api.NewClient(
-		&url.URL{Scheme: scheme, Host: l.String()},
+		&url.URL{
+			Scheme: scheme,
+			Host:   fmt.Sprintf("%s:%d", result.host, result.port),
+		},
 		http.DefaultClient,
 	)
 

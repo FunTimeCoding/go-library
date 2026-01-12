@@ -1942,8 +1942,8 @@ github.com/yusufpapurcu/wmi v1.2.4/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQ
 github.com/yvasiyarov/go-metrics v0.0.0-20140926110328-57bccd1ccd43/go.mod h1:aX5oPXxHm3bOH+xeAttToC8pqch2ScQN/JoXYupl6xs=
 github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50/go.mod h1:NUSPSUX/bi6SeDMUh6brw0nXpxHnc96TguQh0+r/ssA=
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go.mod h1:GlGEuHIJweS1mbCqG+7vt2nvWLzLLnRHbXz5JKd/Qbg=
-gitlab.com/gitlab-org/api/client-go v1.11.0 h1:L+qzw4kiCf3jKdKHQAwiqYKITvzBrW/tl8ampxNLlv0=
-gitlab.com/gitlab-org/api/client-go v1.11.0/go.mod h1:adtVJ4zSTEJ2fP5Pb1zF4Ox1OKFg0MH43yxpb0T0248=
+gitlab.com/gitlab-org/api/client-go v1.12.0 h1:vYeraq+4eC/5Scir5nWve3LPxLoY5rgW2qRNUgjKS2k=
+gitlab.com/gitlab-org/api/client-go v1.12.0/go.mod h1:adtVJ4zSTEJ2fP5Pb1zF4Ox1OKFg0MH43yxpb0T0248=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

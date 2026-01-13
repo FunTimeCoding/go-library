@@ -30,7 +30,7 @@ require (
 	github.com/essentialkaos/go-confluence/v6 v6.0.4
 	github.com/fatih/color v1.18.0
 	github.com/gage-technologies/mistral-go v1.1.0
-	github.com/gdamore/tcell/v2 v2.13.5
+	github.com/gdamore/tcell/v2 v2.13.7
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.40.0
 	github.com/go-git/go-billy/v5 v5.7.0

@@ -6,5 +6,5 @@ import (
 )
 
 func HasDot(s string) bool {
-	return strings.Count(s, separator.Dot) > 1
+	return strings.Count(s, separator.Dot) > 0
 }

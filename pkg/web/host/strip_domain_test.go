@@ -8,7 +8,7 @@ import (
 func TestStripDomain(t *testing.T) {
 	assert.String(t, "", StripDomain(""))
 	assert.String(t, "org", StripDomain("org"))
-	assert.String(t, "example.org", StripDomain("example.org"))
+	assert.String(t, "example", StripDomain("example.org"))
 	assert.String(
 		t,
 		"test",

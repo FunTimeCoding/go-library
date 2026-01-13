@@ -24,7 +24,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "key", Key)
 	assert.String(t, "log", Log)
 	assert.String(t, "loop", Loop)
-	assert.String(t, "maintainer-email", MaintainerEmail)
+	assert.String(t, "maintainer-mail", MaintainerMail)
 	assert.String(t, "maintainer-name", MaintainerName)
 	assert.String(t, "memory", Memory)
 	assert.String(t, "message", Message)

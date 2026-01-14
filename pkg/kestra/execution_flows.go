@@ -6,10 +6,10 @@ import (
 	"github.com/kestra-io/client-sdk/go-sdk"
 )
 
-func (c *Client) Logs(execution string) []kestra_api_client.LogEntry {
-	result, r, e := c.client.LogsAPI.ListLogsFromExecution(
+func (c *Client) ExecutionFlows(namespace string) []kestra_api_client.FlowForExecution {
+	result, r, e := c.client.ExecutionsAPI.ListFlowExecutionsByNamespace(
 		c.context,
-		execution,
+		namespace,
 		constant.MainTenant,
 	).Execute()
 	errors.PanicOnWebError(r, e)

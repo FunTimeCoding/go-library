@@ -20,36 +20,10 @@ func Read() {
 				fmt.Printf("  Flow: %+v\n", f)
 			}
 
-			for _, e := range k.Executions(n) {
-				fmt.Printf("  Execution: %+v\n", e)
-
-				for _, l := range k.Logs(e.Id) {
-					fmt.Printf("    Log: %+v\n", l)
-				}
+			for _, e := range k.ExecutionFlows(n) {
+				fmt.Printf("  Execution flow: %+v\n", e)
+				fmt.Printf("  Execution: %+v\n", k.Execution(e.Id))
 			}
-		}
-	}
-
-	if false {
-		// 404
-		fmt.Printf("Login: %+v\n", k.Login())
-	}
-
-	if false {
-		// 404
-		fmt.Println("Tenants")
-
-		for _, t := range k.Tenants() {
-			fmt.Printf("  %+v\n", t)
-		}
-	}
-
-	if false {
-		// panic: no value given for required property deprecated
-		fmt.Println("Plugins")
-
-		for _, f := range k.Plugins() {
-			fmt.Printf("  %+v\n", f)
 		}
 	}
 

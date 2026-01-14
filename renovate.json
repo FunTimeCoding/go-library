@@ -23,10 +23,6 @@
       "matchPackageNames": ["github.com/kestra-io/client-sdk/go-sdk"],
       "matchUpdateTypes": ["digest"],
       "automerge": true
-    },
-    {
-      "matchPackageNames": ["github.com/kestra-io/client-sdk/go-sdk"],
-      "enabled": false
     }
   ]
 }

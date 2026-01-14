@@ -6,10 +6,10 @@ import (
 	"github.com/kestra-io/client-sdk/go-sdk"
 )
 
-func (c *Client) Executions(namespace string) []kestra_api_client.FlowForExecution {
-	result, r, e := c.client.ExecutionsAPI.ListFlowExecutionsByNamespace(
+func (c *Client) Execution(execution string) *kestra_api_client.Execution {
+	result, r, e := c.client.ExecutionsAPI.GetExecution(
 		c.context,
-		namespace,
+		execution,
 		constant.MainTenant,
 	).Execute()
 	errors.PanicOnWebError(r, e)

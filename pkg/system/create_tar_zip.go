@@ -15,12 +15,10 @@ func CreateTarZip(
 ) {
 	f := Create(destinationFile)
 	defer errors.LogClose(f)
-
-	zip := gzip.NewWriter(f)
-	defer errors.LogClose(zip)
-
-	writer := tar.NewWriter(zip)
-	defer errors.LogClose(writer)
+	z := gzip.NewWriter(f)
+	defer errors.LogClose(z)
+	w := tar.NewWriter(z)
+	defer errors.LogClose(w)
 
 	errors.PanicOnError(
 		filepath.Walk(
@@ -31,21 +29,18 @@ func CreateTarZip(
 				e error,
 			) error {
 				errors.PanicOnError(e)
-
-				h, headerFail := tar.FileInfoHeader(i, i.Name())
-				errors.PanicOnError(headerFail)
-
+				h := TarHeader(i, i.Name())
 				h.Name = filepath.ToSlash(
 					join.Absolute(sourceDirectory, path),
 				)
-				errors.PanicOnError(writer.WriteHeader(h))
+				TarWriteHeader(w, h)
 
 				if !i.Mode().IsRegular() {
 					return nil
 				}
 
 				l := Open(path)
-				Copy(l, writer)
+				Copy(l, w)
 				errors.PanicClose(l)
 
 				return nil

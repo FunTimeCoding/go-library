@@ -55,6 +55,9 @@ func main() {
 	system.OpenHome("")
 	system.ReadLink("")
 	system.LookupStrict("")
+	system.TarWrite(nil, nil)
+	system.ReadFull(nil, nil)
+	system.WriteFile("", nil, 0)
 
 	if true {
 		_, e := system.FindHostnames("")
@@ -104,6 +107,4 @@ func main() {
 	strings.PrintTrim("")
 
 	mattermost_notifier.New(nil, "", "")
-
-	system.TarWrite(nil, nil)
 }

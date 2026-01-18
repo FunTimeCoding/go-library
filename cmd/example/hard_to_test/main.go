@@ -104,4 +104,6 @@ func main() {
 	strings.PrintTrim("")
 
 	mattermost_notifier.New(nil, "", "")
+
+	system.TarWrite(nil, nil)
 }

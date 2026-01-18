@@ -21,10 +21,12 @@ tasks:
     cmds:
     # k8s.io/apimachinery: Cilium is not ready for 0.31.0
     # github.com/google/gnostic-models: 0.7.0 has bad imports
+    # github.com/amikos-tech/chroma-go@v0.2.5: 0.3 has import mess in other libraries
     - |
       goupdate \
         --downgrade k8s.io/apimachinery@v0.30.14 \
-        --downgrade github.com/google/gnostic-models@v0.6.9
+        --downgrade github.com/google/gnostic-models@v0.6.9 \
+        --downgrade github.com/amikos-tech/chroma-go@v0.2.5
     silent: true
   tool:
     cmds:

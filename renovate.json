@@ -19,6 +19,10 @@
       "allowedVersions": "<= v2.13.7"
     },
     {
+      "matchPackageNames": ["github.com/amikos-tech/chroma-go"],
+      "allowedVersions": "< v0.3"
+    },
+    {
       "matchDatasources": ["go"],
       "matchPackageNames": ["github.com/kestra-io/client-sdk/go-sdk"],
       "matchUpdateTypes": ["digest"],

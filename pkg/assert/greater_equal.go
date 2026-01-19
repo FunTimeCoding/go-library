@@ -7,14 +7,12 @@ func GreaterEqual(
 	than float64,
 	actual float64,
 ) {
-	t.Helper()
-
 	if actual < than {
-		t.Logf(
+		t.Helper()
+		t.Errorf(
 			"\nExpect greater equal than: %f\nActual: %f",
 			than,
 			actual,
 		)
-		t.Fail()
 	}
 }

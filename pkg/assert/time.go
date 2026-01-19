@@ -10,11 +10,11 @@ func Time(
 	expect time.Time,
 	actual time.Time,
 ) {
-	t.Helper()
 	expectRounded := expect.Round(time.Second)
 	actualRounded := actual.Round(time.Second)
 
 	if !actualRounded.Equal(expectRounded) {
+		t.Helper()
 		t.Errorf(
 			"\nExpect: %#v\nActual: %#v",
 			expectRounded,

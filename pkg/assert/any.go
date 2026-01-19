@@ -68,7 +68,7 @@ func Any(
 				Context:  1,
 			}
 			text, _ := difflib.GetUnifiedDiffString(diff)
-			t.Fatalf("%s\n%s", reason, text)
+			t.Errorf("%s\n%s", reason, text)
 		}
 	}
 

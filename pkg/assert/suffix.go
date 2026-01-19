@@ -10,9 +10,8 @@ func Suffix(
 	expect string,
 	actual string,
 ) {
-	t.Helper()
-
 	if !strings.HasSuffix(actual, expect) {
-		t.Fatalf("expect suffix %q, got %q", expect, actual)
+		t.Helper()
+		t.Errorf("expect suffix %q, got %q", expect, actual)
 	}
 }

@@ -10,6 +10,7 @@ func FileExists(
 	path string,
 ) {
 	if _, e := os.Stat(path); os.IsNotExist(e) {
-		t.Fatalf("missing: %s", path)
+		t.Helper()
+		t.Errorf("missing: %s", path)
 	}
 }

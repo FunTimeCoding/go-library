@@ -10,10 +10,9 @@ func Contains(
 	expect []string,
 	actual []string,
 ) {
-	t.Helper()
-
 	for _, e := range expect {
 		if !slices.Contains(actual, e) {
+			t.Helper()
 			t.Errorf("\nExpect contains: %+q\nActual: %+q", e, actual)
 
 			return

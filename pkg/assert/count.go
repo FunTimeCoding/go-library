@@ -10,6 +10,7 @@ func Count(
 	expect int,
 	countable any,
 ) {
+	t.Helper()
 	var actual int
 
 	switch reflect.TypeOf(countable).Kind() {

@@ -7,10 +7,8 @@ func Less(
 	than float64,
 	actual float64,
 ) {
-	t.Helper()
-
 	if actual >= than {
-		t.Logf("\nExpect less than: %f\nActual: %f", than, actual)
-		t.Fail()
+		t.Helper()
+		t.Errorf("\nExpect less than: %f\nActual: %f", than, actual)
 	}
 }

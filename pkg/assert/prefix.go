@@ -10,9 +10,8 @@ func Prefix(
 	expect string,
 	actual string,
 ) {
-	t.Helper()
-
 	if !strings.HasPrefix(actual, expect) {
-		t.Fatalf("expect prefix %q, got %q", expect, actual)
+		t.Helper()
+		t.Errorf("expect prefix %q, got %q", expect, actual)
 	}
 }

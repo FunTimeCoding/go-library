@@ -9,12 +9,11 @@ func Nil(
 	t *testing.T,
 	actual any,
 ) {
-	t.Helper()
-
 	if actual == nil {
 		return
 	}
 
+	t.Helper()
 	v := reflect.ValueOf(actual)
 
 	switch v.Kind() {

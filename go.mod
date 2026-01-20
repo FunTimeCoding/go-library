@@ -74,7 +74,7 @@ require (
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/studio-b12/gowebdav v0.11.0
+	github.com/studio-b12/gowebdav v0.12.0
 	github.com/tmc/langchaingo v0.1.14
 	github.com/tobischo/gokeepasslib/v3 v3.6.1
 	github.com/trivago/tgo v1.0.7

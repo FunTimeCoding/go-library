@@ -54,7 +54,9 @@ require (
 	github.com/mark3labs/mcp-go v0.43.2
 	github.com/mattermost/mattermost/server/public v0.1.21
 	github.com/mitchellh/go-ps v1.0.0
+	github.com/muesli/termenv v0.16.0
 	github.com/netbox-community/go-netbox/v4 v4.3.0
+	github.com/nsf/termbox-go v1.1.1
 	github.com/olekukonko/tablewriter v1.1.3
 	github.com/ollama/ollama v0.14.2
 	github.com/openai/openai-go/v3 v3.16.0
@@ -243,7 +245,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
-	github.com/muesli/termenv v0.16.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect

@@ -1,16 +1,13 @@
 package errors
 
-import (
-	"errors"
-	"net/http"
-)
+import "net/http"
 
 func PanicOnUnclean(e error) {
 	if e == nil {
 		return
 	}
 
-	if !errors.Is(e, http.ErrServerClosed) {
+	if !Is(e, http.ErrServerClosed) {
 		panic(e)
 	}
 }

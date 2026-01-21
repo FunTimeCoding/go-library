@@ -1,10 +1,7 @@
 package errors
 
-import (
-	"context"
-	"errors"
-)
+import "context"
 
 func Deadline(e error) bool {
-	return errors.Is(e, context.DeadlineExceeded)
+	return Is(e, context.DeadlineExceeded)
 }

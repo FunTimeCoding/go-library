@@ -41,6 +41,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "schedule", Schedule)
 	assert.String(t, "source", Source)
 	assert.String(t, "space", Space)
+	assert.String(t, "statistic", Statistic)
 	assert.String(t, "summary", Summary)
 	assert.String(t, "systemd-unit", SystemdUnit)
 	assert.String(t, "team", Team)

@@ -13,5 +13,11 @@ func IncludeFile(name string) bool {
 		return constant.NoExtension[name]
 	}
 
-	return constant.Extensions[strings.ToLower(e)]
+	for k := range constant.Prefix {
+		if strings.HasPrefix(name, k) {
+			return true
+		}
+	}
+
+	return constant.Extension[strings.ToLower(e)]
 }

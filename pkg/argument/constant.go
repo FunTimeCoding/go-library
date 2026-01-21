@@ -80,6 +80,7 @@ const (
 	Skip           = "skip"
 	Source         = "source"
 	Space          = "space"
+	Statistic      = "statistic"
 	Summary        = "summary"
 	Suppressed     = "suppressed"
 	SystemdUnit    = "systemd-unit"

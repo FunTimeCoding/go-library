@@ -71,9 +71,9 @@ func Main(
 		key_value.Equals(constant.VersionArgument, goString),
 	)
 
-	if system.FileExists(project.DockerFile) {
+	if file := ContainerFileName(); file != "" {
 		d := project.ReplaceGoFromVersion(
-			system.ReadFile(system.WorkingDirectory(), project.DockerFile),
+			system.ReadFile(system.WorkingDirectory(), file),
 			goString,
 		)
 
@@ -91,7 +91,7 @@ func Main(
 			}
 		}
 
-		system.SaveFile(project.DockerFile, d)
+		system.SaveFile(file, d)
 	}
 
 	if system.FileExists(project.GitLabFile) {

@@ -1,8 +1,9 @@
 package project
 
 const (
-	MainFile   = "main.go"
-	DockerFile = "Dockerfile"
-	ReadmeFile = "README.md"
-	GitLabFile = ".gitlab-ci.yml"
+	ContainerFile = "Containerfile"
+	DockerFile    = "Dockerfile"
+	GitLabFile    = ".gitlab-ci.yml"
+	MainFile      = "main.go"
+	ReadmeFile    = "README.md"
 )

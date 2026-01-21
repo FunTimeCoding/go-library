@@ -1,10 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/project"
+
 const File = "dictionary.dic"
 
 var (
-	Skip       = map[string]bool{".git": true, "tmp": true}
-	Extensions = map[string]bool{
+	Skip   = map[string]bool{".git": true, "tmp": true}
+	Prefix = map[string]bool{
+		"Containerfile.": true,
+		"Dockerfile.":    true,
+	}
+	Extension = map[string]bool{
 		".conf":      true,
 		".envrc":     true,
 		".gitignore": true,
@@ -19,7 +25,7 @@ var (
 		".yml":       true,
 	}
 	NoExtension = map[string]bool{
-		"Containerfile": true,
-		"Dockerfile":    true,
+		project.ContainerFile: true,
+		project.DockerFile:    true,
 	}
 )

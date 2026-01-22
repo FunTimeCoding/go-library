@@ -1,9 +1,6 @@
-package maintenance_log
+package entry
 
-import (
-	"gorm.io/gorm"
-	"time"
-)
+import "time"
 
 type Entry struct {
 	ID          uint      `gorm:"primarykey" json:"id"`
@@ -15,15 +12,4 @@ type Entry struct {
 	Description string    `json:"description" gorm:"type:text"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
-}
-
-func (Entry) TableName() string {
-	return "maintenance_log_entries"
-}
-
-func (e *Entry) BeforeCreate(tx *gorm.DB) error {
-	if e.Timestamp.IsZero() {
-		e.Timestamp = time.Now()
-	}
-	return nil
 }

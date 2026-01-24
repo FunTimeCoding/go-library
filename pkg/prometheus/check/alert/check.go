@@ -2,11 +2,11 @@ package alert
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 )
 
 func Check(o *option.Alert) {
@@ -20,7 +20,7 @@ func Check(o *option.Alert) {
 	//   How to get alert notifications as events?
 	//    If events not available, store current alerts in memory and only notify on new alerts
 
-	c := internal.Alertmanager()
+	c := common.Alertmanager()
 	d := advanced_option.New()
 	d.All = o.All
 	d.CriticalOnly = o.Critical

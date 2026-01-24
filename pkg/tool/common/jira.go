@@ -1,4 +1,4 @@
-package internal
+package common
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira"
@@ -18,3 +18,4 @@ func Jira() *jira.Client {
 		),
 	)
 }
+

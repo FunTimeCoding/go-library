@@ -1,12 +1,12 @@
 package example
 
 import (
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 )
 
 func Create() {
-	c := internal.Alertmanager()
+	c := common.Alertmanager()
 	c.Create(
 		constant.HighMemoryUsage,
 		"localhost:9090",

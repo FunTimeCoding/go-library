@@ -2,11 +2,11 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 )
 
 func Status() {
-	s := internal.Alertmanager().Status()
+	s := common.Alertmanager().Status()
 	fmt.Printf("Status: %+v\n", s)
 	fmt.Printf("  Cluster: %+v\n", s.Cluster)
 	fmt.Printf("    Status: %s\n", *s.Cluster.Status)

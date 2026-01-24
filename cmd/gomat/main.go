@@ -2,18 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/constant"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/thread"
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama"
 	"github.com/funtimecoding/go-library/pkg/text/template"
 	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"time"
 )
 
 func main() {
-	c := internal.Mattermost()
+	c := common.Mattermost()
 
 	t := timeLibrary.Midnight(time.Now())
 	fmt.Printf(

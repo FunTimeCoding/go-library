@@ -1,16 +1,16 @@
 package example
 
 import (
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 )
 
 func Support() {
-	user1 := internal.Mattermost(
+	user1 := common.Mattermost(
 		mattermost.WithToken(environment.Required("MATTERMOST_TOKEN_USER1")),
 	)
-	user2 := internal.Mattermost(
+	user2 := common.Mattermost(
 		mattermost.WithToken(environment.Required("MATTERMOST_TOKEN_USER2")),
 	)
 	h := user1.DefaultChannel()

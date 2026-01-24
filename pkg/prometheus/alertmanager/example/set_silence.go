@@ -1,10 +1,10 @@
 package example
 
 import (
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 )
 
 func SetSilence() {
-	internal.Alertmanager().SimpleSilence(constant.NodeNotReady)
+	common.Alertmanager().SimpleSilence(constant.NodeNotReady)
 }

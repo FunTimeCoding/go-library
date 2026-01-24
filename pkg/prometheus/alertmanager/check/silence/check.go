@@ -2,18 +2,18 @@ package silence
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/matcher"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/silence"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"time"
 )
 
 func Check(o *option.Silence) {
-	c := internal.Alertmanager()
+	c := common.Alertmanager()
 
 	if o.Notation {
 		printNotation(c, o)

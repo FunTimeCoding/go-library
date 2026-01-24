@@ -1,10 +1,10 @@
 package alert
 
 import (
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/alert"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 )
 
 func collect() []*alert.Alert {
-	return internal.Opsgenie().Open()
+	return common.Opsgenie().Open()
 }

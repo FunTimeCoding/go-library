@@ -1,4 +1,4 @@
-package internal
+package common
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie"
@@ -81,3 +81,4 @@ func Opsgenie() *opsgenie.Client {
 
 	return result
 }
+

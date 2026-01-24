@@ -1,8 +1,8 @@
 package example
 
-import "github.com/funtimecoding/go-library/internal"
+import "github.com/funtimecoding/go-library/pkg/tool/common"
 
 func Post() {
-	m := internal.Mattermost()
+	m := common.Mattermost()
 	m.PostDefault("Hello friend")
 }

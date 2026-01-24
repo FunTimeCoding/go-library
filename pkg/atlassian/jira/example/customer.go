@@ -2,13 +2,13 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 )
 
 func Customer() {
-	j := internal.Jira()
+	j := common.Jira()
 	fmt.Printf("Info: %+v\n", j.CustomerInfo())
 
 	if false {

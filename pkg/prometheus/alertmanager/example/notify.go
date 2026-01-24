@@ -2,7 +2,6 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/macos"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
@@ -10,11 +9,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/sound"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"time"
 )
 
 func Notify() {
-	c := internal.Alertmanager()
+	c := common.Alertmanager()
 	s := &State{}
 	stop := make(chan struct{})
 	go worker(stop, c, s)

@@ -2,9 +2,9 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -15,7 +15,7 @@ func Alert() {
 	pflag.String(argument.Text, "", "Alert name")
 	pflag.String(argument.Close, "", "Alert ID")
 	argument.ParseBind()
-	c := internal.Opsgenie()
+	c := common.Opsgenie()
 
 	if viper.GetBool(argument.Create) {
 		c.Create(

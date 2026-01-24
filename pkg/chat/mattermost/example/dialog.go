@@ -3,10 +3,10 @@ package example
 import (
 	"context"
 	"fmt"
-	"github.com/funtimecoding/go-library/internal"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/text/multi_line"
+	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
@@ -48,7 +48,7 @@ func Dialog() {
 		},
 	)
 	s := web.ListenAsynchronous(w)
-	m := internal.Mattermost()
+	m := common.Mattermost()
 
 	if true {
 		h := m.DefaultChannel()

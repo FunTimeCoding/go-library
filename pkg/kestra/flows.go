@@ -3,7 +3,7 @@ package kestra
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/kestra/constant"
-	"github.com/kestra-io/client-sdk/go-sdk"
+	"github.com/kestra-io/client-sdk/go-sdk/kestra_api_client"
 )
 
 func (c *Client) Flows(namespace string) []kestra_api_client.Flow {

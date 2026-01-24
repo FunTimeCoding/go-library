@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/kestra-io/client-sdk/go-sdk"
+	"github.com/kestra-io/client-sdk/go-sdk/kestra_api_client"
 	"net/http"
 )
 

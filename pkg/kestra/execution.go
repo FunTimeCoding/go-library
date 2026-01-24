@@ -3,11 +3,11 @@ package kestra
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/kestra/constant"
-	"github.com/kestra-io/client-sdk/go-sdk"
+	"github.com/kestra-io/client-sdk/go-sdk/kestra_api_client"
 )
 
 func (c *Client) Execution(execution string) *kestra_api_client.Execution {
-	result, r, e := c.client.ExecutionsAPI.GetExecution(
+	result, r, e := c.client.ExecutionsAPI.Execution(
 		c.context,
 		execution,
 		constant.MainTenant,

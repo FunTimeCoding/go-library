@@ -14,15 +14,8 @@ func Read() {
 		for _, n := range k.Namespaces() {
 			fmt.Printf("Namespace: %+v\n", n)
 
-			// TODO: Fails on tutorial namespace
-			//  panic: json: cannot unmarshal number into Go struct field _Flow.variables of type map[string]interface {}
 			for _, f := range k.Flows(n) {
 				fmt.Printf("  Flow: %+v\n", f)
-			}
-
-			for _, e := range k.ExecutionFlows(n) {
-				fmt.Printf("  Execution flow: %+v\n", e)
-				fmt.Printf("  Execution: %+v\n", k.Execution(e.Id))
 			}
 		}
 	}

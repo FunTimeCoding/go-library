@@ -49,7 +49,7 @@ require (
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.8.0
-	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20251104165556-919599634766
+	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260123183957-5a64f79c211e
 	github.com/liushuangls/go-anthropic/v2 v2.17.0
 	github.com/mark3labs/mcp-go v0.43.2
 	github.com/mattermost/mattermost/server/public v0.1.21
@@ -286,6 +286,7 @@ require (
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
 	github.com/tinylib/msgp v1.4.0 // indirect
+	github.com/tmaxmax/go-sse v0.11.0 // indirect
 	github.com/tobischo/argon2 v0.1.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.61.0 // indirect

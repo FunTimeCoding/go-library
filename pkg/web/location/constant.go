@@ -13,6 +13,9 @@ const (
 	Shutdown     = "/shutdown"
 	Status       = "/status"
 
+	Event        = "/sse"
+	EventMessage = "/message"
+
 	Echo    = "/echo"
 	Monitor = "/monitor"
 )

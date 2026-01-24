@@ -1,4 +1,4 @@
-package example
+package mark
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"

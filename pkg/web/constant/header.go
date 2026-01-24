@@ -15,4 +15,7 @@ const (
 	RealAddress       = "X-Real-Ip"
 	Referer           = "Referer"
 	UserAgent         = "User-Agent"
+
+	ProtocolVersion   = "Mcp-Protocol-Version"
+	SessionIdentifier = "Mcp-Session-Id"
 )

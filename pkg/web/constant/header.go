@@ -3,6 +3,7 @@ package constant
 // Header
 const (
 	Accept            = "Accept"
+	AcceptLanguage    = "Accept-Language"
 	AccessExpose      = "Access-Control-Expose-Headers"
 	AccessHeader      = "Access-Control-Allow-Headers"
 	AccessMethod      = "Access-Control-Allow-Methods"

@@ -3,6 +3,7 @@ package matcher
 import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/silence"
+	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"testing"
 	"time"
@@ -16,7 +17,7 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 		name          string
 		matcherName   string
 		matcherValue  string
-		alertLabels   models.LabelSet
+		labels        models.LabelSet
 		expectedMatch bool
 		description   string
 	}{
@@ -24,7 +25,7 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 			name:         "exact match with existing label",
 			matcherName:  "job",
 			matcherValue: "test",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "test",
 				"alertname": "HighCPU",
 			},
@@ -35,7 +36,7 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 			name:         "exact match with different value",
 			matcherName:  "job",
 			matcherValue: "test",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "production",
 				"alertname": "HighCPU",
 			},
@@ -46,7 +47,7 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 			name:          "exact match with missing label",
 			matcherName:   "job",
 			matcherValue:  "test",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: false,
 			description:   "Should not match when label is missing (treated as empty string)",
 		},
@@ -54,7 +55,7 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 			name:          "exact match empty string with missing label",
 			matcherName:   "job",
 			matcherValue:  "",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: true,
 			description:   "Should match when matcher is empty and label is missing",
 		},
@@ -62,7 +63,7 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 			name:          "exact match empty string with existing empty label",
 			matcherName:   "job",
 			matcherValue:  "",
-			alertLabels:   models.LabelSet{"job": "", "alertname": "HighCPU"},
+			labels:        models.LabelSet{"job": "", "alertname": "HighCPU"},
 			expectedMatch: true,
 			description:   "Should match when both matcher and label are empty",
 		},
@@ -74,7 +75,7 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 			func(t *testing.T) {
 				isEqual := true
 				isRegex := false
-				s := createSilence(
+				s := newSilence(
 					&start,
 					&end,
 					tt.matcherName,
@@ -82,9 +83,8 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 					&isEqual,
 					&isRegex,
 				)
-				a := createAlert(tt.alertLabels)
-				matches := Matches(s, []*alert.Alert{a}, now)
-				matched := len(matches) > 0
+				a := newAlert(tt.labels)
+				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
 
 				if matched != tt.expectedMatch {
 					t.Errorf(
@@ -107,7 +107,7 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 		name          string
 		matcherName   string
 		matcherValue  string
-		alertLabels   models.LabelSet
+		labels        models.LabelSet
 		expectedMatch bool
 		description   string
 	}{
@@ -115,7 +115,7 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 			name:         "not equal with matching value",
 			matcherName:  "job",
 			matcherValue: "test",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "test",
 				"alertname": "HighCPU",
 			},
@@ -126,7 +126,7 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 			name:         "not equal with different value",
 			matcherName:  "job",
 			matcherValue: "test",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "production",
 				"alertname": "HighCPU",
 			},
@@ -137,7 +137,7 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 			name:          "not equal with missing label",
 			matcherName:   "job",
 			matcherValue:  "test",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: true,
 			description:   "Should match when label is missing (empty != test)",
 		},
@@ -145,7 +145,7 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 			name:          "not equal empty string with missing label",
 			matcherName:   "job",
 			matcherValue:  "",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: false,
 			description:   "Should not match when both are empty",
 		},
@@ -153,7 +153,7 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 			name:         "not equal empty string with non-empty label",
 			matcherName:  "job",
 			matcherValue: "",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "test",
 				"alertname": "HighCPU",
 			},
@@ -168,7 +168,7 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 			func(t *testing.T) {
 				isEqual := false
 				isRegex := false
-				s := createSilence(
+				s := newSilence(
 					&start,
 					&end,
 					tt.matcherName,
@@ -176,9 +176,8 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 					&isEqual,
 					&isRegex,
 				)
-				a := createAlert(tt.alertLabels)
-				matches := Matches(s, []*alert.Alert{a}, now)
-				matched := len(matches) > 0
+				a := newAlert(tt.labels)
+				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
 
 				if matched != tt.expectedMatch {
 					t.Errorf(
@@ -201,7 +200,7 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 		name          string
 		matcherName   string
 		matcherValue  string
-		alertLabels   models.LabelSet
+		labels        models.LabelSet
 		expectedMatch bool
 		description   string
 	}{
@@ -209,7 +208,7 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 			name:         "regex match with matching value",
 			matcherName:  "job",
 			matcherValue: "test.*",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "test-job",
 				"alertname": "HighCPU",
 			},
@@ -220,7 +219,7 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 			name:         "regex match with non-matching value",
 			matcherName:  "job",
 			matcherValue: "test.*",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "production",
 				"alertname": "HighCPU",
 			},
@@ -231,7 +230,7 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 			name:          "regex match with missing label",
 			matcherName:   "job",
 			matcherValue:  "test.*",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: false,
 			description:   "Should not match when label is missing (empty doesn't match test.*)",
 		},
@@ -239,7 +238,7 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 			name:          "regex match empty string with missing label",
 			matcherName:   "job",
 			matcherValue:  "",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: true,
 			description:   "Should match when regex is empty and label is missing",
 		},
@@ -247,7 +246,7 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 			name:          "regex match wildcard with missing label",
 			matcherName:   "job",
 			matcherValue:  ".*",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: true,
 			description:   "Should match when regex is .* (matches empty string)",
 		},
@@ -255,7 +254,7 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 			name:         "regex match wildcard with existing label",
 			matcherName:  "job",
 			matcherValue: ".*",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "test",
 				"alertname": "HighCPU",
 			},
@@ -268,19 +267,19 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 		t.Run(
 			tt.name,
 			func(t *testing.T) {
-				isEqual := true
-				isRegex := true
-				s := createSilence(
-					&start,
-					&end,
-					tt.matcherName,
-					tt.matcherValue,
-					&isEqual,
-					&isRegex,
-				)
-				a := createAlert(tt.alertLabels)
-				matches := Matches(s, []*alert.Alert{a}, now)
-				matched := len(matches) > 0
+				matched := len(
+					Matches(
+						newSilence(
+							&start,
+							&end,
+							tt.matcherName,
+							tt.matcherValue,
+							ptr.To(true), // equal
+							ptr.To(true), // regex
+						),
+						[]*alert.Alert{newAlert(tt.labels)}, now,
+					),
+				) > 0
 
 				if matched != tt.expectedMatch {
 					t.Errorf(
@@ -303,7 +302,7 @@ func TestMatchesWithNotRegexMatcher(t *testing.T) {
 		name          string
 		matcherName   string
 		matcherValue  string
-		alertLabels   models.LabelSet
+		labels        models.LabelSet
 		expectedMatch bool
 		description   string
 	}{
@@ -311,7 +310,7 @@ func TestMatchesWithNotRegexMatcher(t *testing.T) {
 			name:         "not regex with matching value",
 			matcherName:  "job",
 			matcherValue: "test.*",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "test-job",
 				"alertname": "HighCPU",
 			},
@@ -322,7 +321,7 @@ func TestMatchesWithNotRegexMatcher(t *testing.T) {
 			name:         "not regex with non-matching value",
 			matcherName:  "job",
 			matcherValue: "test.*",
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"job":       "production",
 				"alertname": "HighCPU",
 			},
@@ -333,7 +332,7 @@ func TestMatchesWithNotRegexMatcher(t *testing.T) {
 			name:          "not regex with missing label",
 			matcherName:   "job",
 			matcherValue:  "test.*",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: true,
 			description:   "Should match when label is missing (empty doesn't match test.*)",
 		},
@@ -341,7 +340,7 @@ func TestMatchesWithNotRegexMatcher(t *testing.T) {
 			name:          "not regex wildcard with missing label",
 			matcherName:   "job",
 			matcherValue:  ".*",
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: false,
 			description:   "Should not match when regex is .* (it matches empty string)",
 		},
@@ -353,7 +352,7 @@ func TestMatchesWithNotRegexMatcher(t *testing.T) {
 			func(t *testing.T) {
 				isEqual := false
 				isRegex := true
-				s := createSilence(
+				s := newSilence(
 					&start,
 					&end,
 					tt.matcherName,
@@ -361,9 +360,8 @@ func TestMatchesWithNotRegexMatcher(t *testing.T) {
 					&isEqual,
 					&isRegex,
 				)
-				a := createAlert(tt.alertLabels)
-				matches := Matches(s, []*alert.Alert{a}, now)
-				matched := len(matches) > 0
+				a := newAlert(tt.labels)
+				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
 
 				if matched != tt.expectedMatch {
 					t.Errorf(
@@ -385,17 +383,27 @@ func TestMatchesWithMultipleMatchers(t *testing.T) {
 	tests := []struct {
 		name          string
 		matchers      []*models.Matcher
-		alertLabels   models.LabelSet
+		labels        models.LabelSet
 		expectedMatch bool
 		description   string
 	}{
 		{
 			name: "all matchers match",
 			matchers: []*models.Matcher{
-				createMatcher("alertname", "HighCPU", true, false),
-				createMatcher("severity", "critical", true, false),
+				newMatcher(
+					"alertname",
+					"HighCPU",
+					true,
+					false,
+				),
+				newMatcher(
+					"severity",
+					"critical",
+					true,
+					false,
+				),
 			},
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"alertname": "HighCPU",
 				"severity":  "critical",
 			},
@@ -405,10 +413,20 @@ func TestMatchesWithMultipleMatchers(t *testing.T) {
 		{
 			name: "one matcher doesn't match",
 			matchers: []*models.Matcher{
-				createMatcher("alertname", "HighCPU", true, false),
-				createMatcher("severity", "warning", true, false),
+				newMatcher(
+					"alertname",
+					"HighCPU",
+					true,
+					false,
+				),
+				newMatcher(
+					"severity",
+					"warning",
+					true,
+					false,
+				),
 			},
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"alertname": "HighCPU",
 				"severity":  "critical",
 			},
@@ -418,10 +436,10 @@ func TestMatchesWithMultipleMatchers(t *testing.T) {
 		{
 			name: "combined positive and negative matchers",
 			matchers: []*models.Matcher{
-				createMatcher("alertname", "HighCPU", true, false),
-				createMatcher("job", "test", false, false),
+				newMatcher("alertname", "HighCPU", true, false),
+				newMatcher("job", "test", false, false),
 			},
-			alertLabels: models.LabelSet{
+			labels: models.LabelSet{
 				"alertname": "HighCPU",
 				"job":       "production",
 			},
@@ -431,10 +449,20 @@ func TestMatchesWithMultipleMatchers(t *testing.T) {
 		{
 			name: "negative matcher with missing label",
 			matchers: []*models.Matcher{
-				createMatcher("alertname", "HighCPU", true, false),
-				createMatcher("job", "test", false, false),
+				newMatcher(
+					"alertname",
+					"HighCPU",
+					true,
+					false,
+				),
+				newMatcher(
+					"job",
+					"test",
+					false,
+					false,
+				),
 			},
-			alertLabels:   models.LabelSet{"alertname": "HighCPU"},
+			labels:        models.LabelSet{"alertname": "HighCPU"},
 			expectedMatch: true,
 			description:   "Should match when negative matcher matches missing label",
 		},
@@ -444,10 +472,9 @@ func TestMatchesWithMultipleMatchers(t *testing.T) {
 		t.Run(
 			tt.name,
 			func(t *testing.T) {
-				s := createSilenceWithMatchers(&start, &end, tt.matchers)
-				a := createAlert(tt.alertLabels)
-				matches := Matches(s, []*alert.Alert{a}, now)
-				matched := len(matches) > 0
+				s := newSilenceWithMatchers(&start, &end, tt.matchers)
+				a := newAlert(tt.labels)
+				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
 
 				if matched != tt.expectedMatch {
 					t.Errorf(
@@ -514,7 +541,7 @@ func TestMatchesWithTimeWindow(t *testing.T) {
 			tt.name, func(t *testing.T) {
 				isEqual := true
 				isRegex := false
-				s := createSilence(
+				s := newSilence(
 					&tt.start,
 					&tt.end,
 					"alertname",
@@ -522,10 +549,8 @@ func TestMatchesWithTimeWindow(t *testing.T) {
 					&isEqual,
 					&isRegex,
 				)
-				a := createAlert(models.LabelSet{"alertname": "HighCPU"})
-
-				matches := Matches(s, []*alert.Alert{a}, now)
-				matched := len(matches) > 0
+				a := newAlert(models.LabelSet{"alertname": "HighCPU"})
+				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
 
 				if matched != tt.expectedMatch {
 					t.Errorf(
@@ -546,7 +571,7 @@ func TestMatchesWithMultipleAlerts(t *testing.T) {
 	end := now.Add(1 * time.Hour)
 	equal := true
 	regex := false
-	s := createSilence(
+	s := newSilence(
 		&start,
 		&end,
 		"severity",
@@ -555,19 +580,19 @@ func TestMatchesWithMultipleAlerts(t *testing.T) {
 		&regex,
 	)
 	alerts := []*alert.Alert{
-		createAlert(
+		newAlert(
 			models.LabelSet{"alertname": "HighCPU", "severity": "critical"},
 		),
-		createAlert(
+		newAlert(
 			models.LabelSet{
 				"alertname": "HighMemory",
 				"severity":  "warning",
 			},
 		),
-		createAlert(
+		newAlert(
 			models.LabelSet{"alertname": "DiskFull", "severity": "critical"},
 		),
-		createAlert(
+		newAlert(
 			models.LabelSet{"alertname": "NetworkIssue", "severity": "info"},
 		),
 	}
@@ -587,7 +612,7 @@ func TestMatchesWithMultipleAlerts(t *testing.T) {
 	}
 }
 
-func createMatcher(
+func newMatcher(
 	name string,
 	value string,
 	equal bool,
@@ -601,7 +626,7 @@ func createMatcher(
 	}
 }
 
-func createSilence(
+func newSilence(
 	start *time.Time,
 	end *time.Time,
 	matcherName string,
@@ -609,11 +634,12 @@ func createSilence(
 	equal *bool,
 	regex *bool,
 ) *silence.Silence {
-	matcher := createMatcher(matcherName, matcherValue, *equal, *regex)
-	return createSilenceWithMatchers(start, end, []*models.Matcher{matcher})
+	m := newMatcher(matcherName, matcherValue, *equal, *regex)
+
+	return newSilenceWithMatchers(start, end, []*models.Matcher{m})
 }
 
-func createSilenceWithMatchers(
+func newSilenceWithMatchers(
 	start *time.Time,
 	end *time.Time,
 	m []*models.Matcher,
@@ -625,7 +651,7 @@ func createSilenceWithMatchers(
 	}
 }
 
-func createAlert(l models.LabelSet) *alert.Alert {
+func newAlert(l models.LabelSet) *alert.Alert {
 	return &alert.Alert{
 		Labels: l,
 		Raw:    &models.GettableAlert{Alert: models.Alert{Labels: l}},

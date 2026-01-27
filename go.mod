@@ -60,7 +60,7 @@ require (
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/nsf/termbox-go v1.1.1
 	github.com/olekukonko/tablewriter v1.1.3
-	github.com/ollama/ollama v0.15.1
+	github.com/ollama/ollama v0.15.2
 	github.com/openai/openai-go/v3 v3.16.0
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23

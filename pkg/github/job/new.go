@@ -1,6 +1,6 @@
 package job
 
-import "github.com/google/go-github/v81/github"
+import "github.com/google/go-github/v82/github"
 
 func New(v *github.WorkflowJob) *Job {
 	return &Job{

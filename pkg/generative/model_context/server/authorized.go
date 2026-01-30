@@ -19,18 +19,28 @@ func (s *Server) authorized(r *http.Request) bool {
 		t = r.URL.Query().Get(constant.TokenParameter)
 	}
 
+	address := web.ClientAddress(r)
+
 	if s.tokenAuthentication && s.token != "" && t == s.token {
+		fmt.Printf(
+			"Authorized token:%s address:%s\n",
+			t,
+			address,
+		)
+
 		return true
 	}
 
 	if s.openAuthentication && t != "" && s.validateOpenToken(t) {
+		fmt.Printf("Authorized OIDC address:%s\n", address)
+
 		return true
 	}
 
 	fmt.Printf(
-		"Unauthorized token: '%s' address:%s\n",
+		"Unauthorized token:%s address:%s\n",
 		t,
-		web.ClientAddress(r),
+		address,
 	)
 
 	return false

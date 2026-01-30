@@ -1,6 +1,6 @@
 package run
 
-import "github.com/google/go-github/v81/github"
+import "github.com/google/go-github/v82/github"
 
 func NewSlice(v []*github.WorkflowRun) []*Run {
 	var result []*Run

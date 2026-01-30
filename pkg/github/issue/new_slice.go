@@ -1,6 +1,6 @@
 package issue
 
-import "github.com/google/go-github/v81/github"
+import "github.com/google/go-github/v82/github"
 
 func NewSlice(v []*github.Issue) []*Issue {
 	var result []*Issue

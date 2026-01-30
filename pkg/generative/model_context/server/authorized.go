@@ -3,15 +3,16 @@ package server
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
+	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 	"strings"
 )
 
 func (s *Server) authorized(r *http.Request) bool {
 	t := strings.TrimPrefix(
-		r.Header.Get(web.Authorization),
-		fmt.Sprintf("%s ", web.Bearer),
+		r.Header.Get(webConstant.Authorization),
+		fmt.Sprintf("%s ", webConstant.Bearer),
 	)
 
 	if t == "" {
@@ -26,7 +27,11 @@ func (s *Server) authorized(r *http.Request) bool {
 		return true
 	}
 
-	fmt.Printf("Unauthorized token: %s\n", t)
+	fmt.Printf(
+		"Unauthorized token: '%s' address:%s\n",
+		t,
+		web.ClientAddress(r),
+	)
 
 	return false
 }

@@ -1,15 +1,7 @@
 package request_context
 
-import "github.com/funtimecoding/go-library/pkg/web/constant"
+import "github.com/funtimecoding/go-library/pkg/web"
 
 func (c *Context) ClientAddress() string {
-	if s := c.request.Header.Get(constant.ForwardedFor); s != "" {
-		return s
-	}
-
-	if s := c.request.Header.Get(constant.RealAddress); s != "" {
-		return s
-	}
-
-	return c.request.RemoteAddr
+	return web.ClientAddress(c.request)
 }

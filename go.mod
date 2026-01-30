@@ -31,7 +31,7 @@ require (
 	github.com/essentialkaos/go-confluence/v6 v6.0.4
 	github.com/fatih/color v1.18.0
 	github.com/gage-technologies/mistral-go v1.1.0
-	github.com/gdamore/tcell/v2 v2.13.7
+	github.com/gdamore/tcell/v2 v2.13.8
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.42.0
 	github.com/go-git/go-billy/v5 v5.7.0
@@ -53,7 +53,7 @@ require (
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260123183957-5a64f79c211e
 	github.com/liushuangls/go-anthropic/v2 v2.17.0
 	github.com/mark3labs/mcp-go v0.43.2
-	github.com/mattermost/mattermost/server/public v0.1.21
+	github.com/mattermost/mattermost/server/public v0.1.22
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.2.0
 	github.com/muesli/termenv v0.16.0
@@ -187,6 +187,7 @@ require (
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect
 	github.com/gobwas/ws v1.4.0 // indirect
+	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect

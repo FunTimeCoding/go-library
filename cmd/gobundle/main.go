@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/macos"
+	"github.com/funtimecoding/go-library/pkg/system/macos"
 )
 
 func main() {

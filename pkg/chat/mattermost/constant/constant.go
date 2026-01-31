@@ -17,10 +17,11 @@ const (
 
 // Emoji
 const (
-	CheckMark    = "white_check_mark" // done
-	Construction = "construction"     // in progress
-	Repeat       = "repeat"           // forwarded
-	Thread       = "thread"           // belongs to above thread
+	CheckMark    = "white_check_mark"       // done
+	Construction = "construction"           // in progress
+	Hourglass    = "hourglass_flowing_sand" // waiting, pending resolve
+	Repeat       = "repeat"                 // forwarded
+	Thread       = "thread"                 // belongs to above thread
 )
 
 var Format = option.ExtendedColor.Copy()

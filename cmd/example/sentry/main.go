@@ -1,6 +1,6 @@
 package main
 
-import "github.com/funtimecoding/go-library/pkg/sentry/example"
+import "github.com/funtimecoding/go-library/pkg/errors/sentry/example"
 
 func main() {
 	example.Issue()

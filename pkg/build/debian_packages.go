@@ -1,8 +1,8 @@
 package build
 
 import (
-	"github.com/funtimecoding/go-library/pkg/debian/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/debian/constant"
 	"strings"
 )
 

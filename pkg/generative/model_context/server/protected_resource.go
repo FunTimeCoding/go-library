@@ -2,8 +2,8 @@ package server
 
 import (
 	"encoding/json"
-	library "github.com/funtimecoding/go-library/pkg/authorization/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	library "github.com/funtimecoding/go-library/pkg/web/authorization/constant"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
@@ -29,4 +29,3 @@ func (s *Server) protectedResource(
 		),
 	)
 }
-

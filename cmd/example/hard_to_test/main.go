@@ -10,6 +10,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/chromium"
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry"
 	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
@@ -18,9 +19,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/notifier/mattermost_notifier"
+	"github.com/funtimecoding/go-library/pkg/project"
 	"github.com/funtimecoding/go-library/pkg/prometheus/push"
 	"github.com/funtimecoding/go-library/pkg/relational"
-	"github.com/funtimecoding/go-library/pkg/sentry"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
@@ -107,4 +108,6 @@ func main() {
 	strings.PrintTrim("")
 
 	mattermost_notifier.New(nil, "", "")
+
+	project.TemporaryPath("")
 }

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/funtimecoding/go-library/pkg/debian/example"
+import "github.com/funtimecoding/go-library/pkg/system/debian/example"
 
 func main() {
 	example.Download()

@@ -2,13 +2,13 @@ package example
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/macos"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/sound"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/macos"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"time"
 )

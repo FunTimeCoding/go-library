@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/macos/check/brew"
-	"github.com/funtimecoding/go-library/pkg/macos/check/brew/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/system/macos/check/brew"
+	"github.com/funtimecoding/go-library/pkg/system/macos/check/brew/option"
 	"github.com/spf13/viper"
 )
 

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/funtimecoding/go-library/pkg/markdown/example"
+import "github.com/funtimecoding/go-library/pkg/text/markdown/example"
 
 func main() {
 	example.Runbook()

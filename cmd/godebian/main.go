@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/debian"
-	debianConstant "github.com/funtimecoding/go-library/pkg/debian/constant"
 	"github.com/funtimecoding/go-library/pkg/semver"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/debian"
+	debianConstant "github.com/funtimecoding/go-library/pkg/system/debian/constant"
 	"github.com/funtimecoding/go-library/pkg/system/join"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"

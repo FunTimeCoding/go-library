@@ -1,7 +1,7 @@
 package server
 
 import (
-	authorization "github.com/funtimecoding/go-library/pkg/authorization/constant"
+	authorization "github.com/funtimecoding/go-library/pkg/web/authorization/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"net/http"
 )

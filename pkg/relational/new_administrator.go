@@ -1,7 +1,7 @@
 package relational
 
 import (
-	"github.com/funtimecoding/go-library/pkg/postgres"
+	"github.com/funtimecoding/go-library/pkg/relational/postgres"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 

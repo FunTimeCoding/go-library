@@ -3,7 +3,7 @@ package nextcloud
 import (
 	"github.com/funtimecoding/go-library/pkg/nextcloud/basic"
 	"github.com/funtimecoding/go-library/pkg/nextcloud/helper"
-	"github.com/funtimecoding/go-library/pkg/web/authoring"
+	"github.com/funtimecoding/go-library/pkg/web/author"
 )
 
 func New(
@@ -12,7 +12,7 @@ func New(
 	password string,
 ) *Client {
 	return &Client{
-		basic:     basic.New(host, user, password),
-		authoring: authoring.New(helper.FileRoot(host, user), user, password),
+		basic:  basic.New(host, user, password),
+		author: author.New(helper.FileRoot(host, user), user, password),
 	}
 }

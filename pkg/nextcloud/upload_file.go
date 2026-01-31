@@ -7,5 +7,5 @@ func (c *Client) UploadFile(
 	sourcePath string,
 	sourceName string,
 ) {
-	c.authoring.WriteFile(path, system.ReadBytes(sourcePath, sourceName))
+	c.author.WriteFile(path, system.ReadBytes(sourcePath, sourceName))
 }

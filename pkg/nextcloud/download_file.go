@@ -6,5 +6,5 @@ func (c *Client) DownloadFile(
 	path string,
 	destination string,
 ) {
-	system.SaveBytes(destination, c.authoring.ReadFile(path))
+	system.SaveBytes(destination, c.author.ReadFile(path))
 }

@@ -15,9 +15,6 @@ import (
 )
 
 func Run(o *option.RunIf) {
-	// TODO: Build tag format in commit message
-	//  Example case: [image:backstage]
-	//   If set, build the image
 	base := viper.GetString(constant.Base)
 	head := viper.GetString(constant.Head)
 	path := argument.RequiredPositional(0, "PATH")

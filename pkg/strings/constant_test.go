@@ -6,7 +6,7 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.Any(
+	assert.Strings(
 		t,
 		[]string{
 			"Alfa",

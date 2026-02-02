@@ -6,5 +6,9 @@ import (
 )
 
 func TestFixture(t *testing.T) {
-	assert.Stub(t)
+	assert.Suffix(
+		t,
+		"go-library/fixture/example.txt",
+		Path("example.txt"),
+	)
 }

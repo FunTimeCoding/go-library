@@ -15,7 +15,7 @@ require (
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bndr/gojenkins v1.2.0
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/charmbracelet/bubbles v0.21.0
+	github.com/charmbracelet/bubbles v0.21.1
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d
@@ -126,14 +126,14 @@ require (
 	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
-	github.com/charmbracelet/x/ansi v0.10.1 // indirect
-	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
-	github.com/charmbracelet/x/term v0.2.1 // indirect
+	github.com/charmbracelet/colorprofile v0.4.1 // indirect
+	github.com/charmbracelet/x/ansi v0.11.5 // indirect
+	github.com/charmbracelet/x/cellbuf v0.0.15 // indirect
+	github.com/charmbracelet/x/term v0.2.2 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
-	github.com/clipperhouse/displaywidth v0.6.2 // indirect
+	github.com/clipperhouse/displaywidth v0.9.0 // indirect
 	github.com/clipperhouse/stringish v0.1.1 // indirect
-	github.com/clipperhouse/uax29/v2 v2.3.0 // indirect
+	github.com/clipperhouse/uax29/v2 v2.5.0 // indirect
 	github.com/cloudflare/circl v1.6.1 // indirect
 	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
 	github.com/dennwc/varint v1.0.0 // indirect

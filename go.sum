@@ -999,6 +999,8 @@ github.com/grafana/grafana-openapi-client-go v0.0.0-20251202103709-7ef691d4df1d 
 github.com/grafana/grafana-openapi-client-go v0.0.0-20251202103709-7ef691d4df1d/go.mod h1:sMcpxegie6TcvI6eVm+MbNneNC249GGWRcEO1M+UfSE=
 github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a h1:iiKc9C+1uNztJlrm+87u0yyxV3DK2nqskFncdFuSTQ8=
 github.com/grafana/loki-client-go v0.0.0-20251015150631-c42bbddc310a/go.mod h1:ZXSe0Hy5fQPZP6B9134/g33za4TTEJm4yj0utRb8H+8=
+github.com/grafana/loki-client-go v0.0.0-20260206111646-74657106d7cb h1:o3kTTL0E8xY9s8PidMgqE4kljNz3Q1wD23/NrUnT+kg=
+github.com/grafana/loki-client-go v0.0.0-20260206111646-74657106d7cb/go.mod h1:Ywl0kCGa4kLXKg72XTjoMZZB6hcy4zeC89CC2H3/WPA=
 github.com/grafana/loki/pkg/push v0.0.0-20240912152814-63e84b476a9a h1:azssgwCZo0RpSGECl9oi8mqv/x1yCkMh1B7WxjCWk/w=
 github.com/grafana/loki/pkg/push v0.0.0-20240912152814-63e84b476a9a/go.mod h1:lJEF/Wh5MYlmBem6tOYAFObkLsuikfrEf8Iy9AdMPiQ=
 github.com/grafana/regexp v0.0.0-20220304095617-2e8d9baf4ac2/go.mod h1:M5qHK+eWfAv8VR/265dIuEpL3fNfeC21tXXp9itM24A=

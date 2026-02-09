@@ -19,6 +19,7 @@ const (
 	Configuration = "Configuration"
 	Connection    = "Connection"
 	Container     = "Container"
+	Controller    = "Controller"
 	DaemonSet     = "DaemonSet"
 	Database      = "Database"
 	Date          = "Date"

@@ -18,6 +18,7 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Configuration", Configuration)
 	assert.String(t, "Connection", Connection)
 	assert.String(t, "Container", Container)
+	assert.String(t, "Controller", Controller)
 	assert.String(t, "DaemonSet", DaemonSet)
 	assert.String(t, "Database", Database)
 	assert.String(t, "Date", Date)

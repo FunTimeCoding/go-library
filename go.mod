@@ -35,7 +35,7 @@ require (
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.42.0
 	github.com/go-git/go-billy/v5 v5.7.0
-	github.com/go-git/go-git/v5 v5.16.4
+	github.com/go-git/go-git/v5 v5.16.5
 	github.com/go-openapi/runtime v0.29.2
 	github.com/go-openapi/strfmt v0.25.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1

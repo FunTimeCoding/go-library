@@ -2,7 +2,7 @@ package gitlab
 
 import "gitlab.com/gitlab-org/api/client-go"
 
-func (c *Client) Variables(project int) []*gitlab.ProjectVariable {
+func (c *Client) Variables(project int64) []*gitlab.ProjectVariable {
 	result, r, e := c.client.ProjectVariables.ListVariables(
 		project,
 		&gitlab.ListProjectVariablesOptions{},

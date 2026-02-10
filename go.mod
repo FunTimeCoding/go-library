@@ -50,7 +50,7 @@ require (
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.8.0
-	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260209220249-af409981f1ba
+	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260210101723-35423a39c3cd
 	github.com/liushuangls/go-anthropic/v2 v2.17.0
 	github.com/mark3labs/mcp-go v0.43.2
 	github.com/mattermost/mattermost/server/public v0.1.22

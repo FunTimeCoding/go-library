@@ -2,14 +2,14 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
-	stringLibrary "github.com/funtimecoding/go-library/pkg/strings"
+	library "github.com/funtimecoding/go-library/pkg/strings"
 	"strings"
 	"testing"
 )
 
 func TestSpacingBlankBeforeControl(t *testing.T) {
 	l := Spacing(
-		stringLibrary.Alfa,
+		library.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
 		),
@@ -34,7 +34,7 @@ func TestSpacingBlankBeforeControl(t *testing.T) {
 
 func TestSpacingBlankBeforeReturn(t *testing.T) {
 	l := Spacing(
-		stringLibrary.Bravo,
+		library.Bravo,
 		strings.NewReader(
 			"package example\n\nfunc Example() int {\n\tx := 1\n\treturn x\n}\n",
 		),
@@ -59,7 +59,7 @@ func TestSpacingBlankBeforeReturn(t *testing.T) {
 
 func TestSpacingBlankAfterControl(t *testing.T) {
 	l := Spacing(
-		stringLibrary.Charlie,
+		library.Charlie,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n\tfmt.Println(\"b\")\n}\n",
 		),
@@ -84,7 +84,7 @@ func TestSpacingBlankAfterControl(t *testing.T) {
 
 func TestSpacingReturnFirstInBlock(t *testing.T) {
 	l := Spacing(
-		stringLibrary.Echo,
+		library.Echo,
 		strings.NewReader(
 			"package example\n\nfunc Example() int {\n\treturn 1\n}\n",
 		),
@@ -101,7 +101,7 @@ func TestSpacingReturnFirstInBlock(t *testing.T) {
 
 func TestSpacingControlFirstInBlock(t *testing.T) {
 	l := Spacing(
-		stringLibrary.Foxtrot,
+		library.Foxtrot,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n}\n",
 		),
@@ -118,7 +118,7 @@ func TestSpacingControlFirstInBlock(t *testing.T) {
 
 func TestSpacingConsecutiveClosingBraces(t *testing.T) {
 	l := Spacing(
-		stringLibrary.Golf,
+		library.Golf,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tif true {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\t}\n}\n",
 		),
@@ -135,7 +135,7 @@ func TestSpacingConsecutiveClosingBraces(t *testing.T) {
 
 func TestSpacingElse(t *testing.T) {
 	l := Spacing(
-		stringLibrary.Hotel,
+		library.Hotel,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t} else {\n\t\tfmt.Println(\"b\")\n\t}\n}\n",
 		),
@@ -152,7 +152,7 @@ func TestSpacingElse(t *testing.T) {
 
 func TestSpacingExtraneousBlanks(t *testing.T) {
 	l := Spacing(
-		stringLibrary.Delta,
+		library.Delta,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n\n\ty := 2\n}\n",
 		),

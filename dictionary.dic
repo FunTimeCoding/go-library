@@ -226,3 +226,12 @@ datasources
 
 # Anthropic
 mcpjson
+
+# Proxmox
+cpuinfo
+kversion
+maxcpu
+maxdisk
+pveversion
+secureboot
+sysname

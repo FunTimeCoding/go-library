@@ -1,0 +1,10 @@
+package node_status
+
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
+
+func TestStatus(t *testing.T) {
+	assert.Stub(t)
+}

@@ -1,10 +1,10 @@
-package nextcloud
+package example
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 
-func TestClient(t *testing.T) {
+func TestExample(t *testing.T) {
 	assert.Stub(t)
 }

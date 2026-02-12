@@ -15,5 +15,5 @@ func Integers(
 	}
 
 	t.Helper()
-	t.Errorf("\nExpect: %+q\nActual: %+q", expect, actual)
+	t.Errorf("\nExpect: %v\nActual: %v", expect, actual)
 }

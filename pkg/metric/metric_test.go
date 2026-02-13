@@ -6,5 +6,5 @@ import (
 )
 
 func TestMetric(t *testing.T) {
-	assert.NotNil(t, New(0, false))
+	assert.NotNil(t, New(0, false, nil))
 }

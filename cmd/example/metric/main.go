@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	m := metric.New(0, true)
+	m := metric.New(0, true, nil)
 	log.Println("starting")
-	m.Run(nil)
+	m.Start()
 	log.Println("started")
 	system.KillSignalBlock()
 	log.Println("stopping")

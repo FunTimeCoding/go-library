@@ -9,11 +9,13 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
+	"sync"
 )
 
 func New(
 	port int,
 	verbose bool,
+	w *sync.WaitGroup,
 ) *Server {
 	var address string
 
@@ -31,11 +33,16 @@ func New(
 		promhttp.HandlerFor(r, promhttp.HandlerOpts{Registry: r}),
 	)
 
+	if w == nil {
+		w = NewWaitGroup()
+	}
+
 	return &Server{
 		verbose:  verbose,
 		port:     port,
 		context:  context.Background(),
 		registry: r,
 		server:   web.Server(m, address),
+		wait:     w,
 	}
 }

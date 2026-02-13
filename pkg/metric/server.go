@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/prometheus/client_golang/prometheus"
 	"net/http"
+	"sync"
 )
 
 type Server struct {
@@ -12,4 +13,5 @@ type Server struct {
 	port     int
 	context  context.Context
 	verbose  bool
+	wait     *sync.WaitGroup
 }

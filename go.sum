@@ -1012,6 +1012,8 @@ github.com/grafana/loki/pkg/push v0.0.0-20240912152814-63e84b476a9a/go.mod h1:lJ
 github.com/grafana/regexp v0.0.0-20220304095617-2e8d9baf4ac2/go.mod h1:M5qHK+eWfAv8VR/265dIuEpL3fNfeC21tXXp9itM24A=
 github.com/grafana/regexp v0.0.0-20240518133315-a468a5bfb3bc h1:GN2Lv3MGO7AS6PrRoT6yV5+wkrOpcszoIsO4+4ds248=
 github.com/grafana/regexp v0.0.0-20240518133315-a468a5bfb3bc/go.mod h1:+JKpmjMGhpgPL+rXZ5nsZieVzvarn86asRlBg4uNGnk=
+github.com/graph-gophers/graphql-go v1.8.0 h1:NT05/H+PdH1/PONExlUycnhULYHBy98dxV63WYc0Ng8=
+github.com/graph-gophers/graphql-go v1.8.0/go.mod h1:23olKZ7duEvHlF/2ELEoSZaY1aNPfShjP782SOoNTyM=
 github.com/gregjones/httpcache v0.0.0-20180305231024-9cad4c3443a7/go.mod h1:FecbI9+v66THATjSRHfNgh1IVFe/9kFxbXtjV0ctIMA=
 github.com/grpc-ecosystem/go-grpc-middleware v1.0.0/go.mod h1:FiyG127CGDf3tlThmgyCl78X/SZQqEOJBCDaAfeWzPs=
 github.com/grpc-ecosystem/go-grpc-middleware v1.0.1-0.20190118093823-f849b5445de4/go.mod h1:FiyG127CGDf3tlThmgyCl78X/SZQqEOJBCDaAfeWzPs=
@@ -1186,8 +1188,6 @@ github.com/kataras/neffos v0.0.21/go.mod h1:FeGka8lu8cjD2H+0OpBvW8c6xXawy3fj5VX6
 github.com/kataras/pio v0.0.11/go.mod h1:38hH6SWH6m4DKSYmRhlrCJ5WItwWgCVrTNU62XZyUvI=
 github.com/kataras/sitemap v0.0.6/go.mod h1:dW4dOCNs896OR1HmG+dMLdT7JjDk7mYBzoIRwuj5jA4=
 github.com/kataras/tunnel v0.0.4/go.mod h1:9FkU4LaeifdMWqZu7o20ojmW4B7hdhv2CMLwfnHGpYw=
-github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260211164138-4d3d20f8d922 h1:sZdUKUqOgcUd7A/EHiZ7GL1dXooDFrM96EcET0uvGIc=
-github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260211164138-4d3d20f8d922/go.mod h1:oglBUmW8SztlkA6PRAS1mPXWR+yUNHo2U0K4n327u9Y=
 github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260213141805-cd2b50882305 h1:2txHTLyUvfUS63pIGA4bQuYaNhzljFXJ9UceTcfm5fE=
 github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260213141805-cd2b50882305/go.mod h1:oglBUmW8SztlkA6PRAS1mPXWR+yUNHo2U0K4n327u9Y=
 github.com/kevinburke/ssh_config v1.2.0 h1:x584FjTGwHzMwvHx18PXxbBVzfnxogHaAReU4gf13a4=
@@ -1982,8 +1982,8 @@ github.com/yusufpapurcu/wmi v1.2.4/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQ
 github.com/yvasiyarov/go-metrics v0.0.0-20140926110328-57bccd1ccd43/go.mod h1:aX5oPXxHm3bOH+xeAttToC8pqch2ScQN/JoXYupl6xs=
 github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50/go.mod h1:NUSPSUX/bi6SeDMUh6brw0nXpxHnc96TguQh0+r/ssA=
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go.mod h1:GlGEuHIJweS1mbCqG+7vt2nvWLzLLnRHbXz5JKd/Qbg=
-gitlab.com/gitlab-org/api/client-go v1.33.0 h1:2sWpc3WLEaIeZFJAAocefVWr3oP0kRV7csVo636qto0=
-gitlab.com/gitlab-org/api/client-go v1.33.0/go.mod h1:1LZ/6Q075HHVa1u9GBQjt8StFwFTRvfjo596slHmDbo=
+gitlab.com/gitlab-org/api/client-go v1.34.0 h1:w/Zv3FmfrkZsVUJhzteAu0LsWsz2y7kv/XJ3pvRa+Eo=
+gitlab.com/gitlab-org/api/client-go v1.34.0/go.mod h1:nsUbXSLfne+sl+j62f7S3LFNwQ5Ey96oG9QToJT4aTM=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

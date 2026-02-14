@@ -3,13 +3,13 @@ package network
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
-	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/network"
 )
 
 func (i *Interface) Format(f *option.Format) string {
 	s := status.New(f).String(i.formatName(f), i.formatType()).RawList(i.Raw)
 
-	if i.PhysicalAddress.String() != constant.NullPhysicalAddress.String() {
+	if i.PhysicalAddress.String() != network.NullPhysicalAddress.String() {
 		s.String(i.PhysicalAddress.String())
 	}
 

@@ -13,7 +13,7 @@ import (
 
 func (c *Client) Save(
 	x context.Context,
-	url string,
+	locator string,
 	filename string,
 ) {
 	fmt.Println("  Save")
@@ -46,7 +46,7 @@ func (c *Client) Save(
 				)
 
 				t3 := time.Now()
-				b, e = page.GetResourceContent(t.Frame.ID, url).Do(o)
+				b, e = page.GetResourceContent(t.Frame.ID, locator).Do(o)
 
 				if e != nil {
 					fmt.Printf(

@@ -5,6 +5,7 @@ import (
 	"errors"
 	errorLibrary "github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/monitor/coder/server"
+	system "github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"log"
@@ -20,7 +21,7 @@ func Run() error {
 		return errors.New("listen address missing")
 	}
 
-	l, listenFail := net.Listen("tcp", os.Args[1])
+	l, listenFail := net.Listen(system.Transmission, os.Args[1])
 	errorLibrary.PanicOnError(listenFail)
 
 	log.Printf(

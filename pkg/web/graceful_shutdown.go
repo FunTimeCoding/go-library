@@ -20,7 +20,6 @@ func GracefulShutdown(
 	o, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 	errors.PanicOnError(s.Shutdown(o))
-	<-o.Done()
 
 	if verbose {
 		log.Println("shutdown complete")

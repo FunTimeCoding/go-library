@@ -9,13 +9,13 @@ import (
 
 func PostFile(
 	name string,
-	url string,
+	locator string,
 	user string,
 	password string,
 ) {
 	// HTTP upload closes it
 	f := system.Open(name)
-	r := NewPostBytes(url, f)
+	r := NewPostBytes(locator, f)
 	r.SetBasicAuth(user, password)
 	r.Header.Set(constant.ContentType, constant.Form)
 	r.ContentLength = system.FileStat(f).Size()

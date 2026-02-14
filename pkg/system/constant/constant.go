@@ -1,11 +1,9 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/network"
+import "time"
 
 const (
 	Tilde = "~"
-
-	NullPhysicalAddressString = "00:00:00:00:00:00"
 
 	Linux   = "linux"
 	Darwin  = "darwin"
@@ -32,6 +30,8 @@ const (
 	Transmission = "tcp"
 
 	UnknownHost = "unknown"
+
+	Retry = 50 * time.Millisecond
 )
 
 // File hierarchy system
@@ -54,5 +54,4 @@ var (
 	OperatingSystems    = []string{Linux, Darwin}
 	Architectures       = []string{AMD64, ARM64}
 	SystemArchitectures = []string{LinuxAMD64, DarwinARM64, DarwinAMD64}
-	NullPhysicalAddress = network.PhysicalAddress(NullPhysicalAddressString)
 )

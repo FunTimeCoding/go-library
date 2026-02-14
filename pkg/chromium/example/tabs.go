@@ -25,20 +25,20 @@ func Tabs() {
 			continue
 		}
 
-		if !strings.HasSuffix(t.Url, library.GraphicExtension) {
+		if !strings.HasSuffix(t.Locator, library.GraphicExtension) {
 			continue
 		}
 
 		name, _ := key_value.Space(t.Title)
-		fmt.Printf("%s %s\n", name, t.Url)
+		fmt.Printf("%s %s\n", name, t.Locator)
 		p := join.Absolute(system.Home(), systemConstant.DownloadsPath, name)
 
 		if !system.FileExists(p) {
-			if c.NeedReload(t.Id, t.Url) {
+			if c.NeedReload(t.Id, t.Locator) {
 				c.Activate(t.Id)
 			}
 
-			c.Save(c.TargetContext(t.Id), t.Url, p)
+			c.Save(c.TargetContext(t.Id), t.Locator, p)
 		} else {
 			fmt.Println("  Exists")
 		}

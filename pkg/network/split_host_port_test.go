@@ -1,12 +1,12 @@
 package network
 
 import (
-	"github.com/funtimecoding/go-library/pkg/assert"
+	"gotest.tools/v3/assert"
 	"testing"
 )
 
 func TestSplitHostPort(t *testing.T) {
 	host, port := SplitHostPort("127.0.0.1:80")
-	assert.String(t, "127.0.0.1", host)
-	assert.Integer(t, 80, port)
+	assert.Equal(t, "127.0.0.1", host)
+	assert.Equal(t, 80, port)
 }

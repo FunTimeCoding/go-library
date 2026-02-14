@@ -8,17 +8,19 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/project"
 	"github.com/funtimecoding/go-library/pkg/system"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
+	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/mark3labs/mcp-go/mcp"
-	markServer "github.com/mark3labs/mcp-go/server"
+	mark "github.com/mark3labs/mcp-go/server"
+	"net/http"
 	"os"
 )
 
 func Run(o *option.Mark) {
-	s := markServer.NewMCPServer(
+	s := mark.NewMCPServer(
 		"Demo",
 		constant.DefaultVersion,
-		markServer.WithToolCapabilities(false),
+		mark.WithToolCapabilities(false),
 	)
 	s.AddTool(
 		mcp.NewTool(
@@ -52,7 +54,7 @@ func Run(o *option.Mark) {
 			mcp.WithResourceDescription(
 				"The project's README file",
 			),
-			mcp.WithMIMEType(web.Markdown),
+			mcp.WithMIMEType(webConstant.Markdown),
 		),
 		func(
 			_ context.Context,
@@ -67,7 +69,7 @@ func Run(o *option.Mark) {
 			return []mcp.ResourceContents{
 				mcp.TextResourceContents{
 					URI:      ReadmeDocument,
-					MIMEType: web.Markdown,
+					MIMEType: webConstant.Markdown,
 					Text:     string(content),
 				},
 			}, nil
@@ -80,7 +82,7 @@ func Run(o *option.Mark) {
 			mcp.WithTemplateDescription(
 				"Returns user profile information",
 			),
-			mcp.WithTemplateMIMEType(web.Object),
+			mcp.WithTemplateMIMEType(webConstant.Object),
 		),
 		func(
 			_ context.Context,
@@ -95,7 +97,7 @@ func Run(o *option.Mark) {
 			return []mcp.ResourceContents{
 				mcp.TextResourceContents{
 					URI:      r.Params.URI,
-					MIMEType: web.Object,
+					MIMEType: webConstant.Object,
 					Text:     p,
 				},
 			}, nil
@@ -107,8 +109,11 @@ func Run(o *option.Mark) {
 		system.KillSignalBlock()
 	} else {
 		v := server.New(s)
-		v.Start()
+		m := http.NewServeMux()
+		v.Setup(m)
+		h := web.Server(m, server.Address)
+		web.ServeAsynchronous(h)
 		system.KillSignalBlock()
-		v.Stop()
+		web.GracefulShutdown(context.Background(), h, true)
 	}
 }

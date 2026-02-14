@@ -1,13 +1,15 @@
 package server
 
 import (
-	authorization "github.com/funtimecoding/go-library/pkg/web/authorization/constant"
+	"github.com/funtimecoding/go-library/pkg/web/authorization/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"net/http"
 )
 
-func (s *Server) wrapAuthentication(h http.Handler) http.Handler {
-	m := http.NewServeMux()
+func (s *Server) wrapAuthentication(
+	m *http.ServeMux,
+	h http.Handler,
+) {
 	var middle func(http.Handler) http.Handler
 
 	if s.tokenAuthentication || s.openAuthentication {
@@ -23,8 +25,6 @@ func (s *Server) wrapAuthentication(h http.Handler) http.Handler {
 	m.Handle(location.EventMessage, middle(h))
 
 	if s.openAuthentication {
-		m.HandleFunc(authorization.ProtectedResource, s.protectedResource)
+		m.HandleFunc(constant.ProtectedResource, s.protectedResource)
 	}
-
-	return m
 }

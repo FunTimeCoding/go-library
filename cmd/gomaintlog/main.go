@@ -8,7 +8,7 @@ import (
 
 func main() {
 	s := server.New(maintenance_log.New().Nested())
-	s.Serve()
+	s.Start()
 	system.KillSignalBlock()
 	s.Stop()
 }

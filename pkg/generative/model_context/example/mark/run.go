@@ -107,7 +107,7 @@ func Run(o *option.Mark) {
 		system.KillSignalBlock()
 	} else {
 		v := server.New(s)
-		v.Serve()
+		v.Start()
 		system.KillSignalBlock()
 		v.Stop()
 	}

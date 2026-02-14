@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func (s *Server) Serve() {
+func (s *Server) Start() {
 	m := http.NewServeMux()
 	m.Handle(
 		location.ModelContext,

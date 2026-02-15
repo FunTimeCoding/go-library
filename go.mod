@@ -53,7 +53,7 @@ require (
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260213141805-cd2b50882305
 	github.com/liushuangls/go-anthropic/v2 v2.17.0
 	github.com/luthermonson/go-proxmox v0.3.2
-	github.com/mark3labs/mcp-go v0.43.2
+	github.com/mark3labs/mcp-go v0.44.0
 	github.com/mattermost/mattermost/server/public v0.1.22
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.3.0

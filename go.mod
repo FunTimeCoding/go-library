@@ -81,7 +81,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/studio-b12/gowebdav v0.12.0
 	github.com/tmc/langchaingo v0.1.14
-	github.com/tobischo/gokeepasslib/v3 v3.6.1
+	github.com/tobischo/gokeepasslib/v3 v3.6.2
 	github.com/trivago/tgo v1.0.7
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0

@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	monitor.CopyableArgument()
 	monitor.NotationArgument()
 	monitor.AllArgument()
 	pflag.String(argument.Set, "", "Name, creates or updates")
@@ -19,5 +20,6 @@ func main() {
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)
 	o.Set = viper.GetString(argument.Set)
+	o.Copyable = viper.GetBool(argument.Copyable)
 	silence.Check(o)
 }

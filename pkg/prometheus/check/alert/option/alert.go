@@ -15,4 +15,5 @@ type Alert struct {
 	Firing bool
 
 	Fingerprint bool
+	Copyable    bool
 }

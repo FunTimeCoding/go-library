@@ -3,7 +3,6 @@ package merge_request
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
-	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 )
 
 func (r *Request) Format(f *option.Format) string {
@@ -16,9 +15,7 @@ func (r *Request) Format(f *option.Format) string {
 		r.formatAge(f),
 	).RawList(r.Raw)
 
-	if !f.ShowExtended {
-		s.TagLine(tag.Link, "  %s", r.Link)
-	}
+	s.DetailLink(r.Link, "GitLab", "")
 
 	return s.Format()
 }

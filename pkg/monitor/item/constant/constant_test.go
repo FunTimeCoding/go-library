@@ -6,5 +6,5 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.Count(t, 14, Collectors)
+	assert.Count(t, 15, Collectors)
 }

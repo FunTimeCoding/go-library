@@ -14,11 +14,9 @@ func (c *Content) Format(f *option.Format) string {
 	}
 
 	if f.HasTag(tag.Dense) {
-		if c.TinyLink != "" {
-			s.TagLine(tag.Link, "  %s", c.TinyLink)
-		}
-	} else if c.Link != "" {
-		s.TagLine(tag.Link, "  %s", c.Link)
+		s.DetailLink(c.TinyLink, "Confluence", "")
+	} else {
+		s.DetailLink(c.Link, "Confluence", "")
 	}
 
 	return s.Format()

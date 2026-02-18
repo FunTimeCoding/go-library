@@ -10,11 +10,9 @@ func (p *Page) Format(f *option.Format) string {
 	s := status.New(f).String(p.Name)
 
 	if f.HasTag(tag.Dense) {
-		if p.TinyLink != "" {
-			s.TagLine(tag.Link, "  %s", p.TinyLink)
-		}
-	} else if p.Link != "" {
-		s.TagLine(tag.Link, "  %s", p.Link)
+		s.DetailLink(p.TinyLink, "Confluence", "")
+	} else {
+		s.DetailLink(p.Link, "Confluence", "")
 	}
 
 	return s.Format()

@@ -2,8 +2,8 @@ package alert
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
@@ -21,13 +21,7 @@ func Check(o *option.Alert) {
 	//    If events not available, store current alerts in memory and only notify on new alerts
 
 	c := common.Alertmanager()
-	d := advanced_option.New()
-	d.All = o.All
-	d.CriticalOnly = o.Critical
-	d.WarningOnly = o.Warning
-	d.Suppressed = o.Suppressed
-	d.Old = o.Old
-	alerts, statistic := c.Alerts(d)
+	alerts, statistic := collect(c, o)
 
 	if o.Notation {
 		printNotation(alerts, o)
@@ -42,6 +36,10 @@ func Check(o *option.Alert) {
 	}
 
 	f := constant.Format.Copy()
+
+	if o.Copyable {
+		f.Tag(tag.Copyable)
+	}
 
 	if o.Extended {
 		f.Extended()

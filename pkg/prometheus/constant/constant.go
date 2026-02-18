@@ -53,8 +53,6 @@ const (
 )
 
 var Format = option.Color.Copy().Tag(
-	tag.Link,
-	tag.Runbook,
 	tag.Category,
 	tag.Emoji,
 	tag.Instance,

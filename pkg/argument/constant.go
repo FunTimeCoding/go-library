@@ -14,6 +14,7 @@ const (
 	Contains       = "contains"
 	Context        = "context"
 	Continue       = "continue"
+	Copyable       = "copyable"
 	Core           = "core"
 	Create         = "create"
 	Critical       = "critical"

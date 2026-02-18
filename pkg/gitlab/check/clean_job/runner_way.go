@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
-	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/job"
 	"github.com/funtimecoding/go-library/pkg/gitlab/runner"
@@ -18,7 +17,7 @@ func RunnerWay(
 	fmt.Printf("Runner: %s\n", r.Format(f))
 	jobs := g.RunnerJobs(r.Identifier, 1000)
 	fmt.Printf("Job count: %d\n", len(jobs))
-	f2 := f.Copy().Extended().Tag(tag.Link)
+	f2 := f.Copy().Extended()
 
 	for _, j := range jobs {
 		if j.Fail() {

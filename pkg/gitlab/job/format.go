@@ -24,7 +24,7 @@ func (j *Job) Format(f *option.Format) string {
 		j.formatDate(f),
 		j.formatConcern(f),
 	)
-	s.TagLine(tag.Link, "  %s", j.Link)
+	s.DetailLink(j.Link, "GitLab", "")
 
 	return s.RawList(j.Raw).Format()
 }

@@ -6,7 +6,6 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
-	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 )
 
@@ -16,7 +15,7 @@ func Issue() {
 	issueType := issue.TaskType
 	summary := "Stub summary"
 	description := "Stub description"
-	f := constant.Format.Copy().Tag(tag.Link)
+	f := constant.Format.Copy()
 	var i *jira.Issue
 
 	if true {

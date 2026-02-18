@@ -27,6 +27,13 @@ var (
 		DefaultSource,
 	) // For monitor errors
 
+	GoBrew = collector.New(
+		"gobrew",
+		"brew",
+		"Homebrew packages",
+		10*time.Minute,
+		DefaultSource,
+	)
 	GoAlert = collector.New(
 		"goalert",
 		"alert",
@@ -134,6 +141,7 @@ var (
 	)
 
 	Collectors = []*collector.Collector{
+		GoBrew,
 		GoAlert,
 		GoContainer,
 		GoFile,

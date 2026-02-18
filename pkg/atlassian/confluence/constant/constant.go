@@ -47,6 +47,6 @@ const (
 )
 
 var (
-	Format = option.ExtendedColor.Copy().Tag(tag.Link)
-	Dense  = option.Color.Copy().Tag(tag.Link, tag.Dense)
+	Format = option.ExtendedColor.Copy()
+	Dense  = option.Color.Copy().Tag(tag.Dense)
 )

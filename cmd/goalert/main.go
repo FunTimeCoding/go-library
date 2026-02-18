@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	monitor.CopyableArgument()
 	monitor.NotationArgument()
 	monitor.AllArgument()
 	pflag.Bool(argument.Critical, false, "Critical severity only")
@@ -32,5 +33,6 @@ func main() {
 	o.Rules = viper.GetBool(argument.Rules)
 	o.Firing = viper.GetBool(argument.Firing)
 	o.Fingerprint = viper.GetBool(argument.Fingerprint)
+	o.Copyable = viper.GetBool(argument.Copyable)
 	alert.Check(o)
 }

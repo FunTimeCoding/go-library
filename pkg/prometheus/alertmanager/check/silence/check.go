@@ -2,6 +2,7 @@ package silence
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/matcher"
@@ -14,9 +15,10 @@ import (
 
 func Check(o *option.Silence) {
 	c := common.Alertmanager()
+	silences := collect(c)
 
 	if o.Notation {
-		printNotation(c, o)
+		printNotation(silences, o)
 
 		return
 	}
@@ -29,7 +31,6 @@ func Check(o *option.Silence) {
 	o2.All = true
 	a, _ := c.Alerts(o2)
 	fmt.Printf("Alerts: %d\n", len(a))
-	silences := c.Silences(true)
 
 	if !o.All {
 		silences = silence.FilterPermanent(silences)
@@ -37,6 +38,11 @@ func Check(o *option.Silence) {
 
 	var relevant int
 	f := constant.Format
+
+	if o.Copyable {
+		f.Tag(tag.Copyable)
+	}
+
 	t := time.Now()
 
 	for _, e := range silences {

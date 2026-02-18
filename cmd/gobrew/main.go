@@ -3,18 +3,19 @@ package main
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/system/macos/check/brew"
-	"github.com/funtimecoding/go-library/pkg/system/macos/check/brew/option"
+	"github.com/funtimecoding/go-library/pkg/system/macos/check/brew/outdated"
+	"github.com/funtimecoding/go-library/pkg/system/macos/check/brew/outdated/option"
 	"github.com/spf13/viper"
 )
 
 func main() {
-	monitor.AllArgument()
+	monitor.CopyableArgument()
 	monitor.NotationArgument()
-	monitor.VerboseArgument()
+	monitor.AllArgument()
+	argument.ParseBind()
 	o := option.New()
+	o.Copyable = viper.GetBool(argument.Copyable)
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)
-	o.Verbose = viper.GetBool(argument.Verbose)
-	brew.Check(o)
+	outdated.Check(o)
 }

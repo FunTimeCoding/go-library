@@ -43,10 +43,10 @@ func (a *Alert) Format(f *option.Format) string {
 	}
 
 	s.String(a.formatConcern(f))
-	s.TagLine(tag.Link, "  %s", a.Link)
+	s.DetailLink(a.Link, "Alert", "")
 
 	if a.Runbook != constant.None {
-		s.TagLine(tag.Runbook, "  Runbook: %s", a.Runbook)
+		s.DetailLink(a.Runbook, "Runbook", "Runbook")
 	}
 
 	if f.ShowExtended {

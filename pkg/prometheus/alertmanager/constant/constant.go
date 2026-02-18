@@ -65,7 +65,7 @@ const ExpiredState = "expired" // Silence state
 const NodeNotReady = "KubeNodeNotReady" // Alert name
 
 var (
-	Format = option.Color.Copy().Tag(tag.Link, tag.Comment)
+	Format = option.Color.Copy().Tag(tag.Comment)
 
 	AlertStates = []string{
 		ActiveState,

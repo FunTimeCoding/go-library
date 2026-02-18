@@ -1,7 +1,7 @@
 package option
 
-type Brew struct {
+type Outdated struct {
 	Notation bool
 	All      bool
-	Verbose  bool
+	Copyable bool
 }

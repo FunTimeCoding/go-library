@@ -18,7 +18,6 @@ const (
 )
 
 var Format = option.ExtendedColor.Copy().Tag(
-	tag.Link,
 	tag.Category,
 )
 

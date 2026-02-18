@@ -9,10 +9,12 @@ import (
 )
 
 func main() {
+	monitor.CopyableArgument()
 	monitor.NotationArgument()
 	monitor.AllArgument()
 	argument.ParseBind()
 	o := option.New()
+	o.Copyable = viper.GetBool(argument.Copyable)
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)
 	alert.Check(o)

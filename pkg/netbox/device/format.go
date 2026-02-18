@@ -19,9 +19,7 @@ func (d *Device) Format(f *option.Format) string {
 		d.formatSerial(f),
 	).RawList(d.Raw)
 
-	if d.Link != "" {
-		s.TagLine(tag.Link, "  %s", d.Link)
-	}
+	s.DetailLink(d.Link, "NetBox", "")
 
 	if t := d.formatTags(f); t != "" {
 		s.Line("  Tags: %s", t)

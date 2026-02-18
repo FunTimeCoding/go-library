@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	monitor.CopyableArgument()
 	monitor.NotationArgument()
 	monitor.AllArgument()
 	monitor.VerboseArgument()
@@ -17,5 +18,6 @@ func main() {
 	p.Notation = viper.GetBool(argument.Notation)
 	p.All = viper.GetBool(argument.All)
 	p.Verbose = viper.GetBool(argument.Verbose)
-	issue.Print(p)
+	p.Copyable = viper.GetBool(argument.Copyable)
+	issue.Check(p)
 }

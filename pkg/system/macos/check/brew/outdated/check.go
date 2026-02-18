@@ -1,16 +1,16 @@
-package job
+package outdated
 
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
-	"github.com/funtimecoding/go-library/pkg/gitlab/check/job/option"
-	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
+	"github.com/funtimecoding/go-library/pkg/system/macos/brew/constant"
+	"github.com/funtimecoding/go-library/pkg/system/macos/check/brew/outdated/option"
 )
 
-func Check(o *option.Job) {
-	elements := collect(o)
+func Check(o *option.Outdated) {
+	elements := collect()
 
 	if o.Notation {
 		printNotation(elements, o)
@@ -18,7 +18,7 @@ func Check(o *option.Job) {
 		return
 	}
 
-	f := constant.CheckFormat
+	f := constant.Format
 
 	if o.Copyable {
 		f.Tag(tag.Copyable)
@@ -29,6 +29,6 @@ func Check(o *option.Job) {
 	}
 
 	if len(elements) == 0 {
-		monitor.NoRelevant(item.GoGitLab.Plural)
+		monitor.NoRelevant(item.GoBrew.Plural)
 	}
 }

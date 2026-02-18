@@ -38,6 +38,9 @@ All return `*Status` for chaining.
 - `Line(format, a...)` — extended line (shown when `ShowExtended`)
 - `Lines(v ...string)` — multiple extended lines (each indented with `"  "`)
 - `TagLine(tag, format, a...)` — line grouped by tag (shown when tag is in `format.Tags`)
+- `DetailLink(url, label, prefix)` — link with format-aware rendering (see Link Rendering below)
+
+`ShowExtended` controls whether `Line`/`Lines` detail lines are included. When off, only the bubble header renders — useful for dense list views. `TagLine` and `DetailLink` are independent of `ShowExtended`; they have their own visibility rules (tags and link mode respectively).
 
 ### Debug Methods
 
@@ -87,16 +90,53 @@ option.ExtendedColor = New().Extended().Color()
 Constants in `status/tag/`:
 
 ```
-Age, Assignee, Category, Changes, Cluster, Comment, Concerns, Dense,
-Description, Emoji, Filter, Fingerprint, Graph, Identifier, Instance,
-Investigate, Key, Link, Markdown, Name, Project, Runbook, Score,
-State, Status, Timestamp, Type, Usage, Wiki
+Age, Assignee, Category, Changes, Cluster, Comment, Concerns, Copyable,
+Dense, Description, Emoji, Filter, Fingerprint, Graph, Identifier,
+Instance, Investigate, Key, Markdown, Name, Project, Runbook,
+Score, State, Status, Timestamp, Type, Usage, Wiki
 ```
 
 Tags serve two purposes:
 
-1. **Display toggles** — `TagLine` content only renders when its tag is active. Example: `s.TagLine(tag.Link, "  %s", r.Link)` only shows the link when `tag.Link` is in the format.
-2. **Semantic hints** — `f.HasTag(tag.Markdown)` checked in `format*` helpers to switch between plain and markdown output (e.g., `[text](url)` vs bare URL).
+1. **Display toggles** — `TagLine` content only renders when its tag is active. Example: `s.TagLine(tag.Comment, "  %s", comment)` only shows when `tag.Comment` is in the format.
+2. **Semantic hints** — checked in rendering methods to switch output mode. `tag.Markdown` selects Markdown links, `tag.Copyable` selects plain-text links.
+
+## Link Rendering
+
+`DetailLink(url, label, prefix)` renders a link based on active tags:
+
+- **Default (no tag)** — OSC8 hyperlink as a bubble: `label` (clickable, no color, terminal provides underline). Dense.
+- **`tag.Markdown`** — Markdown detail line: `[label](url)` or `prefix: [label](url)`
+- **`tag.Copyable`** — plain URL detail line: `url` or `prefix: url`
+
+Parameters:
+
+- `url` — the URL (no-op if empty)
+- `label` — short clickable text for OSC8/markdown (defaults to `"Link"` if empty)
+- `prefix` — annotation prepended in copyable/markdown mode (omitted in OSC8 mode, ignored if empty)
+
+### Examples
+
+```
+# Default (OSC8) — url="https://jira.example.com/PROJ-123", label="Jira", prefix=""
+123 | open | Fix auth bug | 3d | Jira
+
+# Markdown — same params
+123 | open | Fix auth bug | 3d
+  [Jira](https://jira.example.com/PROJ-123)
+
+# Copyable — same params
+123 | open | Fix auth bug | 3d
+  https://jira.example.com/PROJ-123
+
+# Copyable with prefix — url="https://grafana.example.com/...", label="Grafana", prefix="Prometheus 24h graph"
+alert-name | firing | 2h
+  Prometheus 24h graph: https://grafana.example.com/...
+
+# Markdown with prefix — same params
+alert-name | firing | 2h
+  Prometheus 24h graph: [Grafana](https://grafana.example.com/...)
+```
 
 ## Formattable Interface
 
@@ -133,9 +173,7 @@ func (r *Request) Format(f *option.Format) string {
         r.formatAge(f),
     ).RawList(r.Raw)
 
-    if !f.ShowExtended {
-        s.TagLine(tag.Link, "  %s", r.Link)
-    }
+    s.DetailLink(r.Link, "GitLab", "")
 
     return s.Format()
 }

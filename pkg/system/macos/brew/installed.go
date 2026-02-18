@@ -12,7 +12,7 @@ func (c *Client) Installed() *response.Installed {
 		constant.Brew,
 		constant.Info,
 		constant.Installed,
-		constant.Notation1,
+		constant.Notation2,
 	)
 	r.Verbose = true
 	var result response.Installed

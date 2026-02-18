@@ -3,7 +3,6 @@ package issue
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
-	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 )
 
 func (i *Issue) Format(f *option.Format) string {
@@ -16,7 +15,7 @@ func (i *Issue) Format(f *option.Format) string {
 		s.Line("%s", d)
 	}
 
-	s.TagLine(tag.Link, "  %s", i.Link)
+	s.DetailLink(i.Link, "Jira", "")
 	s.RawList(i)
 
 	return s.Format()

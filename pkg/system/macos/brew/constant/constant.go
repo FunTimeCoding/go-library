@@ -1,5 +1,7 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/console/status/option"
+
 const (
 	Brew      = "brew"
 	Outdated  = "outdated"
@@ -8,3 +10,5 @@ const (
 	Notation2 = "--json=v2"
 	Notation1 = "--json=v1"
 )
+
+var Format = option.Color.Copy()

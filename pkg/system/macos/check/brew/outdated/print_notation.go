@@ -1,16 +1,16 @@
-package silence
+package outdated
 
 import (
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/report"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
-	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/silence"
+	"github.com/funtimecoding/go-library/pkg/system/macos/brew/formula"
+	"github.com/funtimecoding/go-library/pkg/system/macos/check/brew/outdated/option"
 )
 
 func printNotation(
-	v []*silence.Silence,
-	o *option.Silence,
+	v []*formula.Formula,
+	o *option.Outdated,
 ) {
 	r := report.New()
 
@@ -18,15 +18,15 @@ func printNotation(
 		v,
 		r,
 		o.All,
-		item.GoSilence,
+		item.GoBrew,
 	) {
 		r.AddItem(
-			item.GoSilence,
+			item.GoBrew,
 			e.MonitorIdentifier,
 			constant.Warning,
-			e.Rule,
+			e.CurrentVersion,
 			e.Link,
-			e.Start,
+			nil,
 		)
 	}
 

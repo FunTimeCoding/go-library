@@ -16,7 +16,7 @@ func (r *Rack) Format(f *option.Format) string {
 	}
 
 	s.String(r.formatName(f)).RawList(r.Raw)
-	s.TagLine(tag.Link, "  %s", r.Link)
+	s.DetailLink(r.Link, "NetBox", "")
 
 	if tags := r.tags(); len(tags) > 0 {
 		s.Line("  Tags: %s", join.Comma(tags))

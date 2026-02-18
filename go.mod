@@ -52,7 +52,7 @@ require (
 	github.com/jackc/pgx/v5 v5.8.0
 	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260213141805-cd2b50882305
 	github.com/liushuangls/go-anthropic/v2 v2.17.0
-	github.com/luthermonson/go-proxmox v0.3.2
+	github.com/luthermonson/go-proxmox v0.4.0
 	github.com/mark3labs/mcp-go v0.44.0
 	github.com/mattermost/mattermost/server/public v0.2.0
 	github.com/mitchellh/go-ps v1.0.0
@@ -139,7 +139,7 @@ require (
 	github.com/cloudflare/circl v1.6.1 // indirect
 	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
 	github.com/dennwc/varint v1.0.0 // indirect
-	github.com/diskfs/go-diskfs v1.5.0 // indirect
+	github.com/diskfs/go-diskfs v1.7.0 // indirect
 	github.com/djherbis/times v1.6.0 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/docker/docker v28.5.1+incompatible // indirect

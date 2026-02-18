@@ -1,7 +1,7 @@
 package issue
 
 import (
-	"github.com/google/go-github/v82/github"
+	"github.com/google/go-github/v83/github"
 	"net/url"
 	"strings"
 )

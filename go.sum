@@ -1888,8 +1888,8 @@ github.com/tmc/langchaingo v0.1.14 h1:o1qWBPigAIuFvrG6cjTFo0cZPFEZ47ZqpOYMjM15yZ
 github.com/tmc/langchaingo v0.1.14/go.mod h1:aKKYXYoqhIDEv7WKdpnnCLRaqXic69cX9MnDUk72378=
 github.com/tobischo/argon2 v0.1.0 h1:mwAx/9DK/4rP0xzNifb/XMAf43dU3eG1B3aeF88qu4Y=
 github.com/tobischo/argon2 v0.1.0/go.mod h1:4NLmLFwhWPbT66nRZNgcktV/mibJ6fESoeEp43h9GRw=
-github.com/tobischo/gokeepasslib/v3 v3.6.1 h1:AShQlTypdM19glj0UUePQcUi56qQyeFI5NcrWnVFudA=
-github.com/tobischo/gokeepasslib/v3 v3.6.1/go.mod h1:B31dx/dj0egameQrNtuoOx9RnwxnYaZR4kXaahRuZN8=
+github.com/tobischo/gokeepasslib/v3 v3.6.2 h1:SJzzllmNe7iZLudLJ3Lzdm3pDb++AJqZlmqG+SR8bVc=
+github.com/tobischo/gokeepasslib/v3 v3.6.2/go.mod h1:ga7HFqG0TZSLNao/QOnV2+yngkrf5186saPxSQ1Xp7o=
 github.com/trivago/tgo v1.0.7 h1:uaWH/XIy9aWYWpjm2CU3RpcqZXmX2ysQ9/Go+d9gyrM=
 github.com/trivago/tgo v1.0.7/go.mod h1:w4dpD+3tzNIIiIfkWWa85w5/B77tlvdZckQ+6PkFnhc=
 github.com/tv42/httpunix v0.0.0-20150427012821-b75d8614f926/go.mod h1:9ESjWnEqriFuLhtthL60Sar/7RFoluCcXsuvEwTV5KM=

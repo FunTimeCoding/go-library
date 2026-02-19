@@ -3,6 +3,7 @@ package alert
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 )
 
 func (a *Alert) formatHost(f *option.Format) string {
@@ -16,6 +17,12 @@ func (a *Alert) formatHost(f *option.Format) string {
 		}
 
 		return result
+	}
+
+	if a.HostLink != "" &&
+		!f.HasTag(tag.Copyable) &&
+		!f.HasTag(tag.Markdown) {
+		result = console.Link(a.HostLink, result, true)
 	}
 
 	return result

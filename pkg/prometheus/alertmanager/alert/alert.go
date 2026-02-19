@@ -24,6 +24,7 @@ type Alert struct {
 	Tags      []string
 	Runbook   string
 	Link      string
+	HostLink  string
 	Remaining models.LabelSet
 
 	instance face.StringAlias

@@ -69,6 +69,18 @@ func (a *Alert) Format(f *option.Format) string {
 		if len(a.Receivers) > 0 {
 			s.Line("  Receivers: %s", join.Comma(a.Receivers))
 		}
+
+		if a.HostLink != "" {
+			if f.HasTag(tag.Copyable) {
+				s.Line("  Host: %s", a.HostLink)
+			} else {
+				s.TagLine(
+					tag.Markdown,
+					"  Host: %s",
+					fmt.Sprintf("[%s](%s)", a.Host(), a.HostLink),
+				)
+			}
+		}
 	}
 
 	s.RawList(a.Raw)

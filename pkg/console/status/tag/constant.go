@@ -15,6 +15,7 @@ const (
 	Filter      = "filter"
 	Fingerprint = "fingerprint"
 	Graph       = "graph"
+	Host        = "host"
 	Identifier  = "identifier"
 	Instance    = "instance"
 	Investigate = "investigate"

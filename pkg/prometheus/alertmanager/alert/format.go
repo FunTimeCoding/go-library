@@ -30,6 +30,10 @@ func (a *Alert) Format(f *option.Format) string {
 
 	s.String(a.formatSeverity(f))
 
+	if f.HasTag(tag.Host) {
+		s.String(a.formatHost(f))
+	}
+
 	if f.HasTag(tag.Instance) {
 		s.String(a.formatInstance())
 	}

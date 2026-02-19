@@ -19,13 +19,14 @@ type Alert struct {
 	Labels            models.LabelSet
 	Receivers         []string
 
-	Entity    string
-	Category  string
-	Tags      []string
-	Runbook   string
-	Link      string
-	HostLink  string
-	Remaining models.LabelSet
+	Entity      string
+	Category    string
+	Tags        []string
+	Runbook     string
+	Link        string
+	HostLink    string
+	ExtraBubble []string
+	Remaining   models.LabelSet
 
 	instance face.StringAlias
 	concern  []string

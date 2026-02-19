@@ -53,6 +53,10 @@ func (a *Alert) Format(f *option.Format) string {
 		s.DetailLink(a.Runbook, "Runbook", "Runbook")
 	}
 
+	for _, e := range a.ExtraBubble {
+		s.String(e)
+	}
+
 	if f.ShowExtended {
 		if a.Summary != constant.None {
 			s.Line("  Summary: %s", a.Summary)
@@ -71,14 +75,8 @@ func (a *Alert) Format(f *option.Format) string {
 		}
 
 		if a.HostLink != "" {
-			if f.HasTag(tag.Copyable) {
-				s.Line("  Host: %s", a.HostLink)
-			} else {
-				s.TagLine(
-					tag.Markdown,
-					"  Host: %s",
-					fmt.Sprintf("[%s](%s)", a.Host(), a.HostLink),
-				)
+			if f.HasTag(tag.Copyable) || f.HasTag(tag.Markdown) {
+				s.DetailLink(a.HostLink, "Host", "Host")
 			}
 		}
 	}

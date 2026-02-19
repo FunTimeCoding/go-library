@@ -7,11 +7,11 @@ import (
 )
 
 func (s *Status) DetailLink(
-	url string,
+	link string,
 	label string,
 	prefix string,
 ) *Status {
-	if url == "" {
+	if link == "" {
 		return s
 	}
 
@@ -20,18 +20,18 @@ func (s *Status) DetailLink(
 	}
 
 	if s.format.HasTag(tag.Copyable) {
-		return s.TagLine(tag.Copyable, "  %s", prefixed(prefix, url))
+		return s.TagLine(tag.Copyable, "  %s", prefixed(prefix, link))
 	}
 
 	if s.format.HasTag(tag.Markdown) {
 		return s.TagLine(
 			tag.Markdown,
 			"  %s",
-			prefixed(prefix, markdown.Link(label, url)),
+			prefixed(prefix, markdown.Link(label, link)),
 		)
 	}
 
-	s.bubbles = append(s.bubbles, console.Link(url, label, true))
+	s.bubbles = append(s.bubbles, console.Link(link, label, true))
 
 	return s
 }

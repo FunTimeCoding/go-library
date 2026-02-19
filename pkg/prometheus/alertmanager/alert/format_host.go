@@ -18,9 +18,5 @@ func (a *Alert) formatHost(f *option.Format) string {
 		return result
 	}
 
-	if f.UseColor {
-		result = console.Cyan("%s", result)
-	}
-
 	return result
 }

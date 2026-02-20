@@ -19,16 +19,17 @@ gdamore
 homeassistant
 jdoe
 kaos
+marweber
 mattermost
+mweber
 openvex
 osquery
 qdrant
 shiin
 treminio
 virtomize
-
-# Task
-cmds
+virtualminds
+wiit
 
 # Go
 GOPROXY
@@ -120,6 +121,9 @@ onclose
 onerror
 onmessage
 onopen
+
+# Task
+cmds
 
 # Guild Wars 2
 aleeva

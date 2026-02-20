@@ -61,7 +61,7 @@ require (
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/nsf/termbox-go v1.1.1
 	github.com/olekukonko/tablewriter v1.1.3
-	github.com/ollama/ollama v0.16.2
+	github.com/ollama/ollama v0.16.3
 	github.com/openai/openai-go/v3 v3.22.0
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
@@ -234,7 +234,7 @@ require (
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
-	github.com/klauspost/compress v1.18.0 // indirect
+	github.com/klauspost/compress v1.18.3 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.3.0 // indirect
 	github.com/magefile/mage v1.14.0 // indirect

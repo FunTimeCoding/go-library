@@ -1,21 +1,13 @@
 package main
 
-import (
-	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert"
-	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
-	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/spf13/viper"
+import "github.com/funtimecoding/go-library/pkg/tool/gogenie"
+
+var (
+	Version   string
+	GitHash   string
+	BuildDate string
 )
 
 func main() {
-	monitor.CopyableArgument()
-	monitor.NotationArgument()
-	monitor.AllArgument()
-	argument.ParseBind()
-	o := option.New()
-	o.Copyable = viper.GetBool(argument.Copyable)
-	o.Notation = viper.GetBool(argument.Notation)
-	o.All = viper.GetBool(argument.All)
-	alert.Check(o)
+	gogenie.Main(Version, GitHash, BuildDate)
 }

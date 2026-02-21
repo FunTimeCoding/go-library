@@ -7,6 +7,7 @@ formattable
 positionals
 renderable
 renderables
+stacktraces
 
 # Names
 Loopsies
@@ -19,6 +20,7 @@ gdamore
 homeassistant
 jdoe
 kaos
+lefthook
 marweber
 mattermost
 mweber
@@ -33,6 +35,7 @@ wiit
 
 # Go
 GOPROXY
+bbolt
 covermode
 coverprofile
 gocover
@@ -50,6 +53,7 @@ exitf
 ghjob
 ghpr
 goalert
+goalertlog
 gobuild
 gochk
 gochroma
@@ -124,6 +128,7 @@ onopen
 
 # Task
 cmds
+taskfile
 
 # Guild Wars 2
 aleeva

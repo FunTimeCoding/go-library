@@ -10,11 +10,15 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Main() {
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
 	pflag.String(constant.Base, "HEAD~1", "Base commit")
 	pflag.String(constant.Head, "HEAD", "Head commit")
 	monitor.VerboseArgument()
-	argument.ParseBind()
+	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()
 	o.Verbose = viper.GetBool(argument.Verbose)
 	run_if.Run(o)

@@ -6,7 +6,7 @@ type Context struct {
 	writer  http.ResponseWriter
 	request *http.Request
 
-	bodyRead  bool
+	bodyRead bool
 	body     string
 	bodyByte []byte
 }

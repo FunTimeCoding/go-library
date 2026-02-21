@@ -1,4 +1,5 @@
 package response
+
 type Stream struct {
 	App       string `json:"app"`
 	Container string `json:"container"`

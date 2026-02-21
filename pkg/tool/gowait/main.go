@@ -10,14 +10,18 @@ import (
 	"time"
 )
 
-func Main() {
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
 	pflag.String(argument.File, "", "File to wait for")
 	pflag.String(argument.Process, "", "Process to wait for")
 	pflag.String(argument.Locator, "", "Locator to wait for")
 	pflag.String(argument.Contains, "", "String for locator")
 	pflag.Duration(argument.Timeout, 3*time.Minute, "")
 	monitor.VerboseArgument()
-	argument.ParseBind()
+	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()
 	o.File = viper.GetString(argument.File)
 	o.Process = viper.GetString(argument.Process)

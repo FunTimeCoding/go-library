@@ -14,4 +14,3 @@ func TarWrite(
 
 	return result
 }
-

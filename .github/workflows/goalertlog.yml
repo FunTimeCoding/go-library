@@ -1,0 +1,27 @@
+---
+name: goalertlog
+on: {push: {tags: ['v*']}}
+env:
+  REGISTRY: ghcr.io
+  IMAGE: ${{ github.repository_owner }}/goalertlog
+jobs:
+  container:
+    runs-on: ubuntu-latest
+    permissions: {contents: read, packages: write}
+    steps:
+    - {name: Repository, uses: actions/checkout@v4, with: {fetch-depth: 0}}
+    - {name: Go, uses: actions/setup-go@v5, with: {go-version-file: go.mod}}
+    - {name: Build, run: 'go run cmd/gobuild/main.go --linux-amd64 goalertlog'}
+    - name: Login
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Container
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: container/goalertlog/Containerfile
+        push: true
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.ref_name }}

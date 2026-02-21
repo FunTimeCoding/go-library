@@ -9,7 +9,7 @@ func Clone(
 	locator string,
 	path string,
 ) *git.Repository {
-	result , e := git.PlainClone(
+	result, e := git.PlainClone(
 		path,
 		false,
 		&git.CloneOptions{URL: locator},

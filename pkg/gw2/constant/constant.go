@@ -16,5 +16,5 @@ const (
 	LogFile    = "LogDataCache.json"
 
 	ExceptionFile = "exception.json"
-	GuildFile = "guild.json"
+	GuildFile     = "guild.json"
 )

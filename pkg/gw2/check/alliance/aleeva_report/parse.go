@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 )
 
-func Parse(base string, name string) []*Report {
+func Parse(
+	base string,
+	name string,
+) []*Report {
 	var result []*Report
 	s := system.ReadFile(base, name)
 

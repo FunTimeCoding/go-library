@@ -42,8 +42,11 @@ func Spacing(
 			strings.HasPrefix(trimmed, "break") ||
 			strings.HasPrefix(trimmed, "continue")
 
-		isClosingBrace := trimmed == "}" || strings.HasPrefix(trimmed, "} else")
-		prevOpensBlock := strings.HasSuffix(strings.TrimSpace(prevLine), "{")
+		isClosingBrace := trimmed == "}" ||
+			strings.HasPrefix(trimmed, "} else")
+		prevOpensBlock := strings.HasSuffix(
+			strings.TrimSpace(prevLine), "{",
+		)
 
 		if isControlStart && !prevWasBlank && prevLine != "" && !prevOpensBlock {
 			s.ChangedLine("")

@@ -9,7 +9,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/join"
 )
 
-func Archive(name string, systemArchitecture string) {
+func Archive(
+	name string,
+	systemArchitecture string,
+) {
 	sourceFile := GuessBinaryPath(name, systemArchitecture)
 	fmt.Printf("Source file: %s\n", sourceFile)
 

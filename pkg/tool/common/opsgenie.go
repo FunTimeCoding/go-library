@@ -81,4 +81,3 @@ func Opsgenie() *opsgenie.Client {
 
 	return result
 }
-

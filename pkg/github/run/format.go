@@ -16,7 +16,7 @@ func (r *Run) Format(f *option.Format) string {
 	if f.HasTag(tag.Timestamp) {
 		s.String(r.Create.Format(time.DateMinute))
 	}
-	
+
 	s.String(r.formatConcern(f)).RawList(r.Raw)
 
 	return s.Format()

@@ -6,20 +6,26 @@ Pattern for CLI tools that fetch, filter, and display entities from external sys
 
 ```
 cmd/go<tool>/
-└── main.go                         # Entrypoint: register arguments, bind options, call Check
+└── main.go                         # Linker vars, delegates to Main()
+
+pkg/tool/go<tool>/
+├── main.go                         # Main(): register arguments, parse, build option, call Check
+├── main_test.go                    # Stub test
+└── ...
 
 pkg/<domain>/check/<entity>/
 ├── check.go                        # Check(o): orchestrates collect → filter → format → print
 ├── collect.go                      # collect(): private, fetches entities from client
 ├── print_notation.go               # printNotation(): JSON output for monitoring
 └── option/
-    ├── <entity>.go                 # Option struct
-    └── new.go                      # Factory: New() *Option
+    ├── <entity>.go                 # Option struct (named after entity, not "Option")
+    └── new.go                      # Factory: New() *<Entity>
 
 pkg/<domain>/constant/
 └── constant.go                     # Format preset (option.Color.Copy() + domain tags)
 
 pkg/monitor/
+├── parse_bind.go                   # ParseBind(version, gitHash, buildDate)
 ├── copyable_argument.go            # CopyableArgument(): reusable --copyable flag
 ├── notation_argument.go            # NotationArgument(): reusable --notation flag
 ├── all_argument.go                 # AllArgument(): reusable --all flag
@@ -30,26 +36,40 @@ pkg/argument/
 └── constant.go                     # Argument name constants (Copyable, Notation, All, etc.)
 ```
 
-## Entrypoint
+## Entry Point
 
-`cmd/go<tool>/main.go` registers arguments, parses, binds to option struct, calls `Check`.
+`cmd/go<tool>/main.go` declares linker variables and delegates:
 
 ```go
 package main
 
-import (
-    "github.com/funtimecoding/go-library/pkg/argument"
-    "github.com/funtimecoding/go-library/pkg/<domain>/check/<entity>"
-    "github.com/funtimecoding/go-library/pkg/<domain>/check/<entity>/option"
-    "github.com/funtimecoding/go-library/pkg/monitor"
-    "github.com/spf13/viper"
+import "github.com/funtimecoding/go-library/pkg/tool/go<tool>"
+
+var (
+    Version   string
+    GitHash   string
+    BuildDate string
 )
 
 func main() {
+    go<tool>.Main(Version, GitHash, BuildDate)
+}
+```
+
+## Main Function
+
+`Main()` registers flags, parses with `monitor.ParseBind`, builds the option struct, and calls `Check`:
+
+```go
+func Main(
+    version string,
+    gitHash string,
+    buildDate string,
+) {
     monitor.CopyableArgument()
     monitor.NotationArgument()
     monitor.AllArgument()
-    argument.ParseBind()
+    monitor.ParseBind(version, gitHash, buildDate)
     o := option.New()
     o.Copyable = viper.GetBool(argument.Copyable)
     o.Notation = viper.GetBool(argument.Notation)
@@ -58,7 +78,7 @@ func main() {
 }
 ```
 
-Argument registration order: reusable monitor helpers first, then domain-specific `pflag` calls, then `argument.ParseBind()`.
+`monitor.ParseBind` adds `--version` flag, calls `argument.ParseBind()`, and exits on `--version`. Argument registration order: reusable monitor helpers first, then domain-specific `pflag` calls, then `monitor.ParseBind()`.
 
 ## Option Struct
 

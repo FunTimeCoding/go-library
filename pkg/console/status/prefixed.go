@@ -2,7 +2,10 @@ package status
 
 import "fmt"
 
-func prefixed(prefix string, value string) string {
+func prefixed(
+	prefix string,
+	value string,
+) string {
 	if prefix == "" {
 		return value
 	}

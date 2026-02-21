@@ -1,6 +1,6 @@
 package node
 
-import 	"github.com/funtimecoding/go-library/pkg/errors"
+import "github.com/funtimecoding/go-library/pkg/errors"
 
 func DirectoryByNameStrict(
 	n *Node,

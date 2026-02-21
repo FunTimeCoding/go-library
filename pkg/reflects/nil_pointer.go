@@ -7,4 +7,3 @@ func NilPointer(value any) bool {
 
 	return v.Kind() == reflect.Ptr && v.IsNil()
 }
-

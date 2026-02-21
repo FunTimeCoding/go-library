@@ -5,7 +5,10 @@ import (
 	"log"
 )
 
-func Warning(s string, a ...any) {
+func Warning(
+	s string,
+	a ...any,
+) {
 	if len(a) > 0 {
 		s = fmt.Sprintf(s, a...)
 	}

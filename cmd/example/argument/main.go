@@ -7,6 +7,8 @@ import (
 
 func main() {
 	argument.ParseBind()
-	n := argument.Positional(0)
-	fmt.Printf("Positional argument 0: %s\n", n)
+	fmt.Printf(
+		"Positional argument 0: %s\n",
+		argument.Positional(0),
+	)
 }

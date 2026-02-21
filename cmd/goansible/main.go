@@ -1,5 +1,13 @@
 package main
 
+import "github.com/funtimecoding/go-library/pkg/tool/goansible"
+
+var (
+	Version   string
+	GitHash   string
+	BuildDate string
+)
+
 func main() {
-	// TODO: Find Ansible API, allow calling it from CI/CD
+	goansible.Main(Version, GitHash, BuildDate)
 }

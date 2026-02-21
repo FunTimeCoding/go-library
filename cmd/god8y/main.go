@@ -1,13 +1,13 @@
 package main
 
-import (
-	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/duplicate"
-	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/missing"
-	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/order"
+import "github.com/funtimecoding/go-library/pkg/tool/god8y"
+
+var (
+	Version   string
+	GitHash   string
+	BuildDate string
 )
 
 func main() {
-	order.Run()
-	missing.Run()
-	duplicate.Run()
+	god8y.Main(Version, GitHash, BuildDate)
 }

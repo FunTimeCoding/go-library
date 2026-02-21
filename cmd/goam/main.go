@@ -1,11 +1,13 @@
 package main
 
-import (
-	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/prometheus/amtool"
+import "github.com/funtimecoding/go-library/pkg/tool/goam"
+
+var (
+	Version   string
+	GitHash   string
+	BuildDate string
 )
 
 func main() {
-	argument.ParseBind()
-	amtool.Run(argument.Positional(0))
+	goam.Main(Version, GitHash, BuildDate)
 }

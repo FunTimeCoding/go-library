@@ -1,5 +1,13 @@
 package main
 
+import "github.com/funtimecoding/go-library/pkg/tool/gosalt"
+
+var (
+	Version   string
+	GitHash   string
+	BuildDate string
+)
+
 func main() {
-	// TODO: Use Salt API, allow calling it from CI/CD
+	gosalt.Main(Version, GitHash, BuildDate)
 }

@@ -511,8 +511,8 @@ github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ3
 github.com/creack/pty v1.1.11/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/creasty/defaults v1.8.0 h1:z27FJxCAa0JKt3utc0sCImAEb+spPucmKoOdLHvHYKk=
 github.com/creasty/defaults v1.8.0/go.mod h1:iGzKe6pbEHnpMPtfDXZEr0NVxWnPTjb1bbDy08fPzYM=
-github.com/ctreminiom/go-atlassian/v2 v2.10.0 h1:iEKwB9jlF4PWMwU29OgqinUrxwkBI5/xILmFWTzCSe4=
-github.com/ctreminiom/go-atlassian/v2 v2.10.0/go.mod h1:MlOO4xJqTQeYWQFrlME1EekqHbg3qMsehyrTYgumDz4=
+github.com/ctreminiom/go-atlassian/v2 v2.11.0 h1:FmlOkZ4DVnbfMfSJFScNtOMY2M+CGhDpK2r7/W4OA90=
+github.com/ctreminiom/go-atlassian/v2 v2.11.0/go.mod h1:MlOO4xJqTQeYWQFrlME1EekqHbg3qMsehyrTYgumDz4=
 github.com/cyphar/filepath-securejoin v0.2.2/go.mod h1:FpkQEhXnPnOthhzymB7CGsFk2G9VLXONKD9G7QGMM+4=
 github.com/cyphar/filepath-securejoin v0.2.3/go.mod h1:aPGpWjXOXUn2NCNjFvBE6aRxGGx79pTxQpKOJNYHHl4=
 github.com/cyphar/filepath-securejoin v0.4.1 h1:JyxxyPEaktOD+GAnqIqTf9A8tHyAG22rowi7HkoSU1s=

@@ -15,7 +15,13 @@ func (i *Issue) Format(f *option.Format) string {
 		s.Line("%s", d)
 	}
 
-	s.DetailLink(i.Link, "Jira", "")
+	label := i.Key
+
+	if label == "" {
+		label = "Jira"
+	}
+
+	s.DetailLink(i.Link, label, "")
 	s.RawList(i)
 
 	return s.Format()

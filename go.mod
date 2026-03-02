@@ -41,7 +41,7 @@ require (
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/go-test/deep v1.1.1
 	github.com/google/go-cmp v0.7.0
-	github.com/google/go-github/v83 v83.0.0
+	github.com/google/go-github/v84 v84.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/gpustack/gguf-parser-go v0.24.0
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20251202103709-7ef691d4df1d
@@ -50,7 +50,7 @@ require (
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.8.0
-	github.com/kestra-io/client-sdk/go-sdk v0.0.0-20260218095230-299d6d04fd95
+	github.com/kestra-io/client-sdk/go-sdk v1.0.1
 	github.com/liushuangls/go-anthropic/v2 v2.17.1
 	github.com/luthermonson/go-proxmox v0.4.0
 	github.com/mark3labs/mcp-go v0.44.1

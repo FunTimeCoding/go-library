@@ -1,6 +1,6 @@
 package github
 
-import "github.com/google/go-github/v83/github"
+import "github.com/google/go-github/v84/github"
 
 func (c *Client) ProjectIssues(
 	owner string,

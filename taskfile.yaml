@@ -26,6 +26,7 @@ tasks:
         --downgrade k8s.io/apimachinery@v0.30.14 \
         --downgrade github.com/google/gnostic-models@v0.6.9
     silent: true
+  update-library: {cmds: [true], silent: true}
   tool:
     cmds:
     - |

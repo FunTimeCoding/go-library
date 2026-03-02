@@ -1,6 +1,6 @@
 package workflow
 
-import "github.com/google/go-github/v83/github"
+import "github.com/google/go-github/v84/github"
 
 func New(v *github.Workflow) *Workflow {
 	return &Workflow{

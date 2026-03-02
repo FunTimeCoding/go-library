@@ -1,7 +1,7 @@
 package pull_request
 
 import (
-	"github.com/google/go-github/v83/github"
+	"github.com/google/go-github/v84/github"
 	"time"
 )
 

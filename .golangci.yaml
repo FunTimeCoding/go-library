@@ -1,3 +1,7 @@
 ---
 version: '2'
-run: {allow-serial-runners: true}
+run:
+  allow-serial-runners: true
+  exclude-dirs:
+    - pkg/tool/goalertlog/api
+    - pkg/tool/goalertlog/client

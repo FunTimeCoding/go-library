@@ -11,6 +11,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/mock_client"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/api"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/client"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/poller"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/route"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/store"
@@ -51,9 +53,7 @@ func TestRunLifecycle(t *testing.T) {
 		lifecycle.WithServer(
 			address,
 			func(m *http.ServeMux) {
-				m.HandleFunc("/api/v1/alerts", route.Alerts(s))
-				m.HandleFunc("/api/v1/alerts/recent", route.Recent(s))
-				m.HandleFunc("/api/v1/status", route.Status(s, p))
+				api.HandlerFromMux(route.New(s, p), m)
 			},
 		),
 	)
@@ -77,29 +77,109 @@ func TestRunLifecycle(t *testing.T) {
 		base+"/api/v1/alerts",
 		http.StatusBadRequest,
 	)
-	status := getJSON[route.StatusResponse](t, base+"/api/v1/status")
+	status := getJSON[api.StatusResponse](t, base+"/api/v1/status")
 	assert.Integer(t, 2, status.TotalRecords)
-	assert.True(t, status.LastPoll != "")
-	alerts := getJSON[[]route.AlertsResponse](
+	assert.True(t, status.LastPoll != nil)
+	alerts := getJSON[[]api.AlertsResponse](
 		t,
 		base+"/api/v1/alerts?name=HighMemory",
 	)
 	assert.Count(t, 1, alerts)
 	assert.String(t, "fp1", alerts[0].Fingerprint)
-	assert.String(t, route.Firing, alerts[0].Status)
-	recent := getJSON[[]route.AlertsResponse](t, base+"/api/v1/alerts/recent")
+	assert.String(t, string(api.Firing), string(alerts[0].Status))
+	recent := getJSON[[]api.AlertsResponse](t, base+"/api/v1/alerts/recent")
 	assert.Count(t, 2, recent)
 	c.Remove("fp1")
 	p.Poll()
-	alerts = getJSON[[]route.AlertsResponse](
+	alerts = getJSON[[]api.AlertsResponse](
 		t,
 		base+"/api/v1/alerts?name=HighMemory",
 	)
 	assert.Count(t, 1, alerts)
-	assert.String(t, route.Resolved, alerts[0].Status)
-	assert.True(t, alerts[0].End != "")
-	status = getJSON[route.StatusResponse](t, base+"/api/v1/status")
+	assert.String(t, string(api.Resolved), string(alerts[0].Status))
+	assert.True(t, alerts[0].End != nil)
+	status = getJSON[api.StatusResponse](t, base+"/api/v1/status")
 	assert.Integer(t, 2, status.TotalRecords)
+}
+
+func TestGeneratedClient(t *testing.T) {
+	path := t.TempDir() + "/test.db"
+	s := store.New(path)
+	defer s.Close()
+	c := mock_client.New()
+	c.Add(
+		&alert.Alert{
+			Fingerprint: "fp1",
+			Name:        "HighMemory",
+			Severity:    "critical",
+			Summary:     "Memory above 90%",
+		},
+	)
+	g := logger.New(context.Background())
+	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour)
+	p.Poll()
+	port := system.FindUnusedPort(19500)
+	address := fmt.Sprintf(":%d", port)
+	l := lifecycle.New(
+		lifecycle.WithWorker(p),
+		lifecycle.WithServer(
+			address,
+			func(m *http.ServeMux) {
+				api.HandlerFromMux(route.New(s, p), m)
+			},
+		),
+	)
+	l.Run()
+	defer l.Stop()
+	assert.Listen(t, port)
+	base := fmt.Sprintf("http://localhost:%d", port)
+	cl, e := client.NewClientWithResponses(base)
+
+	if e != nil {
+		t.Fatal(e)
+	}
+
+	ctx := context.Background()
+	status, e := cl.GetStatusWithResponse(ctx)
+
+	if e != nil {
+		t.Fatal(e)
+	}
+
+	assert.Integer(t, http.StatusOK, status.StatusCode())
+	assert.NotNil(t, status.JSON200)
+	assert.Integer(t, 1, status.JSON200.TotalRecords)
+	assert.True(t, status.JSON200.LastPoll != nil)
+	alerts, e := cl.GetAlertsWithResponse(
+		ctx,
+		&client.GetAlertsParams{Name: "HighMemory"},
+	)
+
+	if e != nil {
+		t.Fatal(e)
+	}
+
+	assert.Integer(t, http.StatusOK, alerts.StatusCode())
+	assert.NotNil(t, alerts.JSON200)
+	assert.Count(t, 1, *alerts.JSON200)
+	assert.String(t, "fp1", (*alerts.JSON200)[0].Fingerprint)
+	assert.String(
+		t,
+		string(client.Firing),
+		string((*alerts.JSON200)[0].Status),
+	)
+	recent, e := cl.GetRecentAlertsWithResponse(
+		ctx,
+		&client.GetRecentAlertsParams{},
+	)
+
+	if e != nil {
+		t.Fatal(e)
+	}
+
+	assert.Integer(t, http.StatusOK, recent.StatusCode())
+	assert.NotNil(t, recent.JSON200)
+	assert.Count(t, 1, *recent.JSON200)
 }
 
 func getJSON[T any](

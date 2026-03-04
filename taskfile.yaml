@@ -7,7 +7,7 @@ tasks:
     cmds:
     - |
       mkdir -p fixture/lint/empty_directory
-      golint --fix --skip fixture,tmp
+      golint --fix --skip fixture,tmp,pkg/tool/goalertlog/api,pkg/tool/goalertlog/client
       #command -v gowait >/dev/null && gowait --process golangci-lint || true
       golangci-lint run
     silent: true
@@ -15,6 +15,11 @@ tasks:
   check:
     cmds:
     - gosec -fmt=json -out=tmp/gosec.json -stdout -verbose=text -no-fail ./...
+    silent: true
+  generate:
+    cmds:
+    - cd pkg/tool/goalertlog/api && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goalertlog/client && oapi-codegen --config config.yaml ../api/openapi.yaml
     silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:
@@ -37,6 +42,7 @@ tasks:
         https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \
         | sh -s -- -b $(go env GOPATH)/bin
       go install github.com/boumenot/gocover-cobertura@latest
+      go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
     silent: true
   install:
     cmds:

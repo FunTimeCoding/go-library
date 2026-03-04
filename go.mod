@@ -32,6 +32,7 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/gage-technologies/mistral-go v1.1.0
 	github.com/gdamore/tcell/v2 v2.13.8
+	github.com/getkin/kin-openapi v0.76.0
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.43.0
 	github.com/go-git/go-billy/v5 v5.8.0
@@ -60,6 +61,7 @@ require (
 	github.com/muesli/termenv v0.16.0
 	github.com/netbox-community/go-netbox/v4 v4.3.0
 	github.com/nsf/termbox-go v1.1.1
+	github.com/oapi-codegen/runtime v1.2.0
 	github.com/olekukonko/tablewriter v1.1.3
 	github.com/ollama/ollama v0.17.6
 	github.com/openai/openai-go/v3 v3.24.0
@@ -121,6 +123,7 @@ require (
 	github.com/amikos-tech/pure-tokenizers v0.1.1 // indirect
 	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
+	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/apenella/go-common-utils/data v0.0.0-20220913191136-86daaa87e7df // indirect
 	github.com/apenella/go-common-utils/error v0.0.0-20220913191136-86daaa87e7df // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
@@ -162,6 +165,7 @@ require (
 	github.com/getlantern/hex v0.0.0-20190417191902-c6586a6fe0b7 // indirect
 	github.com/getlantern/hidden v0.0.0-20190325191715-f02dbb02be55 // indirect
 	github.com/getlantern/ops v0.0.0-20190325191751-d70cb0d6f85f // indirect
+	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.7 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.3 // indirect

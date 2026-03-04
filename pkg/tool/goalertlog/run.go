@@ -9,6 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/api"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/poller"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/route"
@@ -47,9 +48,7 @@ func Run(o *option.Log) {
 		lifecycle.WithServer(
 			webConstant.Listen,
 			func(m *http.ServeMux) {
-				m.HandleFunc("/api/v1/alerts", route.Alerts(s))
-				m.HandleFunc("/api/v1/alerts/recent", route.Recent(s))
-				m.HandleFunc("/api/v1/status", route.Status(s, p))
+				api.HandlerFromMux(route.New(s, p), m)
 			},
 		),
 	)

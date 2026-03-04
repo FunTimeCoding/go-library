@@ -1,0 +1,105 @@
+openapi: "3.0.0"
+info:
+  title: goalertlog
+  version: 1.0.0
+paths:
+  /api/v1/alerts:
+    get:
+      operationId: getAlerts
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Alerts matching the given name.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AlertsResponse"
+        "400":
+          description: Missing or invalid name parameter.
+  /api/v1/alerts/recent:
+    get:
+      operationId: getRecentAlerts
+      parameters:
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Alerts within the given time range.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AlertsResponse"
+        "400":
+          description: Invalid start or end parameter.
+  /api/v1/status:
+    get:
+      operationId: getStatus
+      responses:
+        "200":
+          description: Service status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+components:
+  schemas:
+    AlertsResponse:
+      type: object
+      required:
+        - fingerprint
+        - name
+        - severity
+        - summary
+        - labels
+        - start
+        - status
+      properties:
+        fingerprint:
+          type: string
+        name:
+          type: string
+        severity:
+          type: string
+        summary:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        start:
+          type: string
+        end:
+          type: string
+        status:
+          type: string
+          enum:
+            - firing
+            - resolved
+    StatusResponse:
+      type: object
+      required:
+        - totalRecords
+      properties:
+        totalRecords:
+          type: integer
+        lastPoll:
+          type: string

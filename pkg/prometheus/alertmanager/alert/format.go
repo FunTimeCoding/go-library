@@ -24,7 +24,10 @@ func (a *Alert) Format(f *option.Format) string {
 		s.String(a.formatCategory(f))
 	}
 
+	linkLabel := a.Name
+
 	if a.Entity == "" && a.Category == "" {
+		linkLabel = "Alert"
 		s.String(a.formatName(f))
 	}
 
@@ -47,7 +50,7 @@ func (a *Alert) Format(f *option.Format) string {
 	}
 
 	s.String(a.formatConcern(f))
-	s.DetailLink(a.Link, "Alert", "")
+	s.DetailLink(a.Link, linkLabel, "")
 
 	if a.Runbook != constant.None {
 		s.DetailLink(a.Runbook, "Runbook", "Runbook")

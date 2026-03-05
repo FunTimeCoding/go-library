@@ -1,4 +1,4 @@
-package goalertlog
+package goalertlogd
 
 import (
 	"context"
@@ -11,11 +11,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/mock_client"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/api"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/client"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/poller"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/route"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/api"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/poller"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/route"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"io"
 	"net/http"
 	"testing"

@@ -7,13 +7,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/oapi-codegen/runtime"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
-
-	"github.com/oapi-codegen/runtime"
 )
 
 // Defines values for AlertsResponseStatus.

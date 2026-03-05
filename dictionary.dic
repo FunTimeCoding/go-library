@@ -49,11 +49,13 @@ nodename
 servname
 
 # go-library
+alertlog
 exitf
 ghjob
 ghpr
 goalert
 goalertlog
+goalertlogd
 gobuild
 gochk
 gochroma

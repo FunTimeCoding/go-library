@@ -3,7 +3,7 @@ package route
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/api"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/api"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 	"time"

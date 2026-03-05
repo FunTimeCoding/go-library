@@ -1,8 +1,8 @@
 package route
 
 import (
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/api"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/api"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 )
 
 func toResponse(records []store.Record) []api.AlertsResponse {

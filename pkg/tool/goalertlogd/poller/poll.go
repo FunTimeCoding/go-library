@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/advanced_option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"time"
 )
 

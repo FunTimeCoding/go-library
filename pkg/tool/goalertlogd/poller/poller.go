@@ -2,7 +2,7 @@ package poller
 
 import (
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"sync/atomic"
 	"time"
 )

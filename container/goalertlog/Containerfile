@@ -1,4 +1,4 @@
 FROM alpine:3
 RUN apk add --no-cache ca-certificates
-COPY tmp/goalertlog/linux-amd64/goalertlog /usr/local/bin/goalertlog
-ENTRYPOINT ["goalertlog"]
+COPY tmp/goalertlog/linux-amd64/goalertlogd /usr/local/bin/goalertlogd
+ENTRYPOINT ["goalertlogd"]

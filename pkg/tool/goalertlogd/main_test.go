@@ -1,4 +1,4 @@
-package goalertlog
+package goalertlogd
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -8,4 +8,3 @@ import (
 func TestStub(t *testing.T) {
 	assert.Stub(t)
 }
-

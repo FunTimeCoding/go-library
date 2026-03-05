@@ -1,11 +1,9 @@
 package goalertlog
 
 import (
-	"github.com/funtimecoding/go-library/pkg/argument"
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/alert_log"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/option"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -13,14 +11,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	pflag.String(
-		argument.Path,
-		"tmp/goalertlog.db",
-		"Database path",
-	)
 	monitor.ParseBind(version, gitHash, buildDate)
-	o := option.New()
-	o.DatabasePath = viper.GetString(argument.Path)
-	o.Version = version
-	Run(o)
+	l := alert_log.NewEnvironment()
+	fmt.Printf("Alerts: %s\n", l.Alerts())
 }

@@ -10,14 +10,13 @@ import (
 	"compress/gzip"
 	"encoding/base64"
 	"fmt"
+	"github.com/getkin/kin-openapi/openapi3"
+	"github.com/oapi-codegen/runtime"
 	"net/http"
 	"net/url"
 	"path"
 	"strings"
 	"time"
-
-	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/oapi-codegen/runtime"
 )
 
 // Defines values for AlertsResponseStatus.

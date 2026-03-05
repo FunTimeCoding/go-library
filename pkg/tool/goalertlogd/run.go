@@ -1,4 +1,4 @@
-package goalertlog
+package goalertlogd
 
 import (
 	"context"
@@ -9,11 +9,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/api"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/option"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/poller"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/route"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/api"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/option"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/poller"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/route"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 	"time"

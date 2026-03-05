@@ -7,7 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/mock_client"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"testing"
 	"time"
 )
@@ -15,7 +15,10 @@ import (
 var testLogger = logger.New(context.Background())
 
 func TestPoller(t *testing.T) {
-	assert.NotNil(t, New(nil, nil, testLogger, 1*time.Minute, 30*24*time.Hour))
+	assert.NotNil(
+		t,
+		New(nil, nil, testLogger, 1*time.Minute, 30*24*time.Hour),
+	)
 }
 
 func TestPollSavesNewAlert(t *testing.T) {

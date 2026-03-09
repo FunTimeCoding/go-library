@@ -25,6 +25,7 @@ func main() {
 
 		github.BranchRequest()
 		github.CleanJob()
+		github.Packages()
 		github.PullRequest()
 		github.Search()
 	}

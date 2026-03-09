@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/generate_request"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/generate_response"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/ollama/ollama/api"
 )
 
@@ -16,7 +15,7 @@ func (c *Client) Generate(v *generate_request.Request) *generate_response.Respon
 		r.Model = constant.Llama31
 	}
 
-	r.Stream = ptr.To(false)
+	r.Stream = new(false)
 	var result *api.GenerateResponse
 	errors.PanicOnError(
 		c.client.Generate(

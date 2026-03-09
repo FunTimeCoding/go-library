@@ -15,6 +15,8 @@ const (
 
 	EventHeader     = "X-GitHub-Event"
 	SignatureHeader = "X-Hub-Signature-256"
+
+	ContainerPackageType = "container"
 )
 
 var Format = option.ExtendedColor.Copy()

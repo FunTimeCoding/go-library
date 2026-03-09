@@ -2,7 +2,6 @@ package repository
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/google/go-github/v84/github"
 	"testing"
@@ -12,7 +11,7 @@ import (
 func TestRepository(t *testing.T) {
 	r := New(
 		&github.Repository{
-			Name:      ptr.To(strings.Alfa),
+			Name:      new(strings.Alfa),
 			CreatedAt: &github.Timestamp{},
 		},
 	)

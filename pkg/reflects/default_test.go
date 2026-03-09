@@ -2,7 +2,6 @@ package reflects
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"testing"
 )
@@ -17,5 +16,5 @@ func TestDefault(t *testing.T) {
 	assert.False(t, Default(true))
 	assert.False(t, Default(1))
 	assert.False(t, Default(strings.Alfa))
-	assert.False(t, Default(ptr.To(strings.Alfa)))
+	assert.False(t, Default(new(strings.Alfa)))
 }

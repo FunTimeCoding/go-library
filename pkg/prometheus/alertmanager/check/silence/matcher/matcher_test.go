@@ -3,7 +3,6 @@ package matcher
 import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/silence"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"testing"
 	"time"
@@ -274,8 +273,8 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 							&end,
 							tt.matcherName,
 							tt.matcherValue,
-							ptr.To(true), // equal
-							ptr.To(true), // regex
+							new(true), // equal
+							new(true), // regex
 						),
 						[]*alert.Alert{newAlert(tt.labels)}, now,
 					),

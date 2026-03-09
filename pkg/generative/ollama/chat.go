@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/chat_request"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/chat_response"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/ollama/ollama/api"
 )
 
@@ -16,7 +15,7 @@ func (c *Client) Chat(v *chat_request.Request) *chat_response.Response {
 		r.Model = constant.Llama31
 	}
 
-	r.Stream = ptr.To(false)
+	r.Stream = new(false)
 	var result *api.ChatResponse
 	errors.PanicOnError(
 		c.client.Chat(

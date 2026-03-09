@@ -2,7 +2,6 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/job"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -13,7 +12,7 @@ func (c *Client) PipelineJobs(
 	result, r, e := c.client.Jobs.ListPipelineJobs(
 		project,
 		pipeline,
-		&gitlab.ListJobsOptions{IncludeRetried: ptr.To(true)},
+		&gitlab.ListJobsOptions{IncludeRetried: new(true)},
 	)
 	panicOnError(r, e)
 

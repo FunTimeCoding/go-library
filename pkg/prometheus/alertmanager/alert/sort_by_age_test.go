@@ -2,7 +2,6 @@ package alert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"testing"
 )
@@ -12,14 +11,8 @@ func TestSortByAge(t *testing.T) {
 	dayTwo := assert.NewDay(2)
 	descending := SortByAge(
 		[]*Alert{
-			{
-				Name:  strings.Alfa,
-				Start: ptr.To(dayOne),
-			},
-			{
-				Name:  strings.Bravo,
-				Start: ptr.To(dayTwo),
-			},
+			{Name: strings.Alfa, Start: new(dayOne)},
+			{Name: strings.Bravo, Start: new(dayTwo)},
 		},
 		false,
 	)
@@ -27,14 +20,8 @@ func TestSortByAge(t *testing.T) {
 	assert.String(t, "Alfa", descending[1].Name)
 	ascending := SortByAge(
 		[]*Alert{
-			{
-				Name:  strings.Alfa,
-				Start: ptr.To(dayOne),
-			},
-			{
-				Name:  strings.Bravo,
-				Start: ptr.To(dayTwo),
-			},
+			{Name: strings.Alfa, Start: new(dayOne)},
+			{Name: strings.Bravo, Start: new(dayTwo)},
 		},
 		true,
 	)

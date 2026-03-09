@@ -2,7 +2,6 @@ package opsgenie
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/opsgenie/opsgenie-go-sdk-v2/schedule"
 )
 
@@ -11,7 +10,7 @@ func (c *Client) OnCalls(scheduleName string) *schedule.GetOnCallsResult {
 		c.context,
 		&schedule.GetOnCallsRequest{
 			ScheduleIdentifier: scheduleName,
-			Flat:               ptr.To(true),
+			Flat:               new(true),
 		},
 	)
 	errors.PanicOnError(e)

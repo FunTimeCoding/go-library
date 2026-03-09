@@ -1,9 +1,6 @@
 package gitlab
 
-import (
-	"github.com/funtimecoding/go-library/pkg/ptr"
-	"gitlab.com/gitlab-org/api/client-go"
-)
+import "gitlab.com/gitlab-org/api/client-go"
 
 func (c *Client) CreatePipeline(
 	project int64,
@@ -13,7 +10,7 @@ func (c *Client) CreatePipeline(
 	result, r, e := c.client.Pipelines.CreatePipeline(
 		project,
 		&gitlab.CreatePipelineOptions{
-			Ref:       ptr.To(reference),
+			Ref:       new(reference),
 			Variables: &v,
 		},
 	)

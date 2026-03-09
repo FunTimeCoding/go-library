@@ -3,7 +3,6 @@ package ollama
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/ollama/ollama/api"
 )
 
@@ -16,7 +15,7 @@ func (c *Client) GenerateStream(
 		r.Model = constant.Llama31
 	}
 
-	r.Stream = ptr.To(true)
+	r.Stream = new(true)
 	errors.PanicOnError(
 		c.client.Generate(
 			c.context,

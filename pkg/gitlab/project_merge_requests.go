@@ -3,7 +3,6 @@ package gitlab
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/merge_request"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -16,7 +15,7 @@ func (c *Client) ProjectMergeRequests(
 
 	for {
 		o := &gitlab.ListProjectMergeRequestsOptions{
-			State: ptr.To(constant.OpenedState),
+			State: new(constant.OpenedState),
 			ListOptions: gitlab.ListOptions{
 				PerPage: constant.PerPage100,
 				Page:    number,
@@ -24,7 +23,7 @@ func (c *Client) ProjectMergeRequests(
 		}
 
 		if all {
-			o.State = ptr.To("all")
+			o.State = new("all")
 		}
 
 		page, r, e := c.client.MergeRequests.ListProjectMergeRequests(

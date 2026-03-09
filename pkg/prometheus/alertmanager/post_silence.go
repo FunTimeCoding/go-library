@@ -3,7 +3,6 @@ package alertmanager
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/system"
 	library "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/prometheus/alertmanager/api/v2/client/silence"
@@ -27,16 +26,16 @@ func (c *Client) PostSilence(
 		ID: identifier,
 		Silence: models.Silence{
 			Comment:   &comment,
-			CreatedBy: ptr.To(system.User().Username),
+			CreatedBy: new(system.User().Username),
 			Matchers: []*models.Matcher{
 				{
-					Name:    ptr.To(constant.AlertnameLabel),
+					Name:    new(constant.AlertnameLabel),
 					Value:   &alert,
-					IsRegex: ptr.To(false),
+					IsRegex: new(false),
 				},
 			},
-			StartsAt: ptr.To(library.Scan(start)),
-			EndsAt:   ptr.To(library.Scan(end)),
+			StartsAt: new(library.Scan(start)),
+			EndsAt:   new(library.Scan(end)),
 		},
 	}
 	r, e := c.client.Silence.PostSilences(p)

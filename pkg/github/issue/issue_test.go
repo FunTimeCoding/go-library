@@ -2,7 +2,6 @@ package issue
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/google/go-github/v84/github"
@@ -15,8 +14,8 @@ func TestIssue(t *testing.T) {
 			RepositoryURL: locator.New(
 				"api.github.com",
 			).Path("/repos/funtimecoding/go-library").Pointer(),
-			Title:   ptr.To(strings.Alfa),
-			HTMLURL: ptr.To(strings.Bravo),
+			Title:   new(strings.Alfa),
+			HTMLURL: new(strings.Bravo),
 		},
 	)
 	i.Raw = nil

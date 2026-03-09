@@ -3,7 +3,6 @@ package gitlab
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/job"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -22,8 +21,8 @@ func (c *Client) RunnerJobs(
 					PerPage: constant.PerPage100,
 					Page:    number,
 				},
-				OrderBy: ptr.To(constant.Identifier),
-				Sort:    ptr.To(constant.Descending),
+				OrderBy: new(constant.Identifier),
+				Sort:    new(constant.Descending),
 			},
 		)
 		panicOnError(r, e)

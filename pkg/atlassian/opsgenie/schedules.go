@@ -3,7 +3,6 @@ package opsgenie
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/schedule"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	rawSchedule "github.com/opsgenie/opsgenie-go-sdk-v2/schedule"
 	"sort"
 )
@@ -11,7 +10,7 @@ import (
 func (c *Client) Schedules() []*schedule.Schedule {
 	response, e := c.userClient.Schedule.List(
 		c.context,
-		&rawSchedule.ListRequest{Expand: ptr.To(true)},
+		&rawSchedule.ListRequest{Expand: new(true)},
 	)
 	errors.PanicOnError(e)
 	result := schedule.NewSlice(response.Schedule, c.TeamMap())

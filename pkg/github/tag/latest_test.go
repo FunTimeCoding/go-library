@@ -2,7 +2,6 @@ package tag
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"github.com/google/go-github/v84/github"
 	"testing"
 )
@@ -13,8 +12,8 @@ func TestLatest(t *testing.T) {
 		"v1.0.1",
 		Latest(
 			[]*github.RepositoryTag{
-				{Name: ptr.To("v1.0.0")},
-				{Name: ptr.To("v1.0.1")},
+				{Name: new("v1.0.0")},
+				{Name: new("v1.0.1")},
 			},
 		).GetName(),
 	)

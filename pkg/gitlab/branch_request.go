@@ -2,7 +2,6 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/merge_request"
-	"github.com/funtimecoding/go-library/pkg/ptr"
 	"gitlab.com/gitlab-org/api/client-go"
 )
 
@@ -13,7 +12,7 @@ func (c *Client) BranchRequest(
 	result, r, e := c.client.MergeRequests.ListProjectMergeRequests(
 		project,
 		&gitlab.ListProjectMergeRequestsOptions{
-			SourceBranch: ptr.To(branch),
+			SourceBranch: new(branch),
 			ListOptions:  gitlab.ListOptions{PerPage: 1},
 		},
 	)

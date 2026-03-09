@@ -8,4 +8,3 @@ import (
 func TestStub(t *testing.T) {
 	assert.Stub(t)
 }
-

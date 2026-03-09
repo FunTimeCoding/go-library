@@ -8,11 +8,11 @@ paths:
     get:
       operationId: getAlerts
       parameters:
-        - name: name
-          in: query
-          required: true
-          schema:
-            type: string
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: Alerts matching the given name.
@@ -28,18 +28,18 @@ paths:
     get:
       operationId: getRecentAlerts
       parameters:
-        - name: start
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: end
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date-time
+      - name: start
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: end
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
       responses:
         "200":
           description: Alerts within the given time range.
@@ -66,13 +66,13 @@ components:
     AlertsResponse:
       type: object
       required:
-        - fingerprint
-        - name
-        - severity
-        - summary
-        - labels
-        - start
-        - status
+      - fingerprint
+      - name
+      - severity
+      - summary
+      - labels
+      - start
+      - status
       properties:
         fingerprint:
           type: string
@@ -93,12 +93,12 @@ components:
         status:
           type: string
           enum:
-            - firing
-            - resolved
+          - firing
+          - resolved
     StatusResponse:
       type: object
       required:
-        - totalRecords
+      - totalRecords
       properties:
         totalRecords:
           type: integer

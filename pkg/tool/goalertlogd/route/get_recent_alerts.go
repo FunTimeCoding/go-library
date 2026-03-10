@@ -3,7 +3,7 @@ package route
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/api"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 	"time"
@@ -12,7 +12,7 @@ import (
 func (h *Handler) GetRecentAlerts(
 	w http.ResponseWriter,
 	_ *http.Request,
-	params api.GetRecentAlertsParams,
+	params server.GetRecentAlertsParams,
 ) {
 	now := time.Now()
 	start := now.Add(-1 * time.Hour)

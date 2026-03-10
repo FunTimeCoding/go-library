@@ -3,7 +3,7 @@ package route
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/api"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
@@ -11,7 +11,7 @@ import (
 func (h *Handler) GetAlerts(
 	w http.ResponseWriter,
 	_ *http.Request,
-	params api.GetAlertsParams,
+	params server.GetAlertsParams,
 ) {
 	w.Header().Set(constant.ContentType, constant.Object)
 	errors.PanicOnError(

@@ -13,6 +13,7 @@ Design and coding specs live in `.claude/spec/`:
 - `testing.md` — integration testing patterns (mocks, lifecycle HTTP, store)
 - `build.md` — gobuild cross-compilation and linker variable convention
 - `taskfile.md` — task runner, git hooks, CI pipeline
+- `locator.md` — fluent URL builder (`pkg/web/locator`)
 
 Read the relevant spec before working in that area.
 

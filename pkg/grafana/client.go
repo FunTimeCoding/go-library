@@ -1,7 +1,7 @@
 package grafana
 
-import goapi "github.com/grafana/grafana-openapi-client-go/client"
+import "github.com/grafana/grafana-openapi-client-go/client"
 
 type Client struct {
-	client *goapi.GrafanaHTTPAPI
+	client *client.GrafanaHTTPAPI
 }

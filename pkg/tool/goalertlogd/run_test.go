@@ -11,10 +11,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/mock_client"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/api"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/client"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/poller"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/route"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"io"
 	"net/http"
@@ -53,7 +53,7 @@ func TestRunLifecycle(t *testing.T) {
 		lifecycle.WithServer(
 			address,
 			func(m *http.ServeMux) {
-				api.HandlerFromMux(route.New(s, p), m)
+				server.HandlerFromMux(route.New(s, p), m)
 			},
 		),
 	)
@@ -77,28 +77,28 @@ func TestRunLifecycle(t *testing.T) {
 		base+"/api/v1/alerts",
 		http.StatusBadRequest,
 	)
-	status := getJSON[api.StatusResponse](t, base+"/api/v1/status")
+	status := getJSON[server.StatusResponse](t, base+"/api/v1/status")
 	assert.Integer(t, 2, status.TotalRecords)
 	assert.True(t, status.LastPoll != nil)
-	alerts := getJSON[[]api.AlertsResponse](
+	alerts := getJSON[[]server.AlertsResponse](
 		t,
 		base+"/api/v1/alerts?name=HighMemory",
 	)
 	assert.Count(t, 1, alerts)
 	assert.String(t, "fp1", alerts[0].Fingerprint)
-	assert.String(t, string(api.Firing), string(alerts[0].Status))
-	recent := getJSON[[]api.AlertsResponse](t, base+"/api/v1/alerts/recent")
+	assert.String(t, string(server.Firing), string(alerts[0].Status))
+	recent := getJSON[[]server.AlertsResponse](t, base+"/api/v1/alerts/recent")
 	assert.Count(t, 2, recent)
 	c.Remove("fp1")
 	p.Poll()
-	alerts = getJSON[[]api.AlertsResponse](
+	alerts = getJSON[[]server.AlertsResponse](
 		t,
 		base+"/api/v1/alerts?name=HighMemory",
 	)
 	assert.Count(t, 1, alerts)
-	assert.String(t, string(api.Resolved), string(alerts[0].Status))
+	assert.String(t, string(server.Resolved), string(alerts[0].Status))
 	assert.True(t, alerts[0].End != nil)
-	status = getJSON[api.StatusResponse](t, base+"/api/v1/status")
+	status = getJSON[server.StatusResponse](t, base+"/api/v1/status")
 	assert.Integer(t, 2, status.TotalRecords)
 }
 
@@ -125,7 +125,7 @@ func TestGeneratedClient(t *testing.T) {
 		lifecycle.WithServer(
 			address,
 			func(m *http.ServeMux) {
-				api.HandlerFromMux(route.New(s, p), m)
+				server.HandlerFromMux(route.New(s, p), m)
 			},
 		),
 	)

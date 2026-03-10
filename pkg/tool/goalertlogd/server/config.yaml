@@ -1,5 +1,5 @@
 ---
-package: api
+package: server
 generate:
   std-http-server: true
   models: true

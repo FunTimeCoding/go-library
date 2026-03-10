@@ -7,7 +7,7 @@ tasks:
     cmds:
     - |
       mkdir -p fixture/lint/empty_directory
-      golint --fix --skip fixture,tmp,pkg/tool/goalertlog/api,pkg/tool/goalertlog/client
+      golint --fix --skip fixture,tmp,pkg/tool/goalertlog/server,pkg/tool/goalertlog/client
       #command -v gowait >/dev/null && gowait --process golangci-lint || true
       golangci-lint run
     silent: true
@@ -18,8 +18,8 @@ tasks:
     silent: true
   generate:
     cmds:
-    - cd pkg/tool/goalertlog/api && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/goalertlog/client && oapi-codegen --config config.yaml ../api/openapi.yaml
+    - cd pkg/tool/goalertlog/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goalertlog/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:

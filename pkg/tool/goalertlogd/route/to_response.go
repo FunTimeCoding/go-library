@@ -1,27 +1,27 @@
 package route
 
 import (
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/api"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 )
 
-func toResponse(records []store.Record) []api.AlertsResponse {
-	result := make([]api.AlertsResponse, 0, len(records))
+func toResponse(records []store.Record) []server.AlertsResponse {
+	result := make([]server.AlertsResponse, 0, len(records))
 
 	for _, record := range records {
-		entry := api.AlertsResponse{
+		entry := server.AlertsResponse{
 			Fingerprint: record.Fingerprint,
 			Name:        record.Name,
 			Severity:    record.Severity,
 			Summary:     record.Summary,
 			Labels:      record.Labels,
 			Start:       record.Start.Format(DateFormat),
-			Status:      api.Firing,
+			Status:      server.Firing,
 		}
 
 		if record.End != nil {
 			entry.End = new(record.End.Format(DateFormat))
-			entry.Status = api.Resolved
+			entry.Status = server.Resolved
 		}
 
 		result = append(result, entry)

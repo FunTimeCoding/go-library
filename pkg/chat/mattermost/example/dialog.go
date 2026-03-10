@@ -59,15 +59,15 @@ func Dialog() {
 		callback := locator.New(
 			constant.Localhost,
 		).Port(8080).Insecure().Path(location.Callback).String()
-		model.ParseSlackAttachment(
+		model.ParseMessageAttachment(
 			p,
-			[]*model.SlackAttachment{
+			[]*model.MessageAttachment{
 				{
 					AuthorName: "alpha",
 					Title:      "bravo",
 					Text:       "charlie",
 					Color:      "#36a64f",
-					Fields: []*model.SlackAttachmentField{
+					Fields: []*model.MessageAttachmentField{
 						{
 							Title: "Current Version",
 							Value: "v2.1.0",

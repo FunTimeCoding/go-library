@@ -29,6 +29,18 @@ const (
 
 	MissingTestFileKey  = "missing_test_file"
 	MissingTestFileText = "No test file in package"
+
+	MissingBlankBeforeControlKey  = "missing_blank_before_control"
+	MissingBlankBeforeControlText = "Missing blank line before control block"
+
+	MissingBlankBeforeExitKey  = "missing_blank_before_exit"
+	MissingBlankBeforeExitText = "Missing blank line before return/break/continue"
+
+	ExtraneousBlankLineKey  = "extraneous_blank_line"
+	ExtraneousBlankLineText = "Extraneous blank line"
+
+	MissingBlankAfterControlKey  = "missing_blank_after_control"
+	MissingBlankAfterControlText = "Missing blank line after control block"
 )
 
 var PackageBlocklist = []string{"api"}

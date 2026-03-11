@@ -5,4 +5,7 @@ import (
 	"io"
 )
 
-type Checker func(string, io.Reader) *file_report.Report
+type Checker func(
+	string,
+	io.Reader,
+) *file_report.Report

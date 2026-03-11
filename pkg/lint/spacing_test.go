@@ -2,6 +2,7 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	lintConstant "github.com/funtimecoding/go-library/pkg/lint/constant"
 	library "github.com/funtimecoding/go-library/pkg/strings"
 	"strings"
 	"testing"
@@ -20,8 +21,8 @@ func TestSpacingBlankBeforeControl(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      "missing_blank_before_control",
-				Text:     "Missing blank line before control block",
+				Key:      lintConstant.MissingBlankBeforeControlKey,
+				Text:     lintConstant.MissingBlankBeforeControlText,
 				Path:     "Alfa",
 				Line:     5,
 				LineText: "\tif x > 0 {",
@@ -45,8 +46,8 @@ func TestSpacingBlankBeforeReturn(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      "missing_blank_before_exit",
-				Text:     "Missing blank line before return/break/continue",
+				Key:      lintConstant.MissingBlankBeforeExitKey,
+				Text:     lintConstant.MissingBlankBeforeExitText,
 				Path:     "Bravo",
 				Line:     5,
 				LineText: "\treturn x",
@@ -70,8 +71,8 @@ func TestSpacingBlankAfterControl(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      "missing_blank_after_control",
-				Text:     "Missing blank line after control block",
+				Key:      lintConstant.MissingBlankAfterControlKey,
+				Text:     lintConstant.MissingBlankAfterControlText,
 				Path:     "Charlie",
 				Line:     9,
 				LineText: "\tfmt.Println(\"b\")",
@@ -163,14 +164,56 @@ func TestSpacingExtraneousBlanks(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      "extraneous_blank_line",
-				Text:     "Extraneous blank line",
+				Key:      lintConstant.ExtraneousBlankLineKey,
+				Text:     lintConstant.ExtraneousBlankLineText,
 				Path:     "Delta",
 				Line:     6,
 				LineText: "",
 			},
 		},
 		"package example\n\nfunc Example() {\n\tx := 1\n\n\ty := 2\n}\n",
+		l,
+	)
+}
+
+func TestSpacingClean(t *testing.T) {
+	l := Spacing(
+		library.Juliett,
+		strings.NewReader(
+			"package example\n\nfunc Example() {\n\tfmt.Println(\"a\")\n}\n",
+		),
+	)
+	assertReport(
+		t,
+		"Juliett",
+		false,
+		nil,
+		"package example\n\nfunc Example() {\n\tfmt.Println(\"a\")\n}\n",
+		l,
+	)
+}
+
+func TestSpacingDoubleBlankAfterClosingBrace(t *testing.T) {
+	l := Spacing(
+		library.India,
+		strings.NewReader(
+			"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n\n\n\tfmt.Println(\"b\")\n}\n",
+		),
+	)
+	assertReport(
+		t,
+		"India",
+		true,
+		[]*concern.Concern{
+			{
+				Key:      lintConstant.ExtraneousBlankLineKey,
+				Text:     lintConstant.ExtraneousBlankLineText,
+				Path:     "India",
+				Line:     8,
+				LineText: "",
+			},
+		},
+		"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n\n\tfmt.Println(\"b\")\n}\n",
 		l,
 	)
 }

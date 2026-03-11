@@ -1,22 +1,10 @@
 package lint
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/file_report"
-	"github.com/funtimecoding/go-library/pkg/system"
 	"io"
 	"strings"
-)
-
-const (
-	missingBlankBeforeControlKey  = "missing_blank_before_control"
-	missingBlankBeforeControlText = "Missing blank line before control block"
-	missingBlankBeforeExitKey     = "missing_blank_before_exit"
-	missingBlankBeforeExitText    = "Missing blank line before return/break/continue"
-	extraneousBlankLineKey        = "extraneous_blank_line"
-	extraneousBlankLineText       = "Extraneous blank line"
-	missingBlankAfterControlKey   = "missing_blank_after_control"
-	missingBlankAfterControlText  = "Missing blank line after control block"
 )
 
 func Spacing(
@@ -44,6 +32,7 @@ func Spacing(
 
 		isClosingBrace := trimmed == "}" ||
 			strings.HasPrefix(trimmed, "} else")
+
 		prevOpensBlock := strings.HasSuffix(
 			strings.TrimSpace(prevLine), "{",
 		)
@@ -51,8 +40,8 @@ func Spacing(
 		if isControlStart && !prevWasBlank && prevLine != "" && !prevOpensBlock {
 			s.ChangedLine("")
 			s.AddConcern(
-				missingBlankBeforeControlKey,
-				missingBlankBeforeControlText,
+				constant.MissingBlankBeforeControlKey,
+				constant.MissingBlankBeforeControlText,
 				path,
 				number,
 				line,
@@ -62,8 +51,8 @@ func Spacing(
 		if isExit && !prevWasBlank && prevLine != "" && !prevOpensBlock {
 			s.ChangedLine("")
 			s.AddConcern(
-				missingBlankBeforeExitKey,
-				missingBlankBeforeExitText,
+				constant.MissingBlankBeforeExitKey,
+				constant.MissingBlankBeforeExitText,
 				path,
 				number,
 				line,
@@ -73,8 +62,8 @@ func Spacing(
 		if needBlankAfterClosingBrace && !isBlank && !isClosingBrace {
 			s.ChangedLine("")
 			s.AddConcern(
-				missingBlankAfterControlKey,
-				missingBlankAfterControlText,
+				constant.MissingBlankAfterControlKey,
+				constant.MissingBlankAfterControlText,
 				path,
 				number,
 				line,
@@ -84,12 +73,13 @@ func Spacing(
 
 		if isBlank && prevWasBlank {
 			s.AddConcern(
-				extraneousBlankLineKey,
-				extraneousBlankLineText,
+				constant.ExtraneousBlankLineKey,
+				constant.ExtraneousBlankLineText,
 				path,
 				number,
 				line,
 			)
+			needBlankAfterClosingBrace = false
 
 			continue
 		}
@@ -104,13 +94,6 @@ func Spacing(
 
 		prevLine = line
 		prevWasBlank = isBlank
-	}
-
-	s.Fix = func() {
-		if s.Fixed != "" {
-			fmt.Printf("Fix spacing %s\n", path)
-			system.SaveFile(path, s.Fixed)
-		}
 	}
 
 	return s.Finalize()

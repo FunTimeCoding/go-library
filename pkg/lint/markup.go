@@ -30,7 +30,7 @@ func Markup(
 				)
 			}
 		} else {
-			s.ChangedLine(line)
+			s.PassLine(line)
 		}
 	}
 

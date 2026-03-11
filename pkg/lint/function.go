@@ -54,7 +54,7 @@ func Function(
 					)
 				} else {
 					for _, funcLine := range funcLines {
-						s.ChangedLine(funcLine)
+						s.PassLine(funcLine)
 					}
 				}
 
@@ -66,7 +66,7 @@ func Function(
 		}
 
 		if !inFuncBody {
-			s.ChangedLine(line)
+			s.PassLine(line)
 		}
 	}
 

@@ -89,7 +89,7 @@ func Import(
 				block = block[:0]
 			}
 		} else {
-			s.ChangedLine(line)
+			s.PassLine(line)
 		}
 	}
 

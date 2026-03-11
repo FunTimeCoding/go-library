@@ -7,6 +7,14 @@ import (
 	"testing"
 )
 
+func TestMarkupClean(t *testing.T) {
+	l := Markup(
+		stringLibrary.Bravo,
+		strings.NewReader("---\nmyKey: myValue\n"),
+	)
+	assertReport(t, "Bravo", false, nil, "", l)
+}
+
 func TestMarkup(t *testing.T) {
 	l := Markup(
 		stringLibrary.Alfa,

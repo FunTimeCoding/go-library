@@ -7,6 +7,16 @@ import (
 	"testing"
 )
 
+func TestImportClean(t *testing.T) {
+	l := Import(
+		stringLibrary.Bravo,
+		strings.NewReader(
+			"package example\n\nimport \"fmt\"\n\nfunc Example() {\n\tfmt.Println(\"Hello.\")\n}\n",
+		),
+	)
+	assertReport(t, "Bravo", false, nil, "", l)
+}
+
 func TestGo(t *testing.T) {
 	l := Import(
 		stringLibrary.Alfa,

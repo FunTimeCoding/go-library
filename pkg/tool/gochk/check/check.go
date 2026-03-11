@@ -22,6 +22,7 @@ func Check() {
 		fmt.Printf("Failed: %s\n", Execute(command.Failed()))
 		// TODO: Load average > CPU cores check
 		diskFull()
+
 		if run.CommandExists(linux.Jc) {
 			if port := viper.GetString(argument.Port); port != "" {
 				ports := split.Comma(port)

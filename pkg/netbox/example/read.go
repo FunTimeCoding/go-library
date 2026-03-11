@@ -33,6 +33,7 @@ func Read() {
 	for _, s := range n.DataSources() {
 		fmt.Printf("DataSource: %s\n", s.Format(f))
 	}
+
 	// TODO: ExportTemplate, this optionally depends on DataSource
 	//  Whats a good use case?
 	for _, t := range n.ExportTemplates() {
@@ -44,9 +45,11 @@ func Read() {
 	for _, i := range n.CustomFields() {
 		fmt.Printf("CustomField: %s\n", i.Format(f))
 	}
+
 	for _, c := range n.CustomFieldChoices() {
 		fmt.Printf("CustomFieldChoice: %s\n", c.Format(f))
 	}
+
 	for _, l := range n.CustomLinks() {
 		fmt.Printf("CustomLink: %s\n", l.Format(f))
 	}

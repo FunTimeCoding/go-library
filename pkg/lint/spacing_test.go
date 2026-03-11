@@ -213,6 +213,23 @@ func TestSpacingClosingBraceBeforeComma(t *testing.T) {
 	assertReport(t, "Lima", false, nil, "package example\n\nfunc Example(run func()) {\n\trun()\n}\n\nfunc Call() {\n\tExample(func() {\n\t\tif true {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\t})\n}\n", l)
 }
 
+func TestSpacingContinueAsIdentifierPrefix(t *testing.T) {
+	l := Spacing(
+		library.Mike,
+		strings.NewReader(
+			"package example\n\nfunc Example(\n\tcontinueOnError bool,\n) {\n\tfmt.Println(continueOnError)\n}\n",
+		),
+	)
+	assertReport(
+		t,
+		"Mike",
+		false,
+		nil,
+		"package example\n\nfunc Example(\n\tcontinueOnError bool,\n) {\n\tfmt.Println(continueOnError)\n}\n",
+		l,
+	)
+}
+
 func TestSpacingCommentBeforeControl(t *testing.T) {
 	l := Spacing(
 		library.Mike,

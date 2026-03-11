@@ -43,9 +43,9 @@ func Spacing(
 			strings.HasPrefix(trimmed, "switch ") ||
 			strings.HasPrefix(trimmed, "select ")
 
-		isExit := strings.HasPrefix(trimmed, "return") ||
-			strings.HasPrefix(trimmed, "break") ||
-			strings.HasPrefix(trimmed, "continue")
+		isExit := trimmed == "return" || strings.HasPrefix(trimmed, "return ") ||
+			trimmed == "break" || strings.HasPrefix(trimmed, "break ") ||
+			trimmed == "continue" || strings.HasPrefix(trimmed, "continue ")
 
 		isClosingBrace := strings.HasPrefix(trimmed, "}") ||
 			strings.HasPrefix(trimmed, "case ") ||

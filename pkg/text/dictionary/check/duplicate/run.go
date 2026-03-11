@@ -35,6 +35,7 @@ func Run() {
 
 	if len(duplicates) == 0 {
 		fmt.Println("No duplicate words found")
+
 		return
 	}
 

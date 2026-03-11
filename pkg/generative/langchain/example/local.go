@@ -26,6 +26,7 @@ func Local() {
 					chunk []byte,
 				) error {
 					fmt.Printf("chunk len=%d: %s\n", len(chunk), chunk)
+
 					return nil
 				},
 			),

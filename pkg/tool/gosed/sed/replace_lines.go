@@ -18,6 +18,7 @@ func replaceLines(
 				// Keep indentation
 				indent := l[:len(l)-len(strings.TrimLeft(l, " \t"))]
 				lines[i] = indent + prefix + replace
+
 				break
 			}
 		}

@@ -8,6 +8,7 @@ import (
 
 func New() *Client {
 	h := system.Home()
+
 	return &Client{
 		home:          h,
 		workDirectory: join.Absolute(h, constant.DownloadsPath),

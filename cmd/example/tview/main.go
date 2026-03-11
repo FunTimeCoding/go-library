@@ -19,9 +19,11 @@ func main() {
 	for r := 0; r < rows; r++ {
 		for c := 0; c < cols; c++ {
 			color := tcell.ColorWhite
+
 			if c < 1 || r < 1 {
 				color = tcell.ColorYellow
 			}
+
 			table.SetCell(
 				r, c,
 				tview.NewTableCell(lorem[word]).
@@ -37,6 +39,7 @@ func main() {
 			if key == tcell.KeyEscape {
 				app.Stop()
 			}
+
 			if key == tcell.KeyEnter {
 				table.SetSelectable(true, true)
 			}

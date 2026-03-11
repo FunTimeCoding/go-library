@@ -53,6 +53,7 @@ func OllamaSession() {
 			if u.SentFrom().UserName == ownName {
 				continue
 			}
+
 			fmt.Println(m.Format(f))
 			history := multi_line.New()
 

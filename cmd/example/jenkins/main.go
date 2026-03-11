@@ -14,6 +14,7 @@ func main() {
 	if false {
 		plugins := j.Plugins()
 		fmt.Printf("Count: %d\n", len(plugins))
+
 		for _, p := range plugins {
 			fmt.Printf("%s %s\n", p.ShortName, p.Version)
 

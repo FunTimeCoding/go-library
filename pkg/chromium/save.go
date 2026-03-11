@@ -37,6 +37,7 @@ func (c *Client) Save(
 						time.Since(t2),
 						e,
 					)
+
 					return e
 				}
 
@@ -54,6 +55,7 @@ func (c *Client) Save(
 						time.Since(t3),
 						e,
 					)
+
 					return e
 				}
 

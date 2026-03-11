@@ -2,15 +2,20 @@ package lint
 
 import (
 	"path/filepath"
-	"sort"
 	"strings"
 )
 
-func missingTestDirs(paths []string) []string {
+func missingTestDirs(paths []string) map[string]string {
 	dirs := make(map[string]bool)
+	representative := make(map[string]string)
 
 	for _, p := range paths {
-		dirs[filepath.Dir(p)] = false
+		dir := filepath.Dir(p)
+
+		if _, seen := dirs[dir]; !seen {
+			dirs[dir] = false
+			representative[dir] = p
+		}
 	}
 
 	for _, p := range paths {
@@ -19,15 +24,13 @@ func missingTestDirs(paths []string) []string {
 		}
 	}
 
-	var result []string
+	result := make(map[string]string)
 
 	for dir, hasTest := range dirs {
 		if !hasTest {
-			result = append(result, dir)
+			result[dir] = representative[dir]
 		}
 	}
-
-	sort.Strings(result)
 
 	return result
 }

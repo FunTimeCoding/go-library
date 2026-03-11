@@ -7,13 +7,13 @@ import (
 	"testing"
 )
 
-func TestLintVFSImportFix(t *testing.T) {
+func TestCheckImportFix(t *testing.T) {
 	v := vfs.New()
 	v.Write(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
 	)
-	fixes := LintVFS(v, option.New("", false), false)
+	fixes := Check(v, option.New("", false), false)
 	assert.String(
 		t,
 		"package foo\n\nimport \"fmt\"\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
@@ -21,7 +21,7 @@ func TestLintVFSImportFix(t *testing.T) {
 	)
 }
 
-func TestLintVFSCleanNoFixes(t *testing.T) {
+func TestCheckCleanNoFixes(t *testing.T) {
 	v := vfs.New()
 	v.Write(
 		"pkg/foo/foo.go",
@@ -31,22 +31,22 @@ func TestLintVFSCleanNoFixes(t *testing.T) {
 		"pkg/foo/foo_test.go",
 		"package foo\n\nimport \"testing\"\n\nfunc TestFoo(t *testing.T) {\n\tt.Parallel()\n}\n",
 	)
-	fixes := LintVFS(v, option.New("", false), false)
+	fixes := Check(v, option.New("", false), false)
 	assert.Boolean(t, false, fixes.Has("pkg/foo/foo.go"))
 	assert.Boolean(t, false, fixes.Has("pkg/foo/foo_test.go"))
 }
 
-func TestLintVFSSkipsGeneratedFile(t *testing.T) {
+func TestCheckSkipsGeneratedFile(t *testing.T) {
 	v := vfs.New()
 	v.Write(
 		"pkg/foo/generated.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Generated() {\n\tfmt.Println(\"hello\")\n}\n",
 	)
-	fixes := LintVFS(v, option.New("", false), false)
+	fixes := Check(v, option.New("", false), false)
 	assert.Boolean(t, false, fixes.Has("pkg/foo/generated.go"))
 }
 
-func TestLintVFSVariableFlaggedNoFix(t *testing.T) {
+func TestCheckVariableFlaggedNoFix(t *testing.T) {
 	v := vfs.New()
 	v.Write(
 		"pkg/foo/foo.go",
@@ -56,11 +56,11 @@ func TestLintVFSVariableFlaggedNoFix(t *testing.T) {
 		"pkg/foo/foo_test.go",
 		"package foo\n\nimport \"testing\"\n\nfunc TestFoo(t *testing.T) {\n}\n",
 	)
-	fixes := LintVFS(v, option.New("", false), false)
+	fixes := Check(v, option.New("", false), false)
 	assert.Boolean(t, false, fixes.Has("pkg/foo/foo.go"))
 }
 
-func TestLintVFSMultipleFilesOnlyBrokenFixed(t *testing.T) {
+func TestCheckMultipleFilesOnlyBrokenFixed(t *testing.T) {
 	v := vfs.New()
 	v.Write(
 		"pkg/foo/foo.go",
@@ -74,7 +74,21 @@ func TestLintVFSMultipleFilesOnlyBrokenFixed(t *testing.T) {
 		"pkg/foo/foo_test.go",
 		"package foo\n\nimport \"testing\"\n\nfunc TestFoo(t *testing.T) {\n}\n",
 	)
-	fixes := LintVFS(v, option.New("", false), false)
+	fixes := Check(v, option.New("", false), false)
 	assert.Boolean(t, true, fixes.Has("pkg/foo/foo.go"))
 	assert.Boolean(t, false, fixes.Has("pkg/foo/bar.go"))
+}
+
+func TestCheckStubCreated(t *testing.T) {
+	v := vfs.New()
+	v.Write(
+		"pkg/foo/foo.go",
+		"package foo\n\nfunc Foo() {}\n",
+	)
+	fixes := Check(v, option.New("", false), false)
+	assert.String(
+		t,
+		"package foo\n\nimport (\n\t\"github.com/funtimecoding/go-library/pkg/assert\"\n\t\"testing\"\n)\n\nfunc TestStub(t *testing.T) {\n\tassert.Stub(t)\n}\n",
+		fixes.Read("pkg/foo/stub_test.go"),
+	)
 }

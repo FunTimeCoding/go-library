@@ -77,6 +77,16 @@ func TestVariableEOkay(t *testing.T) {
 	assertReport(t, "Delta", false, nil, "", l)
 }
 
+func TestVariableErrInString(t *testing.T) {
+	l := Variable(
+		library.Foxtrot,
+		strings.NewReader(
+			"package example\n\nfunc Example() {\n\ts := \"err := foo()\"\n\t_ = s\n}\n",
+		),
+	)
+	assertReport(t, "Foxtrot", false, nil, "", l)
+}
+
 func TestVariableErrComment(t *testing.T) {
 	l := Variable(
 		library.Echo,

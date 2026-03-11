@@ -17,6 +17,31 @@ func TestImportClean(t *testing.T) {
 	assertReport(t, "Bravo", false, nil, "", l)
 }
 
+func TestImportBlank(t *testing.T) {
+	l := Import(
+		stringLibrary.Charlie,
+		strings.NewReader(
+			"package example\n\nimport (\n\t\"fmt\"\n\n\t\"log\"\n)\n\nfunc Example() {\n\tfmt.Printf(\"test\")\n\tlog.Printf(\"test\")\n}\n",
+		),
+	)
+	assertReport(
+		t,
+		"Charlie",
+		true,
+		[]*concern.Concern{
+			{
+				Key:      "import_blank",
+				Text:     "Import block contains blank line",
+				Path:     "Charlie",
+				Line:     3,
+				LineText: "import (",
+			},
+		},
+		"package example\n\nimport (\n\t\"fmt\"\n\t\"log\"\n)\n\nfunc Example() {\n\tfmt.Printf(\"test\")\n\tlog.Printf(\"test\")\n}\n",
+		l,
+	)
+}
+
 func TestGo(t *testing.T) {
 	l := Import(
 		stringLibrary.Alfa,

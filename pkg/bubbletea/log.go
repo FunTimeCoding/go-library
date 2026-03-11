@@ -7,8 +7,8 @@ import (
 )
 
 func Log(path string) *os.File {
-	f, err := tea.LogToFile(path, "")
-	errors.PanicOnError(err)
+	result, e := tea.LogToFile(path, "")
+	errors.PanicOnError(e)
 
-	return f
+	return result
 }

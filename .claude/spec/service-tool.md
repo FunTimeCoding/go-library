@@ -138,6 +138,8 @@ func Run(o *option.Log) {
 
 ## Route Handlers
 
+This pattern is for manually registered routes. When routes are defined by an OpenAPI spec, use the Handler struct pattern instead — see `openapi.md`.
+
 Handlers live in the `route/` package. Each handler is a function returning `http.HandlerFunc`:
 
 ```go

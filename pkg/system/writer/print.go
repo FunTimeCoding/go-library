@@ -11,6 +11,6 @@ func Print(
 	format string,
 	a ...any,
 ) {
-	_, err := fmt.Fprintf(w, format, a...)
-	errors.PanicOnError(err)
+	_, e := fmt.Fprintf(w, format, a...)
+	errors.PanicOnError(e)
 }

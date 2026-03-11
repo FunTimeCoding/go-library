@@ -7,7 +7,7 @@ tasks:
     cmds:
     - |
       mkdir -p fixture/lint/empty_directory
-      golint --fix --skip fixture,tmp,pkg/tool/goalertlog/server,pkg/tool/goalertlog/client
+      golint --fix
       #command -v gowait >/dev/null && gowait --process golangci-lint || true
       golangci-lint run
     silent: true

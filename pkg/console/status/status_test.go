@@ -1,85 +1,18 @@
-package status
+package status_test
 
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/console/status/extended"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+	"github.com/funtimecoding/go-library/pkg/console/status/tagged"
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"testing"
 )
 
-type ExampleRaw struct {
-	String string
-}
-
-type Alfa struct {
-	Identifier  int
-	Name        string
-	Description string
-
-	Raw *ExampleRaw
-}
-
-func (a *Alfa) Format(f *option.Format) string {
-	s := New(f).Integer(a.Identifier).String(a.Name, a.Description)
-
-	if f.ShowExtended {
-		s.Line("  line1")
-		s.Line("  line2")
-	}
-
-	s.RawList(a.Raw)
-
-	return s.Format()
-}
-
-func NewAlfa(
-	identifier int,
-	name string,
-	description string,
-) *Alfa {
-	return &Alfa{
-		Identifier:  identifier,
-		Name:        name,
-		Description: description,
-	}
-}
-
-type Bravo struct {
-	Identifier int
-	Name       string
-
-	Raw *ExampleRaw
-}
-
-func (b *Bravo) Format(f *option.Format) string {
-	s := New(f).Integer(b.Identifier).String(b.Name)
-
-	if f.ShowExtended {
-		s.TagLine(tag.Usage, "  line1")
-		s.TagLine(tag.Usage, "  line2")
-	}
-
-	s.RawList(b.Raw)
-
-	return s.Format()
-}
-
-func NewBravo(
-	identifier int,
-	name string,
-	rawName string,
-) *Bravo {
-	return &Bravo{
-		Identifier: identifier,
-		Name:       name,
-		Raw:        &ExampleRaw{String: rawName},
-	}
-}
-
 func TestStatus(t *testing.T) {
-	apple := NewAlfa(1, "a", "b")
+	apple := extended.New(1, "a", "b")
 	assert.String(
 		t,
 		"1 | a | b\n  line1\n  line2",
@@ -88,8 +21,8 @@ func TestStatus(t *testing.T) {
 }
 
 func TestStatusNested(t *testing.T) {
-	apple := NewAlfa(1, "a", "b")
-	orange := NewAlfa(2, "c", "d")
+	apple := extended.New(1, "a", "b")
+	orange := extended.New(2, "c", "d")
 	f := option.New().Extended()
 
 	appleOutput := fmt.Sprintf("%s\n", apple.Format(f))
@@ -112,7 +45,7 @@ func TestStatusNested(t *testing.T) {
 }
 
 func TestTagLine(t *testing.T) {
-	apple := NewBravo(1, "a", "b")
+	apple := tagged.New(1, "a", "b")
 	assert.String(
 		t,
 		"1 | a\n  line1\n  line2\n  RawList: &{String:b}",

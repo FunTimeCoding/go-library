@@ -17,4 +17,18 @@ const (
 
 	EmptyFunctionBodyKey  = "empty-function-body"
 	EmptyFunctionBodyText = "Function body with only whitespace"
+
+	ErrVariableKey  = "err_variable"
+	ErrVariableText = "Use e instead of err for error variable"
+
+	PackageNameKey  = "package_name"
+	PackageNameText = "Blacklisted package name"
+
+	MultipleExportedTypesKey  = "multiple_exported_types"
+	MultipleExportedTypesText = "Multiple exported types in one file"
+
+	MissingTestFileKey  = "missing_test_file"
+	MissingTestFileText = "No test file in package"
 )
+
+var PackageBlocklist = []string{"api"}

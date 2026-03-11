@@ -14,8 +14,8 @@ func (s *Server) WaitForCallback() string {
 	select {
 	case code := <-s.callbackCh:
 		return code
-	case err := <-s.errorCh:
-		errors.PanicOnError(err)
+	case e := <-s.errorCh:
+		errors.PanicOnError(e)
 	case <-time.After(5 * time.Minute):
 		errors.PanicOnError(fmt.Errorf("callback timeout"))
 	}

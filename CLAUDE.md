@@ -14,6 +14,7 @@ Design and coding specs live in `.claude/spec/`:
 - `build.md` — gobuild cross-compilation and linker variable convention
 - `taskfile.md` — task runner, git hooks, CI pipeline
 - `locator.md` — fluent URL builder (`pkg/web/locator`)
+- `openapi.md` — OpenAPI codegen pattern (server/, client/, route/ structure)
 
 Read the relevant spec before working in that area.
 

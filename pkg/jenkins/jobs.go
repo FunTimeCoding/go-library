@@ -41,13 +41,13 @@ func (c *Client) JobsJSON() {
 
 	for i, job := range exec.Raw.Jobs {
 		res := new(gojenkins.JobResponse)
-		r2, e2 := c.client.Requester.GetJSON(
+		r2, f := c.client.Requester.GetJSON(
 			c.context,
 			"/job/"+job.Name,
 			res,
 			nil,
 		)
-		errors.PanicOnError(e2)
+		errors.PanicOnError(f)
 
 		if false {
 			// TODO: Body is already read, would have to craft entire request
@@ -55,8 +55,8 @@ func (c *Client) JobsJSON() {
 		}
 
 		if false {
-			ji, err := c.client.GetJob(c.context, job.Name)
-			errors.PanicOnError(err)
+			ji, g := c.client.GetJob(c.context, job.Name)
+			errors.PanicOnError(g)
 			jobs[i] = ji
 		}
 	}

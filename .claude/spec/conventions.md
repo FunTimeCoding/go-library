@@ -69,6 +69,8 @@
 - **Option struct naming** — named after the domain concept, not `Option` (e.g., `option.Log`, `option.Build`, `option.Commit`). File named after the struct. Constructor in `new.go` returns pointer.
 - **Stub tests** — every package gets a `_test.go`. Minimal tests use `assert.Stub(t)`. Constructor tests use `assert.NotNil(t, New(...))`.
 - Tests use `assert.*` helpers to reduce nesting
+- **`new_environment.go`** — when a package reads from environment variables, the environment constructor lives in `new_environment.go` and calls `New()` after reading the required vars. Pattern: `func NewEnvironment() *Client { return New(environment.Required(constant.HostEnvironment), environment.Required(constant.TokenEnvironment)) }`. The base `New()` always takes explicit params; `NewEnvironment()` is the env-reading wrapper.
+- **`example/` subpackage** — every client package gets `example/read.go` (or a domain-named function) called from `cmd/example/<name>/main.go`. Inactive examples are kept in `if false {}` blocks rather than deleted.
 - Fail fast with stacktraces (Sentry integration)
 - Helpers return only success values, panic on errors
 - Prefer extracting logic to testable helpers over inline test code

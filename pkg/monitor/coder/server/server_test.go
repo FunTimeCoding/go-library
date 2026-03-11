@@ -17,24 +17,24 @@ func TestServer(t *testing.T) {
 	s := httptest.NewServer(Server{Logf: t.Logf})
 	defer s.Close()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	x, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	c, _, err := websocket.Dial(
-		ctx,
+	c, _, e := websocket.Dial(
+		x,
 		s.URL,
 		&websocket.DialOptions{Subprotocols: []string{"echo"}},
 	)
-	assert.FatalOnError(t, err)
+	assert.FatalOnError(t, e)
 	defer func() {
 		errors.LogOnError(c.CloseNow())
 	}()
 
 	for i := 0; i < 5; i++ {
-		assert.FatalOnError(t, wsjson.Write(ctx, c, map[string]int{"i": i}))
+		assert.FatalOnError(t, wsjson.Write(x, c, map[string]int{"i": i}))
 
 		v := map[string]int{}
-		assert.FatalOnError(t, wsjson.Read(ctx, c, &v))
+		assert.FatalOnError(t, wsjson.Read(x, c, &v))
 
 		if v["i"] != i {
 			t.Fatalf("expect %v but got %v", i, v)

@@ -2,10 +2,11 @@ package option
 
 import (
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
-	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
+	system "github.com/funtimecoding/go-library/pkg/system/constant"
 	"slices"
 )
 
@@ -21,13 +22,19 @@ func New(
 
 	for _, skip := range []string{
 		constant.Directory,
-		systemConstant.IdeaPath,
+		system.IdeaPath,
+		system.FixturePath,
+		system.Temporary,
 	} {
 		withSlash := fmt.Sprintf("%s/", skip)
 
 		if !slices.Contains(result.Skips, withSlash) {
 			result.Skips = append(result.Skips, withSlash)
 		}
+	}
+
+	if !slices.Contains(result.Skips, library.GeneratedFile) {
+		result.Skips = append(result.Skips, library.GeneratedFile)
 	}
 
 	result.Count = len(result.Skips)

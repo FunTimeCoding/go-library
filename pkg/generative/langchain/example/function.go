@@ -38,10 +38,10 @@ func Function() {
 		),
 	)
 
-	ctx := context.Background()
+	x := context.Background()
 
 	for retries := 3; retries > 0; retries -= 1 {
-		resp, generateFail := c.GenerateContent(ctx, messages)
+		resp, generateFail := c.GenerateContent(x, messages)
 		errors.PanicOnError(generateFail)
 		choice1 := resp.Choices[0]
 		messages = append(
@@ -156,8 +156,8 @@ func validTool(name string) bool {
 }
 
 func systemMessage() string {
-	bs, err := json.Marshal(functions)
-	errors.PanicOnError(err)
+	bytes, e := json.Marshal(functions)
+	errors.PanicOnError(e)
 
 	return fmt.Sprintf(
 		`You have access to the following tools:
@@ -170,7 +170,7 @@ To use a tool, respond with a JSON object with the following structure:
 	"tool_input": <parameters for the tool matching the above JSON schema>
 }
 `,
-		string(bs),
+		string(bytes),
 	)
 }
 

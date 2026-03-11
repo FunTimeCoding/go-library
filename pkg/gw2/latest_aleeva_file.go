@@ -13,9 +13,9 @@ func LatestAleevaFile(files []string) string {
 	for _, file := range files {
 		date := strings.TrimPrefix(file, constant.AleevaPrefix)
 		date = strings.TrimSuffix(date, constant.NotationSuffix)
-		t, err := time.Parse("2006-01-02", date)
+		t, e := time.Parse("2006-01-02", date)
 
-		if err != nil {
+		if e != nil {
 			continue
 		}
 

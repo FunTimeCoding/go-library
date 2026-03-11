@@ -1,7 +1,9 @@
 package lint
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,7 +16,14 @@ func Skipped(
 	}
 
 	for _, p := range s.Skips {
-		if strings.HasPrefix(path, p) {
+		if strings.Contains(p, ".") && !strings.Contains(p, "/") {
+			matched, e := filepath.Match(p, filepath.Base(path))
+			errors.PanicOnError(e)
+
+			if matched {
+				return true
+			}
+		} else if strings.HasPrefix(path, p) {
 			return true
 		}
 	}

@@ -8,8 +8,8 @@ import (
 
 func GenerateSession() string {
 	b := make([]byte, 32)
-	_, err := rand.Read(b)
-	errors.PanicOnError(err)
+	_, e := rand.Read(b)
+	errors.PanicOnError(e)
 
 	return hex.EncodeToString(b)
 }

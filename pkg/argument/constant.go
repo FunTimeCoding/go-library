@@ -80,6 +80,7 @@ const (
 	Retry          = "retry"
 	Rules          = "rules"
 	Run            = "run"
+	Runbook        = "runbook"
 	Schedule       = "schedule"
 	Set            = "set"
 	Skip           = "skip"

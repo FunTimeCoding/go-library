@@ -40,6 +40,7 @@ func TestConstant(t *testing.T) {
 	assert.String(t, "reset", Reset)
 	assert.String(t, "retry", Retry)
 	assert.String(t, "run", Run)
+	assert.String(t, "runbook", Runbook)
 	assert.String(t, "schedule", Schedule)
 	assert.String(t, "source", Source)
 	assert.String(t, "space", Space)

@@ -193,6 +193,94 @@ func TestSpacingClean(t *testing.T) {
 	)
 }
 
+func TestSpacingClosingBraceBeforeDefault(t *testing.T) {
+	l := Spacing(
+		library.Kilo,
+		strings.NewReader(
+			"package example\n\nfunc Example(x int) {\n\tswitch x {\n\tcase 1:\n\t\tif x > 0 {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\tdefault:\n\t\tfmt.Println(\"b\")\n\t}\n}\n",
+		),
+	)
+	assertReport(t, "Kilo", false, nil, "package example\n\nfunc Example(x int) {\n\tswitch x {\n\tcase 1:\n\t\tif x > 0 {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\tdefault:\n\t\tfmt.Println(\"b\")\n\t}\n}\n", l)
+}
+
+func TestSpacingClosingBraceBeforeComma(t *testing.T) {
+	l := Spacing(
+		library.Lima,
+		strings.NewReader(
+			"package example\n\nfunc Example(run func()) {\n\trun()\n}\n\nfunc Call() {\n\tExample(func() {\n\t\tif true {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\t})\n}\n",
+		),
+	)
+	assertReport(t, "Lima", false, nil, "package example\n\nfunc Example(run func()) {\n\trun()\n}\n\nfunc Call() {\n\tExample(func() {\n\t\tif true {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\t})\n}\n", l)
+}
+
+func TestSpacingCommentBeforeControl(t *testing.T) {
+	l := Spacing(
+		library.Mike,
+		strings.NewReader(
+			"package example\n\nfunc Example() {\n\tx := 1\n\t// Check condition\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
+		),
+	)
+	assertReport(
+		t,
+		"Mike",
+		false,
+		nil,
+		"package example\n\nfunc Example() {\n\tx := 1\n\t// Check condition\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
+		l,
+	)
+}
+
+func TestSpacingCompositeLiteralInFunc(t *testing.T) {
+	l := Spacing(
+		library.November,
+		strings.NewReader(
+			"package example\n\nfunc Example() {\n\tx := map[string]int{\n\t\t\"a\": 1,\n\t}\n\ty := 2\n}\n",
+		),
+	)
+	assertReport(
+		t,
+		"November",
+		false,
+		nil,
+		"package example\n\nfunc Example() {\n\tx := map[string]int{\n\t\t\"a\": 1,\n\t}\n\ty := 2\n}\n",
+		l,
+	)
+}
+
+func TestSpacingRawStringLiteral(t *testing.T) {
+	l := Spacing(
+		library.Oscar,
+		strings.NewReader(
+			"package example\n\nvar Template = `\nif (x) {\n\treturn false;\n}\ny = 1;\n`\n",
+		),
+	)
+	assertReport(
+		t,
+		"Oscar",
+		false,
+		nil,
+		"package example\n\nvar Template = `\nif (x) {\n\treturn false;\n}\ny = 1;\n`\n",
+		l,
+	)
+}
+
+func TestSpacingVarBlockCompositeLiteral(t *testing.T) {
+	l := Spacing(
+		library.Papa,
+		strings.NewReader(
+			"package example\n\nvar (\n\tStatuses = []string{\n\t\t\"open\",\n\t\t\"closed\",\n\t}\n\tOther = \"other\"\n)\n",
+		),
+	)
+	assertReport(
+		t,
+		"Papa",
+		false,
+		nil,
+		"package example\n\nvar (\n\tStatuses = []string{\n\t\t\"open\",\n\t\t\"closed\",\n\t}\n\tOther = \"other\"\n)\n",
+		l,
+	)
+}
+
 func TestSpacingDoubleBlankAfterClosingBrace(t *testing.T) {
 	l := Spacing(
 		library.India,

@@ -15,11 +15,28 @@ func Spacing(
 	var prevLine string
 	var prevWasBlank bool
 	var needBlankAfterClosingBrace bool
+	var inBacktick bool
+	var blockStack []bool // true = control block
+	var pendingControl bool
 
 	for s.Scan() {
 		line, number := s.Text()
 		trimmed := strings.TrimSpace(line)
 		isBlank := trimmed == ""
+
+		wasInBacktick := inBacktick
+
+		if strings.Count(line, "`")%2 == 1 {
+			inBacktick = !inBacktick
+		}
+
+		if wasInBacktick {
+			s.ChangedLine(line)
+			prevLine = line
+			prevWasBlank = isBlank
+
+			continue
+		}
 
 		isControlStart := strings.HasPrefix(trimmed, "if ") ||
 			strings.HasPrefix(trimmed, "for ") ||
@@ -30,12 +47,44 @@ func Spacing(
 			strings.HasPrefix(trimmed, "break") ||
 			strings.HasPrefix(trimmed, "continue")
 
-		isClosingBrace := trimmed == "}" ||
-			strings.HasPrefix(trimmed, "} else")
+		isClosingBrace := strings.HasPrefix(trimmed, "}") ||
+			strings.HasPrefix(trimmed, "case ") ||
+			trimmed == "default:"
 
-		prevOpensBlock := strings.HasSuffix(
-			strings.TrimSpace(prevLine), "{",
-		)
+		prevTrimmed := strings.TrimSpace(prevLine)
+		prevOpensBlock := strings.HasSuffix(prevTrimmed, "{") ||
+			strings.HasPrefix(prevTrimmed, "case ") ||
+			prevTrimmed == "default:" ||
+			strings.HasPrefix(prevTrimmed, "//")
+
+		isElseContinuation := strings.HasPrefix(trimmed, "} else")
+		endsWithBrace := strings.HasSuffix(trimmed, "{")
+
+		if isElseContinuation {
+			if len(blockStack) > 0 {
+				blockStack = blockStack[:len(blockStack)-1]
+			}
+
+			if endsWithBrace {
+				blockStack = append(blockStack, true)
+			}
+
+			pendingControl = false
+		} else if strings.HasPrefix(trimmed, "}") && endsWithBrace {
+			if len(blockStack) > 0 {
+				blockStack = blockStack[:len(blockStack)-1]
+			}
+
+			blockStack = append(blockStack, false)
+			pendingControl = false
+		} else if endsWithBrace {
+			blockStack = append(blockStack, isControlStart || pendingControl)
+			pendingControl = false
+		} else if isControlStart {
+			pendingControl = true
+		} else if !isBlank && !isClosingBrace {
+			pendingControl = false
+		}
 
 		if isControlStart && !prevWasBlank && prevLine != "" && !prevOpensBlock {
 			s.ChangedLine("")
@@ -46,6 +95,7 @@ func Spacing(
 				number,
 				line,
 			)
+			needBlankAfterClosingBrace = false
 		}
 
 		if isExit && !prevWasBlank && prevLine != "" && !prevOpensBlock {
@@ -57,6 +107,7 @@ func Spacing(
 				number,
 				line,
 			)
+			needBlankAfterClosingBrace = false
 		}
 
 		if needBlankAfterClosingBrace && !isBlank && !isClosingBrace {
@@ -86,9 +137,16 @@ func Spacing(
 
 		s.ChangedLine(line)
 
-		if isClosingBrace && !strings.HasSuffix(trimmed, "{") {
-			needBlankAfterClosingBrace = true
-		} else if !isBlank {
+		if trimmed == "}" {
+			isControl := false
+
+			if len(blockStack) > 0 {
+				isControl = blockStack[len(blockStack)-1]
+				blockStack = blockStack[:len(blockStack)-1]
+			}
+
+			needBlankAfterClosingBrace = isControl
+		} else {
 			needBlankAfterClosingBrace = false
 		}
 

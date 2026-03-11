@@ -21,7 +21,7 @@ func Check(
 		v,
 		fixes,
 		paths,
-		[]Checker{Import, Function, Variable, PackageName, TypeCount},
+		[]Checker{Import, Function, Variable, PackageName, TypeCount, Spacing},
 		verbose,
 	)
 

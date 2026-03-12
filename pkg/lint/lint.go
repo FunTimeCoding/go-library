@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/system/vfs"
+	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 )
 
 func Lint(

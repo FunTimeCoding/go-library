@@ -2,13 +2,13 @@ package lint
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/system/vfs"
+	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 	"strings"
 )
 
 func runCheckers(
-	v *virtual_file_system.VFS,
-	fixes *virtual_file_system.VFS,
+	v *virtual_file_system.System,
+	fixes *virtual_file_system.System,
 	paths []string,
 	checkers []Checker,
 	verbose bool,

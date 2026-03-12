@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
-	"github.com/funtimecoding/go-library/pkg/system/vfs"
+	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 	"path/filepath"
 	"sort"
 )
 
 func Check(
-	v *virtual_file_system.VFS,
+	v *virtual_file_system.System,
 	skip *option.Lint,
 	verbose bool,
-) *virtual_file_system.VFS {
+) *virtual_file_system.System {
 	fixes := virtual_file_system.New()
 	paths := goFiles(v, skip, verbose)
 

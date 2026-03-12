@@ -1,12 +1,12 @@
 package lint
 
 import (
-	"github.com/funtimecoding/go-library/pkg/system/vfs"
+	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 	"strings"
 )
 
 func packageNameOf(
-	v *virtual_file_system.VFS,
+	v *virtual_file_system.System,
 	path string,
 ) string {
 	for _, line := range strings.Split(v.Read(path), "\n") {

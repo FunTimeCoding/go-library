@@ -3,7 +3,7 @@ package lint
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
-	"github.com/funtimecoding/go-library/pkg/system/vfs"
+	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 	"testing"
 )
 

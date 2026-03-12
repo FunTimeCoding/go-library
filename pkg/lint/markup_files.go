@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
-	"github.com/funtimecoding/go-library/pkg/system/vfs"
+	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 	"strings"
 )
 
 func markupFiles(
-	v *virtual_file_system.VFS,
+	v *virtual_file_system.System,
 	skip *option.Lint,
 	verbose bool,
 ) []string {

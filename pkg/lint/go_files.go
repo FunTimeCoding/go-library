@@ -9,7 +9,7 @@ import (
 )
 
 func goFiles(
-	v *vfs.VFS,
+	v *virtual_file_system.VFS,
 	skip *option.Lint,
 	verbose bool,
 ) []string {

@@ -6,7 +6,7 @@ import (
 )
 
 func packageNameOf(
-	v *vfs.VFS,
+	v *virtual_file_system.VFS,
 	path string,
 ) string {
 	for _, line := range strings.Split(v.Read(path), "\n") {

@@ -7,8 +7,8 @@ import (
 )
 
 func runCheckers(
-	v *vfs.VFS,
-	fixes *vfs.VFS,
+	v *virtual_file_system.VFS,
+	fixes *virtual_file_system.VFS,
 	paths []string,
 	checkers []Checker,
 	verbose bool,

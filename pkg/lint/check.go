@@ -10,18 +10,25 @@ import (
 )
 
 func Check(
-	v *vfs.VFS,
+	v *virtual_file_system.VFS,
 	skip *option.Lint,
 	verbose bool,
-) *vfs.VFS {
-	fixes := vfs.New()
+) *virtual_file_system.VFS {
+	fixes := virtual_file_system.New()
 	paths := goFiles(v, skip, verbose)
 
 	runCheckers(
 		v,
 		fixes,
 		paths,
-		[]Checker{Import, Function, Variable, PackageName, TypeCount, Spacing},
+		[]Checker{
+			Import,
+			Function,
+			Variable,
+			PackageName,
+			TypeCount,
+			Spacing,
+		},
 		verbose,
 	)
 

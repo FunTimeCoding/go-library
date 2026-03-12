@@ -61,7 +61,7 @@ func Lint(
 		}
 	}
 
-	v := vfs.From(constant.CurrentDirectory)
+	v := virtual_file_system.From(constant.CurrentDirectory)
 	fixes := Check(v, skip, verbose)
 
 	if fix {

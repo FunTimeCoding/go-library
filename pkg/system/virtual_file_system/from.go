@@ -1,4 +1,4 @@
-package vfs
+package virtual_file_system
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-func From(dir string) *VFS {
+func From(directory string) *System {
 	result := New()
 	errors.PanicOnError(
 		filepath.Walk(
-			dir,
+			directory,
 			func(
 				path string,
 				i os.FileInfo,
@@ -27,7 +27,10 @@ func From(dir string) *VFS {
 
 				content, e := os.ReadFile(path)
 				errors.PanicOnError(e)
-				relative := strings.TrimPrefix(path, dir+string(filepath.Separator))
+				relative := strings.TrimPrefix(
+					path,
+					directory+string(filepath.Separator),
+				)
 				result.Write(relative, string(content))
 
 				return nil

@@ -1,12 +1,12 @@
-package vfs
+package virtual_file_system
 
 import (
 	"github.com/funtimecoding/go-library/pkg/system"
 	"path/filepath"
 )
 
-func (v *VFS) Flush(dir string) {
-	for path, content := range v.files {
+func (s *System) Flush(dir string) {
+	for path, content := range s.files {
 		full := filepath.Join(dir, path)
 		system.EnsurePathExists(filepath.Dir(full))
 		system.SaveFile(full, content)

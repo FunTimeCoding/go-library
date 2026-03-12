@@ -9,7 +9,7 @@ import (
 )
 
 func markupFiles(
-	v *vfs.VFS,
+	v *virtual_file_system.VFS,
 	skip *option.Lint,
 	verbose bool,
 ) []string {

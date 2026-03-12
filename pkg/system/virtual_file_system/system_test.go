@@ -1,4 +1,4 @@
-package vfs
+package virtual_file_system
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"

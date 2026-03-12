@@ -8,7 +8,7 @@ import (
 )
 
 func TestCheckImportFix(t *testing.T) {
-	v := vfs.New()
+	v := virtual_file_system.New()
 	v.Write(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
@@ -22,7 +22,7 @@ func TestCheckImportFix(t *testing.T) {
 }
 
 func TestCheckCleanNoFixes(t *testing.T) {
-	v := vfs.New()
+	v := virtual_file_system.New()
 	v.Write(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport \"fmt\"\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
@@ -37,7 +37,7 @@ func TestCheckCleanNoFixes(t *testing.T) {
 }
 
 func TestCheckSkipsGeneratedFile(t *testing.T) {
-	v := vfs.New()
+	v := virtual_file_system.New()
 	v.Write(
 		"pkg/foo/generated.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Generated() {\n\tfmt.Println(\"hello\")\n}\n",
@@ -47,7 +47,7 @@ func TestCheckSkipsGeneratedFile(t *testing.T) {
 }
 
 func TestCheckVariableFlaggedNoFix(t *testing.T) {
-	v := vfs.New()
+	v := virtual_file_system.New()
 	v.Write(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport \"fmt\"\n\nfunc Foo() {\n\terr := fmt.Errorf(\"oops\")\n\t_ = err\n}\n",
@@ -61,7 +61,7 @@ func TestCheckVariableFlaggedNoFix(t *testing.T) {
 }
 
 func TestCheckMultipleFilesOnlyBrokenFixed(t *testing.T) {
-	v := vfs.New()
+	v := virtual_file_system.New()
 	v.Write(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
@@ -80,7 +80,7 @@ func TestCheckMultipleFilesOnlyBrokenFixed(t *testing.T) {
 }
 
 func TestCheckStubCreated(t *testing.T) {
-	v := vfs.New()
+	v := virtual_file_system.New()
 	v.Write(
 		"pkg/foo/foo.go",
 		"package foo\n\nfunc Foo() {}\n",

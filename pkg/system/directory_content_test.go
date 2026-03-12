@@ -17,7 +17,7 @@ func TestDirectoryContent(t *testing.T) {
 	fmt.Printf("Fixture: %s\n", fixture)
 	assert.Strings(
 		t,
-		[]string{"hypertext", "lint", "markdown", "notation", "wiki"},
+		[]string{"hypertext", "markdown", "notation", "wiki"},
 		DirectoryContent(fixture),
 	)
 }

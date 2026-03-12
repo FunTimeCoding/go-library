@@ -3,14 +3,7 @@ version: '3'
 tasks:
   default: {cmds: [{task: lint}, {task: test}, {task: build}], silent: true}
   pre-push: {cmds: [{task: lint}, {task: test}], silent: true}
-  lint:
-    cmds:
-    - |
-      mkdir -p fixture/lint/empty_directory
-      golint --fix
-      #command -v gowait >/dev/null && gowait --process golangci-lint || true
-      golangci-lint run
-    silent: true
+  lint: {cmds: ['golint --fix', 'golangci-lint run'], silent: true}
   test: {cmds: ['gotestsum --format standard-quiet'], silent: true}
   check:
     cmds:

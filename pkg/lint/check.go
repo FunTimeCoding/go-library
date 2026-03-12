@@ -38,7 +38,7 @@ func Check(
 		fmt.Printf("%s: %s\n", constant.MissingTestFileText, dir)
 		name := packageNameOf(v, missing[dir])
 		fixes.Write(
-			filepath.Join(dir, "stub_test.go"),
+			filepath.Join(dir, stubTestSuffix(name)+"_test.go"),
 			stubTestContent(name),
 		)
 	}

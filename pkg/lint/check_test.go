@@ -88,7 +88,7 @@ func TestCheckStubCreated(t *testing.T) {
 	fixes := Check(v, option.New("", false), false)
 	assert.String(
 		t,
-		"package foo\n\nimport (\n\t\"github.com/funtimecoding/go-library/pkg/assert\"\n\t\"testing\"\n)\n\nfunc TestStub(t *testing.T) {\n\tassert.Stub(t)\n}\n",
-		fixes.Read("pkg/foo/stub_test.go"),
+		"package foo\n\nimport (\n\t\"github.com/funtimecoding/go-library/pkg/assert\"\n\t\"testing\"\n)\n\nfunc TestFoo(t *testing.T) {\n\tassert.Stub(t)\n}\n",
+		fixes.Read("pkg/foo/foo_test.go"),
 	)
 }

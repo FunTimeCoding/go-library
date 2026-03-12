@@ -119,7 +119,6 @@ func Spacing(
 				number,
 				line,
 			)
-			needBlankAfterClosingBrace = false
 		}
 
 		if isBlank && prevWasBlank {

@@ -16,26 +16,32 @@ func TypeCount(
 	var count int
 	var firstLine int
 	var firstText string
+	var depth int
 
 	for s.Scan() {
 		line, number := s.Text()
 		trimmed := strings.TrimSpace(line)
 
-		if !strings.HasPrefix(trimmed, "type ") {
-			continue
+		if strings.HasPrefix(trimmed, "type ") {
+			rest := strings.TrimPrefix(trimmed, "type ")
+
+			if rest != "" && unicode.IsUpper(rune(rest[0])) && depth == 0 {
+				count++
+
+				if count == 1 {
+					firstLine = number
+					firstText = line
+				}
+			}
 		}
 
-		rest := strings.TrimPrefix(trimmed, "type ")
-
-		if rest == "" || !unicode.IsUpper(rune(rest[0])) {
-			continue
-		}
-
-		count++
-
-		if count == 1 {
-			firstLine = number
-			firstText = line
+		for _, c := range line {
+			switch c {
+			case '{':
+				depth++
+			case '}':
+				depth--
+			}
 		}
 	}
 

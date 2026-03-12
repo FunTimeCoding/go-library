@@ -5,6 +5,7 @@ import (
 	github "github.com/funtimecoding/go-library/pkg/github/example"
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/clean_job"
 	gitlab "github.com/funtimecoding/go-library/pkg/gitlab/example"
+	"github.com/funtimecoding/go-library/pkg/gitlab/example/graph_query"
 )
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 		gitlab.CloneAll()
 		gitlab.Feature()
 		gitlab.File()
-		gitlab.GraphQuery()
+		graph_query.Query()
 		gitlab.Issue()
 		gitlab.MergeRequest()
 		gitlab.Project()

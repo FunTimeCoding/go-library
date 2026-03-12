@@ -42,6 +42,16 @@ func TestTypeCountSingle(t *testing.T) {
 	assertReport(t, "Bravo", false, nil, "", l)
 }
 
+func TestTypeCountLocalType(t *testing.T) {
+	l := TypeCount(
+		library.Delta,
+		strings.NewReader(
+			"package example\n\ntype Foo struct{}\n\nfunc (f *Foo) Method() error {\n\ttype Alias Foo\n\treturn nil\n}\n",
+		),
+	)
+	assertReport(t, "Delta", false, nil, "", l)
+}
+
 func TestTypeCountUnexported(t *testing.T) {
 	l := TypeCount(
 		library.Charlie,

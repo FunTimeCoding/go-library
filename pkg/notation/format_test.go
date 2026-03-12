@@ -2,6 +2,7 @@ package notation
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/notation/fixture"
 	"testing"
 )
 
@@ -15,7 +16,7 @@ func TestFormatTypes(t *testing.T) {
 			"\n    \"Boolean\": true"+
 			"\n}",
 		Format(
-			TypesFixture{
+			fixture.Primitives{
 				String:  "a",
 				Integer: 1,
 				Float:   1.5,
@@ -32,20 +33,9 @@ func TestFormatStringWithVector(t *testing.T) {
 			"\n    \"String\": \"1,<1.0, 1.0, 1.0>,2\""+
 			"\n}",
 		Format(
-			StringFixture{
+			fixture.WithString{
 				String: "1,<1.0, 1.0, 1.0>,2",
 			},
 		),
 	)
-}
-
-type StringFixture struct {
-	String string
-}
-
-type TypesFixture struct {
-	String  string
-	Integer int
-	Float   float64
-	Boolean bool
 }

@@ -67,7 +67,12 @@ func Any(
 				ToFile:   fmt.Sprintf("Actual (%d)", actualLength),
 				Context:  1,
 			}
-			text, _ := difflib.GetUnifiedDiffString(diff)
+			text, e := difflib.GetUnifiedDiffString(diff)
+
+			if e != nil {
+				panic(e)
+			}
+
 			t.Errorf("%s\n%s", reason, text)
 		}
 	}
@@ -76,12 +81,17 @@ func Any(
 		return
 	}
 
-	text, _ := difflib.GetUnifiedDiffString(
+	text, f := difflib.GetUnifiedDiffString(
 		difflib.UnifiedDiff{
 			A:       difflib.SplitLines(spew.Sdump(expect)),
 			B:       difflib.SplitLines(spew.Sdump(actual)),
 			Context: 10,
 		},
 	)
+
+	if f != nil {
+		panic(f)
+	}
+
 	t.Error(text)
 }

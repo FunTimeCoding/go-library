@@ -3,6 +3,7 @@ package image
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/google/go-github/v84/github"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestImage(t *testing.T) {
-	meta, _ := json.Marshal(
+	meta, e := json.Marshal(
 		github.PackageMetadata{
 			PackageType: new(constant.ContainerPackageType),
 			Container: &github.PackageContainerMetadata{
@@ -19,6 +20,7 @@ func TestImage(t *testing.T) {
 			},
 		},
 	)
+	errors.PanicOnError(e)
 	i := New(
 		&github.PackageVersion{
 			ID:        new(int64(1)),

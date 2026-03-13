@@ -1,7 +1,7 @@
 ---
 version: '2'
-run:
-  allow-serial-runners: true
-  exclude-dirs:
-    - pkg/tool/goalertlog/api
-    - pkg/tool/goalertlog/client
+run: {allow-serial-runners: true}
+linters:
+  exclusions:
+    paths: [pkg/tool/goalertlog/api, pkg/tool/goalertlog/client]
+  settings: {errcheck: {check-blank: true}}

@@ -2,6 +2,7 @@ package wait
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gowait/wait/option"
 	"os/exec"
 	"time"
@@ -18,9 +19,9 @@ func Process(o *option.Wait) {
 			fmt.Printf("Check %d\n", attempt)
 		}
 
-		cmd := exec.Command("pgrep", "-f", o.Process)
+		c := exec.Command("pgrep", "-f", o.Process)
 
-		if e := cmd.Run(); e != nil {
+		if e := c.Run(); e != nil {
 			fmt.Printf(
 				"Done after %v\n",
 				time.Since(start).Round(time.Second),
@@ -30,8 +31,13 @@ func Process(o *option.Wait) {
 		}
 
 		if o.Verbose {
-			cmd := exec.Command("pgrep", "-fa", o.Process)
-			out, _ := cmd.Output()
+			verboseCommand := exec.Command(
+				"pgrep",
+				"-fa",
+				o.Process,
+			)
+			out, f := verboseCommand.Output()
+			errors.PanicOnError(f)
 			fmt.Printf("Running: %s", string(out))
 		}
 

@@ -3,7 +3,12 @@ version: '3'
 tasks:
   default: {cmds: [{task: lint}, {task: test}, {task: build}], silent: true}
   pre-push: {cmds: [{task: lint}, {task: test}], silent: true}
-  lint: {cmds: ['golint --fix', 'golangci-lint run'], silent: true}
+  lint:
+    cmds:
+    - golint --fix
+    - golangci-lint config verify
+    - golangci-lint run
+    silent: true
   test: {cmds: ['gotestsum --format standard-quiet'], silent: true}
   check:
     cmds:

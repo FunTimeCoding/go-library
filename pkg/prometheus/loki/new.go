@@ -35,7 +35,8 @@ func slogWay(host string) {
 	)
 	errors.PanicOnError(e)
 	configuration.TenantID = "exampleTenant"
-	c, _ := loki.New(configuration)
+	c, f := loki.New(configuration)
+	errors.PanicOnError(f)
 	l := slog.New(
 		slogloki.Option{Level: slog.LevelDebug, Client: c}.NewLokiHandler(),
 	)

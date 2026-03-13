@@ -4,12 +4,17 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/prometheus/alertmanager/api/v2/client/silence"
+	"log"
 )
 
 func (c *Client) DeleteSilence(identifier string) {
 	// Does not delete: https://github.com/prometheus/alertmanager/issues/3614
 	p := silence.NewDeleteSilenceParams()
 	p.SilenceID = strfmt.UUID(identifier)
-	_, e := c.client.Silence.DeleteSilence(p)
+	result, e := c.client.Silence.DeleteSilence(p)
 	errors.PanicOnError(e)
+
+	if !result.IsSuccess() {
+		log.Panicf("unexpected status code: %+v", result)
+	}
 }

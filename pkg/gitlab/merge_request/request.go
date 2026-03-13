@@ -2,7 +2,7 @@ package merge_request
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 	"time"
 )
 

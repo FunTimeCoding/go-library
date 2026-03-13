@@ -3,7 +3,7 @@ package gitlab
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/merge_request"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 func (c *Client) AssignedMergeRequests(all bool) []*merge_request.Request {

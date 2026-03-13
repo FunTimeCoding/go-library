@@ -3,7 +3,7 @@ package constant
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 const Base = "/api/v4"

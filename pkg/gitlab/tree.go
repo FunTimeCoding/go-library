@@ -1,6 +1,6 @@
 package gitlab
 
-import "gitlab.com/gitlab-org/api/client-go"
+import "gitlab.com/gitlab-org/api/client-go/v2"
 
 func (c *Client) Tree(project int64) []*gitlab.TreeNode {
 	result, r, e := c.client.Repositories.ListTree(

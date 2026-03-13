@@ -1,6 +1,6 @@
 package merge_request
 
-import "gitlab.com/gitlab-org/api/client-go"
+import "gitlab.com/gitlab-org/api/client-go/v2"
 
 func NewSlice(v []*gitlab.BasicMergeRequest) []*Request {
 	var result []*Request

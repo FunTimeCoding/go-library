@@ -3,7 +3,7 @@ package gitlab
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 func (c *Client) Packages(

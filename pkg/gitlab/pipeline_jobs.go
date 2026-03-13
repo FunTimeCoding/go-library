@@ -2,7 +2,7 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/job"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 func (c *Client) PipelineJobs(

@@ -10,7 +10,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/join"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/godownload/download/option"
-	library "gitlab.com/gitlab-org/api/client-go"
+	library "gitlab.com/gitlab-org/api/client-go/v2"
 	"os"
 )
 

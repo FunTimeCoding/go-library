@@ -3,7 +3,7 @@ package gitlab
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/task"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 func (c *Client) Tasks() []*task.Task {

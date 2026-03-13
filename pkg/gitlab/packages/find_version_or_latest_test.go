@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/strings"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 	"testing"
 )
 

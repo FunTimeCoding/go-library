@@ -2,7 +2,7 @@ package job
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 	"time"
 )
 

@@ -2,7 +2,7 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 func (c *Client) Tags(project int64) []*gitlab.Tag {

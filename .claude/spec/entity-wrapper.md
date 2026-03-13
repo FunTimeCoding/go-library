@@ -35,7 +35,7 @@ package job
 
 import (
     "github.com/funtimecoding/go-library/pkg/gitlab/project"
-    "gitlab.com/gitlab-org/api/client-go"
+    "gitlab.com/gitlab-org/api/client-go/v2"
     "time"
 )
 
@@ -169,7 +169,7 @@ package job
 
 import (
     "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
-    "gitlab.com/gitlab-org/api/client-go"
+    "gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 func New(v *gitlab.Job) *Job {
@@ -191,7 +191,7 @@ func New(v *gitlab.Job) *Job {
 ```go
 package job
 
-import "gitlab.com/gitlab-org/api/client-go"
+import "gitlab.com/gitlab-org/api/client-go/v2"
 
 func NewSlice(v []*gitlab.Job) []*Job {
     var result []*Job

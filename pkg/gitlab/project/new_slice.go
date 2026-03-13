@@ -1,6 +1,6 @@
 package project
 
-import gitlab "gitlab.com/gitlab-org/api/client-go"
+import gitlab "gitlab.com/gitlab-org/api/client-go/v2"
 
 func NewSlice(v []*gitlab.Project) []*Project {
 	var result []*Project

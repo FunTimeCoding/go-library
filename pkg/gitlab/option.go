@@ -1,6 +1,6 @@
 package gitlab
 
-import "gitlab.com/gitlab-org/api/client-go"
+import "gitlab.com/gitlab-org/api/client-go/v2"
 
 func (c *Client) Option() *gitlab.Settings {
 	result, r, e := c.client.Settings.GetSettings()

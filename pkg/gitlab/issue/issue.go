@@ -1,6 +1,6 @@
 package issue
 
-import "gitlab.com/gitlab-org/api/client-go"
+import "gitlab.com/gitlab-org/api/client-go/v2"
 
 type Issue struct {
 	Project    int64

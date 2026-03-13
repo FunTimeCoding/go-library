@@ -3,7 +3,7 @@ package image
 import (
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 	"log"
 	"strings"
 )

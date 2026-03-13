@@ -3,7 +3,7 @@ package gitlab
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 func (c *Client) GroupByName(s string) *gitlab.Group {

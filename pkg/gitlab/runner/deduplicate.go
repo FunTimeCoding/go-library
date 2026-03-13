@@ -1,6 +1,6 @@
 package runner
 
-import "gitlab.com/gitlab-org/api/client-go"
+import "gitlab.com/gitlab-org/api/client-go/v2"
 
 func Deduplicate(v []*gitlab.Runner) []*gitlab.Runner {
 	var result []*gitlab.Runner

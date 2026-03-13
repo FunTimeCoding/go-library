@@ -1,6 +1,6 @@
 package commit
 
-import "gitlab.com/gitlab-org/api/client-go"
+import "gitlab.com/gitlab-org/api/client-go/v2"
 
 func New(v *gitlab.Commit) *Commit {
 	return &Commit{

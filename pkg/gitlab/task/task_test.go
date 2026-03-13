@@ -2,7 +2,7 @@ package task
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 	"testing"
 )
 

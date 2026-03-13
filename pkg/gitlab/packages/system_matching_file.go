@@ -1,7 +1,7 @@
 package packages
 
 import (
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 	"runtime"
 	"strings"
 )

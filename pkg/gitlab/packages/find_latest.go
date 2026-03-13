@@ -2,7 +2,7 @@ package packages
 
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 	"log"
 )
 

@@ -2,7 +2,7 @@ package gitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gitlab/branch"
-	"gitlab.com/gitlab-org/api/client-go"
+	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
 func (c *Client) Branches(project int64) []*branch.Branch {

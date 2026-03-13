@@ -2,6 +2,7 @@ package lint
 
 import (
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
@@ -32,7 +33,15 @@ func Check(
 		verbose,
 	)
 
-	missing := missingTestDirs(paths)
+	var generatedPaths []string
+
+	for _, p := range v.Files() {
+		if filepath.Base(p) == library.GeneratedFile {
+			generatedPaths = append(generatedPaths, p)
+		}
+	}
+
+	missing := missingTestDirs(paths, generatedPaths)
 	dirs := make([]string, 0, len(missing))
 
 	for dir := range missing {

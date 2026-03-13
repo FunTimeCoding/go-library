@@ -5,11 +5,23 @@ import (
 	"strings"
 )
 
-func missingTestDirs(paths []string) map[string]string {
+func missingTestDirs(
+	paths []string,
+	generatedPaths []string,
+) map[string]string {
 	dirs := make(map[string]bool)
 	representative := make(map[string]string)
 
 	for _, p := range paths {
+		dir := filepath.Dir(p)
+
+		if _, seen := dirs[dir]; !seen {
+			dirs[dir] = false
+			representative[dir] = p
+		}
+	}
+
+	for _, p := range generatedPaths {
 		dir := filepath.Dir(p)
 
 		if _, seen := dirs[dir]; !seen {

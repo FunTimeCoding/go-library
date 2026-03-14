@@ -60,24 +60,28 @@ lint:
 
 ## Wiring into the Server
 
-In `run.go`, call `server.HandlerFromMux` inside `lifecycle.WithServer`. It registers routes on the mux as a side effect — the return value can be ignored:
+In `run.go`, the oapi-codegen server package is always aliased `generated`. Call `generated.HandlerFromMux` inside `lifecycle.WithServer`. It registers routes on the mux as a side effect — the return value can be ignored:
 
 ```go
+import (
+    generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/server"
+)
+
 lifecycle.WithServer(
-    webConstant.Listen,
+    web.Listen,
     func(m *http.ServeMux) {
-        server.HandlerFromMux(route.New(dep), m)
+        generated.HandlerFromMux(route.New(dep), m)
     },
 )
 ```
+
+The `generated` alias is the standard across all services — it makes clear the package is codegen output, and frees up the unaliased `server` name for any domain service package.
 
 If the service has existing manual routes alongside generated ones, both can coexist on the same mux.
 
 ## Implementing the Handler
 
 This pattern is for OpenAPI-generated routes. For manually registered routes without a spec, see the `route/` section in `service-tool.md`.
-
-
 
 `route/handler.go` — plain struct, no embedding:
 
@@ -87,15 +91,15 @@ type Handler struct {
 }
 ```
 
-`route/<operation>.go` — implements the generated `ServerInterface` method:
+`route/<operation>.go` — implements the generated `ServerInterface` method. Use the `generated` alias for the server package:
 
 ```go
 func (h *Handler) PostDeploy(w http.ResponseWriter, r *http.Request) {
-    var body server.PostDeployJSONRequestBody
+    var body generated.PostDeployJSONRequestBody
     errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
     result := h.deploy.TriggerTargets(body.Targets)
     w.Header().Set(constant.ContentType, constant.Object)
-    errors.PanicOnError(json.NewEncoder(w).Encode(server.DeployResponse{Tag: result}))
+    errors.PanicOnError(json.NewEncoder(w).Encode(generated.DeployResponse{Tag: result}))
 }
 ```
 

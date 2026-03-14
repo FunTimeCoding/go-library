@@ -16,8 +16,10 @@ tasks:
     silent: true
   generate:
     cmds:
-    - cd pkg/tool/goalertlog/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/goalertlog/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goalertlogd/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goalertlogd/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gomaintlogd/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gomaintlogd/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:

@@ -1,6 +1,9 @@
 package example
 
-import "github.com/funtimecoding/go-library/pkg/system/macos"
+import (
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
+	"github.com/funtimecoding/go-library/pkg/system/macos"
+)
 
 func Bundle() {
 	macos.CreateBundle(
@@ -9,6 +12,6 @@ func Bundle() {
 		"tmp/example",
 		"tmp/icon.icns",
 		"sh.s3n",
-		"1.0.0",
+		constant.DefaultVersion,
 	)
 }

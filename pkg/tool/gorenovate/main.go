@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"os"
 )
 
 func Main(
@@ -13,6 +14,16 @@ func Main(
 	buildDate string,
 ) {
 	monitor.ParseBind(version, gitHash, buildDate)
+	var missing []string
+
+	if c := parseConfiguration(); c != nil {
+		missing = missingFiles(c)
+
+		for _, f := range missing {
+			fmt.Printf("matchFiles not found: %s\n", f)
+		}
+	}
+
 	k := client.NewEnvironment()
 	f := constant.Format
 
@@ -22,5 +33,9 @@ func Main(
 
 	for _, j := range k.Jobs(constant.RenovateNamespace) {
 		fmt.Printf("Job: %s\n", j.Format(f))
+	}
+
+	if len(missing) > 0 {
+		os.Exit(1)
 	}
 }

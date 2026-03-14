@@ -1,0 +1,13 @@
+package main
+
+import "github.com/funtimecoding/go-library/pkg/tool/gomcp"
+
+var (
+	Version   string
+	GitHash   string
+	BuildDate string
+)
+
+func main() {
+	gomcp.Main(Version, GitHash, BuildDate)
+}

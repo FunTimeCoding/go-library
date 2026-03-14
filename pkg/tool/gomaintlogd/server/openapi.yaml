@@ -1,0 +1,132 @@
+---
+openapi: "3.0.0"
+info:
+  title: gomaintlog
+  version: 1.0.0
+paths:
+  /api/v1/entries:
+    get:
+      operationId: getEntries
+      parameters:
+      - name: system
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: service
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: user
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: since
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: until
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Maintenance log entries matching the given filters.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EntryResponse"
+    post:
+      operationId: postEntry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostEntryRequest"
+      responses:
+        "200":
+          description: Entry added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntryResponse"
+        "400":
+          description: Missing or invalid fields.
+  /api/v1/status:
+    get:
+      operationId: getStatus
+      responses:
+        "200":
+          description: Service status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+components:
+  schemas:
+    EntryResponse:
+      type: object
+      required:
+      - id
+      - timestamp
+      - action
+      - user
+      properties:
+        id:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        action:
+          type: string
+        user:
+          type: string
+        system:
+          type: string
+        service:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    PostEntryRequest:
+      type: object
+      required:
+      - action
+      - user
+      properties:
+        action:
+          type: string
+        user:
+          type: string
+        system:
+          type: string
+        service:
+          type: string
+        description:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    StatusResponse:
+      type: object
+      required:
+      - totalEntries
+      properties:
+        totalEntries:
+          type: integer

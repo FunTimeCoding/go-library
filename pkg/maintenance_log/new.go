@@ -1,20 +1,15 @@
 package maintenance_log
 
 import (
-	"github.com/funtimecoding/go-library/pkg/maintenance_log/store"
-	"github.com/mark3labs/mcp-go/server"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/client"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
-func New() *Server {
-	result := &Server{
-		server: server.NewMCPServer(
-			"maintenance-log",
-			"1.0.0",
-			server.WithToolCapabilities(true),
-		),
-		store: store.New(),
-	}
-	result.register()
+func New(host string) *Client {
+	c, e := client.NewClientWithResponses(locator.New(host).String())
+	errors.PanicOnError(e)
 
-	return result
+	return &Client{context: context.Background(), client: c}
 }

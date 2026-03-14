@@ -38,6 +38,7 @@ GOPROXY
 bbolt
 covermode
 coverprofile
+errcheck
 gocover
 golangci
 gorm
@@ -46,6 +47,7 @@ gotest
 gotestsum
 govulncheck
 nodename
+oapi
 servname
 
 # go-library
@@ -73,6 +75,8 @@ goimage
 gojira
 gokevt
 golint
+gomaintlog
+gomaintlogd
 gomonitor
 gomonitord
 gosentry

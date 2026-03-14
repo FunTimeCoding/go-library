@@ -75,6 +75,16 @@
 - Helpers return only success values, panic on errors
 - Prefer extracting logic to testable helpers over inline test code
 
+## Import Aliases
+
+- **No acronyms** in package names or import aliases
+- Alias only when the last path segment is ambiguous or collides with another import
+- Alias by the subsystem name, not the role in the current file:
+  - `generative` for `pkg/generative/model_context/server` (the MCP HTTP transport)
+  - `web` for `pkg/web/constant`
+  - `sentry` for `pkg/errors/sentry/constant`
+- **The more local package keeps the natural name** — when two packages share a last segment (e.g., both called `server`), the tool's own generated `server/` package is imported unaliased; the shared infrastructure package gets the alias
+
 ## Interfaces
 
 - **Generic interfaces** (no domain type imports) — define in `pkg/face/`. These are like `io.Reader`: small, shared, used by many consumers. Examples: `Worker`, `Notifier`, `Clock`.

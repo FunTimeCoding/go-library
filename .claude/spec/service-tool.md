@@ -162,3 +162,61 @@ func Alerts(s *store.Store) http.HandlerFunc {
 ## Workers
 
 Workers implement `face.Worker` (`Start()` + `Stop()`). See `lifecycle.md` for details.
+
+## Daemon / CLI Split
+
+Long-running services come in pairs:
+
+| Binary | Package | Role |
+|--------|---------|------|
+| `go<tool>d` | `pkg/tool/go<tool>d/` | Daemon — lifecycle, store, HTTP server |
+| `go<tool>` | `pkg/tool/go<tool>/` | CLI — calls the daemon's REST API, prints output |
+
+The CLI tool is a thin wrapper around the domain client library (see below). It registers no flags beyond `--version` and calls a single method.
+
+```go
+// pkg/tool/go<tool>/main.go
+func Main(version, gitHash, buildDate string) {
+    monitor.ParseBind(version, gitHash, buildDate)
+    c := <domain>.NewEnvironment()
+    fmt.Printf("Entries: %s\n", c.Entries())
+}
+```
+
+## Domain Client Library
+
+The REST client is exposed via a domain library at `pkg/<domain>/`, analogous to how `pkg/alert_log/` wraps the goalertlogd client. This keeps consumer code independent of the generated client types.
+
+**`pkg/<domain>/` is client-only.** All server-side concerns (store, domain types, `model_context/`) belong in `pkg/tool/go<tool>d/`, not in the shared library.
+
+```
+pkg/<domain>/
+├── client.go                       # Client struct (wraps generated client)
+├── new.go                          # New(host string) *Client
+├── new_environment.go              # NewEnvironment() — reads HOST env var
+├── <operation>.go                  # One file per operation (entries.go, alerts.go)
+└── constant/
+    └── constant.go                 # HostEnvironment = "<DOMAIN>_HOST"
+```
+
+`New` wraps the generated client with `locator.New(host).String()`:
+```go
+func New(host string) *Client {
+    c, e := client.NewClientWithResponses(locator.New(host).String())
+    errors.PanicOnError(e)
+    return &Client{context: context.Background(), client: c}
+}
+```
+
+Operations call the plain (non-`WithResponse`) client method and return the raw string via `web.ReadString`:
+```go
+func (c *Client) Entries() string {
+    result, e := c.client.GetEntries(c.context, &client.GetEntriesParams{})
+    errors.PanicOnError(e)
+    return web.ReadString(result)
+}
+```
+
+## MCP Integration
+
+When a daemon also exposes MCP tools, add a `model_context/` subpackage and mount it on the same mux as the REST API. See `model-context.md`.

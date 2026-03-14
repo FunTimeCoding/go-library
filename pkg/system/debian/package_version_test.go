@@ -2,7 +2,8 @@ package debian
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
+	system "github.com/funtimecoding/go-library/pkg/system/constant"
 	"testing"
 )
 
@@ -12,9 +13,9 @@ func TestPackageVersion(t *testing.T) {
 		"example_1.0.0-1_amd64",
 		PackageVersion(
 			"example",
-			"1.0.0",
+			constant.DefaultVersion,
 			1,
-			constant.AMD64,
+			system.AMD64,
 		),
 	)
 }

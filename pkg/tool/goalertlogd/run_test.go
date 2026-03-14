@@ -87,7 +87,10 @@ func TestRunLifecycle(t *testing.T) {
 	assert.Count(t, 1, alerts)
 	assert.String(t, "fp1", alerts[0].Fingerprint)
 	assert.String(t, string(server.Firing), string(alerts[0].Status))
-	recent := getJSON[[]server.AlertsResponse](t, base+"/api/v1/alerts/recent")
+	recent := getJSON[[]server.AlertsResponse](
+		t,
+		base+"/api/v1/alerts/recent",
+	)
 	assert.Count(t, 2, recent)
 	c.Remove("fp1")
 	p.Poll()

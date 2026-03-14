@@ -6,5 +6,5 @@ import (
 )
 
 func (d *Database) PrintDump() {
-	fmt.Println(notation.MarshallIndent(d.Dump()))
+	fmt.Println(notation.MarshalIndent(d.Dump()))
 }

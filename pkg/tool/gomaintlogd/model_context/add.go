@@ -64,7 +64,7 @@ func (s *Server) add(
 	return mcp.NewToolResultText(
 		fmt.Sprintf(
 			"Entry added successfully:\n%s",
-			notation.MarshallIndent(e),
+			notation.MarshalIndent(e),
 		),
 	), nil
 }

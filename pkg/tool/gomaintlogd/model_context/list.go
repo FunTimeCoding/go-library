@@ -67,7 +67,7 @@ func (s *Server) list(
 		fmt.Sprintf(
 			"Found %d entries:\n%s",
 			len(entries),
-			notation.MarshallIndent(entries),
+			notation.MarshalIndent(entries),
 		),
 	), nil
 }

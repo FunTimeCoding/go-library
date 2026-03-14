@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
-func MarshallIndentBytes(a any) []byte {
+func MarshalIndentBytes(a any) []byte {
 	result, e := json.MarshalIndent(a, "", "\t")
 	errors.PanicOnError(e)
 

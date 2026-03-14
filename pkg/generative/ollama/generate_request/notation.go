@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Request) Notation() *Request {
-	r.request.Format = notation.Marshall(constant.NotationFormat)
+	r.request.Format = notation.Marshal(constant.NotationFormat)
 
 	return r
 }

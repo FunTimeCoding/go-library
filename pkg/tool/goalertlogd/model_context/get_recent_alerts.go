@@ -46,7 +46,7 @@ func (s *Server) getRecentAlerts(
 		fmt.Sprintf(
 			"Found %d alerts:\n%s",
 			len(records),
-			notation.MarshallIndent(records),
+			notation.MarshalIndent(records),
 		),
 	), nil
 }

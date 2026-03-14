@@ -6,5 +6,5 @@ import (
 )
 
 func TestMarshallIndent(t *testing.T) {
-	assert.Any(t, `"a"`, MarshallIndent("a"))
+	assert.Any(t, `"a"`, MarshalIndent("a"))
 }

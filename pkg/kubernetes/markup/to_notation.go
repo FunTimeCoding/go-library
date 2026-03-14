@@ -13,5 +13,5 @@ func ToNotation(filePath string) []byte {
 	var a any
 	errors.PanicOnError(yaml.NewYAMLToJSONDecoder(f).Decode(&a))
 
-	return notation.Marshall(a)
+	return notation.Marshal(a)
 }

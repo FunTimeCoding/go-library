@@ -2,6 +2,7 @@ package notation
 
 import (
 	"encoding/json"
+	"github.com/funtimecoding/go-library/pkg/structs/constant"
 	"reflect"
 )
 
@@ -26,7 +27,7 @@ func UnmarshalUnknown(
 
 	for i := 0; i < t.NumField(); i++ {
 		f := t.Field(i)
-		j := f.Tag.Get("json")
+		j := f.Tag.Get(constant.NotationKey)
 
 		if j != "" && j != "-" {
 			// omitempty tags

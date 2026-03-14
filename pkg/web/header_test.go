@@ -8,21 +8,21 @@ import (
 )
 
 func TestTextHeader(t *testing.T) {
-	mock := writer_mock.New()
-	TextHeader(mock)
+	m := writer_mock.New()
+	TextHeader(m)
 	assert.Any(
 		t,
 		http.Header{"Content-Type": {"text/plain"}},
-		mock.Headers,
+		m.Headers,
 	)
 }
 
 func TestObjectHeader(t *testing.T) {
-	mock := writer_mock.New()
-	ObjectHeader(mock)
+	m := writer_mock.New()
+	ObjectHeader(m)
 	assert.Any(
 		t,
 		http.Header{"Content-Type": {"application/json"}},
-		mock.Headers,
+		m.Headers,
 	)
 }

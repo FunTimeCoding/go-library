@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"github.com/charmbracelet/bubbles/table"
+	"charm.land/bubbles/v2/table"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/toast"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/client"
 	"github.com/funtimecoding/go-library/pkg/monitor/item"

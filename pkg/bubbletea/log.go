@@ -1,7 +1,7 @@
 package bubbletea
 
 import (
-	"github.com/charmbracelet/bubbletea"
+	"charm.land/bubbletea/v2"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"os"
 )

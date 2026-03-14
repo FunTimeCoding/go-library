@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/lipgloss/v2"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/toast"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 )

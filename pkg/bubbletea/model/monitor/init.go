@@ -1,10 +1,10 @@
 package monitor
 
 import (
-	"github.com/charmbracelet/bubbletea"
+	"charm.land/bubbletea/v2"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"
 )
 
 func (m *Model) Init() tea.Cmd {
-	return tea.Sequence(tea.EnterAltScreen, tick.Command())
+	return tick.Command()
 }

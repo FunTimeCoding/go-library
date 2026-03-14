@@ -1,7 +1,7 @@
 package receive
 
 import (
-	"github.com/charmbracelet/bubbletea"
+	"charm.land/bubbletea/v2"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/client"
 )
 

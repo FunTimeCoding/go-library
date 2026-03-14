@@ -1,6 +1,6 @@
 package constant
 
-import "github.com/charmbracelet/lipgloss"
+import "charm.land/lipgloss/v2"
 
 const LogFile = "tea.txt"
 

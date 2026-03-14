@@ -1,8 +1,8 @@
 package monitor
 
 import (
+	"charm.land/bubbletea/v2"
 	"fmt"
-	"github.com/charmbracelet/bubbletea"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/receive"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/tick"

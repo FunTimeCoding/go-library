@@ -1,8 +1,11 @@
 package example_list
 
-import "fmt"
+import (
+	"charm.land/bubbletea/v2"
+	"fmt"
+)
 
-func (m *Model) View() string {
+func (m *Model) View() tea.View {
 	s := "What should we buy at the market?\n\n"
 
 	for i, choice := range m.choices {
@@ -23,5 +26,8 @@ func (m *Model) View() string {
 
 	s += "\nPress q to quit.\n"
 
-	return s
+	v := tea.NewView(s)
+	v.WindowTitle = "Grocery List"
+
+	return v
 }

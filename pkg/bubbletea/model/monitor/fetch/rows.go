@@ -1,8 +1,8 @@
 package fetch
 
 import (
+	"charm.land/bubbles/v2/table"
 	"fmt"
-	"github.com/charmbracelet/bubbles/table"
 )
 
 func (m *Message) Rows() []table.Row {

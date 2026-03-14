@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"github.com/charmbracelet/bubbletea"
+	"charm.land/bubbletea/v2"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/key"
 	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor/fetch"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"

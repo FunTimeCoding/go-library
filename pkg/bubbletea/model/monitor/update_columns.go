@@ -6,6 +6,10 @@ import (
 )
 
 func (m *Model) updateColumns() {
+	if m.width == 0 {
+		return
+	}
+
 	remaining := m.width - 2 // 2 for border
 	var detailIndex int
 
@@ -35,5 +39,5 @@ func (m *Model) updateColumns() {
 	}
 
 	m.table.Columns()[detailIndex].Width = remaining - 2 // 2 for padding
-	m.table.UpdateViewport()
+	m.table.SetWidth(m.width)
 }

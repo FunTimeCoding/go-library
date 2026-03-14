@@ -1,6 +1,6 @@
 package monitor
 
-import "github.com/charmbracelet/bubbles/table"
+import "charm.land/bubbles/v2/table"
 
 func rowIndex(
 	m *table.Model,

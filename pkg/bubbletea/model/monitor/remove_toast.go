@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"github.com/charmbracelet/bubbletea"
+	"charm.land/bubbletea/v2"
 	"time"
 )
 

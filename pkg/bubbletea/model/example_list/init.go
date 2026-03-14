@@ -1,7 +1,7 @@
 package example_list
 
-import "github.com/charmbracelet/bubbletea"
+import "charm.land/bubbletea/v2"
 
 func (m *Model) Init() tea.Cmd {
-	return tea.SetWindowTitle("Grocery List")
+	return nil
 }

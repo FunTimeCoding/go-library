@@ -1,8 +1,8 @@
 package console
 
 import (
+	"charm.land/lipgloss/v2"
 	"fmt"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/funtimecoding/go-library/pkg/face"
 )
 

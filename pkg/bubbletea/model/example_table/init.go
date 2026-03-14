@@ -1,6 +1,6 @@
 package example_table
 
-import "github.com/charmbracelet/bubbletea"
+import "charm.land/bubbletea/v2"
 
 func (m *Model) Init() tea.Cmd {
 	return nil

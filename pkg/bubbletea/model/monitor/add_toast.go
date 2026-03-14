@@ -1,6 +1,6 @@
 package monitor
 
-import "github.com/charmbracelet/bubbletea"
+import "charm.land/bubbletea/v2"
 
 func addToast(m string) tea.Cmd {
 	return func() tea.Msg {

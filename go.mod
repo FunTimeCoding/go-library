@@ -8,7 +8,7 @@ require (
 	charm.land/lipgloss/v2 v2.0.2
 	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.0
 	github.com/MrGunflame/gw2api v1.0.5
-	github.com/PuerkitoBio/goquery v1.11.0
+	github.com/PuerkitoBio/goquery v1.12.0
 	github.com/akkuman/logrus-loki-hook v0.0.0-20210518091319-f99fe13c48f5
 	github.com/amikos-tech/chroma-go v0.4.0
 	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447

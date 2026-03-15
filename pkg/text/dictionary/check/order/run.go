@@ -3,12 +3,11 @@ package order
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary"
-	"github.com/funtimecoding/go-library/pkg/text/dictionary/constant"
 	"sort"
 )
 
 func Run() {
-	f := constant.File
+	f := dictionary.ResolvePath()
 	c := dictionary.Read(f)
 
 	for i := range c {

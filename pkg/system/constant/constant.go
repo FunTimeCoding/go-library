@@ -18,13 +18,14 @@ const (
 
 	CommandPath                 = "cmd"
 	ConfigurationPath           = ".config"
+	DocumentPath                = "doc"
 	DownloadsPath               = "Downloads"
 	FixturePath                 = "fixture"
+	HypertextPath               = "hypertext"
 	IdeaPath                    = ".idea"
 	KubernetesConfigurationPath = ".kube/config"
-	NotationPath                = "notation"
-	HypertextPath               = "hypertext"
 	MarkdownPath                = "markdown"
+	NotationPath                = "notation"
 	QuerySocketPath             = ".osquery/shell.em"
 
 	Transmission = "tcp"

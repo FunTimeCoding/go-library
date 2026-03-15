@@ -3,11 +3,10 @@ package duplicate
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary"
-	"github.com/funtimecoding/go-library/pkg/text/dictionary/constant"
 )
 
 func Run() {
-	categories := dictionary.Read(constant.File)
+	categories := dictionary.Read(dictionary.ResolvePath())
 	occurrences := make(map[string][]dictionary.WordLocation)
 	total := 0
 

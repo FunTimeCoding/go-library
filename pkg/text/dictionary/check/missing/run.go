@@ -14,7 +14,7 @@ func Run() {
 	usage := make(map[string]*dictionary.WordUsage)
 	total := 0
 
-	for _, c := range dictionary.Read(constant.File) {
+	for _, c := range dictionary.Read(dictionary.ResolvePath()) {
 		for _, w := range c.Words {
 			usage[strings.ToLower(w)] = &dictionary.WordUsage{
 				Word:     w,

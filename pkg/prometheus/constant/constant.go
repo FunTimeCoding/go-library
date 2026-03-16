@@ -37,6 +37,7 @@ const (
 const (
 	Name          = model.MetricNameLabel
 	InstanceLabel = model.InstanceLabel
+	TargetLabel   = "target"
 	JobLabel      = model.JobLabel
 
 	ContainerLabel   = "container"

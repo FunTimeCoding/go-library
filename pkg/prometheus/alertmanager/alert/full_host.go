@@ -8,7 +8,12 @@ import (
 )
 
 func (a *Alert) FullHost() string {
-	result := a.Detail(constant.InstanceLabel)
+	result := a.Detail(constant.TargetLabel)
+
+	if result == "" {
+		result = a.Detail(constant.InstanceLabel)
+	}
+
 	result = strings.TrimPrefix(result, web.SecurePrefix)
 
 	if strings.ContainsRune(result, ':') {

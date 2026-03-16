@@ -2,19 +2,13 @@ package alert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/network"
-	"github.com/funtimecoding/go-library/pkg/prometheus/constant"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"strings"
 )
 
 func (a *Alert) FullHost() string {
-	result := a.Detail(constant.TargetLabel)
-
-	if result == "" {
-		result = a.Detail(constant.InstanceLabel)
-	}
-
-	result = strings.TrimPrefix(result, web.SecurePrefix)
+	result := a.HostDetail()
+	result = strings.TrimPrefix(result, constant.SecurePrefix)
 
 	if strings.ContainsRune(result, ':') {
 		return network.SplitHost(result)

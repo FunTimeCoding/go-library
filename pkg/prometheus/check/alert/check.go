@@ -35,7 +35,7 @@ func Check(o *option.Alert) {
 		return
 	}
 
-	f := constant.Format.Copy()
+	f := constant.Format.Copy().Tag(tag.Host)
 
 	if o.Copyable {
 		f.Tag(tag.Copyable)

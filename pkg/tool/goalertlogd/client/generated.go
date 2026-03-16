@@ -55,6 +55,15 @@ type StatusResponse struct {
 	TotalRecords int     `json:"totalRecords"`
 }
 
+// TopAlertsResponse defines model for TopAlertsResponse.
+type TopAlertsResponse struct {
+	AverageDuration string `json:"averageDuration"`
+	Count           int    `json:"count"`
+	CurrentlyFiring int    `json:"currentlyFiring"`
+	Name            string `json:"name"`
+	Severity        string `json:"severity"`
+}
+
 // GetAlertsParams defines parameters for GetAlerts.
 type GetAlertsParams struct {
 	Name string `form:"name" json:"name"`
@@ -62,6 +71,13 @@ type GetAlertsParams struct {
 
 // GetRecentAlertsParams defines parameters for GetRecentAlerts.
 type GetRecentAlertsParams struct {
+	Start *time.Time `form:"start,omitempty" json:"start,omitempty"`
+	End   *time.Time `form:"end,omitempty" json:"end,omitempty"`
+}
+
+// GetTopAlertsParams defines parameters for GetTopAlerts.
+type GetTopAlertsParams struct {
+	N     *int       `form:"n,omitempty" json:"n,omitempty"`
 	Start *time.Time `form:"start,omitempty" json:"start,omitempty"`
 	End   *time.Time `form:"end,omitempty" json:"end,omitempty"`
 }
@@ -145,6 +161,9 @@ type ClientInterface interface {
 	// GetRecentAlerts request
 	GetRecentAlerts(ctx context.Context, params *GetRecentAlertsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetTopAlerts request
+	GetTopAlerts(ctx context.Context, params *GetTopAlertsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetStatus request
 	GetStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
@@ -163,6 +182,18 @@ func (c *Client) GetAlerts(ctx context.Context, params *GetAlertsParams, reqEdit
 
 func (c *Client) GetRecentAlerts(ctx context.Context, params *GetRecentAlertsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRecentAlertsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTopAlerts(ctx context.Context, params *GetTopAlertsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTopAlertsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -295,6 +326,87 @@ func NewGetRecentAlertsRequest(server string, params *GetRecentAlertsParams) (*h
 	return req, nil
 }
 
+// NewGetTopAlertsRequest generates requests for GetTopAlerts
+func NewGetTopAlertsRequest(server string, params *GetTopAlertsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/alerts/top")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.N != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "n", *params.N, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Start != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start", *params.Start, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.End != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end", *params.End, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetStatusRequest generates requests for GetStatus
 func NewGetStatusRequest(server string) (*http.Request, error) {
 	var err error
@@ -371,6 +483,9 @@ type ClientWithResponsesInterface interface {
 	// GetRecentAlertsWithResponse request
 	GetRecentAlertsWithResponse(ctx context.Context, params *GetRecentAlertsParams, reqEditors ...RequestEditorFn) (*GetRecentAlertsResponse, error)
 
+	// GetTopAlertsWithResponse request
+	GetTopAlertsWithResponse(ctx context.Context, params *GetTopAlertsParams, reqEditors ...RequestEditorFn) (*GetTopAlertsResponse, error)
+
 	// GetStatusWithResponse request
 	GetStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetStatusResponse, error)
 }
@@ -419,6 +534,28 @@ func (r GetRecentAlertsResponse) StatusCode() int {
 	return 0
 }
 
+type GetTopAlertsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]TopAlertsResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTopAlertsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTopAlertsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -457,6 +594,15 @@ func (c *ClientWithResponses) GetRecentAlertsWithResponse(ctx context.Context, p
 		return nil, err
 	}
 	return ParseGetRecentAlertsResponse(rsp)
+}
+
+// GetTopAlertsWithResponse request returning *GetTopAlertsResponse
+func (c *ClientWithResponses) GetTopAlertsWithResponse(ctx context.Context, params *GetTopAlertsParams, reqEditors ...RequestEditorFn) (*GetTopAlertsResponse, error) {
+	rsp, err := c.GetTopAlerts(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTopAlertsResponse(rsp)
 }
 
 // GetStatusWithResponse request returning *GetStatusResponse
@@ -510,6 +656,32 @@ func ParseGetRecentAlertsResponse(rsp *http.Response) (*GetRecentAlertsResponse,
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []AlertsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTopAlertsResponse parses an HTTP response from a GetTopAlertsWithResponse call
+func ParseGetTopAlertsResponse(rsp *http.Response) (*GetTopAlertsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTopAlertsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []TopAlertsResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

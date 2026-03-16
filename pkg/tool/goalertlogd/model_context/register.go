@@ -38,6 +38,31 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			"get_top_alerts",
+			mcp.WithDescription(
+				"Get top alerts by occurrence count (defaults to top 25 over last 7 days)",
+			),
+			mcp.WithNumber(
+				"n",
+				mcp.Description("Number of top alerts to return (default 25)"),
+			),
+			mcp.WithString(
+				"start",
+				mcp.Description(
+					"Start of time range (RFC3339 format) - defaults to 7 days ago",
+				),
+			),
+			mcp.WithString(
+				"end",
+				mcp.Description(
+					"End of time range (RFC3339 format) - defaults to now",
+				),
+			),
+		),
+		s.getTopAlerts,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			"get_status",
 			mcp.WithDescription(
 				"Get alert log service status including total records and last poll time",

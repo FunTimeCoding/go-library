@@ -17,7 +17,7 @@ var testLogger = logger.New(context.Background())
 func TestPoller(t *testing.T) {
 	assert.NotNil(
 		t,
-		New(nil, nil, testLogger, 1*time.Minute, 30*24*time.Hour),
+		New(nil, nil, testLogger, 1*time.Minute, 30*24*time.Hour, nil),
 	)
 }
 
@@ -35,7 +35,7 @@ func TestPollSavesNewAlert(t *testing.T) {
 			Summary:     "Memory above 90%",
 		},
 	)
-	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour)
+	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
 	records := s.ByName("HighMemory")
 	assert.Count(t, 1, records)
@@ -58,7 +58,7 @@ func TestPollResolvesRemovedAlert(t *testing.T) {
 			Summary:     "Memory above 90%",
 		},
 	)
-	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour)
+	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
 	c.Remove("abc123")
 	p.Poll()
@@ -80,7 +80,7 @@ func TestPollIgnoresDuplicateFiring(t *testing.T) {
 			Severity:    "critical",
 		},
 	)
-	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour)
+	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
 	p.Poll()
 	p.Poll()
@@ -100,9 +100,9 @@ func TestRecoverStaleAdoptsFireing(t *testing.T) {
 			Severity:    "critical",
 		},
 	)
-	old := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour)
+	old := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	old.Poll()
-	fresh := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour)
+	fresh := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	fresh.RecoverStale()
 	assert.Count(t, 1, s.Unresolved())
 	fresh.Poll()
@@ -123,10 +123,10 @@ func TestRecoverStaleResolvesGone(t *testing.T) {
 			Severity:    "critical",
 		},
 	)
-	old := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour)
+	old := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	old.Poll()
 	c.Remove("abc123")
-	fresh := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour)
+	fresh := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	fresh.RecoverStale()
 	assert.Count(t, 0, s.Unresolved())
 	records := s.ByName("HighMemory")
@@ -147,7 +147,7 @@ func TestPollPrunesOldRecords(t *testing.T) {
 			Severity:    "critical",
 		},
 	)
-	p := New(c, s, testLogger, 1*time.Minute, 0)
+	p := New(c, s, testLogger, 1*time.Minute, 0, nil)
 	p.Poll()
 	c.Remove("abc123")
 	p.Poll()
@@ -160,7 +160,7 @@ func TestPollTracksLastPollTime(t *testing.T) {
 	s := store.New(path)
 	defer s.Close()
 	c := mock_client.New()
-	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour)
+	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	assert.True(t, p.LastPoll().IsZero())
 	p.Poll()
 	assert.False(t, p.LastPoll().IsZero())

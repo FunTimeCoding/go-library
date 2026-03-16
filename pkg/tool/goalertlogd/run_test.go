@@ -16,6 +16,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/route"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
 	"io"
 	"net/http"
 	"testing"
@@ -44,7 +45,7 @@ func TestRunLifecycle(t *testing.T) {
 		},
 	)
 	g := logger.New(context.Background())
-	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour)
+	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
 	port := system.FindUnusedPort(19400)
 	address := fmt.Sprintf(":%d", port)
@@ -54,6 +55,7 @@ func TestRunLifecycle(t *testing.T) {
 			address,
 			func(m *http.ServeMux) {
 				server.HandlerFromMux(route.New(s, p), m)
+				web.NewServer(s, p).Mount(m)
 			},
 		),
 	)
@@ -61,6 +63,13 @@ func TestRunLifecycle(t *testing.T) {
 	defer l.Stop()
 	assert.Listen(t, port)
 	base := fmt.Sprintf("http://localhost:%d", port)
+	assert.HTTPStatus(t, base+"/", http.StatusOK)
+	assert.HTTPStatus(t, base+"/recent", http.StatusOK)
+	assert.HTTPStatus(
+		t,
+		base+"/alerts?name=HighMemory",
+		http.StatusOK,
+	)
 	assert.HTTPStatus(t, base+"/api/v1/status", http.StatusOK)
 	assert.HTTPStatus(
 		t,
@@ -70,6 +79,11 @@ func TestRunLifecycle(t *testing.T) {
 	assert.HTTPStatus(
 		t,
 		base+"/api/v1/alerts/recent",
+		http.StatusOK,
+	)
+	assert.HTTPStatus(
+		t,
+		base+"/api/v1/alerts/top",
 		http.StatusOK,
 	)
 	assert.HTTPStatus(
@@ -92,6 +106,12 @@ func TestRunLifecycle(t *testing.T) {
 		base+"/api/v1/alerts/recent",
 	)
 	assert.Count(t, 2, recent)
+	top := getJSON[[]server.TopAlertsResponse](
+		t,
+		base+"/api/v1/alerts/top",
+	)
+	assert.Count(t, 2, top)
+	assert.Integer(t, 1, top[0].Count)
 	c.Remove("fp1")
 	p.Poll()
 	alerts = getJSON[[]server.AlertsResponse](
@@ -119,7 +139,7 @@ func TestGeneratedClient(t *testing.T) {
 		},
 	)
 	g := logger.New(context.Background())
-	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour)
+	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
 	port := system.FindUnusedPort(19500)
 	address := fmt.Sprintf(":%d", port)
@@ -183,6 +203,19 @@ func TestGeneratedClient(t *testing.T) {
 	assert.Integer(t, http.StatusOK, recent.StatusCode())
 	assert.NotNil(t, recent.JSON200)
 	assert.Count(t, 1, *recent.JSON200)
+	topAlerts, e := cl.GetTopAlertsWithResponse(
+		ctx,
+		&client.GetTopAlertsParams{},
+	)
+
+	if e != nil {
+		t.Fatal(e)
+	}
+
+	assert.Integer(t, http.StatusOK, topAlerts.StatusCode())
+	assert.NotNil(t, topAlerts.JSON200)
+	assert.Count(t, 1, *topAlerts.JSON200)
+	assert.Integer(t, 1, (*topAlerts.JSON200)[0].Count)
 }
 
 func getJSON[T any](

@@ -3,6 +3,7 @@ package poller
 import (
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
+	"github.com/prometheus/client_golang/prometheus"
 	"time"
 )
 
@@ -12,8 +13,9 @@ func New(
 	l *logger.Logger,
 	interval time.Duration,
 	retention time.Duration,
+	r *prometheus.Registry,
 ) *Poller {
-	return &Poller{
+	p := &Poller{
 		client:    a,
 		store:     s,
 		logger:    l,
@@ -21,5 +23,12 @@ func New(
 		retention: retention,
 		firing:    make(map[string]string),
 		stop:      make(chan struct{}),
+		registry:  r,
 	}
+
+	if r != nil {
+		p.metrics = newMetrics(r)
+	}
+
+	return p
 }

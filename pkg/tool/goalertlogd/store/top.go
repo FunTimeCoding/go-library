@@ -1,0 +1,104 @@
+package store
+
+import (
+	"encoding/json"
+	"github.com/funtimecoding/go-library/pkg/bolt"
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"go.etcd.io/bbolt"
+	"sort"
+	"time"
+)
+
+type topEntry struct {
+	name            string
+	count           int
+	totalDuration   time.Duration
+	resolvedCount   int
+	currentlyFiring int
+	severity        string
+}
+
+func (s *Store) Top(
+	n int,
+	start time.Time,
+	end time.Time,
+) []TopRecord {
+	entries := make(map[string]*topEntry)
+
+	s.client.View(
+		func(t *bbolt.Tx) error {
+			b := s.client.Bucket(t, Bucket)
+
+			if b == nil {
+				return nil
+			}
+
+			bolt.For(
+				b,
+				func(
+					_ string,
+					v []byte,
+				) {
+					var r Record
+					errors.PanicOnError(json.Unmarshal(v, &r))
+
+					if r.Start.Before(start) || !r.Start.Before(end) {
+						return
+					}
+
+					e, exists := entries[r.Name]
+
+					if !exists {
+						e = &topEntry{name: r.Name}
+						entries[r.Name] = e
+					}
+
+					e.count++
+					e.severity = r.Severity
+
+					if r.End != nil {
+						e.totalDuration += r.End.Sub(r.Start)
+						e.resolvedCount++
+					} else {
+						e.currentlyFiring++
+					}
+				},
+			)
+
+			return nil
+		},
+	)
+
+	result := make([]TopRecord, 0, len(entries))
+
+	for _, e := range entries {
+		var avg time.Duration
+
+		if e.resolvedCount > 0 {
+			avg = e.totalDuration / time.Duration(e.resolvedCount)
+		}
+
+		result = append(
+			result,
+			TopRecord{
+				Name:            e.name,
+				Count:           e.count,
+				AverageDuration: avg,
+				CurrentlyFiring: e.currentlyFiring,
+				Severity:        e.severity,
+			},
+		)
+	}
+
+	sort.Slice(
+		result, func(i, j int) bool {
+			return result[i].Count > result[j].Count
+		},
+	)
+
+	if n > 0 && n < len(result) {
+		result = result[:n]
+	}
+
+	return result
+}

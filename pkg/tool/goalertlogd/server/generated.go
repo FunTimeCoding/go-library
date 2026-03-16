@@ -59,6 +59,15 @@ type StatusResponse struct {
 	TotalRecords int     `json:"totalRecords"`
 }
 
+// TopAlertsResponse defines model for TopAlertsResponse.
+type TopAlertsResponse struct {
+	AverageDuration string `json:"averageDuration"`
+	Count           int    `json:"count"`
+	CurrentlyFiring int    `json:"currentlyFiring"`
+	Name            string `json:"name"`
+	Severity        string `json:"severity"`
+}
+
 // GetAlertsParams defines parameters for GetAlerts.
 type GetAlertsParams struct {
 	Name string `form:"name" json:"name"`
@@ -66,6 +75,13 @@ type GetAlertsParams struct {
 
 // GetRecentAlertsParams defines parameters for GetRecentAlerts.
 type GetRecentAlertsParams struct {
+	Start *time.Time `form:"start,omitempty" json:"start,omitempty"`
+	End   *time.Time `form:"end,omitempty" json:"end,omitempty"`
+}
+
+// GetTopAlertsParams defines parameters for GetTopAlerts.
+type GetTopAlertsParams struct {
+	N     *int       `form:"n,omitempty" json:"n,omitempty"`
 	Start *time.Time `form:"start,omitempty" json:"start,omitempty"`
 	End   *time.Time `form:"end,omitempty" json:"end,omitempty"`
 }
@@ -78,6 +94,9 @@ type ServerInterface interface {
 
 	// (GET /api/v1/alerts/recent)
 	GetRecentAlerts(w http.ResponseWriter, r *http.Request, params GetRecentAlertsParams)
+
+	// (GET /api/v1/alerts/top)
+	GetTopAlerts(w http.ResponseWriter, r *http.Request, params GetTopAlertsParams)
 
 	// (GET /api/v1/status)
 	GetStatus(w http.ResponseWriter, r *http.Request)
@@ -152,6 +171,49 @@ func (siw *ServerInterfaceWrapper) GetRecentAlerts(w http.ResponseWriter, r *htt
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetRecentAlerts(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetTopAlerts operation middleware
+func (siw *ServerInterfaceWrapper) GetTopAlerts(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetTopAlertsParams
+
+	// ------------- Optional query parameter "n" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "n", r.URL.Query(), &params.N, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "n", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "start" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "start", r.URL.Query(), &params.Start, runtime.BindQueryParameterOptions{Type: "string", Format: "date-time"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "start", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "end" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "end", r.URL.Query(), &params.End, runtime.BindQueryParameterOptions{Type: "string", Format: "date-time"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "end", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetTopAlerts(w, r, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -297,6 +359,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/alerts", wrapper.GetAlerts)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/alerts/recent", wrapper.GetRecentAlerts)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/alerts/top", wrapper.GetTopAlerts)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/status", wrapper.GetStatus)
 
 	return m
@@ -305,16 +368,17 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/8xUPW/bMBD9K8K1o2o5bSdtnYoMBQJnDDxcpLN8AUUyx5MKw/B/L0gplj/kAEGXTBLu",
-	"4/Hde0fuoXKtd5asBij3EKottZh+fxkSDSsK3tlAMeLFeRJlSnmydfzozhOUEFTYNnDIYcO2IfHCVmfz",
-	"Bp/JJASsa1Z2Fs3DGfJVyxhwzy9UaQxYbGm2MlBPwrqbTyqK3spoN07VtVA+wYZTLgeh4ExPNazzmb6u",
-	"bVHmTjvEzteOheoBbhJlpH9CdgI6yvPG9shtPSPDY0rdtshg0AdnzLyoTtGsqHJSn6rOVqkhuZrgrPya",
-	"TCxnu3EJidXEXOMw7pBxUceeJLCzUMLdYrlYRgbOk0XPUMKPFMrBo24TmQI9F/1dkQBSpKFkXRwP49Lc",
-	"11DCb9JhTVOvYEtKEqB82gPHo147SqIO+/Km+zSWSkf5uPRzJq6T/0ndROL7chk/lbNKw3qj94arxKh4",
-	"CXG+/QkeK7Wp8avQBkr4UkzXrRjvWnFx0aZ9RxHcDdLWFCphr4OCQ0fWolZbtk2mW8oa7slmccJFhPg5",
-	"MD3v+8MhxHonGdseDdepITtKt4inHfIL+Quhahz3lgurVPERL47rfRRr46RFhRJqVPqmnLy6ulbzaPEx",
-	"+jDW53b3L+uW7Ym3cYpM0DbvOHw/2prUjT6TrW/bOz17t3wdXhj4T6He0+fiDZvR45Gk54qyge0ww+Hw",
-	"LwAA///4UHanugYAAA==",
+	"H4sIAAAAAAAC/+RWTW/bOBD9KwJ3j1rL2d2TbgWKFjkUCJLcghwYaixPQJHMcKTCCPzfC5KKZFt0PtpL",
+	"gZ5kcDjDN+89Dv0slO2cNWDYi/pZeLWFTsafnzQQ+2vwzhoPYcWRdUCMEONgmvDhnQNRC8+EphX7UmzQ",
+	"tECO0HA2ruUD6FhBNg0yWiP11VHlRcq4YB8eQXFYMLKD7E4PAxDyLh9kSXwuwv3YVd+J+k5sMMZKQeCt",
+	"HqAR92Umr+86SbnT9iHzqUeCJpWbSRnhH4CdC030vKCdsN1naLiJofMSaen5ymqdJ9Wy1NegLDWHrKNh",
+	"aIEWHRxtz4G5te4ty8gBSLbwuScZdM/CUrY/Ms6EpxSqJwLDevcliZPd9DPWOGl1lCchKReol0AOii+Z",
+	"CdXRbGw8F1mHWGtloErbkDsA+ciGuFitV+uA1Tow0qGoxX9xqRRO8jZyWEmH1XBRxQJxpYXIVyA6Arxs",
+	"RC2+Aic1Yi7JDhjIi/ruWWA46qmHaLdE10vLMwtMPZTjOMgxdh9vRtQ5gvh3vQ4fZQ1D0k86p1FFRNWj",
+	"T2rP9ZChi4l/E2xELf6q5kFUjVOoOvHTPAkkkdwlahvwitAlP41Dq+gkqy2atuAtFC0OYIrQ4SqU+D8h",
+	"Pc77ht6H/ZYKNIPU2MSEYqJuFU7blyf0VwRqbPecCtdxx0e0mC7+RNbGUidZ1KKRDP8wRq0WHs5XC2P6",
+	"w7V+b3W/I2/RHGgbuihImvYVhS9HWSO7QWcwzZvysnWvaTuNvHdeMpG5UQfz9s+2w/L9eIcjbq0rklbF",
+	"w66wKk1mBUUc3m+7YVbt1AHzX4Jz6qfXV/wiN69RcvK+Z/q/ARpQQZHQph72+x8BAAD//9aPsGLWCQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

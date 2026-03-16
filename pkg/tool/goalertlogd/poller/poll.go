@@ -9,13 +9,24 @@ import (
 )
 
 func (p *Poller) Poll() {
-	p.lastPoll.Store(time.Now())
+	start := time.Now()
+	p.lastPoll.Store(start)
+
+	if p.metrics != nil {
+		p.metrics.lastPollTime.SetToCurrentTime()
+	}
 
 	defer func() {
 		if v := recover(); v != nil {
 			p.logger.Structured(
 				"poll failed",
 				"error", fmt.Sprint(v),
+			)
+		}
+
+		if p.metrics != nil {
+			p.metrics.pollDuration.Observe(
+				time.Since(start).Seconds(),
 			)
 		}
 	}()
@@ -50,6 +61,10 @@ func (p *Poller) Poll() {
 		}
 
 		p.firing[a.Fingerprint] = p.store.Save(r)
+
+		if p.metrics != nil {
+			p.metrics.alertsTotal.Inc()
+		}
 	}
 
 	for fingerprint, key := range p.firing {
@@ -63,5 +78,10 @@ func (p *Poller) Poll() {
 
 	if pruned := p.store.Prune(time.Now().Add(-p.retention)); pruned > 0 {
 		p.logger.Structured("pruned records", "count", pruned)
+	}
+
+	if p.metrics != nil {
+		p.metrics.alertsFiring.Set(float64(len(p.firing)))
+		p.metrics.recordsTotal.Set(float64(p.store.Count()))
 	}
 }

@@ -51,6 +51,38 @@ paths:
                   $ref: "#/components/schemas/AlertsResponse"
         "400":
           description: Invalid start or end parameter.
+  /api/v1/alerts/top:
+    get:
+      operationId: getTopAlerts
+      parameters:
+      - name: "n"
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: start
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: end
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Top alerts by occurrence count.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TopAlertsResponse"
+        "400":
+          description: Invalid parameters.
   /api/v1/status:
     get:
       operationId: getStatus
@@ -95,6 +127,25 @@ components:
           enum:
           - firing
           - resolved
+    TopAlertsResponse:
+      type: object
+      required:
+      - name
+      - count
+      - averageDuration
+      - currentlyFiring
+      - severity
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+        averageDuration:
+          type: string
+        currentlyFiring:
+          type: integer
+        severity:
+          type: string
     StatusResponse:
       type: object
       required:

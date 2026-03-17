@@ -6,5 +6,6 @@ import (
 )
 
 func TestMessage(t *testing.T) {
-	assert.Stub(t)
+	assert.String(t, "user", RoleUser)
+	assert.String(t, "assistant", RoleAssistant)
 }

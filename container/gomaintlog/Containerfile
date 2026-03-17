@@ -1,4 +1,4 @@
-FROM alpine:3
-RUN apk add --no-cache sqlite-libs libc6-compat
+FROM debian:13.3-slim
+RUN apt-get update && apt-get install -y --no-install-recommends libsqlite3-0 && rm -rf /var/lib/apt/lists/*
 COPY tmp/gomaintlogd/linux-amd64/gomaintlogd /usr/local/bin/gomaintlogd
 ENTRYPOINT ["gomaintlogd"]

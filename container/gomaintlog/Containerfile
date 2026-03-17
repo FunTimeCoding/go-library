@@ -1,4 +1,4 @@
 FROM alpine:3
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache sqlite-libs
 COPY tmp/gomaintlogd/linux-amd64/gomaintlogd /usr/local/bin/gomaintlogd
 ENTRYPOINT ["gomaintlogd"]

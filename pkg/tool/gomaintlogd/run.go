@@ -14,7 +14,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/route"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/web"
+	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
@@ -33,13 +34,15 @@ func Run(o *option.Log) {
 		defer func() { r.RecoverFlush(recover()) }()
 	}
 
-	s := store.New(o.PostgresLocator)
+	s := newStore(o)
+	defer s.Close()
 	l := lifecycle.New(
 		lifecycle.WithServer(
-			web.Listen,
+			webConstant.Listen,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s), m)
 				generative.New(model_context.New(s).Nested()).Setup(m)
+				web.NewServer(s).Mount(m)
 			},
 		),
 	)
@@ -47,4 +50,16 @@ func Run(o *option.Log) {
 	l.Run()
 	system.KillSignalBlock()
 	l.Stop()
+}
+
+func newStore(o *option.Log) *store.Store {
+	if o.PostgresLocator != "" {
+		return store.NewPostgres(o.PostgresLocator)
+	}
+
+	if o.SQLitePath != "" {
+		return store.NewSQLite(o.SQLitePath)
+	}
+
+	panic("set POSTGRES_LOCATOR or SQLITE_PATH")
 }

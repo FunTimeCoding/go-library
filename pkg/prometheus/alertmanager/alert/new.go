@@ -13,7 +13,16 @@ func New(
 	v *models.GettableAlert,
 	host string,
 ) *Alert {
-	remaining := v.Labels
+	var remaining models.LabelSet
+
+	if v.Labels != nil {
+		remaining = make(models.LabelSet, len(v.Labels))
+
+		for k, val := range v.Labels {
+			remaining[k] = val
+		}
+	}
+
 	state := *v.Status.State
 
 	if state == "" {

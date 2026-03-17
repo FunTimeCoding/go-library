@@ -247,3 +247,6 @@ maxdisk
 pveversion
 secureboot
 sysname
+
+# HTMX
+HTMX

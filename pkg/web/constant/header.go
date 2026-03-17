@@ -11,6 +11,7 @@ const (
 	Authenticate      = "WWW-Authenticate"
 	Authorization     = "Authorization"
 	ContentType       = "Content-Type"
+	ExtendedRequest   = "HX-Request"
 	ForwardedFor      = "X-Forwarded-For"
 	ForwardedProtocol = "X-Forwarded-Proto"
 	RealAddress       = "X-Real-Ip"

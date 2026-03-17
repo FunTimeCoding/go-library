@@ -25,7 +25,10 @@ func (c *Client) StreamMessage(
 				Model:     anthropic.Model(model),
 				MaxTokens: 8192,
 				System: []anthropic.TextBlockParam{
-					{Text: system},
+					{
+						Text:         system,
+						CacheControl: anthropic.NewCacheControlEphemeralParam(),
+					},
 				},
 				Messages: message.ToParamSlice(messages),
 			},

@@ -64,7 +64,7 @@ require (
 	github.com/oapi-codegen/runtime v1.2.0
 	github.com/olekukonko/tablewriter v1.1.4
 	github.com/ollama/ollama v0.18.1
-	github.com/openai/openai-go/v3 v3.28.0
+	github.com/openai/openai-go/v3 v3.29.0
 	github.com/openvex/go-vex v0.2.7
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2

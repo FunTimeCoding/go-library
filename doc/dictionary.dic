@@ -82,6 +82,7 @@ goversion
 govolume
 gowait
 kevt
+maintlog
 
 # OS
 aarch

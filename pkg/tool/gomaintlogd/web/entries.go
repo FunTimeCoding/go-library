@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
 	g "maragu.dev/gomponents"
@@ -121,6 +122,31 @@ func entriesTable(entries []store.Entry) g.Node {
 		return h.P(h.Em(g.Text("No entries found.")))
 	}
 
+	var rows []g.Node
+
+	for _, e := range entries {
+		target := fmt.Sprintf("detail-%d", e.ID)
+		rows = append(
+			rows,
+			h.Tr(
+				h.Class("clickable-row"),
+				hx.Get(fmt.Sprintf("/entry/detail?id=%d", e.ID)),
+				hx.Target("#"+target),
+				hx.Swap("outerHTML"),
+				h.Td(g.Text(formatTime(e.Timestamp))),
+				h.Td(g.Text(e.Action)),
+				h.Td(g.Text(e.User)),
+				h.Td(g.Text(e.System)),
+				h.Td(g.Text(e.Service)),
+				h.Td(g.Text(truncate(e.Description, 80))),
+			),
+			h.Tr(
+				h.ID(target),
+				h.Style("display:none"),
+			),
+		)
+	}
+
 	return h.Table(
 		h.THead(
 			h.Tr(
@@ -132,19 +158,6 @@ func entriesTable(entries []store.Entry) g.Node {
 				h.Th(g.Text("Description")),
 			),
 		),
-		h.TBody(
-			g.Map(
-				entries, func(e store.Entry) g.Node {
-					return h.Tr(
-						h.Td(g.Text(formatTime(e.Timestamp))),
-						h.Td(g.Text(e.Action)),
-						h.Td(g.Text(e.User)),
-						h.Td(g.Text(e.System)),
-						h.Td(g.Text(e.Service)),
-						h.Td(g.Text(truncate(e.Description, 80))),
-					)
-				},
-			),
-		),
+		h.TBody(g.Group(rows)),
 	)
 }

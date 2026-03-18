@@ -56,13 +56,13 @@ func Function() {
 				log.Printf("Call: %v (raw: %v)", a.Tool, choice1.Content)
 			}
 
-			msg, cont := dispatchCall(a)
+			m, cont := dispatchCall(a)
 
 			if !cont {
 				break
 			}
 
-			messages = append(messages, msg)
+			messages = append(messages, m)
 		} else {
 			// Ollama doesn't always respond with a function call, let it try again.
 			log.Printf("Not a call: %v", choice1.Content)

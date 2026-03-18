@@ -35,6 +35,7 @@ bbolt
 covermode
 coverprofile
 errcheck
+goanalyze
 gocover
 golangci
 gorm

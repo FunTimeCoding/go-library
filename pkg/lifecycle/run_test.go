@@ -150,10 +150,7 @@ func TestRunServerMiddleware(t *testing.T) {
 	defer l.Stop()
 	assert.Listen(t, port)
 	r, e := http.Get(fmt.Sprintf("http://localhost:%d/health", port))
-
-	if e != nil {
-		t.Fatal(e)
-	}
+	assert.FatalOnError(t, e)
 
 	defer errors.PanicClose(r.Body)
 	assert.Integer(t, http.StatusOK, r.StatusCode)

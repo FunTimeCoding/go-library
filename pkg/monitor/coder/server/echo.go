@@ -16,27 +16,27 @@ func echo(
 	c *websocket.Conn,
 	l *rate.Limiter,
 ) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	x, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	if e := l.Wait(ctx); e != nil {
+	if e := l.Wait(x); e != nil {
 		return e
 	}
 
-	messageType, r, readFail := c.Reader(ctx)
+	messageType, r, readFail := c.Reader(x)
 
 	if readFail != nil {
 		return readFail
 	}
 
-	w, writeFail := c.Writer(ctx, messageType)
+	w, writeFail := c.Writer(x, messageType)
 
 	if writeFail != nil {
 		return writeFail
 	}
 
 	if _, e := io.Copy(w, r); e != nil {
-		return fmt.Errorf("failed to io.Copy: %w", e)
+		return fmt.Errorf("io.Copy fail: %w", e)
 	}
 
 	return w.Close()

@@ -40,8 +40,8 @@ func TestFilesSorted(t *testing.T) {
 func TestFlushFrom(t *testing.T) {
 	v := New()
 	v.Write("sub/file.txt", "hello")
-	dir := t.TempDir()
-	v.Flush(dir)
-	back := From(dir)
+	d := t.TempDir()
+	v.Flush(d)
+	back := From(d)
 	assert.String(t, "hello", back.Read("sub/file.txt"))
 }

@@ -28,8 +28,8 @@ func (c *Client) Activate(targetIdentifier string) {
 	e := chromedp.Run(
 		c.TargetContext(targetIdentifier),
 		chromedp.ActionFunc(
-			func(ctx context.Context) error {
-				return page.Reload().Do(ctx)
+			func(x context.Context) error {
+				return page.Reload().Do(x)
 			},
 		),
 	)

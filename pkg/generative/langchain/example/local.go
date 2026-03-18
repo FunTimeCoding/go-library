@@ -22,7 +22,7 @@ func Local() {
 			query,
 			llms.WithStreamingFunc(
 				func(
-					ctx context.Context,
+					_ context.Context,
 					chunk []byte,
 				) error {
 					fmt.Printf("chunk len=%d: %s\n", len(chunk), chunk)

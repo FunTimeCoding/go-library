@@ -6,7 +6,7 @@ func New(v *file.Node) *Node {
 	result := Stub()
 	result.Type = v.Type
 	result.Name = v.Name
-	result.Link = v.Url
+	result.Link = v.Locator
 	result.Children = NewSlice(v.Children)
 	result.Raw = v
 

@@ -2,9 +2,12 @@ package goghpr
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
+	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/github/check/pull_request"
 	"github.com/funtimecoding/go-library/pkg/github/check/pull_request/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/spf13/viper"
 )
 
@@ -13,6 +16,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
+	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+		r := reporter.New("goghpr", c, "", version)
+		r.Start()
+		defer func() { r.RecoverFlush(recover()) }()
+	}
+
 	monitor.NotationArgument()
 	monitor.AllArgument()
 	monitor.VerboseArgument()

@@ -1,11 +1,13 @@
 package main
 
-import (
-	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/ceph/goc"
+import "github.com/funtimecoding/go-library/pkg/tool/goc"
+
+var (
+	Version   string
+	GitHash   string
+	BuildDate string
 )
 
 func main() {
-	argument.ParseBind()
-	goc.Run(argument.Positional(0), false)
+	goc.Main(Version, GitHash, BuildDate)
 }

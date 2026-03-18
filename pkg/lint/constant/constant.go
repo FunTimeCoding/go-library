@@ -41,6 +41,9 @@ const (
 
 	MissingBlankAfterControlKey  = "missing_blank_after_control"
 	MissingBlankAfterControlText = "Missing blank line after control block"
+
+	MissingSentryKey  = "missing_sentry"
+	MissingSentryText = "No sentry reporter in program"
 )
 
 var PackageBlocklist = []string{"api"}

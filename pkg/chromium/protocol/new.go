@@ -10,5 +10,5 @@ func New(tab string) *Protocol {
 		panic("tab not found")
 	}
 
-	return &Protocol{client: c, context: c.TargetContext(t.Id)}
+	return &Protocol{client: c, context: c.TargetContext(t.Identifier)}
 }

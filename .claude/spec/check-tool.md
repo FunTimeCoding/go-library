@@ -38,47 +38,9 @@ pkg/argument/
 
 ## Entry Point
 
-`cmd/go<tool>/main.go` declares linker variables and delegates:
+See `entrypoint.md` for linker variables, `Main()`, and sentry setup.
 
-```go
-package main
-
-import "github.com/funtimecoding/go-library/pkg/tool/go<tool>"
-
-var (
-    Version   string
-    GitHash   string
-    BuildDate string
-)
-
-func main() {
-    go<tool>.Main(Version, GitHash, BuildDate)
-}
-```
-
-## Main Function
-
-`Main()` registers flags, parses with `monitor.ParseBind`, builds the option struct, and calls `Check`:
-
-```go
-func Main(
-    version string,
-    gitHash string,
-    buildDate string,
-) {
-    monitor.CopyableArgument()
-    monitor.NotationArgument()
-    monitor.AllArgument()
-    monitor.ParseBind(version, gitHash, buildDate)
-    o := option.New()
-    o.Copyable = viper.GetBool(argument.Copyable)
-    o.Notation = viper.GetBool(argument.Notation)
-    o.All = viper.GetBool(argument.All)
-    <entity>.Check(o)
-}
-```
-
-`monitor.ParseBind` adds `--version` flag, calls `argument.ParseBind()`, and exits on `--version`. Argument registration order: reusable monitor helpers first, then domain-specific `pflag` calls, then `monitor.ParseBind()`.
+After the standard entrypoint setup, `Main()` registers check-specific flags (copyable, notation, all), builds the option struct, and calls `Check()`. Argument registration order: reusable monitor helpers first, then domain-specific `pflag` calls, then `monitor.ParseBind()`.
 
 ## Option Struct
 

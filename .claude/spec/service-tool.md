@@ -40,43 +40,9 @@ pkg/tool/go<tool>/
 
 ## Entry Point
 
-`cmd/go<tool>/main.go` declares linker variables and delegates:
+See `entrypoint.md` for linker variables, `Main()`, and sentry setup.
 
-```go
-package main
-
-import "github.com/funtimecoding/go-library/pkg/tool/go<tool>"
-
-var (
-    Version   string
-    GitHash   string
-    BuildDate string
-)
-
-func main() {
-    go<tool>.Main(Version, GitHash, BuildDate)
-}
-```
-
-## Main Function
-
-`Main()` registers flags, parses with `monitor.ParseBind`, builds the option struct, and calls `Run()`:
-
-```go
-func Main(
-    version string,
-    gitHash string,
-    buildDate string,
-) {
-    pflag.String(argument.Path, "tmp/go<tool>.db", "Database path")
-    monitor.ParseBind(version, gitHash, buildDate)
-    o := option.New()
-    o.DatabasePath = viper.GetString(argument.Path)
-    Run(o)
-}
-```
-
-`monitor.ParseBind` adds `--version` flag, calls `argument.ParseBind()`, and exits on `--version`.
+`Main()` registers flags, builds the option struct, and calls `Run()`. Sentry and `monitor.ParseBind` are handled per the entrypoint convention.
 
 ## Run Function
 
@@ -97,44 +63,15 @@ func Run(o *option.Log) {
             },
         ),
     )
-    l.Run()
-    system.KillSignalBlock()
-    l.Stop()
+    l.RunUntilSignal()
 }
 ```
 
 Key conventions:
 - Server address uses `web/constant.Listen` (`:8080`)
 - Routes registered in the `func(*http.ServeMux)` callback
-- `system.KillSignalBlock()` between `Run()` and `Stop()`
+- `RunUntilSignal()` handles run, signal block, and reverse-order stop
 - Store closed via `defer` before lifecycle starts
-
-## Sentry Integration
-
-Optional error reporting via `SENTRY_LOCATOR` environment variable. When set, unhandled panics in `Run()` are reported to Sentry before the process exits:
-
-```go
-func Run(o *option.Log) {
-    g := logger.New(context.Background())
-    locator := environment.Optional(constant.LocatorEnvironment)
-
-    if locator != "" {
-        r := reporter.New("go<tool>", locator, "", o.Version)
-        r.Start()
-        defer func() { r.RecoverFlush(recover()) }()
-    }
-
-    s := store.New(o.DatabasePath)
-    defer s.Close()
-    // ...
-}
-```
-
-- Sentry setup comes before store/lifecycle so the defer runs last (captures panics from all later code)
-- `environment.Optional` returns empty string when the variable is unset — no error, no Sentry
-- `reporter.RecoverFlush(recover())` captures the panic value, reports it, and flushes before exit
-- The option struct carries `Version` so it can be passed to the reporter
-- Workers should use their own `defer/recover` to log errors via the structured logger rather than crashing the process
 
 ## Route Handlers
 
@@ -172,16 +109,7 @@ Long-running services come in pairs:
 | `go<tool>d` | `pkg/tool/go<tool>d/` | Daemon — lifecycle, store, HTTP server |
 | `go<tool>` | `pkg/tool/go<tool>/` | CLI — calls the daemon's REST API, prints output |
 
-The CLI tool is a thin wrapper around the domain client library (see below). It registers no flags beyond `--version` and calls a single method.
-
-```go
-// pkg/tool/go<tool>/main.go
-func Main(version, gitHash, buildDate string) {
-    monitor.ParseBind(version, gitHash, buildDate)
-    c := <domain>.NewEnvironment()
-    fmt.Printf("Entries: %s\n", c.Entries())
-}
-```
+The CLI tool is a thin wrapper around the domain client library (see below). After the standard entrypoint setup (see `entrypoint.md`), it calls a single method on the domain client.
 
 ## Domain Client Library
 

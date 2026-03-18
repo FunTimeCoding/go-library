@@ -45,28 +45,7 @@ tmp/<name>/
 
 ## Entry Point Contract
 
-Every `cmd/<name>/main.go` must declare linker variables and pass them to `Main()`:
-
-```go
-var (
-    Version   string
-    GitHash   string
-    BuildDate string
-)
-
-func main() {
-    <package>.Main(Version, GitHash, BuildDate)
-}
-```
-
-`Main()` passes these to `monitor.ParseBind(version, gitHash, buildDate)`, which adds `--version` and exits with build info when invoked:
-
-```
-$ goalertlog --version
-Version: v0.10.294
-GitHash: 144f841a
-BuildDate: 2026-02-20T13:36:08+01:00
-```
+See `entrypoint.md` for the linker variable and `Main()` convention. `gobuild` injects `Version`, `GitHash`, and `BuildDate` at compile time.
 
 ## Main Path Resolution
 

@@ -9,7 +9,11 @@ import (
 )
 
 func ReadRepository(path string) *repository.Repository {
-	c := exec.Command(constant.Command, constant.RevParse, constant.GitDir)
+	c := exec.Command(
+		constant.Command,
+		constant.RevParse,
+		constant.GitDirectory,
+	)
 	c.Dir = path
 	errors.PanicOnError(c.Run())
 	c = exec.Command(constant.Command, constant.Status, constant.Porcelain)

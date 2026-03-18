@@ -15,5 +15,5 @@ func Tab() {
 		panic("tab not found")
 	}
 
-	fmt.Printf("Body: %+v", c.Body(t.Id))
+	fmt.Printf("Body: %+v", c.Body(t.Identifier))
 }

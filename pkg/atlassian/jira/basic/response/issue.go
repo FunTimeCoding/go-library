@@ -20,10 +20,10 @@ type Issue struct {
 		Resolution any `json:"resolution"`
 		LastViewed any `json:"lastViewed"`
 		Priority   struct {
-			Self    string `json:"self"`
-			IconUrl string `json:"iconUrl"`
-			Name    string `json:"name"`
-			Id      string `json:"id"`
+			Self        string `json:"self"`
+			IconLocator string `json:"iconUrl"`
+			Name        string `json:"name"`
+			Id          string `json:"id"`
 		} `json:"priority"`
 		Labels                        []any `json:"labels"`
 		TimeEstimate                  any   `json:"timeestimate"`
@@ -48,7 +48,7 @@ type Issue struct {
 					Status  struct {
 						Self           string `json:"self"`
 						Description    string `json:"description"`
-						IconUrl        string `json:"iconUrl"`
+						IconLocator    string `json:"iconUrl"`
 						Name           string `json:"name"`
 						Id             string `json:"id"`
 						StatusCategory struct {
@@ -60,16 +60,16 @@ type Issue struct {
 						} `json:"statusCategory"`
 					} `json:"status"`
 					Priority struct {
-						Self    string `json:"self"`
-						IconUrl string `json:"iconUrl"`
-						Name    string `json:"name"`
-						Id      string `json:"id"`
+						Self        string `json:"self"`
+						IconLocator string `json:"iconUrl"`
+						Name        string `json:"name"`
+						Id          string `json:"id"`
 					} `json:"priority"`
 					IssueType struct {
 						Self           string `json:"self"`
 						Id             string `json:"id"`
 						Description    string `json:"description"`
-						IconUrl        string `json:"iconUrl"`
+						IconLocator    string `json:"iconUrl"`
 						Name           string `json:"name"`
 						Subtask        bool   `json:"subtask"`
 						AvatarId       int    `json:"avatarId"`
@@ -82,7 +82,7 @@ type Issue struct {
 		Status   struct {
 			Self           string `json:"self"`
 			Description    string `json:"description"`
-			IconUrl        string `json:"iconUrl"`
+			IconLocator    string `json:"iconUrl"`
 			Name           string `json:"name"`
 			Id             string `json:"id"`
 			StatusCategory struct {
@@ -96,10 +96,10 @@ type Issue struct {
 		Components            []any `json:"components"`
 		AggregateTimeEstimate any   `json:"aggregatetimeestimate"`
 		Creator               struct {
-			Self         string `json:"self"`
-			AccountId    string `json:"accountId"`
-			EmailAddress string `json:"emailAddress"`
-			AvatarUrls   struct {
+			Self          string `json:"self"`
+			AccountId     string `json:"accountId"`
+			EmailAddress  string `json:"emailAddress"`
+			AvatarLocator struct {
 				X48 string `json:"48x48"`
 				X24 string `json:"24x24"`
 				X16 string `json:"16x16"`
@@ -112,10 +112,10 @@ type Issue struct {
 		} `json:"creator"`
 		Subtasks []any `json:"subtasks"`
 		Reporter struct {
-			Self         string `json:"self"`
-			AccountId    string `json:"accountId"`
-			EmailAddress string `json:"emailAddress"`
-			AvatarUrls   struct {
+			Self          string `json:"self"`
+			AccountId     string `json:"accountId"`
+			EmailAddress  string `json:"emailAddress"`
+			AvatarLocator struct {
 				X48 string `json:"48x48"`
 				X24 string `json:"24x24"`
 				X16 string `json:"16x16"`
@@ -143,7 +143,7 @@ type Issue struct {
 			Self           string `json:"self"`
 			Id             string `json:"id"`
 			Description    string `json:"description"`
-			IconUrl        string `json:"iconUrl"`
+			IconLocator    string `json:"iconUrl"`
 			Name           string `json:"name"`
 			Subtask        bool   `json:"subtask"`
 			AvatarId       int    `json:"avatarId"`
@@ -157,7 +157,7 @@ type Issue struct {
 			Name           string `json:"name"`
 			ProjectTypeKey string `json:"projectTypeKey"`
 			Simplified     bool   `json:"simplified"`
-			AvatarUrls     struct {
+			AvatarLocator  struct {
 				X48 string `json:"48x48"`
 				X24 string `json:"24x24"`
 				X16 string `json:"16x16"`

@@ -92,3 +92,31 @@ func TestCheckStubCreated(t *testing.T) {
 		fixes.Read("pkg/foo/foo_test.go"),
 	)
 }
+
+func TestCheckStubMainPackage(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write(
+		"cmd/foo/main.go",
+		"package main\n\nfunc main() {}\n",
+	)
+	fixes := Check(v, option.New("", false), false)
+	assert.String(
+		t,
+		"package main\n\nimport (\n\t\"github.com/funtimecoding/go-library/pkg/assert\"\n\t\"testing\"\n)\n\nfunc TestStub(t *testing.T) {\n\tassert.Stub(t)\n}\n",
+		fixes.Read("cmd/foo/main_test.go"),
+	)
+}
+
+func TestCheckStubTestdata(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write(
+		"pkg/lint/analyzer/naming/testdata/src/example/example.go",
+		"package example\n\ntype Example struct{}\n",
+	)
+	fixes := Check(v, option.New("", false), false)
+	assert.String(
+		t,
+		"package example\n\nimport \"testing\"\n\nfunc TestExample(t *testing.T) {\n\tt.Helper()\n}\n",
+		fixes.Read("pkg/lint/analyzer/naming/testdata/src/example/example_test.go"),
+	)
+}

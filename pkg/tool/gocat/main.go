@@ -2,10 +2,13 @@ package gocat
 
 import (
 	"fmt"
+	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/strings/slice"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -17,6 +20,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
+	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+		r := reporter.New("gocat", c, "", version)
+		r.Start()
+		defer func() { r.RecoverFlush(recover()) }()
+	}
+
 	monitor.ParseBind(version, gitHash, buildDate)
 	pattern := filepath.Join(".", "*.go")
 	files := slice.StripSuffix(system.Glob(pattern), "_test.go")

@@ -8,7 +8,7 @@ Reusable application lifecycle manager for service-style applications that serve
 
 ## Core Concept
 
-Components (servers and workers) are registered via functional options. They start in registration order and stop in reverse registration order. The caller decides when to block (typically `system.KillSignalBlock()`).
+Components (servers and workers) are registered via functional options. They start in registration order and stop in reverse registration order. `RunUntilSignal()` handles the run/block/stop sequence.
 
 ## File Layout
 
@@ -18,6 +18,7 @@ pkg/lifecycle/
   lifecycle.go              — Lifecycle struct
   new.go                    — constructor
   run.go                    — Run() starts all components in order
+  run_until_signal.go       — RunUntilSignal() runs, blocks, stops
   stop.go                   — Stop() stops all in reverse order
   with_server.go            — WithServer option
   with_server_middleware.go — WithServerMiddleware option
@@ -82,25 +83,18 @@ Stop happens in reverse: the server shuts down before the worker stops.
 
 ## What Stays Outside Lifecycle
 
-- **Sentry recover** — `recover()` only works in direct defer, can't be wrapped. Use `defer func() { s.RecoverFlush(recover()) }()` before `lifecycle.Run()`.
+- **Sentry** — lives in `Main()`, not `Run()`. See `entrypoint.md`. The `recover()` defer in `Main()` catches panics from `Run()`.
 - **App-specific setup** — database connections, client construction, configuration parsing. All happen before `lifecycle.New()`.
-- **Signal blocking** — the caller calls `system.KillSignalBlock()` after `lifecycle.Run()`.
-- **Reporter start** — if other components need the sentry hub at construction time, the reporter must `Start()` before `lifecycle.New()` so `Hub()` is available.
 
 ## Usage Pattern
 
 ```go
 func Run(o *option.Config) {
-    // 1. Pre-lifecycle setup (sentry, clients, config)
-    s := reporter.New(...)
-    s.Start()
-    defer func() { s.RecoverFlush(recover()) }()
-
-    // 2. Construct components
+    // 1. Construct components
     e := metric.New(0, o.Verbose, nil)
 
-    // 3. Build lifecycle in desired start order
-    b := lifecycle.New(
+    // 2. Build lifecycle in desired start order
+    l := lifecycle.New(
         lifecycle.WithVerbose(o.Verbose),
         lifecycle.WithWorker(e),
         lifecycle.WithWorker(ticker.New(5*time.Minute, func() { ... })),
@@ -109,10 +103,8 @@ func Run(o *option.Config) {
         }),
     )
 
-    // 4. Run, block, stop
-    b.Run()
-    defer b.Stop()
-    system.KillSignalBlock()
+    // 3. Run until signal, stop in reverse order
+    l.RunUntilSignal()
 }
 ```
 

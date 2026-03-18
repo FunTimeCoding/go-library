@@ -2,9 +2,12 @@ package gorenovate
 
 import (
 	"fmt"
+	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"os"
 )
 
@@ -13,6 +16,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
+	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+		r := reporter.New("gorenovate", c, "", version)
+		r.Start()
+		defer func() { r.RecoverFlush(recover()) }()
+	}
+
 	monitor.ParseBind(version, gitHash, buildDate)
 	var missing []string
 

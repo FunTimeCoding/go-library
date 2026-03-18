@@ -1,15 +1,13 @@
 package godebian
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
+	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/semver"
-	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/system/constant"
-	"github.com/funtimecoding/go-library/pkg/system/debian"
-	debianConstant "github.com/funtimecoding/go-library/pkg/system/debian/constant"
-	"github.com/funtimecoding/go-library/pkg/system/join"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/godebian/option"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -21,10 +19,16 @@ const (
 )
 
 func Main(
-	v string,
+	version string,
 	gitHash string,
 	buildDate string,
 ) {
+	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+		r := reporter.New("godebian", c, "", version)
+		r.Start()
+		defer func() { r.RecoverFlush(recover()) }()
+	}
+
 	pflag.String(
 		argument.Executable,
 		"",
@@ -45,94 +49,17 @@ func Main(
 		"",
 		"Maintainer email: another@example.org",
 	)
-	var createUnit bool
-	pflag.BoolVar(
-		&createUnit,
+	pflag.Bool(
 		systemdUnitFlag,
 		false,
 		"Create a systemd unit",
 	)
-	monitor.ParseBind(v, gitHash, buildDate)
-	executable := viper.GetString(argument.Executable)
-	version := semver.Trim(viper.GetString(argument.Version))
-	maintainerName := viper.GetString(maintainerNameArgument)
-	maintainerMail := viper.GetString(maintainerEmailArgument)
-	architecture := constant.AMD64
-
-	packageName := debian.PackageVersion(
-		executable,
-		version,
-		1,
-		architecture,
-	)
-	packageDirectory := join.Absolute(system.WorkingDirectory(), packageName)
-
-	debianDirectory := join.Absolute(
-		packageDirectory,
-		debianConstant.PackageConfigurationDirectory,
-	)
-	system.MakeDirectory(debianDirectory)
-	system.SaveFile(
-		join.Absolute(debianDirectory, debianConstant.ControlFile),
-		fmt.Sprintf(
-			"Package: %s"+
-				"\nVersion: %s"+
-				"\nArchitecture: %s"+
-				"\nMaintainer: %s <%s>"+
-				"\nDescription: Short stub description."+
-				"\n Long stub description."+
-				"\n",
-			executable,
-			version,
-			architecture,
-			maintainerName,
-			maintainerMail,
-		),
-	)
-
-	if createUnit {
-		unit := join.Absolute(
-			packageDirectory,
-			constant.Library,
-			"systemd",
-			"system",
-		)
-		system.MakeDirectory(unit)
-		system.SaveFile(
-			join.Absolute(unit, fmt.Sprintf("%s.service", executable)),
-			fmt.Sprintf(
-				"[Unit]"+
-					"\nDescription=%s stub description"+
-					"\nAfter=network.target"+
-					"\n"+
-					"\n[Service]"+
-					"\nType=simple"+
-					"\nExecStart=/usr/local/bin/%s"+
-					"\n"+
-					"\n[Install]"+
-					"\nWantedBy=multi-user.target"+
-					"\n",
-				executable,
-				executable,
-			),
-		)
-	}
-
-	bin := join.Absolute(
-		packageDirectory,
-		constant.Resources,
-		constant.Local,
-		constant.Binary,
-	)
-	system.MakeDirectory(bin)
-	system.Move(executable, join.Absolute(bin, executable))
-
-	fmt.Println(
-		system.Run(
-			"dpkg-deb",
-			"--build",
-			"--root-owner-group",
-			packageName,
-		),
-	)
+	monitor.ParseBind(version, gitHash, buildDate)
+	o := option.New()
+	o.Executable = viper.GetString(argument.Executable)
+	o.PackageVersion = semver.Trim(viper.GetString(argument.Version))
+	o.MaintainerName = viper.GetString(maintainerNameArgument)
+	o.MaintainerEmail = viper.GetString(maintainerEmailArgument)
+	o.SystemdUnit = viper.GetBool(systemdUnitFlag)
+	Run(o)
 }

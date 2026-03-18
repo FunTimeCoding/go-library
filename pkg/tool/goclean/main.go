@@ -2,6 +2,8 @@ package goclean
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
+	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
@@ -15,6 +17,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
+	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+		r := reporter.New("goclean", c, "", version)
+		r.Start()
+		defer func() { r.RecoverFlush(recover()) }()
+	}
+
 	monitor.VerboseArgument()
 	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()

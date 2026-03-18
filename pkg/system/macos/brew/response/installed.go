@@ -16,18 +16,18 @@ type Installed struct {
 			Head   *string `json:"head"`
 			Bottle bool    `json:"bottle"`
 		} `json:"versions"`
-		Urls struct {
+		Locator struct {
 			Stable struct {
-				Url      string  `json:"url"`
+				Locator  string  `json:"url"`
 				Tag      *string `json:"tag"`
 				Revision *string `json:"revision"`
 				Using    *string `json:"using"`
 				Checksum *string `json:"checksum"`
 			} `json:"stable"`
 			Head struct {
-				Url    string  `json:"url"`
-				Branch *string `json:"branch"`
-				Using  *string `json:"using"`
+				Locator string  `json:"url"`
+				Branch  *string `json:"branch"`
+				Using   *string `json:"using"`
 			} `json:"head,omitempty"`
 		} `json:"urls"`
 		Revision          int         `json:"revision"`
@@ -37,103 +37,103 @@ type Installed struct {
 		SkipLivecheck     bool        `json:"skip_livecheck"`
 		Bottle            struct {
 			Stable struct {
-				Rebuild int    `json:"rebuild"`
-				RootUrl string `json:"root_url"`
-				Files   struct {
+				Rebuild     int    `json:"rebuild"`
+				RootLocator string `json:"root_url"`
+				Files       struct {
 					Arm64Sequoia struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"arm64_sequoia,omitempty"`
 					Arm64Sonoma struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"arm64_sonoma,omitempty"`
 					Arm64Ventura struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"arm64_ventura,omitempty"`
 					Sonoma struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"sonoma,omitempty"`
 					Ventura struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"ventura,omitempty"`
 					Arm64Linux struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"arm64_linux,omitempty"`
 					X8664Linux struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"x86_64_linux,omitempty"`
 					All struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"all,omitempty"`
 					Arm64Monterey struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"arm64_monterey,omitempty"`
 					Arm64BigSur struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"arm64_big_sur,omitempty"`
 					Monterey struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"monterey,omitempty"`
 					BigSur struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"big_sur,omitempty"`
 					Catalina struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"catalina,omitempty"`
 					Arm64Tahoe struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"arm64_tahoe,omitempty"`
 					Sequoia struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"sequoia,omitempty"`
 					Mojave struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"mojave,omitempty"`
 					HighSierra struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"high_sierra,omitempty"`
 					Sierra struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"sierra,omitempty"`
 					ElCapitan struct {
-						Cellar string `json:"cellar"`
-						Url    string `json:"url"`
-						Sha256 string `json:"sha256"`
+						Cellar  string `json:"cellar"`
+						Locator string `json:"url"`
+						Sha256  string `json:"sha256"`
 					} `json:"el_capitan,omitempty"`
 				} `json:"files"`
 			} `json:"stable,omitempty"`
@@ -207,7 +207,7 @@ type Installed struct {
 				Always bool `json:"always"`
 			} `json:"keep_alive,omitempty"`
 			EnvironmentVariables map[string]string `json:"environment_variables,omitempty"`
-			WorkingDir           string            `json:"working_dir,omitempty"`
+			WorkingDirectory     string            `json:"working_dir,omitempty"`
 			LogPath              string            `json:"log_path,omitempty"`
 			ErrorLogPath         string            `json:"error_log_path,omitempty"`
 			RequireRoot          bool              `json:"require_root,omitempty"`
@@ -230,15 +230,15 @@ type Installed struct {
 		} `json:"head_dependencies,omitempty"`
 	} `json:"formulae"`
 	Casks []struct {
-		Token     string   `json:"token"`
-		FullToken string   `json:"full_token"`
-		OldTokens []string `json:"old_tokens"`
-		Tap       string   `json:"tap"`
-		Name      []string `json:"name"`
-		Desc      *string  `json:"desc"`
-		Homepage  string   `json:"homepage"`
-		Url       string   `json:"url"`
-		UrlSpecs  struct {
+		Token                string   `json:"token"`
+		FullToken            string   `json:"full_token"`
+		OldTokens            []string `json:"old_tokens"`
+		Tap                  string   `json:"tap"`
+		Name                 []string `json:"name"`
+		Desc                 *string  `json:"desc"`
+		Homepage             string   `json:"homepage"`
+		Locator              string   `json:"url"`
+		LocatorSpecification struct {
 			Verified string `json:"verified,omitempty"`
 			Branch   string `json:"branch,omitempty"`
 			OnlyPath string `json:"only_path,omitempty"`
@@ -255,26 +255,26 @@ type Installed struct {
 		Sha256             string  `json:"sha256"`
 		Artifacts          []struct {
 			Uninstall []struct {
-				Quit      string `json:"quit,omitempty"`
-				LoginItem string `json:"login_item,omitempty"`
-				Pkgutil   any    `json:"pkgutil,omitempty"`
-				Launchctl any    `json:"launchctl,omitempty"`
-				Script    struct {
+				Quit           string `json:"quit,omitempty"`
+				LoginItem      string `json:"login_item,omitempty"`
+				PackageUtility any    `json:"pkgutil,omitempty"`
+				LaunchControl  any    `json:"launchctl,omitempty"`
+				Script         struct {
 					Executable string   `json:"executable"`
 					Sudo       bool     `json:"sudo"`
 					Input      []string `json:"input,omitempty"`
 					Args       []string `json:"args,omitempty"`
 				} `json:"script,omitempty"`
-				Delete any      `json:"delete,omitempty"`
-				Rmdir  string   `json:"rmdir,omitempty"`
-				Signal []string `json:"signal,omitempty"`
-				Trash  string   `json:"trash,omitempty"`
+				Delete          any      `json:"delete,omitempty"`
+				RemoveDirectory string   `json:"rmdir,omitempty"`
+				Signal          []string `json:"signal,omitempty"`
+				Trash           string   `json:"trash,omitempty"`
 			} `json:"uninstall,omitempty"`
 			App []any `json:"app,omitempty"`
 			Zap []struct {
-				Trash     any      `json:"trash"`
-				Rmdir     any      `json:"rmdir,omitempty"`
-				Launchctl []string `json:"launchctl,omitempty"`
+				Trash           any      `json:"trash"`
+				RemoveDirectory any      `json:"rmdir,omitempty"`
+				LaunchControl   []string `json:"launchctl,omitempty"`
 			} `json:"zap,omitempty"`
 			Pkg                 []any    `json:"pkg,omitempty"`
 			BashCompletion      []string `json:"bash_completion,omitempty"`

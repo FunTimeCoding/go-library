@@ -3,6 +3,8 @@ package goversion
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
+	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
 	checkVersion "github.com/funtimecoding/go-library/pkg/go_mod/check/version"
 	"github.com/funtimecoding/go-library/pkg/go_mod/check/version/option"
@@ -21,6 +23,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
+	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+		r := reporter.New("goversion", c, "", version)
+		r.Start()
+		defer func() { r.RecoverFlush(recover()) }()
+	}
+
 	monitor.NotationArgument()
 	monitor.AllArgument()
 	pflag.String(argument.Skip, "", "Skip matches")

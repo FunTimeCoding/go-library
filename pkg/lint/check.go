@@ -8,6 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 func Check(
@@ -41,22 +42,26 @@ func Check(
 		}
 	}
 
-	missing := missingTestDirs(paths, generatedPaths)
-	dirs := make([]string, 0, len(missing))
+	missing := missingTestDirectories(paths, generatedPaths)
+	directories := make([]string, 0, len(missing))
 
-	for dir := range missing {
-		dirs = append(dirs, dir)
+	for d := range missing {
+		directories = append(directories, d)
 	}
 
-	sort.Strings(dirs)
+	sort.Strings(directories)
 
-	for _, dir := range dirs {
-		fmt.Printf("%s: %s\n", constant.MissingTestFileText, dir)
-		name := packageNameOf(v, missing[dir])
+	for _, d := range directories {
+		fmt.Printf("%s: %s\n", constant.MissingTestFileText, d)
+		name := packageNameOf(v, missing[d])
 		fixes.Write(
-			filepath.Join(dir, stubTestSuffix(name)+"_test.go"),
-			stubTestContent(name),
+			filepath.Join(d, stubTestSuffix(name)+"_test.go"),
+			stubTestContent(name, strings.Contains(d, "/testdata/")),
 		)
+	}
+
+	for _, name := range missingSentryPrograms(v) {
+		fmt.Printf("%s: cmd/%s\n", constant.MissingSentryText, name)
 	}
 
 	runCheckers(

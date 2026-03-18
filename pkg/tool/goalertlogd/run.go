@@ -2,15 +2,11 @@ package goalertlogd
 
 import (
 	"context"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
-	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/poller"
@@ -25,19 +21,6 @@ import (
 
 func Run(o *option.Log) {
 	g := logger.New(context.Background())
-	locator := environment.Optional(sentry.LocatorEnvironment)
-
-	if locator != "" {
-		r := reporter.New(
-			"goalertlog",
-			locator,
-			"",
-			o.Version,
-		)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
 	e := metric.New(0, false, nil)
 	s := store.New(o.DatabasePath)
 	defer s.Close()
@@ -62,7 +45,5 @@ func Run(o *option.Log) {
 		),
 	)
 	g.Structured("starting")
-	l.Run()
-	system.KillSignalBlock()
-	l.Stop()
+	l.RunUntilSignal()
 }

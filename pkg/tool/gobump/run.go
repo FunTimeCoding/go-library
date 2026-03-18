@@ -1,0 +1,54 @@
+package gobump
+
+import (
+	"fmt"
+	"github.com/coreos/go-semver/semver"
+	"github.com/funtimecoding/go-library/pkg/git"
+	"github.com/funtimecoding/go-library/pkg/git/constant"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
+	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/tool/gobump/option"
+)
+
+const (
+	major = "major"
+	minor = "minor"
+	patch = "patch"
+)
+
+func Run(o *option.Bump) {
+	d := system.WorkingDirectory()
+
+	if !git.IsCleanCommand() {
+		s := git.Status(d)
+
+		if !git.IsClean(s, false) {
+			system.Exitf(1, "not clean:\n%s\n", s.String())
+		}
+	}
+
+	git.Fetch()
+	var next *semver.Version
+
+	if versions := git.Versions(d); len(versions) == 0 {
+		next = semver.New("0.0.0")
+	} else {
+		next = semver.New(versions[len(versions)-1].String())
+	}
+
+	switch o.Increase {
+	case patch:
+		next.BumpPatch()
+	case minor:
+		next.BumpMinor()
+	case major:
+		next.BumpMajor()
+	default:
+		system.Exitf(1, "unexpected increase: %s\n", o.Increase)
+	}
+
+	nextString := key_value.Empty(constant.VersionPrefix, next.String())
+	fmt.Printf("Tag: %s\n", nextString)
+	git.Tag(nextString)
+	git.Push()
+}

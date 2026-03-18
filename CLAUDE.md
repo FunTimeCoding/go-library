@@ -5,7 +5,8 @@
 Design and coding specs live in `.claude/spec/`:
 
 - `conventions.md` — coding style, error handling, naming, structure
-- `service-tool.md` — long-running service tool pattern (Main/Run, lifecycle wiring, routes)
+- `entrypoint.md` — linker variables, Main(), sentry setup (shared by all cmd/ programs)
+- `service-tool.md` — long-running service tool pattern (Run, lifecycle wiring, routes)
 - `check-tool.md` — CLI check tool pattern (fetch, filter, format, print)
 - `lifecycle.md` — lifecycle manager for servers and workers
 - `entity-wrapper.md` — entity wrapper pattern

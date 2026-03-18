@@ -5,8 +5,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/constant"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/thread"
 	"github.com/funtimecoding/go-library/pkg/console"
+	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/text/template"
 	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
@@ -18,6 +21,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
+	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+		r := reporter.New("gomat", c, "", version)
+		r.Start()
+		defer func() { r.RecoverFlush(recover()) }()
+	}
+
 	monitor.ParseBind(version, gitHash, buildDate)
 	c := common.Mattermost()
 

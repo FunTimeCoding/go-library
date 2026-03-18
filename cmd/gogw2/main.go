@@ -1,11 +1,13 @@
 package main
 
-import "github.com/funtimecoding/go-library/pkg/gw2/check/alliance"
+import "github.com/funtimecoding/go-library/pkg/tool/gogw2"
+
+var (
+	Version   string
+	GitHash   string
+	BuildDate string
+)
 
 func main() {
-	alliance.Check()
-
-	if false {
-		alliance.PrintAccount()
-	}
+	gogw2.Main(Version, GitHash, BuildDate)
 }

@@ -22,8 +22,8 @@ const (
 	Clone   = "clone"
 	Status  = "status"
 
-	RevParse = "rev-parse"
-	GitDir   = "--git-dir"
+	RevParse     = "rev-parse"
+	GitDirectory = "--git-dir"
 
 	Porcelain = "--porcelain"
 

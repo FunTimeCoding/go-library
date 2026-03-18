@@ -4,8 +4,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/bubbletea"
 	monitorModel "github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor"
+	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/check/collect"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/gomonitor/option"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -16,6 +19,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
+	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+		r := reporter.New("gomonitor", c, "", version)
+		r.Start()
+		defer func() { r.RecoverFlush(recover()) }()
+	}
+
 	pflag.Bool(argument.Connect, false, "Connect to the server")
 	pflag.Bool(argument.Once, false, "Run once and exit")
 	pflag.Bool(

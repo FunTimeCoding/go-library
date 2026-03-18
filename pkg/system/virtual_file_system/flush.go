@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 )
 
-func (s *System) Flush(dir string) {
+func (s *System) Flush(directory string) {
 	for path, content := range s.files {
-		full := filepath.Join(dir, path)
+		full := filepath.Join(directory, path)
 		system.EnsurePathExists(filepath.Dir(full))
 		system.SaveFile(full, content)
 	}

@@ -23,7 +23,7 @@ func Skipped(
 			if matched {
 				return true
 			}
-		} else if strings.HasPrefix(path, p) {
+		} else if strings.HasPrefix(path, p) || strings.Contains(path, "/"+p) {
 			return true
 		}
 	}

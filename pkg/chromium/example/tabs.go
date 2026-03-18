@@ -34,11 +34,11 @@ func Tabs() {
 		p := join.Absolute(system.Home(), systemConstant.DownloadsPath, name)
 
 		if !system.FileExists(p) {
-			if c.NeedReload(t.Id, t.Locator) {
-				c.Activate(t.Id)
+			if c.NeedReload(t.Identifier, t.Locator) {
+				c.Activate(t.Identifier)
 			}
 
-			c.Save(c.TargetContext(t.Id), t.Locator, p)
+			c.Save(c.TargetContext(t.Identifier), t.Locator, p)
 		} else {
 			fmt.Println("  Exists")
 		}

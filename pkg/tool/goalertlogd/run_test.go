@@ -157,30 +157,21 @@ func TestGeneratedClient(t *testing.T) {
 	assert.Listen(t, port)
 	base := fmt.Sprintf("http://localhost:%d", port)
 	cl, e := client.NewClientWithResponses(base)
+	assert.FatalOnError(t, e)
 
-	if e != nil {
-		t.Fatal(e)
-	}
-
-	ctx := context.Background()
-	status, e := cl.GetStatusWithResponse(ctx)
-
-	if e != nil {
-		t.Fatal(e)
-	}
+	x := context.Background()
+	status, f := cl.GetStatusWithResponse(x)
+	assert.FatalOnError(t, f)
 
 	assert.Integer(t, http.StatusOK, status.StatusCode())
 	assert.NotNil(t, status.JSON200)
 	assert.Integer(t, 1, status.JSON200.TotalRecords)
 	assert.True(t, status.JSON200.LastPoll != nil)
-	alerts, e := cl.GetAlertsWithResponse(
-		ctx,
+	alerts, h := cl.GetAlertsWithResponse(
+		x,
 		&client.GetAlertsParams{Name: "HighMemory"},
 	)
-
-	if e != nil {
-		t.Fatal(e)
-	}
+	assert.FatalOnError(t, h)
 
 	assert.Integer(t, http.StatusOK, alerts.StatusCode())
 	assert.NotNil(t, alerts.JSON200)
@@ -191,26 +182,20 @@ func TestGeneratedClient(t *testing.T) {
 		string(client.Firing),
 		string((*alerts.JSON200)[0].Status),
 	)
-	recent, e := cl.GetRecentAlertsWithResponse(
-		ctx,
+	recent, i := cl.GetRecentAlertsWithResponse(
+		x,
 		&client.GetRecentAlertsParams{},
 	)
-
-	if e != nil {
-		t.Fatal(e)
-	}
+	assert.FatalOnError(t, i)
 
 	assert.Integer(t, http.StatusOK, recent.StatusCode())
 	assert.NotNil(t, recent.JSON200)
 	assert.Count(t, 1, *recent.JSON200)
-	topAlerts, e := cl.GetTopAlertsWithResponse(
-		ctx,
+	topAlerts, j := cl.GetTopAlertsWithResponse(
+		x,
 		&client.GetTopAlertsParams{},
 	)
-
-	if e != nil {
-		t.Fatal(e)
-	}
+	assert.FatalOnError(t, j)
 
 	assert.Integer(t, http.StatusOK, topAlerts.StatusCode())
 	assert.NotNil(t, topAlerts.JSON200)
@@ -224,14 +209,11 @@ func getJSON[T any](
 ) T {
 	t.Helper()
 	r, e := http.Get(locator)
-
-	if e != nil {
-		t.Fatal(e)
-	}
+	assert.FatalOnError(t, e)
 
 	defer errors.PanicClose(r.Body)
-	body, e := io.ReadAll(r.Body)
-	errors.PanicOnError(e)
+	body, f := io.ReadAll(r.Body)
+	errors.PanicOnError(f)
 
 	var result T
 	errors.PanicOnError(json.Unmarshal(body, &result))

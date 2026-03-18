@@ -10,7 +10,7 @@ import (
 )
 
 func probe(
-	url string,
+	locator string,
 	token string,
 ) {
 	var opts []transport.StreamableHTTPCOption
@@ -26,19 +26,19 @@ func probe(
 		)
 	}
 
-	c, e := client.NewStreamableHttpClient(url, opts...)
+	c, e := client.NewStreamableHttpClient(locator, opts...)
 	errors.PanicOnError(e)
 
-	ctx := context.Background()
-	errors.PanicOnError(c.Start(ctx))
+	x := context.Background()
+	errors.PanicOnError(c.Start(x))
 
-	_, e = c.Initialize(ctx, mcp.InitializeRequest{})
+	_, e = c.Initialize(x, mcp.InitializeRequest{})
 	errors.PanicOnError(e)
 
 	fmt.Printf("Session ID: %s\n", c.GetTransport().GetSessionId())
 
-	result, e := c.ListTools(ctx, mcp.ListToolsRequest{})
-	errors.PanicOnError(e)
+	result, f := c.ListTools(x, mcp.ListToolsRequest{})
+	errors.PanicOnError(f)
 
 	for _, t := range result.Tools {
 		fmt.Printf("%s: %s\n", t.Name, t.Description)

@@ -7,15 +7,15 @@ func (s *Store) List(f *Filter) ([]Entry, error) {
 
 	if f != nil {
 		if f.System != "" {
-			q = q.Where("system = ?", f.System)
+			q = q.Where(map[string]any{"system": f.System})
 		}
 
 		if f.Service != "" {
-			q = q.Where("service = ?", f.Service)
+			q = q.Where(map[string]any{"service": f.Service})
 		}
 
 		if f.User != "" {
-			q = q.Where("user = ?", f.User)
+			q = q.Where(map[string]any{"user": f.User})
 		}
 
 		if !f.Since.IsZero() {

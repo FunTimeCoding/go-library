@@ -3,11 +3,10 @@ package gomaintlogd
 import (
 	"context"
 	"fmt"
-	"testing"
-
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+	"testing"
 )
 
 func TestModelContextClient(t *testing.T) {
@@ -64,6 +63,54 @@ func TestModelContextClient(t *testing.T) {
 		t,
 		"1 entries",
 		list.Content[0].(*mcp.TextContent).Text,
+	)
+
+	// list_entries — filter by system
+	filtered, e := session.CallTool(
+		x,
+		&mcp.CallToolParams{
+			Name:      "list_entries",
+			Arguments: map[string]any{"system": "worker1"},
+		},
+	)
+	assert.FatalOnError(t, e)
+	assert.False(t, filtered.IsError)
+	assert.StringContains(
+		t,
+		"1 entries",
+		filtered.Content[0].(*mcp.TextContent).Text,
+	)
+
+	// list_entries — filter by user
+	filteredUser, e := session.CallTool(
+		x,
+		&mcp.CallToolParams{
+			Name:      "list_entries",
+			Arguments: map[string]any{"user": "jdoe"},
+		},
+	)
+	assert.FatalOnError(t, e)
+	assert.False(t, filteredUser.IsError)
+	assert.StringContains(
+		t,
+		"1 entries",
+		filteredUser.Content[0].(*mcp.TextContent).Text,
+	)
+
+	// list_entries — filter no match
+	noMatch, e := session.CallTool(
+		x,
+		&mcp.CallToolParams{
+			Name:      "list_entries",
+			Arguments: map[string]any{"system": "nonexistent"},
+		},
+	)
+	assert.FatalOnError(t, e)
+	assert.False(t, noMatch.IsError)
+	assert.StringContains(
+		t,
+		"0 entries",
+		noMatch.Content[0].(*mcp.TextContent).Text,
 	)
 
 	// update_entry

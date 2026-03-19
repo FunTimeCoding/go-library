@@ -19,12 +19,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
 	"io"
 	"net/http"
+	"path/filepath"
 	"testing"
 	"time"
 )
 
 func TestRunLifecycle(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	s := store.New(path)
 	defer s.Close()
 	c := mock_client.New()
@@ -126,7 +127,7 @@ func TestRunLifecycle(t *testing.T) {
 }
 
 func TestGeneratedClient(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	s := store.New(path)
 	defer s.Close()
 	c := mock_client.New()

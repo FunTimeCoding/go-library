@@ -8,6 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/mock_client"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
+	"path/filepath"
 	"testing"
 	"time"
 )
@@ -22,7 +23,7 @@ func TestPoller(t *testing.T) {
 }
 
 func TestPollSavesNewAlert(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	defer system.Remove(path)
 	s := store.New(path)
 	defer s.Close()
@@ -45,7 +46,7 @@ func TestPollSavesNewAlert(t *testing.T) {
 }
 
 func TestPollResolvesRemovedAlert(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	defer system.Remove(path)
 	s := store.New(path)
 	defer s.Close()
@@ -68,7 +69,7 @@ func TestPollResolvesRemovedAlert(t *testing.T) {
 }
 
 func TestPollIgnoresDuplicateFiring(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	defer system.Remove(path)
 	s := store.New(path)
 	defer s.Close()
@@ -88,7 +89,7 @@ func TestPollIgnoresDuplicateFiring(t *testing.T) {
 }
 
 func TestRecoverStaleAdoptsFireing(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	defer system.Remove(path)
 	s := store.New(path)
 	defer s.Close()
@@ -111,7 +112,7 @@ func TestRecoverStaleAdoptsFireing(t *testing.T) {
 }
 
 func TestRecoverStaleResolvesGone(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	defer system.Remove(path)
 	s := store.New(path)
 	defer s.Close()
@@ -135,7 +136,7 @@ func TestRecoverStaleResolvesGone(t *testing.T) {
 }
 
 func TestPollPrunesOldRecords(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	defer system.Remove(path)
 	s := store.New(path)
 	defer s.Close()
@@ -155,7 +156,7 @@ func TestPollPrunesOldRecords(t *testing.T) {
 }
 
 func TestPollTracksLastPollTime(t *testing.T) {
-	path := t.TempDir() + "/test.db"
+	path := filepath.Join(t.TempDir(), "test.db")
 	defer system.Remove(path)
 	s := store.New(path)
 	defer s.Close()

@@ -18,7 +18,7 @@ func (c *Client) CreateCustomerIssue(
 		&models.CreateCustomerRequestPayloadScheme{
 			ServiceDeskID: integers.ToString(desk),
 			RequestTypeID: integers.ToString(requestType),
-			RequestFieldValues: map[string]interface{}{
+			RequestFieldValues: map[string]any{
 				customer.SummaryField:     summary,
 				customer.DescriptionField: description,
 			},

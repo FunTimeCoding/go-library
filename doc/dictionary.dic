@@ -104,9 +104,15 @@ vmlinuz
 # macOS
 APPL
 afplay
+catalina
 icns
+mojave
+monterey
+sonoma
 sosumi
+tahoe
 tink
+ventura
 wdutil
 
 # Debian
@@ -115,6 +121,7 @@ netinst
 
 # HTTP
 PROPFIND
+urls
 
 # Kubernetes
 apimachinery

@@ -66,6 +66,43 @@ paths:
                 $ref: "#/components/schemas/EntryResponse"
         "400":
           description: Missing or invalid fields.
+  /api/v1/entries/{id}:
+    put:
+      operationId: updateEntry
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostEntryRequest"
+      responses:
+        "200":
+          description: Entry updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntryResponse"
+        "404":
+          description: Entry not found.
+    delete:
+      operationId: deleteEntry
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: Entry deleted successfully.
+        "404":
+          description: Entry not found.
   /api/v1/status:
     get:
       operationId: getStatus

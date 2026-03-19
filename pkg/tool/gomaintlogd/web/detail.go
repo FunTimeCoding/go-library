@@ -53,6 +53,17 @@ func (s *Server) handleEditSubmit(
 	renderFragment(w, detailRow(e))
 }
 
+func (s *Server) handleDelete(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	id, e := strconv.ParseUint(r.URL.Query().Get("id"), 10, 64)
+	errors.PanicOnError(e)
+	errors.PanicOnError(s.store.Delete(uint(id)))
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+}
+
 func (s *Server) entryFromQuery(r *http.Request) *store.Entry {
 	id, e := strconv.ParseUint(r.URL.Query().Get("id"), 10, 64)
 	errors.PanicOnError(e)
@@ -111,6 +122,18 @@ func detailRow(e *store.Entry) g.Node {
 						hx.Target(target),
 						hx.Swap("outerHTML"),
 						g.Text("Edit"),
+					),
+					h.Button(
+						h.Class("outline contrast"),
+						hx.Post(fmt.Sprintf("/entry/delete?id=%d", e.ID)),
+						hx.Confirm("Delete this entry?"),
+						g.Attr("hx-on::after-request",
+							fmt.Sprintf(
+								"document.getElementById('row-%d')?.remove();document.getElementById('detail-%d')?.remove()",
+								e.ID, e.ID,
+							),
+						),
+						g.Text("Delete"),
 					),
 					h.Button(
 						h.Type("button"),

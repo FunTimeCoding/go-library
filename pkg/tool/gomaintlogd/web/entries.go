@@ -129,6 +129,7 @@ func entriesTable(entries []store.Entry) g.Node {
 		rows = append(
 			rows,
 			h.Tr(
+				h.ID(fmt.Sprintf("row-%d", e.ID)),
 				h.Class("clickable-row"),
 				hx.Get(fmt.Sprintf("/entry/detail?id=%d", e.ID)),
 				hx.Target("#"+target),

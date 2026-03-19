@@ -87,4 +87,58 @@ func (s *Server) register() {
 		),
 		s.list,
 	)
+	s.server.AddTool(
+		mcp.NewTool(
+			"update_entry",
+			mcp.WithDescription(
+				"Update an existing maintenance log entry",
+			),
+			mcp.WithNumber(
+				"id",
+				mcp.Required(),
+				mcp.Description("ID of the entry to update"),
+			),
+			mcp.WithString(
+				"action",
+				mcp.Description("Updated action description"),
+			),
+			mcp.WithString(
+				"user",
+				mcp.Description("Updated user"),
+			),
+			mcp.WithString(
+				"system",
+				mcp.Description("Updated system identifier"),
+			),
+			mcp.WithString(
+				"service",
+				mcp.Description("Updated service identifier"),
+			),
+			mcp.WithString(
+				"description",
+				mcp.Description("Updated description"),
+			),
+			mcp.WithString(
+				"timestamp",
+				mcp.Description(
+					"Updated timestamp (RFC3339 format)",
+				),
+			),
+		),
+		s.update,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			"delete_entry",
+			mcp.WithDescription(
+				"Delete a maintenance log entry",
+			),
+			mcp.WithNumber(
+				"id",
+				mcp.Required(),
+				mcp.Description("ID of the entry to delete"),
+			),
+		),
+		s.delete,
+	)
 }

@@ -24,6 +24,7 @@ func (s *Server) Mount(m *http.ServeMux) {
 	m.HandleFunc("GET /entry/detail", s.handleDetail)
 	m.HandleFunc("GET /entry/edit", s.handleEditForm)
 	m.HandleFunc("POST /entry/edit", s.handleEditSubmit)
+	m.HandleFunc("POST /entry/delete", s.handleDelete)
 }
 
 func (s *Server) isHTMX(r *http.Request) bool {

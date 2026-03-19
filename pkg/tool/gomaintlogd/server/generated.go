@@ -60,6 +60,9 @@ type GetEntriesParams struct {
 // PostEntryJSONRequestBody defines body for PostEntry for application/json ContentType.
 type PostEntryJSONRequestBody = PostEntryRequest
 
+// UpdateEntryJSONRequestBody defines body for UpdateEntry for application/json ContentType.
+type UpdateEntryJSONRequestBody = PostEntryRequest
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
@@ -68,6 +71,12 @@ type ServerInterface interface {
 
 	// (POST /api/v1/entries)
 	PostEntry(w http.ResponseWriter, r *http.Request)
+
+	// (DELETE /api/v1/entries/{id})
+	DeleteEntry(w http.ResponseWriter, r *http.Request, id int)
+
+	// (PUT /api/v1/entries/{id})
+	UpdateEntry(w http.ResponseWriter, r *http.Request, id int)
 
 	// (GET /api/v1/status)
 	GetStatus(w http.ResponseWriter, r *http.Request)
@@ -154,6 +163,56 @@ func (siw *ServerInterfaceWrapper) PostEntry(w http.ResponseWriter, r *http.Requ
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.PostEntry(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteEntry operation middleware
+func (siw *ServerInterfaceWrapper) DeleteEntry(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "id" -------------
+	var id int
+
+	err = runtime.BindStyledParameterWithOptions("simple", "id", r.PathValue("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteEntry(w, r, id)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// UpdateEntry operation middleware
+func (siw *ServerInterfaceWrapper) UpdateEntry(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "id" -------------
+	var id int
+
+	err = runtime.BindStyledParameterWithOptions("simple", "id", r.PathValue("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateEntry(w, r, id)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -299,6 +358,8 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/entries", wrapper.GetEntries)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/entries", wrapper.PostEntry)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/entries/{id}", wrapper.DeleteEntry)
+	m.HandleFunc("PUT "+options.BaseURL+"/api/v1/entries/{id}", wrapper.UpdateEntry)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/status", wrapper.GetStatus)
 
 	return m
@@ -307,16 +368,17 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/8xUTY/TQAz9K5HhGJoucMoRCSEOSIg9rlZomLipV/O1Y6dStMp/RzPTbbdtul+AxKnp",
-	"zNh+fn5+d6C9Dd6hE4b2Dliv0ar8+dlJHH8gB+8Y00GIPmAUwnyttJB36UvGgNACSyTXw1SDjqgEu59K",
-	"0vXKR5u+oFOC74QsQn0a0yHrSOFsTuoeHJMT7DGmc8a4IY2zMTyyoJ29SjBYlA3PRzgwxplcUw0RbweK",
-	"2EF7lXA+zF7f87SNv94l9r9uUEtK/N2zbMm+HZDlRVw/xdv/xs/TdFyKkoHPC0+8KJP4uv9/pImjggfP",
-	"T+ul5+RWPmciMemu91aRE+N7qGGDkTO5cLFYLpYJoQ/oVCBo4UM+qiEoWWcwjQrUbC4a3OPrMU80taBS",
-	"7187aOELyj2mFB2VRcHI0F7dAaVitwPGEWpwymY2y6jq7YLO8nwmciuAV4TmEb2mJLmjgs9R0FkUTsj8",
-	"tWyGLMlcU3v9XCcBFfXlAb5fLtOP9k7Q5VmqEAzpPM3mhsvm7ROSoM2BbyOuoIU3zd5jm63BNofuOu3w",
-	"qxjVWGR5sNrwLUkSnXIaK+P7aquwyirRa3J9JWusetqgq1ZkkpgWJU3wPCPAnelAWRdk+eS78UWNPtbf",
-	"ialNh4spccDpD4l+Ab+nfOYHleo67CoetEbm1WDMuEjD+FiQHE2AmBPRPlbkNspQV60ITVeInurd8nN2",
-	"sMd2v3gc/MP+j1x0hoDLYgxVQVt6mKbfAQAA//9rqFr0EQgAAA==",
+	"H4sIAAAAAAAC/+RVTWsbMRD9K8u0x63XaXPaY2kpPRRKQ08hFFWaXU/QSoo0a1jM/vciyY6/1kmcNFDo",
+	"yWtJM3rz3pvRCqTtnDVoOEC9giAX2In0+dmwH35gcNYEjAvOW4eeCdO2kEzWxC8eHEINgT2ZFsYSpEfB",
+	"qH4JjtuN9V38AiUY3zF1COVxjMIgPbmTOUntLJNhbNHH9YB+SRInY8IQGLvJrQgjsOjc0xH2Af1ErrEE",
+	"j3c9eVRQX0ecu9nLDU/r+Jv7xPb3LUqOib/bwGuy73oMfBbXj/H2r/HzOB1XLLgPp43HloWOfG3+H3ji",
+	"4MK948f3xeNkGpsyEeu419pOkGFtWyhhiT4kcuFiNp/NI0Lr0AhHUMOHtFSCE7xIYCrhqFpeVLjF12JS",
+	"NJYgYu1fFdTwBXmDKUZ70SGjD1Bfr4DiZXc9+gFKMKJLbGapynWDTvJ8InJtgGeEJomecyWZgwuf4qCT",
+	"KAyT/mvZNHXEU0Vt/XMTDZTdlwR8P5/HH2kNo0laCuc0yaRmdRty520TEmOXAt96bKCGN9V2xlbrAVvt",
+	"T9fxHr/wXgzZlnutDd+iJdEII7HQti3WDis6wXJBpi14gUVLSzRFQzqaaZbTOBsmDHg/dCC3Cwb+aNVw",
+	"VqEP1Xc01Mb9xmTf4/hCos/g95jPdKAQSqEqQi8lhtD0Wg+zKMZlRnKgAIUQiba+ILMUmlTREGqViR7L",
+	"w+avVqTGnEYj47EGn9L6RoWpKRDnyta76W3Zp/BMI18eV5V5yBAnmTgZYywXje2N2hitn/DZTxeb9JVr",
+	"/G/t2yd2XyLbjm1DengferLy0wyvWPfB4z9R+FV+z4qMNtcwjn8CAAD//4dm+fzICgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

@@ -30,11 +30,11 @@ type Installed struct {
 				Using   *string `json:"using"`
 			} `json:"head,omitempty"`
 		} `json:"urls"`
-		Revision          int         `json:"revision"`
-		VersionScheme     int         `json:"version_scheme"`
-		Autobump          bool        `json:"autobump"`
-		NoAutobumpMessage interface{} `json:"no_autobump_message"`
-		SkipLivecheck     bool        `json:"skip_livecheck"`
+		Revision          int  `json:"revision"`
+		VersionScheme     int  `json:"version_scheme"`
+		Autobump          bool `json:"autobump"`
+		NoAutobumpMessage any  `json:"no_autobump_message"`
+		SkipLivecheck     bool `json:"skip_livecheck"`
 		Bottle            struct {
 			Stable struct {
 				Rebuild     int    `json:"rebuild"`
@@ -144,13 +144,13 @@ type Installed struct {
 			Reason      string `json:"reason"`
 			Explanation string `json:"explanation"`
 		} `json:"keg_only_reason"`
-		Options                 []interface{} `json:"options"`
-		BuildDependencies       []string      `json:"build_dependencies"`
-		Dependencies            []string      `json:"dependencies"`
-		TestDependencies        []string      `json:"test_dependencies"`
-		RecommendedDependencies []interface{} `json:"recommended_dependencies"`
-		OptionalDependencies    []interface{} `json:"optional_dependencies"`
-		UsesFromMacos           []interface{} `json:"uses_from_macos"`
+		Options                 []any    `json:"options"`
+		BuildDependencies       []string `json:"build_dependencies"`
+		Dependencies            []string `json:"dependencies"`
+		TestDependencies        []string `json:"test_dependencies"`
+		RecommendedDependencies []any    `json:"recommended_dependencies"`
+		OptionalDependencies    []any    `json:"optional_dependencies"`
+		UsesFromMacos           []any    `json:"uses_from_macos"`
 		UsesFromMacosBounds     []struct {
 			Since string `json:"since,omitempty"`
 		} `json:"uses_from_macos_bounds"`

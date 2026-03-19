@@ -57,6 +57,9 @@ type GetEntriesParams struct {
 // PostEntryJSONRequestBody defines body for PostEntry for application/json ContentType.
 type PostEntryJSONRequestBody = PostEntryRequest
 
+// UpdateEntryJSONRequestBody defines body for UpdateEntry for application/json ContentType.
+type UpdateEntryJSONRequestBody = PostEntryRequest
+
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
 
@@ -138,6 +141,14 @@ type ClientInterface interface {
 
 	PostEntry(ctx context.Context, body PostEntryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteEntry request
+	DeleteEntry(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateEntryWithBody request with any body
+	UpdateEntryWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateEntry(ctx context.Context, id int, body UpdateEntryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetStatus request
 	GetStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
@@ -168,6 +179,42 @@ func (c *Client) PostEntryWithBody(ctx context.Context, contentType string, body
 
 func (c *Client) PostEntry(ctx context.Context, body PostEntryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostEntryRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteEntry(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteEntryRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateEntryWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEntryRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateEntry(ctx context.Context, id int, body UpdateEntryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEntryRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -359,6 +406,87 @@ func NewPostEntryRequestWithBody(server string, contentType string, body io.Read
 	return req, nil
 }
 
+// NewDeleteEntryRequest generates requests for DeleteEntry
+func NewDeleteEntryRequest(server string, id int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/entries/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateEntryRequest calls the generic UpdateEntry builder with application/json body
+func NewUpdateEntryRequest(server string, id int, body UpdateEntryJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateEntryRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateEntryRequestWithBody generates requests for UpdateEntry with any type of body
+func NewUpdateEntryRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/entries/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetStatusRequest generates requests for GetStatus
 func NewGetStatusRequest(server string) (*http.Request, error) {
 	var err error
@@ -437,6 +565,14 @@ type ClientWithResponsesInterface interface {
 
 	PostEntryWithResponse(ctx context.Context, body PostEntryJSONRequestBody, reqEditors ...RequestEditorFn) (*PostEntryResponse, error)
 
+	// DeleteEntryWithResponse request
+	DeleteEntryWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteEntryResponse, error)
+
+	// UpdateEntryWithBodyWithResponse request with any body
+	UpdateEntryWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEntryResponse, error)
+
+	UpdateEntryWithResponse(ctx context.Context, id int, body UpdateEntryJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEntryResponse, error)
+
 	// GetStatusWithResponse request
 	GetStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetStatusResponse, error)
 }
@@ -479,6 +615,49 @@ func (r PostEntryResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r PostEntryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteEntryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteEntryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteEntryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateEntryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *EntryResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateEntryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateEntryResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -533,6 +712,32 @@ func (c *ClientWithResponses) PostEntryWithResponse(ctx context.Context, body Po
 	return ParsePostEntryResponse(rsp)
 }
 
+// DeleteEntryWithResponse request returning *DeleteEntryResponse
+func (c *ClientWithResponses) DeleteEntryWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*DeleteEntryResponse, error) {
+	rsp, err := c.DeleteEntry(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteEntryResponse(rsp)
+}
+
+// UpdateEntryWithBodyWithResponse request with arbitrary body returning *UpdateEntryResponse
+func (c *ClientWithResponses) UpdateEntryWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEntryResponse, error) {
+	rsp, err := c.UpdateEntryWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateEntryResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateEntryWithResponse(ctx context.Context, id int, body UpdateEntryJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEntryResponse, error) {
+	rsp, err := c.UpdateEntry(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateEntryResponse(rsp)
+}
+
 // GetStatusWithResponse request returning *GetStatusResponse
 func (c *ClientWithResponses) GetStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetStatusResponse, error) {
 	rsp, err := c.GetStatus(ctx, reqEditors...)
@@ -577,6 +782,48 @@ func ParsePostEntryResponse(rsp *http.Response) (*PostEntryResponse, error) {
 	}
 
 	response := &PostEntryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EntryResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteEntryResponse parses an HTTP response from a DeleteEntryWithResponse call
+func ParseDeleteEntryResponse(rsp *http.Response) (*DeleteEntryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteEntryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseUpdateEntryResponse parses an HTTP response from a UpdateEntryWithResponse call
+func ParseUpdateEntryResponse(rsp *http.Response) (*UpdateEntryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateEntryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

@@ -21,7 +21,10 @@ func (c *Client) searchV3Page(
 		).SetInteger(constant.MaximumResultsKey, maximumResults).Set(
 			constant.NextPageTokenKey,
 			nextPageToken,
-		).Set(constant.QueryKey, query).String(),
+		).Set(constant.QueryKey, query).Set(
+			constant.ExpandKey,
+			constant.ChangelogExpand,
+		).String(),
 	)
 	notation.DecodeStrict(r, &result, true)
 

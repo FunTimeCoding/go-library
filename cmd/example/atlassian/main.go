@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	jira.Customer()
+	jira.Changelog()
 
 	if false {
 		confluence.Overview()
@@ -20,6 +20,7 @@ func main() {
 		confluence.Space()
 		confluence.User()
 
+		jira.Customer()
 		jira.Issue()
 		jira.Search()
 		jira.Watch()

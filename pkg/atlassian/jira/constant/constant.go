@@ -39,9 +39,14 @@ const (
 	MaximumResultsKey = "maxResults"
 	NextPageTokenKey  = "nextPageToken"
 	QueryKey          = "jql"
+	ExpandKey         = "expand"
 )
 
 const AllFields = "*all" // Query parameter value
+
+const ChangelogExpand = "changelog"
+
+const TimeFormat = "2006-01-02T15:04:05.000-0700"
 
 // Field names
 const (

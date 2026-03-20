@@ -26,6 +26,7 @@ func (c *Client) Search(
 				NextPageToken: token,
 				Fields:        []string{"*all"},
 				MaxResults:    constant.SearchLimit,
+				Expand:        constant.ChangelogExpand,
 			},
 		)
 		errors.PanicOnError(e)

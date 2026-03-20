@@ -7,7 +7,7 @@ import (
 )
 
 func TestMessage(t *testing.T) {
-	r, v := NewSlice(response.Data{})
+	r, v := NewSlice(response.QueryResult{})
 	assert.NotNil(t, r)
 	assert.NotNil(t, v)
 }

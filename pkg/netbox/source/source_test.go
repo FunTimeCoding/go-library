@@ -1,4 +1,4 @@
-package config_context
+package source
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,6 +6,6 @@ import (
 	"testing"
 )
 
-func TestContext(t *testing.T) {
-	assert.NotNil(t, New(&netbox.ConfigContext{}))
+func TestSource(t *testing.T) {
+	assert.NotNil(t, New(&netbox.DataSource{}))
 }

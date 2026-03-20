@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) GetStatus(
+func (h *Router) GetStatus(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {

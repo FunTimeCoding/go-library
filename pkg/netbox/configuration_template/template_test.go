@@ -1,4 +1,4 @@
-package data_source
+package configuration_template
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,6 +6,6 @@ import (
 	"testing"
 )
 
-func TestSource(t *testing.T) {
-	assert.NotNil(t, New(&netbox.DataSource{}))
+func TestTemplate(t *testing.T) {
+	assert.NotNil(t, New(&netbox.ConfigTemplate{}))
 }

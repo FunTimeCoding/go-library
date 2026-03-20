@@ -10,7 +10,7 @@ func (c *Client) Installed() *response.Installed {
 	r := run.New()
 	r.Start(
 		constant.Brew,
-		constant.Info,
+		constant.Information,
 		constant.Installed,
 		constant.Notation2,
 	)

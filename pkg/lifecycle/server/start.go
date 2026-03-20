@@ -7,13 +7,12 @@ import (
 
 func (s *Server) Start() {
 	s.Setup(s.Mux)
-
-	var handler http.Handler = s.Mux
+	var m http.Handler = s.Mux
 
 	if s.Middleware != nil {
-		handler = s.Middleware(handler)
+		m = s.Middleware(m)
 	}
 
-	s.http = web.Server(handler, s.Address)
+	s.http = web.Server(m, s.Address)
 	web.ServeAsynchronous(s.http)
 }

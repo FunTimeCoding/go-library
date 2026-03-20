@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func MiddlewareHandler(h http.Handler) http.Handler {
+func Middleware(h http.Handler) http.Handler {
 	return std.Handler(
 		"",
 		middleware.New(

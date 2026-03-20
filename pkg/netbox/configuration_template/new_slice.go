@@ -1,9 +1,9 @@
-package data_source
+package configuration_template
 
 import "github.com/netbox-community/go-netbox/v4"
 
-func NewSlice(v []netbox.DataSource) []*Source {
-	var result []*Source
+func NewSlice(v []netbox.ConfigTemplate) []*Template {
+	var result []*Template
 
 	for _, e := range v {
 		result = append(result, New(&e))

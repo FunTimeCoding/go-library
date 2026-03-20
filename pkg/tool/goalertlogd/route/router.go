@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 )
 
-type Handler struct {
+type Router struct {
 	store  *store.Store
 	poller *poller.Poller
 }

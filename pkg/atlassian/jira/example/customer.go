@@ -9,7 +9,7 @@ import (
 
 func Customer() {
 	j := common.Jira()
-	fmt.Printf("Info: %+v\n", j.CustomerInfo())
+	fmt.Printf("Information: %+v\n", j.CustomerInformation())
 
 	if false {
 		for _, i := range j.CustomerIssues(true) {

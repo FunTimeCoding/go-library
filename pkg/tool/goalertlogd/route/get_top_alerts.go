@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (h *Handler) GetTopAlerts(
+func (h *Router) GetTopAlerts(
 	w http.ResponseWriter,
 	_ *http.Request,
 	params server.GetTopAlertsParams,

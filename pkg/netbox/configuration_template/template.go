@@ -1,4 +1,4 @@
-package config_template
+package configuration_template
 
 import "github.com/netbox-community/go-netbox/v4"
 

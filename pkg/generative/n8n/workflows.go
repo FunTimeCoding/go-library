@@ -10,5 +10,5 @@ func (c *Client) Workflows() []*response.Workflow {
 	var r *response.Workflows
 	notation.DecodeStrict(c.Get(constant.Workflows), &r, false)
 
-	return r.Data
+	return r.Payload
 }

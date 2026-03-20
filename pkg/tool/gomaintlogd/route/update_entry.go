@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) UpdateEntry(
+func (h *Router) UpdateEntry(
 	w http.ResponseWriter,
 	r *http.Request,
 	id int,

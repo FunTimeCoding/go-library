@@ -1,14 +1,14 @@
-package data_source
+package configuration_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 )
 
-func (s *Source) formatName(f *option.Format) string {
+func (c *Context) formatName(f *option.Format) string {
 	if f.UseColor {
-		return console.Cyan("%s", s.Name)
+		return console.Cyan("%s", c.Name)
 	}
 
-	return s.Name
+	return c.Name
 }

@@ -1,7 +1,7 @@
 package response
 
 type Runner struct {
-	Data struct {
+	Payload struct {
 		Runner struct {
 			ID          string `json:"id"`
 			Description string `json:"description"`

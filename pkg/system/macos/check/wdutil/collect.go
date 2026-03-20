@@ -8,7 +8,7 @@ import (
 
 func collect() *Result {
 	r := run.New()
-	r.Start("sudo", constant.Wdutil, constant.Info)
+	r.Start("sudo", constant.Wdutil, constant.Information)
 
 	if false {
 		fmt.Printf("Status: %s\n", r.OutputString)

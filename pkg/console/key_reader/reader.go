@@ -6,7 +6,7 @@ import (
 )
 
 type Reader struct {
-	handlers     map[rune]handler
+	handlers     map[rune]Callback
 	states       map[rune]*state
 	mutex        sync.RWMutex
 	releaseDelay time.Duration

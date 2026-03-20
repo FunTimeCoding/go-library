@@ -17,8 +17,8 @@ func (s *Statistic) CountAfterProcessing(v []*alert.Alert) *Statistic {
 			s.Severity.Critical++
 		case constant.WarningSeverity:
 			s.Severity.Warning++
-		case constant.InfoSeverity:
-			s.Severity.Info++
+		case constant.InformationSeverity:
+			s.Severity.Information++
 		case constant.NoneSeverity:
 			s.Severity.None++
 		default:

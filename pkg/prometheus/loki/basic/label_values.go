@@ -38,5 +38,5 @@ func (c *Client) LabelValues(
 		log.Panicf("unexpected status: %s", r.Status)
 	}
 
-	return r.Data
+	return r.Labels
 }

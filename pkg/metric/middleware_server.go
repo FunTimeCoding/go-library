@@ -6,5 +6,5 @@ func MiddlewareServer(
 	address string,
 	m http.Handler,
 ) *http.Server {
-	return &http.Server{Addr: address, Handler: MiddlewareHandler(m)}
+	return &http.Server{Addr: address, Handler: Middleware(m)}
 }

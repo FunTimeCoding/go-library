@@ -29,9 +29,9 @@ const (
 	ExecuteSubResource = "exec"
 )
 
-const DNSConfigForming = "DNSConfigForming" // Event reason
+const DNSConfigurationForming = "DNSConfigForming" // Event reason
 
-var IrrelevantEventReason = []string{DNSConfigForming}
+var IrrelevantEventReason = []string{DNSConfigurationForming}
 
 const (
 	TrivyNamespace = "trivy"

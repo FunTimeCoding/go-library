@@ -1,4 +1,4 @@
-package data_source
+package source
 
 import "github.com/netbox-community/go-netbox/v4"
 

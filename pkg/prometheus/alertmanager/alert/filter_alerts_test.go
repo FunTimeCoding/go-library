@@ -23,7 +23,7 @@ func TestFilterAlerts(t *testing.T) {
 			{
 				Name:     strings.Charlie,
 				State:    constant.ActiveState,
-				Severity: constant.InfoSeverity,
+				Severity: constant.InformationSeverity,
 			},
 		},
 	)

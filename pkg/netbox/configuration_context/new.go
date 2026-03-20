@@ -1,4 +1,4 @@
-package config_context
+package configuration_context
 
 import "github.com/netbox-community/go-netbox/v4"
 

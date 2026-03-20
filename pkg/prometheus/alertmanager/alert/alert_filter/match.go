@@ -17,7 +17,7 @@ func (f *Filter) match(a *alert.Alert) bool {
 	switch a.Severity {
 	case constant.NoneSeverity:
 		return false
-	case constant.InfoSeverity:
+	case constant.InformationSeverity:
 		return false
 	}
 

@@ -1,5 +1,5 @@
 package node
 
 type Payload struct {
-	Data []*Node `json:"data"`
+	Payload []*Node `json:"data"`
 }

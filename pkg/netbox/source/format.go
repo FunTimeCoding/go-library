@@ -1,4 +1,4 @@
-package config_context
+package source
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
@@ -6,14 +6,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 )
 
-func (c *Context) Format(f *option.Format) string {
-	s := status.New(f)
+func (s *Source) Format(f *option.Format) string {
+	o := status.New(f)
 
 	if f.HasTag(tag.Identifier) {
-		s.Integer32(c.Identifier)
+		o.Integer32(s.Identifier)
 	}
 
-	s.String(c.formatName(f)).RawList(c.Raw)
+	o.String(s.formatName(f)).RawList(s.Raw)
 
-	return s.Format()
+	return o.Format()
 }

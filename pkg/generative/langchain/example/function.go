@@ -178,7 +178,7 @@ func getCurrentWeather(
 	location string,
 	unit string,
 ) string {
-	weatherInfo := map[string]any{
+	weather := map[string]any{
 		"location":    location,
 		"temperature": "6",
 		"unit":        unit,
@@ -186,10 +186,10 @@ func getCurrentWeather(
 	}
 
 	if unit == "fahrenheit" {
-		weatherInfo["temperature"] = 43
+		weather["temperature"] = 43
 	}
 
-	b, e := json.Marshal(weatherInfo)
+	b, e := json.Marshal(weather)
 	errors.PanicOnError(e)
 
 	return string(b)

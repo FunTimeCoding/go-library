@@ -13,7 +13,7 @@ func (c *Client) QueryRange(
 	query string,
 	start time.Time,
 	end time.Time,
-) response.Data {
+) response.QueryResult {
 	r := &response.Query{}
 	notation.DecodeStrict(
 		c.Get(
@@ -39,5 +39,5 @@ func (c *Client) QueryRange(
 		log.Panicf("unexpected status: %s", r.Status)
 	}
 
-	return r.Data
+	return r.Result
 }

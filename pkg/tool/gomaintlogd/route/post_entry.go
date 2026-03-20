@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) PostEntry(
+func (h *Router) PostEntry(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {

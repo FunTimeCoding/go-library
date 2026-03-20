@@ -2,7 +2,7 @@ package key_reader
 
 import "time"
 
-type handler struct {
+type Callback struct {
 	Press func(
 		k rune,
 		t time.Time,

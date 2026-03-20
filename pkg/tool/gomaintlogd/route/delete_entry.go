@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) DeleteEntry(
+func (h *Router) DeleteEntry(
 	w http.ResponseWriter,
 	_ *http.Request,
 	id int,

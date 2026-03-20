@@ -1,9 +1,9 @@
-package config_template
+package configuration_context
 
 import "github.com/netbox-community/go-netbox/v4"
 
-func NewSlice(v []netbox.ConfigTemplate) []*Template {
-	var result []*Template
+func NewSlice(v []netbox.ConfigContext) []*Context {
+	var result []*Context
 
 	for _, e := range v {
 		result = append(result, New(&e))

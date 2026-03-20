@@ -17,7 +17,7 @@ func printNotation(
 	var relevant []*alert.Alert
 
 	for _, e := range v {
-		if !o.All && e.Severity == alertmanager.InfoSeverity {
+		if !o.All && e.Severity == alertmanager.InformationSeverity {
 			continue
 		}
 

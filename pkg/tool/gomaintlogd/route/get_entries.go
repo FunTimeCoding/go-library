@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) GetEntries(
+func (h *Router) GetEntries(
 	w http.ResponseWriter,
 	_ *http.Request,
 	params generated.GetEntriesParams,

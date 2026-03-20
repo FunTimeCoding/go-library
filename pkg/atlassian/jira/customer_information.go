@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
-func (c *Client) CustomerInfo() *models.InfoScheme {
+func (c *Client) CustomerInformation() *models.InfoScheme {
 	result, _, e := c.service.Info.Get(c.context)
 	errors.PanicOnError(e)
 

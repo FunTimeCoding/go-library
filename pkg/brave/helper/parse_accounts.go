@@ -2,27 +2,27 @@ package helper
 
 import "google.golang.org/protobuf/encoding/protowire"
 
-func ParseAccounts(data []byte) (name string, email string, photo string, gaia string) {
-	pos := 0
+func ParseAccounts(b []byte) (name string, email string, photo string, gaia string) {
+	position := 0
 
-	for pos < len(data) {
-		fieldNum, wireType, n := protowire.ConsumeTag(data[pos:])
+	for position < len(b) {
+		fieldNum, wireType, n := protowire.ConsumeTag(b[position:])
 
 		if n < 0 {
 			break
 		}
 
-		pos += n
+		position += n
 
 		switch wireType {
 		case protowire.BytesType:
-			v, b := protowire.ConsumeBytes(data[pos:])
+			v, y := protowire.ConsumeBytes(b[position:])
 
-			if b < 0 {
+			if y < 0 {
 				break
 			}
 
-			pos += b
+			position += y
 
 			if fieldNum == 1 {
 				return ParseAccounts(v)
@@ -39,21 +39,21 @@ func ParseAccounts(data []byte) (name string, email string, photo string, gaia s
 				gaia = string(v)
 			}
 		case protowire.VarintType:
-			_, b := protowire.ConsumeVarint(data[pos:])
+			_, y := protowire.ConsumeVarint(b[position:])
 
-			if b < 0 {
+			if y < 0 {
 				break
 			}
 
-			pos += b
+			position += y
 		default:
-			b := protowire.ConsumeFieldValue(fieldNum, wireType, data[pos:])
+			y := protowire.ConsumeFieldValue(fieldNum, wireType, b[position:])
 
-			if b < 0 {
+			if y < 0 {
 				break
 			}
 
-			pos += b
+			position += y
 		}
 	}
 

@@ -53,11 +53,11 @@ const (
 
 // Severity
 const (
-	CriticalSeverity = "critical"
-	InfoSeverity     = "info"
-	NoneSeverity     = "none"
-	UnknownSeverity  = "unknown"
-	WarningSeverity  = "warning"
+	CriticalSeverity    = "critical"
+	InformationSeverity = "info"
+	NoneSeverity        = "none"
+	UnknownSeverity     = "unknown"
+	WarningSeverity     = "warning"
 )
 
 const ExpiredState = "expired" // Silence state
@@ -74,7 +74,7 @@ var (
 	Severities = []string{
 		CriticalSeverity,
 		WarningSeverity,
-		InfoSeverity,
+		InformationSeverity,
 		NoneSeverity,
 		UnknownSeverity,
 	}

@@ -1,6 +1,6 @@
 package constant
 
 const (
-	Wdutil = "wdutil"
-	Info   = "info"
+	Wdutil      = "wdutil"
+	Information = "info"
 )

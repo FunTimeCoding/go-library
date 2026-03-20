@@ -2,7 +2,7 @@ package message
 
 import "github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/response"
 
-func NewSlice(v response.Data) ([]*Message, *Meta) {
+func NewSlice(v response.QueryResult) ([]*Message, *Meta) {
 	var result []*Message
 
 	for _, e := range v.Result {

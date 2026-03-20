@@ -10,7 +10,7 @@ func FilterAlerts(v []*Alert) []*Alert {
 			continue
 		}
 
-		if e.Severity == constant.InfoSeverity {
+		if e.Severity == constant.InformationSeverity {
 			continue
 		}
 

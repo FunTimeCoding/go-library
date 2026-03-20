@@ -19,7 +19,7 @@ func Listen() {
 
 				fmt.Printf("%s %s\n", m.Type, m.Event.Origin)
 				fmt.Printf("  Time: %s\n", m.Event.Time)
-				fmt.Printf("  Data: %s\n", string(m.Event.Raw))
+				fmt.Printf("  Raw: %s\n", string(m.Event.Raw))
 				fmt.Println()
 			},
 		),

@@ -20,14 +20,14 @@ func readExtra(
 
 	if false {
 		// TODO: on load: panic: no value given for required property data_path
-		for _, c := range n.ConfigContexts() {
+		for _, c := range n.ConfigurationContexts() {
 			fmt.Printf("ConfigContext: %s\n", c.Format(f))
 		}
 	}
 
 	// TODO: Must specify either local content or a data file
 	//  How, what is this for?
-	for _, t := range n.ConfigTemplates() {
+	for _, t := range n.ConfigurationTemplates() {
 		fmt.Printf("ConfigTemplate: %s\n", t.Format(f))
 	}
 }

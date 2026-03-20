@@ -20,13 +20,7 @@ func New(
 				BasePath: "/api",
 				Schemes:  []string{constant.Secure},
 				APIKey:   token,
-				//BasicAuth: url.UserPassword("admin", "admin"),
 				OrgID: 1,
-				//TLSConfig: &tls.Config{},
-				//NumRetries: 3,
-				//RetryTimeout: 0,
-				//RetryStatusCodes: []string{"420", "5xx"},
-				//HTTPHeaders: map[string]string{},
 			},
 		),
 	}

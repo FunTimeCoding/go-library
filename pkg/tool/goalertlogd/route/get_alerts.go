@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) GetAlerts(
+func (h *Router) GetAlerts(
 	w http.ResponseWriter,
 	_ *http.Request,
 	params server.GetAlertsParams,

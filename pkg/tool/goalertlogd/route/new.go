@@ -8,8 +8,8 @@ import (
 func New(
 	s *store.Store,
 	p *poller.Poller,
-) *Handler {
-	return &Handler{
+) *Router {
+	return &Router{
 		store:  s,
 		poller: p,
 	}

@@ -15,21 +15,28 @@ func CreateBundle(
 	vendor string,
 	version string,
 ) {
-	lowerName := strings.ToLower(name)
-	identifier := fmt.Sprintf("%s.%s", vendor, lowerName)
-	fullName := fmt.Sprintf("%s.app", name)
-	base := join.Absolute(system.WorkingDirectory(), path, fullName)
-	contents := join.Absolute(base, "Contents")
-	macos := join.Absolute(contents, "MacOS")
-	resources := join.Absolute(contents, "Resources")
-	executable := join.Absolute(macos, lowerName)
+	lower := strings.ToLower(name)
+	identifier := fmt.Sprintf("%s.%s", vendor, lower)
+	content := join.Absolute(
+		join.Absolute(
+			system.WorkingDirectory(),
+			path,
+			fmt.Sprintf("%s.app", name),
+		),
+		"Contents",
+	)
+	macos := join.Absolute(content, "MacOS")
+	resource := join.Absolute(content, "Resources")
+	executable := join.Absolute(macos, lower)
 	system.MakeDirectory(macos)
-	system.MakeDirectory(resources)
+	system.MakeDirectory(resource)
 	system.CopyFile(executablePath, executable)
 	system.Executable(executable)
-	system.CopyFile(iconPath, join.Absolute(resources, "icon.icns"))
-	info := fmt.Sprintf(
-		`<?xml version="1.0" encoding="UTF-8"?>
+	system.CopyFile(iconPath, join.Absolute(resource, "icon.icns"))
+	system.SaveFile(
+		join.Absolute(content, "Info.plist"),
+		fmt.Sprintf(
+			`<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
     "https://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -63,12 +70,12 @@ func CreateBundle(
 </dict>
 </plist>
 `,
-		name,
-		name,
-		identifier,
-		version,
-		version,
-		lowerName,
+			name,
+			name,
+			identifier,
+			version,
+			version,
+			lower,
+		),
 	)
-	system.SaveFile(join.Absolute(contents, "Info.plist"), info)
 }

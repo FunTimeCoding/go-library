@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (c *Client) Query(query string) response.Data {
+func (c *Client) Query(query string) response.QueryResult {
 	r := &response.Query{}
 	notation.DecodeStrict(
 		c.Get(
@@ -26,5 +26,5 @@ func (c *Client) Query(query string) response.Data {
 		log.Panicf("unexpected status: %s", r.Status)
 	}
 
-	return r.Data
+	return r.Result
 }

@@ -1,10 +1,10 @@
-package config_context
+package source
 
 import "github.com/netbox-community/go-netbox/v4"
 
-type Context struct {
+type Source struct {
 	Identifier int32
 	Name       string
 
-	Raw *netbox.ConfigContext
+	Raw *netbox.DataSource
 }

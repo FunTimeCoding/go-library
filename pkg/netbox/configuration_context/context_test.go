@@ -1,4 +1,4 @@
-package config_template
+package configuration_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
@@ -6,6 +6,6 @@ import (
 	"testing"
 )
 
-func TestTemplate(t *testing.T) {
-	assert.NotNil(t, New(&netbox.ConfigTemplate{}))
+func TestContext(t *testing.T) {
+	assert.NotNil(t, New(&netbox.ConfigContext{}))
 }

@@ -5,16 +5,16 @@ import "time"
 func (r *Reader) Register(
 	k rune,
 	press func(
-		rune,
-		time.Time,
-	),
+	rune,
+	time.Time,
+),
 	release func(
-		rune,
-		time.Duration,
-	),
+	rune,
+	time.Duration,
+),
 ) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
-	r.handlers[k] = handler{Press: press, Release: release}
+	r.handlers[k] = Callback{Press: press, Release: release}
 	r.states[k] = &state{}
 }

@@ -1,4 +1,4 @@
-package config_template
+package configuration_template
 
 import (
 	"github.com/funtimecoding/go-library/pkg/console"

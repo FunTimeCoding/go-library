@@ -30,7 +30,7 @@ func Read() {
 
 	// TODO: DataSource: Requires local, git or S3 source
 	//  Is this used to import entities?
-	for _, s := range n.DataSources() {
+	for _, s := range n.Sources() {
 		fmt.Printf("DataSource: %s\n", s.Format(f))
 	}
 

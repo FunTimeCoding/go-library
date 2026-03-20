@@ -3,6 +3,7 @@ colorable
 colorer
 enricher
 entrypoints
+fahrenheit
 formattable
 positionals
 renderable
@@ -27,6 +28,7 @@ osquery
 qdrant
 shiin
 treminio
+trivy
 virtomize
 
 # Go

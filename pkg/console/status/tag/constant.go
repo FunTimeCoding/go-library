@@ -20,6 +20,7 @@ const (
 	Instance    = "instance"
 	Investigate = "investigate"
 	Key         = "key"
+	Labels      = "labels"
 	Markdown    = "markdown"
 	Name        = "name"
 	Project     = "project"

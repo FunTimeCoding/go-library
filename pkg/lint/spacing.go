@@ -115,9 +115,11 @@ func Spacing(
 		if !isBlank && pendingBlank {
 			if strings.HasPrefix(trimmed, "//") {
 				// Blank before a comment is always valid - emit both immediately.
+				// Clear needBlankAfterClosingBrace: the emitted blank satisfies it.
 				s.ChangedLine("")
 				s.ChangedLine(line)
 				pendingBlank = false
+				needBlankAfterClosingBrace = false
 
 				continue
 			}

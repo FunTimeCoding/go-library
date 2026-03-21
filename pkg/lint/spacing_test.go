@@ -662,6 +662,12 @@ func TestSpacingSpuriousBlankBetweenTopLevelVarsRemoved(t *testing.T) {
 	)
 }
 
+func TestSpacingBlankBeforeCommentAfterControlIdempotent(t *testing.T) {
+	input := "package example\n\nfunc Example() {\n\tif true {\n\t\tx := 1\n\t\t_ = x\n\t}\n\n\t// note\n\ty := 2\n\t_ = y\n}\n"
+	l := Spacing("idempotent", strings.NewReader(input))
+	assertReport(t, "idempotent", false, nil, input, l)
+}
+
 func TestSpacingBlankAfterControlBeforeRegularStatementPreserved(t *testing.T) {
 	l := Spacing(
 		"ctrlblank",

@@ -62,9 +62,9 @@
 
 ## Structure
 
-- **One-file-per-function** - extract helpers to dedicated files named after the function (e.g., `http_fail.go`, `add_file_to_tar.go`)
-- **One-type-per-file** - struct definitions go in a file named after the struct (e.g., `log.go` for `type Log struct`)
-- **Constants in `constant.go`** - exported constants get their own `constant.go` file in the package. Prefer a single flat `constant.go` per package.
+- **One-file-per-function** - each function or method lives in its own file. File name is the snake_case form of the function name: `addFileToTar()` → `add_file_to_tar.go`, `httpFail()` → `http_fail.go`.
+- **One-type-per-file** - struct definitions go in a file named after the struct (snake_case): `type Store struct` → `store.go`.
+- **Constants in `constant.go`** - exported constants get their own `constant.go` file in the package. Prefer a single flat `constant.go` per package. When an iota enum is defined with a named type, both the type and the const values belong in the same constant package — separating them creates circular imports.
 - **Reuse existing constants** - use `web/constant.Listen`, `web/constant.Object`, `web/constant.ContentType`, `argument.Name`, etc. Never hardcode strings that already have a constant in the codebase.
 - **Option struct naming** - named after the domain concept, not `Option` (e.g., `option.Log`, `option.Build`, `option.Commit`). File named after the struct. Constructor in `new.go` returns pointer.
 - **Stub tests** - every package gets a `_test.go`. Minimal tests use `assert.Stub(t)`. Constructor tests use `assert.NotNil(t, New(...))`.
@@ -74,6 +74,12 @@
 - Fail fast with stacktraces (Sentry integration)
 - Helpers return only success values, panic on errors
 - Prefer extracting logic to testable helpers over inline test code
+
+## Forbidden Imports
+
+| Forbidden | Use instead |
+|-----------|-------------|
+| `"flag"` | `"github.com/spf13/pflag"` |
 
 ## Import Aliases
 

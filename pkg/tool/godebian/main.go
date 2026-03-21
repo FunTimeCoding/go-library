@@ -12,12 +12,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-	maintainerNameArgument  = "maintainer-name"
-	maintainerEmailArgument = "maintainer-email"
-	systemdUnitFlag         = "systemd-unit"
-)
-
 func Main(
 	version string,
 	gitHash string,

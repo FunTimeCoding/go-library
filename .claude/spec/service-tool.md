@@ -96,6 +96,34 @@ func Alerts(s *store.Store) http.HandlerFunc {
 - Use `argument.*` constants for query parameter names
 - Response structs in `response.go`, constants in `constant.go`
 
+## HTML Web Package
+
+When a service tool serves an HTML UI (using gomponents), routes are grouped under a `web/` package rather than `route/`. Use this pattern instead of `route/` when handlers need shared state and render HTML rather than JSON.
+
+```
+pkg/tool/go<tool>d/web/
+├── server.go           # type Server struct (dependencies only, no functions)
+├── new.go              # NewServer(deps) *Server
+├── mount.go            # (s *Server) Mount(m *http.ServeMux)
+├── is_htmx.go          # (s *Server) isHTMX(r *http.Request) bool
+├── render_page.go      # renderPage(w, page g.Node)
+├── render_fragment.go  # renderFragment(w, fragment g.Node)
+├── <route>.go          # handler method named after route: alerts(), dashboard()
+├── <component>.go      # HTML builder named after component: alerts_table.go
+├── layout.go           # layout() — full page shell
+├── nav_link.go         # navLink() — navigation component
+└── constant/
+    └── constant.go     # inlineCSS and other web-layer constants
+```
+
+Key conventions:
+- `Server` struct holds dependencies (store, poller, etc.)
+- `Mount()` registers all routes using method values: `m.HandleFunc("GET /alerts", s.alerts)`
+- Handler methods named after the route, no `handle` prefix: `alerts()`, `dashboard()`, `addSubmit()`
+- Standalone HTML builders named after the component they produce: `alertsTable()`, `addForm()`, `detailRow()`
+- Handler and builder names never collide because the handler is named after the route (`add`), not the component (`addForm`)
+- Methods that access server state (store, poller) stay as methods; pure renderers are standalone functions
+
 ## Workers
 
 Workers implement `face.Worker` (`Start()` + `Stop()`). See `lifecycle.md` for details.

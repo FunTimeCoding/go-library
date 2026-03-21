@@ -5,8 +5,6 @@ import (
 	"testing"
 )
 
-const fixtureAddress = "192.168.0.1/24"
-
 func TestFindByName(t *testing.T) {
 	addresses := []*Address{{Name: fixtureAddress}}
 	// Happy path

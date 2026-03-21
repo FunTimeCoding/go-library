@@ -1,25 +1,6 @@
 package lint
 
-import (
-	"fmt"
-	"strings"
-)
-
-func stubTestSuffix(packageName string) string {
-	parts := strings.Split(packageName, "_")
-
-	return parts[len(parts)-1]
-}
-
-func stubTestName(packageName string) string {
-	if packageName == "main" {
-		return "Stub"
-	}
-
-	suffix := stubTestSuffix(packageName)
-
-	return strings.ToUpper(suffix[:1]) + suffix[1:]
-}
+import "fmt"
 
 func stubTestContent(
 	packageName string,

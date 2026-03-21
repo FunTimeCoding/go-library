@@ -197,26 +197,3 @@ type Issue struct {
 	} `json:"fields"`
 	Changelog *Changelog `json:"changelog,omitempty"`
 }
-
-type Changelog struct {
-	StartAt    int              `json:"startAt"`
-	MaxResults int              `json:"maxResults"`
-	Total      int              `json:"total"`
-	Histories  []ChangeHistory  `json:"histories"`
-}
-
-type ChangeHistory struct {
-	Id      string       `json:"id"`
-	Created string       `json:"created"`
-	Items   []ChangeItem `json:"items"`
-}
-
-type ChangeItem struct {
-	Field      string `json:"field"`
-	FieldType  string `json:"fieldtype"`
-	FieldId    string `json:"fieldId"`
-	From       string `json:"from"`
-	FromString string `json:"fromString"`
-	To         string `json:"to"`
-	ToString   string `json:"toString"`
-}

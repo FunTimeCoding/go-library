@@ -6,11 +6,6 @@ import (
 	"go.etcd.io/bbolt"
 )
 
-const (
-	Bucket = "bucket"
-	Key    = "key"
-)
-
 func main() {
 	b := bolt.New("tmp/bolt.db")
 	defer b.Close()

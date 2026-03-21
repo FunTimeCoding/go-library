@@ -73,6 +73,17 @@ See `openapi.md` for the full Router pattern. Summary:
 - Receiver on `*Router` methods: `r`
 - `*http.Request` parameter: `q` (avoids collision with receiver `r`)
 - Function parameter that accepts a handler func: `serve`, not `handler`
+- Handler methods/functions are named after the resource they serve, without a `handle` prefix: `handleAlerts` → `alerts`, `handleDashboard` → `dashboard`, `handleAddSubmit` → `addSubmit`
+
+## HTML node builder naming
+
+Functions returning `g.Node` (gomponents HTML builders) are named after the component they produce, not the action of building it:
+
+- `alertsTable()` — renders the alerts table
+- `addForm()` — renders the add entry form
+- `navLink()` — renders a navigation link
+
+File name follows the function name: `alerts_table.go`, `add_form.go`, `nav_link.go`.
 
 ## Variable shorthands
 

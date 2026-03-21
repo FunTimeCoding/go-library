@@ -8,27 +8,6 @@ import (
 	"time"
 )
 
-// https://opentelemetry.io/docs/specs/semconv/messaging
-// Required
-const (
-	MessagingSystem = "messaging.system"
-	OperationName   = "messaging.operation.name"
-)
-
-// Recommended
-const (
-	MessageIdentifier      = "messaging.message.id"
-	ConversationIdentifier = "messaging.message.conversation_id"
-	BodySize               = "messaging.message.body.size"
-	EnvelopeTime           = "messaging.message.envelope_time"
-)
-
-// MessageType Optional
-const MessageType = "messaging.message.type"
-
-// HomeAssistantOrigin Home Assistant specific
-const HomeAssistantOrigin = "messaging.homeassistant.origin"
-
 func (l *Logger) WebSocket(v *message.Message) {
 	if v.Event == nil {
 		return

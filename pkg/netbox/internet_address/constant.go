@@ -13,6 +13,8 @@ const (
 	SubnetAddress = "ipam.prefix"
 
 	NoObjectType = "no object type"
+
+	fixtureAddress = "192.168.0.1/24"
 )
 
 var ObjectTypes = []string{

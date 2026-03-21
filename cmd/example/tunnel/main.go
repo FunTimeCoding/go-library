@@ -8,11 +8,6 @@ import (
 	"github.com/spf13/pflag"
 )
 
-const (
-	TargetHost = "target-host"
-	TargetPort = "target-port"
-)
-
 func main() {
 	pflag.String(argument.Host, "", "Relay host")
 	pflag.String(TargetHost, "", "Target host")

@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/generative/anthropic/cache"
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/message"
 	"log"
 )
@@ -14,7 +14,7 @@ func (c *Client) StreamMessage(
 	v []*message.Message,
 	system string,
 	model string,
-	m cache.Mode,
+	m constant.Mode,
 ) <-chan string {
 	h := make(chan string, 64)
 	go func() {

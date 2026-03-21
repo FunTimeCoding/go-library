@@ -10,12 +10,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gobump/option"
 )
 
-const (
-	major = "major"
-	minor = "minor"
-	patch = "patch"
-)
-
 func Run(o *option.Bump) {
 	d := system.WorkingDirectory()
 

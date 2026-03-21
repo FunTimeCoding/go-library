@@ -1,15 +1,13 @@
 package web
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
 	g "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx"
 	h "maragu.dev/gomponents/html"
 	"net/http"
 )
 
-func (s *Server) handleDashboard(
+func (s *Server) dashboard(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
@@ -41,11 +39,4 @@ func (s *Server) handleDashboard(
 			),
 		),
 	)
-}
-
-func (s *Server) recentTable() g.Node {
-	entries, e := s.store.List(&store.Filter{Limit: 50})
-	errors.PanicOnError(e)
-
-	return entriesTable(entries)
 }

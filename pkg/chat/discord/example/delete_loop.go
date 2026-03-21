@@ -8,8 +8,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const DeleteLoopArgument = "delete-loop"
-
 func DeleteLoop() {
 	pflag.String(
 		DeleteLoopArgument,

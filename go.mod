@@ -18,7 +18,7 @@ require (
 	github.com/atlassian/go-sentry-api v1.0.0
 	github.com/bndr/gojenkins v1.2.0
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/chromedp/cdproto v0.0.0-20260320225252-cf654f46fc63
+	github.com/chromedp/cdproto v0.0.0-20260321001828-e3e3800016bc
 	github.com/chromedp/chromedp v0.15.0
 	github.com/coder/websocket v1.8.14
 	github.com/coreos/go-oidc/v3 v3.17.0

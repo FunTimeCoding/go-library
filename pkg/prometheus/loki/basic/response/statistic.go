@@ -13,7 +13,7 @@ type Statistic struct {
 	} `json:"summary"`
 	Querier struct {
 		Store struct {
-			TotalChunksRef        int `json:"totalChunksRef"`
+			TotalChunksReference        int `json:"totalChunksRef"`
 			TotalChunksDownloaded int `json:"totalChunksDownloaded"`
 			ChunksDownloadTime    int `json:"chunksDownloadTime"`
 			Chunk                 struct {
@@ -32,7 +32,7 @@ type Statistic struct {
 		TotalBatches       int `json:"totalBatches"`
 		TotalLinesSent     int `json:"totalLinesSent"`
 		Store              struct {
-			TotalChunksRef        int `json:"totalChunksRef"`
+			TotalChunksReference        int `json:"totalChunksRef"`
 			TotalChunksDownloaded int `json:"totalChunksDownloaded"`
 			ChunksDownloadTime    int `json:"chunksDownloadTime"`
 			Chunk                 struct {

@@ -5,7 +5,7 @@ import (
 	h "maragu.dev/gomponents/html"
 )
 
-func navLink(href, label, currentPath string) g.Node {
+func navigationLink(href, label, currentPath string) g.Node {
 	attrs := []g.Node{
 		g.Attr("href", href),
 		g.Text(label),

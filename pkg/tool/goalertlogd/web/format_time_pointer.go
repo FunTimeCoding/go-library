@@ -2,7 +2,7 @@ package web
 
 import "time"
 
-func formatTimePtr(t *time.Time) string {
+func formatTimePointer(t *time.Time) string {
 	if t == nil {
 		return "-"
 	}

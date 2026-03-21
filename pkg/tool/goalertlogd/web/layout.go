@@ -34,8 +34,8 @@ func layout(
 						h.Li(h.Strong(g.Text("Alert Log"))),
 					),
 					h.Ul(
-						navLink("/", "Dashboard", currentPath),
-						navLink("/recent", "Recent", currentPath),
+						navigationLink("/", "Dashboard", currentPath),
+						navigationLink("/recent", "Recent", currentPath),
 					),
 				),
 				h.Main(

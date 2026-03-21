@@ -123,22 +123,22 @@ func Main(
 	}
 
 	// Normalize spacing in code section
-	prevWasEmpty := false
+	pastWasEmpty := false
 
 	for i, line := range codeLines {
 		trimmed := strings.TrimSpace(line)
 		isEmpty := trimmed == ""
 		isTopLevel := funcRegex.MatchString(trimmed)
 		// Add blank line before top-level declarations (except the very first one)
-		if isTopLevel && i > 0 && !prevWasEmpty {
+		if isTopLevel && i > 0 && !pastWasEmpty {
 			fmt.Println()
 		}
 
 		// Print the line (skip consecutive empty lines)
-		if !isEmpty || !prevWasEmpty {
+		if !isEmpty || !pastWasEmpty {
 			fmt.Println(line)
 		}
 
-		prevWasEmpty = isEmpty
+		pastWasEmpty = isEmpty
 	}
 }

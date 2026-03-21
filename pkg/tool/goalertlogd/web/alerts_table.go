@@ -36,7 +36,7 @@ func alertsTable(records []store.Record) g.Node {
 						h.Td(severityBadge(r.Severity)),
 						h.Td(g.Text(truncate(r.Summary, 80))),
 						h.Td(g.Text(formatTime(r.Start))),
-						h.Td(g.Text(formatTimePtr(r.End))),
+						h.Td(g.Text(formatTimePointer(r.End))),
 						h.Td(statusBadge(status)),
 					)
 				},

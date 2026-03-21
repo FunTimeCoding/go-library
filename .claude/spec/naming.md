@@ -81,7 +81,7 @@ Functions returning `g.Node` (gomponents HTML builders) are named after the comp
 
 - `alertsTable()` — renders the alerts table
 - `addForm()` — renders the add entry form
-- `navLink()` — renders a navigation link
+- `navigationLink()` — renders a navigation link
 
 File name follows the function name: `alerts_table.go`, `add_form.go`, `nav_link.go`.
 
@@ -98,8 +98,20 @@ These are established conventions across the codebase:
 | `*tar.Writer` | `t` |
 | `error` (first in scope) | `e` |
 | `error` (second in scope) | `f` |
+| serialized markup (`[]byte` of yaml/xml/html) | `m` |
+| serialized notation (`[]byte` of json) | `j` |
 
 See `conventions.md` for the full short variable name table.
+
+## Single-character collision fallback
+
+When the suggested single character is already taken in scope (e.g. `m` is the receiver of `*Model`), step through the letters of the full word in order until a free one is found:
+
+- `markup` → `m`, `a`, `r`, `k`, `u`, `p`
+- `notation` → `j` (first letter of json, the dominant format), then `n`, `o`, `t`, `a`, `i`
+- `error` → `e`, `f`, `g`, `h`
+
+The linter suggests only the first option. Choosing a later letter when there is a collision is left to the developer.
 
 ## HTML custom attributes
 

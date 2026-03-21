@@ -11,6 +11,10 @@ func check(
 	ident *ast.Ident,
 	obj types.Object,
 ) {
+	if isInterfaceMethod(pass, obj) {
+		return
+	}
+
 	_, isVar := obj.(*types.Var)
 
 	for _, segment := range segments(ident.Name) {
@@ -24,9 +28,9 @@ func check(
 			return
 		}
 
-		alts, ok := suggestions[segment]
+		alts, hasSuggestion := suggestions[segment]
 
-		if !ok {
+		if !hasSuggestion {
 			continue
 		}
 

@@ -5,6 +5,6 @@ type RequestFieldValue struct {
 	Label         string `json:"label"`
 	Value         any    `json:"value"`
 	RenderedValue struct {
-		Html string `json:"html"`
+		Markup string `json:"html"`
 	} `json:"renderedValue,omitempty"`
 }

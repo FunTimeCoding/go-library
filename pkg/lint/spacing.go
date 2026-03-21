@@ -12,8 +12,8 @@ func Spacing(
 	r io.Reader,
 ) *file_report.Report {
 	s := file_report.New(path, r)
-	var prevLine string
-	var prevWasBlank bool
+	var pastLine string
+	var pastWasBlank bool
 	var needBlankAfterClosingBrace bool
 	var inBacktick bool
 	var blockStack []bool // true = control block
@@ -35,8 +35,8 @@ func Spacing(
 
 		if wasInBacktick {
 			s.ChangedLine(line)
-			prevLine = line
-			prevWasBlank = isBlank
+			pastLine = line
+			pastWasBlank = isBlank
 
 			continue
 		}
@@ -55,7 +55,7 @@ func Spacing(
 
 		isDefer := strings.HasPrefix(trimmed, "defer ")
 
-		isTopLevelDecl := topLevel && !isBlank && (strings.HasPrefix(
+		isTopLevelDeclaration := topLevel && !isBlank && (strings.HasPrefix(
 			trimmed,
 			"func ",
 		) ||
@@ -65,11 +65,11 @@ func Spacing(
 			strings.HasPrefix(trimmed, "case ") ||
 			trimmed == "default:"
 
-		prevTrimmed := strings.TrimSpace(prevLine)
-		prevOpensBlock := strings.HasSuffix(prevTrimmed, "{") ||
-			strings.HasPrefix(prevTrimmed, "case ") ||
-			prevTrimmed == "default:" ||
-			strings.HasPrefix(prevTrimmed, "//")
+		pastTrimmed := strings.TrimSpace(pastLine)
+		pastOpensBlock := strings.HasSuffix(pastTrimmed, "{") ||
+			strings.HasPrefix(pastTrimmed, "case ") ||
+			pastTrimmed == "default:" ||
+			strings.HasPrefix(pastTrimmed, "//")
 
 		isElseContinuation := strings.HasPrefix(trimmed, "} else")
 		endsWithBrace := strings.HasSuffix(trimmed, "{")
@@ -127,12 +127,12 @@ func Spacing(
 			pendingBlank = false
 
 			if topLevel {
-				prevIsVarConst := strings.HasPrefix(prevTrimmed, "var ") ||
-					strings.HasPrefix(prevTrimmed, "const ")
+				pastIsVarConst := strings.HasPrefix(pastTrimmed, "var ") ||
+					strings.HasPrefix(pastTrimmed, "const ")
 				isVarConst := strings.HasPrefix(trimmed, "var ") ||
 					strings.HasPrefix(trimmed, "const ")
 
-				if prevIsVarConst && isVarConst {
+				if pastIsVarConst && isVarConst {
 					// Spurious blank between consecutive top-level var/const - remove.
 					s.AddConcern(
 						constant.ExtraneousTopLevelBlankKey,
@@ -147,12 +147,12 @@ func Spacing(
 			} else {
 				// Blank is invalid after a block opener or a comment - a
 				// comment is attached to what follows; the blank belongs before it.
-				prevOpenedBrace := strings.HasSuffix(prevTrimmed, "{") ||
-					strings.HasPrefix(prevTrimmed, "case ") ||
-					prevTrimmed == "default:" ||
-					strings.HasPrefix(prevTrimmed, "//")
+				pastOpenedBrace := strings.HasSuffix(pastTrimmed, "{") ||
+					strings.HasPrefix(pastTrimmed, "case ") ||
+					pastTrimmed == "default:" ||
+					strings.HasPrefix(pastTrimmed, "//")
 
-				if prevOpenedBrace {
+				if pastOpenedBrace {
 					// Blank at start of block - always invalid.
 					s.AddConcern(
 						constant.BlankInsideFunctionKey,
@@ -182,7 +182,7 @@ func Spacing(
 			}
 		}
 
-		if isControlStart && !prevWasBlank && prevLine != "" && !prevOpensBlock {
+		if isControlStart && !pastWasBlank && pastLine != "" && !pastOpensBlock {
 			s.ChangedLine("")
 			s.AddConcern(
 				constant.MissingBlankBeforeControlKey,
@@ -194,7 +194,7 @@ func Spacing(
 			needBlankAfterClosingBrace = false
 		}
 
-		if isExit && !prevWasBlank && prevLine != "" && !prevOpensBlock {
+		if isExit && !pastWasBlank && pastLine != "" && !pastOpensBlock {
 			s.ChangedLine("")
 			s.AddConcern(
 				constant.MissingBlankBeforeExitKey,
@@ -206,7 +206,7 @@ func Spacing(
 			needBlankAfterClosingBrace = false
 		}
 
-		if isTopLevelDecl && !prevWasBlank && prevLine != "" && !prevOpensBlock {
+		if isTopLevelDeclaration && !pastWasBlank && pastLine != "" && !pastOpensBlock {
 			s.ChangedLine("")
 			s.AddConcern(
 				constant.MissingBlankBeforeDeclarationKey,
@@ -228,7 +228,7 @@ func Spacing(
 			)
 		}
 
-		if isBlank && prevWasBlank {
+		if isBlank && pastWasBlank {
 			s.AddConcern(
 				constant.ExtraneousBlankLineKey,
 				constant.ExtraneousBlankLineText,
@@ -248,10 +248,10 @@ func Spacing(
 		if isBlank {
 			pendingBlank = true
 			pendingBlankLine = number
-			prevWasBlank = true
+			pastWasBlank = true
 
-			// Do not update prevLine - keep it as the last non-blank line so
-			// prevOpensBlock is correct when the next non-blank is processed.
+			// Do not update pastLine - keep it as the last non-blank line so
+			// pastOpensBlock is correct when the next non-blank is processed.
 			continue
 		}
 
@@ -277,8 +277,8 @@ func Spacing(
 			needBlankAfterClosingBrace = false
 		}
 
-		prevLine = line
-		prevWasBlank = isBlank
+		pastLine = line
+		pastWasBlank = isBlank
 	}
 
 	return s.Finalize()

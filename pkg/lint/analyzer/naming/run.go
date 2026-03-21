@@ -30,9 +30,9 @@ func run(pass *analysis.Pass) (any, error) {
 				return
 			}
 
-			obj, ok := pass.TypesInfo.Defs[ident]
+			obj, isDef := pass.TypesInfo.Defs[ident]
 
-			if !ok {
+			if !isDef {
 				return
 			}
 

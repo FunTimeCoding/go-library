@@ -17,13 +17,22 @@ var suggestions = map[string][]string{
 	"ctx":   {"x"}, // context collides with the standard library package name
 	"param": {"parameter"},
 	"msg":   {"m", "message"},
-	"req":   {"r", "request"},
-	"doc":   {"d", "document"},
-	"config": {
-		"c",
-		"configuration",
-	}, // configuration is long but beats a vague abbreviation in non-variable contexts; often replaceable with something more specific like setting
-	"cfg": {"c", "configuration"},
+	"req":  {"r", "request"},
+	"doc":  {"d", "document"},
+	"pos":  {"p", "position"},
+	"buf":  {"b", "buffer"},
+	"ptr":  {"p", "pointer"},
+	"addr": {"a", "address"},
+	"ref":  {"r", "reference"},
+	"nav":  {"n", "navigation"},
+	"prev": {"past"},
+	"decl": {"declaration"},
+	"yaml": {"m", "markup"},
+	"xml":  {"m", "markup"},
+	"html": {"m", "markup"},
+	"json": {"j", "notation"},
+	"config": {"c", "configuration"},
+	"cfg":    {"c", "configuration"},
 	"llm": {"m", "model"},
 	"tmp": {"t"}, // temporary is too long; t suffices
 }

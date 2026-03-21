@@ -111,7 +111,7 @@ pkg/tool/go<tool>d/web/
 ├── <route>.go          # handler method named after route: alerts(), dashboard()
 ├── <component>.go      # HTML builder named after component: alerts_table.go
 ├── layout.go           # layout() — full page shell
-├── nav_link.go         # navLink() — navigation component
+├── navigation_link.go  # navigationLink() — navigation component
 └── constant/
     └── constant.go     # inlineCSS and other web-layer constants
 ```

@@ -34,9 +34,9 @@ func layout(
 						h.Li(h.Strong(g.Text("Maintenance Log"))),
 					),
 					h.Ul(
-						navLink("/", "Dashboard", currentPath),
-						navLink("/entries", "Entries", currentPath),
-						navLink("/add", "Add Entry", currentPath),
+						navigationLink("/", "Dashboard", currentPath),
+						navigationLink("/entries", "Entries", currentPath),
+						navigationLink("/add", "Add Entry", currentPath),
 					),
 				),
 				h.Main(

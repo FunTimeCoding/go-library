@@ -22,7 +22,6 @@ func IsClean(
 
 			if status.Worktree != git.Untracked &&
 				status.Staging != git.Untracked {
-
 				return false
 			}
 		}

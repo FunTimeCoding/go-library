@@ -17,7 +17,6 @@ func main() {
 	service := argument.RequiredPositional(1, "SERVICE")
 	fmt.Printf("Host: %s\n", host)
 	fmt.Printf("Service: %s\n", service)
-
 	s := ssh.New(system.User().Username, host, true)
 	defer s.Close()
 	c := systemd.New(s)

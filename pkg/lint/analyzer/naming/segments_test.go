@@ -26,5 +26,9 @@ func TestSegmentsAllLower(t *testing.T) {
 }
 
 func TestSegmentsMixed(t *testing.T) {
-	assert.Strings(t, []string{"output", "directory"}, segments("OutputDirectory"))
+	assert.Strings(
+		t,
+		[]string{"output", "directory"},
+		segments("OutputDirectory"),
+	)
 }

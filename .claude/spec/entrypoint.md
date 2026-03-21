@@ -1,6 +1,6 @@
 # Entrypoint Spec
 
-Shared conventions for all `cmd/` programs — linker variables, `Main()`, sentry integration.
+Shared conventions for all `cmd/` programs - linker variables, `Main()`, sentry integration.
 
 ## Linker Variables
 
@@ -22,7 +22,7 @@ func main() {
 }
 ```
 
-These are injected by `gobuild` at compile time — see `build.md`.
+These are injected by `gobuild` at compile time - see `build.md`.
 
 ## Main Function
 
@@ -64,10 +64,10 @@ if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
 ```
 
 - Sentry is the first thing in `Main()` so the defer runs last (captures panics from all later code)
-- `environment.Optional` returns empty string when the variable is unset — no error, no Sentry
+- `environment.Optional` returns empty string when the variable is unset - no error, no Sentry
 - `reporter.RecoverFlush(recover())` captures the panic value, reports it, and flushes before exit
-- Uses the `version` parameter directly — no need to pass it through option structs
+- Uses the `version` parameter directly - no need to pass it through option structs
 
 ### `os.Exit` and sentry
 
-Some tools call `os.Exit(1)` for expected failure conditions (no results, validation failures, upload errors). This intentionally bypasses the sentry defer — these are not crashes and should not be reported as errors. Sentry covers unexpected panics only.
+Some tools call `os.Exit(1)` for expected failure conditions (no results, validation failures, upload errors). This intentionally bypasses the sentry defer - these are not crashes and should not be reported as errors. Sentry covers unexpected panics only.

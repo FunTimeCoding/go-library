@@ -8,7 +8,6 @@ import (
 
 func Sort(v []*gitlab.RegistryRepositoryTag) []*gitlab.RegistryRepositoryTag {
 	result := append([]*gitlab.RegistryRepositoryTag{}, v...)
-
 	sort.SliceStable(
 		result,
 		func(

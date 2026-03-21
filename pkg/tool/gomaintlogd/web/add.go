@@ -29,7 +29,6 @@ func (s *Server) handleAddSubmit(
 	r *http.Request,
 ) {
 	errors.PanicOnError(r.ParseForm())
-
 	e := &store.Entry{
 		Action:      r.FormValue("action"),
 		User:        r.FormValue("user"),
@@ -37,9 +36,7 @@ func (s *Server) handleAddSubmit(
 		Service:     r.FormValue("service"),
 		Description: r.FormValue("description"),
 	}
-
 	errors.PanicOnError(s.store.Add(e))
-
 	renderFragment(
 		w,
 		h.Div(

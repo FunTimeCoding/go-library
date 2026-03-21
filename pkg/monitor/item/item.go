@@ -8,7 +8,6 @@ import (
 
 type Item struct {
 	collector *collector.Collector
-
 	Identifier string
 	Severity   constant.Severity
 	Detail     string

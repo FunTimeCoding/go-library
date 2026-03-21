@@ -12,7 +12,6 @@ const (
 
 // NodeAll analogous to NamespaceAll
 const NodeAll = ""
-
 const (
 	Kubectl        = "kubectl"
 	Configuration  = "config"
@@ -30,9 +29,7 @@ const (
 )
 
 const DNSConfigurationForming = "DNSConfigForming" // Event reason
-
 var IrrelevantEventReason = []string{DNSConfigurationForming}
-
 const (
 	TrivyNamespace = "trivy"
 	TrivyCron      = "trivy"

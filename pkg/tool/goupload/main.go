@@ -71,18 +71,13 @@ func Main(
 		"Header for authentication in key=value format",
 	)
 	monitor.ParseBind(version, gitHash, buildDate)
-
 	locator := argument.Required(argument.Locator)
 	fmt.Printf("Locator: %s\n", locator)
-
 	project := argument.Required(argument.Project)
 	fmt.Printf("Project: %s\n", project)
-
 	tag := argument.Required(argument.Tag)
 	fmt.Printf("Tag: %s\n", tag)
-
 	headers := build.Headers(viper.GetString(argument.Header))
-
 	var runs int
 
 	for _, name := range build.OutputDirectories() {
@@ -104,7 +99,6 @@ func Main(
 
 				if status != http.StatusCreated {
 					fmt.Printf("Upload failed: %d %s\n", status, body)
-
 					os.Exit(1)
 				}
 			}
@@ -113,7 +107,6 @@ func Main(
 
 	if runs == 0 {
 		fmt.Println("No archive uploaded")
-
 		os.Exit(1)
 	}
 }

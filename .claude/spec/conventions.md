@@ -37,9 +37,9 @@
   - Avoid `-ing` and plural forms in names
   - Prefer shorter words: "fail" over "error", "path" over "filePath"
 - **Function/method chaining** - pass return values directly: `p.WritePKGINFO(p.CreateDataTar())`
-- **Blank identifier for byte counts** — ignore bytes read/written when not needed: `content, _ := io.ReadAll(tr)`, `_, f = outFile.Write(data)`
+- **Blank identifier for byte counts** - ignore bytes read/written when not needed: `content, _ := io.ReadAll(tr)`, `_, f = outFile.Write(data)`
   - Never ignore error returns, only byte counts
-- **`new(expr)` for pointers** (Go 1.26) — use `new(time.Now())` instead of `t := time.Now(); &t`. Works for any expression: `new(true)`, `new("value")`, `new(42)`
+- **`new(expr)` for pointers** (Go 1.26) - use `new(time.Now())` instead of `t := time.Now(); &t`. Works for any expression: `new(true)`, `new("value")`, `new(42)`
 - **Defer placement** - immediately after resource creation and error check:
   ```go
   file, e := os.Open(path)
@@ -62,15 +62,15 @@
 
 ## Structure
 
-- **One-file-per-function** — extract helpers to dedicated files named after the function (e.g., `http_fail.go`, `add_file_to_tar.go`)
-- **One-type-per-file** — struct definitions go in a file named after the struct (e.g., `log.go` for `type Log struct`)
-- **Constants in `constant.go`** — exported constants get their own `constant.go` file in the package. Prefer a single flat `constant.go` per package.
-- **Reuse existing constants** — use `web/constant.Listen`, `web/constant.Object`, `web/constant.ContentType`, `argument.Name`, etc. Never hardcode strings that already have a constant in the codebase.
-- **Option struct naming** — named after the domain concept, not `Option` (e.g., `option.Log`, `option.Build`, `option.Commit`). File named after the struct. Constructor in `new.go` returns pointer.
-- **Stub tests** — every package gets a `_test.go`. Minimal tests use `assert.Stub(t)`. Constructor tests use `assert.NotNil(t, New(...))`.
+- **One-file-per-function** - extract helpers to dedicated files named after the function (e.g., `http_fail.go`, `add_file_to_tar.go`)
+- **One-type-per-file** - struct definitions go in a file named after the struct (e.g., `log.go` for `type Log struct`)
+- **Constants in `constant.go`** - exported constants get their own `constant.go` file in the package. Prefer a single flat `constant.go` per package.
+- **Reuse existing constants** - use `web/constant.Listen`, `web/constant.Object`, `web/constant.ContentType`, `argument.Name`, etc. Never hardcode strings that already have a constant in the codebase.
+- **Option struct naming** - named after the domain concept, not `Option` (e.g., `option.Log`, `option.Build`, `option.Commit`). File named after the struct. Constructor in `new.go` returns pointer.
+- **Stub tests** - every package gets a `_test.go`. Minimal tests use `assert.Stub(t)`. Constructor tests use `assert.NotNil(t, New(...))`.
 - Tests use `assert.*` helpers to reduce nesting
-- **`new_environment.go`** — when a package reads from environment variables, the environment constructor lives in `new_environment.go` and calls `New()` after reading the required vars. Pattern: `func NewEnvironment() *Client { return New(environment.Required(constant.HostEnvironment), environment.Required(constant.TokenEnvironment)) }`. The base `New()` always takes explicit params; `NewEnvironment()` is the env-reading wrapper.
-- **`example/` subpackage** — every client package gets `example/read.go` (or a domain-named function) called from `cmd/example/<name>/main.go`. Inactive examples are kept in `if false {}` blocks rather than deleted.
+- **`new_environment.go`** - when a package reads from environment variables, the environment constructor lives in `new_environment.go` and calls `New()` after reading the required vars. Pattern: `func NewEnvironment() *Client { return New(environment.Required(constant.HostEnvironment), environment.Required(constant.TokenEnvironment)) }`. The base `New()` always takes explicit params; `NewEnvironment()` is the env-reading wrapper.
+- **`example/` subpackage** - every client package gets `example/read.go` (or a domain-named function) called from `cmd/example/<name>/main.go`. Inactive examples are kept in `if false {}` blocks rather than deleted.
 - Fail fast with stacktraces (Sentry integration)
 - Helpers return only success values, panic on errors
 - Prefer extracting logic to testable helpers over inline test code
@@ -83,13 +83,13 @@
   - `generative` for `pkg/generative/model_context/server` (the MCP HTTP transport)
   - `web` for `pkg/web/constant`
   - `sentry` for `pkg/errors/sentry/constant`
-- **The more local package keeps the natural name** — when two packages share a last segment (e.g., both called `server`), the tool's own generated `server/` package is imported unaliased; the shared infrastructure package gets the alias
+- **The more local package keeps the natural name** - when two packages share a last segment (e.g., both called `server`), the tool's own generated `server/` package is imported unaliased; the shared infrastructure package gets the alias
 
 ## Interfaces
 
-- **Generic interfaces** (no domain type imports) — define in `pkg/face/`. These are like `io.Reader`: small, shared, used by many consumers. Examples: `Worker`, `Notifier`, `Clock`.
-- **Domain-specific interfaces** (reference types like `*alert.Alert`) — define at the consumer. Domain types often already import `face`, so putting the interface in `face` would create an import cycle. Example: `AlertSource` in `poller/poller.go`.
-- **Mock convention** — hand-rolled structs in `mock_*` sub-packages near the real implementation (e.g., `mock_notifier/`, `mock_client/`). One file per method. Methods to manipulate state for testing (e.g., `Add()`, `Remove()`).
+- **Generic interfaces** (no domain type imports) - define in `pkg/face/`. These are like `io.Reader`: small, shared, used by many consumers. Examples: `Worker`, `Notifier`, `Clock`.
+- **Domain-specific interfaces** (reference types like `*alert.Alert`) - define at the consumer. Domain types often already import `face`, so putting the interface in `face` would create an import cycle. Example: `AlertSource` in `poller/poller.go`.
+- **Mock convention** - hand-rolled structs in `mock_*` sub-packages near the real implementation (e.g., `mock_notifier/`, `mock_client/`). One file per method. Methods to manipulate state for testing (e.g., `Add()`, `Remove()`).
 
 ## Deviations
 

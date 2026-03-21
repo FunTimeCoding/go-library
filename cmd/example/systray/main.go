@@ -21,7 +21,6 @@ func onReady() {
 	systray.SetTooltip("Example Tooltip")
 	mQuit := systray.AddMenuItem("Quit", "Quit application")
 	mQuit.SetIcon(icon.Data)
-
 	go func() {
 		<-mQuit.ClickedCh
 		fmt.Println("Requesting quit")

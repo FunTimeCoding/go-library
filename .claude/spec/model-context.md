@@ -13,13 +13,13 @@ pkg/tool/go<tool>d/
 └── model_context/
     ├── server.go              # Server struct (holds MCPServer + dependencies)
     ├── new.go                 # New(s *store.Store, ...) *Server
-    ├── nested.go              # Nested() *server.MCPServer — for mounting
-    ├── register.go            # register() — wires all tools to the MCPServer
-    ├── <tool_name>.go         # One file per tool handler (get_alerts.go, etc.)
+    ├── nested.go              # Nested() *server.MCPServer - for mounting
+    ├── register.go            # register() - wires all tools to the MCPServer
+    ├── <tool_name>.go         # One file per tool function (get_alerts.go, etc.)
     └── model_context_test.go  # Stub test
 ```
 
-`model_context/` is a sibling of `route/`. Both implement the same domain operations — `route/` over REST, `model_context/` over MCP.
+`model_context/` is a sibling of `route/`. Both implement the same domain operations - `route/` over REST, `model_context/` over MCP.
 
 ## Server Struct
 
@@ -32,7 +32,7 @@ type Server struct {
 }
 ```
 
-`new.go` — create the MCPServer, register tools, return:
+`new.go` - create the MCPServer, register tools, return:
 ```go
 func New(s *store.Store, p *poller.Poller) *Server {
     result := &Server{
@@ -50,7 +50,7 @@ func New(s *store.Store, p *poller.Poller) *Server {
 }
 ```
 
-`nested.go` — exposes the inner MCPServer for the HTTP transport layer:
+`nested.go` - exposes the inner MCPServer for the HTTP transport layer:
 ```go
 func (s *Server) Nested() *server.MCPServer {
     return s.server
@@ -59,7 +59,7 @@ func (s *Server) Nested() *server.MCPServer {
 
 ## Registering Tools
 
-`register.go` — one `AddTool` call per tool, handler in its own file:
+`register.go` - one `AddTool` call per tool, function in its own file:
 ```go
 func (s *Server) register() {
     s.server.AddTool(
@@ -73,7 +73,7 @@ func (s *Server) register() {
 }
 ```
 
-Tool handler files (`get_alerts.go`, etc.):
+Tool function files (`get_alerts.go`, etc.):
 ```go
 func (s *Server) getAlerts(
     _ context.Context,
@@ -93,13 +93,13 @@ func (s *Server) getAlerts(
 }
 ```
 
-- Required params: `r.RequireString(...)` — return `mcp.NewToolResultError(...)` on failure, not a Go error
+- Required params: `r.RequireString(...)` - return `mcp.NewToolResultError(...)` on failure, not a Go error
 - Optional params: `r.GetString("key", "")` / `r.GetFloat("key", 0)`
 - Results: `mcp.NewToolResultText(...)` for success
 
 ## Wiring into run.go
 
-Mount alongside REST on the same mux — REST routes (`/api/v1/...`) and MCP routes (`/mcp`, `/sse`, `/message`) don't conflict:
+Mount alongside REST on the same mux - REST routes (`/api/v1/...`) and MCP routes (`/mcp`, `/sse`, `/message`) don't conflict:
 
 ```go
 import (
@@ -123,6 +123,6 @@ lifecycle.WithServer(
 
 ## What Not To Do
 
-- Don't create a separate lifecycle server for MCP — one port, one mux
-- Don't name it `mcp/` — use `model_context/` (no acronyms in package names)
-- Don't put HTTP transport concerns in `model_context/` — that belongs in `generative.New(...).Setup(m)`
+- Don't create a separate lifecycle server for MCP - one port, one mux
+- Don't name it `mcp/` - use `model_context/` (no acronyms in package names)
+- Don't put HTTP transport concerns in `model_context/` - that belongs in `generative.New(...).Setup(m)`

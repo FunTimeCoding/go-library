@@ -16,7 +16,6 @@ func Headers(token string) map[string]string {
 
 		if headerValue == "" {
 			fmt.Println("Header value empty")
-
 			os.Exit(1)
 		}
 

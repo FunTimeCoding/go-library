@@ -8,6 +8,5 @@ import (
 type Release struct {
 	Name   string
 	Create time.Time
-
 	Raw *github.RepositoryRelease
 }

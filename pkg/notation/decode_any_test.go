@@ -8,10 +8,8 @@ import (
 
 func TestDecodeAny(t *testing.T) {
 	var a any
-
 	DecodeAny(true, &a)
 	assert.Any(t, a, true)
-
 	DecodeAny(strings.Alfa, &a)
 	assert.Any(t, a, "Alfa")
 }

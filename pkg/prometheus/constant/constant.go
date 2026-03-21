@@ -8,7 +8,6 @@ import (
 
 const Graph = "/graph"
 const Graph0Expression = "g0.expr"
-
 const (
 	HostEnvironment     = "PROMETHEUS_HOST"
 	PortEnvironment     = "PROMETHEUS_PORT"

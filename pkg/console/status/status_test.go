@@ -24,10 +24,8 @@ func TestStatusNested(t *testing.T) {
 	apple := extended.New(1, "a", "b")
 	orange := extended.New(2, "c", "d")
 	f := option.New().Extended()
-
 	appleOutput := fmt.Sprintf("%s\n", apple.Format(f))
 	assert.String(t, "1 | a | b\n  line1\n  line2\n", appleOutput)
-
 	orangeOutput := fmt.Sprintf("%s\n", orange.Format(f.Indent(1)))
 	assert.String(
 		t,

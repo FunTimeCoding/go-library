@@ -6,7 +6,5 @@ const (
 )
 
 const GreetTool = "greet"
-
 const NameParameter = "name"
-
 const TokenParameter = "token"

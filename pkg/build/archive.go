@@ -15,10 +15,8 @@ func Archive(
 ) {
 	sourceFile := GuessBinaryPath(name, systemArchitecture)
 	fmt.Printf("Source file: %s\n", sourceFile)
-
 	archiveName := fmt.Sprintf("%s-%s.zip", name, systemArchitecture)
 	fmt.Printf("Archive name: %s\n", archiveName)
-
 	archive := system.Create(join.Relative(constant.Temporary, archiveName))
 	defer errors.PanicClose(archive)
 	w := zip.NewWriter(archive)

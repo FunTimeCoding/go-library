@@ -7,7 +7,6 @@ import (
 
 func (s *Store) Count() int {
 	var result int
-
 	s.client.View(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)

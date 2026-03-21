@@ -8,6 +8,5 @@ import (
 type Result struct {
 	Time  time.Time
 	Value int
-
 	Raw *generic.Result
 }

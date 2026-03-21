@@ -12,12 +12,9 @@ type Silence struct {
 	Match             string
 	Author            string
 	Comment           string
-
 	Start *time.Time
 	End   *time.Time
-
 	Rule string
 	Link string
-
 	Raw *models.GettableSilence
 }

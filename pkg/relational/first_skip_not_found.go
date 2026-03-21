@@ -33,7 +33,6 @@ func FirstSkipNotFound(
 			return result
 		} else {
 			m.Logger = past
-
 			panic(e)
 		}
 	}

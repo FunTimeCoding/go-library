@@ -4,7 +4,6 @@ import "strings"
 
 func TrimToLastSentence(text string) string {
 	i := strings.LastIndexAny(text, ".!?")
-
 	// No punctuation found, or already ends with punctuation
 	if i == -1 || i == len(text)-1 {
 		return text

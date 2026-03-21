@@ -5,7 +5,6 @@ import "time"
 func (t *Ticker) Start() {
 	t.ticker = time.NewTicker(t.interval)
 	t.done = make(chan struct{})
-
 	go func() {
 		for {
 			select {

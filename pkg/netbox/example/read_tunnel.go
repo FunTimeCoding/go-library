@@ -11,7 +11,6 @@ func readTunnel(
 	f *option.Format,
 ) {
 	// VPN
-
 	for _, g := range n.TunnelGroups() {
 		fmt.Printf("TunnelGroup: %s\n", g.Format(f))
 	}

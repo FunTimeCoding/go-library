@@ -9,7 +9,6 @@ import (
 func TestAll(t *testing.T) {
 	assert.True(t, All([]string{strings.Alfa}, []string{strings.Alfa}))
 	assert.False(t, All([]string{strings.Alfa}, []string{strings.Bravo}))
-
 	assert.True(
 		t,
 		All(

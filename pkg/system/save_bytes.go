@@ -10,11 +10,9 @@ func SaveBytes(
 	b []byte,
 ) {
 	f := Create(path)
-
 	w := bufio.NewWriter(f)
 	_, e := w.Write(b)
 	errors.PanicOnError(e)
-
 	errors.PanicOnError(w.Flush())
 	errors.PanicClose(f)
 }

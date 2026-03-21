@@ -15,7 +15,6 @@ func TestRun(t *testing.T) {
 	assert.True(t, r1.Error == nil)
 	assert.String(t, "test\n", r1.OutputString)
 	assert.String(t, "", r1.ErrorString)
-
 	r2 := New()
 	r2.Panic = false
 	r2.Start("nonexistent")

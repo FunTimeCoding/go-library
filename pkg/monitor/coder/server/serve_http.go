@@ -31,7 +31,6 @@ func (s Server) ServeHTTP(
 			s.Logf("failed to close connection: %v", e)
 		}
 	}()
-
 	log.Printf("subprotocol: %v\n", c.Subprotocol())
 
 	if c.Subprotocol() != "echo" {

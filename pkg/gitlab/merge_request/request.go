@@ -13,8 +13,6 @@ type Request struct {
 	State      string
 	Link       string
 	Create     *time.Time
-
 	ageColor face.SprintFunction
-
 	Raw *gitlab.BasicMergeRequest
 }

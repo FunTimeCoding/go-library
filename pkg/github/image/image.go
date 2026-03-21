@@ -10,6 +10,5 @@ type Image struct {
 	Digest     string
 	Tags       []string
 	Create     time.Time
-
 	Raw *github.PackageVersion
 }

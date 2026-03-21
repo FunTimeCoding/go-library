@@ -20,7 +20,6 @@ func TestReport(t *testing.T) {
 	other := New("Example other", NoLimit)
 	other.String("String", "other")
 	root.AppendSection(other)
-
 	assert.String(
 		t,
 		"Example root"+
@@ -45,15 +44,12 @@ func TestReportLimit(t *testing.T) {
 	assert.Integer(t, 12, root.Length())
 	root.String("String", "example")
 	assert.Integer(t, 30, root.Length())
-
 	firstSection := root.Nest("Example section", NoLimit)
 	assert.Integer(t, 15, firstSection.Length())
 	firstSection.String("String", "example")
 	assert.Integer(t, 37, firstSection.Length())
-
 	secondSection := root.Nest("Too long section", NoLimit)
 	assert.Integer(t, 16, secondSection.Length())
-
 	assert.String(
 		t,
 		"Example root"+

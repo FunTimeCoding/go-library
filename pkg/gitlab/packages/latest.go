@@ -11,7 +11,6 @@ func Latest(v []*gitlab.Package) map[string]*gitlab.Package {
 
 	for _, e := range v {
 		errors.PanicOnSemver(e.Version)
-
 		latest := result[e.Name]
 
 		if latest == nil ||

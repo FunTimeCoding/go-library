@@ -18,7 +18,6 @@ func (d *Device) Format(f *option.Format) string {
 		d.PrimaryAddress,
 		d.formatSerial(f),
 	).RawList(d.Raw)
-
 	s.DetailLink(d.Link, "NetBox", "")
 
 	if t := d.formatTags(f); t != "" {

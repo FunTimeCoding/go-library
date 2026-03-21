@@ -16,7 +16,6 @@ func FindProjectOrExit(
 
 	if p == nil {
 		fmt.Printf("repository not found: %s/%s\n", owner, repository)
-
 		os.Exit(1)
 	}
 

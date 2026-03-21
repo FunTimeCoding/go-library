@@ -20,7 +20,6 @@ func (c *Client) SearchLimit(
 		&jira.SearchOptionsV2{Fields: []string{"*all"}, MaxResults: limit},
 	)
 	panicOnError(r, e)
-
 	result := issue.NewSlice(page, c.IssueOption())
 
 	return c.enrichMany(result)

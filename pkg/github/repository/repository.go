@@ -10,8 +10,6 @@ type Repository struct {
 	Owner      string
 	Name       string
 	FullName   string
-
 	CreatedAt time.Time
-
 	Raw *github.Repository
 }

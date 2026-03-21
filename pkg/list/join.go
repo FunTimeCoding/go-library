@@ -8,7 +8,6 @@ func Join[T any](slices [][]T) []T {
 	}
 
 	result := make([]T, length)
-
 	var i int
 
 	for _, s := range slices {

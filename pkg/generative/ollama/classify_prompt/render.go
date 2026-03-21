@@ -4,10 +4,8 @@ import "github.com/funtimecoding/go-library/pkg/text/multi_line"
 
 func (p *Prompt) Render() string {
 	m := multi_line.New()
-
 	m.Format("Instructions: %s", p.instructions)
 	m.Format("Sample to classify: %s", p.toClassify)
-
 	m.Blank()
 	m.Add("## Answer format")
 	m.Add(p.answerFormat)

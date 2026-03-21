@@ -7,7 +7,6 @@ import (
 
 func Read() {
 	g := grafana.NewEnvironment()
-
 	fmt.Println("Folders")
 
 	for _, f := range g.Folders() {
@@ -22,7 +21,6 @@ func Read() {
 
 	h := g.Home()
 	fmt.Printf("Home: %+v\n", h.Meta)
-
 	fmt.Println("Search")
 
 	for _, d := range g.Search() {

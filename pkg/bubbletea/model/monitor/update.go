@@ -44,7 +44,6 @@ func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 		before := len(m.toast)
 		m.toast = updated
 		after := len(m.toast)
-
 		m.updateTableHeight(before > 0 && after == 0, false)
 		m.table.UpdateViewport()
 

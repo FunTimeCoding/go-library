@@ -17,7 +17,6 @@ func DeleteLoop() {
 		"Delete messages in a loop, requires channel",
 	)
 	argument.ParseBind()
-
 	c := discord.NewEnvironment()
 	c.Listen(false)
 	defer c.Close()

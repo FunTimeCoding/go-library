@@ -14,7 +14,6 @@ func (s *Sentence) Join() string {
 
 	result := []string{s.action}
 	result = append(result, s.affect...)
-
 	last := len(result) - 1
 	result[last] = fmt.Sprintf("and %s", result[last])
 

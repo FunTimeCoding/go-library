@@ -63,7 +63,6 @@ func Main(
 	go_mod.UpdateDirectDependencies(exclusives, continueOnError)
 	go_mod.DowngradeDependencies(downgrades)
 	go_mod.Tidy()
-
 	goVersion := runtime.ExecutableVersion()
 
 	if goVersion == nil {
@@ -108,7 +107,6 @@ func Main(
 			system.ReadFile(system.WorkingDirectory(), project.GitLabFile),
 			goString,
 		)
-
 		system.SaveFile(project.GitLabFile, d)
 	}
 }

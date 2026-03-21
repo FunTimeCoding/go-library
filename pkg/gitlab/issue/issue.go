@@ -8,6 +8,5 @@ type Issue struct {
 	Title      string
 	State      string
 	Link       string
-
 	Raw *gitlab.Issue
 }

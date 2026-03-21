@@ -7,6 +7,5 @@ type Page struct {
 	Name       string
 	Link       string
 	TinyLink   string
-
 	Raw *response.Page
 }

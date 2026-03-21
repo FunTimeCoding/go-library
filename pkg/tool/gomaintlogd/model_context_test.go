@@ -26,12 +26,10 @@ func TestModelContextClient(t *testing.T) {
 	)
 	assert.FatalOnError(t, e)
 	defer errors.PanicClose(session)
-
 	// ListTools
 	tools, e := session.ListTools(x, &mcp.ListToolsParams{})
 	assert.FatalOnError(t, e)
 	assert.Count(t, 4, tools.Tools)
-
 	// add_entry
 	add, e := session.CallTool(
 		x,
@@ -48,7 +46,6 @@ func TestModelContextClient(t *testing.T) {
 	)
 	assert.FatalOnError(t, e)
 	assert.False(t, add.IsError)
-
 	// list_entries
 	list, e := session.CallTool(
 		x,
@@ -64,8 +61,7 @@ func TestModelContextClient(t *testing.T) {
 		"1 entries",
 		list.Content[0].(*mcp.TextContent).Text,
 	)
-
-	// list_entries — filter by system
+	// list_entries - filter by system
 	filtered, e := session.CallTool(
 		x,
 		&mcp.CallToolParams{
@@ -80,8 +76,7 @@ func TestModelContextClient(t *testing.T) {
 		"1 entries",
 		filtered.Content[0].(*mcp.TextContent).Text,
 	)
-
-	// list_entries — filter by user
+	// list_entries - filter by user
 	filteredUser, e := session.CallTool(
 		x,
 		&mcp.CallToolParams{
@@ -96,8 +91,7 @@ func TestModelContextClient(t *testing.T) {
 		"1 entries",
 		filteredUser.Content[0].(*mcp.TextContent).Text,
 	)
-
-	// list_entries — filter no match
+	// list_entries - filter no match
 	noMatch, e := session.CallTool(
 		x,
 		&mcp.CallToolParams{
@@ -112,7 +106,6 @@ func TestModelContextClient(t *testing.T) {
 		"0 entries",
 		noMatch.Content[0].(*mcp.TextContent).Text,
 	)
-
 	// update_entry
 	update, e := session.CallTool(
 		x,
@@ -131,8 +124,7 @@ func TestModelContextClient(t *testing.T) {
 		"updated successfully",
 		update.Content[0].(*mcp.TextContent).Text,
 	)
-
-	// list_entries — verify update
+	// list_entries - verify update
 	list, e = session.CallTool(
 		x,
 		&mcp.CallToolParams{
@@ -146,7 +138,6 @@ func TestModelContextClient(t *testing.T) {
 		"cleared and documented",
 		list.Content[0].(*mcp.TextContent).Text,
 	)
-
 	// delete_entry
 	del, e := session.CallTool(
 		x,
@@ -162,8 +153,7 @@ func TestModelContextClient(t *testing.T) {
 		"deleted successfully",
 		del.Content[0].(*mcp.TextContent).Text,
 	)
-
-	// list_entries — verify delete
+	// list_entries - verify delete
 	list, e = session.CallTool(
 		x,
 		&mcp.CallToolParams{

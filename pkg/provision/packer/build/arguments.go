@@ -35,7 +35,6 @@ func (b *Build) arguments(headless bool) [][]string {
 			result,
 			[]string{"-monitor", "telnet::6666,server=on,wait=off"},
 		)
-
 		result = append(
 			result,
 			[]string{

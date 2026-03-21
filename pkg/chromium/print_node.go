@@ -20,7 +20,6 @@ func (c *Client) PrintNode(
 			chromedp.Nodes(selector, &node, chromedp.ByQueryAll),
 		),
 	)
-
 	fmt.Printf("Selector: %s\n", selector)
 
 	for i, n := range node {

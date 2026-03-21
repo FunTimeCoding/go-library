@@ -26,7 +26,6 @@ func Run() {
 	l := helper.Dial(u)
 	defer errors.LogClose(l)
 	done := make(chan struct{})
-
 	go func() {
 		defer close(done)
 
@@ -42,7 +41,6 @@ func Run() {
 			log.Printf("receive: %s", message)
 		}
 	}()
-
 	ticker := time.NewTicker(time.Second)
 	defer ticker.Stop()
 

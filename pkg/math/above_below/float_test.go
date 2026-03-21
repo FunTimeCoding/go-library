@@ -9,11 +9,9 @@ func TestFloat(t *testing.T) {
 	assertFloat(t, 1, 0, true, false)
 	assertFloat(t, -1, 0, false, true)
 	assertFloat(t, 0, 0, false, false)
-
 	assertFloat(t, 1, 1, false, false)
 	assertFloat(t, -1, 1, false, false)
 	assertFloat(t, 0, 1, false, false)
-
 	assertFloat(t, 2, 1, true, false)
 	assertFloat(t, -2, 1, false, true)
 }

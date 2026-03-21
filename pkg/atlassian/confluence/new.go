@@ -18,7 +18,6 @@ func New(
 	errors.FatalOnEmpty(host, "host")
 	errors.FatalOnEmpty(user, "user")
 	errors.FatalOnEmpty(token, "token")
-
 	result := &Client{
 		context:    context.Background(),
 		host:       host,

@@ -13,7 +13,6 @@ func Open(path string) *git.Repository {
 	f := osfs.New(path)
 	dot, dotFail := f.Chroot(constant.Directory)
 	errors.PanicOnError(dotFail)
-
 	r, openFail := git.Open(
 		filesystem.NewStorage(dot, cache.NewObjectLRUDefault()),
 		f,

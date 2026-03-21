@@ -31,7 +31,6 @@ type Alert struct {
 	Tags            []string
 	Details         map[string]string
 	Description     string
-
 	Entity            string
 	Category          string
 	Team              *team.Team
@@ -44,7 +43,6 @@ type Alert struct {
 	descriptionToName face.StringAlias
 	parseDescription  constant.ParseDescription
 	MonitorIdentifier string
-
 	RawList   *alert.Alert
 	RawDetail *alert.GetAlertResult
 }

@@ -29,7 +29,6 @@ func TestOfDay(t *testing.T) {
 		0,
 		now.Location(),
 	)
-
 	assert.Integer(t, 0, OfDay(midnight))
 	assert.Integer(t, 3600, OfDay(one))
 }

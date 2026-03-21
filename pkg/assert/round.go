@@ -17,7 +17,6 @@ func Round(
 	}
 
 	actual = round.Round(actual, decimals)
-
 	// Pass if identical after rounding
 	if actual == expect {
 		return

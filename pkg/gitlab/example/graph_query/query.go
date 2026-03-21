@@ -33,13 +33,10 @@ query { runners(first: 5) { nodes { id description } } }
 func Query() {
 	// Reference:
 	// https://docs.gitlab.com/api/graphql/
-
 	// TODO: How to get all runners?
 	// https://docs.gitlab.com/api/graphql/reference/#queryrunners
-
 	// Explorer, also exists on self-hosted:
 	// https://gitlab.com/-/graphql-explorer
-
 	c := gitlab.NewEnvironment()
 	runner := &RunnerResult{}
 	// Not sure how to get all runners, but this works, and IDs can be loaded the other API way

@@ -11,7 +11,6 @@ func readVirtual(
 	f *option.Format,
 ) {
 	// Virtualization
-
 	for _, g := range n.ClusterGroups() {
 		fmt.Printf("ClusterGroup: %s\n", g.Format(f))
 	}

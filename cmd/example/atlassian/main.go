@@ -19,13 +19,11 @@ func main() {
 		confluence.Search()
 		confluence.Space()
 		confluence.User()
-
 		jira.Customer()
 		jira.Issue()
 		jira.Search()
 		jira.Watch()
 		jira.CustomValue()
-
 		opsgenie.AddResponder()
 		opsgenie.Alert()
 	}

@@ -13,10 +13,8 @@ func ExtractTarZip(
 ) {
 	f := Open(sourceFile)
 	defer errors.LogClose(f)
-
 	z := GnuZipReader(f)
 	defer errors.LogClose(z)
-
 	r := tar.NewReader(z)
 
 	for {

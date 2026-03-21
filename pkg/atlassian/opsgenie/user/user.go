@@ -6,6 +6,5 @@ type User struct {
 	Identifier string
 	Name       string
 	FullName   string
-
 	Raw *user.User
 }

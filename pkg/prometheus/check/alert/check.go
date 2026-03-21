@@ -19,7 +19,6 @@ func Check(o *option.Alert) {
 	//   For mail, a mail client that filters would help
 	//   How to get alert notifications as events?
 	//    If events not available, store current alerts in memory and only notify on new alerts
-
 	c := common.Alertmanager()
 	alerts, statistic := collect(c, o)
 

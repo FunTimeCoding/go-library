@@ -16,7 +16,6 @@ func main() {
 		brave.Open()
 		brave.Send()
 		brave.Profile()
-
 		chromium.Tabs()
 		chromium.Tab()
 		chromium.Open()

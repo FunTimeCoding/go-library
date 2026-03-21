@@ -11,7 +11,6 @@ type Alert struct {
 	Team    *team_map.Map
 	User    *user_map.Map
 	WebHost string
-
 	ShortAlert        face.StringAlias
 	ShortUser         face.StringAlias
 	DescriptionToName face.StringAlias

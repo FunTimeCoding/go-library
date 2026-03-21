@@ -10,7 +10,6 @@ func LatestTag(path string) string {
 	r := Open(path)
 	var result string
 	var latest time.Time
-
 	errors.PanicOnError(
 		TagsIterator(r).ForEach(
 			func(f *plumbing.Reference) error {

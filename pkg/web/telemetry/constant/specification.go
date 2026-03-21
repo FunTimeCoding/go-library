@@ -1,7 +1,6 @@
 package constant
 
 // https://opentelemetry.io/docs/specs/semconv/http/http-spans/
-
 // Required attributes
 const (
 	RequestMethod = "http.request.method"

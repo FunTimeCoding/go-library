@@ -27,7 +27,6 @@ func TestChanger(t *testing.T) {
 			},
 		),
 	)
-
 	a2 := New()
 	a2.AddName("BigApple", "Apple")
 	a2.AddSeverity(

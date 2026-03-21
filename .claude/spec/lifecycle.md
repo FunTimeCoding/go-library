@@ -14,24 +14,24 @@ Components (servers and workers) are registered via functional options. They sta
 
 ```
 pkg/lifecycle/
-  constant.go               — Option type
-  lifecycle.go              — Lifecycle struct
-  new.go                    — constructor
-  run.go                    — Run() starts all components in order
-  run_until_signal.go       — RunUntilSignal() runs, blocks, stops
-  stop.go                   — Stop() stops all in reverse order
-  with_server.go            — WithServer option
-  with_server_middleware.go — WithServerMiddleware option
-  with_verbose.go           — WithVerbose option
-  with_worker.go            — WithWorker option
+  constant.go               - Option type
+  lifecycle.go              - Lifecycle struct
+  new.go                    - constructor
+  run.go                    - Run() starts all components in order
+  run_until_signal.go       - RunUntilSignal() runs, blocks, stops
+  stop.go                   - Stop() stops all in reverse order
+  with_server.go            - WithServer option
+  with_server_middleware.go - WithServerMiddleware option
+  with_verbose.go           - WithVerbose option
+  with_worker.go            - WithWorker option
   component/
-    component.go            — internal component adapter
+    component.go            - internal component adapter
     start.go
     stop.go
   server/
-    server.go               — server struct (internal)
-    start.go                — sets up mux, creates http.Server, serves
-    stop.go                 — graceful HTTP shutdown
+    server.go               - server struct (internal)
+    start.go                - sets up mux, creates http.Server, serves
+    stop.go                 - graceful HTTP shutdown
 ```
 
 ## Worker Interface
@@ -55,7 +55,7 @@ lifecycle.WithServer(address, func(m *http.ServeMux) {
 })
 ```
 
-The lifecycle owns the `*http.ServeMux` and `*http.Server`. The setup callback only registers routes. This means route registrars don't need to know about HTTP server lifecycle — they just receive a mux.
+The lifecycle owns the `*http.ServeMux` and `*http.Server`. The setup callback only registers routes. This means route registrars don't need to know about HTTP server lifecycle - they just receive a mux.
 
 ## WithServerMiddleware
 
@@ -65,7 +65,7 @@ lifecycle.WithServerMiddleware(address, func(m *http.ServeMux) {
 }, middlewareFunc)
 ```
 
-Wraps the HTTP handler with middleware (e.g. `metric.MiddlewareHandler` for Prometheus request metrics).
+Wraps the HTTP handler with middleware (e.g. `metric.Middleware` for Prometheus request metrics).
 
 ## Registration Order Matters
 
@@ -83,8 +83,8 @@ Stop happens in reverse: the server shuts down before the worker stops.
 
 ## What Stays Outside Lifecycle
 
-- **Sentry** — lives in `Main()`, not `Run()`. See `entrypoint.md`. The `recover()` defer in `Main()` catches panics from `Run()`.
-- **App-specific setup** — database connections, client construction, configuration parsing. All happen before `lifecycle.New()`.
+- **Sentry** - lives in `Main()`, not `Run()`. See `entrypoint.md`. The `recover()` defer in `Main()` catches panics from `Run()`.
+- **App-specific setup** - database connections, client construction, configuration parsing. All happen before `lifecycle.New()`.
 
 ## Usage Pattern
 
@@ -99,7 +99,7 @@ func Run(o *option.Config) {
         lifecycle.WithWorker(e),
         lifecycle.WithWorker(ticker.New(5*time.Minute, func() { ... })),
         lifecycle.WithServer(":8080", func(m *http.ServeMux) {
-            m.HandleFunc("/health", healthHandler)
+            m.HandleFunc("/health", health)
         }),
     )
 
@@ -113,7 +113,7 @@ func Run(o *option.Config) {
 To make a type usable as a `lifecycle.Worker`:
 
 - **Move runtime parameters into constructor.** If `Start(hourly bool)` takes args, move them to `New(..., hourly)` so `Start()` takes none.
-- **Move callbacks into options.** If `Start(handler)` takes a callback, add a `WithSubscriber(handler)` option so `Start()` reads from the struct.
+- **Move callbacks into options.** If `Start(fn)` takes a callback, add a `WithSubscriber(fn)` option so `Start()` reads from the struct.
 - **HTTP servers become route registrars.** If a server type owns its own `*http.Server`, extract a `Setup(m *http.ServeMux)` method and let lifecycle own the HTTP serving via `WithServer`.
 
 ## Go-Library Components with Start()/Stop()

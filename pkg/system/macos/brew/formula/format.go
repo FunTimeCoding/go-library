@@ -11,7 +11,6 @@ func (f *Formula) Format(o *option.Format) string {
 		f.Name,
 		strings.Join(f.InstalledVersions, ", ")+" → "+f.CurrentVersion,
 	)
-
 	s.DetailLink(f.Link, "Homebrew", "")
 
 	return s.Format()

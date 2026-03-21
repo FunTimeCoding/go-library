@@ -19,7 +19,6 @@ func CleanAddress(s string) (string, error) {
 
 	if strings.ContainsRune(s, '/') {
 		host, _ := key_value.Slash(s)
-
 		s = host
 	}
 

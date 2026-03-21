@@ -12,9 +12,7 @@ type Issue struct {
 	Title   string
 	Link    string
 	Create  *time.Time
-
 	MonitorIdentifier string
 	ageColor          face.SprintFunction
-
 	Raw *sentry.Issue
 }

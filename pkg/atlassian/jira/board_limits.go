@@ -8,7 +8,6 @@ import (
 
 func (c *Client) BoardLimits(identifier int) []*board_limit.Limit {
 	var result []*board_limit.Limit
-
 	b := c.Board(identifier)
 	o := c.BoardConfiguration(identifier)
 

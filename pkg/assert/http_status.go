@@ -24,6 +24,5 @@ func HTTPStatus(
 			panic(f)
 		}
 	}()
-
 	Integer(t, expect, r.StatusCode)
 }

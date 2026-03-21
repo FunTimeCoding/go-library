@@ -13,7 +13,6 @@ func (c *Client) AddTag(
 
 	if t == nil {
 		// Does not happen because TagByName panics if not found
-
 		return nil
 	}
 

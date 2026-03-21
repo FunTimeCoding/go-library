@@ -12,11 +12,9 @@ type Report struct {
 	fixedBuilder    *strings.Builder
 	scanner         *bufio.Scanner
 	lineNumber      int
-
-	FilePath string
-	Concerns []*concern.Concern
-	Original string
-	Fixed    string
-
-	Fix func()
+	FilePath        string
+	Concerns        []*concern.Concern
+	Original        string
+	Fixed           string
+	Fix             func()
 }

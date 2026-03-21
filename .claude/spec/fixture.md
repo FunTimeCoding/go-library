@@ -2,7 +2,7 @@
 
 Test fixtures (static files used by tests) live at `<repo-root>/fixture/<subdir>/` and are
 loaded via helpers in `pkg/assert/fixture`. The root is located by walking up from the test
-working directory to the nearest git root — so paths are always absolute and test-location
+working directory to the nearest git root - so paths are always absolute and test-location
 independent.
 
 ## Helpers
@@ -36,7 +36,7 @@ so callers never hardcode bare strings.
 
 Constants keep fixture paths refactorable and prevent bare string literals in tests.
 
-**go-library** — constants live in `pkg/system/constant/constant.go`:
+**go-library** - constants live in `pkg/system/constant/constant.go`:
 
 ```go
 HypertextPath = "hypertext"

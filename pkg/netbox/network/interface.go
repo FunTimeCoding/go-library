@@ -10,11 +10,9 @@ type Interface struct {
 	Name            string
 	Description     string
 	PhysicalAddress net.HardwareAddr
-
 	Type             netbox.InterfaceTypeValue
 	Contexts         []netbox.VirtualDeviceContext
 	VirtualNetworks  []netbox.VLAN
 	WirelessNetworks []netbox.WirelessLAN
-
 	Raw *netbox.Interface
 }

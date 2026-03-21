@@ -35,6 +35,5 @@ func (c *Client) GenerateStream(
 			},
 		),
 	)
-
 	close(output)
 }

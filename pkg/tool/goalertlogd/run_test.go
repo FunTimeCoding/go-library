@@ -159,11 +159,9 @@ func TestGeneratedClient(t *testing.T) {
 	base := fmt.Sprintf("http://localhost:%d", port)
 	cl, e := client.NewClientWithResponses(base)
 	assert.FatalOnError(t, e)
-
 	x := context.Background()
 	status, f := cl.GetStatusWithResponse(x)
 	assert.FatalOnError(t, f)
-
 	assert.Integer(t, http.StatusOK, status.StatusCode())
 	assert.NotNil(t, status.JSON200)
 	assert.Integer(t, 1, status.JSON200.TotalRecords)
@@ -173,7 +171,6 @@ func TestGeneratedClient(t *testing.T) {
 		&client.GetAlertsParams{Name: "HighMemory"},
 	)
 	assert.FatalOnError(t, h)
-
 	assert.Integer(t, http.StatusOK, alerts.StatusCode())
 	assert.NotNil(t, alerts.JSON200)
 	assert.Count(t, 1, *alerts.JSON200)
@@ -188,7 +185,6 @@ func TestGeneratedClient(t *testing.T) {
 		&client.GetRecentAlertsParams{},
 	)
 	assert.FatalOnError(t, i)
-
 	assert.Integer(t, http.StatusOK, recent.StatusCode())
 	assert.NotNil(t, recent.JSON200)
 	assert.Count(t, 1, *recent.JSON200)
@@ -197,7 +193,6 @@ func TestGeneratedClient(t *testing.T) {
 		&client.GetTopAlertsParams{},
 	)
 	assert.FatalOnError(t, j)
-
 	assert.Integer(t, http.StatusOK, topAlerts.StatusCode())
 	assert.NotNil(t, topAlerts.JSON200)
 	assert.Count(t, 1, *topAlerts.JSON200)
@@ -211,11 +206,9 @@ func getJSON[T any](
 	t.Helper()
 	r, e := http.Get(locator)
 	assert.FatalOnError(t, e)
-
 	defer errors.PanicClose(r.Body)
 	body, f := io.ReadAll(r.Body)
 	errors.PanicOnError(f)
-
 	var result T
 	errors.PanicOnError(json.Unmarshal(body, &result))
 

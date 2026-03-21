@@ -27,7 +27,7 @@ c.Remove("fp1")
 
 ## Poll Cycle Testing
 
-Test poll logic directly by calling `Poll()` — no goroutine or ticker needed:
+Test poll logic directly by calling `Poll()` - no goroutine or ticker needed:
 
 ```go
 p := poller.New(c, s, 1*time.Minute)
@@ -60,10 +60,10 @@ assert.Listen(t, port)
 ```
 
 Key helpers:
-- `system.FindUnusedPort(startPort)` — finds an available port
-- `assert.Listen(t, port)` — waits up to 2s for port to accept connections
-- `assert.NotListen(t, port)` — asserts port is closed
-- `assert.HTTPStatus(t, url, expectedStatus)` — GET request + status assertion
+- `system.FindUnusedPort(startPort)` - finds an available port
+- `assert.Listen(t, port)` - waits up to 2s for port to accept connections
+- `assert.NotListen(t, port)` - asserts port is closed
+- `assert.HTTPStatus(t, url, expectedStatus)` - GET request + status assertion
 
 ## Typed Response Parsing
 

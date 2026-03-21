@@ -53,7 +53,6 @@ func Main(
 
 	r := relational.NewEnvironment()
 	defer r.Close()
-
 	s := r.Client().Stat()
 	fmt.Printf("Statistics: %+v\n", s)
 }

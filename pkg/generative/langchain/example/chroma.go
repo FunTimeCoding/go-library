@@ -17,7 +17,6 @@ func Chroma() {
 	   	"os"
 	   	"strings"
 	   )
-
 	   func Chroma() {
 	   	c, clientFail := ollama.New(ollama.WithModel(constant.Llama31))
 	   	errors.PanicOnError(clientFail)

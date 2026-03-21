@@ -7,9 +7,7 @@ import (
 
 type Map struct {
 	Teams []*team.Team
-
 	TeamMap      map[string]*team.Team
 	KeyByNameMap map[string]string
-
 	tagToName face.SliceAlias
 }

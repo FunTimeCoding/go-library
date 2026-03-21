@@ -6,6 +6,5 @@ type Prefix struct {
 	Identifier  int32
 	Name        string
 	Description string
-
 	Raw *netbox.Prefix
 }

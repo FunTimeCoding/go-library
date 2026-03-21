@@ -27,12 +27,12 @@ pkg/tool/go<tool>/
 ├── poller/                         # Background worker (if needed)
 │   ├── poller.go                   # Poller struct
 │   ├── new.go                      # Constructor
-│   ├── start.go                    # Start() — goroutine with ticker
+│   ├── start.go                    # Start() - goroutine with ticker
 │   ├── stop.go                     # Stop()
-│   ├── poll.go                     # Poll() — single cycle logic
+│   ├── poll.go                     # Poll() - single cycle logic
 │   └── poller_test.go              # assert.NotNil(t, New(...))
-└── route/                          # HTTP route handlers
-    ├── <route>.go                  # Handler function returning http.HandlerFunc
+└── route/                          # HTTP route functions
+    ├── <route>.go                  # Route function returning http.HandlerFunc
     ├── response.go                 # Response struct (if needed)
     ├── constant.go                 # Route-specific constants
     └── route_test.go               # Stub test
@@ -73,11 +73,11 @@ Key conventions:
 - `RunUntilSignal()` handles run, signal block, and reverse-order stop
 - Store closed via `defer` before lifecycle starts
 
-## Route Handlers
+## Route Functions
 
-This pattern is for manually registered routes. When routes are defined by an OpenAPI spec, use the Handler struct pattern instead — see `openapi.md`.
+This pattern is for manually registered routes. When routes are defined by an OpenAPI spec, use the Router struct pattern instead - see `openapi.md`.
 
-Handlers live in the `route/` package. Each handler is a function returning `http.HandlerFunc`:
+Route functions live in the `route/` package. Each is a function returning `http.HandlerFunc`:
 
 ```go
 func Alerts(s *store.Store) http.HandlerFunc {
@@ -106,8 +106,8 @@ Long-running services come in pairs:
 
 | Binary | Package | Role |
 |--------|---------|------|
-| `go<tool>d` | `pkg/tool/go<tool>d/` | Daemon — lifecycle, store, HTTP server |
-| `go<tool>` | `pkg/tool/go<tool>/` | CLI — calls the daemon's REST API, prints output |
+| `go<tool>d` | `pkg/tool/go<tool>d/` | Daemon - lifecycle, store, HTTP server |
+| `go<tool>` | `pkg/tool/go<tool>/` | CLI - calls the daemon's REST API, prints output |
 
 The CLI tool is a thin wrapper around the domain client library (see below). After the standard entrypoint setup (see `entrypoint.md`), it calls a single method on the domain client.
 
@@ -121,7 +121,7 @@ The REST client is exposed via a domain library at `pkg/<domain>/`, analogous to
 pkg/<domain>/
 ├── client.go                       # Client struct (wraps generated client)
 ├── new.go                          # New(host string) *Client
-├── new_environment.go              # NewEnvironment() — reads HOST env var
+├── new_environment.go              # NewEnvironment() - reads HOST env var
 ├── <operation>.go                  # One file per operation (entries.go, alerts.go)
 └── constant/
     └── constant.go                 # HostEnvironment = "<DOMAIN>_HOST"

@@ -92,7 +92,6 @@ func (t *Tunnel) Start(
 
 		close(t.stopped)
 	}()
-
 	<-t.started
 	<-t.listening
 

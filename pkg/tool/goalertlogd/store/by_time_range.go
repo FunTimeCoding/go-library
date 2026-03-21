@@ -14,7 +14,6 @@ func (s *Store) ByTimeRange(
 	end time.Time,
 ) []Record {
 	var result []Record
-
 	s.client.View(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)
@@ -41,7 +40,6 @@ func (s *Store) ByTimeRange(
 			return nil
 		},
 	)
-
 	sort.Slice(
 		result, func(i, j int) bool {
 			return result[i].Start.Before(result[j].Start)

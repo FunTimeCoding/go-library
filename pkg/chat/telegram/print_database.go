@@ -7,7 +7,6 @@ import (
 
 func (c *Client) PrintDatabase() {
 	f := constant.Format
-
 	fmt.Println("Channels:")
 
 	for _, h := range c.channels {

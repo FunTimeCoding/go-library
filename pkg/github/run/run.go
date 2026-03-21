@@ -14,11 +14,8 @@ type Run struct {
 	Status            string
 	Create            time.Time
 	Update            time.Time
-
 	concern []string
-
 	Repository *repository.Repository
 	Jobs       []*job.Job
-
 	Raw *github.WorkflowRun
 }

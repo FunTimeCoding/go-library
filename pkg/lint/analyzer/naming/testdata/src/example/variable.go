@@ -12,15 +12,13 @@ var paramCount = 0        // want `use "parameter" instead of "param" in paramCo
 var parameterCount = 0    // ok: contains the suggestion
 var mcpServer = ""        // want `use "c" or "model_context" instead of "mcp" in mcpServer`
 var clean = ""            // ok: no blacklisted segment
-
-var req = ""        // want `use "r" or "request" instead of "req" in req`
-var request = ""    // ok: uses the suggestion
-var docPath = ""    // want `use "d" or "document" instead of "doc" in docPath`
-var document = ""   // ok: uses the suggestion
-var cfg = ""        // want `use "c" or "configuration" instead of "cfg" in cfg`
-var llm = ""        // want `use "m" or "model" instead of "llm" in llm`
-var tmp = ""        // want `use "t" instead of "tmp" in tmp`
-
-var loginHandler = "" // want `avoid "handler" in name, use a more specific term`
-var userInfo = ""     // want `avoid "info" in name, use a more specific term`
-var userData = ""     // want `avoid "data" in name, use a more specific term`
+var req = ""              // want `use "r" or "request" instead of "req" in req`
+var request = ""          // ok: uses the suggestion
+var docPath = ""          // want `use "d" or "document" instead of "doc" in docPath`
+var document = ""         // ok: uses the suggestion
+var cfg = ""              // want `use "c" or "configuration" instead of "cfg" in cfg`
+var llm = ""              // want `use "m" or "model" instead of "llm" in llm`
+var tmp = ""              // want `use "t" instead of "tmp" in tmp`
+var loginHandler = ""     // want `avoid "handler" in name, use a more specific term`
+var userInfo = ""         // want `avoid "info" in name, use a more specific term`
+var userData = ""         // want `avoid "data" in name, use a more specific term`

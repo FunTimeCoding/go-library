@@ -12,6 +12,5 @@ type Commit struct {
 	Link       string
 	Author     string
 	Date       *time.Time
-
 	Raw *gitlab.Commit
 }

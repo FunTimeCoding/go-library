@@ -19,7 +19,6 @@ func Run(o *option.Debian) {
 		architecture,
 	)
 	packageDirectory := join.Absolute(system.WorkingDirectory(), packageName)
-
 	debianDirectory := join.Absolute(
 		packageDirectory,
 		debianConstant.PackageConfigurationDirectory,
@@ -79,7 +78,6 @@ func Run(o *option.Debian) {
 	)
 	system.MakeDirectory(bin)
 	system.Move(o.Executable, join.Absolute(bin, o.Executable))
-
 	fmt.Println(
 		system.Run(
 			"dpkg-deb",

@@ -7,7 +7,6 @@ import (
 
 func TestGreater(t *testing.T) {
 	Greater(t, 0, 1)
-
 	// Unhappy less
 	t1 := &testing.T{}
 	Greater(t1, 1, 0)

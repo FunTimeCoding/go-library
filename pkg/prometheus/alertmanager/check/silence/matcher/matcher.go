@@ -15,7 +15,6 @@ func Matches(
 	now time.Time,
 ) []*alert.Alert {
 	var result []*alert.Alert
-
 	// Silence is active in the range [start, end) - inclusive start, exclusive end
 	if now.Before(*s.Start) || !now.Before(*s.End) {
 		return result

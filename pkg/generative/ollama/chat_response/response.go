@@ -10,6 +10,5 @@ type Response struct {
 	Evaluation       int64
 	PromptTokens     float64
 	Tokens           float64
-
 	Raw *api.ChatResponse
 }

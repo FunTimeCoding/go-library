@@ -14,7 +14,6 @@ func EmptyDirectories(
 	verbose bool,
 ) []string {
 	var result []string
-
 	errors.PanicOnError(
 		filepath.Walk(
 			root,

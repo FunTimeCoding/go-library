@@ -21,7 +21,6 @@ type Issue struct {
 	Due               *time.Time
 	Link              string
 	Labels            []string
-
 	concerns          []string
 	score             float64
 	commentNameFilter []string
@@ -30,6 +29,5 @@ type Issue struct {
 	ageColor          face.SprintFunction
 	fieldMap          *field_map.Map
 	option            *option.Issue
-
 	Raw *jira.Issue
 }

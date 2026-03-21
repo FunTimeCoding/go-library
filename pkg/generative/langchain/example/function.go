@@ -24,7 +24,6 @@ func Function() {
 	)
 	errors.PanicOnError(clientFail)
 	var messages []llms.MessageContent
-
 	// system message defines the available tools.
 	messages = append(
 		messages,
@@ -37,7 +36,6 @@ func Function() {
 			"What's the weather like in Beijing?",
 		),
 	)
-
 	x := context.Background()
 
 	for retries := 3; retries > 0; retries -= 1 {

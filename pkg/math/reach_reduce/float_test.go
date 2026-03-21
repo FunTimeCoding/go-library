@@ -8,13 +8,10 @@ import (
 func TestFloat(t *testing.T) {
 	// Short by 1
 	assertFloat(t, 52, 51, 50, false)
-
 	// Reached exactly
 	assertFloat(t, 51, 50, 50, true)
-
 	// Exceed by 1
 	assertFloat(t, 51, 49, 50, true)
-
 	// Reach increase
 	assertFloat(t, 49, 51, 50, false)
 }

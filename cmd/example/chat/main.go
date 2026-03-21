@@ -11,12 +11,10 @@ func main() {
 
 	if false {
 		discord.DeleteLoop()
-
 		mattermost.Team()
 		mattermost.Dialog()
 		mattermost.Support()
 		mattermost.Post()
-
 		telegram.OllamaSession()
 		telegram.OllamaReply()
 		telegram.Update()

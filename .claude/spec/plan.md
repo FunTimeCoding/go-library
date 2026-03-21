@@ -1,7 +1,7 @@
 # Plan Files
 
 Implementation plans live in `doc/plan/<feature>.md` in the relevant repo.
-Plans are working documents, not permanent records — they shrink as work
+Plans are working documents, not permanent records - they shrink as work
 completes and disappear entirely when done.
 
 ## When to Create
@@ -14,7 +14,7 @@ or obvious changes don't need one.
 
 Before writing a plan:
 1. Read the relevant specs (`.claude/spec/`)
-2. Explore existing code in the area — understand what already exists,
+2. Explore existing code in the area - understand what already exists,
    what the file/package conventions are, and where new code will slot in
 3. Identify all files to create or change, with their function signatures
    and responsibilities
@@ -30,7 +30,7 @@ Use `##` sections for distinct work areas. Under each, list:
 - Function signatures and what they do
 - Any implementation constraints or decisions worth preserving
 
-Keep it lean — just enough to execute without re-deriving, not a
+Keep it lean - just enough to execute without re-deriving, not a
 full design document.
 
 ## Lifecycle
@@ -38,5 +38,5 @@ full design document.
 - **Delete completed sections** as the work is done, not after the whole
   plan is finished. The file shrinks as progress is made.
 - **Delete the file** when all sections are gone.
-- Plans are never committed as historical records — if you need to
+- Plans are never committed as historical records - if you need to
   understand past decisions, read the code and git history.

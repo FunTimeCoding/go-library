@@ -11,7 +11,6 @@ func readDCIM(
 	f *option.Format,
 ) {
 	// Data Center Infrastructure Management
-
 	for _, l := range n.Locations() {
 		fmt.Printf("Location: %s\n", l.Format(f))
 	}

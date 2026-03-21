@@ -54,7 +54,6 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Temperature", Temperature)
 	assert.String(t, "Token", Token)
 	assert.String(t, "Volume", Volume)
-
 	assert.String(t, "Bad", Bad)
 	assert.String(t, "Behind", Behind)
 	assert.String(t, "Big", Big)
@@ -96,6 +95,5 @@ func TestAlert(t *testing.T) {
 	assert.String(t, "Timeout", Timeout)
 	assert.String(t, "Unbound", Unbound)
 	assert.String(t, "Unhealthy", Unhealthy)
-
 	assert.String(t, "Okay", Okay)
 }

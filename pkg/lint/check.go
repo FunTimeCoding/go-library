@@ -18,22 +18,23 @@ func Check(
 ) *virtual_file_system.System {
 	fixes := virtual_file_system.New()
 	paths := goFiles(v, skip, verbose)
-
 	runCheckers(
 		v,
 		fixes,
 		paths,
 		[]Checker{
 			Import,
+			ForbiddenImport,
 			Function,
 			Variable,
 			PackageName,
 			TypeCount,
+			FunctionCount,
+			StrayConst,
 			Spacing,
 		},
 		verbose,
 	)
-
 	var generatedPaths []string
 
 	for _, p := range v.Files() {

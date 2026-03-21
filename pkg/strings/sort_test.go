@@ -13,7 +13,6 @@ func TestSort(t *testing.T) {
 		[]string{Alfa, Bravo, Charlie},
 		preSorted,
 	)
-
 	ascending := []string{Bravo, Alfa, Charlie}
 	Sort(ascending, true)
 	assert.Strings(
@@ -21,7 +20,6 @@ func TestSort(t *testing.T) {
 		[]string{Alfa, Bravo, Charlie},
 		ascending,
 	)
-
 	descending := []string{Bravo, Alfa, Charlie}
 	Sort(descending, false)
 	assert.Strings(

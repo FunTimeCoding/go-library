@@ -1,7 +1,6 @@
 package constant
 
 const ProtectedResource = "/.well-known/oauth-protected-resource"
-
 const ProtectedMethods = "GET, OPTIONS"
 
 // Notation key

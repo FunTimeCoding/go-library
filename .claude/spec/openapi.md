@@ -13,9 +13,9 @@ pkg/<service>/
 ├── client/
 │   ├── config.yaml    # oapi-codegen client config
 │   └── generated.go   # Generated: Client, typed request/response methods
-└── route/             # Sibling to server/ — implements ServerInterface
-    ├── handler.go     # Handler struct (holds dependencies)
-    ├── new.go         # New(dep *dep.Dep) *Handler
+└── route/             # Sibling to server/ - implements ServerInterface
+    ├── router.go      # Router struct (holds dependencies)
+    ├── new.go         # New(dep *dep.Dep) *Router
     └── <operation>.go # One file per endpoint (post_deploy.go, get_status.go)
 ```
 
@@ -60,7 +60,7 @@ lint:
 
 ## Wiring into the Server
 
-In `run.go`, the oapi-codegen server package is always aliased `generated`. Call `generated.HandlerFromMux` inside `lifecycle.WithServer`. It registers routes on the mux as a side effect — the return value can be ignored:
+In `run.go`, the oapi-codegen server package is always aliased `generated`. Call `generated.HandlerFromMux` inside `lifecycle.WithServer`. It registers routes on the mux as a side effect - the return value can be ignored:
 
 ```go
 import (
@@ -75,29 +75,29 @@ lifecycle.WithServer(
 )
 ```
 
-The `generated` alias is the standard across all services — it makes clear the package is codegen output, and frees up the unaliased `server` name for any domain service package.
+The `generated` alias is the standard across all services - it makes clear the package is codegen output, and frees up the unaliased `server` name for any domain service package.
 
 If the service has existing manual routes alongside generated ones, both can coexist on the same mux.
 
-## Implementing the Handler
+## Implementing the Router
 
 This pattern is for OpenAPI-generated routes. For manually registered routes without a spec, see the `route/` section in `service-tool.md`.
 
-`route/handler.go` — plain struct, no embedding:
+`route/router.go` - plain struct, no embedding:
 
 ```go
-type Handler struct {
+type Router struct {
     deploy *deploy.Observer
 }
 ```
 
-`route/<operation>.go` — implements the generated `ServerInterface` method. Use the `generated` alias for the server package:
+`route/<operation>.go` - implements the generated `ServerInterface` method. Use the `generated` alias for the server package:
 
 ```go
-func (h *Handler) PostDeploy(w http.ResponseWriter, r *http.Request) {
+func (r *Router) PostDeploy(w http.ResponseWriter, q *http.Request) {
     var body generated.PostDeployJSONRequestBody
-    errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-    result := h.deploy.TriggerTargets(body.Targets)
+    errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
+    result := r.deploy.TriggerTargets(body.Targets)
     w.Header().Set(constant.ContentType, constant.Object)
     errors.PanicOnError(json.NewEncoder(w).Encode(generated.DeployResponse{Tag: result}))
 }
@@ -105,7 +105,7 @@ func (h *Handler) PostDeploy(w http.ResponseWriter, r *http.Request) {
 
 ## Using the Generated Client
 
-Wrap the host with `locator.New(host).String()` — hosts are stored without scheme, the generated client needs a full URL:
+Wrap the host with `locator.New(host).String()` - hosts are stored without scheme, the generated client needs a full URL:
 
 ```go
 c, e := client.NewClient(locator.New(environment.Required(constant.HostEnvironment)).String())
@@ -115,7 +115,7 @@ resp, e := c.PostDeploy(ctx, client.PostDeployJSONRequestBody{...})
 
 ## What Not To Do
 
-- Don't name the server package `api` — use `server`
-- Don't nest `route/` inside `server/` — keep it a sibling
-- Don't manually register routes that the spec already defines — let `HandlerFromMux` do it
-- Don't edit `generated.go` — regenerate from the spec instead
+- Don't name the server package `api` - use `server`
+- Don't nest `route/` inside `server/` - keep it a sibling
+- Don't manually register routes that the spec already defines - let `HandlerFromMux` do it
+- Don't edit `generated.go` - regenerate from the spec instead

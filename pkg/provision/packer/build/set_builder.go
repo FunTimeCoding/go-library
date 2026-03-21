@@ -27,28 +27,20 @@ func (b *Build) SetBuilder(
 	packerBuilder := builder.Builder{
 		ImageLink:     imageLink,
 		ImageChecksum: imageChecksum,
-
 		WebDirectory:    webDirectory,
 		OutputDirectory: outputDirectory,
-
 		Type: "qemu",
 		Name: OutputFilename(v),
-
 		QemuArguments: b.arguments(headless),
-
 		Cores:   2,
 		Threads: 2,
 		Memory:  2048,
-
 		DiskSize:      81920,
 		DiskFormat:    "qcow2",
 		DiskInterface: "virtio",
-
 		NetDevice: "virtio-net",
-
 		Headless: headless,
 		Display:  display,
-
 		BootWait: "1s",
 		BootCommand: []string{
 			"<esc><wait>",
@@ -57,11 +49,9 @@ func (b *Build) SetBuilder(
 			" initrd=/install.amd/initrd.gz",
 			"<enter>",
 		},
-
 		SshUsername:    b.username,
 		SshPassword:    b.password,
 		SshWaitTimeout: "10m",
-
 		ShutdownCommand: "sudo -S shutdown -P now",
 	}
 

@@ -20,7 +20,6 @@ func (s *Server) handleAlerts(
 	}
 
 	records := s.store.ByName(name)
-
 	renderPage(
 		w,
 		layout(

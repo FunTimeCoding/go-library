@@ -226,7 +226,7 @@ func (c *Client) ProjectJobs(p *project.Project) []*job.Job {
 
 ## The `basic/` Subpackage
 
-**First, look for an importable client library.** Many APIs have well-maintained Go clients (GitHub, GitLab, Prometheus, etc.) — prefer those over building from scratch. `basic/` exists for two situations: (1) no good library exists and a hand-rolled HTTP client is the permanent solution, or (2) as temporary scaffolding while exploring an unfamiliar API before deciding whether to keep it or replace it with a library later.
+**First, look for an importable client library.** Many APIs have well-maintained Go clients (GitHub, GitLab, Prometheus, etc.) - prefer those over building from scratch. `basic/` exists for two situations: (1) no good library exists and a hand-rolled HTTP client is the permanent solution, or (2) as temporary scaffolding while exploring an unfamiliar API before deciding whether to keep it or replace it with a library later.
 
 When a client talks to a JSON API (vs. scraping HTML) and no suitable library exists, the raw HTTP layer lives in a `basic/` subpackage. The top-level client embeds it and returns typed entities.
 
@@ -242,7 +242,7 @@ pkg/<name>/
     └── get.go         # Get(path string) string
 ```
 
-`basic/get.go` from `pkg/jenkins/basic` — builds URL with locator, sets auth, sends:
+`basic/get.go` from `pkg/jenkins/basic` - builds URL with locator, sets auth, sends:
 
 ```go
 func (c *Client) Get(path string) string {

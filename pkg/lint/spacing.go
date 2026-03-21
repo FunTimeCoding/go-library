@@ -18,13 +18,16 @@ func Spacing(
 	var inBacktick bool
 	var blockStack []bool // true = control block
 	var pendingControl bool
+	var parenDepth int
+	var pendingBlank bool
+	var pendingBlankLine int
 
 	for s.Scan() {
 		line, number := s.Text()
 		trimmed := strings.TrimSpace(line)
 		isBlank := trimmed == ""
-
 		wasInBacktick := inBacktick
+		topLevel := len(blockStack) == 0
 
 		if strings.Count(line, "`")%2 == 1 {
 			inBacktick = !inBacktick
@@ -43,9 +46,20 @@ func Spacing(
 			strings.HasPrefix(trimmed, "switch ") ||
 			strings.HasPrefix(trimmed, "select ")
 
-		isExit := trimmed == "return" || strings.HasPrefix(trimmed, "return ") ||
+		isExit := trimmed == "return" || strings.HasPrefix(
+			trimmed,
+			"return ",
+		) ||
 			trimmed == "break" || strings.HasPrefix(trimmed, "break ") ||
 			trimmed == "continue" || strings.HasPrefix(trimmed, "continue ")
+
+		isDefer := strings.HasPrefix(trimmed, "defer ")
+
+		isTopLevelDecl := topLevel && !isBlank && (strings.HasPrefix(
+			trimmed,
+			"func ",
+		) ||
+			strings.HasPrefix(trimmed, "type "))
 
 		isClosingBrace := strings.HasPrefix(trimmed, "}") ||
 			strings.HasPrefix(trimmed, "case ") ||
@@ -82,8 +96,88 @@ func Spacing(
 			pendingControl = false
 		} else if isControlStart {
 			pendingControl = true
-		} else if !isBlank && !isClosingBrace {
+		} else if !isBlank && !isClosingBrace && parenDepth == 0 {
 			pendingControl = false
+		}
+
+		for _, c := range line {
+			switch c {
+			case '(':
+				parenDepth++
+			case ')':
+				if parenDepth > 0 {
+					parenDepth--
+				}
+			}
+		}
+
+		// Decide on a held blank when the next non-blank line arrives.
+		if !isBlank && pendingBlank {
+			if strings.HasPrefix(trimmed, "//") {
+				// Blank before a comment is always valid - emit both immediately.
+				s.ChangedLine("")
+				s.ChangedLine(line)
+				pendingBlank = false
+
+				continue
+			}
+
+			pendingBlank = false
+
+			if topLevel {
+				prevIsVarConst := strings.HasPrefix(prevTrimmed, "var ") ||
+					strings.HasPrefix(prevTrimmed, "const ")
+				isVarConst := strings.HasPrefix(trimmed, "var ") ||
+					strings.HasPrefix(trimmed, "const ")
+
+				if prevIsVarConst && isVarConst {
+					// Spurious blank between consecutive top-level var/const - remove.
+					s.AddConcern(
+						constant.ExtraneousTopLevelBlankKey,
+						constant.ExtraneousTopLevelBlankText,
+						path,
+						pendingBlankLine,
+						"",
+					)
+				} else {
+					s.ChangedLine("")
+				}
+			} else {
+				// Blank is invalid after a block opener or a comment - a
+				// comment is attached to what follows; the blank belongs before it.
+				prevOpenedBrace := strings.HasSuffix(prevTrimmed, "{") ||
+					strings.HasPrefix(prevTrimmed, "case ") ||
+					prevTrimmed == "default:" ||
+					strings.HasPrefix(prevTrimmed, "//")
+
+				if prevOpenedBrace {
+					// Blank at start of block - always invalid.
+					s.AddConcern(
+						constant.BlankInsideFunctionKey,
+						constant.BlankInsideFunctionText,
+						path,
+						pendingBlankLine,
+						"",
+					)
+				} else if needBlankAfterClosingBrace {
+					// Blank earned by a preceding control block - emit it and
+					// clear the flag so the existing insertion check won't fire.
+					s.ChangedLine("")
+					needBlankAfterClosingBrace = false
+				} else if isControlStart || isExit || isDefer {
+					// Blank before control, exit, or defer - valid, emit.
+					s.ChangedLine("")
+				} else {
+					// Any other blank inside a function body - invalid.
+					s.AddConcern(
+						constant.BlankInsideFunctionKey,
+						constant.BlankInsideFunctionText,
+						path,
+						pendingBlankLine,
+						"",
+					)
+				}
+			}
 		}
 
 		if isControlStart && !prevWasBlank && prevLine != "" && !prevOpensBlock {
@@ -110,6 +204,17 @@ func Spacing(
 			needBlankAfterClosingBrace = false
 		}
 
+		if isTopLevelDecl && !prevWasBlank && prevLine != "" && !prevOpensBlock {
+			s.ChangedLine("")
+			s.AddConcern(
+				constant.MissingBlankBeforeDeclarationKey,
+				constant.MissingBlankBeforeDeclarationText,
+				path,
+				number,
+				line,
+			)
+		}
+
 		if needBlankAfterClosingBrace && !isBlank && !isClosingBrace {
 			s.ChangedLine("")
 			s.AddConcern(
@@ -129,14 +234,31 @@ func Spacing(
 				number,
 				line,
 			)
-			needBlankAfterClosingBrace = false
 
+			if !pendingBlank {
+				needBlankAfterClosingBrace = false
+			}
+
+			continue
+		}
+
+		// Hold the blank to defer the decision to the next non-blank line.
+		if isBlank {
+			pendingBlank = true
+			pendingBlankLine = number
+			prevWasBlank = true
+
+			// Do not update prevLine - keep it as the last non-blank line so
+			// prevOpensBlock is correct when the next non-blank is processed.
 			continue
 		}
 
 		s.ChangedLine(line)
 
-		if trimmed == "}" {
+		if strings.HasPrefix(
+			trimmed,
+			"}",
+		) && !isElseContinuation && !endsWithBrace {
 			isControl := false
 
 			if len(blockStack) > 0 {
@@ -144,7 +266,11 @@ func Spacing(
 				blockStack = blockStack[:len(blockStack)-1]
 			}
 
-			needBlankAfterClosingBrace = isControl
+			if trimmed == "}" {
+				needBlankAfterClosingBrace = isControl
+			} else {
+				needBlankAfterClosingBrace = false
+			}
 		} else {
 			needBlankAfterClosingBrace = false
 		}

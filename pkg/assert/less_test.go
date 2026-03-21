@@ -7,7 +7,6 @@ import (
 
 func TestLess(t *testing.T) {
 	Less(t, 1, 0)
-
 	// Unhappy more
 	t1 := &testing.T{}
 	Less(t1, 0, 1)

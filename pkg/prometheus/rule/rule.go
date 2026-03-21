@@ -13,7 +13,6 @@ type Rule struct {
 	Severity    string
 	State       string
 	Health      v1.RuleHealth
-
 	RawGroup  *v1.RuleGroup
 	RawAlert  *v1.AlertingRule
 	RawRecord *v1.RecordingRule

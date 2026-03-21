@@ -12,7 +12,6 @@ func Runner() {
 
 	for _, r := range g.Runners(true) {
 		r = g.Runner(r.Identifier)
-
 		fmt.Println(r.Format(f))
 	}
 }

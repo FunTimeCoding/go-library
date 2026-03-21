@@ -13,15 +13,12 @@ func TestTime(t *testing.T) {
 	assert.Integer(t, 604800, WeekInSeconds)
 	assert.Integer(t, 2419200, MonthInSeconds)
 	assert.Integer(t, 29030400, YearInSeconds)
-
 	assert.Integer(t, 28, MonthInDays)
-
 	assert.String(
 		t,
 		"1970-01-01 00:00:00",
 		constant.StartOfTime.Format(DateSecond),
 	)
-
 	now := time.Now()
 	past := now.Add(-time.Minute)
 

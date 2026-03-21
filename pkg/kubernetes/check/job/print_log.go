@@ -53,7 +53,6 @@ func printLog(
 	for _, p := range k.Pods(
 		filter.New().AddNamespaces(namespace).AddNames(j.Name),
 	) {
-
 		if p.Label("batch.kubernetes.io/controller-uid") != controller {
 			continue
 		}

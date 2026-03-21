@@ -490,7 +490,6 @@ func TestMatchesWithMultipleMatchers(t *testing.T) {
 
 func TestMatchesWithTimeWindow(t *testing.T) {
 	now := time.Now()
-
 	tests := []struct {
 		name          string
 		start         time.Time

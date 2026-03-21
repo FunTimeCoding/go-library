@@ -8,7 +8,6 @@ func (p *Project) Validate() {
 			p.concern = append(p.concern, PanicOccurred)
 		}
 	}()
-
 	versionSemantic := semver.New(p.Version)
 	runtimeSemantic := semver.New(p.runtimeVersion)
 

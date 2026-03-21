@@ -17,7 +17,6 @@ func (c *Client) StreamMessage(
 	m cache.Mode,
 ) <-chan string {
 	h := make(chan string, 64)
-
 	go func() {
 		defer close(h)
 		s := c.client.Messages.NewStreaming(

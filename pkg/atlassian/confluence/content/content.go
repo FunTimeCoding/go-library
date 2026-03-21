@@ -12,7 +12,6 @@ type Content struct {
 	Space      string
 	Title      string
 	Labels     []string
-
 	Raw          *kaos.Content
 	RawVirtomize *virtomize.Results
 }

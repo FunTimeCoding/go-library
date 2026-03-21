@@ -148,10 +148,10 @@ func printNotation(
 
 The steps:
 
-1. `report.New()` — create a report
-2. `report.Trim(v, r, o.All, item)` — cap the slice unless `--all` is set
-3. `r.AddItem(item, identifier, severity, detail, link, create)` — add each entity as a report item
-4. `r.Print()` — output JSON
+1. `report.New()` - create a report
+2. `report.Trim(v, r, o.All, item)` - cap the slice unless `--all` is set
+3. `r.AddItem(item, identifier, severity, detail, link, create)` - add each entity as a report item
+4. `r.Print()` - output JSON
 
 Each entity must expose `MonitorIdentifier`, `Link`, and a timestamp field for `AddItem`. The severity (`constant.Critical`, `constant.Warning`) is domain-specific.
 

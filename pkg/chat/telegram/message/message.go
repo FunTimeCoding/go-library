@@ -9,8 +9,6 @@ type Message struct {
 	From   string
 	Text   string
 	Create *time.Time
-
 	Update *tgbotapi.Update
-
 	Raw *tgbotapi.Message
 }

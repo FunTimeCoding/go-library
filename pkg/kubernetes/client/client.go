@@ -10,13 +10,11 @@ import (
 
 type Client struct {
 	clients map[string]*Client
-
 	context       context.Context
 	cluster       string
 	configuration *rest.Config
 	client        *kubernetes.Clientset
 	metric        *versioned.Clientset
 	dynamic       dynamic.Interface
-
 	Verbose bool
 }

@@ -11,7 +11,6 @@ func FindFilesByExtension(
 	extension string,
 ) []string {
 	var result []string
-
 	errors.PanicOnError(
 		filepath.WalkDir(
 			root,

@@ -14,7 +14,6 @@ func TestColorer(t *testing.T) {
 	g := age_fixture.New(0 * time.Hour)
 	y := age_fixture.New(15 * time.Hour)
 	r := age_fixture.New(30 * time.Hour)
-
 	c := Default(g, y, r)
 	assert.Any(
 		t,
@@ -43,17 +42,13 @@ func TestColorer(t *testing.T) {
 		},
 		c.mapping,
 	)
-
 	c.Set(g)
 	c.Set(y)
 	c.Set(r)
-
 	console.GreenInstance.EnableColor()
 	console.YellowInstance.EnableColor()
 	console.RedInstance.EnableColor()
-
 	// Not sure if function pointers can be compared, so compare output
-
 	assert.String(
 		t,
 		console.Green("%s", "g"),

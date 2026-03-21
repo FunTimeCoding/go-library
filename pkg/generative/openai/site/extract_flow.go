@@ -13,7 +13,6 @@ func (s *Site) ExtractFlow(verbose bool) string {
 	}
 
 	s.clickProfile()
-
 	s.clickSettings()
 	s.clickPersonalize()
 
@@ -22,9 +21,7 @@ func (s *Site) ExtractFlow(verbose bool) string {
 	}
 
 	s.clickMemories()
-
 	time.Sleep(2 * time.Second)
-
 	result := s.readMemories()
 
 	if verbose {

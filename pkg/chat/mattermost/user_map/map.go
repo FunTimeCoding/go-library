@@ -8,7 +8,6 @@ import (
 type Map struct {
 	byName       map[string]*model.User
 	byIdentifier map[string]*model.User
-
 	administrator []string
 	userAlias     face.StringAlias
 }

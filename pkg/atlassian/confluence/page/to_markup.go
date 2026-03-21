@@ -8,7 +8,6 @@ import (
 
 func ToMarkup(markdown string) string {
 	var b bytes.Buffer
-
 	errors.PanicOnError(goldmark.Convert([]byte(markdown), &b))
 
 	return b.String()

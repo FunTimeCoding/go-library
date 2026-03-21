@@ -63,11 +63,10 @@ func TestStopEmpty(t *testing.T) {
 }
 
 func TestRunServerResponds(t *testing.T) {
-	port := system.FindUnusedPort(19000)
-	address := fmt.Sprintf(":%d", port)
+	p := system.FindUnusedPort(19000)
 	l := New(
 		WithServer(
-			address,
+			fmt.Sprintf(":%d", p),
 			func(m *http.ServeMux) {
 				m.HandleFunc(
 					"/health",
@@ -83,20 +82,19 @@ func TestRunServerResponds(t *testing.T) {
 	)
 	l.Run()
 	defer l.Stop()
-	assert.Listen(t, port)
+	assert.Listen(t, p)
 	assert.HTTPStatus(
 		t,
-		fmt.Sprintf("http://localhost:%d/health", port),
+		fmt.Sprintf("http://localhost:%d/health", p),
 		http.StatusOK,
 	)
 }
 
 func TestStopServerShutsDown(t *testing.T) {
-	port := system.FindUnusedPort(19100)
-	address := fmt.Sprintf(":%d", port)
+	p := system.FindUnusedPort(19100)
 	l := New(
 		WithServer(
-			address,
+			fmt.Sprintf(":%d", p),
 			func(m *http.ServeMux) {
 				m.HandleFunc(
 					"/health",
@@ -111,17 +109,16 @@ func TestStopServerShutsDown(t *testing.T) {
 		),
 	)
 	l.Run()
-	assert.Listen(t, port)
+	assert.Listen(t, p)
 	l.Stop()
-	assert.NotListen(t, port)
+	assert.NotListen(t, p)
 }
 
 func TestRunServerMiddleware(t *testing.T) {
-	port := system.FindUnusedPort(19300)
-	address := fmt.Sprintf(":%d", port)
+	p := system.FindUnusedPort(19300)
 	l := New(
 		WithServerMiddleware(
-			address,
+			fmt.Sprintf(":%d", p),
 			func(m *http.ServeMux) {
 				m.HandleFunc(
 					"/health",
@@ -148,10 +145,9 @@ func TestRunServerMiddleware(t *testing.T) {
 	)
 	l.Run()
 	defer l.Stop()
-	assert.Listen(t, port)
-	r, e := http.Get(fmt.Sprintf("http://localhost:%d/health", port))
+	assert.Listen(t, p)
+	r, e := http.Get(fmt.Sprintf("http://localhost:%d/health", p))
 	assert.FatalOnError(t, e)
-
 	defer errors.PanicClose(r.Body)
 	assert.Integer(t, http.StatusOK, r.StatusCode)
 	assert.String(t, "middleware", r.Header.Get("X-Test"))
@@ -159,12 +155,11 @@ func TestRunServerMiddleware(t *testing.T) {
 
 func TestRunMixedOrder(t *testing.T) {
 	var log []string
-	port := system.FindUnusedPort(19200)
-	address := fmt.Sprintf(":%d", port)
+	p := system.FindUnusedPort(19200)
 	l := New(
 		WithWorker(&worker{log: &log, tag: "a"}),
 		WithServer(
-			address,
+			fmt.Sprintf(":%d", p),
 			func(m *http.ServeMux) {
 				log = append(log, "start:server")
 				m.HandleFunc(
@@ -185,7 +180,7 @@ func TestRunMixedOrder(t *testing.T) {
 	assert.String(t, "start:a", log[0])
 	assert.String(t, "start:server", log[1])
 	assert.String(t, "start:b", log[2])
-	assert.Listen(t, port)
+	assert.Listen(t, p)
 	log = nil
 	l.Stop()
 	assert.Count(t, 2, log)

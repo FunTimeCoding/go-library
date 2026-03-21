@@ -12,6 +12,5 @@ func TestEnvironment(t *testing.T) {
 		"Alfa",
 		Fallback("DOES_NOT_EXIST", strings.Alfa),
 	)
-
 	EnsureUnset("NEVER_EXIST")
 }

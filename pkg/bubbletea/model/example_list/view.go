@@ -25,7 +25,6 @@ func (m *Model) View() tea.View {
 	}
 
 	s += "\nPress q to quit.\n"
-
 	v := tea.NewView(s)
 	v.WindowTitle = "Grocery List"
 

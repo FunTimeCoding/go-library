@@ -18,7 +18,6 @@ type Alert struct {
 	Start             *time.Time
 	Labels            models.LabelSet
 	Receivers         []string
-
 	Entity      string
 	Category    string
 	Tags        []string
@@ -27,9 +26,7 @@ type Alert struct {
 	HostLink    string
 	ExtraBubble []string
 	Remaining   models.LabelSet
-
 	instance face.StringAlias
 	concern  []string
-
 	Raw *models.GettableAlert
 }

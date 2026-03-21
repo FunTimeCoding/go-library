@@ -11,29 +11,19 @@ import (
 type Model struct {
 	width  int
 	height int
-
 	auto bool
-
 	topBar string
-
 	table *table.Model
 	items []*item.Item
-
 	bottomBar string
-
 	second int
-
 	client   *client.Client
 	connect  bool
 	user     string
 	hostname string
-
 	toast     []*toast.Toast
 	nextToast int
-
 	initialResized bool
-
 	modal *Modal
-
 	lastFetch time.Time
 }

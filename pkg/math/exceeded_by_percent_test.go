@@ -15,7 +15,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		false,
 	)
-
 	// 9% exceeded
 	assertExceededByPercent(
 		t,
@@ -25,7 +24,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		false,
 	)
-
 	// 10% exceeded
 	assertExceededByPercent(
 		t,
@@ -35,7 +33,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		true,
 	)
-
 	// 11% exceeded
 	assertExceededByPercent(
 		t,
@@ -45,7 +42,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		true,
 	)
-
 	// 19% exceeded
 	assertExceededByPercent(
 		t,
@@ -55,7 +51,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		true,
 	)
-
 	// 20% exceeded
 	assertExceededByPercent(
 		t,
@@ -65,7 +60,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		true,
 	)
-
 	// 21% exceeded
 	assertExceededByPercent(
 		t,
@@ -75,7 +69,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		true,
 	)
-
 	// 9% exceeded
 	assertExceededByPercent(
 		t,
@@ -85,7 +78,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		false,
 	)
-
 	// 10% exceeded
 	assertExceededByPercent(
 		t,
@@ -95,7 +87,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		true,
 	)
-
 	// 11% exceeded
 	assertExceededByPercent(
 		t,
@@ -105,7 +96,6 @@ func TestExceededByPercent(t *testing.T) {
 		10,
 		true,
 	)
-
 	assertExceededByPercent(
 		t,
 		661399.2-1,

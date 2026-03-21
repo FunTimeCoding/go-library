@@ -15,7 +15,6 @@ func TestParse(t *testing.T) {
 		},
 		Parse("a"),
 	)
-
 	assert.Any(
 		t,
 		&Node{
@@ -26,7 +25,6 @@ func TestParse(t *testing.T) {
 		},
 		Parse("a\nb"),
 	)
-
 	// 1 space
 	assert.Any(
 		t,
@@ -42,7 +40,6 @@ func TestParse(t *testing.T) {
 		},
 		Parse("a\n b"),
 	)
-
 	// 2 space
 	assert.Any(
 		t,
@@ -58,7 +55,6 @@ func TestParse(t *testing.T) {
 		},
 		Parse("a\n  b"),
 	)
-
 	// 3 space
 	assert.Any(
 		t,
@@ -74,7 +70,6 @@ func TestParse(t *testing.T) {
 		},
 		Parse("a\n   b"),
 	)
-
 	// 4 space
 	assert.Any(
 		t,
@@ -90,7 +85,6 @@ func TestParse(t *testing.T) {
 		},
 		Parse("a\n    b"),
 	)
-
 	// 4 space with blank line
 	assert.Any(
 		t,

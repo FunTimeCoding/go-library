@@ -8,7 +8,6 @@ import (
 func (c *Client) Connect() {
 	log.Printf("connect to %s", c.locator.Host)
 	c.connection = helper.Dial(c.locator)
-
 	go func() {
 		defer close(c.done)
 

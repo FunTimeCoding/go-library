@@ -10,9 +10,7 @@ func New(p *model.Post) *Post {
 		Identifier:     p.Id,
 		UserIdentifier: p.UserId,
 		Message:        p.Message,
-
 		Create: time.UnixMilli(p.CreateAt),
-
 		Raw: p,
 	}
 }

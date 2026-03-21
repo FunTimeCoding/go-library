@@ -11,7 +11,6 @@ func main() {
 	loki.QueryRange()
 	//prometheus.Target()
 	//prometheus.Series()
-
 	if false {
 		alertmanager.Alert()
 		alertmanager.Create()
@@ -20,16 +19,13 @@ func main() {
 		alertmanager.SetSilence()
 		alertmanager.Silence()
 		alertmanager.Status()
-
 		grafana.Read()
-
 		loki.Label()
 		loki.Official()
 		loki.Query()
 		loki.Series()
 		loki.Statistic()
 		loki.Write()
-
 		prometheus.Label()
 		prometheus.LabelName()
 		prometheus.Meta()

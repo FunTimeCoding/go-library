@@ -46,7 +46,6 @@ func QueryRange() {
 			v.Stream,
 			body,
 		)
-
 		h := v.ReadHeader()
 
 		for k := range h {

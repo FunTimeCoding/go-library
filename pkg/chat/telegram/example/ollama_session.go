@@ -111,7 +111,6 @@ func OllamaSession() {
 			t.SendMessage(t.ChannelByName(c).Identifier, response.Text)
 		}
 	}()
-
 	system.KillSignalBlock()
 	t.Close()
 }

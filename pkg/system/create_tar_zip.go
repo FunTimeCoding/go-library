@@ -19,7 +19,6 @@ func CreateTarZip(
 	defer errors.LogClose(z)
 	w := tar.NewWriter(z)
 	defer errors.LogClose(w)
-
 	errors.PanicOnError(
 		filepath.Walk(
 			sourceDirectory,

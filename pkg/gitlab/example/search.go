@@ -9,7 +9,6 @@ import (
 func Search() {
 	g := gitlab.NewEnvironment()
 	// Free version search is limited
-
 	for _, p := range g.SearchProject("") {
 		fmt.Printf("Project: %s\n", p.Raw.NameWithNamespace)
 	}

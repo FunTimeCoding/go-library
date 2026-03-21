@@ -23,7 +23,6 @@ func main() {
 		gitlab.Project()
 		gitlab.Runner()
 		gitlab.Search()
-
 		github.BranchRequest()
 		github.CleanJob()
 		github.Packages()

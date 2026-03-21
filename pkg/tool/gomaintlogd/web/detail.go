@@ -17,7 +17,6 @@ func (s *Server) handleDetail(
 	r *http.Request,
 ) {
 	e := s.entryFromQuery(r)
-
 	renderFragment(w, detailRow(e))
 }
 
@@ -26,7 +25,6 @@ func (s *Server) handleEditForm(
 	r *http.Request,
 ) {
 	e := s.entryFromQuery(r)
-
 	renderFragment(w, editForm(e))
 }
 
@@ -49,7 +47,6 @@ func (s *Server) handleEditSubmit(
 	}
 
 	errors.PanicOnError(s.store.Update(e))
-
 	renderFragment(w, detailRow(e))
 }
 

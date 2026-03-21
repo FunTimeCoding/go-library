@@ -11,7 +11,6 @@ func Latest(v []*gitlab.RegistryRepositoryTag) *gitlab.RegistryRepositoryTag {
 
 	for _, e := range v {
 		current := Version(e)
-
 		// skip latest
 		if current == constant.LatestVersion {
 			continue

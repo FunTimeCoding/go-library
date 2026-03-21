@@ -15,7 +15,6 @@ func New(connect bool) *Model {
 		connect:  connect,
 		user:     system.User().Username,
 		hostname: system.Hostname(),
-
 		auto: !environment.Exists(constant.ManualEnvironment),
 	}
 }

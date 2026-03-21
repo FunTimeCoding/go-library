@@ -11,8 +11,6 @@ type Address struct {
 	Address          net.HardwareAddr
 	ObjectType       string
 	ObjectIdentifier int64
-
 	Interface *netbox.BriefInterface
-
 	Raw *netbox.MACAddress
 }

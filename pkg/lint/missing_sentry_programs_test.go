@@ -18,7 +18,10 @@ func TestMissingSentryProgramsFlagged(t *testing.T) {
 func TestMissingSentryProgramsWithReporter(t *testing.T) {
 	v := virtual_file_system.New()
 	v.Write("cmd/gotest/main.go", "package main\n")
-	v.Write("pkg/tool/gotest/run.go", "package gotest\n\nfunc Run() {\n\tr := reporter.New(\"gotest\", c, \"\", o.Version)\n}\n")
+	v.Write(
+		"pkg/tool/gotest/run.go",
+		"package gotest\n\nfunc Run() {\n\tr := reporter.New(\"gotest\", c, \"\", o.Version)\n}\n",
+	)
 	result := missingSentryPrograms(v)
 	assert.Integer(t, 0, len(result))
 }

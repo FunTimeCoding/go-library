@@ -5,13 +5,13 @@ import "time"
 func (r *Reader) Register(
 	k rune,
 	press func(
-	rune,
-	time.Time,
-),
+		rune,
+		time.Time,
+	),
 	release func(
-	rune,
-	time.Duration,
-),
+		rune,
+		time.Duration,
+	),
 ) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()

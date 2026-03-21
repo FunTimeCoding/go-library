@@ -45,7 +45,6 @@ func (c *Client) Save(
 					"    GetResourceTree took %v\n",
 					time.Since(t2),
 				)
-
 				t3 := time.Now()
 				b, e = page.GetResourceContent(t.Frame.ID, locator).Do(o)
 

@@ -255,6 +255,7 @@ cpuinfo
 kversion
 maxcpu
 maxdisk
+proxmox
 pveversion
 secureboot
 sysname

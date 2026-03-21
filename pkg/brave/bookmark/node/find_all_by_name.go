@@ -6,7 +6,6 @@ func FindAllByNameAndType(
 	nodeType string,
 ) []*Node {
 	var results []*Node
-
 	Walk(
 		n,
 		func(o *Node) {

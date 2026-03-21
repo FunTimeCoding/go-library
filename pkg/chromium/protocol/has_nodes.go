@@ -7,7 +7,6 @@ import (
 
 func (p *Protocol) HasNodes(s string) bool {
 	var nodes []*cdp.Node
-
 	p.client.RunContext(
 		p.context,
 		chromedp.Nodes(s, &nodes, chromedp.AtLeast(0)),

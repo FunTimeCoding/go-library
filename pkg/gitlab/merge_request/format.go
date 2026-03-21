@@ -14,7 +14,6 @@ func (r *Request) Format(f *option.Format) string {
 		r.formatTitle(f),
 		r.formatAge(f),
 	).RawList(r.Raw)
-
 	s.DetailLink(r.Link, "GitLab", "")
 
 	return s.Format()

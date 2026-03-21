@@ -58,7 +58,6 @@ func Run() {
 			},
 		),
 	)
-
 	fmt.Printf("Scanned %d files\n", scanned)
 	unused := make(map[string][]string)
 	used := 0

@@ -10,7 +10,6 @@ import (
 
 func (s *Store) Unresolved() []UnresolvedRecord {
 	var result []UnresolvedRecord
-
 	s.client.View(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)
@@ -43,7 +42,6 @@ func (s *Store) Unresolved() []UnresolvedRecord {
 			return nil
 		},
 	)
-
 	sort.Slice(
 		result, func(i, j int) bool {
 			return result[i].Key < result[j].Key

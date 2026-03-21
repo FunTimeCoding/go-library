@@ -23,7 +23,6 @@ func Run() error {
 
 	l, listenFail := net.Listen(system.Transmission, os.Args[1])
 	errorLibrary.PanicOnError(listenFail)
-
 	log.Printf(
 		"listen on %s",
 		locator.New(l.Addr().String()).Scheme(constant.Socket).String(),
@@ -34,12 +33,10 @@ func Run() error {
 		WriteTimeout: time.Second * 10,
 	}
 	channelFail := make(chan error, 1)
-
 	go func() {
 		log.Println("serve")
 		channelFail <- s.Serve(l)
 	}()
-
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
 	log.Println("wait for signal")

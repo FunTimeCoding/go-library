@@ -20,7 +20,6 @@ func New(
 	verbose bool,
 ) *Client {
 	//client.New()
-
 	if false {
 		slogWay(host)
 	}

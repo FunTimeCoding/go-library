@@ -11,7 +11,6 @@ import (
 func Changelog() {
 	k := environment.Required(constant.DefaultProjectKeyEnvironment)
 	j := common.Jira()
-
 	fmt.Println("Search (with changelog)...")
 	start := time.Now()
 	issues := j.Search(
@@ -20,7 +19,6 @@ func Changelog() {
 	)
 	elapsed := time.Since(start)
 	fmt.Printf("Fetched %d issues in %s\n\n", len(issues), elapsed)
-
 	fmt.Printf(
 		"  %-10s %-22s %6s %6s\n",
 		"KEY", "STATUS", "CHANGE", "TRANS",

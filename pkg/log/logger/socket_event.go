@@ -9,7 +9,6 @@ import (
 )
 
 // https://opentelemetry.io/docs/specs/semconv/messaging
-
 // Required
 const (
 	MessagingSystem = "messaging.system"
@@ -37,7 +36,6 @@ func (l *Logger) WebSocket(v *message.Message) {
 
 	t, e := time.Parse(time.RFC3339Nano, v.Event.Time)
 	errors.PanicOnError(e)
-
 	result := []slog.Attr{
 		slog.String(MessagingSystem, "homeassistant"),
 		slog.String(OperationName, "receive"),

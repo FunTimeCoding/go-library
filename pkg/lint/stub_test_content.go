@@ -21,7 +21,10 @@ func stubTestName(packageName string) string {
 	return strings.ToUpper(suffix[:1]) + suffix[1:]
 }
 
-func stubTestContent(packageName string, testdata bool) string {
+func stubTestContent(
+	packageName string,
+	testdata bool,
+) string {
 	testName := stubTestName(packageName)
 
 	if testdata {

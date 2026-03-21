@@ -6,6 +6,5 @@ type Repository struct {
 	Path              string
 	IsClean           bool
 	Status            string
-
 	concern []string
 }

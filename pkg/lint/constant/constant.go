@@ -44,6 +44,24 @@ const (
 
 	MissingSentryKey  = "missing_sentry"
 	MissingSentryText = "No sentry reporter in program"
+
+	ForbiddenImportKey  = "forbidden_import"
+	ForbiddenImportText = `Use "github.com/spf13/pflag" instead of "flag"`
+
+	MultipleFunctionsKey  = "multiple_functions"
+	MultipleFunctionsText = "Multiple function definitions in one file"
+
+	StrayConstKey  = "stray_const"
+	StrayConstText = "Top-level const outside of a constant file or constant package"
+
+	BlankInsideFunctionKey  = "blank_inside_function"
+	BlankInsideFunctionText = "Blank line between statements inside function body"
+
+	MissingBlankBeforeDeclarationKey  = "missing_blank_before_declaration"
+	MissingBlankBeforeDeclarationText = "Missing blank line before declaration"
+
+	ExtraneousTopLevelBlankKey  = "extraneous_top_level_blank"
+	ExtraneousTopLevelBlankText = "Extraneous blank line between top-level declarations"
 )
 
 var PackageBlocklist = []string{"api"}

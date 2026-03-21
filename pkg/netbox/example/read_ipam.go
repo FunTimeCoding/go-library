@@ -11,7 +11,6 @@ func readIPAM(
 	f *option.Format,
 ) {
 	// IP Address Management
-
 	for _, t := range n.ServiceTemplates() {
 		fmt.Printf("ServiceTemplate: %s\n", t.Format(f))
 	}

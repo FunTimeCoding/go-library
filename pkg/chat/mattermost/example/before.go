@@ -30,7 +30,6 @@ func Before() {
 		"Date: %s\n",
 		time.UnixMilli(reference.Raw.CreateAt).Format(library.DateMinute),
 	)
-
 	keep := 500
 	posts := m.PostsBefore(c, t, keep)
 	fmt.Printf(

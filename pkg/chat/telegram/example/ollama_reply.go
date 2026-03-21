@@ -15,7 +15,6 @@ func OllamaReply() {
 	defer t.Close()
 	f := constant.Format
 	c := environment.Required(constant.ChannelEnvironment)
-
 	l := multi_line.New()
 	l.Format(
 		"You are a helpful assistant called %s. Below is a set of lines from a chat channel. Respond with a message in a friendly and informative manner. I will worry about the formatting, time and your name. Try to blend in with the message length and writing style. You can also choose to say nothing if you feel it is not appropriate.",

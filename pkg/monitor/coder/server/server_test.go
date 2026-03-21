@@ -13,13 +13,10 @@ import (
 
 func TestServer(t *testing.T) {
 	t.Parallel()
-
 	s := httptest.NewServer(Server{Logf: t.Logf})
 	defer s.Close()
-
 	x, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
-
 	c, _, e := websocket.Dial(
 		x,
 		s.URL,
@@ -32,7 +29,6 @@ func TestServer(t *testing.T) {
 
 	for i := 0; i < 5; i++ {
 		assert.FatalOnError(t, wsjson.Write(x, c, map[string]int{"i": i}))
-
 		v := map[string]int{}
 		assert.FatalOnError(t, wsjson.Read(x, c, &v))
 

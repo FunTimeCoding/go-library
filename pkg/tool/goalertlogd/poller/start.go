@@ -6,7 +6,6 @@ func (p *Poller) Start() {
 	go func() {
 		t := time.NewTicker(p.interval)
 		defer t.Stop()
-
 		p.RecoverStale()
 		p.Poll()
 

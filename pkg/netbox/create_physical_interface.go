@@ -23,7 +23,6 @@ func (c *Client) CreatePhysicalInterface(
 
 	q.SetAssignedObjectType(constant.InterfaceAddress)
 	q.SetAssignedObjectId(int64(i.Identifier))
-
 	result, r, e := c.client.DcimAPI.DcimMacAddressesCreate(
 		c.context,
 	).MACAddressRequest(*q).Execute()

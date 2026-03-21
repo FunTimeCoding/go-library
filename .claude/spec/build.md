@@ -20,9 +20,9 @@ For each target architecture, `gobuild` runs:
 go build -ldflags "-X main.Version=v0.10.294 -X main.GitHash=144f841a -X main.BuildDate=2026-02-20T13:36:08+01:00" -o tmp/<name>/<os>-<arch>/<name> cmd/<name>/main.go
 ```
 
-- **Version** — latest git tag (`git describe --tags --abbrev=0`)
-- **GitHash** — short commit hash (`git rev-parse --short HEAD`)
-- **BuildDate** — current time in RFC3339
+- **Version** - latest git tag (`git describe --tags --abbrev=0`)
+- **GitHash** - short commit hash (`git rev-parse --short HEAD`)
+- **BuildDate** - current time in RFC3339
 
 ## Target Architectures
 

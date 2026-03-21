@@ -15,11 +15,9 @@ func Pipe(
 	var stderr bytes.Buffer
 	c.Stdout = &stdout
 	c.Stderr = &stderr
-
 	pipe, pipeFail := c.StdinPipe()
 	errors.PanicOnError(pipeFail)
 	errors.PanicOnError(c.Start())
-
 	written, writeFail := pipe.Write([]byte(input))
 	errors.PanicOnError(writeFail)
 	errors.PanicOnError(pipe.Close())

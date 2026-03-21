@@ -14,9 +14,7 @@ func waitForDone(
 ) {
 	fmt.Println("Sleep before wait")
 	time.Sleep(10 * time.Second)
-
 	printJobs(k, namespace)
-
 	fmt.Println("Wait for job")
 	errors.PanicOnError(k.WaitForJob(namespace, job, 0))
 }

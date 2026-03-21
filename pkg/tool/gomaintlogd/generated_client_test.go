@@ -17,7 +17,6 @@ func TestGeneratedClient(t *testing.T) {
 	c, e := client.NewClientWithResponses(base)
 	assert.FatalOnError(t, e)
 	x := context.Background()
-
 	// Create
 	system := "worker1"
 	service := "nginx"
@@ -38,18 +37,15 @@ func TestGeneratedClient(t *testing.T) {
 	assert.String(t, "restarted web server", create.JSON200.Action)
 	assert.String(t, "jdoe", create.JSON200.User)
 	id := create.JSON200.Id
-
 	// Read
 	status, e := c.GetStatusWithResponse(x)
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, status.StatusCode())
 	assert.Integer(t, 1, status.JSON200.TotalEntries)
-
 	entries, e := c.GetEntriesWithResponse(x, &client.GetEntriesParams{})
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, entries.StatusCode())
 	assert.Count(t, 1, *entries.JSON200)
-
 	// Update
 	newAction := "cleared and documented"
 	update, e := c.UpdateEntryWithResponse(
@@ -66,17 +62,14 @@ func TestGeneratedClient(t *testing.T) {
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, update.StatusCode())
 	assert.String(t, newAction, update.JSON200.Action)
-
 	// Read after update
 	entries, e = c.GetEntriesWithResponse(x, &client.GetEntriesParams{})
 	assert.FatalOnError(t, e)
 	assert.String(t, newAction, (*entries.JSON200)[0].Action)
-
 	// Delete
 	del, e := c.DeleteEntryWithResponse(x, id)
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusNoContent, del.StatusCode())
-
 	// Read after delete
 	status, e = c.GetStatusWithResponse(x)
 	assert.FatalOnError(t, e)

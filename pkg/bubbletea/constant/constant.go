@@ -3,7 +3,6 @@ package constant
 import "charm.land/lipgloss/v2"
 
 const LogFile = "tea.txt"
-
 var (
 	Default = lipgloss.NewStyle()
 

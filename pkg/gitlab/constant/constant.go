@@ -7,7 +7,6 @@ import (
 )
 
 const Base = "/api/v4"
-
 const (
 	OpenedState  = "opened"
 	PendingState = "pending"
@@ -37,7 +36,6 @@ const (
 )
 
 var DefaultListOptions = gitlab.ListOptions{Page: 0, PerPage: 100}
-
 const (
 	HostEnvironment  = "GITLAB_HOST"
 	TokenEnvironment = "GITLAB_TOKEN"

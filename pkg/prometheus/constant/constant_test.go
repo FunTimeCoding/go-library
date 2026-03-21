@@ -7,7 +7,6 @@ import (
 
 func TestConstant(t *testing.T) {
 	assert.String(t, "up", Up)
-
 	assert.String(t, "daemonset", DaemonSetLabel)
 	assert.String(t, "deployment", DeploymentLabel)
 	assert.String(t, "endpoint", EndpointLabel)

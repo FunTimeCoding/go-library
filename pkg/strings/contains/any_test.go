@@ -9,7 +9,6 @@ import (
 func TestAny(t *testing.T) {
 	assert.True(t, Any([]string{strings.Alfa}, []string{strings.Alfa}))
 	assert.False(t, Any([]string{strings.Alfa}, []string{strings.Bravo}))
-
 	assert.True(
 		t,
 		Any(

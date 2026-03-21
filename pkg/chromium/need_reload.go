@@ -34,7 +34,6 @@ func (c *Client) NeedReload(
 		c.context,
 		chromedp.WithTargetID(target.ID(identifier)),
 	)
-
 	run, cancelRun := context.WithTimeout(check, 1*time.Second)
 	defer cancelRun()
 

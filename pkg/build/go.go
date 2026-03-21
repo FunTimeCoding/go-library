@@ -36,7 +36,6 @@ func Go(o *option.Build) {
 	path := filepath.Dir(p.Output)
 	fmt.Printf("Path: %s\n", path)
 	system.EnsurePathExists(path)
-
 	s := []string{
 		constant.Go,
 		constant.Build,
@@ -56,7 +55,6 @@ func Go(o *option.Build) {
 	}
 
 	s = append(s, []string{constant.OutputArgument, p.Output, p.MainPath}...)
-
 	r := run.New()
 	r.Verbose = true
 	r.Panic = false
@@ -104,6 +102,5 @@ func Go(o *option.Build) {
 		system.CopyFile(p.Output, destination)
 		system.Executable(destination)
 	}
-
 	fmt.Printf("Size: %dM\n", system.FileSize(p.Output)/1024/1024)
 }

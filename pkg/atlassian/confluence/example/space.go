@@ -18,7 +18,6 @@ func Space() {
 
 	if false {
 		fmt.Println("SpacesKaos")
-
 		// Requires a key, cannot list all spaces
 		for _, s := range c.SpacesKaos([]string{""}) {
 			fmt.Printf("  Space: %s\n", s.Name)

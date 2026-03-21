@@ -54,7 +54,6 @@ func Log(
 	fmt.Printf("Alliance tag: %s\n", tag)
 	fmt.Printf("Team: %s\n", currentTeam)
 	fmt.Printf("At-risk cut-off member: %s\n", atRiskCutOff)
-
 	gw2.ImportAleevaFiles()
 	members := gw2.MembersOfGuild(gw2.NewEnvironment(), tag)
 	fmt.Printf("Members count: %d\n", len(members))
@@ -81,7 +80,6 @@ func Log(
 		"Latest Aleeva file: %s\n",
 		join.Absolute(systemConstant.Temporary, aleevaFile),
 	)
-
 	var exceptionNames []string
 
 	for _, e := range exceptions.Parse(systemConstant.Temporary) {
@@ -232,7 +230,6 @@ func Log(
 		len(foundExceptions),
 		stringJoin.Comma(foundExceptions),
 	)
-
 	fmt.Printf("Never seen count: %d\n", len(neverSeen))
 	sort.Strings(neverSeen)
 

@@ -39,7 +39,6 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 	}
 
 	f := option.ExtendedColor.Copy()
-
 	top := status.New(f).String()
 	top.String(fmt.Sprintf("items: %d", len(m.table.Rows())))
 
@@ -56,7 +55,6 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 	}
 
 	m.topBar = top.Format()
-
 	bottom := status.New(f)
 	bottom.String(m.hostname)
 
@@ -70,7 +68,6 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 
 	bottom.String(fmt.Sprintf("%dx%d", m.width, m.height))
 	m.bottomBar = bottom.Format()
-
 	m.second++
 	result = append(result, tick.Command())
 

@@ -29,7 +29,6 @@ func Main(
 
 	monitor.ParseBind(version, gitHash, buildDate)
 	c := common.Mattermost()
-
 	t := timeLibrary.Midnight(time.Now())
 	fmt.Printf(
 		"Unresolved threads since %s\n",

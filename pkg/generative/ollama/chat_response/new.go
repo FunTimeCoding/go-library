@@ -11,7 +11,6 @@ func New(r *api.ChatResponse) *Response {
 		Evaluation:       r.EvalDuration.Milliseconds(),
 		PromptTokens:     float64(r.PromptEvalCount) / r.PromptEvalDuration.Seconds(),
 		Tokens:           float64(r.EvalCount) / r.EvalDuration.Seconds(),
-
 		Raw: r,
 	}
 }

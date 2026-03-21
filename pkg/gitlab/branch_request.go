@@ -19,7 +19,6 @@ func (c *Client) BranchRequest(
 
 	if r != nil && r.StatusCode == 404 {
 		// Project not found, do not panic
-
 		return nil
 	}
 
@@ -27,7 +26,6 @@ func (c *Client) BranchRequest(
 
 	if len(result) == 0 {
 		// Branch not found, do not panic
-
 		return nil
 	}
 

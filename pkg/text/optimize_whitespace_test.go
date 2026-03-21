@@ -33,14 +33,12 @@ func TestOptimizeWhitespace(t *testing.T) {
 		"A\n\nB\n",
 		OptimizeWhitespace("A\n \n \nB\n\n", nil),
 	)
-
 	// Fix missing newline at the end
 	assert.String(
 		t,
 		"A\nB\n",
 		OptimizeWhitespace("A\nB", nil),
 	)
-
 	// No blank line is allowed
 	zeroBlank := option.New()
 	zeroBlank.AllowedBlankLines = 0

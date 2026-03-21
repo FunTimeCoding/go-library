@@ -30,7 +30,6 @@ func (p *Poller) Poll() {
 			)
 		}
 	}()
-
 	alerts, _ := p.client.Alerts(&advanced_option.Alert{})
 	current := make(map[string]bool)
 
@@ -59,7 +58,6 @@ func (p *Poller) Poll() {
 			Labels:      labels,
 			Start:       time.Now(),
 		}
-
 		p.firing[a.Fingerprint] = p.store.Save(r)
 
 		if p.metrics != nil {

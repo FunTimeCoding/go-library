@@ -17,11 +17,9 @@ func TestPrimary(t *testing.T) {
 
 	for i := 0; i < v.NumField(); i++ {
 		f := v.Field(i)
-
 		n := notation_tag.FromField(f)
 		assert.String(t, "name", n.Key())
 		assert.False(t, n.OmitEmpty())
-
 		r := relational_tag.FromField(f)
 		assert.True(t, r.Primary())
 		assert.True(t, !r.Nullable())
@@ -37,11 +35,9 @@ func TestOmit(t *testing.T) {
 
 	for i := 0; i < v.NumField(); i++ {
 		f := v.Field(i)
-
 		n := notation_tag.FromField(f)
 		assert.String(t, "age", n.Key())
 		assert.True(t, n.OmitEmpty())
-
 		r := relational_tag.FromField(f)
 		assert.False(t, r.Primary())
 		assert.True(t, !r.Nullable())
@@ -57,11 +53,9 @@ func TestNotNullDefault(t *testing.T) {
 
 	for i := 0; i < v.NumField(); i++ {
 		f := v.Field(i)
-
 		n := notation_tag.FromField(f)
 		assert.String(t, "mail", n.Key())
 		assert.False(t, n.OmitEmpty())
-
 		r := relational_tag.FromField(f)
 		assert.False(t, r.Primary())
 		assert.True(t, !r.Nullable())

@@ -44,7 +44,6 @@ func Query() {
 	}
 
 	// TODO: prometheus_tsdb_symbol_table_size_bytes
-
 	fmt.Printf(
 		"Load: %.1f %.1f %.1f\n",
 		c.QueryFloat(constant.Load1, t),

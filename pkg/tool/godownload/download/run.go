@@ -32,7 +32,6 @@ func Run(o *option.Download) {
 
 	if p == nil {
 		fmt.Printf("package not found: %s\n", o.Package)
-
 		os.Exit(1)
 	}
 
@@ -50,7 +49,6 @@ func Run(o *option.Download) {
 
 	if f == nil {
 		fmt.Printf("architecture and system match not found")
-
 		os.Exit(1)
 	}
 

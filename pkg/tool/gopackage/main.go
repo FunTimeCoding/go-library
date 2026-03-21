@@ -41,7 +41,6 @@ func Main(
 
 	if runs == 0 {
 		fmt.Println("No archive created")
-
 		os.Exit(1)
 	}
 }

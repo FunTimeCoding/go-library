@@ -7,7 +7,6 @@ import (
 
 func TestClient(t *testing.T) {
 	assert.String(t, "no space", NoSpace)
-
 	assert.String(t, "view", ViewFormat)
 	assert.String(t, "atlas_doc_format", AtlasFormat)
 	assert.String(t, "export_view", ExportFormat)

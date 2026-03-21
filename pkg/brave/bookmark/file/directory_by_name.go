@@ -7,7 +7,6 @@ func DirectoryByName(
 	name string,
 ) *Node {
 	var result *Node
-
 	WalkUntil(
 		n,
 		func(o *Node) bool {

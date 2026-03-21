@@ -6,6 +6,5 @@ type Rack struct {
 	Identifier int32
 	Name       string
 	Link       string
-
 	Raw *netbox.Rack
 }

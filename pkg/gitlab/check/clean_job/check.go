@@ -37,7 +37,6 @@ func Check() {
 
 	if r == nil {
 		fmt.Println("No runner match")
-
 		os.Exit(1)
 	}
 

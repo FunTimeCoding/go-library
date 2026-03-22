@@ -61,6 +61,9 @@ func Spacing(
 		) ||
 			strings.HasPrefix(trimmed, "type "))
 
+		isVar := topLevel && !isBlank && strings.HasPrefix(trimmed, "var ")
+		isConst := topLevel && !isBlank && strings.HasPrefix(trimmed, "const ")
+
 		isClosingBrace := strings.HasPrefix(trimmed, "}") ||
 			strings.HasPrefix(trimmed, "case ") ||
 			trimmed == "default:"
@@ -127,13 +130,12 @@ func Spacing(
 			pendingBlank = false
 
 			if topLevel {
-				pastIsVarConst := strings.HasPrefix(pastTrimmed, "var ") ||
-					strings.HasPrefix(pastTrimmed, "const ")
-				isVarConst := strings.HasPrefix(trimmed, "var ") ||
-					strings.HasPrefix(trimmed, "const ")
+				pastIsVar := strings.HasPrefix(pastTrimmed, "var ")
+				pastIsConst := strings.HasPrefix(pastTrimmed, "const ")
+				sameKind := (pastIsVar && isVar) || (pastIsConst && isConst)
 
-				if pastIsVarConst && isVarConst {
-					// Spurious blank between consecutive top-level var/const - remove.
+				if sameKind {
+					// Spurious blank between consecutive top-level declarations of the same kind - remove.
 					s.AddConcern(
 						constant.ExtraneousTopLevelBlankKey,
 						constant.ExtraneousTopLevelBlankText,
@@ -216,6 +218,22 @@ func Spacing(
 			s.AddConcern(
 				constant.MissingBlankBeforeDeclarationKey,
 				constant.MissingBlankBeforeDeclarationText,
+				path,
+				number,
+				line,
+				true,
+			)
+		}
+
+		pastIsVar := strings.HasPrefix(pastTrimmed, "var ")
+		pastIsConst := strings.HasPrefix(pastTrimmed, "const ")
+		crossKind := (pastIsVar && isConst) || (pastIsConst && isVar)
+
+		if crossKind && !pastWasBlank && pastLine != "" {
+			s.ChangedLine("")
+			s.AddConcern(
+				constant.MissingBlankBetweenVarConstKey,
+				constant.MissingBlankBetweenVarConstText,
 				path,
 				number,
 				line,

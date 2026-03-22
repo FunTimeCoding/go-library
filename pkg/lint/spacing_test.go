@@ -759,6 +759,66 @@ func TestSpacingInterFunctionBlankAfterNestedFuncLiteral(t *testing.T) {
 	)
 }
 
+func TestSpacingBlankBetweenTopLevelConstAndVarPreserved(t *testing.T) {
+	input := "package example\n\nconst A = 1\n\nvar B = 2\n"
+	l := Spacing("constvarblank", strings.NewReader(input))
+	assertReport(t, "constvarblank", false, nil, input, l)
+}
+
+func TestSpacingBlankBetweenTopLevelVarAndConstPreserved(t *testing.T) {
+	input := "package example\n\nvar A = 1\n\nconst B = 2\n"
+	l := Spacing("varconstblank", strings.NewReader(input))
+	assertReport(t, "varconstblank", false, nil, input, l)
+}
+
+func TestSpacingMissingBlankBetweenTopLevelConstAndVarInserted(t *testing.T) {
+	l := Spacing(
+		"constvarinsert",
+		strings.NewReader("package example\n\nconst A = 1\nvar B = 2\n"),
+	)
+	assertReport(
+		t,
+		"constvarinsert",
+		true,
+		[]*concern.Concern{
+			{
+				Key:      lintConstant.MissingBlankBetweenVarConstKey,
+				Text:     lintConstant.MissingBlankBetweenVarConstText,
+				Path:     "constvarinsert",
+				Line:     4,
+				LineText: "var B = 2",
+				Fixed:    true,
+			},
+		},
+		"package example\n\nconst A = 1\n\nvar B = 2\n",
+		l,
+	)
+}
+
+func TestSpacingMissingBlankBetweenTopLevelVarAndConstInserted(t *testing.T) {
+	l := Spacing(
+		"varconstinsert",
+		strings.NewReader("package example\n\nvar A = 1\nconst B = 2\n"),
+	)
+	assertReport(
+		t,
+		"varconstinsert",
+		true,
+		[]*concern.Concern{
+			{
+				Key:      lintConstant.MissingBlankBetweenVarConstKey,
+				Text:     lintConstant.MissingBlankBetweenVarConstText,
+				Path:     "varconstinsert",
+				Line:     4,
+				LineText: "const B = 2",
+				Fixed:    true,
+			},
+		},
+		"package example\n\nvar A = 1\n\nconst B = 2\n",
+		l,
+	)
+}
+
 func TestSpacingDoubleBlankAfterClosingBrace(t *testing.T) {
 	l := Spacing(
 		library.India,

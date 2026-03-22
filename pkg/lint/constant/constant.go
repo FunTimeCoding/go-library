@@ -62,6 +62,9 @@ const (
 
 	ExtraneousTopLevelBlankKey  = "extraneous_top_level_blank"
 	ExtraneousTopLevelBlankText = "Extraneous blank line between top-level declarations"
+
+	MissingBlankBetweenVarConstKey  = "missing_blank_between_var_const"
+	MissingBlankBetweenVarConstText = "Missing blank line between top-level const and var declarations"
 )
 
 var PackageBlocklist = []string{"api"}

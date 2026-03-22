@@ -34,6 +34,7 @@ func Variable(
 				path,
 				number,
 				line,
+				false,
 			)
 		}
 	}

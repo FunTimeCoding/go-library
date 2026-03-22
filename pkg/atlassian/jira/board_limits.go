@@ -25,11 +25,7 @@ func (c *Client) BoardLimits(identifier int) []*board_limit.Limit {
 
 		result = append(
 			result,
-			&board_limit.Limit{
-				Board:   b.Name,
-				Column:  column.Name,
-				Maximum: column.Max,
-			},
+			board_limit.New(b.Name, column.Name, column.Max),
 		)
 	}
 

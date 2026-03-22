@@ -11,14 +11,8 @@ func WithServerMiddleware(
 	middleware func(http.Handler) http.Handler,
 ) Option {
 	return func(l *Lifecycle) {
-		l.component = append(
-			l.component,
-			&server.Server{
-				Mux:        http.NewServeMux(),
-				Setup:      setup,
-				Middleware: middleware,
-				Address:    address,
-			},
-		)
+		s := server.New(http.NewServeMux(), setup, address)
+		s.Middleware = middleware
+		l.component = append(l.component, s)
 	}
 }

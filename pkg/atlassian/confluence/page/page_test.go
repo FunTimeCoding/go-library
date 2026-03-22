@@ -8,5 +8,5 @@ import (
 )
 
 func TestPage(t *testing.T) {
-	assert.NotNil(t, New(&response.Page{}, strings.Alfa))
+	assert.NotNil(t, New(response.NewPage(), strings.Alfa))
 }

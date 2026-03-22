@@ -1,29 +1,16 @@
 package git
 
 import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/git/repository"
-	"os/exec"
+	"github.com/funtimecoding/go-library/pkg/system/run"
 )
 
 func ReadRepository(path string) *repository.Repository {
-	c := exec.Command(
-		constant.Command,
-		constant.RevParse,
-		constant.GitDirectory,
-	)
-	c.Dir = path
-	errors.PanicOnError(c.Run())
-	c = exec.Command(constant.Command, constant.Status, constant.Porcelain)
-	c.Dir = path
-	output, e := c.Output()
-	errors.PanicOnError(e)
+	r := run.New()
+	r.Directory = path
+	r.Start(constant.Command, constant.RevParse, constant.GitDirectory)
+	r.Start(constant.Command, constant.Status, constant.Porcelain)
 
-	if false {
-		fmt.Printf("Output: %s\n", output)
-	}
-
-	return repository.New(path, string(output))
+	return repository.New(path, r.OutputString)
 }

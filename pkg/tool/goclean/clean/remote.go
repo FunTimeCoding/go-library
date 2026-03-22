@@ -22,7 +22,7 @@ func originRemote(
 			o.GitLabHost,
 		)
 		// make static analyzer happy
-		result = &remote.Remote{}
+		result = remote.New("", "", "")
 	}
 
 	return result

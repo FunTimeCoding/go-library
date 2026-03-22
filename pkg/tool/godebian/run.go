@@ -27,13 +27,7 @@ func Run(o *option.Debian) {
 	system.SaveFile(
 		join.Absolute(debianDirectory, debianConstant.ControlFile),
 		fmt.Sprintf(
-			"Package: %s"+
-				"\nVersion: %s"+
-				"\nArchitecture: %s"+
-				"\nMaintainer: %s <%s>"+
-				"\nDescription: Short stub description."+
-				"\n Long stub description."+
-				"\n",
+			"Package: %s\nVersion: %s\nArchitecture: %s\nMaintainer: %s <%s>\nDescription: Short stub description.\n Long stub description.\n",
 			o.Executable,
 			o.PackageVersion,
 			architecture,
@@ -53,17 +47,7 @@ func Run(o *option.Debian) {
 		system.SaveFile(
 			join.Absolute(unit, fmt.Sprintf("%s.service", o.Executable)),
 			fmt.Sprintf(
-				"[Unit]"+
-					"\nDescription=%s stub description"+
-					"\nAfter=network.target"+
-					"\n"+
-					"\n[Service]"+
-					"\nType=simple"+
-					"\nExecStart=/usr/local/bin/%s"+
-					"\n"+
-					"\n[Install]"+
-					"\nWantedBy=multi-user.target"+
-					"\n",
+				"[Unit]\nDescription=%s stub description\nAfter=network.target\n\n[Service]\nType=simple\nExecStart=/usr/local/bin/%s\n\n[Install]\nWantedBy=multi-user.target\n",
 				o.Executable,
 				o.Executable,
 			),

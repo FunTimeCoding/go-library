@@ -21,10 +21,10 @@ func (m *Model) View() tea.View {
 			checked = "x"
 		}
 
-		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice)
+		s = fmt.Sprintf("%s%s [%s] %s\n", s, cursor, checked, choice)
 	}
 
-	s += "\nPress q to quit.\n"
+	s = fmt.Sprintf("%s\nPress q to quit.\n", s)
 	v := tea.NewView(s)
 	v.WindowTitle = "Grocery List"
 

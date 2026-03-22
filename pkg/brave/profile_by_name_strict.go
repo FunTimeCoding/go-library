@@ -11,7 +11,7 @@ func ProfileByNameStrict(name string) *profile.Profile {
 	if p == nil {
 		errors.NotFound(name)
 
-		return &profile.Profile{}
+		return profile.New()
 	}
 
 	return p

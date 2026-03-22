@@ -46,6 +46,7 @@ func StrayConst(
 				path,
 				number,
 				line,
+				false,
 			)
 		}
 

@@ -1,6 +1,7 @@
 package formula
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"strings"
@@ -9,7 +10,7 @@ import (
 func (f *Formula) Format(o *option.Format) string {
 	s := status.New(o).String(
 		f.Name,
-		strings.Join(f.InstalledVersions, ", ")+" → "+f.CurrentVersion,
+		fmt.Sprintf("%s → %s", strings.Join(f.InstalledVersions, ", "), f.CurrentVersion),
 	)
 	s.DetailLink(f.Link, "Homebrew", "")
 

@@ -14,7 +14,7 @@ func (s *Server) entries(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	f := &store.Filter{}
+	f := store.NewFilter()
 
 	if v := r.URL.Query().Get("system"); v != "" {
 		f.System = v

@@ -18,11 +18,11 @@ func MatrixTimeString(v model.Value) []*time_string.Result {
 		for _, v := range e.Values {
 			result = append(
 				result,
-				&time_string.Result{
-					Metric: e.Metric.String(),
-					Time:   v.Timestamp.Time(),
-					Value:  v.Value.String(),
-				},
+				time_string.New(
+					e.Metric.String(),
+					v.Timestamp.Time(),
+					v.Value.String(),
+				),
 			)
 		}
 	}

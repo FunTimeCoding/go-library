@@ -1,18 +1,13 @@
 package system
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"os/exec"
-)
+import "github.com/funtimecoding/go-library/pkg/system/run"
 
 func RunDirectory(
 	directory string,
 	s ...string,
 ) string {
-	c := exec.Command(s[0], s[1:]...)
-	c.Dir = directory
-	result, e := c.CombinedOutput()
-	errors.PanicOnError(e)
+	r := run.New()
+	r.Directory = directory
 
-	return string(result)
+	return r.Start(s...)
 }

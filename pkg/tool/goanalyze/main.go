@@ -3,7 +3,10 @@ package goanalyze
 import (
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/forbidden_call"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/naming"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/string_concatenation"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"golang.org/x/tools/go/analysis/multichecker"
 )
@@ -19,5 +22,5 @@ func Main(
 		defer func() { r.RecoverFlush(recover()) }()
 	}
 
-	multichecker.Main(naming.Analyzer)
+	multichecker.Main(naming.Analyzer, forbidden_call.Analyzer, string_concatenation.Analyzer, struct_literal.Analyzer)
 }

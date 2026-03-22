@@ -11,12 +11,12 @@ func (c *Client) Run(command string) *result.Result {
 	defer secure_shell.CloseSession(s)
 	stdout, stderr := secure_shell.SessionBuffers(s)
 	e := s.Run(command)
-	r := &result.Result{
-		OutputString: trim.NewLine(stdout.String()),
-		ErrorString:  trim.NewLine(stderr.String()),
-		Exit:         secure_shell.Exit(e),
-		Error:        e,
-	}
+	r := result.New(
+		trim.NewLine(stdout.String()),
+		trim.NewLine(stderr.String()),
+		secure_shell.Exit(e),
+		e,
+	)
 
 	if c.Panic {
 		result.PanicOnExit(r)

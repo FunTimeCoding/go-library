@@ -7,5 +7,5 @@ import (
 )
 
 func TestResult(t *testing.T) {
-	assert.NotNil(t, New(&response.Result{}))
+	assert.NotNil(t, New(response.NewResult()))
 }

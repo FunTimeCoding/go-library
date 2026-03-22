@@ -30,7 +30,7 @@ func (p *Poller) Poll() {
 			)
 		}
 	}()
-	alerts, _ := p.client.Alerts(&advanced_option.Alert{})
+	alerts, _ := p.client.Alerts(advanced_option.New())
 	current := make(map[string]bool)
 
 	for _, a := range alerts {

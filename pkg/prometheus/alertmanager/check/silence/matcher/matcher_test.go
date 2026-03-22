@@ -642,16 +642,9 @@ func newSilenceWithMatchers(
 	end *time.Time,
 	m []*models.Matcher,
 ) *silence.Silence {
-	return &silence.Silence{
-		Start: start,
-		End:   end,
-		Raw:   &models.GettableSilence{Silence: models.Silence{Matchers: m}},
-	}
+	return silence.NewFromMatchers(start, end, m)
 }
 
 func newAlert(l models.LabelSet) *alert.Alert {
-	return &alert.Alert{
-		Labels: l,
-		Raw:    &models.GettableAlert{Alert: models.Alert{Labels: l}},
-	}
+	return alert.NewFromLabels(l)
 }

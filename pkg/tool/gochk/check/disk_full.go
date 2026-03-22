@@ -2,18 +2,14 @@ package check
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	stringLibrary "github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
-	"os/exec"
+	"github.com/funtimecoding/go-library/pkg/system/run"
 	"strings"
 )
 
 func diskFull() {
-	output, e := exec.Command("df", "-h").CombinedOutput()
-	errors.PanicOnError(e)
-
-	for _, line := range split.NewLine(string(output))[1:] {
+	for _, line := range split.NewLine(run.New().Start("df", "-h"))[1:] {
 		p := strings.Fields(line)
 
 		if len(p) < 4 {

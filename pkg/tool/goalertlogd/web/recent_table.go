@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	g "maragu.dev/gomponents"
 	h "maragu.dev/gomponents/html"
@@ -35,7 +36,7 @@ func recentTable(records []store.Record) g.Node {
 						h.Td(
 							h.A(
 								h.Class("alert-link"),
-								h.Href("/alerts?name="+r.Name),
+								h.Href(fmt.Sprintf("/alerts?name=%s", r.Name)),
 								g.Text(r.Name),
 							),
 						),

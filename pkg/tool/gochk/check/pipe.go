@@ -3,15 +3,14 @@ package check
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"os/exec"
 )
 
 func Pipe(
-	c *exec.Cmd,
 	input string,
 	verbose bool,
+	s ...string,
 ) string {
-	stdout, stderr := system.Pipe(c, input)
+	stdout, stderr := system.Pipe(input, s...)
 
 	if verbose {
 		if stdout != "" {

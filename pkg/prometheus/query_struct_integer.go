@@ -15,12 +15,16 @@ func (c *Client) QueryStructInteger(
 	result := parse.Generic(c.Query(q, t))
 
 	if len(result) == 0 {
-		return &integer.Result{Value: fallback}
+		r := integer.New()
+		r.Value = fallback
+
+		return r
 	}
 
-	return &integer.Result{
-		Time:  result[0].Time,
-		Value: strings.ToInteger(result[0].Value, fallback),
-		Raw:   result[0],
-	}
+	r := integer.New()
+	r.Time = result[0].Time
+	r.Value = strings.ToInteger(result[0].Value, fallback)
+	r.Raw = result[0]
+
+	return r
 }

@@ -10,8 +10,5 @@ func (c *Client) Get(locator string) (*web_response.Response, error) {
 	start := c.clock.Now()
 	response, e := http.Get(locator)
 
-	return &web_response.Response{
-		Response:     response,
-		Milliseconds: time.Since(start).Milliseconds(),
-	}, e
+	return web_response.New(response, time.Since(start).Milliseconds()), e
 }

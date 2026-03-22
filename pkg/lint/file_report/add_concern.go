@@ -8,6 +8,7 @@ func (r *Report) AddConcern(
 	path string,
 	line int,
 	lineText string,
+	fixed bool,
 ) {
-	r.Add(concern.New(key, text, path, line, lineText))
+	r.Add(concern.New(key, text, path, line, lineText, fixed))
 }

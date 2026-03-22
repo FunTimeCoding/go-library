@@ -5,13 +5,13 @@ import (
 	h "maragu.dev/gomponents/html"
 )
 
-func navigationLink(href, label, currentPath string) g.Node {
+func navigationLink(link, label, currentPath string) g.Node {
 	attrs := []g.Node{
-		g.Attr("href", href),
+		g.Attr("href", link),
 		g.Text(label),
 	}
 
-	if currentPath == href {
+	if currentPath == link {
 		attrs = append(attrs, g.Attr("aria-current", "page"))
 	}
 

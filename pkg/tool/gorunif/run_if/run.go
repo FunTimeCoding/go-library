@@ -3,14 +3,11 @@ package run_if
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if/option"
 	"github.com/spf13/viper"
-	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -45,10 +42,6 @@ func Run(o *option.RunIf) {
 	}
 
 	if changed {
-		c := exec.Command("sh", "-c", execute)
-		c.Stdout = os.Stdout
-		c.Stderr = os.Stderr
-		c.Stdin = os.Stdin
-		errors.PanicOnError(c.Run())
+		run.New().Execute("sh", "-c", execute)
 	}
 }

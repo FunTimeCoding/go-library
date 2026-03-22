@@ -9,7 +9,7 @@ func WithWorker(w face.Worker) Option {
 	return func(l *Lifecycle) {
 		l.component = append(
 			l.component,
-			&component.Component{Worker: w},
+			component.New(w),
 		)
 	}
 }

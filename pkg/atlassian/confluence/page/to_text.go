@@ -2,6 +2,7 @@ package page
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system/writer"
 	"golang.org/x/net/html"
 	"strings"
 )
@@ -13,7 +14,7 @@ func ToText(markup string) string {
 	var f func(*html.Node)
 	f = func(n *html.Node) {
 		if n.Type == html.TextNode {
-			b.WriteString(" " + n.Data)
+			writer.Print(&b, "%s", n.Data)
 		}
 
 		for c := n.FirstChild; c != nil; c = c.NextSibling {

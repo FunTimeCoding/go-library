@@ -11,6 +11,7 @@ func runCheckers(
 	fixes *virtual_file_system.System,
 	paths []string,
 	checkers []Checker,
+	fix bool,
 	verbose bool,
 ) {
 	for _, p := range paths {
@@ -25,7 +26,13 @@ func runCheckers(
 			r := check(p, strings.NewReader(content))
 
 			for _, c := range r.Concerns {
-				fmt.Printf("%s: %s\n", c.Text, c.Path)
+				if c.Fixed && fix {
+					fmt.Printf("%s: %s (auto-fixed)\n", c.Text, c.Path)
+				} else if c.Fixed {
+					fmt.Printf("%s: %s (auto-fixable)\n", c.Text, c.Path)
+				} else {
+					fmt.Printf("%s: %s\n", c.Text, c.Path)
+				}
 			}
 
 			if r.Fixed != "" && r.Fixed != r.Original {

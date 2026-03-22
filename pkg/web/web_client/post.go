@@ -20,10 +20,8 @@ func (c *Client) Post(
 		constant.Object,
 		bytes.NewBuffer([]byte(encoded)),
 	)
+	r := web_response.New(response, time.Since(start).Milliseconds())
+	r.BodyBytes = len(encoded)
 
-	return &web_response.Response{
-		Response:     response,
-		BodyBytes:    len(encoded),
-		Milliseconds: time.Since(start).Milliseconds(),
-	}, e
+	return r, e
 }

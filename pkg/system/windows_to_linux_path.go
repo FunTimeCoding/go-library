@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"strings"
 )
@@ -10,7 +11,7 @@ func WindowsToLinuxPath(windowsPath string) string {
 
 	if len(result) > 1 && result[1] == ':' {
 		driveLetter := strings.ToLower(string(result[0]))
-		result = separator.Slash + driveLetter + result[2:]
+		result = fmt.Sprintf("%s%s%s", separator.Slash, driveLetter, result[2:])
 	}
 
 	return result

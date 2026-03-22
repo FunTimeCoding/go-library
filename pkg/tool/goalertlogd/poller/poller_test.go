@@ -29,12 +29,12 @@ func TestPollSavesNewAlert(t *testing.T) {
 	defer s.Close()
 	c := mock_client.New()
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "abc123",
-			Name:        "HighMemory",
-			Severity:    "critical",
-			Summary:     "Memory above 90%",
-		},
+		alert.NewBasic(
+			"abc123",
+			"HighMemory",
+			"critical",
+			"Memory above 90%",
+		),
 	)
 	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
@@ -52,12 +52,12 @@ func TestPollResolvesRemovedAlert(t *testing.T) {
 	defer s.Close()
 	c := mock_client.New()
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "abc123",
-			Name:        "HighMemory",
-			Severity:    "critical",
-			Summary:     "Memory above 90%",
-		},
+		alert.NewBasic(
+			"abc123",
+			"HighMemory",
+			"critical",
+			"Memory above 90%",
+		),
 	)
 	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
@@ -75,11 +75,12 @@ func TestPollIgnoresDuplicateFiring(t *testing.T) {
 	defer s.Close()
 	c := mock_client.New()
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "abc123",
-			Name:        "HighMemory",
-			Severity:    "critical",
-		},
+		alert.NewBasic(
+			"abc123",
+			"HighMemory",
+			"critical",
+			"",
+		),
 	)
 	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
@@ -95,11 +96,12 @@ func TestRecoverStaleAdoptsFireing(t *testing.T) {
 	defer s.Close()
 	c := mock_client.New()
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "abc123",
-			Name:        "HighMemory",
-			Severity:    "critical",
-		},
+		alert.NewBasic(
+			"abc123",
+			"HighMemory",
+			"critical",
+			"",
+		),
 	)
 	old := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	old.Poll()
@@ -118,11 +120,12 @@ func TestRecoverStaleResolvesGone(t *testing.T) {
 	defer s.Close()
 	c := mock_client.New()
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "abc123",
-			Name:        "HighMemory",
-			Severity:    "critical",
-		},
+		alert.NewBasic(
+			"abc123",
+			"HighMemory",
+			"critical",
+			"",
+		),
 	)
 	old := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	old.Poll()
@@ -142,11 +145,12 @@ func TestPollPrunesOldRecords(t *testing.T) {
 	defer s.Close()
 	c := mock_client.New()
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "abc123",
-			Name:        "HighMemory",
-			Severity:    "critical",
-		},
+		alert.NewBasic(
+			"abc123",
+			"HighMemory",
+			"critical",
+			"",
+		),
 	)
 	p := New(c, s, testLogger, 1*time.Minute, 0, nil)
 	p.Poll()

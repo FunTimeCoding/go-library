@@ -1,6 +1,7 @@
 package locator
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"github.com/funtimecoding/go-library/pkg/system/join"
 	"net"
@@ -25,7 +26,7 @@ func (l *Locator) String() string {
 	}
 
 	if l.trail && !strings.HasSuffix(o.Path, separator.Slash) {
-		o.Path += separator.Slash
+		o.Path = fmt.Sprintf("%s%s", o.Path, separator.Slash)
 	}
 
 	o.RawQuery = l.value.Encode()
@@ -40,9 +41,9 @@ func (l *Locator) String() string {
 
 	if l.fragment != "" {
 		if len(l.fragmentValue) > 0 {
-			result += "#" + l.fragment + "?" + l.fragmentValue.Encode()
+			result = fmt.Sprintf("%s#%s?%s", result, l.fragment, l.fragmentValue.Encode())
 		} else {
-			result += "#" + l.fragment
+			result = fmt.Sprintf("%s#%s", result, l.fragment)
 		}
 	}
 

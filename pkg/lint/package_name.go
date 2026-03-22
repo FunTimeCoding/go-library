@@ -31,6 +31,7 @@ func PackageName(
 					path,
 					number,
 					line,
+					false,
 				)
 			}
 		}

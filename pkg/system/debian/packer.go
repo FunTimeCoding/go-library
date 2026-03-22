@@ -44,11 +44,7 @@ func (c *Client) Packer(
 	if system.FileExists(outputImagePath) {
 		fmt.Printf("Already exists: %s\n", outputImagePath)
 		fmt.Printf(
-			"To spawn a clone:"+
-				"\n  mkdir /tmp/test"+
-				"\n  cd /tmp/test"+
-				"\n  cp %s ."+
-				"\n  qemu-system-x86_64 -machine type=q35,accel=kvm -m 2G -cpu host -smp 2 -drive file=%s,format=qcow2 -netdev user,id=net0 -device virtio-net-pci,netdev=net0",
+			"To spawn a clone:\n  mkdir /tmp/test\n  cd /tmp/test\n  cp %s .\n  qemu-system-x86_64 -machine type=q35,accel=kvm -m 2G -cpu host -smp 2 -drive file=%s,format=qcow2 -netdev user,id=net0 -device virtio-net-pci,netdev=net0",
 			outputImagePath,
 			outputImage,
 		)
@@ -81,21 +77,7 @@ func (c *Client) Packer(
 	system.SaveFile(
 		preseedPath,
 		fmt.Sprintf(
-			"%s"+
-				"\nd-i base-installer/install-recommends boolean false"+
-				"\nd-i grub-installer/bootdev string default"+
-				"\ntasksel tasksel/skip-tasks string standard"+
-				"\ntasksel tasksel/first multiselect ssh-server"+
-				"\nd-i pkgsel/include string sudo"+
-				"\nd-i passwd/root-password password %s"+
-				"\nd-i passwd/root-password-again password %s"+
-				"\nd-i passwd/user-fullname string %s"+
-				"\nd-i passwd/username string %s"+
-				"\nd-i passwd/user-password password %s"+
-				"\nd-i passwd/user-password-again password %s"+
-				"\nd-i preseed/late_command string \\"+
-				"\n  %s"+
-				"\n",
+			"%s\nd-i base-installer/install-recommends boolean false\nd-i grub-installer/bootdev string default\ntasksel tasksel/skip-tasks string standard\ntasksel tasksel/first multiselect ssh-server\nd-i pkgsel/include string sudo\nd-i passwd/root-password password %s\nd-i passwd/root-password-again password %s\nd-i passwd/user-fullname string %s\nd-i passwd/username string %s\nd-i passwd/user-password password %s\nd-i passwd/user-password-again password %s\nd-i preseed/late_command string \\\n  %s\n",
 			system.ReadFile(c.workDirectory, preseedName),
 			rootPassword,
 			rootPassword,

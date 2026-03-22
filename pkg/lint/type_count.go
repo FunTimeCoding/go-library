@@ -52,6 +52,7 @@ func TypeCount(
 			path,
 			firstLine,
 			firstText,
+			false,
 		)
 	}
 

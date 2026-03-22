@@ -35,6 +35,7 @@ func ForbiddenImport(
 					path,
 					number,
 					line,
+					false,
 				)
 			}
 
@@ -50,6 +51,7 @@ func ForbiddenImport(
 				path,
 				number,
 				line,
+				false,
 			)
 		}
 

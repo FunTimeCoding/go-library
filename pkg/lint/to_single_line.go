@@ -1,6 +1,9 @@
 package lint
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func toSingleLine(lines []string) string {
 	if len(lines) == 0 {
@@ -14,5 +17,5 @@ func toSingleLine(lines []string) string {
 		return first
 	}
 
-	return strings.TrimSpace(first[:open]) + " {}"
+	return fmt.Sprintf("%s {}", strings.TrimSpace(first[:open]))
 }

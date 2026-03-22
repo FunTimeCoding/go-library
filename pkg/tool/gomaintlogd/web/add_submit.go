@@ -13,13 +13,12 @@ func (s *Server) addSubmit(
 	r *http.Request,
 ) {
 	errors.PanicOnError(r.ParseForm())
-	e := &store.Entry{
-		Action:      r.FormValue("action"),
-		User:        r.FormValue("user"),
-		System:      r.FormValue("system"),
-		Service:     r.FormValue("service"),
-		Description: r.FormValue("description"),
-	}
+	e := store.NewEntry()
+	e.Action = r.FormValue("action")
+	e.User = r.FormValue("user")
+	e.System = r.FormValue("system")
+	e.Service = r.FormValue("service")
+	e.Description = r.FormValue("description")
 	errors.PanicOnError(s.store.Add(e))
 	renderFragment(
 		w,

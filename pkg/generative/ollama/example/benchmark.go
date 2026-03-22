@@ -13,7 +13,7 @@ func Benchmark() {
 	chunk := "This is a test paragraph with about 50 tokens of content repeated multiple times."
 
 	for i := 1; i <= 5; i++ {
-		prompt := base + strings.Repeat(chunk, i*100)
+		prompt := fmt.Sprintf("%s%s", base, strings.Repeat(chunk, i*100))
 		start := time.Now()
 		response := o.GenerateSimple(prompt)
 		duration := time.Since(start)

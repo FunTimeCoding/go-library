@@ -1,6 +1,7 @@
 package virtual_file_system
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"os"
 	"path/filepath"
@@ -29,7 +30,7 @@ func From(directory string) *System {
 				errors.PanicOnError(e)
 				relative := strings.TrimPrefix(
 					path,
-					directory+string(filepath.Separator),
+					fmt.Sprintf("%s%s", directory, string(filepath.Separator)),
 				)
 				result.Write(relative, string(content))
 

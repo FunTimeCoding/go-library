@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"strings"
 )
@@ -15,5 +16,5 @@ func StripUntilDirectory(
 		return s
 	}
 
-	return separator.Slash + directory + parts[1]
+	return fmt.Sprintf("%s%s%s", separator.Slash, directory, parts[1])
 }

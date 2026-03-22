@@ -26,7 +26,7 @@ func (c *Client) JobsJSON() {
 		res := new(gojenkins.JobResponse)
 		r2, f := c.client.Requester.GetJSON(
 			c.context,
-			"/job/"+job.Name,
+			fmt.Sprintf("/job/%s", job.Name),
 			res,
 			nil,
 		)

@@ -23,7 +23,7 @@ func entriesTable(entries []store.Entry) g.Node {
 				h.ID(fmt.Sprintf("row-%d", e.ID)),
 				h.Class("clickable-row"),
 				hx.Get(fmt.Sprintf("/entry/detail?id=%d", e.ID)),
-				hx.Target("#"+target),
+				hx.Target(fmt.Sprintf("#%s", target)),
 				hx.Swap("outerHTML"),
 				h.Td(g.Text(formatTime(e.Timestamp))),
 				h.Td(g.Text(e.Action)),

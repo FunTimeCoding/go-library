@@ -15,6 +15,7 @@ func TestConcern(t *testing.T) {
 			strings.Charlie,
 			1,
 			strings.Charlie,
+			false,
 		),
 	)
 }

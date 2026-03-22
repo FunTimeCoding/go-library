@@ -51,6 +51,7 @@ func Function(
 						path,
 						funcStart,
 						strings.Join(funcLines, "\n"),
+						true,
 					)
 				} else {
 					for _, funcLine := range funcLines {

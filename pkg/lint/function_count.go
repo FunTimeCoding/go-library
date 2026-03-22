@@ -57,6 +57,7 @@ func FunctionCount(
 			path,
 			firstLine,
 			firstText,
+			false,
 		)
 	}
 

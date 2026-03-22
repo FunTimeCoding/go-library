@@ -15,10 +15,9 @@ func (h *Router) PostEntry(
 ) {
 	var body generated.PostEntryJSONRequestBody
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	e := &store.Entry{
-		Action: body.Action,
-		User:   body.User,
-	}
+	e := store.NewEntry()
+	e.Action = body.Action
+	e.User = body.User
 
 	if body.System != nil {
 		e.System = *body.System

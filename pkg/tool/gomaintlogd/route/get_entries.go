@@ -14,7 +14,7 @@ func (h *Router) GetEntries(
 	_ *http.Request,
 	params generated.GetEntriesParams,
 ) {
-	f := &store.Filter{}
+	f := store.NewFilter()
 
 	if params.System != nil {
 		f.System = *params.System

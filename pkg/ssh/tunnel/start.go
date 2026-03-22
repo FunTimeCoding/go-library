@@ -6,10 +6,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/ssh/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
+	"github.com/funtimecoding/go-library/pkg/system/run"
 	"log"
 	"net"
-	"os"
-	"os/exec"
 	"time"
 )
 
@@ -37,14 +36,13 @@ func (t *Tunnel) Start(
 			fmt.Printf("Command: %s\n", parts)
 		}
 
-		t.command = exec.Command(parts[0], parts[1:]...)
+		r := run.New()
 
 		if !t.NoOutput {
-			t.command.Stdout = os.Stdout
-			t.command.Stderr = os.Stderr
+			r = r.WithStdio()
 		}
 
-		errors.PanicOnError(t.command.Start())
+		t.process = r.Open(parts...)
 
 		for {
 			d, dialFail := net.DialTimeout(
@@ -75,17 +73,16 @@ func (t *Tunnel) Start(
 			)
 		}
 
-		waitFail := t.command.Wait()
+		waitFail := t.process.Wait()
 
 		if t.CleanStop && waitFail != nil {
 			errors.PanicOnError(waitFail)
 
-			if exit := t.command.ProcessState.ExitCode(); exit != 0 {
+			if exit := t.process.ExitCode(); exit != 0 {
 				log.Panicf(
-					"non-zero exit code: %d\n"+
-						"output: %s\n",
+					"non-zero exit code: %d\noutput: %s\n",
 					exit,
-					t.command.ProcessState.String(),
+					t.process.ProcessMessage(),
 				)
 			}
 		}

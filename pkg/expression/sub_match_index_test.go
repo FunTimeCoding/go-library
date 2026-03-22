@@ -11,9 +11,7 @@ func TestSubMatchIndex(t *testing.T) {
 		"MyPrefix: 123",
 		SubMatchIndex(
 			`MyPrefix: (.*)`,
-			"Some line\n"+
-				"MyPrefix: 123\n"+
-				"Some other line\n",
+			"Some line\nMyPrefix: 123\nSome other line\n",
 			0,
 		),
 	)

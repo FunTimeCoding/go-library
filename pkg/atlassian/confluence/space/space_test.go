@@ -7,5 +7,5 @@ import (
 )
 
 func TestSpace(t *testing.T) {
-	assert.NotNil(t, New(&response.Space{}))
+	assert.NotNil(t, New(response.NewSpace()))
 }

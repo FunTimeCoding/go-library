@@ -140,6 +140,7 @@ func Spacing(
 						path,
 						pendingBlankLine,
 						"",
+						true,
 					)
 				} else {
 					s.ChangedLine("")
@@ -160,6 +161,7 @@ func Spacing(
 						path,
 						pendingBlankLine,
 						"",
+						true,
 					)
 				} else if needBlankAfterClosingBrace {
 					// Blank earned by a preceding control block - emit it and
@@ -177,6 +179,7 @@ func Spacing(
 						path,
 						pendingBlankLine,
 						"",
+						true,
 					)
 				}
 			}
@@ -190,6 +193,7 @@ func Spacing(
 				path,
 				number,
 				line,
+				true,
 			)
 			needBlankAfterClosingBrace = false
 		}
@@ -202,6 +206,7 @@ func Spacing(
 				path,
 				number,
 				line,
+				true,
 			)
 			needBlankAfterClosingBrace = false
 		}
@@ -214,6 +219,7 @@ func Spacing(
 				path,
 				number,
 				line,
+				true,
 			)
 		}
 
@@ -225,6 +231,7 @@ func Spacing(
 				path,
 				number,
 				line,
+				true,
 			)
 		}
 
@@ -235,6 +242,7 @@ func Spacing(
 				path,
 				number,
 				line,
+				true,
 			)
 
 			if !pendingBlank {

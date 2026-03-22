@@ -9,12 +9,7 @@ import (
 func TestFormatTypes(t *testing.T) {
 	assert.Any(
 		t,
-		"{"+
-			"\n    \"String\": \"a\","+
-			"\n    \"Integer\": 1,"+
-			"\n    \"Float\": 1.5,"+
-			"\n    \"Boolean\": true"+
-			"\n}",
+		"{\n    \"String\": \"a\",\n    \"Integer\": 1,\n    \"Float\": 1.5,\n    \"Boolean\": true\n}",
 		Format(
 			fixture.Primitives{
 				String:  "a",
@@ -29,9 +24,7 @@ func TestFormatTypes(t *testing.T) {
 func TestFormatStringWithVector(t *testing.T) {
 	assert.Any(
 		t,
-		"{"+
-			"\n    \"String\": \"1,<1.0, 1.0, 1.0>,2\""+
-			"\n}",
+		"{\n    \"String\": \"1,<1.0, 1.0, 1.0>,2\"\n}",
 		Format(
 			fixture.WithString{
 				String: "1,<1.0, 1.0, 1.0>,2",

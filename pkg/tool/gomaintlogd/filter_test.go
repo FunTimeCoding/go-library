@@ -111,16 +111,16 @@ func TestFilterViaWeb(t *testing.T) {
 	})
 	assert.FatalOnError(t, e)
 	// Filter by system=worker1 → "restart" visible, "backup" not
-	body := getBody(t, base+"/entries?system="+system1)
+	body := getBody(t, fmt.Sprintf("%s/entries?system=%s", base, system1))
 	assert.StringContains(t, "restart", body)
 	assert.StringContains(t, "worker1", body) // form value reflected
 	// Filter by user=bob → "backup" visible
-	body = getBody(t, base+"/entries?user="+user2)
+	body = getBody(t, fmt.Sprintf("%s/entries?user=%s", base, user2))
 	assert.StringContains(t, "backup", body)
 	// Filter by user=alice → "restart" visible
-	body = getBody(t, base+"/entries?user="+user1)
+	body = getBody(t, fmt.Sprintf("%s/entries?user=%s", base, user1))
 	assert.StringContains(t, "restart", body)
 	// No match → "No entries found"
-	body = getBody(t, base+"/entries?system=nonexistent")
+	body = getBody(t, fmt.Sprintf("%s/entries?system=nonexistent", base))
 	assert.StringContains(t, "No entries found", body)
 }

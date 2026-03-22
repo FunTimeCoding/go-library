@@ -1,42 +1,42 @@
 package naming
 
 import (
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"go/ast"
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/passes/inspect"
 	"golang.org/x/tools/go/ast/inspector"
 	"path/filepath"
-	"strings"
 )
 
-func run(pass *analysis.Pass) (any, error) {
+func run(p *analysis.Pass) (any, error) {
 	skip := make(map[string]bool)
 
-	for _, f := range pass.Files {
-		name := filepath.Base(pass.Fset.File(f.Pos()).Name())
+	for _, f := range p.Files {
+		name := filepath.Base(p.Fset.File(f.Pos()).Name())
 
-		if name == "generated.go" || strings.HasPrefix(name, "generated_") {
+		if name == constant.GeneratedFile {
 			skip[name] = true
 		}
 	}
 
-	i := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
+	i := p.ResultOf[inspect.Analyzer].(*inspector.Inspector)
 	i.Preorder(
 		[]ast.Node{(*ast.Ident)(nil)}, func(n ast.Node) {
 			ident := n.(*ast.Ident)
-			file := filepath.Base(pass.Fset.File(ident.Pos()).Name())
+			file := filepath.Base(p.Fset.File(ident.Pos()).Name())
 
 			if skip[file] {
 				return
 			}
 
-			obj, isDef := pass.TypesInfo.Defs[ident]
+			o, isDefined := p.TypesInfo.Defs[ident]
 
-			if !isDef {
+			if !isDefined {
 				return
 			}
 
-			check(pass, ident, obj)
+			check(p, ident, o)
 		},
 	)
 

@@ -1,9 +1,10 @@
 package system
 
-import "os/exec"
+import "github.com/funtimecoding/go-library/pkg/system/run"
 
 func RunError(s ...string) (string, error) {
-	result, e := exec.Command(s[0], s[1:]...).CombinedOutput()
+	r := run.New().NoPanic()
+	r.Start(s...)
 
-	return string(result), e
+	return r.OutputString, r.Error
 }

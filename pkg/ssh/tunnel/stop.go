@@ -6,11 +6,11 @@ import (
 )
 
 func (t *Tunnel) Stop() {
-	if t.command == nil {
+	if t.process == nil {
 		panic("not running")
 	}
 
-	e := t.command.Process.Signal(syscall.SIGTERM)
+	e := t.process.Signal(syscall.SIGTERM)
 
 	if e != nil && e.Error() != "os: process already finished" {
 		errors.PanicOnError(e)

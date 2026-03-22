@@ -29,7 +29,9 @@ func (s *Server) add(
 		), nil
 	}
 
-	e := &store.Entry{Action: action, User: user}
+	e := store.NewEntry()
+	e.Action = action
+	e.User = user
 
 	if y := r.GetString("system", ""); y != "" {
 		e.System = y

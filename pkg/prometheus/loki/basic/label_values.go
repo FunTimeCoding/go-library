@@ -14,7 +14,7 @@ func (c *Client) LabelValues(
 	end time.Time,
 	label string,
 ) []string {
-	r := &response.List{}
+	r := response.NewList()
 	notation.DecodeStrict(
 		c.Get(
 			c.base.Copy().Path(

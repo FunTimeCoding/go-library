@@ -6,7 +6,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/linux/systemd/command"
 	"github.com/funtimecoding/go-library/pkg/linux/systemd/jc"
 	"github.com/funtimecoding/go-library/pkg/notation"
-	"os/exec"
 )
 
 func Netstat(verbose bool) []*jc.Output {
@@ -19,12 +18,9 @@ func Netstat(verbose bool) []*jc.Output {
 	var result []*jc.Output
 	notation.DecodeStrict(
 		Pipe(
-			exec.Command(linux.Jc, "--netstat", "--monochrome"),
-			Pipe(
-				exec.Command(linux.Awk, "!seen[$4]++"), output,
-				verbose,
-			),
+			Pipe(output, verbose, linux.Awk, "!seen[$4]++"),
 			verbose,
+			linux.Jc, "--netstat", "--monochrome",
 		),
 		&result,
 		true,

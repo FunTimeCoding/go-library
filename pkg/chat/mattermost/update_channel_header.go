@@ -1,6 +1,7 @@
 package mattermost
 
 import (
+	"fmt"
 	"github.com/mattermost/mattermost/server/public/model"
 	"strings"
 )
@@ -16,7 +17,7 @@ func (c *Client) UpdateChannelHeader(
 
 	for _, s := range strings.Split(h.Header, separator) {
 		if strings.HasPrefix(strings.TrimSpace(s), prefix) {
-			header = append(header, " "+text+" ")
+			header = append(header, fmt.Sprintf(" %s ", text))
 			found = true
 		} else {
 			header = append(header, s)
@@ -24,8 +25,8 @@ func (c *Client) UpdateChannelHeader(
 	}
 
 	if !found {
-		header[len(header)-1] = header[len(header)-1] + " "
-		header = append(header, " "+text)
+		header[len(header)-1] = fmt.Sprintf("%s ", header[len(header)-1])
+		header = append(header, fmt.Sprintf(" %s", text))
 	}
 
 	h.Header = strings.Join(header, separator)

@@ -41,6 +41,7 @@ func Import(
 						path,
 						start,
 						blockText,
+						true,
 					)
 				}
 
@@ -65,6 +66,7 @@ func Import(
 						path,
 						start,
 						blockText,
+						true,
 					)
 				} else {
 					sorted := make([]string, len(block)-2)
@@ -80,6 +82,7 @@ func Import(
 							path,
 							start,
 							blockText,
+							true,
 						)
 					}
 

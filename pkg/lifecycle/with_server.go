@@ -12,11 +12,7 @@ func WithServer(
 	return func(l *Lifecycle) {
 		l.component = append(
 			l.component,
-			&server.Server{
-				Mux:     http.NewServeMux(),
-				Setup:   setup,
-				Address: address,
-			},
+			server.New(http.NewServeMux(), setup, address),
 		)
 	}
 }

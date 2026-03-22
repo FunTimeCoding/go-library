@@ -7,7 +7,9 @@ import (
 )
 
 func (s *Server) recentTable() g.Node {
-	entries, e := s.store.List(&store.Filter{Limit: 50})
+	f := store.NewFilter()
+	f.Limit = 50
+	entries, e := s.store.List(f)
 	errors.PanicOnError(e)
 
 	return entriesTable(entries)

@@ -22,19 +22,7 @@ func TestReport(t *testing.T) {
 	root.AppendSection(other)
 	assert.String(
 		t,
-		"Example root"+
-			"\n  String: example"+
-			"\n  Integer: 2"+
-			"\n  Example first section"+
-			"\n    String: example"+
-			"\n    Float without unit: 1.0"+
-			"\n    Float with unit: 2.0 L"+
-			"\n    Integer: 1"+
-			"\n    Percent: 50%"+
-			"\n    Example second section"+
-			"\n      String: example"+
-			"\n  Example other"+
-			"\n    String: other",
+		"Example root\n  String: example\n  Integer: 2\n  Example first section\n    String: example\n    Float without unit: 1.0\n    Float with unit: 2.0 L\n    Integer: 1\n    Percent: 50%\n    Example second section\n      String: example\n  Example other\n    String: other",
 		root.Render(),
 	)
 }
@@ -52,10 +40,7 @@ func TestReportLimit(t *testing.T) {
 	assert.Integer(t, 16, secondSection.Length())
 	assert.String(
 		t,
-		"Example root"+
-			"\n  String: example"+
-			"\n  Example section"+
-			"\n    String: example",
+		"Example root\n  String: example\n  Example section\n    String: example",
 		root.Render(),
 	)
 }

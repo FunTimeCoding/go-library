@@ -1,5 +1,7 @@
 package report
 
+import "fmt"
+
 func (l *line) Render() string {
-	return spaces(l.indent) + l.value
+	return fmt.Sprintf("%s%s", spaces(l.indent), l.value)
 }

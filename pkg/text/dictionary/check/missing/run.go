@@ -16,11 +16,7 @@ func Run() {
 
 	for _, c := range dictionary.Read(dictionary.ResolvePath()) {
 		for _, w := range c.Words {
-			usage[strings.ToLower(w)] = &dictionary.WordUsage{
-				Word:     w,
-				Category: c.Name,
-				Used:     false,
-			}
+			usage[strings.ToLower(w)] = dictionary.NewWordUsage(w, c.Name, false)
 			total++
 		}
 	}

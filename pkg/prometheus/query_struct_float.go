@@ -15,12 +15,16 @@ func (c *Client) QueryStructFloat(
 	result := parse.Generic(c.Query(q, t))
 
 	if len(result) == 0 {
-		return &float.Result{Value: fallback}
+		r := float.New()
+		r.Value = fallback
+
+		return r
 	}
 
-	return &float.Result{
-		Time:  result[0].Time,
-		Value: strings.ToFloat(result[0].Value, fallback),
-		Raw:   result[0],
-	}
+	r := float.New()
+	r.Time = result[0].Time
+	r.Value = strings.ToFloat(result[0].Value, fallback)
+	r.Raw = result[0]
+
+	return r
 }

@@ -13,7 +13,7 @@ func (s *Server) list(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	filter := &store.Filter{}
+	filter := store.NewFilter()
 
 	if y := r.GetString("system", ""); y != "" {
 		filter.System = y

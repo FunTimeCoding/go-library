@@ -30,20 +30,20 @@ func TestRunLifecycle(t *testing.T) {
 	defer s.Close()
 	c := mock_client.New()
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "fp1",
-			Name:        "HighMemory",
-			Severity:    "critical",
-			Summary:     "Memory above 90%",
-		},
+		alert.NewBasic(
+			"fp1",
+			"HighMemory",
+			"critical",
+			"Memory above 90%",
+		),
 	)
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "fp2",
-			Name:        "DiskFull",
-			Severity:    "warning",
-			Summary:     "Disk usage above 85%",
-		},
+		alert.NewBasic(
+			"fp2",
+			"DiskFull",
+			"warning",
+			"Disk usage above 85%",
+		),
 	)
 	g := logger.New(context.Background())
 	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
@@ -64,52 +64,52 @@ func TestRunLifecycle(t *testing.T) {
 	defer l.Stop()
 	assert.Listen(t, port)
 	base := fmt.Sprintf("http://localhost:%d", port)
-	assert.HTTPStatus(t, base+"/", http.StatusOK)
-	assert.HTTPStatus(t, base+"/recent", http.StatusOK)
+	assert.HTTPStatus(t, fmt.Sprintf("%s/", base), http.StatusOK)
+	assert.HTTPStatus(t, fmt.Sprintf("%s/recent", base), http.StatusOK)
 	assert.HTTPStatus(
 		t,
-		base+"/alerts?name=HighMemory",
+		fmt.Sprintf("%s/alerts?name=HighMemory", base),
 		http.StatusOK,
 	)
-	assert.HTTPStatus(t, base+"/api/v1/status", http.StatusOK)
+	assert.HTTPStatus(t, fmt.Sprintf("%s/api/v1/status", base), http.StatusOK)
 	assert.HTTPStatus(
 		t,
-		base+"/api/v1/alerts?name=HighMemory",
-		http.StatusOK,
-	)
-	assert.HTTPStatus(
-		t,
-		base+"/api/v1/alerts/recent",
+		fmt.Sprintf("%s/api/v1/alerts?name=HighMemory", base),
 		http.StatusOK,
 	)
 	assert.HTTPStatus(
 		t,
-		base+"/api/v1/alerts/top",
+		fmt.Sprintf("%s/api/v1/alerts/recent", base),
 		http.StatusOK,
 	)
 	assert.HTTPStatus(
 		t,
-		base+"/api/v1/alerts",
+		fmt.Sprintf("%s/api/v1/alerts/top", base),
+		http.StatusOK,
+	)
+	assert.HTTPStatus(
+		t,
+		fmt.Sprintf("%s/api/v1/alerts", base),
 		http.StatusBadRequest,
 	)
-	status := getJSON[server.StatusResponse](t, base+"/api/v1/status")
+	status := getJSON[server.StatusResponse](t, fmt.Sprintf("%s/api/v1/status", base))
 	assert.Integer(t, 2, status.TotalRecords)
 	assert.True(t, status.LastPoll != nil)
 	alerts := getJSON[[]server.AlertsResponse](
 		t,
-		base+"/api/v1/alerts?name=HighMemory",
+		fmt.Sprintf("%s/api/v1/alerts?name=HighMemory", base),
 	)
 	assert.Count(t, 1, alerts)
 	assert.String(t, "fp1", alerts[0].Fingerprint)
 	assert.String(t, string(server.Firing), string(alerts[0].Status))
 	recent := getJSON[[]server.AlertsResponse](
 		t,
-		base+"/api/v1/alerts/recent",
+		fmt.Sprintf("%s/api/v1/alerts/recent", base),
 	)
 	assert.Count(t, 2, recent)
 	top := getJSON[[]server.TopAlertsResponse](
 		t,
-		base+"/api/v1/alerts/top",
+		fmt.Sprintf("%s/api/v1/alerts/top", base),
 	)
 	assert.Count(t, 2, top)
 	assert.Integer(t, 1, top[0].Count)
@@ -117,12 +117,12 @@ func TestRunLifecycle(t *testing.T) {
 	p.Poll()
 	alerts = getJSON[[]server.AlertsResponse](
 		t,
-		base+"/api/v1/alerts?name=HighMemory",
+		fmt.Sprintf("%s/api/v1/alerts?name=HighMemory", base),
 	)
 	assert.Count(t, 1, alerts)
 	assert.String(t, string(server.Resolved), string(alerts[0].Status))
 	assert.True(t, alerts[0].End != nil)
-	status = getJSON[server.StatusResponse](t, base+"/api/v1/status")
+	status = getJSON[server.StatusResponse](t, fmt.Sprintf("%s/api/v1/status", base))
 	assert.Integer(t, 2, status.TotalRecords)
 }
 
@@ -132,12 +132,12 @@ func TestGeneratedClient(t *testing.T) {
 	defer s.Close()
 	c := mock_client.New()
 	c.Add(
-		&alert.Alert{
-			Fingerprint: "fp1",
-			Name:        "HighMemory",
-			Severity:    "critical",
-			Summary:     "Memory above 90%",
-		},
+		alert.NewBasic(
+			"fp1",
+			"HighMemory",
+			"critical",
+			"Memory above 90%",
+		),
 	)
 	g := logger.New(context.Background())
 	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)

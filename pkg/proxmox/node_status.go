@@ -9,7 +9,7 @@ import (
 
 func (c *Client) NodeStatus(name string) *node_status.Status {
 	errors.PanicOnEmpty(name, constant.Name)
-	n := &node_status.Payload{}
+	n := node_status.New()
 	Get(c, fmt.Sprintf("/nodes/%s/status", name), &n.Payload)
 
 	return n.Payload

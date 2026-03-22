@@ -14,7 +14,7 @@ func (c *Client) QueryRange(
 	start time.Time,
 	end time.Time,
 ) response.QueryResult {
-	r := &response.Query{}
+	r := response.NewQuery()
 	notation.DecodeStrict(
 		c.Get(
 			c.base.Copy().Path(constant.QueryRange).SetInteger64(

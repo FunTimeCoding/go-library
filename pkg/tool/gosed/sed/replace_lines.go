@@ -1,6 +1,7 @@
 package sed
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"strings"
@@ -17,7 +18,7 @@ func replaceLines(
 			if strings.HasPrefix(strings.TrimSpace(l), prefix) {
 				// Keep indentation
 				indent := l[:len(l)-len(strings.TrimLeft(l, " \t"))]
-				lines[i] = indent + prefix + replace
+				lines[i] = fmt.Sprintf("%s%s%s", indent, prefix, replace)
 
 				break
 			}

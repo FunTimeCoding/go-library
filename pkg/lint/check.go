@@ -14,6 +14,7 @@ import (
 func Check(
 	v *virtual_file_system.System,
 	skip *option.Lint,
+	fix bool,
 	verbose bool,
 ) *virtual_file_system.System {
 	fixes := virtual_file_system.New()
@@ -33,6 +34,7 @@ func Check(
 			StrayConst,
 			Spacing,
 		},
+		fix,
 		verbose,
 	)
 	var generatedPaths []string
@@ -53,11 +55,24 @@ func Check(
 	sort.Strings(directories)
 
 	for _, d := range directories {
-		fmt.Printf("%s: %s\n", constant.MissingTestFileText, d)
+		if fix {
+			fmt.Printf("%s: %s (auto-fixed)\n", constant.MissingTestFileText, d)
+		} else {
+			fmt.Printf("%s: %s (auto-fixable)\n", constant.MissingTestFileText, d)
+		}
+
 		name := packageNameOf(v, missing[d])
+		isToolPackage := strings.HasPrefix(d, "pkg/tool/") &&
+			strings.Count(strings.TrimPrefix(d, "pkg/tool/"), "/") == 0
+		filename := fmt.Sprintf("%s_test.go", stubTestSuffix(name))
+
+		if isToolPackage {
+			filename = "main_test.go"
+		}
+
 		fixes.Write(
-			filepath.Join(d, stubTestSuffix(name)+"_test.go"),
-			stubTestContent(name, strings.Contains(d, "/testdata/")),
+			filepath.Join(d, filename),
+			stubTestContent(name, strings.Contains(d, "/testdata/"), isToolPackage),
 		)
 	}
 
@@ -70,6 +85,7 @@ func Check(
 		fixes,
 		markupFiles(v, skip, verbose),
 		[]Checker{Markup},
+		fix,
 		verbose,
 	)
 

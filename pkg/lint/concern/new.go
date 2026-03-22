@@ -6,6 +6,7 @@ func New(
 	path string,
 	line int,
 	lineText string,
+	fixed bool,
 ) *Concern {
 	return &Concern{
 		Key:      key,
@@ -13,5 +14,6 @@ func New(
 		Path:     path,
 		Line:     line,
 		LineText: lineText,
+		Fixed:    fixed,
 	}
 }

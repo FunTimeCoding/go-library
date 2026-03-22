@@ -41,10 +41,10 @@ func (c *Client) RunCommand(o *command.Command) *result.Result {
 
 	e := s.Run(text)
 
-	return &result.Result{
-		OutputString: trim.NewLine(stdout.String()),
-		ErrorString:  trim.NewLine(stderr.String()),
-		Exit:         secure_shell.Exit(e),
-		Error:        e,
-	}
+	return result.New(
+		trim.NewLine(stdout.String()),
+		trim.NewLine(stderr.String()),
+		secure_shell.Exit(e),
+		e,
+	)
 }

@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"path/filepath"
@@ -25,7 +26,7 @@ func Skipped(
 			}
 		} else if strings.HasPrefix(path, p) || strings.Contains(
 			path,
-			"/"+p,
+			fmt.Sprintf("/%s", p),
 		) {
 			return true
 		}

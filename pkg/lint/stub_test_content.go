@@ -5,8 +5,13 @@ import "fmt"
 func stubTestContent(
 	packageName string,
 	testdata bool,
+	main bool,
 ) string {
 	testName := stubTestName(packageName)
+
+	if main {
+		testName = "Stub"
+	}
 
 	if testdata {
 		return fmt.Sprintf(

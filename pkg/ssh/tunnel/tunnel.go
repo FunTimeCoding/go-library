@@ -1,9 +1,9 @@
 package tunnel
 
-import "os/exec"
+import "github.com/funtimecoding/go-library/pkg/system/run/process"
 
 type Tunnel struct {
-	command   *exec.Cmd
+	process   *process.Process
 	started   chan struct{}
 	listening chan struct{}
 	stopped   chan struct{}

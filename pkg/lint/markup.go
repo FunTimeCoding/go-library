@@ -27,6 +27,7 @@ func Markup(
 					path,
 					number,
 					line,
+					true,
 				)
 			}
 		} else {

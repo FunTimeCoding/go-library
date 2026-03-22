@@ -1,7 +1,10 @@
 package project
 
-import "github.com/funtimecoding/go-library/pkg/strings/separator"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
+)
 
 func (p *Project) CombinedName() string {
-	return p.Namespace + separator.Slash + p.Name
+	return fmt.Sprintf("%s%s%s", p.Namespace, separator.Slash, p.Name)
 }

@@ -6,4 +6,5 @@ type Concern struct {
 	Path     string
 	Line     int
 	LineText string
+	Fixed    bool
 }

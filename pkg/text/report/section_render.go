@@ -7,10 +7,10 @@ func (s *Section) Render() string {
 		return ""
 	}
 
-	result := spaces(s.indent) + s.title
+	result := fmt.Sprintf("%s%s", spaces(s.indent), s.title)
 
 	for _, e := range s.renderables {
-		result += fmt.Sprintf("\n%s", e.Render())
+		result = fmt.Sprintf("%s\n%s", result, e.Render())
 	}
 
 	return result

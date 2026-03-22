@@ -16,12 +16,12 @@ func Generic(v model.Value) []*generic.Result {
 			for _, inner := range e.Values {
 				result = append(
 					result,
-					&generic.Result{
-						Type:   constant.Matrix,
-						Metric: e.Metric.String(),
-						Time:   inner.Timestamp.Time(),
-						Value:  inner.Value.String(),
-					},
+					generic.New(
+						constant.Matrix,
+						e.Metric.String(),
+						inner.Timestamp.Time(),
+						inner.Value.String(),
+					),
 				)
 			}
 		}
@@ -29,35 +29,35 @@ func Generic(v model.Value) []*generic.Result {
 		for _, e := range v.(model.Vector) {
 			result = append(
 				result,
-				&generic.Result{
-					Type:   constant.Vector,
-					Metric: e.Metric.String(),
-					Time:   e.Timestamp.Time(),
-					Value:  e.Value.String(),
-				},
+				generic.New(
+					constant.Vector,
+					e.Metric.String(),
+					e.Timestamp.Time(),
+					e.Value.String(),
+				),
 			)
 		}
 	case model.ValScalar:
 		s := v.(*model.Scalar)
 		result = append(
 			result,
-			&generic.Result{
-				Type:   constant.Scalar,
-				Metric: s.String(),
-				Time:   s.Timestamp.Time(),
-				Value:  s.Value.String(),
-			},
+			generic.New(
+				constant.Scalar,
+				s.String(),
+				s.Timestamp.Time(),
+				s.Value.String(),
+			),
 		)
 	case model.ValString:
 		s := v.(*model.String)
 		result = append(
 			result,
-			&generic.Result{
-				Type:   constant.String,
-				Metric: s.String(),
-				Time:   s.Timestamp.Time(),
-				Value:  s.Value,
-			},
+			generic.New(
+				constant.String,
+				s.String(),
+				s.Timestamp.Time(),
+				s.Value,
+			),
 		)
 	default:
 		log.Panicf("unexpected type: %d", t)

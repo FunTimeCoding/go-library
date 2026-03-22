@@ -62,7 +62,7 @@ func Lint(
 	}
 
 	v := virtual_file_system.From(constant.CurrentDirectory)
-	fixes := Check(v, skip, verbose)
+	fixes := Check(v, skip, fix, verbose)
 
 	if fix {
 		fixes.Flush(constant.CurrentDirectory)

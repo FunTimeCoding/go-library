@@ -4,10 +4,9 @@
 
 ## Linter features — deferred
 
-| Item | Reason |
-|------|--------|
-| Direct `exec.Command` usage (suggest `pkg/system/run`) | Easy, deferred |
-| String `+` concatenation ban (suggest `fmt.Sprintf` or `filepath.Join`) | Needs AST pass |
-| Flag which items were auto-fixed in output | UX, format not decided |
-| Stub test filename `main_test.go` enforcement in `pkg/tool/<program>` | Medium complexity |
-| Multiple bare top-level `var x = ...` → suggest `var (...)` | New checker |
+| Item | Tool | Notes |
+|------|------|-------|
+| Multiple bare top-level `var x = ...` → suggest `var (...)` | golint | New text-scanner checker |
+| New banned segments: `href` (→ link/reference/locator), `def` (→ definition), `concat` (→ concatenate), `obj` (→ object), `stmt` (→ statement) | goanalyze / naming | DONE |
+| Ban `&pkg.Struct{}` when `pkg` is owned by this project — enforce `pkg.New()` instead | goanalyze | DONE |
+| Function parameters typed as struct or `*struct` must have single-letter names | goanalyze | Applies to all params incl. receivers; next-letter rule for collisions |

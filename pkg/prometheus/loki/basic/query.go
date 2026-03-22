@@ -10,7 +10,7 @@ import (
 )
 
 func (c *Client) Query(query string) response.QueryResult {
-	r := &response.Query{}
+	r := response.NewQuery()
 	notation.DecodeStrict(
 		c.Get(
 			c.base.Copy().Path(constant.Query).SetInteger64(

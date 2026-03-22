@@ -1,6 +1,9 @@
 package lint
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func stubTestName(packageName string) string {
 	if packageName == "main" {
@@ -9,5 +12,5 @@ func stubTestName(packageName string) string {
 
 	suffix := stubTestSuffix(packageName)
 
-	return strings.ToUpper(suffix[:1]) + suffix[1:]
+	return fmt.Sprintf("%s%s", strings.ToUpper(suffix[:1]), suffix[1:])
 }

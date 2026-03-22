@@ -1,6 +1,7 @@
 package strings
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"regexp"
 )
@@ -12,7 +13,7 @@ func HasWord(
 	// matches word with word boundaries
 	// prevents partial matches like "test" matching "testing"
 	result, e := regexp.MatchString(
-		`\b`+regexp.QuoteMeta(word)+`\b`,
+		fmt.Sprintf(`\b%s\b`, regexp.QuoteMeta(word)),
 		text,
 	)
 	errors.PanicOnError(e)

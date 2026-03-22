@@ -34,7 +34,12 @@ var suggestions = map[string][]string{
 	"config": {"c", "configuration"},
 	"cfg":    {"c", "configuration"},
 	"llm": {"m", "model"},
-	"tmp": {"t"}, // temporary is too long; t suffices
+	"tmp":    {"t"}, // temporary is too long; t suffices
+	"href":   {"link", "reference", "locator"},
+	"def":    {"definition"},
+	"concat": {"concatenate"},
+	"obj":    {"o", "object"},
+	"stmt":   {"s", "statement"},
 }
 
 // noSuggestion contains banned noise words with no prescribed replacement.

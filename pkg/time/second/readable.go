@@ -41,7 +41,7 @@ func Readable(seconds int) string {
 	}
 
 	if rounded > 1 {
-		result += "s"
+		result = fmt.Sprintf("%ss", result)
 	}
 
 	if result == "0 second" {

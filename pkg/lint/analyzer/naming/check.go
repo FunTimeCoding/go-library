@@ -7,19 +7,19 @@ import (
 )
 
 func check(
-	pass *analysis.Pass,
+	p *analysis.Pass,
 	ident *ast.Ident,
-	obj types.Object,
+	o types.Object,
 ) {
-	if isInterfaceMethod(pass, obj) {
+	if isInterfaceMethod(p, o) {
 		return
 	}
 
-	_, isVar := obj.(*types.Var)
+	_, isVar := o.(*types.Var)
 
 	for _, segment := range segments(ident.Name) {
 		if noSuggestion[segment] {
-			pass.Reportf(
+			p.Reportf(
 				ident.Pos(),
 				"avoid %q in name, use a more specific term",
 				segment,
@@ -43,7 +43,7 @@ func check(
 		}
 
 		if len(applicable) == 0 {
-			pass.Reportf(
+			p.Reportf(
 				ident.Pos(),
 				"avoid %q in name, use a more specific term",
 				segment,
@@ -58,7 +58,7 @@ func check(
 			}
 		}
 
-		pass.Reportf(
+		p.Reportf(
 			ident.Pos(),
 			"%s",
 			formatMessage(applicable, segment, ident.Name),

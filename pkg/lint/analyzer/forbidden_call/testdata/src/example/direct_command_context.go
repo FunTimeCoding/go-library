@@ -6,8 +6,8 @@ import (
 )
 
 func DirectCommandContext() {
-	exec.CommandContext(
+	exec.CommandContext( // want `use pkg/system/run instead of exec\.CommandContext`
 		context.Background(),
 		"ls",
-	) // want `use pkg/system/run instead of exec\.CommandContext`
+	)
 }

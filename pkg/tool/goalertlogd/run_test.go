@@ -92,7 +92,10 @@ func TestRunLifecycle(t *testing.T) {
 		fmt.Sprintf("%s/api/v1/alerts", base),
 		http.StatusBadRequest,
 	)
-	status := getJSON[server.StatusResponse](t, fmt.Sprintf("%s/api/v1/status", base))
+	status := getJSON[server.StatusResponse](
+		t,
+		fmt.Sprintf("%s/api/v1/status", base),
+	)
 	assert.Integer(t, 2, status.TotalRecords)
 	assert.True(t, status.LastPoll != nil)
 	alerts := getJSON[[]server.AlertsResponse](
@@ -122,7 +125,10 @@ func TestRunLifecycle(t *testing.T) {
 	assert.Count(t, 1, alerts)
 	assert.String(t, string(server.Resolved), string(alerts[0].Status))
 	assert.True(t, alerts[0].End != nil)
-	status = getJSON[server.StatusResponse](t, fmt.Sprintf("%s/api/v1/status", base))
+	status = getJSON[server.StatusResponse](
+		t,
+		fmt.Sprintf("%s/api/v1/status", base),
+	)
 	assert.Integer(t, 2, status.TotalRecords)
 }
 

@@ -20,7 +20,7 @@ func New(
 				BasePath: "/api",
 				Schemes:  []string{constant.Secure},
 				APIKey:   token,
-				OrgID: 1,
+				OrgID:    1,
 			},
 		),
 	}

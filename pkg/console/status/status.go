@@ -9,5 +9,5 @@ type Status struct {
 	bubbles    []string
 	lines      []string
 	linesByTag []*tag_line.Line
-	format *option.Format
+	format     *option.Format
 }

@@ -6,5 +6,5 @@ type Tenant struct {
 	Identifier int32
 	Group      string
 	Name       string
-	Raw *netbox.Tenant
+	Raw        *netbox.Tenant
 }

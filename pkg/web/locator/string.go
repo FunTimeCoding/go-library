@@ -41,7 +41,12 @@ func (l *Locator) String() string {
 
 	if l.fragment != "" {
 		if len(l.fragmentValue) > 0 {
-			result = fmt.Sprintf("%s#%s?%s", result, l.fragment, l.fragmentValue.Encode())
+			result = fmt.Sprintf(
+				"%s#%s?%s",
+				result,
+				l.fragment,
+				l.fragmentValue.Encode(),
+			)
 		} else {
 			result = fmt.Sprintf("%s#%s", result, l.fragment)
 		}

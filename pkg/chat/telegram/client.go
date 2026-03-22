@@ -8,8 +8,8 @@ import (
 )
 
 type Client struct {
-	client  *tgbotapi.BotAPI
-	Verbose bool
+	client   *tgbotapi.BotAPI
+	Verbose  bool
 	database *bolt.Client
 	channels []*channel.Channel
 	users    []*user.User

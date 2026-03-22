@@ -24,7 +24,7 @@ const (
 	Uniform  = "Uniform"
 	Victor   = "Victor"
 	Whiskey  = "Whiskey"
-	Xray    = "Xray"
-	Yankee = "Yankee"
-	Zulu   = "Zulu"
+	Xray     = "Xray"
+	Yankee   = "Yankee"
+	Zulu     = "Zulu"
 )

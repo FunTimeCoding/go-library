@@ -6,5 +6,5 @@ type Release struct {
 	Codename string
 	Major    int64
 	Minor    int64
-	version *semver.Version
+	version  *semver.Version
 }

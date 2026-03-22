@@ -11,17 +11,17 @@ import (
 )
 
 type Client struct {
-	context context.Context
-	webHost string
-	teamMap *team_map.Map
-	userMap *user_map.Map
-	userClient *client.Client
-	teamClient *client.Client
+	context           context.Context
+	webHost           string
+	teamMap           *team_map.Map
+	userMap           *user_map.Map
+	userClient        *client.Client
+	teamClient        *client.Client
 	shortUser         face.StringAlias
 	shortAlert        face.StringAlias
 	descriptionToName face.StringAlias
 	tagToTeam         face.SliceAlias
 	parseDescription  constant.ParseDescription
-	enricher *alert_enricher.Enricher
-	Verbose bool
+	enricher          *alert_enricher.Enricher
+	Verbose           bool
 }

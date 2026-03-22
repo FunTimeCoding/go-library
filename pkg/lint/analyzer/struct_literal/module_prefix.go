@@ -22,7 +22,12 @@ func modulePrefix(p *analysis.Pass) string {
 				trimmed := strings.TrimSpace(line)
 
 				if strings.HasPrefix(trimmed, "module ") {
-					return strings.TrimSpace(strings.TrimPrefix(trimmed, "module "))
+					return strings.TrimSpace(
+						strings.TrimPrefix(
+							trimmed,
+							"module ",
+						),
+					)
 				}
 			}
 		}

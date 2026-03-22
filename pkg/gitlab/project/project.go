@@ -7,5 +7,5 @@ type Project struct {
 	Namespace  string
 	Name       string
 	Link       string
-	Raw *gitlab.Project
+	Raw        *gitlab.Project
 }

@@ -76,6 +76,7 @@ const (
 )
 
 var Format = option.ExtendedColor.Copy()
+
 const (
 	ServiceDeskCanceled = "Canceled"
 	ServiceDeskClosed   = "Closed"

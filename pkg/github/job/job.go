@@ -12,5 +12,5 @@ type Job struct {
 	Conclusion string
 	Hash       string
 	CreatedAt  time.Time
-	Raw *github.WorkflowJob
+	Raw        *github.WorkflowJob
 }

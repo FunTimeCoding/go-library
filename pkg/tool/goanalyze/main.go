@@ -22,5 +22,10 @@ func Main(
 		defer func() { r.RecoverFlush(recover()) }()
 	}
 
-	multichecker.Main(naming.Analyzer, forbidden_call.Analyzer, string_concatenation.Analyzer, struct_literal.Analyzer)
+	multichecker.Main(
+		naming.Analyzer,
+		forbidden_call.Analyzer,
+		string_concatenation.Analyzer,
+		struct_literal.Analyzer,
+	)
 }

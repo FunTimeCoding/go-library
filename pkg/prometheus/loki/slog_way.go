@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/basic/constant"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
-	loki "github.com/grafana/loki-client-go/loki"
+	"github.com/grafana/loki-client-go/loki"
 	slogloki "github.com/samber/slog-loki/v3"
 	"log/slog"
 )

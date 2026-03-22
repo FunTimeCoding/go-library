@@ -8,5 +8,11 @@ import (
 )
 
 func (m *Model) View() tea.View {
-	return tea.NewView(fmt.Sprintf("%s%s", constant.Table.Render(m.table.View()), separator.Unix))
+	return tea.NewView(
+		fmt.Sprintf(
+			"%s%s",
+			constant.Table.Render(m.table.View()),
+			separator.Unix,
+		),
+	)
 }

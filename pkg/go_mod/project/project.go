@@ -5,6 +5,6 @@ type Project struct {
 	Name              string
 	Path              string
 	Version           string
-	concern        []string
-	runtimeVersion string
+	concern           []string
+	runtimeVersion    string
 }

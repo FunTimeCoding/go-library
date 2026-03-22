@@ -10,5 +10,5 @@ type Override struct {
 	Start     time.Time
 	End       time.Time
 	Rotations []schedule.RotationIdentifier
-	Raw *schedule.ScheduleOverride
+	Raw       *schedule.ScheduleOverride
 }

@@ -41,7 +41,10 @@ func ownedType(
 
 	path := pkg.Path()
 
-	if path != module && !strings.HasPrefix(path, fmt.Sprintf("%s/", module)) {
+	if path != module && !strings.HasPrefix(
+		path,
+		fmt.Sprintf("%s/", module),
+	) {
 		return nil
 	}
 

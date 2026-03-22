@@ -25,7 +25,7 @@ func TestFunctionEmptyBody(t *testing.T) {
 				Path:     "Bravo",
 				Line:     3,
 				LineText: "func main() {\n}",
-			Fixed: true,
+				Fixed:    true,
 			},
 		},
 		"package main\n\nfunc main() {}\n",

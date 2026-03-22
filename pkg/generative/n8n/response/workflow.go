@@ -11,7 +11,7 @@ type Workflow struct {
 	Archived   bool                   `json:"isArchived"`
 	Nodes      []*Node                `json:"nodes"`
 	Connection map[string]*Connection `json:"connections"`
-	Setting   struct {
+	Setting    struct {
 		ExecutionOrder string `json:"executionOrder"`
 	} `json:"settings"`
 	Static any `json:"staticData"`

@@ -12,5 +12,5 @@ type Rotation struct {
 	Type         og.RotationType
 	Participants []og.Participant
 	Start        *time.Time
-	Raw *schedule.Rotation
+	Raw          *schedule.Rotation
 }

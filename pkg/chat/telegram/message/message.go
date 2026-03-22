@@ -10,5 +10,5 @@ type Message struct {
 	Text   string
 	Create *time.Time
 	Update *tgbotapi.Update
-	Raw *tgbotapi.Message
+	Raw    *tgbotapi.Message
 }

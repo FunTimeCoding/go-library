@@ -30,7 +30,11 @@ func From(directory string) *System {
 				errors.PanicOnError(e)
 				relative := strings.TrimPrefix(
 					path,
-					fmt.Sprintf("%s%s", directory, string(filepath.Separator)),
+					fmt.Sprintf(
+						"%s%s",
+						directory,
+						string(filepath.Separator),
+					),
 				)
 				result.Write(relative, string(content))
 

@@ -7,5 +7,5 @@ type Task struct {
 	State string
 	Link  string
 	Type  gitlab.TodoTargetType
-	Raw *gitlab.Todo
+	Raw   *gitlab.Todo
 }

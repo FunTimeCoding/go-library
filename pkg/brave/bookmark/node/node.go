@@ -8,5 +8,5 @@ type Node struct {
 	Link     string
 	Children []*Node
 	Parent   *Node
-	Raw *file.Node
+	Raw      *file.Node
 }

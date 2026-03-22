@@ -8,5 +8,5 @@ import (
 type Request struct {
 	Name   string
 	Create time.Time
-	Raw *github.PullRequest
+	Raw    *github.PullRequest
 }

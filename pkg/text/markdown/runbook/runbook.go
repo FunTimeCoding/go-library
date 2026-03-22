@@ -1,7 +1,7 @@
 package runbook
 
 type Runbook struct {
-	source *[]byte
+	source   *[]byte
 	Filename string
 	Title    string
 	Sections []Section

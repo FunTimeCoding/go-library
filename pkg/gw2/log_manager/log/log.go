@@ -8,5 +8,5 @@ import (
 type Log struct {
 	Accounts []string
 	Time     time.Time
-	Raw *log_manager.Log
+	Raw      *log_manager.Log
 }

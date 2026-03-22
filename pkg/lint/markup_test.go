@@ -31,7 +31,7 @@ func TestMarkup(t *testing.T) {
 				Path:     "Alfa",
 				Line:     1,
 				LineText: "myKey: myValue",
-			Fixed: true,
+				Fixed:    true,
 			},
 		},
 		"---\nmyKey: myValue\n",

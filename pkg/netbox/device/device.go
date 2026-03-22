@@ -14,5 +14,5 @@ type Device struct {
 	PrimaryAddress string
 	Tags           []string
 	Link           string
-	Raw *netbox.DeviceWithConfigContext
+	Raw            *netbox.DeviceWithConfigContext
 }

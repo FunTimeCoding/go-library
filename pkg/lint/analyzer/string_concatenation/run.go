@@ -24,7 +24,11 @@ func run(p *analysis.Pass) (any, error) {
 	i := p.ResultOf[inspect.Analyzer].(*inspector.Inspector)
 	i.WithStack(
 		[]ast.Node{(*ast.BinaryExpr)(nil), (*ast.AssignStmt)(nil)},
-		func(n ast.Node, push bool, stack []ast.Node) bool {
+		func(
+			n ast.Node,
+			push bool,
+			stack []ast.Node,
+		) bool {
 			if !push {
 				return true
 			}

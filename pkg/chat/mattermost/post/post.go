@@ -10,6 +10,6 @@ type Post struct {
 	UserIdentifier string
 	Message        string
 	Create         time.Time
-	User *model.User
-	Raw *model.Post
+	User           *model.User
+	Raw            *model.Post
 }

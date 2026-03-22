@@ -62,7 +62,8 @@ func detailRow(e *store.Entry) g.Node {
 						h.Class("outline contrast"),
 						hx.Post(fmt.Sprintf("/entry/delete?id=%d", e.ID)),
 						hx.Confirm("Delete this entry?"),
-						g.Attr("hx-on::after-request",
+						g.Attr(
+							"hx-on::after-request",
 							fmt.Sprintf(
 								"document.getElementById('row-%d')?.remove();document.getElementById('detail-%d')?.remove()",
 								e.ID, e.ID,
@@ -73,7 +74,8 @@ func detailRow(e *store.Entry) g.Node {
 					h.Button(
 						h.Type("button"),
 						h.Class("outline secondary"),
-						g.Attr("onclick",
+						g.Attr(
+							"onclick",
 							fmt.Sprintf(
 								"var r=document.getElementById('detail-%d');r.style.display='none';r.innerHTML='';r.className=''",
 								e.ID,

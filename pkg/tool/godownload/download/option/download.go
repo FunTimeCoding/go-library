@@ -8,5 +8,5 @@ type Download struct {
 	PackageVersion string
 	Output         string
 	Verbose        bool
-	Package string
+	Package        string
 }

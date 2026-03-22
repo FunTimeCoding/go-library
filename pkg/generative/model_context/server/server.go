@@ -9,15 +9,15 @@ import (
 )
 
 type Server struct {
-	server  *server.MCPServer
-	logger  util.Logger
-	context context.Context
+	server               *server.MCPServer
+	logger               util.Logger
+	context              context.Context
 	openAuthentication   bool
 	verifier             *oidc.IDTokenVerifier
 	once                 sync.Once
 	serverLocator        string
 	authorizationLocator string
 	clientIdentifier     string
-	tokenAuthentication bool
-	token               string
+	tokenAuthentication  bool
+	token                string
 }

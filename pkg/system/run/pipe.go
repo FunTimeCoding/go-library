@@ -6,7 +6,10 @@ import (
 	"log"
 )
 
-func (r *Run) Pipe(input string, s ...string) (string, string) {
+func (r *Run) Pipe(
+	input string,
+	s ...string,
+) (string, string) {
 	c := r.build(s...)
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer

@@ -1,6 +1,6 @@
 package response
 
 type Query struct {
-	Status string `json:"status"`
+	Status string      `json:"status"`
 	Result QueryResult `json:"data"`
 }

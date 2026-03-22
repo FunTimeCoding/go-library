@@ -29,5 +29,5 @@ type Issue struct {
 	ageColor          face.SprintFunction
 	fieldMap          *field_map.Map
 	option            *option.Issue
-	Raw *jira.Issue
+	Raw               *jira.Issue
 }

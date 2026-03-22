@@ -10,5 +10,5 @@ type Workflow struct {
 	Name       string
 	State      string
 	CreatedAt  time.Time
-	Raw *github.Workflow
+	Raw        *github.Workflow
 }

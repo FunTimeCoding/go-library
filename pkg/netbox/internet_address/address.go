@@ -12,5 +12,5 @@ type Address struct {
 	Network          *net.IPNet
 	ObjectType       string
 	ObjectIdentifier int64
-	Raw *netbox.IPAddress
+	Raw              *netbox.IPAddress
 }

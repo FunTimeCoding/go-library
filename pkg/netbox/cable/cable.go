@@ -6,5 +6,5 @@ type Cable struct {
 	Identifier  int32
 	Name        string
 	Description string
-	Raw *netbox.Cable
+	Raw         *netbox.Cable
 }

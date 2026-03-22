@@ -6,5 +6,5 @@ type Code struct {
 	Hash string
 	Name string
 	Path string
-	Raw *github.CodeResult
+	Raw  *github.CodeResult
 }

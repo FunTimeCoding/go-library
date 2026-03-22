@@ -15,5 +15,5 @@ type Event struct {
 	Reason            string
 	Note              string
 	Create            *time.Time
-	Raw *event.Event
+	Raw               *event.Event
 }

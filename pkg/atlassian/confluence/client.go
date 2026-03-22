@@ -10,15 +10,15 @@ import (
 )
 
 type Client struct {
-	host   string
-	labels []string
-	context context.Context
-	basic *basic.Client
-	kaos       *kaos.API
-	virtomize  *virtomize.API
-	treminio   *treminio.Client
-	treminioV2 *treminioV2.Client
+	host         string
+	labels       []string
+	context      context.Context
+	basic        *basic.Client
+	kaos         *kaos.API
+	virtomize    *virtomize.API
+	treminio     *treminio.Client
+	treminioV2   *treminioV2.Client
 	defaultSpace string
 	defaultPage  string
-	verbose bool
+	verbose      bool
 }

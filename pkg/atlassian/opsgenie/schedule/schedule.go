@@ -9,6 +9,6 @@ type Schedule struct {
 	Identifier  string
 	Name        string
 	Description string
-	Team *team.Team
-	Raw *schedule.Schedule
+	Team        *team.Team
+	Raw         *schedule.Schedule
 }

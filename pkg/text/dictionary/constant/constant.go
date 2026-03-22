@@ -3,6 +3,7 @@ package constant
 import "github.com/funtimecoding/go-library/pkg/project"
 
 const File = "dictionary.dic"
+
 var (
 	Skip   = map[string]bool{".git": true, "tmp": true}
 	Prefix = map[string]bool{

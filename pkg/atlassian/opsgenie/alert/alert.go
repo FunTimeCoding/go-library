@@ -12,25 +12,25 @@ import (
 )
 
 type Alert struct {
-	Identifier      string
-	SmallIdentifier int
-	Name            string
-	Status          string
-	Seen            bool
-	Acknowledged    bool
-	Snoozed         bool
-	Priority        alert.Priority
-	Link            string
-	Owner           string
-	Source          string
-	Create          time.Time
-	SnoozeUntil     time.Time
-	Update          time.Time
-	Report          alert.Report
-	Responders      []alert.Responder
-	Tags            []string
-	Details         map[string]string
-	Description     string
+	Identifier        string
+	SmallIdentifier   int
+	Name              string
+	Status            string
+	Seen              bool
+	Acknowledged      bool
+	Snoozed           bool
+	Priority          alert.Priority
+	Link              string
+	Owner             string
+	Source            string
+	Create            time.Time
+	SnoozeUntil       time.Time
+	Update            time.Time
+	Report            alert.Report
+	Responders        []alert.Responder
+	Tags              []string
+	Details           map[string]string
+	Description       string
 	Entity            string
 	Category          string
 	Team              *team.Team
@@ -43,6 +43,6 @@ type Alert struct {
 	descriptionToName face.StringAlias
 	parseDescription  constant.ParseDescription
 	MonitorIdentifier string
-	RawList   *alert.Alert
-	RawDetail *alert.GetAlertResult
+	RawList           *alert.Alert
+	RawDetail         *alert.GetAlertResult
 }

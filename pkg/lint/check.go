@@ -56,9 +56,17 @@ func Check(
 
 	for _, d := range directories {
 		if fix {
-			fmt.Printf("%s: %s (auto-fixed)\n", constant.MissingTestFileText, d)
+			fmt.Printf(
+				"%s: %s (auto-fixed)\n",
+				constant.MissingTestFileText,
+				d,
+			)
 		} else {
-			fmt.Printf("%s: %s (auto-fixable)\n", constant.MissingTestFileText, d)
+			fmt.Printf(
+				"%s: %s (auto-fixable)\n",
+				constant.MissingTestFileText,
+				d,
+			)
 		}
 
 		name := packageNameOf(v, missing[d])
@@ -72,7 +80,11 @@ func Check(
 
 		fixes.Write(
 			filepath.Join(d, filename),
-			stubTestContent(name, strings.Contains(d, "/testdata/"), isToolPackage),
+			stubTestContent(
+				name,
+				strings.Contains(d, "/testdata/"),
+				isToolPackage,
+			),
 		)
 	}
 

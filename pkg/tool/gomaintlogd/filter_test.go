@@ -36,13 +36,15 @@ func TestFilterViaREST(t *testing.T) {
 		{"backup", user2, &system2, &service2},
 		{"deploy", user1, &system2, &service1},
 	} {
-		_, e = c.PostEntryWithResponse(x, client.PostEntryJSONRequestBody{
-			Action:      entry.action,
-			User:        entry.user,
-			System:      entry.system,
-			Service:     entry.service,
-			Description: &desc,
-		})
+		_, e = c.PostEntryWithResponse(
+			x, client.PostEntryJSONRequestBody{
+				Action:      entry.action,
+				User:        entry.user,
+				System:      entry.system,
+				Service:     entry.service,
+				Description: &desc,
+			},
+		)
 		assert.FatalOnError(t, e)
 	}
 	// No filter → all 3
@@ -50,26 +52,44 @@ func TestFilterViaREST(t *testing.T) {
 	assert.FatalOnError(t, e)
 	assert.Count(t, 3, *all.JSON200)
 	// Filter by system
-	bySys1, e := c.GetEntriesWithResponse(x, &client.GetEntriesParams{System: &system1})
+	bySys1, e := c.GetEntriesWithResponse(
+		x,
+		&client.GetEntriesParams{System: &system1},
+	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 1, *bySys1.JSON200)
 	assert.String(t, "restart", (*bySys1.JSON200)[0].Action)
-	bySys2, e := c.GetEntriesWithResponse(x, &client.GetEntriesParams{System: &system2})
+	bySys2, e := c.GetEntriesWithResponse(
+		x,
+		&client.GetEntriesParams{System: &system2},
+	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 2, *bySys2.JSON200)
 	// Filter by user
-	byAlice, e := c.GetEntriesWithResponse(x, &client.GetEntriesParams{User: &user1})
+	byAlice, e := c.GetEntriesWithResponse(
+		x,
+		&client.GetEntriesParams{User: &user1},
+	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 2, *byAlice.JSON200)
-	byBob, e := c.GetEntriesWithResponse(x, &client.GetEntriesParams{User: &user2})
+	byBob, e := c.GetEntriesWithResponse(
+		x,
+		&client.GetEntriesParams{User: &user2},
+	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 1, *byBob.JSON200)
 	assert.String(t, "backup", (*byBob.JSON200)[0].Action)
 	// Filter by service
-	bySvc1, e := c.GetEntriesWithResponse(x, &client.GetEntriesParams{Service: &service1})
+	bySvc1, e := c.GetEntriesWithResponse(
+		x,
+		&client.GetEntriesParams{Service: &service1},
+	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 2, *bySvc1.JSON200)
-	bySvc2, e := c.GetEntriesWithResponse(x, &client.GetEntriesParams{Service: &service2})
+	bySvc2, e := c.GetEntriesWithResponse(
+		x,
+		&client.GetEntriesParams{Service: &service2},
+	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 1, *bySvc2.JSON200)
 	// Combined: alice on worker2 → only "deploy"
@@ -82,7 +102,10 @@ func TestFilterViaREST(t *testing.T) {
 	assert.String(t, "deploy", (*byAliceSys2.JSON200)[0].Action)
 	// No match
 	nobody := "nobody"
-	byNobody, e := c.GetEntriesWithResponse(x, &client.GetEntriesParams{User: &nobody})
+	byNobody, e := c.GetEntriesWithResponse(
+		x,
+		&client.GetEntriesParams{User: &nobody},
+	)
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, byNobody.StatusCode())
 	assert.Count(t, 0, *byNobody.JSON200)
@@ -102,13 +125,25 @@ func TestFilterViaWeb(t *testing.T) {
 	user2 := "bob"
 	svc := "nginx"
 	desc := "test"
-	_, e = c.PostEntryWithResponse(x, client.PostEntryJSONRequestBody{
-		Action: "restart", User: user1, System: &system1, Service: &svc, Description: &desc,
-	})
+	_, e = c.PostEntryWithResponse(
+		x, client.PostEntryJSONRequestBody{
+			Action:      "restart",
+			User:        user1,
+			System:      &system1,
+			Service:     &svc,
+			Description: &desc,
+		},
+	)
 	assert.FatalOnError(t, e)
-	_, e = c.PostEntryWithResponse(x, client.PostEntryJSONRequestBody{
-		Action: "backup", User: user2, System: &system2, Service: &svc, Description: &desc,
-	})
+	_, e = c.PostEntryWithResponse(
+		x, client.PostEntryJSONRequestBody{
+			Action:      "backup",
+			User:        user2,
+			System:      &system2,
+			Service:     &svc,
+			Description: &desc,
+		},
+	)
 	assert.FatalOnError(t, e)
 	// Filter by system=worker1 → "restart" visible, "backup" not
 	body := getBody(t, fmt.Sprintf("%s/entries?system=%s", base, system1))

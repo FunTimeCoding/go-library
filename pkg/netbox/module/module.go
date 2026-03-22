@@ -6,5 +6,5 @@ type Module struct {
 	Identifier  int32
 	Name        string
 	Description string
-	Raw *netbox.Module
+	Raw         *netbox.Module
 }

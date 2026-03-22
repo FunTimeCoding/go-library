@@ -13,6 +13,6 @@ type Format struct {
 	// Raw Print the wrapped object with %+v in a new line
 	ShowRaw bool
 	// Filters To filter arbitrary key-value pairs
-	Filters []*pair.Pair
+	Filters     []*pair.Pair
 	Indentation int
 }

@@ -11,7 +11,12 @@ func WindowsToLinuxPath(windowsPath string) string {
 
 	if len(result) > 1 && result[1] == ':' {
 		driveLetter := strings.ToLower(string(result[0]))
-		result = fmt.Sprintf("%s%s%s", separator.Slash, driveLetter, result[2:])
+		result = fmt.Sprintf(
+			"%s%s%s",
+			separator.Slash,
+			driveLetter,
+			result[2:],
+		)
 	}
 
 	return result

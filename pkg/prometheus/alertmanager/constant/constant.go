@@ -60,7 +60,7 @@ const (
 	WarningSeverity     = "warning"
 )
 
-const ExpiredState = "expired" // Silence state
+const ExpiredState = "expired"          // Silence state
 const NodeNotReady = "KubeNodeNotReady" // Alert name
 var (
 	Format = option.Color.Copy().Tag(tag.Comment)

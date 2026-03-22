@@ -36,7 +36,12 @@ func recentTable(records []store.Record) g.Node {
 						h.Td(
 							h.A(
 								h.Class("alert-link"),
-								h.Href(fmt.Sprintf("/alerts?name=%s", r.Name)),
+								h.Href(
+									fmt.Sprintf(
+										"/alerts?name=%s",
+										r.Name,
+									),
+								),
 								g.Text(r.Name),
 							),
 						),

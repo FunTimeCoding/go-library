@@ -58,7 +58,24 @@
   - Aim for functions/methods with ~15 calls or fewer to maintain readability
   - Line length: break at 80 characters, prioritizing fewer total lines (break single-arg calls before multi-arg calls)
 - **Multiline function calls** - when args don't fit one line, each arg gets its own line with closing paren separate
-- **Prefer go-library wrappers** - use `system.Open()`, `system.Create()`, `system.FileStat()`, `system.Copy()`, `system.TarWriteHeader()`, `errors.PanicFlush()` instead of stdlib + error checking
+- **Prefer go-library wrappers** - use go-library wrappers instead of stdlib + error checking. Quick reference:
+
+  | stdlib call | go-library replacement |
+  |---|---|
+  | `os.Open(path)` | `system.Open(path)` |
+  | `os.Create(path)` | `system.Create(path)` |
+  | `os.MkdirAll(path, 0755)` | `system.MakeDirectory(path)` |
+  | `filepath.Rel(base, target)` | `system.RelativePath(base, target)` |
+  | `r.ReadString('\n')` | `system.ReadLine(r)` |
+  | `os.Stat(path)` | `system.FileStat(path)` |
+  | `io.Copy(dst, src)` | `system.Copy(dst, src)` |
+  | `tar.FileInfoHeader(...)` | `system.TarWriteHeader(...)` |
+  | `w.Flush()` | `errors.PanicFlush(w)` |
+  | `defer f.Close()` | `defer errors.PanicClose(f)` |
+  | `f.Write(b)` | `_, e = f.Write(b); errors.PanicOnError(e)` |
+  | `transform.String(t, s)` | `result, _, e := transform.String(t, s); errors.PanicOnError(e)` |
+
+  **Touch pattern in tests:** `errors.PanicClose(system.Create(path))` creates an empty file and closes it in one line.
 
 ## Structure
 

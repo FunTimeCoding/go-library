@@ -87,7 +87,7 @@ require (
 	github.com/trivago/tgo v1.0.7
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
-	github.com/yuin/goldmark v1.8.0
+	github.com/yuin/goldmark v1.8.1
 	gitlab.com/gitlab-org/api/client-go/v2 v2.7.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.49.0

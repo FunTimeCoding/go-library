@@ -62,7 +62,9 @@ func Spacing(
 			strings.HasPrefix(trimmed, "type "))
 
 		isVar := topLevel && !isBlank && strings.HasPrefix(trimmed, "var ")
-		isConst := topLevel && !isBlank && strings.HasPrefix(trimmed, "const ")
+		isConst := topLevel &&
+			!isBlank &&
+			strings.HasPrefix(trimmed, "const ")
 
 		isClosingBrace := strings.HasPrefix(trimmed, "}") ||
 			strings.HasPrefix(trimmed, "case ") ||

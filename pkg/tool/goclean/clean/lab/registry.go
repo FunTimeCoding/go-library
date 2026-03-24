@@ -17,13 +17,22 @@ func Registry(
 		p.Identifier,
 		false,
 	) {
-		// TODO: This still doesn't delete the latest, test now to see what happens
 		images := c.Images(p.Identifier, r.ID)
 
 		if len(images) == 0 {
 			continue
 		}
 
+		if strings.HasSuffix(r.Name, "/cache") {
+			for _, i := range images {
+				fmt.Printf("Image: %s\n", i.Name)
+				c.DeleteImage(p.Identifier, r.ID, i.Name)
+			}
+
+			continue
+		}
+
+		// TODO: This still doesn't delete the latest, test now to see what happens
 		latest := image.Latest(images)
 
 		for _, i := range images {

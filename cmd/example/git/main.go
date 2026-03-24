@@ -9,9 +9,10 @@ import (
 )
 
 func main() {
-	git.BuildInformation()
+	gitlab.Registry()
 
 	if false {
+		git.BuildInformation()
 		clean_job.Check()
 		gitlab.BranchRequest()
 		gitlab.CloneAll()

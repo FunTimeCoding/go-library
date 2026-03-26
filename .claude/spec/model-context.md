@@ -96,6 +96,7 @@ func (s *Server) getAlerts(
 - Required params: `r.RequireString(...)` - return `mcp.NewToolResultError(...)` on failure, not a Go error
 - Optional params: `r.GetString("key", "")` / `r.GetFloat("key", 0)`
 - Results: `mcp.NewToolResultText(...)` for success
+- Error handling is two-tier — input validation vs infrastructure failures. See `error-handling.md`.
 
 ## Wiring into run.go
 

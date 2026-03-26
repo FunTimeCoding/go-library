@@ -2,10 +2,9 @@
 
 ## Error Handling
 
-- **Prefer `PanicOnError` over returning errors** in test/internal code
+- **Prefer `PanicOnError` over returning errors** — see `error-handling.md` for the full strategy and the exceptions (MCP handlers, flow control)
 - **Prefer `PanicClose` over checking close errors**
 - Use `LogClose` only in loops/uncertain contexts (e.g., validation)
-- Production APIs still return `error`, but helpers panic
 - **Error variable naming:**
   - `e` for first error in scope
   - `f` for second error in same scope (avoid shadowing)

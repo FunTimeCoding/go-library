@@ -17,6 +17,7 @@ Design and coding specs live in `.claude/spec/`:
 - `taskfile.md` - task runner, git hooks, CI pipeline
 - `locator.md` - fluent URL builder (`pkg/web/locator`)
 - `openapi.md` - OpenAPI codegen pattern (server/, client/, route/ structure)
+- `error-handling.md` - error handling strategies: default panic, MCP translation, flow control exception, store method rule
 
 Read the relevant spec before working in that area.
 

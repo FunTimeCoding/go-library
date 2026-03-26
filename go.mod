@@ -54,7 +54,7 @@ require (
 	github.com/kestra-io/client-sdk/go-sdk v1.0.1
 	github.com/liushuangls/go-anthropic/v2 v2.17.3
 	github.com/luthermonson/go-proxmox v0.4.0
-	github.com/mark3labs/mcp-go v0.45.0
+	github.com/mark3labs/mcp-go v0.46.0
 	github.com/mattermost/mattermost/server/public v0.2.1
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.4.1
@@ -235,7 +235,6 @@ require (
 	github.com/henvic/httpretty v0.1.4 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/invopop/jsonschema v0.13.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect

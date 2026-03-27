@@ -40,7 +40,7 @@ func checkNaming(
 			}
 		}
 
-		fix := chooseFix(ident.Name, applicable)
+		fix := resolveFix(ident.Name, segment, applicable, o)
 
 		return &violation{
 			ident:   ident,

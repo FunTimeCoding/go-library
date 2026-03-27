@@ -2,15 +2,8 @@ package goanalyze
 
 import (
 	"fmt"
-	"go/token"
 	"golang.org/x/tools/go/packages"
 )
-
-type edit struct {
-	position token.Pos
-	end      token.Pos
-	newText  string
-}
 
 func buildAllEdits(
 	all []*packages.Package,
@@ -19,6 +12,15 @@ func buildAllEdits(
 	var result []edit
 
 	for _, v := range violations {
+		if v.fix == "" {
+			fmt.Printf(
+				"%s: cannot auto-fix (collision)\n",
+				v.ident.Name,
+			)
+
+			continue
+		}
+
 		replacement := replaceSegment(v.ident.Name, v.segment, v.fix)
 		references := findAllReferences(all, v.object)
 		fmt.Printf(

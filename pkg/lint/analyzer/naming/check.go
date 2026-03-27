@@ -66,16 +66,19 @@ func check(
 		}
 
 		if o != nil && !ident.IsExported() {
-			fix := chooseFix(ident.Name, applicable)
-			replacement := replaceSegment(ident.Name, segment, fix)
-			edits := buildEdits(p, o, segment, fix)
+			fix := resolveFix(ident.Name, segment, applicable, o)
 
-			if len(edits) > 0 {
-				diagnostic.SuggestedFixes = []analysis.SuggestedFix{
-					{
-						Message:   fmt.Sprintf("rename to %s", replacement),
-						TextEdits: edits,
-					},
+			if fix != "" {
+				replacement := replaceSegment(ident.Name, segment, fix)
+				edits := buildEdits(p, o, segment, fix)
+
+				if len(edits) > 0 {
+					diagnostic.SuggestedFixes = []analysis.SuggestedFix{
+						{
+							Message:   fmt.Sprintf("rename to %s", replacement),
+							TextEdits: edits,
+						},
+					}
 				}
 			}
 		}

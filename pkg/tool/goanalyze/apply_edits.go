@@ -12,9 +12,10 @@ import (
 func applyEdits(
 	fileSet *token.FileSet,
 	edits []edit,
+	directory string,
 	diff bool,
 ) {
-	grouped := groupByFile(fileSet, edits)
+	grouped := groupByFile(fileSet, edits, directory)
 
 	for path, fileEdits := range grouped {
 		sort.Slice(fileEdits, func(i, j int) bool {
@@ -56,9 +57,14 @@ type fileEdit struct {
 func groupByFile(
 	fileSet *token.FileSet,
 	edits []edit,
+	directory string,
 ) map[string][]fileEdit {
 	result := make(map[string][]fileEdit)
-	workingDirectory := system.WorkingDirectory()
+	workingDirectory := directory
+
+	if workingDirectory == "" {
+		workingDirectory = system.WorkingDirectory()
+	}
 
 	for _, e := range edits {
 		position := fileSet.Position(e.position)

@@ -9,11 +9,13 @@ import (
 
 func load(
 	fileSet *token.FileSet,
+	directory string,
 	patterns []string,
 ) []*packages.Package {
 	configuration := &packages.Config{
 		Mode:  packages.LoadSyntax,
 		Fset:  fileSet,
+		Dir:   directory,
 		Tests: true,
 	}
 	result, e := packages.Load(configuration, patterns...)

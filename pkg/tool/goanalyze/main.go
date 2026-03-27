@@ -64,7 +64,7 @@ func runFix(patterns []string, diff bool) {
 	}
 
 	fileSet := token.NewFileSet()
-	all := load(fileSet, patterns)
+	all := load(fileSet, "", patterns)
 	violations := findViolations(all)
 
 	if len(violations) == 0 {
@@ -72,5 +72,5 @@ func runFix(patterns []string, diff bool) {
 	}
 
 	edits := buildAllEdits(all, violations)
-	applyEdits(fileSet, edits, diff)
+	applyEdits(fileSet, edits, "", diff)
 }

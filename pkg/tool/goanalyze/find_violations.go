@@ -25,6 +25,10 @@ func findViolations(all []*packages.Package) []violation {
 				continue
 			}
 
+			if isInterfaceMethodDefinition(o) {
+				continue
+			}
+
 			if isInterfaceMethod(p, o) {
 				continue
 			}

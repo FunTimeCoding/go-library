@@ -40,5 +40,8 @@ func New(
 		result.closedStatus = []string{constant.Closed}
 	}
 
+	// Verify token. Search V2 returns 200 even if token is invalid.
+	result.User()
+
 	return result
 }

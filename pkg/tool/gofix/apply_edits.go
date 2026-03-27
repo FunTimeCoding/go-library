@@ -2,6 +2,7 @@ package gofix
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"go/token"
 	"os"
 	"sort"
@@ -19,7 +20,6 @@ func applyEdits(
 		sort.Slice(fileEdits, func(i, j int) bool {
 			return fileEdits[i].offset > fileEdits[j].offset
 		})
-
 		original, e := os.ReadFile(path)
 
 		if e != nil {
@@ -58,7 +58,7 @@ func groupByFile(
 	edits []edit,
 ) map[string][]fileEdit {
 	result := make(map[string][]fileEdit)
-	workingDirectory, _ := os.Getwd()
+	workingDirectory := system.WorkingDirectory()
 
 	for _, e := range edits {
 		position := fileSet.Position(e.position)
@@ -99,7 +99,6 @@ func printDiff(path string, original []byte, modified []byte) {
 	}
 
 	fmt.Printf("--- %s\n+++ %s\n", path, path)
-
 	originalLines := splitLines(original)
 	modifiedLines := splitLines(modified)
 

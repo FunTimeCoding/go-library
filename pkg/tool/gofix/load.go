@@ -16,7 +16,6 @@ func load(
 		Fset:  fileSet,
 		Tests: true,
 	}
-
 	result, e := packages.Load(configuration, patterns...)
 
 	if e != nil {

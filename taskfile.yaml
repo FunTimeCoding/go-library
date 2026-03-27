@@ -8,7 +8,7 @@ tasks:
     - golint --fix
     - golangci-lint config verify
     - golangci-lint run
-    - goanalyze ./...
+    - goanalyze --fix ./...
     silent: true
   test: {cmds: ['gotestsum --format standard-quiet'], silent: true}
   check:

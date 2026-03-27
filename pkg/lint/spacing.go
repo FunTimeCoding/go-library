@@ -61,8 +61,8 @@ func Spacing(
 		) ||
 			strings.HasPrefix(trimmed, "type "))
 
-		isVar := topLevel && !isBlank && strings.HasPrefix(trimmed, "var ")
-		isConst := topLevel &&
+		isVariable := topLevel && !isBlank && strings.HasPrefix(trimmed, "var ")
+		isConstant := topLevel &&
 			!isBlank &&
 			strings.HasPrefix(trimmed, "const ")
 
@@ -132,9 +132,9 @@ func Spacing(
 			pendingBlank = false
 
 			if topLevel {
-				pastIsVar := strings.HasPrefix(pastTrimmed, "var ")
-				pastIsConst := strings.HasPrefix(pastTrimmed, "const ")
-				sameKind := (pastIsVar && isVar) || (pastIsConst && isConst)
+				pastIsVariable := strings.HasPrefix(pastTrimmed, "var ")
+				pastIsConstant := strings.HasPrefix(pastTrimmed, "const ")
+				sameKind := (pastIsVariable && isVariable) || (pastIsConstant && isConstant)
 
 				if sameKind {
 					// Spurious blank between consecutive top-level declarations of the same kind - remove.
@@ -227,9 +227,9 @@ func Spacing(
 			)
 		}
 
-		pastIsVar := strings.HasPrefix(pastTrimmed, "var ")
-		pastIsConst := strings.HasPrefix(pastTrimmed, "const ")
-		crossKind := (pastIsVar && isConst) || (pastIsConst && isVar)
+		pastIsVariable := strings.HasPrefix(pastTrimmed, "var ")
+		pastIsConstant := strings.HasPrefix(pastTrimmed, "const ")
+		crossKind := (pastIsVariable && isConstant) || (pastIsConstant && isVariable)
 
 		if crossKind && !pastWasBlank && pastLine != "" {
 			s.ChangedLine("")

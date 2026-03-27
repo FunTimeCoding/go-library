@@ -1,0 +1,3 @@
+package example
+
+func FixtureMarkup() {} // want `use "markup" instead of "html" in FixtureHtml`

@@ -1,0 +1,3 @@
+package example
+
+type DirectoryEntry struct{} // want `use "directory" instead of "dir" in DirEntry`

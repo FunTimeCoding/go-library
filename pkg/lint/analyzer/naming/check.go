@@ -1,6 +1,7 @@
 package naming
 
 import (
+	"fmt"
 	"go/ast"
 	"go/types"
 	"golang.org/x/tools/go/analysis"
@@ -15,20 +16,20 @@ func check(
 		return
 	}
 
-	_, isVar := o.(*types.Var)
+	_, isVariable := o.(*types.Var)
 
 	for _, segment := range segments(ident.Name) {
 		if noSuggestion[segment] {
-			p.Reportf(
-				ident.Pos(),
-				"avoid %q in name, use a more specific term",
-				segment,
-			)
+			p.Report(analysis.Diagnostic{
+				Pos:     ident.Pos(),
+				End:     ident.End(),
+				Message: fmt.Sprintf("avoid %q in name, use a more specific term", segment),
+			})
 
 			return
 		}
 
-		alts, hasSuggestion := suggestions[segment]
+		alternatives, hasSuggestion := suggestions[segment]
 
 		if !hasSuggestion {
 			continue
@@ -36,34 +37,71 @@ func check(
 
 		var applicable []string
 
-		for _, alt := range alts {
-			if len(alt) > 1 || isVar {
-				applicable = append(applicable, alt)
+		for _, alternative := range alternatives {
+			if len(alternative) > 1 || isVariable {
+				applicable = append(applicable, alternative)
 			}
 		}
 
 		if len(applicable) == 0 {
-			p.Reportf(
-				ident.Pos(),
-				"avoid %q in name, use a more specific term",
-				segment,
-			)
+			p.Report(analysis.Diagnostic{
+				Pos:     ident.Pos(),
+				End:     ident.End(),
+				Message: fmt.Sprintf("avoid %q in name, use a more specific term", segment),
+			})
 
 			return
 		}
 
-		for _, alt := range applicable {
-			if containsSegment(ident.Name, alt) {
+		for _, alternative := range applicable {
+			if containsSegment(ident.Name, alternative) {
 				return
 			}
 		}
 
-		p.Reportf(
-			ident.Pos(),
-			"%s",
-			formatMessage(applicable, segment, ident.Name),
-		)
+		diagnostic := analysis.Diagnostic{
+			Pos:     ident.Pos(),
+			End:     ident.End(),
+			Message: formatMessage(applicable, segment, ident.Name),
+		}
+
+		if o != nil {
+			fix := chooseFix(ident.Name, applicable)
+			replacement := replaceSegment(ident.Name, segment, fix)
+			edits := buildEdits(p, o, segment, fix)
+
+			if len(edits) > 0 {
+				diagnostic.SuggestedFixes = []analysis.SuggestedFix{
+					{
+						Message:   fmt.Sprintf("rename to %s", replacement),
+						TextEdits: edits,
+					},
+				}
+			}
+		}
+
+		p.Report(diagnostic)
 
 		return
 	}
+}
+
+func buildEdits(
+	p *analysis.Pass,
+	o types.Object,
+	segment string,
+	fix string,
+) []analysis.TextEdit {
+	references := findReferences(p, o)
+	var edits []analysis.TextEdit
+
+	for _, reference := range references {
+		edits = append(edits, analysis.TextEdit{
+			Pos:     reference.Pos(),
+			End:     reference.End(),
+			NewText: []byte(replaceSegment(reference.Name, segment, fix)),
+		})
+	}
+
+	return edits
 }

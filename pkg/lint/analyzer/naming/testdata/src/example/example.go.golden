@@ -1,0 +1,5 @@
+package example
+
+type Example struct {
+	directories []string // want `use "directories" instead of "dirs" in dirs`
+}

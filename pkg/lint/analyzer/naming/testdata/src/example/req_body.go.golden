@@ -1,0 +1,3 @@
+package example
+
+type RequestBody struct{} // want `use "request" instead of "req" in ReqBody`

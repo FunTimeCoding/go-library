@@ -1,0 +1,3 @@
+package example
+
+func FixtureAddress() {} // want `use "address" instead of "addr" in FixtureAddr`

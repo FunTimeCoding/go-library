@@ -1,0 +1,3 @@
+package example
+
+func FixtureDeclaration() {} // want `use "declaration" instead of "decl" in FixtureDecl`

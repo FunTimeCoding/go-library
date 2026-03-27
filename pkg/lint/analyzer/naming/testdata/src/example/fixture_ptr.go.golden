@@ -1,0 +1,3 @@
+package example
+
+func FixturePointer() {} // want `use "pointer" instead of "ptr" in FixturePtr`

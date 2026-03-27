@@ -40,6 +40,8 @@ var suggestions = map[string][]string{
 	"concat": {"concatenate"},
 	"obj":    {"o", "object"},
 	"stmt":   {"s", "statement"},
+	"var":    {"v", "variable"},
+	"const":  {"c", "constant"},
 }
 
 // noSuggestion contains banned noise words with no prescribed replacement.

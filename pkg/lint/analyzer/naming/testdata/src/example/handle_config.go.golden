@@ -1,0 +1,3 @@
+package example
+
+func HandleConfiguration() {} // want `use "configuration" instead of "config" in HandleConfig`

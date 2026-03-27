@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func StrayConst(
+func StrayConstant(
 	path string,
 	r io.Reader,
 ) *file_report.Report {
@@ -41,8 +41,8 @@ func StrayConst(
 		if !packageConstant && depth == 0 &&
 			(strings.HasPrefix(trimmed, "const ") || trimmed == "const (") {
 			s.AddConcern(
-				constant.StrayConstKey,
-				constant.StrayConstText,
+				constant.StrayConstantKey,
+				constant.StrayConstantText,
 				path,
 				number,
 				line,

@@ -31,7 +31,7 @@ func Check(
 			PackageName,
 			TypeCount,
 			FunctionCount,
-			StrayConst,
+			StrayConstant,
 			Spacing,
 		},
 		fix,

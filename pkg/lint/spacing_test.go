@@ -307,7 +307,7 @@ func TestSpacingRawStringLiteral(t *testing.T) {
 	)
 }
 
-func TestSpacingVarBlockCompositeLiteral(t *testing.T) {
+func TestSpacingVariableBlockCompositeLiteral(t *testing.T) {
 	l := Spacing(
 		library.Papa,
 		strings.NewReader(
@@ -625,7 +625,7 @@ func TestSpacingMissingBlankBetweenFunctions(t *testing.T) {
 	)
 }
 
-func TestSpacingConsecutiveTopLevelVarNoBlankAdded(t *testing.T) {
+func TestSpacingConsecutiveTopLevelVariableNoBlankAdded(t *testing.T) {
 	l := Spacing(
 		"topvar",
 		strings.NewReader(
@@ -759,19 +759,19 @@ func TestSpacingInterFunctionBlankAfterNestedFuncLiteral(t *testing.T) {
 	)
 }
 
-func TestSpacingBlankBetweenTopLevelConstAndVarPreserved(t *testing.T) {
+func TestSpacingBlankBetweenTopLevelConstantAndVarPreserved(t *testing.T) {
 	input := "package example\n\nconst A = 1\n\nvar B = 2\n"
 	l := Spacing("constvarblank", strings.NewReader(input))
 	assertReport(t, "constvarblank", false, nil, input, l)
 }
 
-func TestSpacingBlankBetweenTopLevelVarAndConstPreserved(t *testing.T) {
+func TestSpacingBlankBetweenTopLevelVariableAndConstPreserved(t *testing.T) {
 	input := "package example\n\nvar A = 1\n\nconst B = 2\n"
 	l := Spacing("varconstblank", strings.NewReader(input))
 	assertReport(t, "varconstblank", false, nil, input, l)
 }
 
-func TestSpacingMissingBlankBetweenTopLevelConstAndVarInserted(t *testing.T) {
+func TestSpacingMissingBlankBetweenTopLevelConstantAndVarInserted(t *testing.T) {
 	l := Spacing(
 		"constvarinsert",
 		strings.NewReader("package example\n\nconst A = 1\nvar B = 2\n"),
@@ -782,8 +782,8 @@ func TestSpacingMissingBlankBetweenTopLevelConstAndVarInserted(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBetweenVarConstKey,
-				Text:     lintConstant.MissingBlankBetweenVarConstText,
+				Key:      lintConstant.MissingBlankBetweenVariableConstKey,
+				Text:     lintConstant.MissingBlankBetweenVariableConstText,
 				Path:     "constvarinsert",
 				Line:     4,
 				LineText: "var B = 2",
@@ -795,7 +795,7 @@ func TestSpacingMissingBlankBetweenTopLevelConstAndVarInserted(t *testing.T) {
 	)
 }
 
-func TestSpacingMissingBlankBetweenTopLevelVarAndConstInserted(t *testing.T) {
+func TestSpacingMissingBlankBetweenTopLevelVariableAndConstInserted(t *testing.T) {
 	l := Spacing(
 		"varconstinsert",
 		strings.NewReader("package example\n\nvar A = 1\nconst B = 2\n"),
@@ -806,8 +806,8 @@ func TestSpacingMissingBlankBetweenTopLevelVarAndConstInserted(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBetweenVarConstKey,
-				Text:     lintConstant.MissingBlankBetweenVarConstText,
+				Key:      lintConstant.MissingBlankBetweenVariableConstKey,
+				Text:     lintConstant.MissingBlankBetweenVariableConstText,
 				Path:     "varconstinsert",
 				Line:     4,
 				LineText: "const B = 2",

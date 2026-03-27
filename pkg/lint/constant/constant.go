@@ -51,8 +51,8 @@ const (
 	MultipleFunctionsKey  = "multiple_functions"
 	MultipleFunctionsText = "Multiple function definitions in one file"
 
-	StrayConstKey  = "stray_const"
-	StrayConstText = "Top-level const outside of a constant file or constant package"
+	StrayConstantKey  = "stray_const"
+	StrayConstantText = "Top-level const outside of a constant file or constant package"
 
 	BlankInsideFunctionKey  = "blank_inside_function"
 	BlankInsideFunctionText = "Blank line between statements inside function body"
@@ -63,8 +63,8 @@ const (
 	ExtraneousTopLevelBlankKey  = "extraneous_top_level_blank"
 	ExtraneousTopLevelBlankText = "Extraneous blank line between top-level declarations"
 
-	MissingBlankBetweenVarConstKey  = "missing_blank_between_var_const"
-	MissingBlankBetweenVarConstText = "Missing blank line between top-level const and var declarations"
+	MissingBlankBetweenVariableConstKey  = "missing_blank_between_var_const"
+	MissingBlankBetweenVariableConstText = "Missing blank line between top-level const and var declarations"
 )
 
 var PackageBlocklist = []string{"api"}

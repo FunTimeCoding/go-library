@@ -234,8 +234,8 @@ func Spacing(
 		if crossKind && !pastWasBlank && pastLine != "" {
 			s.ChangedLine("")
 			s.AddConcern(
-				constant.MissingBlankBetweenVarConstKey,
-				constant.MissingBlankBetweenVarConstText,
+				constant.MissingBlankBetweenVariableConstKey,
+				constant.MissingBlankBetweenVariableConstText,
 				path,
 				number,
 				line,

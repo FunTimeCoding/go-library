@@ -44,15 +44,3 @@ func findViolations(all []*packages.Package) []violation {
 
 	return result
 }
-
-func buildGeneratedSet(p *packages.Package) map[string]bool {
-	result := make(map[string]bool)
-
-	for _, file := range p.Syntax {
-		if isGenerated(file) {
-			result[p.Fset.File(file.Pos()).Name()] = true
-		}
-	}
-
-	return result
-}

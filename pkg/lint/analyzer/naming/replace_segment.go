@@ -1,6 +1,7 @@
 package naming
 
 import (
+	"fmt"
 	"strings"
 	"unicode"
 )
@@ -40,16 +41,5 @@ func replaceSegment(name, old, replacement string) string {
 		}
 	}
 
-	return name[:target.start] + b.String() + name[target.end:]
-}
-
-func capitalize(s string) string {
-	if s == "" {
-		return s
-	}
-
-	r := []rune(s)
-	r[0] = unicode.ToUpper(r[0])
-
-	return string(r)
+	return fmt.Sprintf("%s%s%s", name[:target.start], b.String(), name[target.end:])
 }

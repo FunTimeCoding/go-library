@@ -2,11 +2,9 @@ package goanalyze
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/system"
 	"go/token"
 	"os"
 	"sort"
-	"strings"
 )
 
 func applyEdits(
@@ -46,105 +44,4 @@ func applyEdits(
 			}
 		}
 	}
-}
-
-type fileEdit struct {
-	offset  int
-	length  int
-	newText string
-}
-
-func groupByFile(
-	fileSet *token.FileSet,
-	edits []edit,
-	directory string,
-) map[string][]fileEdit {
-	result := make(map[string][]fileEdit)
-	workingDirectory := directory
-
-	if workingDirectory == "" {
-		workingDirectory = system.WorkingDirectory()
-	}
-
-	for _, e := range edits {
-		position := fileSet.Position(e.position)
-		endPosition := fileSet.Position(e.end)
-		path := position.Filename
-
-		if !strings.HasPrefix(path, workingDirectory) {
-			continue
-		}
-
-		result[path] = append(result[path], fileEdit{
-			offset:  position.Offset,
-			length:  endPosition.Offset - position.Offset,
-			newText: e.newText,
-		})
-	}
-
-	return result
-}
-
-func splice(
-	b []byte,
-	offset int,
-	length int,
-	replacement []byte,
-) []byte {
-	var result []byte
-	result = append(result, b[:offset]...)
-	result = append(result, replacement...)
-	result = append(result, b[offset+length:]...)
-
-	return result
-}
-
-func printDiff(path string, original []byte, modified []byte) {
-	if string(original) == string(modified) {
-		return
-	}
-
-	fmt.Printf("--- %s\n+++ %s\n", path, path)
-	originalLines := splitLines(original)
-	modifiedLines := splitLines(modified)
-
-	for i := 0; i < len(originalLines) || i < len(modifiedLines); i++ {
-		var o, m string
-
-		if i < len(originalLines) {
-			o = originalLines[i]
-		}
-
-		if i < len(modifiedLines) {
-			m = modifiedLines[i]
-		}
-
-		if o != m {
-			if o != "" {
-				fmt.Printf("-%s\n", o)
-			}
-
-			if m != "" {
-				fmt.Printf("+%s\n", m)
-			}
-		}
-	}
-}
-
-func splitLines(b []byte) []string {
-	var result []string
-	start := 0
-
-	for i, c := range b {
-		if c == '\n' {
-			result = append(result, string(b[start:i]))
-			start = i + 1
-		}
-	}
-
-	if start < len(b) {
-		result = append(result, string(b[start:]))
-	}
-
-	return result
 }

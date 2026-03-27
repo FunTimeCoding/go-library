@@ -95,14 +95,31 @@ Test fixtures:
   (framework applies all SuggestedFixes and compares against .golden)
 - Add new fixtures for `var`/`const` bans
 
-### Phase 2 — forbidden_call
+### Phase 2 — integrate gofix into goanalyze
 
-- `pkg/lint/analyzer/forbidden_call/check_call.go` — add SuggestedFixes
-- Import rewriting logic (TextEdit for import block)
-- Tests
+Replace `multichecker.Main()` with a custom runner that:
+1. Loads all packages via `go/packages.Load` with `LoadSyntax` + `Tests: true`
+2. Runs all four analyzers per-package (same diagnostics as today)
+3. With `--fix`: does cross-package renames for exported naming violations
+4. Dedup by `token.Pos` to handle test package duality
+5. Skip interface methods (`isInterfaceMethod`) and generated files
+6. Filter edits to working directory only (no build cache)
 
-### Phase 3 — string_concatenation + struct_literal
+Delete `cmd/gofix/` and `pkg/tool/gofix/` after merge.
+Move needed logic into `pkg/lint/analyzer/naming/` or a new `pkg/lint/fix/` package.
 
-- These are lower leverage (less common, trickier edge cases)
+### Phase 3 — integration test for cross-package rename
+
+Test that creates a temp Go module with multiple packages, runs the
+fix logic, and verifies output files. Validates:
+- Unexported identifiers renamed within package
+- Exported identifiers renamed across packages
+- Interface methods skipped
+- Generated files skipped
+- References in test files included
+
+### Phase 4 — forbidden_call + string_concatenation + struct_literal
+
+- forbidden_call: add SuggestedFixes, import rewriting
 - string_concatenation: expression-to-source rendering
 - struct_literal: constructor existence check

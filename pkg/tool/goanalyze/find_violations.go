@@ -1,8 +1,7 @@
-package gofix
+package goanalyze
 
 import (
 	"go/token"
-	"go/types"
 	"golang.org/x/tools/go/packages"
 )
 
@@ -22,15 +21,7 @@ func findViolations(all []*packages.Package) []violation {
 				continue
 			}
 
-			if !ident.IsExported() {
-				continue
-			}
-
 			if generatedFiles[p.Fset.File(ident.Pos()).Name()] {
-				continue
-			}
-
-			if _, isVariable := o.(*types.Var); isVariable {
 				continue
 			}
 

@@ -1,4 +1,4 @@
-package gofix
+package goanalyze
 
 var suggestions = map[string][]string{
 	"url":    {"l", "locator"},

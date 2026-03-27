@@ -759,19 +759,19 @@ func TestSpacingInterFunctionBlankAfterNestedFuncLiteral(t *testing.T) {
 	)
 }
 
-func TestSpacingBlankBetweenTopLevelConstantAndVarPreserved(t *testing.T) {
+func TestSpacingBlankBetweenTopLevelConstantAndVariablePreserved(t *testing.T) {
 	input := "package example\n\nconst A = 1\n\nvar B = 2\n"
 	l := Spacing("constvarblank", strings.NewReader(input))
 	assertReport(t, "constvarblank", false, nil, input, l)
 }
 
-func TestSpacingBlankBetweenTopLevelVariableAndConstPreserved(t *testing.T) {
+func TestSpacingBlankBetweenTopLevelVariableAndConstantPreserved(t *testing.T) {
 	input := "package example\n\nvar A = 1\n\nconst B = 2\n"
 	l := Spacing("varconstblank", strings.NewReader(input))
 	assertReport(t, "varconstblank", false, nil, input, l)
 }
 
-func TestSpacingMissingBlankBetweenTopLevelConstantAndVarInserted(t *testing.T) {
+func TestSpacingMissingBlankBetweenTopLevelConstantAndVariableInserted(t *testing.T) {
 	l := Spacing(
 		"constvarinsert",
 		strings.NewReader("package example\n\nconst A = 1\nvar B = 2\n"),
@@ -782,8 +782,8 @@ func TestSpacingMissingBlankBetweenTopLevelConstantAndVarInserted(t *testing.T) 
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBetweenVariableConstKey,
-				Text:     lintConstant.MissingBlankBetweenVariableConstText,
+				Key:      lintConstant.MissingBlankBetweenVariableConstantKey,
+				Text:     lintConstant.MissingBlankBetweenVariableConstantText,
 				Path:     "constvarinsert",
 				Line:     4,
 				LineText: "var B = 2",
@@ -795,7 +795,7 @@ func TestSpacingMissingBlankBetweenTopLevelConstantAndVarInserted(t *testing.T) 
 	)
 }
 
-func TestSpacingMissingBlankBetweenTopLevelVariableAndConstInserted(t *testing.T) {
+func TestSpacingMissingBlankBetweenTopLevelVariableAndConstantInserted(t *testing.T) {
 	l := Spacing(
 		"varconstinsert",
 		strings.NewReader("package example\n\nvar A = 1\nconst B = 2\n"),
@@ -806,8 +806,8 @@ func TestSpacingMissingBlankBetweenTopLevelVariableAndConstInserted(t *testing.T
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBetweenVariableConstKey,
-				Text:     lintConstant.MissingBlankBetweenVariableConstText,
+				Key:      lintConstant.MissingBlankBetweenVariableConstantKey,
+				Text:     lintConstant.MissingBlankBetweenVariableConstantText,
 				Path:     "varconstinsert",
 				Line:     4,
 				LineText: "const B = 2",

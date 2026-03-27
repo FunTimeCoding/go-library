@@ -1,4 +1,4 @@
-package gofix
+package goanalyze
 
 import (
 	"go/ast"
@@ -9,6 +9,8 @@ func checkNaming(
 	ident *ast.Ident,
 	o types.Object,
 ) *violation {
+	_, isVariable := o.(*types.Var)
+
 	for _, segment := range segments(ident.Name) {
 		if noSuggestion[segment] {
 			return nil
@@ -23,7 +25,7 @@ func checkNaming(
 		var applicable []string
 
 		for _, alternative := range alternatives {
-			if len(alternative) > 1 {
+			if len(alternative) > 1 || isVariable {
 				applicable = append(applicable, alternative)
 			}
 		}

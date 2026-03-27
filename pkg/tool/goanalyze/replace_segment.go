@@ -1,4 +1,4 @@
-package gofix
+package goanalyze
 
 import (
 	"fmt"

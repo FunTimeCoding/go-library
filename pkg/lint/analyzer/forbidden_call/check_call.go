@@ -23,15 +23,15 @@ func checkCall(
 		return
 	}
 
-	fn, isFunc := o.(*types.Func)
+	fn, isFunction := o.(*types.Func)
 
-	if !isFunc {
+	if !isFunction {
 		return
 	}
 
-	pkg := fn.Pkg()
+	a := fn.Pkg()
 
-	if pkg == nil || pkg.Path() != "os/exec" {
+	if a == nil || a.Path() != "os/exec" {
 		return
 	}
 

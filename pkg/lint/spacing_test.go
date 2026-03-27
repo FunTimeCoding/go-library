@@ -273,7 +273,7 @@ func TestSpacingCommentBeforeControl(t *testing.T) {
 	)
 }
 
-func TestSpacingCompositeLiteralInFunc(t *testing.T) {
+func TestSpacingCompositeLiteralInFunction(t *testing.T) {
 	l := Spacing(
 		library.November,
 		strings.NewReader(
@@ -488,7 +488,7 @@ func TestSpacingBlankBeforeIfInFunction(t *testing.T) {
 	)
 }
 
-func TestSpacingBlankInFuncLiteral(t *testing.T) {
+func TestSpacingBlankInFunctionLiteral(t *testing.T) {
 	l := Spacing(
 		library.Xray,
 		strings.NewReader(

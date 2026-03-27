@@ -18,8 +18,8 @@ func New(
 	if v.Labels != nil {
 		remaining = make(models.LabelSet, len(v.Labels))
 
-		for k, val := range v.Labels {
-			remaining[k] = val
+		for k, v := range v.Labels {
+			remaining[k] = v
 		}
 	}
 

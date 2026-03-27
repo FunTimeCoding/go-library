@@ -44,8 +44,8 @@ func Run() error {
 	select {
 	case selectFail := <-channelFail:
 		log.Printf("serve fail: %v", selectFail)
-	case sig := <-signals:
-		log.Printf("terminate: %v", sig)
+	case s := <-signals:
+		log.Printf("terminate: %v", s)
 	}
 
 	c, cancel := context.WithTimeout(context.Background(), time.Second*10)

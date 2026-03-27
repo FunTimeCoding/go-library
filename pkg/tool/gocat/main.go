@@ -39,7 +39,7 @@ func Main(
 	packageRegex := regexp.MustCompile(`^package\s+\w+`)
 	importRegex := regexp.MustCompile(`^import\s+`)
 	importBlockRegex := regexp.MustCompile(`^import\s*\(`)
-	funcRegex := regexp.MustCompile(`^(func|type|var|const)\s+`)
+	functionRegex := regexp.MustCompile(`^(func|type|var|const)\s+`)
 	var packageLine string
 	importSet := make(map[string]bool)
 	var codeLines []string
@@ -128,7 +128,7 @@ func Main(
 	for i, line := range codeLines {
 		trimmed := strings.TrimSpace(line)
 		isEmpty := trimmed == ""
-		isTopLevel := funcRegex.MatchString(trimmed)
+		isTopLevel := functionRegex.MatchString(trimmed)
 		// Add blank line before top-level declarations (except the very first one)
 		if isTopLevel && i > 0 && !pastWasEmpty {
 			fmt.Println()

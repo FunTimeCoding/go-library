@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestVariableErrAssignment(t *testing.T) {
+func TestVariableErrorAssignment(t *testing.T) {
 	l := Variable(
 		library.Alfa,
 		strings.NewReader(
@@ -32,7 +32,7 @@ func TestVariableErrAssignment(t *testing.T) {
 	)
 }
 
-func TestVariableErrMultiReturn(t *testing.T) {
+func TestVariableErrorMultiReturn(t *testing.T) {
 	l := Variable(
 		library.Bravo,
 		strings.NewReader(
@@ -57,7 +57,7 @@ func TestVariableErrMultiReturn(t *testing.T) {
 	)
 }
 
-func TestVariableErrComparison(t *testing.T) {
+func TestVariableErrorComparison(t *testing.T) {
 	l := Variable(
 		library.Charlie,
 		strings.NewReader(
@@ -77,7 +77,7 @@ func TestVariableEOkay(t *testing.T) {
 	assertReport(t, "Delta", false, nil, "", l)
 }
 
-func TestVariableErrInString(t *testing.T) {
+func TestVariableErrorInString(t *testing.T) {
 	l := Variable(
 		library.Foxtrot,
 		strings.NewReader(
@@ -87,7 +87,7 @@ func TestVariableErrInString(t *testing.T) {
 	assertReport(t, "Foxtrot", false, nil, "", l)
 }
 
-func TestVariableErrComment(t *testing.T) {
+func TestVariableErrorComment(t *testing.T) {
 	l := Variable(
 		library.Echo,
 		strings.NewReader(

@@ -18,8 +18,8 @@ const (
 	EmptyFunctionBodyKey  = "empty-function-body"
 	EmptyFunctionBodyText = "Function body with only whitespace"
 
-	ErrVariableKey  = "err_variable"
-	ErrVariableText = "Use e instead of err for error variable"
+	ErrorVariableKey  = "err_variable"
+	ErrorVariableText = "Use e instead of err for error variable"
 
 	PackageNameKey  = "package_name"
 	PackageNameText = "Blacklisted package name"

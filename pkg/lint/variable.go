@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-var errPattern = regexp.MustCompile(`\berr(?:\s*(?::=|=[^=])|,)`)
+var errorPattern = regexp.MustCompile(`\berr(?:\s*(?::=|=[^=])|,)`)
 var stringLiteral = regexp.MustCompile(`"(?:[^"\\]|\\.)*"`)
 
 func Variable(
@@ -27,10 +27,10 @@ func Variable(
 
 		stripped := stringLiteral.ReplaceAllString(trimmed, `""`)
 
-		if errPattern.MatchString(stripped) {
+		if errorPattern.MatchString(stripped) {
 			s.AddConcern(
-				constant.ErrVariableKey,
-				constant.ErrVariableText,
+				constant.ErrorVariableKey,
+				constant.ErrorVariableText,
 				path,
 				number,
 				line,

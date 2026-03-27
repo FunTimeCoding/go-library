@@ -14,10 +14,10 @@ func Function(
 	r io.Reader,
 ) *file_report.Report {
 	s := file_report.New(path, r)
-	var funcStart int
-	var funcBraceDepth int
-	var funcLines []string
-	var inFuncBody bool
+	var functionStart int
+	var functionBraceDepth int
+	var functionLines []string
+	var inFunctionBody bool
 
 	for s.Scan() {
 		line, number := s.Text()
@@ -27,46 +27,46 @@ func Function(
 			line,
 			"{",
 		) {
-			funcStart = number
-			funcBraceDepth = strings.Count(line, "{") - strings.Count(
+			functionStart = number
+			functionBraceDepth = strings.Count(line, "{") - strings.Count(
 				line,
 				"}",
 			)
-			funcLines = []string{line}
-			inFuncBody = funcBraceDepth > 0
-		} else if inFuncBody {
-			funcLines = append(funcLines, line)
-			funcBraceDepth += strings.Count(line, "{") - strings.Count(
+			functionLines = []string{line}
+			inFunctionBody = functionBraceDepth > 0
+		} else if inFunctionBody {
+			functionLines = append(functionLines, line)
+			functionBraceDepth += strings.Count(line, "{") - strings.Count(
 				line,
 				"}",
 			)
 
-			if funcBraceDepth == 0 {
-				if emptyFunctionBody(funcLines) {
-					fixedFunction := toSingleLine(funcLines)
+			if functionBraceDepth == 0 {
+				if emptyFunctionBody(functionLines) {
+					fixedFunction := toSingleLine(functionLines)
 					s.ChangedLine(fixedFunction)
 					s.AddConcern(
 						constant.EmptyFunctionBodyKey,
 						constant.EmptyFunctionBodyText,
 						path,
-						funcStart,
-						strings.Join(funcLines, "\n"),
+						functionStart,
+						strings.Join(functionLines, "\n"),
 						true,
 					)
 				} else {
-					for _, funcLine := range funcLines {
-						s.PassLine(funcLine)
+					for _, functionLine := range functionLines {
+						s.PassLine(functionLine)
 					}
 				}
 
-				inFuncBody = false
-				funcLines = nil
+				inFunctionBody = false
+				functionLines = nil
 
 				continue
 			}
 		}
 
-		if !inFuncBody {
+		if !inFunctionBody {
 			s.PassLine(line)
 		}
 	}

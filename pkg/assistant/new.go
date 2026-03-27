@@ -15,8 +15,8 @@ func New(
 		context:    context.Background(),
 	}
 
-	for _, opt := range o {
-		opt(result)
+	for _, o := range o {
+		o(result)
 	}
 
 	return result

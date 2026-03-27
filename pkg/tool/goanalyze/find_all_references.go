@@ -9,7 +9,7 @@ import (
 
 type reference struct {
 	ident *ast.Ident
-	pkg   *packages.Package
+	p   *packages.Package
 }
 
 func findAllReferences(
@@ -24,14 +24,14 @@ func findAllReferences(
 		for ident, definition := range p.TypesInfo.Defs {
 			if definition != nil && definition.Pos() == target && !seen[ident.Pos()] {
 				seen[ident.Pos()] = true
-				result = append(result, reference{ident: ident, pkg: p})
+				result = append(result, reference{ident: ident, p: p})
 			}
 		}
 
 		for ident, use := range p.TypesInfo.Uses {
 			if use.Pos() == target && !seen[ident.Pos()] {
 				seen[ident.Pos()] = true
-				result = append(result, reference{ident: ident, pkg: p})
+				result = append(result, reference{ident: ident, p: p})
 			}
 		}
 	}

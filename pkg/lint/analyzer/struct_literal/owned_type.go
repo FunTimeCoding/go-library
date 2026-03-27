@@ -33,13 +33,13 @@ func ownedType(
 		return nil
 	}
 
-	pkg := typeName.Pkg()
+	a := typeName.Pkg()
 
-	if pkg == nil {
+	if a == nil {
 		return nil
 	}
 
-	path := pkg.Path()
+	path := a.Path()
 
 	if path != module && !strings.HasPrefix(
 		path,

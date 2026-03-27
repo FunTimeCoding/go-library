@@ -12,15 +12,15 @@ func isInterfaceMethod(
 	p *analysis.Pass,
 	o types.Object,
 ) bool {
-	f, isFunc := o.(*types.Func)
+	f, isFunction := o.(*types.Func)
 
-	if !isFunc {
+	if !isFunction {
 		return false
 	}
 
-	s, isSig := f.Type().(*types.Signature)
+	s, isSignature := f.Type().(*types.Signature)
 
-	if !isSig || s.Recv() == nil {
+	if !isSignature || s.Recv() == nil {
 		return false
 	}
 

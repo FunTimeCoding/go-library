@@ -8,8 +8,8 @@ func UpdateDirectDependencies(
 ) {
 	hasExclusive := len(exclusiveMatches) > 0
 
-	for _, dep := range Read().Require {
-		if dep.Indirect {
+	for _, d := range Read().Require {
+		if d.Indirect {
 			continue
 		}
 
@@ -17,7 +17,7 @@ func UpdateDirectDependencies(
 			var found bool
 
 			for _, m := range exclusiveMatches {
-				if strings.Contains(dep.Mod.Path, m) {
+				if strings.Contains(d.Mod.Path, m) {
 					found = true
 
 					break
@@ -29,6 +29,6 @@ func UpdateDirectDependencies(
 			}
 		}
 
-		Update(dep.Mod.Path, hasExclusive, continueOnError)
+		Update(d.Mod.Path, hasExclusive, continueOnError)
 	}
 }

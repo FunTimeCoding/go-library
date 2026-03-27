@@ -33,7 +33,7 @@
   - `h` for headers, `i` for FileInfo in loops
   - `z` for gzip writers, `t` for tar writers, `f` for files
   - `path` over `outputPath`, `name` over `fileName`
-  - Single letters for obvious types
+  - Single letters for obvious types in local variables and struct receivers (the type already documents the receiver). Function parameters prefer descriptive names — callers read the signature without seeing the body.
   - Avoid `-ing` and plural forms in names
   - Prefer shorter words: "fail" over "error", "path" over "filePath"
 - **Function/method chaining** - pass return values directly: `p.WritePKGINFO(p.CreateDataTar())`

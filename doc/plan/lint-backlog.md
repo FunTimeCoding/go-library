@@ -16,11 +16,6 @@ but are lower priority than the goanalyze auto-fix work.
 
 ## Parked: manual conformance batches
 
-These need human judgment per violation. The linter finds them, a model
-or developer fixes them in grouped batches.
-
-- Run goanalyze naming against full codebase, group by banned segment
 - Run golint variable checker (`err` → `e`), fix scope-aware
 - Run golint stray_const, decide per-constant where it belongs
 - Grep for stdlib calls that have go-library wrappers (before rules exist)
-- Run both tools against `pkg/lint/` itself (dogfooding)

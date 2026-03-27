@@ -1,3 +1,0 @@
-package example
-
-func FixtureReference() {} // want `use "reference" instead of "ref" in FixtureRef`

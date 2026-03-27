@@ -1,3 +1,0 @@
-package example
-
-func HandleRequest() {} // want `use "request" instead of "req" in HandleReq`

@@ -65,7 +65,7 @@ func check(
 			Message: formatMessage(applicable, segment, ident.Name),
 		}
 
-		if o != nil {
+		if o != nil && !ident.IsExported() {
 			fix := chooseFix(ident.Name, applicable)
 			replacement := replaceSegment(ident.Name, segment, fix)
 			edits := buildEdits(p, o, segment, fix)

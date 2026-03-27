@@ -1,3 +1,0 @@
-package example
-
-func FixturePosition() {} // want `use "position" instead of "pos" in FixturePos`

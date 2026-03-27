@@ -1,3 +1,0 @@
-package example
-
-func FixtureMarkup() {} // want `use "markup" instead of "xml" in FixtureXml`

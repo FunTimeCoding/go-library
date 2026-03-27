@@ -1,3 +1,0 @@
-package example
-
-func FixtureNotation() {} // want `use "notation" instead of "json" in FixtureJson`

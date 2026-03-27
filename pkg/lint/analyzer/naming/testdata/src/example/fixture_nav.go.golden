@@ -1,3 +1,0 @@
-package example
-
-func FixtureNavigation() {} // want `use "navigation" instead of "nav" in FixtureNav`

@@ -1,3 +1,0 @@
-package example
-
-func FixtureLocator() {} // want `use "locator" instead of "url" in FixtureUrl`

@@ -1,3 +1,0 @@
-package example
-
-func FixturePast() {} // want `use "past" instead of "prev" in FixturePrev`

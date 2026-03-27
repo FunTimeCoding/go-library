@@ -22,10 +22,16 @@ func Main(
 		defer func() { r.RecoverFlush(recover()) }()
 	}
 
-	fix, diff, patterns := parseFlags()
+	f := parseFlags()
 
-	if fix || diff {
-		runFix(patterns, diff)
+	if f.survey {
+		runSurvey(f.patterns)
+
+		return
+	}
+
+	if f.fix || f.diff {
+		runFix(f.patterns, f.diff)
 
 		return
 	}

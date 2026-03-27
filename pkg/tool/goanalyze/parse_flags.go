@@ -2,20 +2,21 @@ package goanalyze
 
 import "os"
 
-func parseFlags() (bool, bool, []string) {
-	var fix, diff bool
-	var patterns []string
+func parseFlags() flags {
+	var result flags
 
 	for _, a := range os.Args[1:] {
 		switch a {
 		case "--fix":
-			fix = true
+			result.fix = true
 		case "--diff":
-			diff = true
+			result.diff = true
+		case "--survey":
+			result.survey = true
 		default:
-			patterns = append(patterns, a)
+			result.patterns = append(result.patterns, a)
 		}
 	}
 
-	return fix, diff, patterns
+	return result
 }

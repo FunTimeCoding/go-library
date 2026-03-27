@@ -34,6 +34,16 @@ var suggestions = map[string][]string{
 	"stmt":   {"s", "statement"},
 	"var":    {"v", "variable"},
 	"const":  {"c", "constant"},
+	"func":   {"f", "function"},
+	"sig":    {"s", "signature"},
+	"pkg":    {"p", "package"},
+	"err":    {"e", "error"},
+	"val":    {"v", "value"},
+	"args":   {"arguments"},
+	"opt":    {"o", "option"},
+	"cols":   {"columns"},
+	"loc":    {"l", "location"},
+	"dep":    {"d", "dependency"},
 }
 
 var noSuggestion = map[string]bool{

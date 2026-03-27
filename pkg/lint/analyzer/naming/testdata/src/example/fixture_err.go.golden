@@ -1,0 +1,3 @@
+package example
+
+var errorPattern = "" // want `use "e" or "error" instead of "err" in errPattern`

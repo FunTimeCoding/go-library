@@ -1,0 +1,3 @@
+package example
+
+var isSignature = false // want `use "s" or "signature" instead of "sig" in isSig`

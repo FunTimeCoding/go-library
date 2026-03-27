@@ -1,0 +1,43 @@
+package gofix
+
+var suggestions = map[string][]string{
+	"url":    {"l", "locator"},
+	"mcp":    {"c", "model_context"},
+	"dir":    {"d", "directory"},
+	"dirs":   {"directories"},
+	"tx":     {"t"},
+	"ctx":    {"x"},
+	"param":  {"parameter"},
+	"msg":    {"m", "message"},
+	"req":    {"r", "request"},
+	"doc":    {"d", "document"},
+	"pos":    {"p", "position"},
+	"buf":    {"b", "buffer"},
+	"ptr":    {"p", "pointer"},
+	"addr":   {"a", "address"},
+	"ref":    {"r", "reference"},
+	"nav":    {"n", "navigation"},
+	"prev":   {"past"},
+	"decl":   {"declaration"},
+	"yaml":   {"m", "markup"},
+	"xml":    {"m", "markup"},
+	"html":   {"m", "markup"},
+	"json":   {"j", "notation"},
+	"config": {"c", "configuration"},
+	"cfg":    {"c", "configuration"},
+	"llm":    {"m", "model"},
+	"tmp":    {"t"},
+	"href":   {"link", "reference", "locator"},
+	"def":    {"definition"},
+	"concat": {"concatenate"},
+	"obj":    {"o", "object"},
+	"stmt":   {"s", "statement"},
+	"var":    {"v", "variable"},
+	"const":  {"c", "constant"},
+}
+
+var noSuggestion = map[string]bool{
+	"handler": true,
+	"data":    true,
+	"info":    true,
+}

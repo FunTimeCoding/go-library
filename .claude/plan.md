@@ -8,6 +8,13 @@
 | `err` → `e` variable auto-fix | golint | Variable checker already detects; add `ChangedLine` fix path. Scope-aware rename within file. High frequency. |
 | `defer f.Close()` → `defer errors.PanicClose(f)` | golint | Text match and rewrite. Catches real unchecked-close bugs. |
 
+## Medium priority — collision detection hardening
+
+| Item | Tool | Notes |
+|------|------|-------|
+| Import shadowing check | goanalyze | Prevent renames that shadow imported package names (e.g. renaming to `fmt`). Compiler catches it but produces confusing errors. |
+| Cross-package export collision check | goanalyze | When `--fix` renames an exported identifier, verify the new name doesn't collide with other exports in the same package. |
+
 ## Medium priority — auto-fix for remaining goanalyze analyzers
 
 | Item | Tool | Notes |

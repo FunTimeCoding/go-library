@@ -3,6 +3,7 @@ package proxmox
 import (
 	"context"
 	"github.com/luthermonson/go-proxmox"
+	"time"
 )
 
 type Client struct {
@@ -15,4 +16,5 @@ type Client struct {
 	selfSigned bool
 	log        bool
 	verbose    bool
+	timeout    time.Duration
 }

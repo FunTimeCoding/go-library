@@ -3,6 +3,7 @@ package proxmox
 import (
 	"github.com/funtimecoding/go-library/pkg/proxmox/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"time"
 )
 
 func NewEnvironment() *Client {
@@ -31,6 +32,12 @@ func NewEnvironment() *Client {
 
 	if environment.Exists(constant.VerboseEnvironment) {
 		option = append(option, WithVerbose())
+	}
+
+	if raw := environment.Optional(constant.TimeoutEnvironment); raw != "" {
+		if d, err := time.ParseDuration(raw); err == nil {
+			option = append(option, WithTimeout(d))
+		}
 	}
 
 	return New(environment.Required(constant.HostEnvironment), option...)

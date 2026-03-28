@@ -59,6 +59,14 @@ func New(
 		c = web.InsecureClient()
 	}
 
+	if result.timeout > 0 {
+		if c == nil {
+			c = &http.Client{}
+		}
+
+		c.Timeout = result.timeout
+	}
+
 	if c != nil {
 		option = append(option, proxmox.WithHTTPClient(c))
 	}

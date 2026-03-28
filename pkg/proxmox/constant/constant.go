@@ -9,6 +9,7 @@ const (
 	LogEnvironment      = "PROXMOX_LOG"
 	VerboseEnvironment  = "PROXMOX_VERBOSE"
 	InsecureEnvironment = "PROXMOX_INSECURE"
+	TimeoutEnvironment  = "PROXMOX_TIMEOUT"
 )
 
 const (

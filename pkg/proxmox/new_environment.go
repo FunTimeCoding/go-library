@@ -35,7 +35,7 @@ func NewEnvironment() *Client {
 	}
 
 	if raw := environment.Optional(constant.TimeoutEnvironment); raw != "" {
-		if d, err := time.ParseDuration(raw); err == nil {
+		if d, e := time.ParseDuration(raw); e == nil {
 			option = append(option, WithTimeout(d))
 		}
 	}

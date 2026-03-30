@@ -9,7 +9,8 @@ func checkNaming(
 	ident *ast.Ident,
 	o types.Object,
 ) *violation {
-	_, isVariable := o.(*types.Var)
+	v, isVariable := o.(*types.Var)
+	allowSingleLetter := isVariable && !v.IsField()
 
 	for _, segment := range segments(ident.Name) {
 		if noSuggestion[segment] {
@@ -25,7 +26,7 @@ func checkNaming(
 		var applicable []string
 
 		for _, alternative := range alternatives {
-			if len(alternative) > 1 || isVariable {
+			if len(alternative) > 1 || allowSingleLetter {
 				applicable = append(applicable, alternative)
 			}
 		}

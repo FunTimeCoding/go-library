@@ -5,6 +5,8 @@ var suggestions = map[string][]string{
 	"mcp":    {"c", "model_context"},
 	"dir":    {"d", "directory"},
 	"dirs":   {"directories"},
+	"src":    {"s", "source"},
+	"dst":    {"d", "destination"},
 	"tx":     {"t"},
 	"ctx":    {"x"},
 	"param":  {"parameter"},

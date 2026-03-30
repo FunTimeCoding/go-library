@@ -12,7 +12,7 @@ func resolveFix(
 	fix := chooseFix(name, applicable)
 	replacement := replaceSegment(name, segment, fix)
 
-	if scope == nil || scope.Lookup(replacement) == nil {
+	if scope == nil || !scopeContains(scope, replacement) {
 		return fix
 	}
 
@@ -30,10 +30,17 @@ func resolveFix(
 		letter := string(r)
 		candidate := replaceSegment(name, segment, letter)
 
-		if scope.Lookup(candidate) == nil {
+		if !scopeContains(scope, candidate) {
 			return letter
 		}
 	}
 
 	return ""
+}
+
+func scopeContains(
+	scope *types.Scope,
+	name string,
+) bool {
+	return scope.Lookup(name) != nil || childScopeContains(scope, name)
 }

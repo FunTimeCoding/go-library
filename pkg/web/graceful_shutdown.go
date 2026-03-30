@@ -19,7 +19,14 @@ func GracefulShutdown(
 
 	o, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
-	errors.PanicOnError(s.Shutdown(o))
+	e := s.Shutdown(o)
+
+	if errors.Is(e, context.DeadlineExceeded) {
+		log.Println("shutdown timed out, forcing close")
+		errors.LogClose(s)
+	} else {
+		errors.PanicOnError(e)
+	}
 
 	if verbose {
 		log.Println("shutdown complete")

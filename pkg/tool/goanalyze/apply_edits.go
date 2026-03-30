@@ -16,9 +16,11 @@ func applyEdits(
 	grouped := groupByFile(fileSet, edits, directory)
 
 	for path, fileEdits := range grouped {
-		sort.Slice(fileEdits, func(i, j int) bool {
-			return fileEdits[i].offset > fileEdits[j].offset
-		})
+		sort.Slice(
+			fileEdits, func(i, j int) bool {
+				return fileEdits[i].offset > fileEdits[j].offset
+			},
+		)
 		original, e := os.ReadFile(path)
 
 		if e != nil {
@@ -31,7 +33,12 @@ func applyEdits(
 		copy(modified, original)
 
 		for _, fe := range fileEdits {
-			modified = splice(modified, fe.offset, fe.length, []byte(fe.newText))
+			modified = splice(
+				modified,
+				fe.offset,
+				fe.length,
+				[]byte(fe.newText),
+			)
 		}
 
 		if diff {

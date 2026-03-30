@@ -25,11 +25,13 @@ func segmentSpans(name string) []segmentSpan {
 		for i, r := range part {
 			if i > 0 && unicode.IsUpper(r) {
 				if segmentStart < offset+i {
-					result = append(result, segmentSpan{
-						start: segmentStart,
-						end:   offset + i,
-						lower: strings.ToLower(name[segmentStart : offset+i]),
-					})
+					result = append(
+						result, segmentSpan{
+							start: segmentStart,
+							end:   offset + i,
+							lower: strings.ToLower(name[segmentStart : offset+i]),
+						},
+					)
 				}
 
 				segmentStart = offset + i
@@ -37,11 +39,13 @@ func segmentSpans(name string) []segmentSpan {
 		}
 
 		if segmentStart < offset+len(part) {
-			result = append(result, segmentSpan{
-				start: segmentStart,
-				end:   offset + len(part),
-				lower: strings.ToLower(name[segmentStart : offset+len(part)]),
-			})
+			result = append(
+				result, segmentSpan{
+					start: segmentStart,
+					end:   offset + len(part),
+					lower: strings.ToLower(name[segmentStart : offset+len(part)]),
+				},
+			)
 		}
 
 		offset += len(part)

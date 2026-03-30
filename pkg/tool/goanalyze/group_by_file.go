@@ -27,11 +27,13 @@ func groupByFile(
 			continue
 		}
 
-		result[path] = append(result[path], fileEdit{
-			offset:  position.Offset,
-			length:  endPosition.Offset - position.Offset,
-			newText: e.newText,
-		})
+		result[path] = append(
+			result[path], fileEdit{
+				offset:  position.Offset,
+				length:  endPosition.Offset - position.Offset,
+				newText: e.newText,
+			},
+		)
 	}
 
 	return result

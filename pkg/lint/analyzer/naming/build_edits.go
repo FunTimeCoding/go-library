@@ -15,11 +15,13 @@ func buildEdits(
 	var edits []analysis.TextEdit
 
 	for _, reference := range references {
-		edits = append(edits, analysis.TextEdit{
-			Pos:     reference.Pos(),
-			End:     reference.End(),
-			NewText: []byte(replaceSegment(reference.Name, segment, fix)),
-		})
+		edits = append(
+			edits, analysis.TextEdit{
+				Pos:     reference.Pos(),
+				End:     reference.End(),
+				NewText: []byte(replaceSegment(reference.Name, segment, fix)),
+			},
+		)
 	}
 
 	return edits

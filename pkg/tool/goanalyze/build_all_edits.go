@@ -32,11 +32,13 @@ func buildAllEdits(
 
 		for _, r := range references {
 			newName := replaceSegment(r.ident.Name, v.segment, v.fix)
-			result = append(result, edit{
-				position: r.ident.Pos(),
-				end:      r.ident.End(),
-				newText:  newName,
-			})
+			result = append(
+				result, edit{
+					position: r.ident.Pos(),
+					end:      r.ident.End(),
+					newText:  newName,
+				},
+			)
 		}
 	}
 

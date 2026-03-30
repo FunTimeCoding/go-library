@@ -6,11 +6,19 @@ import (
 )
 
 func TestReplaceSegmentCamelCase(t *testing.T) {
-	assert.String(t, "directoryName", replaceSegment("dirName", "dir", "directory"))
+	assert.String(
+		t,
+		"directoryName",
+		replaceSegment("dirName", "dir", "directory"),
+	)
 }
 
 func TestReplaceSegmentPascalCase(t *testing.T) {
-	assert.String(t, "DirectorySomething", replaceSegment("DirSomething", "dir", "directory"))
+	assert.String(
+		t,
+		"DirectorySomething",
+		replaceSegment("DirSomething", "dir", "directory"),
+	)
 }
 
 func TestReplaceSegmentSingleWord(t *testing.T) {
@@ -30,19 +38,35 @@ func TestReplaceSegmentMiddleExported(t *testing.T) {
 }
 
 func TestReplaceSegmentSnakeCase(t *testing.T) {
-	assert.String(t, "foo_directory", replaceSegment("foo_dir", "dir", "directory"))
+	assert.String(
+		t,
+		"foo_directory",
+		replaceSegment("foo_dir", "dir", "directory"),
+	)
 }
 
 func TestReplaceSegmentMultiWordCamel(t *testing.T) {
-	assert.String(t, "modelContextServer", replaceSegment("mcpServer", "mcp", "model_context"))
+	assert.String(
+		t,
+		"modelContextServer",
+		replaceSegment("mcpServer", "mcp", "model_context"),
+	)
 }
 
 func TestReplaceSegmentMultiWordPascal(t *testing.T) {
-	assert.String(t, "ModelContextServer", replaceSegment("McpServer", "mcp", "model_context"))
+	assert.String(
+		t,
+		"ModelContextServer",
+		replaceSegment("McpServer", "mcp", "model_context"),
+	)
 }
 
 func TestReplaceSegmentMultiWordSnake(t *testing.T) {
-	assert.String(t, "model_context_server", replaceSegment("mcp_server", "mcp", "model_context"))
+	assert.String(
+		t,
+		"model_context_server",
+		replaceSegment("mcp_server", "mcp", "model_context"),
+	)
 }
 
 func TestReplaceSegmentSingleChar(t *testing.T) {

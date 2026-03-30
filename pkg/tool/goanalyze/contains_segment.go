@@ -1,6 +1,9 @@
 package goanalyze
 
-func containsSegment(name string, target string) bool {
+func containsSegment(
+	name string,
+	target string,
+) bool {
 	for _, s := range segments(name) {
 		if len(target) == 1 {
 			if s == target {

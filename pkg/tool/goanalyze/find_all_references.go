@@ -9,7 +9,7 @@ import (
 
 type reference struct {
 	ident *ast.Ident
-	p   *packages.Package
+	p     *packages.Package
 }
 
 func findAllReferences(

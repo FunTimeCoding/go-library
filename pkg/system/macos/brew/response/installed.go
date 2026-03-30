@@ -177,7 +177,7 @@ type Installed struct {
 				Version          string `json:"version"`
 				Revision         int    `json:"revision,omitempty"`
 				BottleRebuild    int    `json:"bottle_rebuild,omitempty"`
-				PackageVersion       string `json:"pkg_version,omitempty"`
+				PackageVersion   string `json:"pkg_version,omitempty"`
 				DeclaredDirectly bool   `json:"declared_directly"`
 			} `json:"runtime_dependencies"`
 			InstalledAsDependency bool `json:"installed_as_dependency"`
@@ -263,7 +263,7 @@ type Installed struct {
 					Executable string   `json:"executable"`
 					Sudo       bool     `json:"sudo"`
 					Input      []string `json:"input,omitempty"`
-					Arguments       []string `json:"args,omitempty"`
+					Arguments  []string `json:"args,omitempty"`
 				} `json:"script,omitempty"`
 				Delete          any      `json:"delete,omitempty"`
 				RemoveDirectory string   `json:"rmdir,omitempty"`
@@ -276,7 +276,7 @@ type Installed struct {
 				RemoveDirectory any      `json:"rmdir,omitempty"`
 				LaunchControl   []string `json:"launchctl,omitempty"`
 			} `json:"zap,omitempty"`
-			P                 []any    `json:"pkg,omitempty"`
+			P                   []any    `json:"pkg,omitempty"`
 			BashCompletion      []string `json:"bash_completion,omitempty"`
 			FishCompletion      []string `json:"fish_completion,omitempty"`
 			ZshCompletion       []string `json:"zsh_completion,omitempty"`

@@ -2,7 +2,10 @@ package goanalyze
 
 import "go/token"
 
-func runFix(patterns []string, diff bool) {
+func runFix(
+	patterns []string,
+	diff bool,
+) {
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}
 	}

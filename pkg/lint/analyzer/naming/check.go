@@ -20,11 +20,16 @@ func check(
 
 	for _, segment := range segments(ident.Name) {
 		if noSuggestion[segment] {
-			p.Report(analysis.Diagnostic{
-				Pos:     ident.Pos(),
-				End:     ident.End(),
-				Message: fmt.Sprintf("avoid %q in name, use a more specific term", segment),
-			})
+			p.Report(
+				analysis.Diagnostic{
+					Pos: ident.Pos(),
+					End: ident.End(),
+					Message: fmt.Sprintf(
+						"avoid %q in name, use a more specific term",
+						segment,
+					),
+				},
+			)
 
 			return
 		}
@@ -44,11 +49,16 @@ func check(
 		}
 
 		if len(applicable) == 0 {
-			p.Report(analysis.Diagnostic{
-				Pos:     ident.Pos(),
-				End:     ident.End(),
-				Message: fmt.Sprintf("avoid %q in name, use a more specific term", segment),
-			})
+			p.Report(
+				analysis.Diagnostic{
+					Pos: ident.Pos(),
+					End: ident.End(),
+					Message: fmt.Sprintf(
+						"avoid %q in name, use a more specific term",
+						segment,
+					),
+				},
+			)
 
 			return
 		}
@@ -75,7 +85,10 @@ func check(
 				if len(edits) > 0 {
 					diagnostic.SuggestedFixes = []analysis.SuggestedFix{
 						{
-							Message:   fmt.Sprintf("rename to %s", replacement),
+							Message: fmt.Sprintf(
+								"rename to %s",
+								replacement,
+							),
 							TextEdits: edits,
 						},
 					}

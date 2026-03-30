@@ -2,7 +2,11 @@ package goanalyze
 
 import "fmt"
 
-func printDiff(path string, original []byte, modified []byte) {
+func printDiff(
+	path string,
+	original []byte,
+	modified []byte,
+) {
 	if string(original) == string(modified) {
 		return
 	}

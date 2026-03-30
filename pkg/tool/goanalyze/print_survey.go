@@ -20,9 +20,11 @@ func printSurvey(
 		entries = append(entries, entry{segment, count})
 	}
 
-	sort.Slice(entries, func(i, j int) bool {
-		return entries[i].count > entries[j].count
-	})
+	sort.Slice(
+		entries, func(i, j int) bool {
+			return entries[i].count > entries[j].count
+		},
+	)
 
 	for _, e := range entries {
 		fmt.Printf(

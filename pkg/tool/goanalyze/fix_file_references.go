@@ -3,6 +3,7 @@ package goanalyze
 import (
 	"bytes"
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"os"
 	"regexp"
 )
@@ -35,6 +36,6 @@ func fixFileReferences(
 	}
 
 	if !bytes.Equal(modified, content) {
-		_ = os.WriteFile(path, modified, 0644)
+		errors.PanicOnError(os.WriteFile(path, modified, 0644))
 	}
 }

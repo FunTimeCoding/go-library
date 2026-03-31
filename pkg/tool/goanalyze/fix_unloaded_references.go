@@ -1,6 +1,7 @@
 package goanalyze
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"go/ast"
 	"os"
 	"path/filepath"
@@ -41,7 +42,7 @@ func fixUnloadedReferences(
 		root = "."
 	}
 
-	_ = filepath.Walk(
+	errors.PanicOnError(filepath.Walk(
 		root, func(path string, info os.FileInfo, e error) error {
 			if e != nil {
 				return nil
@@ -63,7 +64,7 @@ func fixUnloadedReferences(
 
 			return nil
 		},
-	)
+	))
 }
 
 type exportedRename struct {

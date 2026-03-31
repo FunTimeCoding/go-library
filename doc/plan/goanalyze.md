@@ -12,8 +12,12 @@
 - **New bans**: `src → s, source` and `dst → d, destination`
 - **Test consolidation**: single `TestFix` with 9 subtests, pipeline runs once
 - **Unit tests**: table-driven for `chooseFix`, `replaceSegment`, `segments`,
-  `segmentSpans`, `containsSegment`, `parentScopeContains` (40 total)
+  `segmentSpans`, `containsSegment`, `parentScopeContains`; 10 integration subtests,
+  41 total
 - **Smoke tests on go-mint**: parent-scope shadow correctly avoided in `format.go`
+- **Unloaded file references**: text-based fallback pass for exported renames in files
+  excluded by build constraints (e.g. `//go:build linux`). Walks all `.go` files, skips
+  those already handled by the type-checked pipeline. Regression test with tagged fixture.
 
 ## Planned — collision detection hardening
 

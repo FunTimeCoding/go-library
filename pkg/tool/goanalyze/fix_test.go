@@ -15,6 +15,8 @@ func TestFix(t *testing.T) {
 	violations := findViolations(all)
 	edits := buildAllEdits(all, violations)
 	applyEdits(fileSet, edits, directory, false)
+	loadedFiles := buildLoadedFiles(all)
+	fixUnloadedReferences(violations, loadedFiles, directory)
 	t.Run(
 		"CrossPackageRename", func(t *testing.T) {
 			assert.String(
@@ -172,6 +174,49 @@ func TestFix(t *testing.T) {
 			)
 		},
 	)
+	t.Run(
+		"ExportedCrossPackageRename", func(t *testing.T) {
+			assert.String(
+				t,
+				"package sentinel\n\nimport \"fmt\"\n\nvar ErrorQuit = fmt.Errorf(\"quit\")\n",
+				readFile(
+					t,
+					filepath.Join(
+						directory,
+						"pkg",
+						"sentinel",
+						"sentinel.go",
+					),
+				),
+			)
+			assert.String(
+				t,
+				"package caller\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Check(e error) bool {\n\treturn errors.Is(e, sentinel.ErrorQuit)\n}\n",
+				readFile(
+					t,
+					filepath.Join(
+						directory,
+						"pkg",
+						"caller",
+						"caller.go",
+					),
+				),
+			)
+			assert.String(
+				t,
+				"//go:build linux\n\npackage tagged\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Handle(e error) bool {\n\treturn errors.Is(e, sentinel.ErrorQuit)\n}\n",
+				readFile(
+					t,
+					filepath.Join(
+						directory,
+						"pkg",
+						"tagged",
+						"tagged.go",
+					),
+				),
+			)
+		},
+	)
 }
 
 func writeTestModule(t *testing.T) string {
@@ -247,6 +292,24 @@ func writeTestModule(t *testing.T) string {
 		directory,
 		"pkg/parent/example.go",
 		"package parent\n\nfunc Example() {\n\ts := \"status\"\n\tsources := []string{\"a\"}\n\n\tfor _, src := range sources {\n\t\t_ = s + src\n\t}\n}\n",
+	)
+	writeFile(
+		t,
+		directory,
+		"pkg/sentinel/sentinel.go",
+		"package sentinel\n\nimport \"fmt\"\n\nvar ErrQuit = fmt.Errorf(\"quit\")\n",
+	)
+	writeFile(
+		t,
+		directory,
+		"pkg/caller/caller.go",
+		"package caller\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Check(e error) bool {\n\treturn errors.Is(e, sentinel.ErrQuit)\n}\n",
+	)
+	writeFile(
+		t,
+		directory,
+		"pkg/tagged/tagged.go",
+		"//go:build linux\n\npackage tagged\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Handle(e error) bool {\n\treturn errors.Is(e, sentinel.ErrQuit)\n}\n",
 	)
 
 	return directory

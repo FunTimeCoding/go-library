@@ -20,4 +20,9 @@ func runFix(
 
 	edits := buildAllEdits(all, violations)
 	applyEdits(fileSet, edits, "", diff)
+
+	if !diff {
+		loadedFiles := buildLoadedFiles(all)
+		fixUnloadedReferences(violations, loadedFiles, "")
+	}
 }

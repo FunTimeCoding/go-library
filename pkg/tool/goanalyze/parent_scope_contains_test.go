@@ -7,12 +7,11 @@ import (
 
 func TestParentScopeContains(t *testing.T) {
 	universe := types.Universe
-	pkg := types.NewScope(universe, 0, 1, "package")
-	fn := types.NewScope(pkg, 0, 1, "function")
+	p := types.NewScope(universe, 0, 1, "package")
+	fn := types.NewScope(p, 0, 1, "function")
 	block := types.NewScope(fn, 0, 1, "block")
 	inner := types.NewScope(block, 0, 1, "inner")
-
-	pkg.Insert(types.NewVar(0, nil, "p", types.Typ[types.Int]))
+	p.Insert(types.NewVar(0, nil, "p", types.Typ[types.Int]))
 	fn.Insert(types.NewVar(0, nil, "f", types.Typ[types.Int]))
 	block.Insert(types.NewVar(0, nil, "b", types.Typ[types.Int]))
 

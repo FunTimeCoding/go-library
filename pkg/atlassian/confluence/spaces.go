@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/space"
 	"github.com/funtimecoding/go-library/pkg/notation"
-	"strings"
 )
 
 func (c *Client) Spaces() []*space.Space {
@@ -25,9 +24,7 @@ func (c *Client) Spaces() []*space.Space {
 			break
 		}
 
-		l = c.basic.Base().Copy().Path(
-			strings.TrimPrefix(s.Links.Next, constant.Base),
-		).String()
+		l = c.basic.Next(s.Links.Next)
 	}
 
 	return space.Sort(space.NewSlice(result))

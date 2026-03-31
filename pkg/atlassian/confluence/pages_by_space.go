@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/notation"
-	"strings"
 )
 
 func (c *Client) PagesBySpace(identifier string) []*page.Page {
@@ -30,9 +29,7 @@ func (c *Client) PagesBySpace(identifier string) []*page.Page {
 			break
 		}
 
-		l = c.basic.Base().Copy().Path(
-			strings.TrimPrefix(s.Links.Next, constant.Base),
-		).String()
+		l = c.basic.Next(s.Links.Next)
 	}
 
 	return page.Sort(page.NewSlice(result, c.host))

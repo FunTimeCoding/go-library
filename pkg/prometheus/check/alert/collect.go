@@ -16,8 +16,8 @@ func collect(
 	d.All = o.All
 	d.CriticalOnly = o.Critical
 	d.WarningOnly = o.Warning
+	d.InformationOnly = o.Information
 	d.Suppressed = o.Suppressed
-	d.Old = o.Old
 
 	return c.Alerts(d)
 }

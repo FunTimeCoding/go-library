@@ -4,7 +4,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/contains"
-	"time"
 )
 
 func (f *Filter) match(a *alert.Alert) bool {
@@ -16,12 +15,6 @@ func (f *Filter) match(a *alert.Alert) bool {
 
 	switch a.Severity {
 	case constant.NoneSeverity:
-		return false
-	case constant.InformationSeverity:
-		return false
-	}
-
-	if !p.Old && a.Age() > 7*24*time.Hour {
 		return false
 	}
 
@@ -38,6 +31,10 @@ func (f *Filter) match(a *alert.Alert) bool {
 	}
 
 	if p.WarningOnly && a.Severity != constant.WarningSeverity {
+		return false
+	}
+
+	if p.InformationOnly && a.Severity != constant.InformationSeverity {
 		return false
 	}
 

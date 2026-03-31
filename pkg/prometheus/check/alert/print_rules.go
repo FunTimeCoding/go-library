@@ -11,13 +11,11 @@ import (
 func printRules(
 	c *alertmanager.Client,
 	firing bool,
-	old bool,
 ) {
 	f := option.ExtendedColor.Copy()
 
 	for _, r := range c.Rules().Alert() {
-		if old &&
-			r.RawAlert != nil &&
+		if r.RawAlert != nil &&
 			time.Since(
 				r.RawAlert.LastEvaluation,
 			).Round(time.Second) < 1*time.Minute {

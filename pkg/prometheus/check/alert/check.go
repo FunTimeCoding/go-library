@@ -29,7 +29,7 @@ func Check(o *option.Alert) {
 	}
 
 	if o.Rules {
-		printRules(c, o.Firing, o.Old)
+		printRules(c, o.Firing)
 
 		return
 	}

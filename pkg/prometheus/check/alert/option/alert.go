@@ -5,8 +5,8 @@ type Alert struct {
 	All         bool
 	Critical    bool
 	Warning     bool
+	Information bool
 	Extended    bool
-	Old         bool
 	Suppressed  bool
 	Rules       bool
 	Firing      bool

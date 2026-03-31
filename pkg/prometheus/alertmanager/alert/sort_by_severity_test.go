@@ -8,12 +8,13 @@ import (
 )
 
 func TestSortBySeverity(t *testing.T) {
-	now := time.Now()
 	assert.Count(
 		t,
 		1,
 		SortBySeverity(
-			[]*Alert{{Severity: constant.WarningSeverity, Start: &now}},
+			[]*Alert{
+				{Severity: constant.WarningSeverity, Start: new(time.Now())},
+			},
 			constant.Severities,
 		),
 	)

@@ -1,10 +1,10 @@
 package advanced_option
 
 type Alert struct {
-	All          bool
-	CriticalOnly bool
-	WarningOnly  bool
-	Old          bool
-	Suppressed   bool
-	Receiver     []string
+	All             bool
+	CriticalOnly    bool
+	WarningOnly     bool
+	InformationOnly bool
+	Suppressed      bool
+	Receiver        []string
 }

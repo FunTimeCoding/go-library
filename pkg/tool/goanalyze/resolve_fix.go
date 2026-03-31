@@ -20,13 +20,23 @@ func resolveFix(
 		return ""
 	}
 
-	multiCharacter := firstMultiCharacter(applicable)
+	for _, a := range applicable {
+		if len(a) == 1 && a != fix {
+			candidate := replaceSegment(name, segment, a)
 
-	if multiCharacter == "" {
+			if !scopeContains(scope, candidate) {
+				return a
+			}
+		}
+	}
+
+	firstWord := firstWord(applicable)
+
+	if firstWord == "" {
 		return ""
 	}
 
-	for _, r := range multiCharacter {
+	for _, r := range firstWord {
 		letter := string(r)
 		candidate := replaceSegment(name, segment, letter)
 

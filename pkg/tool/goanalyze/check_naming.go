@@ -17,7 +17,7 @@ func checkNaming(
 			return nil
 		}
 
-		alternatives, hasSuggestion := suggestions[segment]
+		s, hasSuggestion := suggestions[segment]
 
 		if !hasSuggestion {
 			continue
@@ -25,11 +25,11 @@ func checkNaming(
 
 		var applicable []string
 
-		for _, alternative := range alternatives {
-			if len(alternative) > 1 || allowSingleLetter {
-				applicable = append(applicable, alternative)
-			}
+		if allowSingleLetter {
+			applicable = append(applicable, s.letters...)
 		}
+
+		applicable = append(applicable, s.words...)
 
 		if len(applicable) == 0 {
 			return nil

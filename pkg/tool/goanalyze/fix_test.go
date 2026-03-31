@@ -155,6 +155,23 @@ func TestFix(t *testing.T) {
 			)
 		},
 	)
+	t.Run(
+		"ParentScopeShadow", func(t *testing.T) {
+			assert.String(
+				t,
+				"package parent\n\nfunc Example() {\n\ts := \"status\"\n\tsources := []string{\"a\"}\n\n\tfor _, o := range sources {\n\t\t_ = s + o\n\t}\n}\n",
+				readFile(
+					t,
+					filepath.Join(
+						directory,
+						"pkg",
+						"parent",
+						"example.go",
+					),
+				),
+			)
+		},
+	)
 }
 
 func writeTestModule(t *testing.T) string {
@@ -224,6 +241,12 @@ func writeTestModule(t *testing.T) string {
 		directory,
 		"pkg/shadow/example.go",
 		"package shadow\n\nfunc Example() string {\n\tm := map[string]string{\"k\": \"x\"}\n\n\tfor _, val := range m {\n\t\tv := val\n\t\t_ = v\n\t}\n\n\treturn \"\"\n}\n",
+	)
+	writeFile(
+		t,
+		directory,
+		"pkg/parent/example.go",
+		"package parent\n\nfunc Example() {\n\ts := \"status\"\n\tsources := []string{\"a\"}\n\n\tfor _, src := range sources {\n\t\t_ = s + src\n\t}\n}\n",
 	)
 
 	return directory

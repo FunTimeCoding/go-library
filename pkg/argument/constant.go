@@ -39,6 +39,7 @@ const (
 	Hardware       = "hardware"
 	Header         = "header"
 	Host           = "host"
+	Information    = "information"
 	Interactive    = "interactive"
 	Investigate    = "investigate"
 	Issue          = "issue"

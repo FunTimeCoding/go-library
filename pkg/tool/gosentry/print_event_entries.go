@@ -11,13 +11,14 @@ func printEventEntries(entries []response.EventEntry) {
 		case "exception":
 			printException(entry.Data.Values)
 		case "message":
-			msg := entry.Data.Formatted
-			if msg == "" {
-				msg = entry.Data.Message
+			m := entry.Data.Formatted
+
+			if m == "" {
+				m = entry.Data.Message
 			}
 
-			if msg != "" {
-				fmt.Printf("Message: %s\n", msg)
+			if m != "" {
+				fmt.Printf("Message: %s\n", m)
 			}
 		}
 	}

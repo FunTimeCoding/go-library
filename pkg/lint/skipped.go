@@ -20,7 +20,6 @@ func Skipped(
 	for _, p := range o.Skips {
 		if strings.Contains(p, separator.Dot) &&
 			!strings.Contains(p, separator.Slash) {
-
 			if system.Match(p, filepath.Base(path)) {
 				return true
 			}

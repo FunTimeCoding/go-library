@@ -19,12 +19,12 @@ func Issue() {
 		for _, o := range c.Organizations() {
 			fmt.Printf("Organization: %s\n", o.Name)
 
-			for _, p := range c.OrganizationProjects(o) {
+			for _, p := range c.OrganizationProjects(o.Slug) {
 				fmt.Printf("Project: %s\n", p.Name)
 
 				for _, i := range c.Issues(
-					o,
-					p,
+					o.Slug,
+					p.ID,
 					constant.PeriodFortnight,
 				) {
 					fmt.Printf("Issue: %s\n", i.Format(f))

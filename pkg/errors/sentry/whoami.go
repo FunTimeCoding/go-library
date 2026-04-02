@@ -6,14 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 )
 
-func (c *Client) Organizations() []response.Organization {
-	var result []response.Organization
+func (c *Client) Whoami() *response.User {
+	var result response.User
 	errors.PanicOnError(
-		json.Unmarshal(
-			c.basic.GetBytes("organizations", nil),
-			&result,
-		),
+		json.Unmarshal(c.basic.GetBytes("user", nil), &result),
 	)
 
-	return result
+	return &result
 }

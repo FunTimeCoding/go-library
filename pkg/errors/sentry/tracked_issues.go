@@ -12,16 +12,11 @@ func (c *Client) TrackedIssues() []*issue.Issue {
 		return result
 	}
 
-	organization := c.Organization(c.organization)
-
 	for _, p := range c.projects {
+		proj := c.Project(c.organization, p)
 		result = append(
 			result,
-			c.Issues(
-				organization,
-				c.Project(organization, p),
-				constant.PeriodFortnight,
-			)...,
+			c.Issues(c.organization, proj.ID, constant.PeriodFortnight)...,
 		)
 	}
 

@@ -2,7 +2,7 @@ package sentry
 
 import (
 	"fmt"
-	"github.com/atlassian/go-sentry-api"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/issue"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
@@ -12,19 +12,18 @@ import (
 
 func (c *Client) IssuesSimple(verbose bool) []*issue.Issue {
 	if o := environment.Optional(constant.OrganizationEnvironment); o != "" {
-		r := c.Organization(o)
-		var projects []sentry.Project
+		var projects []response.Project
 
 		if p := environment.Optional(constant.ProjectEnvironment); p != "" {
 			names := split.Comma(p)
 
-			for _, j := range c.OrganizationProjects(r) {
+			for _, j := range c.OrganizationProjects(o) {
 				if slices.Contains(names, j.Name) {
 					projects = append(projects, j)
 				}
 			}
 		} else {
-			projects = append(projects, c.OrganizationProjects(r)...)
+			projects = append(projects, c.OrganizationProjects(o)...)
 		}
 
 		var result []*issue.Issue
@@ -36,7 +35,7 @@ func (c *Client) IssuesSimple(verbose bool) []*issue.Issue {
 
 			result = append(
 				result,
-				c.Issues(r, p, constant.PeriodFortnight)...,
+				c.Issues(o, p.ID, constant.PeriodFortnight)...,
 			)
 		}
 

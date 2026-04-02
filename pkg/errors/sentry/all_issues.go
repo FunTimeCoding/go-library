@@ -9,10 +9,10 @@ func (c *Client) AllIssues() []*issue.Issue {
 	var result []*issue.Issue
 
 	for _, o := range c.Organizations() {
-		for _, p := range c.OrganizationProjects(o) {
+		for _, p := range c.OrganizationProjects(o.Slug) {
 			result = append(
 				result,
-				c.Issues(o, p, constant.PeriodFortnight)...,
+				c.Issues(o.Slug, p.ID, constant.PeriodFortnight)...,
 			)
 		}
 	}

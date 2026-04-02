@@ -1,8 +1,8 @@
 package issue
 
-import "github.com/atlassian/go-sentry-api"
+import "github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 
-func NewSlice(v []sentry.Issue) []*Issue {
+func NewSlice(v []response.Issue) []*Issue {
 	var result []*Issue
 
 	for _, e := range v {

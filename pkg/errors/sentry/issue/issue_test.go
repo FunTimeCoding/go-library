@@ -1,22 +1,20 @@
 package issue
 
 import (
-	"github.com/atlassian/go-sentry-api"
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"testing"
 )
 
 func TestIssue(t *testing.T) {
 	actual := New(
-		&sentry.Issue{
-			ID:        new("1"),
-			Project:   &sentry.Project{Name: strings.Alfa},
-			Type:      new(strings.Bravo),
-			Title:     new(strings.Charlie),
-			Permalink: new(strings.Delta),
-			FirstSeen: new(constant.StartOfTime),
+		&response.Issue{
+			ID:        "1",
+			Type:      strings.Bravo,
+			Title:     strings.Charlie,
+			Permalink: strings.Delta,
+			Project:   Project{Name: strings.Alfa},
 		},
 	)
 	actual.Create = nil

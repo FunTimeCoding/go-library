@@ -5,26 +5,36 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
+	"strconv"
 )
 
-func (c *Client) LatestEvent(
+func (c *Client) IssueTagValues(
 	organization string,
-	issueIdentifier string,
-) *response.Event {
-	var result response.Event
+	identifier string,
+	tag string,
+	limit int,
+) []response.TagValue {
+	q := map[string]string{}
+
+	if limit > 0 {
+		q["limit"] = strconv.Itoa(limit)
+	}
+
+	var result []response.TagValue
 	errors.PanicOnError(
 		json.Unmarshal(
 			c.basic.GetBytes(
 				fmt.Sprintf(
-					"organizations/%s/issues/%s/events/latest",
+					"organizations/%s/issues/%s/tags/%s/values",
 					organization,
-					issueIdentifier,
+					identifier,
+					tag,
 				),
-				nil,
+				q,
 			),
 			&result,
 		),
 	)
 
-	return &result
+	return result
 }

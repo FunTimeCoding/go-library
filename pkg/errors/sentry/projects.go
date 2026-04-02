@@ -1,13 +1,16 @@
 package sentry
 
 import (
-	"github.com/atlassian/go-sentry-api"
+	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 )
 
-func (c *Client) Projects() []sentry.Project {
-	result, _, e := c.client.GetProjects()
-	errors.PanicOnError(e)
+func (c *Client) Projects() []response.Project {
+	var result []response.Project
+	errors.PanicOnError(
+		json.Unmarshal(c.basic.GetBytes("projects", nil), &result),
+	)
 
 	return result
 }

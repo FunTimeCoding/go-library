@@ -1,13 +1,23 @@
 package sentry
 
 import (
-	"github.com/atlassian/go-sentry-api"
+	"encoding/json"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 )
 
-func (c *Client) Organization(slug string) sentry.Organization {
-	result, e := c.client.GetOrganization(slug)
-	errors.PanicOnError(e)
+func (c *Client) Organization(slug string) *response.Organization {
+	var result response.Organization
+	errors.PanicOnError(
+		json.Unmarshal(
+			c.basic.GetBytes(
+				fmt.Sprintf("organizations/%s", slug),
+				nil,
+			),
+			&result,
+		),
+	)
 
-	return result
+	return &result
 }

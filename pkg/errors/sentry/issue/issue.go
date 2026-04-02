@@ -1,7 +1,7 @@
 package issue
 
 import (
-	"github.com/atlassian/go-sentry-api"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"time"
 )
@@ -14,5 +14,5 @@ type Issue struct {
 	Create            *time.Time
 	MonitorIdentifier string
 	ageColor          face.SprintFunction
-	Raw               *sentry.Issue
+	Raw               *response.Issue
 }

@@ -11,7 +11,7 @@ func Organization() {
 	for _, o := range c.Organizations() {
 		fmt.Printf("Organization: %+v\n", o)
 
-		for _, t := range c.OrganizationTeams(o) {
+		for _, t := range c.OrganizationTeams(o.Slug) {
 			fmt.Printf("Team: %+v\n", t)
 		}
 	}

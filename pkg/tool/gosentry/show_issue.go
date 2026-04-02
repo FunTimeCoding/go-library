@@ -55,4 +55,9 @@ func showIssue(shortID string) {
 			e.DateCreated.Format("2006-01-02 15:04"),
 		)
 	}
+
+	if len(e.Entries) > 0 {
+		fmt.Println()
+		printEventEntries(e.Entries)
+	}
 }

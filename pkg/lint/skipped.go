@@ -2,32 +2,30 @@ package lint
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"path/filepath"
 	"strings"
 )
 
 func Skipped(
-	s *option.Lint,
+	o *option.Lint,
 	path string,
 ) bool {
-	if s.Count == 0 {
+	if o.Count == 0 {
 		return false
 	}
 
-	for _, p := range s.Skips {
-		if strings.Contains(p, ".") && !strings.Contains(p, "/") {
-			matched, e := filepath.Match(p, filepath.Base(path))
-			errors.PanicOnError(e)
+	for _, p := range o.Skips {
+		if strings.Contains(p, separator.Dot) &&
+			!strings.Contains(p, separator.Slash) {
 
-			if matched {
+			if system.Match(p, filepath.Base(path)) {
 				return true
 			}
-		} else if strings.HasPrefix(path, p) || strings.Contains(
-			path,
-			fmt.Sprintf("/%s", p),
-		) {
+		} else if strings.HasPrefix(path, p) ||
+			strings.Contains(path, fmt.Sprintf("/%s", p)) {
 			return true
 		}
 	}

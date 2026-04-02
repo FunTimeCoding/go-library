@@ -22,7 +22,7 @@ func From(directory string) *System {
 					return e
 				}
 
-				if i.IsDir() {
+				if i.IsDir() || i.Mode()&os.ModeSymlink != 0 {
 					return nil
 				}
 

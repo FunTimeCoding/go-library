@@ -42,29 +42,36 @@ func fixUnloadedReferences(
 		root = "."
 	}
 
-	errors.PanicOnError(filepath.Walk(
-		root, func(path string, info os.FileInfo, e error) error {
-			if e != nil {
+	errors.PanicOnError(
+		filepath.Walk(
+			root,
+			func(
+				path string,
+				i os.FileInfo,
+				e error,
+			) error {
+				if e != nil {
+					return nil
+				}
+
+				if i.IsDir() {
+					return nil
+				}
+
+				if !strings.HasSuffix(path, ".go") {
+					return nil
+				}
+
+				if loadedFiles[path] {
+					return nil
+				}
+
+				fixFileReferences(path, renames)
+
 				return nil
-			}
-
-			if info.IsDir() {
-				return nil
-			}
-
-			if !strings.HasSuffix(path, ".go") {
-				return nil
-			}
-
-			if loadedFiles[path] {
-				return nil
-			}
-
-			fixFileReferences(path, renames)
-
-			return nil
-		},
-	))
+			},
+		),
+	)
 }
 
 type exportedRename struct {

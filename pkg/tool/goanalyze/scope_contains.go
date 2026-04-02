@@ -2,8 +2,11 @@ package goanalyze
 
 import "go/types"
 
-func scopeContains(scope *types.Scope, name string) bool {
-	return scope.Lookup(name) != nil ||
-		childScopeContains(scope, name) ||
-		parentScopeContains(scope, name)
+func scopeContains(
+	s *types.Scope,
+	name string,
+) bool {
+	return s.Lookup(name) != nil ||
+		childScopeContains(s, name) ||
+		parentScopeContains(s, name)
 }

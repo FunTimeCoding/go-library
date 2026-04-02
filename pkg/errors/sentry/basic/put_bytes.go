@@ -11,7 +11,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
-func (c *Client) PutBytes(path string, body any) []byte {
+func (c *Client) PutBytes(
+	path string,
+	body any,
+) []byte {
 	b, e := json.Marshal(body)
 	errors.PanicOnError(e)
 	l := locator.New(c.host).Base(constant.Base).Path(path).Trail().String()

@@ -38,5 +38,14 @@ full design document.
 - **Delete completed sections** as the work is done, not after the whole
   plan is finished. The file shrinks as progress is made.
 - **Delete the file** when all sections are gone.
-- Plans are never committed as historical records - if you need to
-  understand past decisions, read the code and git history.
+- Most plans should be deleted when done - code and git history are
+  the primary record.
+
+## Preserving
+
+When a plan evolved into a system description during iteration - multiple
+external integrations, ongoing work across sessions, package structure
+worth orienting future sessions around - transform it instead of deleting:
+strip task tracking and status markers, keep the system map, moving parts,
+and remaining work. The result stays in `doc/plan/` as a living document.
+Revisit and prune on subsequent sessions.

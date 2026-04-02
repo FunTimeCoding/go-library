@@ -3,10 +3,11 @@ package main
 import "github.com/funtimecoding/go-library/pkg/errors/sentry/example"
 
 func main() {
-	example.Issue()
+	example.Whoami()
 
 	if false {
 		example.Capture()
+		example.Issue()
 		example.TrackedIssue()
 		example.Organization()
 		example.Project()

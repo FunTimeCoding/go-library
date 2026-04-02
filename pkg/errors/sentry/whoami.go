@@ -9,7 +9,7 @@ import (
 func (c *Client) Whoami() *response.User {
 	var result response.User
 	errors.PanicOnError(
-		json.Unmarshal(c.basic.GetBytes("user", nil), &result),
+		json.Unmarshal(c.basic.GetBytes("auth", nil), &result),
 	)
 
 	return &result

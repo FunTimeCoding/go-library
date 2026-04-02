@@ -36,7 +36,7 @@ func (c *Client) Get(path string, params map[string]string) {
 ### Ad-hoc URL construction
 
 ```go
-locator.New(host).Path("/api/v1/alerts").Set("name", name).String()
+locator.New(host).Path("/api/alerts").Set("name", name).String()
 ```
 
 ### Non-standard port
@@ -68,8 +68,8 @@ locator.New(host).Path("/%s/-/merge_requests", project).String()
 ### Reusable base path
 
 ```go
-locator.New(host).Port(port).Base("/api/v1").Path("/alerts").String()
-// → https://host:port/api/v1/alerts
+locator.New(host).Port(port).Base("/api").Path("/alerts").String()
+// → https://host:port/api/alerts
 ```
 
 ### Basic auth

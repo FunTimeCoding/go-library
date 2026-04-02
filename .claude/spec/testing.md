@@ -50,7 +50,7 @@ l := lifecycle.New(
     lifecycle.WithServer(
         address,
         func(m *http.ServeMux) {
-            m.HandleFunc("/api/v1/alerts", route.Alerts(s))
+            m.HandleFunc("/api/alerts", route.Alerts(s))
         },
     ),
 )
@@ -95,7 +95,7 @@ func getJSON[T any](
 Usage:
 
 ```go
-status := getJSON[route.StatusResponse](t, base+"/api/v1/status")
+status := getJSON[route.StatusResponse](t, base+"/api/status")
 assert.Integer(t, 2, status.TotalRecords)
 ```
 
@@ -106,12 +106,12 @@ Integration tests can manipulate mock state between assertions to verify behavio
 ```go
 // Initial state: alert firing
 p.Poll()
-alerts := getJSON[[]route.AlertsResponse](t, base+"/api/v1/alerts?name=X")
+alerts := getJSON[[]route.AlertsResponse](t, base+"/api/alerts?name=X")
 assert.String(t, route.Firing, alerts[0].Status)
 
 // Remove alert, poll again: now resolved
 c.Remove("fp1")
 p.Poll()
-alerts = getJSON[[]route.AlertsResponse](t, base+"/api/v1/alerts?name=X")
+alerts = getJSON[[]route.AlertsResponse](t, base+"/api/alerts?name=X")
 assert.String(t, route.Resolved, alerts[0].Status)
 ```

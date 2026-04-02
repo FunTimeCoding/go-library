@@ -100,7 +100,7 @@ func (s *Server) getAlerts(
 
 ## Wiring into run.go
 
-Mount alongside REST on the same mux - REST routes (`/api/v1/...`) and MCP routes (`/mcp`, `/sse`, `/message`) don't conflict:
+Mount alongside REST on the same mux - REST routes (`/api/...`) and MCP routes (`/mcp`, `/sse`, `/message`) don't conflict:
 
 ```go
 import (

@@ -59,7 +59,7 @@ func Run(o *option.Log) {
         lifecycle.WithServer(
             constant.Listen,
             func(m *http.ServeMux) {
-                m.HandleFunc("/api/v1/alerts", route.Alerts(s))
+                m.HandleFunc("/api/alerts", route.Alerts(s))
             },
         ),
     )

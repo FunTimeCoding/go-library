@@ -1242,8 +1242,8 @@ github.com/lucasb-eyer/go-colorful v1.3.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i
 github.com/lufia/plan9stats v0.0.0-20250317134145-8bc96cf8fc35 h1:PpXWgLPs+Fqr325bN2FD2ISlRRztXibcX6e8f5FR5Dc=
 github.com/lufia/plan9stats v0.0.0-20250317134145-8bc96cf8fc35/go.mod h1:autxFIvghDt3jPTLoqZ9OZ7s9qTGNAWmYCjVFWPX/zg=
 github.com/lunixbochs/vtclean v1.0.0/go.mod h1:pHhQNgMf3btfWnGBVipUOjRYhoOsdGqdm/+2c2E2WMI=
-github.com/luthermonson/go-proxmox v0.4.0 h1:LKXpG9d64zTaQF79wV0kfOnnSwIcdG39m7sc4ga+XZs=
-github.com/luthermonson/go-proxmox v0.4.0/go.mod h1:U6dAkJ+iiwaeb1g/LMWpWuWN4nmvWeXhmoMuYJMumS4=
+github.com/luthermonson/go-proxmox v0.4.1 h1:1WnUBHzCQEa5goHuzewkApi6LKtQcFB8/tXTtS2D5w8=
+github.com/luthermonson/go-proxmox v0.4.1/go.mod h1:U6dAkJ+iiwaeb1g/LMWpWuWN4nmvWeXhmoMuYJMumS4=
 github.com/lxn/walk v0.0.0-20210112085537-c389da54e794/go.mod h1:E23UucZGqpuUANJooIbHWCufXvOcT6E7Stq81gU+CSQ=
 github.com/lxn/win v0.0.0-20210218163916-a377121e959e/go.mod h1:KxxjdtRkfNoYDCUP5ryK7XJJNTnpC8atvtmTheChOtk=
 github.com/lyft/protoc-gen-star v0.6.0/go.mod h1:TGAoBVkt8w7MPG72TrKIu85MIdXwDuzJYeZuUPFPNwA=

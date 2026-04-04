@@ -87,7 +87,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
-	gitlab.com/gitlab-org/api/client-go/v2 v2.14.0
+	gitlab.com/gitlab-org/api/client-go/v2 v2.15.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.49.0
 	golang.org/x/mod v0.34.0

@@ -81,6 +81,7 @@ func TestCheckMultipleFilesOnlyBrokenFixed(t *testing.T) {
 
 func TestCheckStubCreated(t *testing.T) {
 	v := virtual_file_system.New()
+	v.Write("go.mod", "module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n")
 	v.Write(
 		"pkg/foo/foo.go",
 		"package foo\n\nfunc Foo() {}\n",
@@ -95,6 +96,7 @@ func TestCheckStubCreated(t *testing.T) {
 
 func TestCheckStubMainPackage(t *testing.T) {
 	v := virtual_file_system.New()
+	v.Write("go.mod", "module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n")
 	v.Write(
 		"cmd/foo/main.go",
 		"package main\n\nfunc main() {}\n",
@@ -109,6 +111,7 @@ func TestCheckStubMainPackage(t *testing.T) {
 
 func TestCheckStubToolPackage(t *testing.T) {
 	v := virtual_file_system.New()
+	v.Write("go.mod", "module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n")
 	v.Write(
 		"pkg/tool/gofoo/main.go",
 		"package gofoo\n\nfunc Main() {}\n",
@@ -118,6 +121,21 @@ func TestCheckStubToolPackage(t *testing.T) {
 		t,
 		"package gofoo\n\nimport (\n\t\"github.com/funtimecoding/go-library/pkg/assert\"\n\t\"testing\"\n)\n\nfunc TestStub(t *testing.T) {\n\tassert.Stub(t)\n}\n",
 		fixes.Read("pkg/tool/gofoo/main_test.go"),
+	)
+}
+
+func TestCheckStubWithoutGoLibrary(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write("go.mod", "module example\n")
+	v.Write(
+		"pkg/foo/foo.go",
+		"package foo\n\nfunc Foo() {}\n",
+	)
+	fixes := Check(v, option.New("", false), false, false)
+	assert.String(
+		t,
+		"package foo\n\nimport \"testing\"\n\nfunc TestFoo(t *testing.T) {\n\tt.Helper()\n}\n",
+		fixes.Read("pkg/foo/foo_test.go"),
 	)
 }
 

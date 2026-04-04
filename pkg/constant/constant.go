@@ -46,6 +46,8 @@ const (
 	PhysicalTest2 = "00:00:00:00:00:02"
 
 	Unauthorized = "Unauthorized"
+
+	GoLibraryModule = "github.com/funtimecoding/go-library"
 )
 
 // For console status option

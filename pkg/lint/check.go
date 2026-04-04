@@ -53,6 +53,10 @@ func Check(
 	}
 
 	sort.Strings(directories)
+	useAssert := strings.Contains(
+		v.Read("go.mod"),
+		library.GoLibraryModule,
+	)
 
 	for _, d := range directories {
 		if fix {
@@ -84,6 +88,7 @@ func Check(
 				name,
 				strings.Contains(d, "/testdata/"),
 				isToolPackage,
+				useAssert,
 			),
 		)
 	}

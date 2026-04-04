@@ -21,7 +21,10 @@ gdamore
 homeassistant
 jdoe
 kaos
+karakeep
 lefthook
+linkace
+linkwarden
 mattermost
 openvex
 osquery
@@ -239,9 +242,6 @@ xhci
 # Packer
 HTTPIP
 qemuargs
-
-# Linkwarden
-linkwarden
 
 # Renovate
 automerge

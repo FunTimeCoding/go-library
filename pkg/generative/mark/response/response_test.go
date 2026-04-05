@@ -6,5 +6,12 @@ import (
 )
 
 func TestResponse(t *testing.T) {
-	assert.Stub(t)
+	_, e := Fail("")
+	assert.Nil(t, e)
+	_, f := Success("")
+	assert.Nil(t, f)
+	_, g := FailAny("")
+	assert.Nil(t, g)
+	_, h := SuccessAny("")
+	assert.Nil(t, h)
 }

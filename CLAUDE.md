@@ -18,6 +18,12 @@ Design and coding specs live in `.claude/spec/`:
 - `locator.md` - fluent URL builder (`pkg/web/locator`)
 - `openapi.md` - OpenAPI codegen pattern (server/, client/, route/ structure)
 - `error-handling.md` - error handling strategies: default panic, MCP translation, flow control exception, store method rule
+- `example.md` - example code conventions (pkg/<domain>/example/, cmd/example/)
+- `fixture.md` - test fixture patterns (fixture/ at repo root, helpers, constants)
+- `model-context.md` - MCP tool exposure pattern (model_context/ subpackage, HTTP transport)
+- `package-design.md` - one struct with receivers per package rule (when to extract sub-packages)
+- `package-taxonomy.md` - package roles, dependency direction, and promotion criteria for growing service tools
+- `plan.md` - implementation plan file conventions (doc/plan/, lifecycle, format)
 
 Read the relevant spec before working in that area.
 

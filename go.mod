@@ -71,6 +71,7 @@ require (
 	github.com/prometheus/client_golang v1.23.2
 	github.com/prometheus/common v0.67.5
 	github.com/rivo/tview v0.42.0
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/samber/slog-loki/v3 v3.7.2
 	github.com/sanity-io/litter v1.5.8
 	github.com/sashabaranov/go-openai v1.41.2

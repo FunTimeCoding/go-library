@@ -1,0 +1,13 @@
+FROM golang:1.26.1-alpine AS builder
+WORKDIR /go/src/github.com/funtimecoding/go-library
+COPY . .
+ENV PATH=/go/bin:${PATH}
+ENV GOPRIVATE=github.com/funtimecoding/*
+RUN apk add --no-cache git curl
+RUN go install github.com/funtimecoding/go-library/cmd/gobuild@latest
+RUN gobuild --linux-amd64 gomatmcp
+
+FROM alpine:3.23.3 AS runner
+COPY --from=builder /go/src/github.com/funtimecoding/go-library/tmp/gomatmcp/linux-amd64/gomatmcp /usr/local/bin
+EXPOSE 8080
+ENTRYPOINT ["gomatmcp"]

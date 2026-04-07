@@ -1,10 +1,10 @@
 package gomatmcp
 
 import (
-	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/mark3labs/mcp-go/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/tool"
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
 )
 
 func addTool(

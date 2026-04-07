@@ -79,6 +79,7 @@ gokevt
 golint
 gomaintlog
 gomaintlogd
+gomatmcp
 gomonitor
 gomonitord
 gosentry

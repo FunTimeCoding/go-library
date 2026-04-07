@@ -8,10 +8,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	gomonitor "github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/mark3labs/mcp-go/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/tool"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/mark3labs/mcp-go/server"
 )
 
 func Main(

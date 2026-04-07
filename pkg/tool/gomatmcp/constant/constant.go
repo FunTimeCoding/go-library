@@ -1,13 +1,13 @@
 package constant
 
 const (
-	ListChannels      = "mattermost_list_channels"
-	GetChannelHistory = "mattermost_get_channel_history"
-	PostMessage       = "mattermost_post_message"
-	ReplyToThread     = "mattermost_reply_to_thread"
-	AddReaction       = "mattermost_add_reaction"
-	GetThreadReplies  = "mattermost_get_thread_replies"
-	GetUsers          = "mattermost_get_users"
-	GetUserProfile    = "mattermost_get_user_profile"
-	RunMonitoring     = "mattermost_run_monitoring"
+	ListChannels      = "list_channels"
+	GetChannelHistory = "get_channel_history"
+	PostMessage       = "post_message"
+	ReplyToThread     = "reply_to_thread"
+	AddReaction       = "add_reaction"
+	GetThreadReplies  = "get_thread_replies"
+	GetUsers          = "get_users"
+	GetUserProfile    = "get_user_profile"
+	RunMonitoring     = "run_monitoring"
 )

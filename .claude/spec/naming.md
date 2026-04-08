@@ -21,6 +21,7 @@ a lint error; this spec documents the resolution pattern for each.
 | `handler` | function parameter | `serve` |
 | `handler` | function name suffix | drop suffix: `logRequestHandler` → `logRequest` |
 | `config` | type name | `Configuration` |
+| `config` | package-level data struct | extract to `<name>_option/` package as `Option` |
 | `config` | function name | `LoadConfiguration`, etc. |
 | `llm` | any identifier | `model` (e.g. `llmPrefix` → `modelPrefix`) |
 | `tmp` | field prefix | drop prefix: `TmpFromAccountID` → `FromAccountID` |

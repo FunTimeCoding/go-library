@@ -83,10 +83,10 @@
 - **Constants in `constant.go`** - exported constants get their own `constant.go` file in the package. Prefer a single flat `constant.go` per package. When an iota enum is defined with a named type, both the type and the const values belong in the same constant package — separating them creates circular imports.
 - **Reuse existing constants** - use `web/constant.Listen`, `web/constant.Object`, `web/constant.ContentType`, `argument.Name`, etc. Never hardcode strings that already have a constant in the codebase.
 - **Option struct naming** - named after the domain concept, not `Option` (e.g., `option.Log`, `option.Build`, `option.Commit`). File named after the struct. Constructor in `new.go` returns pointer.
-- **Stub tests** - every package gets a `_test.go`. Minimal tests use `assert.Stub(t)`. Constructor tests use `assert.NotNil(t, New(...))`.
+- **Stub tests** - every package gets at least one `_test.go`. When a package has real tests, no stub is needed. Use `assert.Stub(t)` only in packages with no other tests, to prevent `?` in gotestsum output. Constructor tests use `assert.NotNil(t, New(...))`.
 - Tests use `assert.*` helpers to reduce nesting
 - **`new_environment.go`** - when a package reads from environment variables, the environment constructor lives in `new_environment.go` and calls `New()` after reading the required vars. Pattern: `func NewEnvironment() *Client { return New(environment.Required(constant.HostEnvironment), environment.Required(constant.TokenEnvironment)) }`. The base `New()` always takes explicit params; `NewEnvironment()` is the env-reading wrapper.
-- **`example/` subpackage** - every client package gets `example/read.go` (or a domain-named function) called from `cmd/example/<name>/main.go`. Inactive examples are kept in `if false {}` blocks rather than deleted.
+- **`example/` subpackage** - every client package should have an `example/` when there's a real usage scenario to demonstrate. Don't create empty or contrived examples just to fill the slot. Entry point lives in `cmd/example/<name>/main.go`. Inactive examples are kept in `if false {}` blocks rather than deleted.
 - Fail fast with stacktraces (Sentry integration)
 - Helpers return only success values, panic on errors
 - Prefer extracting logic to testable helpers over inline test code

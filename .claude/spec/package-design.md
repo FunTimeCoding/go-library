@@ -12,7 +12,10 @@ snake_case. Constructor lives in `new.go`.
 Data-only structs (no receivers) may coexist — one per file, named after
 the struct. Group related data structs in a dedicated sub-package when
 there are several (e.g. `response/` for response types, `option/` for
-configuration).
+configuration). Data-only structs with external dependencies or distinct
+domain identity may also warrant their own package, even without receivers,
+to keep the parent package's import graph clean and the concept
+self-contained.
 
 ## When to Extract
 

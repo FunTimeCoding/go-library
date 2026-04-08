@@ -155,7 +155,7 @@ pkg/<domain>/
     └── constant.go                 # HostEnvironment = "<DOMAIN>_HOST"
 ```
 
-`New` wraps the generated client with `locator.New(host).String()`:
+`New` takes explicit params for the connection. `New(host string)` is the common case; add parameters when the service requires them (e.g., `New(host string, port int)`). Wraps the generated client with `locator.New(host).String()`:
 ```go
 func New(host string) *Client {
     c, e := client.NewClientWithResponses(locator.New(host).String())

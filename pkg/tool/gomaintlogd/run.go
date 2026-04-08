@@ -19,15 +19,13 @@ func Run(o *option.Log) {
 	s := newStore(o)
 	defer s.Close()
 	l := lifecycle.New(
-		lifecycle.WithServerTimeout(
+		lifecycle.WithServer(
 			webConstant.Listen,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s), m)
 				generative.New(model_context.New(s).Nested()).Setup(m)
 				web.NewServer(s).Mount(m)
 			},
-			0,
-			0,
 		),
 	)
 	g.Structured("starting")

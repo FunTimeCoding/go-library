@@ -8,6 +8,7 @@ formattable
 positionals
 renderable
 renderables
+slowloris
 stacktraces
 
 # Names

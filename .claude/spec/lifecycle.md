@@ -14,23 +14,28 @@ Components (servers and workers) are registered via functional options. They sta
 
 ```
 pkg/lifecycle/
-  constant.go               - Option type
-  lifecycle.go              - Lifecycle struct
-  new.go                    - constructor
-  run.go                    - Run() starts all components in order
-  run_until_signal.go       - RunUntilSignal() runs, blocks, stops
-  stop.go                   - Stop() stops all in reverse order
-  with_server.go            - WithServer option
-  with_server_middleware.go - WithServerMiddleware option
-  with_verbose.go           - WithVerbose option
-  with_worker.go            - WithWorker option
+  constant.go                         - Option type
+  lifecycle.go                        - Lifecycle struct
+  new.go                              - constructor
+  run.go                              - Run() starts all components in order
+  run_until_signal.go                 - RunUntilSignal() runs, blocks, stops
+  stop.go                             - Stop() stops all in reverse order
+  with_server.go                      - WithServer option (no timeout — streaming/MCP)
+  with_server_middleware.go           - WithServerMiddleware option (no timeout)
+  with_protected_server.go            - WithProtectedServer option (10s — plain REST)
+  with_protected_server_middleware.go - WithProtectedServerMiddleware option (10s + middleware)
+  with_verbose.go                     - WithVerbose option
+  with_worker.go                      - WithWorker option
   component/
     component.go            - internal component adapter
     start.go
     stop.go
   server/
+    constant.go             - readWriteTimeout for protected servers
     server.go               - server struct (internal)
-    start.go                - sets up mux, creates http.Server, serves
+    new.go                  - New constructor (no timeout)
+    new_protected.go        - NewProtected constructor (sets protected flag)
+    start.go                - sets up mux, creates http.Server, applies timeout if protected
     stop.go                 - graceful HTTP shutdown
 ```
 
@@ -47,25 +52,35 @@ type Worker interface {
 
 Implemented by: `metric.Server`, `ticker.Ticker`, `reporter.Reporter`, and any struct with `Start()`/`Stop()`.
 
-## WithServer
+## WithServer / WithServerMiddleware
+
+For streaming servers (MCP, SSE) — no read/write timeout. The lifecycle owns the `*http.ServeMux` and `*http.Server`; the setup callback only registers routes.
 
 ```go
 lifecycle.WithServer(address, func(m *http.ServeMux) {
-    // register routes on m
+    v.Setup(m) // MCP or SSE handler
 })
-```
 
-The lifecycle owns the `*http.ServeMux` and `*http.Server`. The setup callback only registers routes. This means route registrars don't need to know about HTTP server lifecycle - they just receive a mux.
-
-## WithServerMiddleware
-
-```go
 lifecycle.WithServerMiddleware(address, func(m *http.ServeMux) {
     // register routes on m
 }, middlewareFunc)
 ```
 
-Wraps the HTTP handler with middleware (e.g. `metric.Middleware` for Prometheus request metrics).
+## WithProtectedServer / WithProtectedServerMiddleware
+
+For plain request/response REST servers — applies a 10s read/write timeout (slowloris protection). Use these whenever the server does not serve streaming or long-lived connections.
+
+```go
+lifecycle.WithProtectedServer(address, func(m *http.ServeMux) {
+    m.HandleFunc("/health", health)
+})
+
+lifecycle.WithProtectedServerMiddleware(address, func(m *http.ServeMux) {
+    // register routes on m
+}, tokenMiddleware)
+```
+
+Mixed servers (REST routes + MCP on the same mux) must use `WithServer` — the streaming endpoint governs the timeout choice.
 
 ## Registration Order Matters
 

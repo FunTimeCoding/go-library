@@ -1,16 +1,12 @@
 package server
 
-import (
-	"net/http"
-	"time"
-)
+import "net/http"
 
 type Server struct {
-	Mux          *http.ServeMux
-	http         *http.Server
-	Setup        func(*http.ServeMux)
-	Middleware   func(http.Handler) http.Handler
-	Address      string
-	ReadTimeout  time.Duration
-	WriteTimeout time.Duration
+	Mux        *http.ServeMux
+	http       *http.Server
+	Setup      func(*http.ServeMux)
+	Middleware func(http.Handler) http.Handler
+	Address    string
+	protected  bool
 }

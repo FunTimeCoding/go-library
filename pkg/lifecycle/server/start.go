@@ -14,7 +14,11 @@ func (s *Server) Start() {
 	}
 
 	s.http = web.Server(m, s.Address)
-	s.http.ReadTimeout = s.ReadTimeout
-	s.http.WriteTimeout = s.WriteTimeout
+
+	if s.protected {
+		s.http.ReadTimeout = readWriteTimeout
+		s.http.WriteTimeout = readWriteTimeout
+	}
+
 	web.ServeAsynchronous(s.http)
 }

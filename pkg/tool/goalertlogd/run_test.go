@@ -52,14 +52,12 @@ func TestRunLifecycle(t *testing.T) {
 	address := fmt.Sprintf(":%d", port)
 	l := lifecycle.New(
 		lifecycle.WithWorker(p),
-		lifecycle.WithServerTimeout(
+		lifecycle.WithServer(
 			address,
 			func(m *http.ServeMux) {
 				server.HandlerFromMux(route.New(s, p), m)
 				web.NewServer(s, p).Mount(m)
 			},
-			0,
-			0,
 		),
 	)
 	l.Run()
@@ -154,13 +152,11 @@ func TestGeneratedClient(t *testing.T) {
 	address := fmt.Sprintf(":%d", port)
 	l := lifecycle.New(
 		lifecycle.WithWorker(p),
-		lifecycle.WithServerTimeout(
+		lifecycle.WithServer(
 			address,
 			func(m *http.ServeMux) {
 				server.HandlerFromMux(route.New(s, p), m)
 			},
-			0,
-			0,
 		),
 	)
 	l.Run()

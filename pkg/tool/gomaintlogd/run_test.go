@@ -23,15 +23,13 @@ func setup(t *testing.T) (*store.Store, int, *lifecycle.Lifecycle) {
 	s := store.NewSQLite(filepath.Join(t.TempDir(), "test.db"))
 	port := system.FindUnusedPort(19600)
 	l := lifecycle.New(
-		lifecycle.WithServerTimeout(
+		lifecycle.WithServer(
 			fmt.Sprintf(":%d", port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s), m)
 				generative.New(model_context.New(s).Nested()).Setup(m)
 				web.NewServer(s).Mount(m)
 			},
-			0,
-			0,
 		),
 	)
 	l.Run()

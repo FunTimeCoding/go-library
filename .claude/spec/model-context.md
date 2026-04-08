@@ -109,12 +109,14 @@ import (
     generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/server"
 )
 
-lifecycle.WithServer(
+lifecycle.WithServerTimeout(
     web.Listen,
     func(m *http.ServeMux) {
         generated.HandlerFromMux(route.New(s, p), m)
         generative.New(model_context.New(s, p).Nested()).Setup(m)
     },
+    0,
+    0,
 )
 ```
 

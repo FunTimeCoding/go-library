@@ -35,7 +35,7 @@ func Run(o *option.Log) {
 	l := lifecycle.New(
 		lifecycle.WithWorker(e),
 		lifecycle.WithWorker(p),
-		lifecycle.WithServer(
+		lifecycle.WithServerInfiniteTimeout(
 			webConstant.Listen,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s, p), m)

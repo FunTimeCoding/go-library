@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"github.com/mark3labs/mcp-go/server"
 	"net/http"
+	"time"
 )
 
 func (s *Server) Setup(m *http.ServeMux) {
@@ -13,6 +14,7 @@ func (s *Server) Setup(m *http.ServeMux) {
 		server.NewStreamableHTTPServer(
 			s.server,
 			server.WithLogger(s.Logger()),
+			server.WithHeartbeatInterval(30*time.Second),
 		),
 	)
 	sse := server.NewSSEServer(s.server)

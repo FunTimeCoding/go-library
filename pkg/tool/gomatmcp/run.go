@@ -6,7 +6,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
-	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/tool"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
@@ -35,7 +34,5 @@ func Run() {
 			},
 		),
 	)
-	b.Run()
-	defer b.Stop()
-	system.KillSignalBlock()
+	b.RunUntilSignal()
 }

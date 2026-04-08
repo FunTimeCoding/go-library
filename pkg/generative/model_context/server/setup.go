@@ -14,7 +14,8 @@ func (s *Server) Setup(m *http.ServeMux) {
 		server.NewStreamableHTTPServer(
 			s.server,
 			server.WithLogger(s.Logger()),
-			server.WithHeartbeatInterval(30*time.Second),
+			server.WithHeartbeatInterval(15*time.Second),
+			server.WithSessionIdleTTL(1*time.Hour),
 		),
 	)
 	sse := server.NewSSEServer(s.server)

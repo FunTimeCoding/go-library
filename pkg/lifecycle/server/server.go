@@ -11,5 +11,6 @@ type Server struct {
 	Setup        func(*http.ServeMux)
 	Middleware   func(http.Handler) http.Handler
 	Address      string
+	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }

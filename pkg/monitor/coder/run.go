@@ -29,8 +29,8 @@ func Run() error {
 	)
 	s := &http.Server{
 		Handler:      server.Server{Logf: log.Printf},
-		ReadTimeout:  time.Second * 10,
-		WriteTimeout: time.Second * 10,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 	channelFail := make(chan error, 1)
 	go func() {

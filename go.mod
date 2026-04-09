@@ -91,7 +91,7 @@ require (
 	gitlab.com/gitlab-org/api/client-go/v2 v2.16.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.49.0
-	golang.org/x/mod v0.34.0
+	golang.org/x/mod v0.35.0
 	golang.org/x/net v0.52.0
 	golang.org/x/oauth2 v0.36.0
 	golang.org/x/time v0.15.0

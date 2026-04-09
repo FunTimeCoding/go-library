@@ -13,7 +13,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.4.1
 	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447
 	github.com/andygrunwald/go-jira v1.17.0
-	github.com/anthropics/anthropic-sdk-go v1.32.0
+	github.com/anthropics/anthropic-sdk-go v1.33.0
 	github.com/apenella/go-ansible/v2 v2.4.1
 	github.com/bndr/gojenkins v1.2.0
 	github.com/bwmarrin/discordgo v0.29.0

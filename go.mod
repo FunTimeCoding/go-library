@@ -54,7 +54,7 @@ require (
 	github.com/liushuangls/go-anthropic/v2 v2.18.0
 	github.com/luthermonson/go-proxmox v0.4.1
 	github.com/mark3labs/mcp-go v0.47.1
-	github.com/mattermost/mattermost/server/public v0.3.0
+	github.com/mattermost/mattermost/server/public v0.3.1
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.5.0
 	github.com/muesli/termenv v0.16.0

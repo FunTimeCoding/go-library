@@ -1,0 +1,19 @@
+package tab
+
+import (
+	"github.com/funtimecoding/go-library/pkg/console/status"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+	"github.com/funtimecoding/go-library/pkg/console/status/tag"
+)
+
+func (t *Tab) Format(f *option.Format) string {
+	s := status.New(f)
+
+	if f.HasTag(tag.Identifier) {
+		s.Integer(t.Identifier)
+	}
+
+	s.String(t.formatTitle(f), t.Locator)
+
+	return s.Format()
+}

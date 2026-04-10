@@ -26,6 +26,10 @@
 - **Cross-package export collision check**: when `--fix` renames an exported identifier,
   verify the new name doesn't collide with other exports in the same package.
 
+## Planned — struct attribute naming
+
+- Struct fields should not get single-letter suggestions (beyond `IsField()` exclusion)
+
 ## Planned — widen naming bans
 
 Survey codebases for more abbreviations to add to the suggestions map. Nearly free:

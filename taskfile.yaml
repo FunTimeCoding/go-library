@@ -59,6 +59,10 @@ tasks:
       go test -coverprofile=tmp/coverage.txt -covermode count ./...
       gocover-cobertura <tmp/coverage.txt >tmp/coverage.xml
     silent: true
+  firefox-mcp:
+    cmds:
+    - curl -sL "https://raw.githubusercontent.com/mozilla/readability/refs/heads/main/Readability.js" -o js/firefox_bridge/Readability.js
+    silent: true
   server-check:
     cmds:
     - gobuild --copy-to-bin gochk

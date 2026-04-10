@@ -29,7 +29,7 @@ type Log struct {
 	EncounterStartTime time.Time `json:"EncounterStartTime"`
 	EncounterDuration  string    `json:"EncounterDuration"`
 	DpsReportEIUpload  struct {
-		URL             any `json:"Url"`
+		Locator         any `json:"Url"`
 		ProcessingError any `json:"ProcessingError"`
 		UploadTime      any `json:"UploadTime"`
 	} `json:"DpsReportEIUpload"`

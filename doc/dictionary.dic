@@ -30,6 +30,7 @@ mattermost
 openvex
 osquery
 qdrant
+rundeck
 shiin
 treminio
 trivy
@@ -75,6 +76,7 @@ gogithub
 gogitlab
 gogitstatus
 goimage
+goitermmcp
 gojira
 gokevt
 golint
@@ -85,6 +87,7 @@ gomonitor
 gomonitord
 gosentry
 gosilence
+gosublmcp
 goupdate
 goversion
 govolume
@@ -113,6 +116,7 @@ APPL
 afplay
 catalina
 icns
+iterm
 mojave
 monterey
 sonoma
@@ -204,6 +208,7 @@ cdproto
 chromedp
 
 # Salt
+highstate
 saltstack
 
 # Postgres

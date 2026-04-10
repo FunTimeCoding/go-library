@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "Firefox Bridge",
+  "version": "1.0.0",
+  "description": "Bridge for MCP access to Firefox tabs and content",
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "activeTab",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["bridge.js", "background.js"],
+    "persistent": true
+  }
+}

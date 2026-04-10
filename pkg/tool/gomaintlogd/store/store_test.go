@@ -1,7 +1,10 @@
 package store
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
 
 func TestStub(t *testing.T) {
-	_ = t
+	assert.Stub(t)
 }

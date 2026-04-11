@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "ignorePaths": ["py/sublime_bridge/.python-version"],
   "packageRules": [
     {
       "matchPackageNames": [
@@ -8,7 +9,8 @@
         "k8s.io/metrics",
         "k8s.io/apimachinery"
       ],
-      "allowedVersions": "<= v0.30.14"
+      "allowedVersions": "<= v0.30.14",
+      "description": "pinned: downstream cluster compatibility constraint"
     },
     {
       "matchPackageNames": ["github.com/google/gnostic-models"],

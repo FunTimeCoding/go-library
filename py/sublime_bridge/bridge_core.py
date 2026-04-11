@@ -56,7 +56,7 @@ def create_view(title, content, syntax):
     if title:
         view.set_name(title)
 
-    if syntax:
+    if syntax and hasattr(sublime, 'find_syntax'):
         view.assign_syntax(sublime.find_syntax(syntax))
 
     if content:

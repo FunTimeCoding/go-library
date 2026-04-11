@@ -24,9 +24,6 @@ func main() {
 	}
 
 	if false {
-		// TODO: Load Markdown files
-		// TODO: Load Mattermost threads
-		// TODO: Load Confluence pages
 		example.Collection()
 		example.Client()
 	}

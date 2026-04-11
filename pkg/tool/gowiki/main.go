@@ -57,6 +57,4 @@ func Main(
 		fmt.Println(p.Format(f))
 		p.PrintConsole()
 	}
-
-	// TODO: Synchronize runbooks
 }

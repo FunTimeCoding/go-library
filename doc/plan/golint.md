@@ -1,25 +1,29 @@
-# golint / goanalyze feature plan
+# golint feature plan
 
-## golint — auto-fixers with immediate impact
+See `doc/plan/goanalyze.md` for the goanalyze naming fix plan.
 
-| Item | Notes |
-|------|-------|
-| `err` → `e` variable auto-fix | Variable checker already detects; add `ChangedLine` fix path. Scope-aware rename within file. |
-| `defer f.Close()` → `defer errors.PanicClose(f)` | Text match and rewrite. Catches real unchecked-close bugs. |
+golint is text/string-based. goanalyze uses the Go analysis package (AST, type-checking,
+scope). New rules that need scope or type information belong in goanalyze.
 
-## golint — new rules and conformance
+## Remaining work
 
-| Item | Notes |
-|------|-------|
-| `var` grouping: consecutive bare `var x = ...` → `var (...)` | Text-based auto-fixer |
-| stdlib call replacement: `os.Create` etc. → go-library wrappers | Call site easy, import harder |
-| Filename must match function/struct name | Preventive; 95%+ compliance today |
+### Auto-fixers
 
-## goanalyze
+- `err` → `e` variable auto-fix: variable checker already detects; add `ChangedLine` fix
+  path. Scope-aware rename within file.
+- `defer f.Close()` → `defer errors.PanicClose(f)`: text match and rewrite. Catches real
+  unchecked-close bugs.
 
-See `doc/plan/goanalyze.md` for naming fix plan and roadmap.
+### New rules
 
-## Parked — manual conformance batches
+- `var` grouping: consecutive bare `var x = ...` → `var (...)` — text-based auto-fixer
+- stdlib call replacement: `os.Create` etc. → go-library wrappers — call site easy,
+  import rewrite harder
+- Filename must match function/struct name — preventive; 95%+ compliance today
+- Blob executable finder: scan tracked files for compiled binaries (by magic bytes or
+  file mode). Images (png etc.) are excluded. Flag for deletion before damage is done.
+
+### Parked — manual conformance batches
 
 - Run golint stray_const, decide per-constant where it belongs
 - Grep for stdlib calls that have go-library wrappers (before rules exist)

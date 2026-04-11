@@ -19,30 +19,56 @@
   excluded by build constraints (e.g. `//go:build linux`). Walks all `.go` files, skips
   those already handled by the type-checked pipeline. Regression test with tagged fixture.
 
-## Planned — collision detection hardening
+## Remaining work
 
-- **Import shadowing check**: prevent renames that shadow imported package names
-  (e.g. renaming to `fmt`). Compiler catches it but produces confusing errors.
-- **Cross-package export collision check**: when `--fix` renames an exported identifier,
-  verify the new name doesn't collide with other exports in the same package.
+### Collision detection hardening
 
-## Planned — struct attribute naming
+Prevent renames that shadow imported package names (e.g. renaming to `fmt`) — compiler
+catches it but produces confusing errors. Also: when `--fix` renames an exported identifier,
+verify the new name doesn't collide with other exports in the same package.
 
-- Struct fields should not get single-letter suggestions (beyond `IsField()` exclusion)
+### Struct attribute naming
 
-## Planned — widen naming bans
+Struct fields should not get single-letter suggestions beyond the current `IsField()`
+exclusion. Needs a stricter rule for field-level suggestions.
 
-Survey codebases for more abbreviations to add to the suggestions map. Nearly free:
-one map entry per ban, automatic cross-package fix via `--fix`.
+### Widen naming bans
 
-## Planned — auto-fix for other goanalyze analyzers
+Survey codebases for more abbreviations. Nearly free: one map entry per ban, automatic
+cross-package fix via `--fix`. New entries to add to `suggestions.go`:
+
+- `cmd → c, command`
+- `diff / diffs → d, difference`
+- `auth → a, authentication`
+- `enum → e, enumeration`
+- `api → i, interface` (guard against keyword collision)
+- `json`: add `n` as second letter alongside existing `j` — two-letter proposal: `{j, n}`
+
+### Auto-fix for other analyzers
 
 - **forbidden_call**: `exec.Command` → `run.Command` + import rewrite
 - **string_concatenation**: `a + b` → `fmt.Sprintf(...)` (needs expression-to-source)
 - **struct_literal**: `&pkg.X{}` → `pkg.NewX()` (needs constructor existence check)
 
-## Future — deterministic local variable renaming
+### String-literal constant finder
+
+New analyzer: scan non-test code for string literals that have a matching constant
+defined in a nearby constant package (`pkg/constant`, `pkg/<thing>/constant`,
+`pkg/tool/<thing>/constant`) but use the literal directly instead. First phase:
+flag and report. Second phase: propose new constants for repeated literals, with
+an exclude-list for patterns that don't warrant constants.
+
+### Deterministic local variable renaming
 
 End-state: goanalyze re-renames ALL local variables in a function according to a
-deterministic pattern derived at runtime from the suggestion lists. Requires the
-collision machinery and two-list structure to be solid first. Not yet scoped.
+deterministic pattern derived at runtime from the suggestion lists. Requires collision
+machinery and two-list structure to be solid first.
+
+Feeds into this:
+- Count unique local variables per function (foundation for the algorithm)
+- Collapse variable: if a local is declared once and used exactly once, not in a
+  loop, flag it for inlining
+- Error variable sequencing: when `e` is re-declared multiple times in a function,
+  rename subsequent declarations to `f`, `g`, `h` — guarding against collision with
+  existing `f` (file), `h` (header), etc. Algorithm needs a survey of actual textures
+  across the two 100k+ LOC projects before the letter reservation can be finalized

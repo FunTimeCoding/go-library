@@ -15,7 +15,7 @@ func (c *Client) IssueEvents(
 	limit int,
 	cursor string,
 ) []response.Event {
-	q := map[string]string{}
+	q := map[string]string{"full": "1"}
 
 	if query != "" {
 		q["query"] = query

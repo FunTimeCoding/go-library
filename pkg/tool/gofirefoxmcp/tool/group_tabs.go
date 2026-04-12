@@ -8,10 +8,10 @@ import (
 )
 
 type groupTabsArguments struct {
-	TabIdentifiers  []int  `json:"tab_ids"`
+	TabIdentifiers  []int           `json:"tab_ids"`
 	GroupIdentifier request.Integer `json:"group_id"`
-	Title           string `json:"title"`
-	Color           string `json:"color"`
+	Title           string          `json:"title"`
+	Color           string          `json:"color"`
 }
 
 func (t *Tool) GroupTabs(

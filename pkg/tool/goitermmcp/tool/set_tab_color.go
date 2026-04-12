@@ -8,7 +8,7 @@ import (
 )
 
 type setTabColorArguments struct {
-	SessionIdentifier string `json:"session_id"`
+	SessionIdentifier string          `json:"session_id"`
 	Red               request.Integer `json:"red"`
 	Green             request.Integer `json:"green"`
 	Blue              request.Integer `json:"blue"`

@@ -17,11 +17,13 @@ func (c *Client) EditView(
 	all bool,
 ) (view.View, error) {
 	l := c.base.Copy().Path("/views/%d", identifier).String()
-	body, e := json.Marshal(map[string]any{
-		"old_string":  old,
-		"new_string":  new,
-		"replace_all": all,
-	})
+	body, e := json.Marshal(
+		map[string]any{
+			"old_string":  old,
+			"new_string":  new,
+			"replace_all": all,
+		},
+	)
 
 	if e != nil {
 		return view.View{}, fmt.Errorf("edit view: %w", e)

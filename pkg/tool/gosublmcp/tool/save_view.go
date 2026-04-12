@@ -9,7 +9,7 @@ import (
 
 type saveViewArguments struct {
 	ViewIdentifier request.Integer `json:"view_id"`
-	FilePath       string `json:"file_path"`
+	FilePath       string          `json:"file_path"`
 }
 
 func (t *Tool) SaveView(

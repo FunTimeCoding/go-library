@@ -9,7 +9,10 @@ import (
 	"net/http"
 )
 
-func (c *Client) ReadHistory(identifier string, count int) (session.History, error) {
+func (c *Client) ReadHistory(
+	identifier string,
+	count int,
+) (session.History, error) {
 	l := c.base.Copy().Path("/sessions/%s/history", identifier).
 		Set("count", fmt.Sprintf("%d", count)).String()
 	r, e := c.client.Get(l)
@@ -23,7 +26,11 @@ func (c *Client) ReadHistory(identifier string, count int) (session.History, err
 	if r.StatusCode != http.StatusOK {
 		b := system.ReadAll(r.Body)
 
-		return session.History{}, fmt.Errorf("read history: %d: %s", r.StatusCode, b)
+		return session.History{}, fmt.Errorf(
+			"read history: %d: %s",
+			r.StatusCode,
+			b,
+		)
 	}
 
 	var result session.History

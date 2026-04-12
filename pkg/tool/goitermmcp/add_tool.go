@@ -7,7 +7,10 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-func addTool(s *server.MCPServer, t *tool.Tool) {
+func addTool(
+	s *server.MCPServer,
+	t *tool.Tool,
+) {
 	s.AddTool(
 		mcp.NewTool(
 			constant.ListSessions,

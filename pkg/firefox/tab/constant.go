@@ -1,6 +1,6 @@
 package tab
 
 const (
-	NoTitle = "untitled"
-	NoLocator   = "about:blank"
+	NoTitle   = "untitled"
+	NoLocator = "about:blank"
 )

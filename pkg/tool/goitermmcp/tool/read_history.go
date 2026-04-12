@@ -8,7 +8,7 @@ import (
 )
 
 type readHistoryArguments struct {
-	SessionIdentifier string `json:"session_id"`
+	SessionIdentifier string          `json:"session_id"`
 	Count             request.Integer `json:"count"`
 }
 

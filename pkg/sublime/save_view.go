@@ -9,11 +9,16 @@ import (
 	"net/http"
 )
 
-func (c *Client) SaveView(identifier int, path string) error {
+func (c *Client) SaveView(
+	identifier int,
+	path string,
+) error {
 	l := c.base.Copy().Path("/views/%d/save", identifier).String()
-	body, e := json.Marshal(map[string]string{
-		"file_path": path,
-	})
+	body, e := json.Marshal(
+		map[string]string{
+			"file_path": path,
+		},
+	)
 
 	if e != nil {
 		return fmt.Errorf("save view: %w", e)

@@ -9,7 +9,10 @@ import (
 	"net/http"
 )
 
-func (c *Client) SetTabTitle(tabIdentifier string, title string) error {
+func (c *Client) SetTabTitle(
+	tabIdentifier string,
+	title string,
+) error {
 	l := c.base.Copy().Path("/tabs/%s/title", tabIdentifier).String()
 	body, e := json.Marshal(map[string]string{"title": title})
 

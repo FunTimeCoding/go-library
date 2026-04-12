@@ -11,7 +11,10 @@ import (
 	"net/http"
 )
 
-func Run(address string, bridgePort int) {
+func Run(
+	address string,
+	bridgePort int,
+) {
 	c := firefox.NewEnvironment()
 	s := server.NewMCPServer(constant.Name, constant.Version)
 	t := tool.New(c)

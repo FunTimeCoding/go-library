@@ -7,7 +7,10 @@ import (
 	"time"
 )
 
-func (c *Client) send(method string, parameters any) (response, error) {
+func (c *Client) send(
+	method string,
+	parameters any,
+) (response, error) {
 	c.mutex.Lock()
 	connection := c.connection
 	c.mutex.Unlock()
@@ -49,6 +52,9 @@ func (c *Client) send(method string, parameters any) (response, error) {
 
 		return r, nil
 	case <-time.After(10 * time.Second):
-		return response{}, fmt.Errorf("%s: timeout waiting for response", method)
+		return response{}, fmt.Errorf(
+			"%s: timeout waiting for response",
+			method,
+		)
 	}
 }

@@ -9,7 +9,10 @@ import (
 	"net/http"
 )
 
-func (c *Client) SendText(identifier string, text string) error {
+func (c *Client) SendText(
+	identifier string,
+	text string,
+) error {
 	l := c.base.Copy().Path("/sessions/%s/send", identifier).String()
 	body, e := json.Marshal(map[string]string{"text": text})
 

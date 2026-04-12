@@ -16,11 +16,13 @@ func (c *Client) SetTabColor(
 	blue int,
 ) error {
 	l := c.base.Copy().Path("/sessions/%s/color", sessionIdentifier).String()
-	body, e := json.Marshal(map[string]int{
-		"red":   red,
-		"green": green,
-		"blue":  blue,
-	})
+	body, e := json.Marshal(
+		map[string]int{
+			"red":   red,
+			"green": green,
+			"blue":  blue,
+		},
+	)
 
 	if e != nil {
 		return fmt.Errorf("set tab color: %w", e)

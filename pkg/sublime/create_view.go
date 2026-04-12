@@ -16,11 +16,13 @@ func (c *Client) CreateView(
 	syntax string,
 ) (view.View, error) {
 	l := c.base.Copy().Path("/views").String()
-	body, e := json.Marshal(map[string]string{
-		"title":   title,
-		"content": content,
-		"syntax":  syntax,
-	})
+	body, e := json.Marshal(
+		map[string]string{
+			"title":   title,
+			"content": content,
+			"syntax":  syntax,
+		},
+	)
 
 	if e != nil {
 		return view.View{}, fmt.Errorf("create view: %w", e)

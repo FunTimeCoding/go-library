@@ -17,7 +17,10 @@ func (t *Tool) ReadTab(
 	_ mcp.CallToolRequest,
 	arguments readTabArguments,
 ) (*mcp.CallToolResult, error) {
-	v, e := t.client.ReadTab(int(arguments.TabIdentifier), bool(arguments.Raw))
+	v, e := t.client.ReadTab(
+		int(arguments.TabIdentifier),
+		bool(arguments.Raw),
+	)
 
 	if e != nil {
 		return response.Fail("read tab: %v", e)

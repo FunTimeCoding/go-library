@@ -22,7 +22,11 @@ func (c *Client) CreateTab() (session.Session, error) {
 	if r.StatusCode != http.StatusCreated {
 		b := system.ReadAll(r.Body)
 
-		return session.Session{}, fmt.Errorf("create tab: %d: %s", r.StatusCode, b)
+		return session.Session{}, fmt.Errorf(
+			"create tab: %d: %s",
+			r.StatusCode,
+			b,
+		)
 	}
 
 	var result session.Session

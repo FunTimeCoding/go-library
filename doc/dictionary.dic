@@ -136,6 +136,7 @@ urls
 
 # Kubernetes
 apimachinery
+certificaterequests
 sigs
 
 # HTML

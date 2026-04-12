@@ -9,8 +9,8 @@ import (
 
 type updateGroupArguments struct {
 	GroupIdentifier request.Integer `json:"group_id"`
-	Title           string `json:"title"`
-	Color           string `json:"color"`
+	Title           string          `json:"title"`
+	Color           string          `json:"color"`
 }
 
 func (t *Tool) UpdateGroup(

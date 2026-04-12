@@ -7,10 +7,15 @@ import (
 	"net/http"
 )
 
-func (c *Client) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	connection, e := websocket.Accept(w, r, &websocket.AcceptOptions{
-		InsecureSkipVerify: true,
-	})
+func (c *Client) ServeHTTP(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	connection, e := websocket.Accept(
+		w, r, &websocket.AcceptOptions{
+			InsecureSkipVerify: true,
+		},
+	)
 
 	if e != nil {
 		log.Printf("firefox bridge: accept: %v", e)

@@ -12,9 +12,11 @@ import (
 
 func (c *Client) OpenFile(path string) (view.View, error) {
 	l := c.base.Copy().Path("/open").String()
-	body, e := json.Marshal(map[string]string{
-		"file_path": path,
-	})
+	body, e := json.Marshal(
+		map[string]string{
+			"file_path": path,
+		},
+	)
 
 	if e != nil {
 		return view.View{}, fmt.Errorf("open file: %w", e)

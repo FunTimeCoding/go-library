@@ -81,7 +81,10 @@ func TestCheckMultipleFilesOnlyBrokenFixed(t *testing.T) {
 
 func TestCheckStubCreated(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("go.mod", "module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n")
+	v.Write(
+		"go.mod",
+		"module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n",
+	)
 	v.Write(
 		"pkg/foo/foo.go",
 		"package foo\n\nfunc Foo() {}\n",
@@ -96,7 +99,10 @@ func TestCheckStubCreated(t *testing.T) {
 
 func TestCheckStubMainPackage(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("go.mod", "module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n")
+	v.Write(
+		"go.mod",
+		"module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n",
+	)
 	v.Write(
 		"cmd/foo/main.go",
 		"package main\n\nfunc main() {}\n",
@@ -111,7 +117,10 @@ func TestCheckStubMainPackage(t *testing.T) {
 
 func TestCheckStubToolPackage(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("go.mod", "module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n")
+	v.Write(
+		"go.mod",
+		"module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n",
+	)
 	v.Write(
 		"pkg/tool/gofoo/main.go",
 		"package gofoo\n\nfunc Main() {}\n",

@@ -24,7 +24,11 @@ func Main(
 	}
 
 	pflag.Int(argument.Port, 8080, "MCP listen port")
-	pflag.Int(constant.BridgePortFlag, 6125, "WebSocket bridge port for extension")
+	pflag.Int(
+		constant.BridgePortFlag,
+		6125,
+		"WebSocket bridge port for extension",
+	)
 	monitor.ParseBind(version, gitHash, buildDate)
 	Run(
 		fmt.Sprintf(":%d", viper.GetInt(argument.Port)),

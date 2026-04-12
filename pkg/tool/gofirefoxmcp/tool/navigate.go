@@ -9,7 +9,7 @@ import (
 
 type navigateArguments struct {
 	TabIdentifier request.Integer `json:"tab_id"`
-	Locator           string `json:"url"`
+	Locator       string          `json:"url"`
 }
 
 func (t *Tool) Navigate(

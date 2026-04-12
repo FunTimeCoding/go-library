@@ -9,7 +9,10 @@ import (
 	"net/http"
 )
 
-func (c *Client) SendKey(identifier string, key string) error {
+func (c *Client) SendKey(
+	identifier string,
+	key string,
+) error {
 	l := c.base.Copy().Path("/sessions/%s/key", identifier).String()
 	body, e := json.Marshal(map[string]string{"key": key})
 

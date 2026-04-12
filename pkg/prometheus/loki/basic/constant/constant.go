@@ -19,3 +19,5 @@ const (
 	Stdout = "stdout"
 	Stderr = "stderr"
 )
+
+const MaximumLimit = 5000

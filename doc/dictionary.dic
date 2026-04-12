@@ -30,7 +30,6 @@ mattermost
 openvex
 osquery
 qdrant
-rundeck
 shiin
 treminio
 trivy
@@ -81,6 +80,7 @@ goitermmcp
 gojira
 gokevt
 golint
+goloki
 gomaintlog
 gomaintlogd
 gomatmcp
@@ -167,6 +167,7 @@ alertname
 amtool
 daemonset
 ingester
+logcli
 promhttp
 pushgateway
 querier

@@ -19,6 +19,7 @@ func QueryRange() {
 		`{namespace="bot"} | json | msg="request_start", http_route="/github"`,
 		start,
 		end,
+		constant.MaximumLimit,
 	)
 
 	if false {

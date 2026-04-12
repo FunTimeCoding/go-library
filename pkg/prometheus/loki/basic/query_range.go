@@ -13,6 +13,7 @@ func (c *Client) QueryRange(
 	query string,
 	start time.Time,
 	end time.Time,
+	limit int,
 ) response.QueryResult {
 	r := response.NewQuery()
 	notation.DecodeStrict(
@@ -28,7 +29,7 @@ func (c *Client) QueryRange(
 				query,
 			).SetInteger(
 				parameter.Limit,
-				5000, // maximum is 5000
+				limit,
 			).String(),
 		),
 		&r,

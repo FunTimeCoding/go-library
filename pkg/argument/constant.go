@@ -41,6 +41,7 @@ const (
 	Host           = "host"
 	Information    = "information"
 	Interactive    = "interactive"
+	Interval       = "interval"
 	Investigate    = "investigate"
 	Issue          = "issue"
 	Key            = "key"

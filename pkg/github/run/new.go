@@ -28,6 +28,8 @@ func New(v *github.WorkflowRun) *Run {
 		Identifier: v.GetID(),
 		Name:       v.GetName(),
 		Status:     v.GetStatus(),
+		Conclusion: v.GetConclusion(),
+		Branch:     v.GetHeadBranch(),
 		Create:     create,
 		Update:     update,
 		Repository: repository.New(v.Repository),

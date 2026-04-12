@@ -12,6 +12,8 @@ type Run struct {
 	Identifier        int64
 	Name              string
 	Status            string
+	Conclusion        string
+	Branch            string
 	Create            time.Time
 	Update            time.Time
 	concern           []string

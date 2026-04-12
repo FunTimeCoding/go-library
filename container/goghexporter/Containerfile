@@ -1,0 +1,3 @@
+FROM alpine:3
+COPY tmp/goghexporter/linux-amd64/goghexporter /usr/local/bin/goghexporter
+ENTRYPOINT ["goghexporter"]

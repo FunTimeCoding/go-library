@@ -33,7 +33,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.13.8
 	github.com/getkin/kin-openapi v0.135.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.45.0
+	github.com/getsentry/sentry-go v0.45.1
 	github.com/go-git/go-billy/v5 v5.8.0
 	github.com/go-git/go-git/v5 v5.17.2
 	github.com/go-openapi/runtime v0.29.3
@@ -62,7 +62,7 @@ require (
 	github.com/nsf/termbox-go v1.1.1
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/olekukonko/tablewriter v1.1.4
-	github.com/ollama/ollama v0.20.5
+	github.com/ollama/ollama v0.20.6
 	github.com/openai/openai-go/v3 v3.31.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23

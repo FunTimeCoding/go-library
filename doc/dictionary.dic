@@ -17,6 +17,7 @@ Ollama
 Opsgenie
 Samsa
 boumenot
+coolify
 funtimecoding
 gdamore
 homeassistant
@@ -259,6 +260,7 @@ automerge
 datasources
 
 # Anthropic
+autoupdater
 mcpjson
 
 # Proxmox

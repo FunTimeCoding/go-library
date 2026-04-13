@@ -261,6 +261,7 @@ datasources
 
 # Anthropic
 autoupdater
+jsonrpc
 mcpjson
 
 # Proxmox

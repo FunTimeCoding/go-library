@@ -3,6 +3,7 @@ package gomaintlogd
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 	"net/url"
 	"strings"
@@ -31,7 +32,7 @@ func TestWebEndpoint(t *testing.T) {
 	}
 	r, e := http.Post(
 		fmt.Sprintf("%s/add", base),
-		"application/x-www-form-urlencoded",
+		constant.FormEncoded,
 		strings.NewReader(form.Encode()),
 	)
 	assert.FatalOnError(t, e)
@@ -66,7 +67,7 @@ func TestWebEndpoint(t *testing.T) {
 	}
 	r, e = http.Post(
 		fmt.Sprintf("%s/entry/edit?id=1", base),
-		"application/x-www-form-urlencoded",
+		constant.FormEncoded,
 		strings.NewReader(editForm.Encode()),
 	)
 	assert.FatalOnError(t, e)

@@ -20,9 +20,11 @@ func (c *Client) Sessions() ([]session.Session, error) {
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusOK {
-		b := system.ReadAll(r.Body)
-
-		return nil, fmt.Errorf("list sessions: %d: %s", r.StatusCode, b)
+		return nil, fmt.Errorf(
+			"list sessions: %d: %s",
+			r.StatusCode,
+			system.ReadAll(r.Body),
+		)
 	}
 
 	var result struct {

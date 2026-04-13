@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/sublime/view"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
@@ -29,31 +30,33 @@ func (c *Client) EditView(
 		return view.View{}, fmt.Errorf("edit view: %w", e)
 	}
 
-	q, e := http.NewRequest(http.MethodPut, l, bytes.NewReader(body))
+	q, f := http.NewRequest(http.MethodPut, l, bytes.NewReader(body))
 
-	if e != nil {
-		return view.View{}, fmt.Errorf("edit view: %w", e)
+	if f != nil {
+		return view.View{}, fmt.Errorf("edit view: %w", f)
 	}
 
-	q.Header.Set("Content-Type", "application/json")
-	r, e := c.client.Do(q)
+	q.Header.Set("Content-Type", constant.Object)
+	r, g := c.client.Do(q)
 
-	if e != nil {
-		return view.View{}, fmt.Errorf("edit view: %w", e)
+	if g != nil {
+		return view.View{}, fmt.Errorf("edit view: %w", g)
 	}
 
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusOK {
-		b := system.ReadAll(r.Body)
-
-		return view.View{}, fmt.Errorf("edit view: %d: %s", r.StatusCode, b)
+		return view.View{}, fmt.Errorf(
+			"edit view: %d: %s",
+			r.StatusCode,
+			system.ReadAll(r.Body),
+		)
 	}
 
 	var result view.View
 
-	if e = json.NewDecoder(r.Body).Decode(&result); e != nil {
-		return view.View{}, fmt.Errorf("edit view: %w", e)
+	if h := json.NewDecoder(r.Body).Decode(&result); h != nil {
+		return view.View{}, fmt.Errorf("edit view: %w", h)
 	}
 
 	return result, nil

@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/sublime/view"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
@@ -28,24 +29,26 @@ func (c *Client) CreateView(
 		return view.View{}, fmt.Errorf("create view: %w", e)
 	}
 
-	r, e := c.client.Post(l, "application/json", bytes.NewReader(body))
+	r, f := c.client.Post(l, constant.Object, bytes.NewReader(body))
 
-	if e != nil {
-		return view.View{}, fmt.Errorf("create view: %w", e)
+	if f != nil {
+		return view.View{}, fmt.Errorf("create view: %w", f)
 	}
 
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusCreated {
-		b := system.ReadAll(r.Body)
-
-		return view.View{}, fmt.Errorf("create view: %d: %s", r.StatusCode, b)
+		return view.View{}, fmt.Errorf(
+			"create view: %d: %s",
+			r.StatusCode,
+			system.ReadAll(r.Body),
+		)
 	}
 
 	var result view.View
 
-	if e = json.NewDecoder(r.Body).Decode(&result); e != nil {
-		return view.View{}, fmt.Errorf("create view: %w", e)
+	if g := json.NewDecoder(r.Body).Decode(&result); g != nil {
+		return view.View{}, fmt.Errorf("create view: %w", g)
 	}
 
 	return result, nil

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
@@ -28,10 +29,10 @@ func (c *Client) SetTabColor(
 		return fmt.Errorf("set tab color: %w", e)
 	}
 
-	r, e := c.client.Post(l, "application/json", bytes.NewReader(body))
+	r, f := c.client.Post(l, constant.Object, bytes.NewReader(body))
 
-	if e != nil {
-		return fmt.Errorf("set tab color: %w", e)
+	if f != nil {
+		return fmt.Errorf("set tab color: %w", f)
 	}
 
 	defer errors.LogClose(r.Body)

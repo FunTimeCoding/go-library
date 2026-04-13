@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
@@ -24,18 +25,20 @@ func (c *Client) SaveView(
 		return fmt.Errorf("save view: %w", e)
 	}
 
-	r, e := c.client.Post(l, "application/json", bytes.NewReader(body))
+	r, f := c.client.Post(l, constant.Object, bytes.NewReader(body))
 
-	if e != nil {
-		return fmt.Errorf("save view: %w", e)
+	if f != nil {
+		return fmt.Errorf("save view: %w", f)
 	}
 
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusOK {
-		b := system.ReadAll(r.Body)
-
-		return fmt.Errorf("save view: %d: %s", r.StatusCode, b)
+		return fmt.Errorf(
+			"save view: %d: %s",
+			r.StatusCode,
+			system.ReadAll(r.Body),
+		)
 	}
 
 	return nil

@@ -4,7 +4,7 @@ go 1.26.2
 
 require (
 	charm.land/bubbles/v2 v2.1.0
-	charm.land/bubbletea/v2 v2.0.4
+	charm.land/bubbletea/v2 v2.0.5
 	charm.land/lipgloss/v2 v2.0.3
 	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.0
 	github.com/MrGunflame/gw2api v1.0.5
@@ -13,7 +13,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.4.1
 	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447
 	github.com/andygrunwald/go-jira v1.17.0
-	github.com/anthropics/anthropic-sdk-go v1.35.0
+	github.com/anthropics/anthropic-sdk-go v1.35.1
 	github.com/apenella/go-ansible/v2 v2.4.1
 	github.com/bndr/gojenkins v1.2.0
 	github.com/bwmarrin/discordgo v0.29.0
@@ -44,7 +44,7 @@ require (
 	github.com/google/go-github/v84 v84.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/gpustack/gguf-parser-go v0.24.0
-	github.com/grafana/grafana-openapi-client-go v0.0.0-20260330113218-ee77c4f6f90e
+	github.com/grafana/grafana-openapi-client-go v0.0.0-20260413221349-81de049f2230
 	github.com/grafana/loki-client-go v0.0.0-20260319041550-4794b448cb9b
 	github.com/hashicorp/vault-client-go v0.4.3
 	github.com/hupe1980/go-tiktoken v0.0.10
@@ -138,7 +138,7 @@ require (
 	github.com/buger/jsonparser v1.1.2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/charmbracelet/colorprofile v0.4.3 // indirect
-	github.com/charmbracelet/ultraviolet v0.0.0-20260413133134-73592393e1ad // indirect
+	github.com/charmbracelet/ultraviolet v0.0.0-20260413211237-bd52878bcec2 // indirect
 	github.com/charmbracelet/x/ansi v0.11.7 // indirect
 	github.com/charmbracelet/x/term v0.2.2 // indirect
 	github.com/charmbracelet/x/termios v0.1.1 // indirect

@@ -2,8 +2,8 @@ bazil.org/fuse v0.0.0-20160811212531-371fbbdaa898/go.mod h1:Xbm+BRKSBEpa4q4hTSxo
 bazil.org/fuse v0.0.0-20200407214033-5883e5a4b512/go.mod h1:FbcW6z/2VytnFDhZfumh8Ss8zxHE6qpMP5sHTRe0EaM=
 charm.land/bubbles/v2 v2.1.0 h1:YSnNh5cPYlYjPxRrzs5VEn3vwhtEn3jVGRBT3M7/I0g=
 charm.land/bubbles/v2 v2.1.0/go.mod h1:l97h4hym2hvWBVfmJDtrEHHCtkIKeTEb3TTJ4ZOB3wY=
-charm.land/bubbletea/v2 v2.0.4 h1:C0Ukynyn4uQSb8lRjnsoW3qQjYDLSIqMzfFeKw6iWTE=
-charm.land/bubbletea/v2 v2.0.4/go.mod h1:zk69eBFFmU7T5qtTcxHpKerPlT4v/8Gy7f8pc0oVly0=
+charm.land/bubbletea/v2 v2.0.5 h1:TQlLFqxo39AAHSVuOhJ5D3nH7O9Nk8JGinsfWQ4y1U4=
+charm.land/bubbletea/v2 v2.0.5/go.mod h1:dvbsYZD+MHkdIZl+Z67D212hEvB+GII2tfH8f9SnoDw=
 charm.land/lipgloss/v2 v2.0.3 h1:yM2zJ4Cf5Y51b7RHIwioil4ApI/aypFXXVHSwlM6RzU=
 charm.land/lipgloss/v2 v2.0.3/go.mod h1:7myLU9iG/3xluAWzpY/fSxYYHCgoKTie7laxk6ATwXA=
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
@@ -191,8 +191,8 @@ github.com/andygrunwald/go-jira v1.17.0/go.mod h1:tiZsPUu9824bwcI2BUXatE4hJbs9rU
 github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239/go.mod h1:2FmKhYUyUczH0OGQWaF5ceTx0UBShxjsH6f8oGKYe2c=
 github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be h1:9AeTilPcZAjCFIImctFaOjnTIavg87rW78vTPkQqLI8=
 github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be/go.mod h1:ySMOLuWl6zY27l47sB3qLNK6tF2fkHG55UZxx8oIVo4=
-github.com/anthropics/anthropic-sdk-go v1.35.0 h1:W6K8mIkD1zIU0VUPMuokWONUvdlt2C//b11Zr6v5Oz4=
-github.com/anthropics/anthropic-sdk-go v1.35.0/go.mod h1:dSIO7kSrOI7MA4fE6RRVaw8tyWP7HNQU5/H/KS4cax8=
+github.com/anthropics/anthropic-sdk-go v1.35.1 h1:FuDOGnzB2QSV3lNTk1cXKMJQJx36/hqSKOHcJZBpgyM=
+github.com/anthropics/anthropic-sdk-go v1.35.1/go.mod h1:dSIO7kSrOI7MA4fE6RRVaw8tyWP7HNQU5/H/KS4cax8=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/apache/thrift v0.13.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
@@ -312,8 +312,8 @@ github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UF
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/charmbracelet/colorprofile v0.4.3 h1:QPa1IWkYI+AOB+fE+mg/5/4HRMZcaXex9t5KX76i20Q=
 github.com/charmbracelet/colorprofile v0.4.3/go.mod h1:/zT4BhpD5aGFpqQQqw7a+VtHCzu+zrQtt1zhMt9mR4Q=
-github.com/charmbracelet/ultraviolet v0.0.0-20260413133134-73592393e1ad h1:kxhuAdAdSGSiAadbEjP7v06nCb17jXjjqF2QOX+0QiE=
-github.com/charmbracelet/ultraviolet v0.0.0-20260413133134-73592393e1ad/go.mod h1:bAAz7dh/FTYfC+oiHavL4mX1tOIBZ0ZwYjSi3qE6ivM=
+github.com/charmbracelet/ultraviolet v0.0.0-20260413211237-bd52878bcec2 h1:mRAlb/WARLaCnCwAEBa8Zfk965GrYc414MhJamV4anw=
+github.com/charmbracelet/ultraviolet v0.0.0-20260413211237-bd52878bcec2/go.mod h1:bAAz7dh/FTYfC+oiHavL4mX1tOIBZ0ZwYjSi3qE6ivM=
 github.com/charmbracelet/x/ansi v0.11.7 h1:kzv1kJvjg2S3r9KHo8hDdHFQLEqn4RBCb39dAYC84jI=
 github.com/charmbracelet/x/ansi v0.11.7/go.mod h1:9qGpnAVYz+8ACONkZBUWPtL7lulP9No6p1epAihUZwQ=
 github.com/charmbracelet/x/exp/golden v0.0.0-20250806222409-83e3a29d542f h1:pk6gmGpCE7F3FcjaOEKYriCvpmIN4+6OS/RD0vm4uIA=
@@ -1015,8 +1015,8 @@ github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 h1:JeSE6pjso5T
 github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674/go.mod h1:r4w70xmWCQKmi1ONH4KIaBptdivuRPyosB9RmPlGEwA=
 github.com/gpustack/gguf-parser-go v0.24.0 h1:tdJceXYp9e5RhE9RwVYIuUpir72Jz2D68NEtDXkKCKc=
 github.com/gpustack/gguf-parser-go v0.24.0/go.mod h1:y4TwTtDqFWTK+xvprOjRUh+dowgU2TKCX37vRKvGiZ0=
-github.com/grafana/grafana-openapi-client-go v0.0.0-20260330113218-ee77c4f6f90e h1:P/SerquhsX/4a3kreHR5mrJmohlWRqaxei/ZUSA6zkA=
-github.com/grafana/grafana-openapi-client-go v0.0.0-20260330113218-ee77c4f6f90e/go.mod h1:sMcpxegie6TcvI6eVm+MbNneNC249GGWRcEO1M+UfSE=
+github.com/grafana/grafana-openapi-client-go v0.0.0-20260413221349-81de049f2230 h1:lvk7ZvDR2C9qj0GBjKxYeA52h1CdkgREbMFQD8OWfvU=
+github.com/grafana/grafana-openapi-client-go v0.0.0-20260413221349-81de049f2230/go.mod h1:4WkWL9W7QMnRgRA1XrrSbZRg/UIoTx4x5ynx5RjJldU=
 github.com/grafana/loki-client-go v0.0.0-20260319041550-4794b448cb9b h1:nO4Tjwu6JcbEJK3KzjoaRlidfKuynessgCoYGlGZywY=
 github.com/grafana/loki-client-go v0.0.0-20260319041550-4794b448cb9b/go.mod h1:c2l2oqm4OSWlL9rjIkeP+xhD9nQd6sHYVo1V6FibM04=
 github.com/grafana/loki/pkg/push v0.0.0-20240912152814-63e84b476a9a h1:azssgwCZo0RpSGECl9oi8mqv/x1yCkMh1B7WxjCWk/w=

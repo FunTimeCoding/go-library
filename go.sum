@@ -1017,6 +1017,8 @@ github.com/gpustack/gguf-parser-go v0.24.0 h1:tdJceXYp9e5RhE9RwVYIuUpir72Jz2D68N
 github.com/gpustack/gguf-parser-go v0.24.0/go.mod h1:y4TwTtDqFWTK+xvprOjRUh+dowgU2TKCX37vRKvGiZ0=
 github.com/grafana/grafana-openapi-client-go v0.0.0-20260413221349-81de049f2230 h1:lvk7ZvDR2C9qj0GBjKxYeA52h1CdkgREbMFQD8OWfvU=
 github.com/grafana/grafana-openapi-client-go v0.0.0-20260413221349-81de049f2230/go.mod h1:4WkWL9W7QMnRgRA1XrrSbZRg/UIoTx4x5ynx5RjJldU=
+github.com/grafana/grafana-openapi-client-go v0.0.0-20260414120814-5b95bb183fae h1:ExiJ4Ha24+MRuKxymlGp5bAJwbUSHe+QXcf6E8pwlo0=
+github.com/grafana/grafana-openapi-client-go v0.0.0-20260414120814-5b95bb183fae/go.mod h1:4WkWL9W7QMnRgRA1XrrSbZRg/UIoTx4x5ynx5RjJldU=
 github.com/grafana/loki-client-go v0.0.0-20260319041550-4794b448cb9b h1:nO4Tjwu6JcbEJK3KzjoaRlidfKuynessgCoYGlGZywY=
 github.com/grafana/loki-client-go v0.0.0-20260319041550-4794b448cb9b/go.mod h1:c2l2oqm4OSWlL9rjIkeP+xhD9nQd6sHYVo1V6FibM04=
 github.com/grafana/loki/pkg/push v0.0.0-20240912152814-63e84b476a9a h1:azssgwCZo0RpSGECl9oi8mqv/x1yCkMh1B7WxjCWk/w=

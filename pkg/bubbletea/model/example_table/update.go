@@ -20,7 +20,8 @@ func (m *Model) Update(s tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Enter:
 			return m, tea.Batch(
 				tea.Printf(
-					"Let's go to %s!", m.table.SelectedRow()[1],
+					"Let's go to %s!",
+					m.table.SelectedRow()[1],
 				),
 			)
 		}

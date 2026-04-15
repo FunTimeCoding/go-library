@@ -21,7 +21,10 @@ func Changelog() {
 	fmt.Printf("Fetched %d issues in %s\n\n", len(issues), elapsed)
 	fmt.Printf(
 		"  %-10s %-22s %6s %6s\n",
-		"KEY", "STATUS", "CHANGE", "TRANS",
+		"KEY",
+		"STATUS",
+		"CHANGE",
+		"TRANS",
 	)
 
 	for _, i := range issues {

@@ -66,7 +66,8 @@ func detailRow(e *store.Entry) g.Node {
 							"hx-on::after-request",
 							fmt.Sprintf(
 								"document.getElementById('row-%d')?.remove();document.getElementById('detail-%d')?.remove()",
-								e.ID, e.ID,
+								e.ID,
+								e.ID,
 							),
 						),
 						g.Text("Delete"),

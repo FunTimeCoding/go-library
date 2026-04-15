@@ -24,7 +24,8 @@ func collectOverview(
 			constant.MaximumLimit,
 		)
 		result = append(
-			result, &overview{
+			result,
+			&overview{
 				Namespace: n,
 				Count:     len(r),
 				Latest:    latest(r),

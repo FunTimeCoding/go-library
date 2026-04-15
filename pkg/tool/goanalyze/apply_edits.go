@@ -17,7 +17,8 @@ func applyEdits(
 
 	for path, fileEdits := range grouped {
 		sort.Slice(
-			fileEdits, func(i, j int) bool {
+			fileEdits,
+			func(i, j int) bool {
 				return fileEdits[i].offset > fileEdits[j].offset
 			},
 		)

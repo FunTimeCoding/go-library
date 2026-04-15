@@ -11,7 +11,8 @@ func (p *Poller) RecoverStale() {
 		if v := recover(); v != nil {
 			p.logger.Structured(
 				"recover stale failed",
-				"error", fmt.Sprint(v),
+				"error",
+				fmt.Sprint(v),
 			)
 		}
 	}()
@@ -45,7 +46,9 @@ func (p *Poller) RecoverStale() {
 
 	p.logger.Structured(
 		"recovered stale records",
-		"adopted", len(p.firing),
-		"resolved", resolved,
+		"adopted",
+		len(p.firing),
+		"resolved",
+		resolved,
 	)
 }

@@ -20,7 +20,9 @@ func Netstat(verbose bool) []*jc.Output {
 		Pipe(
 			Pipe(output, verbose, linux.Awk, "!seen[$4]++"),
 			verbose,
-			linux.Jc, "--netstat", "--monochrome",
+			linux.Jc,
+			"--netstat",
+			"--monochrome",
 		),
 		&result,
 		true,

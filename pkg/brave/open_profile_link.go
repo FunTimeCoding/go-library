@@ -19,6 +19,7 @@ func OpenProfileLink(
 			filepath.Join(system.Home(), constant.BraveSettings),
 		),
 		fmt.Sprintf("--profile-directory=%s", profile),
-		"--new-window", link,
+		"--new-window",
+		link,
 	)
 }

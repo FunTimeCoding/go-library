@@ -53,7 +53,8 @@ func (s *Server) entries(
 	renderPage(
 		w,
 		layout(
-			"Entries", "/entries",
+			"Entries",
+			"/entries",
 			h.H1(g.Text("Entries")),
 			h.Form(
 				h.Class("filter-form"),

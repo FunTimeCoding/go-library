@@ -13,7 +13,8 @@ func (s *Server) add(
 	renderPage(
 		w,
 		layout(
-			"Add Entry", "/add",
+			"Add Entry",
+			"/add",
 			h.H1(g.Text("Add Entry")),
 			h.Div(h.ID("result")),
 			addForm(),

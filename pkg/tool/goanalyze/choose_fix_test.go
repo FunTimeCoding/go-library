@@ -7,7 +7,8 @@ import (
 
 func TestChooseFix(t *testing.T) {
 	t.Run(
-		"SingleSegmentReturnsFirst", func(t *testing.T) {
+		"SingleSegmentReturnsFirst",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"r",
@@ -16,7 +17,8 @@ func TestChooseFix(t *testing.T) {
 		},
 	)
 	t.Run(
-		"MultiSegmentPrefersMultiCharacter", func(t *testing.T) {
+		"MultiSegmentPrefersMultiCharacter",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"reference",
@@ -25,12 +27,14 @@ func TestChooseFix(t *testing.T) {
 		},
 	)
 	t.Run(
-		"MultiSegmentFallsBackToFirst", func(t *testing.T) {
+		"MultiSegmentFallsBackToFirst",
+		func(t *testing.T) {
 			assert.String(t, "t", chooseFix("fooTx", []string{"t"}))
 		},
 	)
 	t.Run(
-		"SingleOptionReturnsIt", func(t *testing.T) {
+		"SingleOptionReturnsIt",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"arguments",

@@ -25,7 +25,8 @@ func fixUnloadedReferences(
 		}
 
 		renames = append(
-			renames, exportedRename{
+			renames,
+			exportedRename{
 				oldName: v.ident.Name,
 				newName: replaceSegment(v.ident.Name, v.segment, v.fix),
 			},

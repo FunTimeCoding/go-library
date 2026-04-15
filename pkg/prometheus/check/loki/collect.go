@@ -48,7 +48,8 @@ func collect(
 	}
 
 	sort.Slice(
-		result, func(i, j int) bool {
+		result,
+		func(i, j int) bool {
 			return result[i].Time.Before(result[j].Time)
 		},
 	)

@@ -39,7 +39,8 @@ func (s *Server) recent(
 	renderPage(
 		w,
 		layout(
-			"Recent", "/recent",
+			"Recent",
+			"/recent",
 			h.H1(g.Text("Recent Alerts")),
 			h.Form(
 				h.Class("filter-form"),

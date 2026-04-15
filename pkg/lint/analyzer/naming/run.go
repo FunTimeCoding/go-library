@@ -22,7 +22,8 @@ func run(p *analysis.Pass) (any, error) {
 
 	i := p.ResultOf[inspect.Analyzer].(*inspector.Inspector)
 	i.Preorder(
-		[]ast.Node{(*ast.Ident)(nil)}, func(n ast.Node) {
+		[]ast.Node{(*ast.Ident)(nil)},
+		func(n ast.Node) {
 			ident := n.(*ast.Ident)
 			file := filepath.Base(p.Fset.File(ident.Pos()).Name())
 

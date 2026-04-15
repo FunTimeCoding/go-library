@@ -41,7 +41,8 @@ func (s *Store) ByTimeRange(
 		},
 	)
 	sort.Slice(
-		result, func(i, j int) bool {
+		result,
+		func(i, j int) bool {
 			return result[i].Start.Before(result[j].Start)
 		},
 	)

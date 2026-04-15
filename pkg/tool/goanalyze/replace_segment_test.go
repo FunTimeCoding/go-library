@@ -7,12 +7,14 @@ import (
 
 func TestReplaceSegment(t *testing.T) {
 	t.Run(
-		"CamelCaseSingleLetter", func(t *testing.T) {
+		"CamelCaseSingleLetter",
+		func(t *testing.T) {
 			assert.String(t, "fooR", replaceSegment("fooRef", "ref", "r"))
 		},
 	)
 	t.Run(
-		"CamelCaseMultiWord", func(t *testing.T) {
+		"CamelCaseMultiWord",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"fooReference",
@@ -21,7 +23,8 @@ func TestReplaceSegment(t *testing.T) {
 		},
 	)
 	t.Run(
-		"PascalCaseMultiWord", func(t *testing.T) {
+		"PascalCaseMultiWord",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"FooReference",
@@ -30,7 +33,8 @@ func TestReplaceSegment(t *testing.T) {
 		},
 	)
 	t.Run(
-		"SnakeCaseMultiWord", func(t *testing.T) {
+		"SnakeCaseMultiWord",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"foo_reference",
@@ -39,7 +43,8 @@ func TestReplaceSegment(t *testing.T) {
 		},
 	)
 	t.Run(
-		"SnakeCaseUnderscoreExpansion", func(t *testing.T) {
+		"SnakeCaseUnderscoreExpansion",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"foo_model_context",
@@ -48,7 +53,8 @@ func TestReplaceSegment(t *testing.T) {
 		},
 	)
 	t.Run(
-		"CamelCaseUnderscoreExpansion", func(t *testing.T) {
+		"CamelCaseUnderscoreExpansion",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"fooModelContext",
@@ -57,12 +63,14 @@ func TestReplaceSegment(t *testing.T) {
 		},
 	)
 	t.Run(
-		"SingleWordReplacement", func(t *testing.T) {
+		"SingleWordReplacement",
+		func(t *testing.T) {
 			assert.String(t, "r", replaceSegment("ref", "ref", "r"))
 		},
 	)
 	t.Run(
-		"NoMatch", func(t *testing.T) {
+		"NoMatch",
+		func(t *testing.T) {
 			assert.String(
 				t,
 				"fooBar",

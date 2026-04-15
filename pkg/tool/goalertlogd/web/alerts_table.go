@@ -24,7 +24,8 @@ func alertsTable(records []store.Record) g.Node {
 		),
 		h.TBody(
 			g.Map(
-				records, func(r store.Record) g.Node {
+				records,
+				func(r store.Record) g.Node {
 					status := "firing"
 
 					if r.End != nil {

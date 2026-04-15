@@ -11,7 +11,8 @@ func (c *Client) ReadTab(
 	raw bool,
 ) (tab.Content, error) {
 	r, e := c.send(
-		"read_tab", map[string]any{
+		"read_tab",
+		map[string]any{
 			"tab_id": identifier,
 			"raw":    raw,
 		},

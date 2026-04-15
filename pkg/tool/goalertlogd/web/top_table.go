@@ -28,7 +28,8 @@ func (s *Server) topTable() g.Node {
 		),
 		h.TBody(
 			g.Map(
-				records, func(r store.TopRecord) g.Node {
+				records,
+				func(r store.TopRecord) g.Node {
 					return h.Tr(
 						h.Td(
 							h.A(

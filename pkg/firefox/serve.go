@@ -12,7 +12,9 @@ func (c *Client) ServeHTTP(
 	r *http.Request,
 ) {
 	connection, e := websocket.Accept(
-		w, r, &websocket.AcceptOptions{
+		w,
+		r,
+		&websocket.AcceptOptions{
 			InsecureSkipVerify: true,
 		},
 	)

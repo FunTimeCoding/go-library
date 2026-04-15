@@ -276,7 +276,8 @@ func TestMatchesWithRegexMatcher(t *testing.T) {
 							new(true), // equal
 							new(true), // regex
 						),
-						[]*alert.Alert{newAlert(tt.labels)}, now,
+						[]*alert.Alert{newAlert(tt.labels)},
+						now,
 					),
 				) > 0
 
@@ -536,7 +537,8 @@ func TestMatchesWithTimeWindow(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(
-			tt.name, func(t *testing.T) {
+			tt.name,
+			func(t *testing.T) {
 				isEqual := true
 				isRegex := false
 				s := newSilence(

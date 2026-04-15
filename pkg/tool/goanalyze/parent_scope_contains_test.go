@@ -29,7 +29,8 @@ func TestParentScopeContains(t *testing.T) {
 		{"UniverseScopeIgnored", inner, "int", false},
 	} {
 		t.Run(
-			c.name, func(t *testing.T) {
+			c.name,
+			func(t *testing.T) {
 				got := parentScopeContains(c.scope, c.target)
 
 				if got != c.want {

@@ -7,7 +7,8 @@ import (
 
 func TestDeleteEmpty(t *testing.T) {
 	assert.Any(
-		t, []string{"Alfa", "Bravo"},
+		t,
+		[]string{"Alfa", "Bravo"},
 		DeleteEmpty([]string{"", Alfa, "", Bravo, ""}),
 	)
 }

@@ -9,7 +9,8 @@ import (
 
 func TestMidnight(t *testing.T) {
 	assert.Any(
-		t, time.Date(
+		t,
+		time.Date(
 			1970,
 			1,
 			1,

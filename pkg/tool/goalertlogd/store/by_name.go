@@ -37,7 +37,8 @@ func (s *Store) ByName(name string) []Record {
 		},
 	)
 	sort.Slice(
-		result, func(i, j int) bool {
+		result,
+		func(i, j int) bool {
 			return result[i].Start.After(result[j].Start)
 		},
 	)

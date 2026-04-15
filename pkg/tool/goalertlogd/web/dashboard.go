@@ -27,7 +27,8 @@ func (s *Server) dashboard(
 	renderPage(
 		w,
 		layout(
-			"Dashboard", "/",
+			"Dashboard",
+			"/",
 			h.H1(g.Text("Dashboard")),
 			h.Div(
 				h.Class("summary-cards"),

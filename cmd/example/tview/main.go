@@ -25,7 +25,8 @@ func main() {
 			}
 
 			table.SetCell(
-				r, c,
+				r,
+				c,
 				tview.NewTableCell(lorem[word]).
 					SetTextColor(color).
 					SetAlign(tview.AlignCenter),

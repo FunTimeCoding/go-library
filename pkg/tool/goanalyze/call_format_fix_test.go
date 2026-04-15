@@ -150,14 +150,12 @@ func writeCallFormatTestModule(t *testing.T) string {
 		"compliant.go",
 		"package example\n\nfunc Compliant() {\n\ttwoArgs(\"alpha\", \"bravo\")\n\ttwoArgs(\n\t\t\"alpha\",\n\t\t\"bravo\",\n\t)\n}\n",
 	)
-
 	writeFile(
 		t,
 		directory,
 		"multiple_violations.go",
 		"package example\n\nfunc MultipleViolations() {\n\tfourArgs(\n\t\t\"adopted\", \"bravo\",\n\t\t\"charlie\", \"delta\",\n\t)\n}\n\nfunc fourArgs(a, b, c, d string) {}\n",
 	)
-
 	writeFile(
 		t,
 		directory,

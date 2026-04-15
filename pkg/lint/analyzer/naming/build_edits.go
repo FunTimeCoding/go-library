@@ -16,7 +16,8 @@ func buildEdits(
 
 	for _, reference := range references {
 		edits = append(
-			edits, analysis.TextEdit{
+			edits,
+			analysis.TextEdit{
 				Pos:     reference.Pos(),
 				End:     reference.End(),
 				NewText: []byte(replaceSegment(reference.Name, segment, fix)),

@@ -20,7 +20,8 @@ func (p *Poller) Poll() {
 		if v := recover(); v != nil {
 			p.logger.Structured(
 				"poll failed",
-				"error", fmt.Sprint(v),
+				"error",
+				fmt.Sprint(v),
 			)
 		}
 

@@ -22,7 +22,8 @@ func (s *Server) alerts(
 	renderPage(
 		w,
 		layout(
-			name, "",
+			name,
+			"",
 			h.H1(g.Textf("Alert: %s", name)),
 			h.P(g.Textf("%d occurrences", len(records))),
 			alertsTable(records),

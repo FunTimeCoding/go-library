@@ -21,7 +21,8 @@ func printSurvey(
 	}
 
 	sort.Slice(
-		entries, func(i, j int) bool {
+		entries,
+		func(i, j int) bool {
 			return entries[i].count > entries[j].count
 		},
 	)

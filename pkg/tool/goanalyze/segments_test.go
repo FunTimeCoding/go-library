@@ -7,12 +7,14 @@ import (
 
 func TestSegments(t *testing.T) {
 	t.Run(
-		"CamelCase", func(t *testing.T) {
+		"CamelCase",
+		func(t *testing.T) {
 			assert.Strings(t, []string{"foo", "ref"}, segments("fooRef"))
 		},
 	)
 	t.Run(
-		"PascalCase", func(t *testing.T) {
+		"PascalCase",
+		func(t *testing.T) {
 			assert.Strings(
 				t,
 				[]string{"foo", "bar", "ref"},
@@ -21,22 +23,26 @@ func TestSegments(t *testing.T) {
 		},
 	)
 	t.Run(
-		"SnakeCase", func(t *testing.T) {
+		"SnakeCase",
+		func(t *testing.T) {
 			assert.Strings(t, []string{"foo", "ref"}, segments("foo_ref"))
 		},
 	)
 	t.Run(
-		"SingleWord", func(t *testing.T) {
+		"SingleWord",
+		func(t *testing.T) {
 			assert.Strings(t, []string{"ref"}, segments("ref"))
 		},
 	)
 	t.Run(
-		"SingleUpperWord", func(t *testing.T) {
+		"SingleUpperWord",
+		func(t *testing.T) {
 			assert.Strings(t, []string{"ref"}, segments("Ref"))
 		},
 	)
 	t.Run(
-		"SingleLetter", func(t *testing.T) {
+		"SingleLetter",
+		func(t *testing.T) {
 			assert.Strings(t, []string{"r"}, segments("r"))
 		},
 	)
@@ -44,7 +50,8 @@ func TestSegments(t *testing.T) {
 
 func TestSegmentSpans(t *testing.T) {
 	t.Run(
-		"CamelCase", func(t *testing.T) {
+		"CamelCase",
+		func(t *testing.T) {
 			spans := segmentSpans("fooRef")
 			assert.Integer(t, 2, len(spans))
 			assert.Integer(t, 0, spans[0].start)
@@ -56,7 +63,8 @@ func TestSegmentSpans(t *testing.T) {
 		},
 	)
 	t.Run(
-		"SnakeCase", func(t *testing.T) {
+		"SnakeCase",
+		func(t *testing.T) {
 			spans := segmentSpans("foo_ref")
 			assert.Integer(t, 2, len(spans))
 			assert.Integer(t, 0, spans[0].start)
@@ -66,7 +74,8 @@ func TestSegmentSpans(t *testing.T) {
 		},
 	)
 	t.Run(
-		"SingleWord", func(t *testing.T) {
+		"SingleWord",
+		func(t *testing.T) {
 			spans := segmentSpans("ref")
 			assert.Integer(t, 1, len(spans))
 			assert.Integer(t, 0, spans[0].start)

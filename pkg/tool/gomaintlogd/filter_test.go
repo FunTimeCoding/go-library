@@ -37,7 +37,8 @@ func TestFilterViaREST(t *testing.T) {
 		{"deploy", user1, &system2, &service1},
 	} {
 		_, e = c.PostEntryWithResponse(
-			x, client.PostEntryJSONRequestBody{
+			x,
+			client.PostEntryJSONRequestBody{
 				Action:      entry.action,
 				User:        entry.user,
 				System:      entry.system,
@@ -126,7 +127,8 @@ func TestFilterViaWeb(t *testing.T) {
 	svc := "nginx"
 	desc := "test"
 	_, e = c.PostEntryWithResponse(
-		x, client.PostEntryJSONRequestBody{
+		x,
+		client.PostEntryJSONRequestBody{
 			Action:      "restart",
 			User:        user1,
 			System:      &system1,
@@ -136,7 +138,8 @@ func TestFilterViaWeb(t *testing.T) {
 	)
 	assert.FatalOnError(t, e)
 	_, e = c.PostEntryWithResponse(
-		x, client.PostEntryJSONRequestBody{
+		x,
+		client.PostEntryJSONRequestBody{
 			Action:      "backup",
 			User:        user2,
 			System:      &system2,

@@ -43,7 +43,8 @@ func (s *Store) Unresolved() []UnresolvedRecord {
 		},
 	)
 	sort.Slice(
-		result, func(i, j int) bool {
+		result,
+		func(i, j int) bool {
 			return result[i].Key < result[j].Key
 		},
 	)

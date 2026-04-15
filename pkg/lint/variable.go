@@ -8,8 +8,10 @@ import (
 	"strings"
 )
 
-var errorPattern = regexp.MustCompile(`\berr(?:\s*(?::=|=[^=])|,)`)
-var stringLiteral = regexp.MustCompile(`"(?:[^"\\]|\\.)*"`)
+var (
+	errorPattern = regexp.MustCompile(`\berr(?:\s*(?::=|=[^=])|,)`)
+	stringLiteral = regexp.MustCompile(`"(?:[^"\\]|\\.)*"`)
+)
 
 func Variable(
 	path string,

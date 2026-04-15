@@ -33,7 +33,6 @@ func Check(
 			FunctionCount,
 			StrayConstant,
 			Spacing,
-			DeferClose,
 			VariableGrouping,
 		},
 		fix,

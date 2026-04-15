@@ -140,11 +140,11 @@ func TestFix(t *testing.T) {
 		},
 	)
 	t.Run(
-		"CollisionAbort",
+		"CollisionFallback",
 		func(t *testing.T) {
 			assert.String(
 				t,
-				"package abort\n\nfunc Example() string {\n\tt := \"taken\"\n\ttx := \"test\"\n\n\treturn t + tx\n}\n",
+				"package abort\n\nfunc Example() string {\n\tt := \"taken\"\n\ta := \"test\"\n\n\treturn t + a\n}\n",
 				readFile(
 					t,
 					filepath.Join(directory, "pkg", "abort", "example.go"),
@@ -178,6 +178,42 @@ func TestFix(t *testing.T) {
 						"pkg",
 						"parent",
 						"example.go",
+					),
+				),
+			)
+		},
+	)
+	t.Run(
+		"ErrorChainSecond",
+		func(t *testing.T) {
+			assert.String(
+				t,
+				"package errs\n\nimport \"fmt\"\n\nfunc Example() {\n\te := fmt.Errorf(\"first\")\n\tf := fmt.Errorf(\"second\")\n\t_ = e\n\t_ = f\n}\n",
+				readFile(
+					t,
+					filepath.Join(
+						directory,
+						"pkg",
+						"errs",
+						"example.go",
+					),
+				),
+			)
+		},
+	)
+	t.Run(
+		"ErrorChainThird",
+		func(t *testing.T) {
+			assert.String(
+				t,
+				"package errs\n\nimport \"fmt\"\n\nfunc Triple() {\n\te := fmt.Errorf(\"first\")\n\tf := fmt.Errorf(\"second\")\n\tg := fmt.Errorf(\"third\")\n\t_ = e\n\t_ = f\n\t_ = g\n}\n",
+				readFile(
+					t,
+					filepath.Join(
+						directory,
+						"pkg",
+						"errs",
+						"triple.go",
 					),
 				),
 			)
@@ -328,6 +364,18 @@ func writeTestModule(t *testing.T) string {
 		directory,
 		"pkg/tagged/tagged.go",
 		"//go:build linux\n\npackage tagged\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Handle(e error) bool {\n\treturn errors.Is(e, sentinel.ErrQuit)\n}\n",
+	)
+	writeFile(
+		t,
+		directory,
+		"pkg/errs/example.go",
+		"package errs\n\nimport \"fmt\"\n\nfunc Example() {\n\te := fmt.Errorf(\"first\")\n\terr := fmt.Errorf(\"second\")\n\t_ = e\n\t_ = err\n}\n",
+	)
+	writeFile(
+		t,
+		directory,
+		"pkg/errs/triple.go",
+		"package errs\n\nimport \"fmt\"\n\nfunc Triple() {\n\te := fmt.Errorf(\"first\")\n\tf := fmt.Errorf(\"second\")\n\terr := fmt.Errorf(\"third\")\n\t_ = e\n\t_ = f\n\t_ = err\n}\n",
 	)
 
 	return directory

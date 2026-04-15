@@ -32,12 +32,19 @@ func resolveFix(
 
 	firstWord := firstWord(applicable)
 
-	if firstWord == "" {
-		return ""
+	if firstWord != "" {
+		for _, r := range firstWord {
+			letter := string(r)
+			candidate := replaceSegment(name, segment, letter)
+
+			if !scopeContains(scope, candidate) {
+				return letter
+			}
+		}
 	}
 
-	for _, r := range firstWord {
-		letter := string(r)
+	for c := byte('a'); c <= byte('z'); c++ {
+		letter := string(c)
 		candidate := replaceSegment(name, segment, letter)
 
 		if !scopeContains(scope, candidate) {

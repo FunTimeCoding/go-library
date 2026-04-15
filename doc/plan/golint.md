@@ -11,17 +11,16 @@ scope). New rules that need scope or type information belong in goanalyze.
 
 - `err` → `e` variable auto-fix: variable checker already detects; add `ChangedLine` fix
   path. Scope-aware rename within file.
-- `defer f.Close()` → `defer errors.PanicClose(f)`: text match and rewrite. Catches real
-  unchecked-close bugs.
 
 ### New rules
 
-- `var` grouping: consecutive bare `var x = ...` → `var (...)` — text-based auto-fixer
 - stdlib call replacement: `os.Create` etc. → go-library wrappers — call site easy,
   import rewrite harder
 - Filename must match function/struct name — preventive; 95%+ compliance today
-- Blob executable finder: scan tracked files for compiled binaries (by magic bytes or
-  file mode). Images (png etc.) are excluded. Flag for deletion before damage is done.
+- ~~Blob executable finder~~ — done (b5304c8f)
+- ~~`defer f.Close()` → `defer errors.PanicClose(f)`~~ — moved to goanalyze as
+  `defer_close` analyzer (needs type info to check `io.Closer` conformance)
+- ~~`var` grouping~~ — done (76190a3c)
 
 ### Parked — manual conformance batches
 

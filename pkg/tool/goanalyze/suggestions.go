@@ -44,7 +44,7 @@ var suggestions = map[string]suggestion{
 	"func":   {letters: []string{"f"}, words: []string{"function"}},
 	"sig":    {letters: []string{"s"}, words: []string{"signature"}},
 	"pkg":    {letters: []string{"p"}, words: []string{"package"}},
-	"err":    {letters: []string{"e"}, words: []string{"error"}},
+	"err":    {letters: []string{"e", "f", "g", "h"}, words: []string{"error"}},
 	"val":    {letters: []string{"v"}, words: []string{"value"}},
 	"args":   {words: []string{"arguments"}},
 	"opt":    {letters: []string{"o"}, words: []string{"option"}},

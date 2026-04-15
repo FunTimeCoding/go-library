@@ -21,6 +21,10 @@ tasks:
     - cd pkg/tool/goalertlogd/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     - cd pkg/tool/gomaintlogd/server && oapi-codegen --config config.yaml openapi.yaml
     - cd pkg/tool/gomaintlogd/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goatld/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goatld/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gonetbd/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gonetbd/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:

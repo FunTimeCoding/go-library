@@ -92,6 +92,8 @@ gomaintlogd
 gomatmcp
 gomonitor
 gomonitord
+gonetb
+gonetbd
 gosentry
 gosilence
 gosublmcp
@@ -101,6 +103,7 @@ govolume
 gowait
 kevt
 maintlog
+netb
 
 # OS
 aarch

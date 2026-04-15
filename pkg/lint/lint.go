@@ -3,6 +3,7 @@ package lint
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	lintConstant "github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
@@ -62,6 +63,21 @@ func Lint(
 	}
 
 	v := virtual_file_system.From(constant.CurrentDirectory)
+
+	for _, p := range v.Files() {
+		if Skipped(skip, p) {
+			continue
+		}
+
+		if isKnownBinaryExtension(p) {
+			continue
+		}
+
+		if isExecutable(v.Read(p)) {
+			fmt.Printf("%s: %s\n", lintConstant.TrackedBinaryText, p)
+		}
+	}
+
 	fixes := Check(v, skip, fix, verbose)
 
 	if fix {

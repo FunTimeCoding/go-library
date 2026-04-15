@@ -65,6 +65,9 @@ const (
 
 	MissingBlankBetweenVariableConstantKey  = "missing_blank_between_var_const"
 	MissingBlankBetweenVariableConstantText = "Missing blank line between top-level const and var declarations"
+
+	TrackedBinaryKey  = "tracked_binary"
+	TrackedBinaryText = "Tracked binary executable"
 )
 
 var PackageBlocklist = []string{"api"}

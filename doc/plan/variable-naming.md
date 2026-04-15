@@ -94,6 +94,12 @@ whatever the struct rule assigns).
   `e` and `f` naturally. A function with two errors and one file gets `e`, `f`, `g` for
   errors and the file needs to fall through — to what? Cycle "file": `i`, `l`, `e` → `l`.
 
+## Parked
+
+- Flag multi-character descriptive names (`result`, `letter`) for deterministic shortening
+- Handle `ok`/`okay` booleans from type assertions and map lookups
+- Fix path: scope-aware rename via `applyEdits` pipeline (detection-only for now)
+
 ## Not in scope
 
 - Function parameters (descriptive names per conventions spec)

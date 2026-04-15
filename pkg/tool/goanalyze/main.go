@@ -9,6 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/naming"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/string_concatenation"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/variable_naming"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"golang.org/x/tools/go/analysis/multichecker"
 )
@@ -46,5 +47,6 @@ func Main(
 		struct_literal.Analyzer,
 		call_format.Analyzer,
 		defer_close.Analyzer,
+		variable_naming.Analyzer,
 	)
 }

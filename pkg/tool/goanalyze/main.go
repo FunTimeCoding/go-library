@@ -3,6 +3,7 @@ package goanalyze
 import (
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/call_format"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/forbidden_call"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/naming"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/string_concatenation"
@@ -32,6 +33,7 @@ func Main(
 
 	if f.fix || f.diff {
 		runFix(f.patterns, f.diff)
+		runCallFormatFix(f.patterns, f.diff)
 
 		return
 	}
@@ -41,5 +43,6 @@ func Main(
 		forbidden_call.Analyzer,
 		string_concatenation.Analyzer,
 		struct_literal.Analyzer,
+		call_format.Analyzer,
 	)
 }

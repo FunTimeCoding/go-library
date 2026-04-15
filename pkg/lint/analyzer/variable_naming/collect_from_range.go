@@ -2,11 +2,11 @@ package variable_naming
 
 import (
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"go/types"
 )
 
 func collectFromRange(
-	p *analysis.Pass,
+	info *types.Info,
 	s *ast.RangeStmt,
 	result *[]typedVariable,
 ) {
@@ -21,7 +21,7 @@ func collectFromRange(
 			continue
 		}
 
-		o := p.TypesInfo.ObjectOf(ident)
+		o := info.ObjectOf(ident)
 
 		if o == nil {
 			continue

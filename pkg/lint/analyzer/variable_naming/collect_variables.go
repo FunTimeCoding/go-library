@@ -2,11 +2,11 @@ package variable_naming
 
 import (
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"go/types"
 )
 
 func collectVariables(
-	p *analysis.Pass,
+	info *types.Info,
 	body *ast.BlockStmt,
 ) []typedVariable {
 	var result []typedVariable
@@ -15,9 +15,9 @@ func collectVariables(
 		func(n ast.Node) bool {
 			switch node := n.(type) {
 			case *ast.AssignStmt:
-				collectFromAssign(p, node, &result)
+				collectFromAssign(info, node, &result)
 			case *ast.RangeStmt:
-				collectFromRange(p, node, &result)
+				collectFromRange(info, node, &result)
 			}
 
 			return true

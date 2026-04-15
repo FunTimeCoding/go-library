@@ -8,7 +8,7 @@ import (
 func assignLetters(variables []typedVariable) map[*ast.Ident]string {
 	result := make(map[*ast.Ident]string)
 	taken := make(map[string]bool)
-	singleLetterVars := filterSingleLetter(variables)
+	singleLetterVars := filterEligible(variables)
 
 	for _, v := range singleLetterVars {
 		taken[v.ident.Name] = true

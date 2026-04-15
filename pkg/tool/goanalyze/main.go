@@ -36,6 +36,7 @@ func Main(
 	if f.fix || f.diff {
 		runFix(f.patterns, f.diff)
 		runCallFormatFix(f.patterns, f.diff)
+		runVariableNamingFix(f.patterns, f.diff)
 
 		return
 	}

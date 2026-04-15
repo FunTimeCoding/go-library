@@ -6,7 +6,7 @@ import (
 )
 
 func checkFunction(p *analysis.Pass, fn *ast.FuncDecl) {
-	variables := collectVariables(p, fn.Body)
+	variables := collectVariables(p.TypesInfo, fn.Body)
 
 	if len(variables) == 0 {
 		return
@@ -15,7 +15,7 @@ func checkFunction(p *analysis.Pass, fn *ast.FuncDecl) {
 	assignments := assignLetters(variables)
 
 	for _, v := range variables {
-		if len(v.ident.Name) > 1 {
+		if !isEligible(v) {
 			continue
 		}
 

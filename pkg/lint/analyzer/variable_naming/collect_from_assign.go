@@ -3,11 +3,11 @@ package variable_naming
 import (
 	"go/ast"
 	"go/token"
-	"golang.org/x/tools/go/analysis"
+	"go/types"
 )
 
 func collectFromAssign(
-	p *analysis.Pass,
+	info *types.Info,
 	s *ast.AssignStmt,
 	result *[]typedVariable,
 ) {
@@ -22,7 +22,7 @@ func collectFromAssign(
 			continue
 		}
 
-		o := p.TypesInfo.ObjectOf(ident)
+		o := info.ObjectOf(ident)
 
 		if o == nil {
 			continue

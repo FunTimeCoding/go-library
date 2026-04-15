@@ -1,0 +1,3 @@
+FROM alpine:3
+COPY tmp/goatld/linux-amd64/goatld /usr/local/bin/goatld
+ENTRYPOINT ["goatld"]

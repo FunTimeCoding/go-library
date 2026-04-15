@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/search_result"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
 func (c *Client) Search(
@@ -19,7 +20,7 @@ func (c *Client) Search(
 	var result *response.Search
 	notation.DecodeStrict(
 		c.basic.Get(
-			c.basic.Base().Copy().Path(
+			locator.New(c.host).Base(constant.OldBase).Path(
 				constant.Search,
 			).Set(constant.Query, query).String(),
 		),

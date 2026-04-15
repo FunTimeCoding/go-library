@@ -33,6 +33,7 @@ func Check(
 			FunctionCount,
 			StrayConstant,
 			Spacing,
+			DeferClose,
 		},
 		fix,
 		verbose,

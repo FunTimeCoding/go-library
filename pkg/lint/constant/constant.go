@@ -68,6 +68,11 @@ const (
 
 	TrackedBinaryKey  = "tracked_binary"
 	TrackedBinaryText = "Tracked binary executable"
+
+	DeferCloseKey  = "defer_close"
+	DeferCloseText = "Use defer errors.PanicClose instead of defer x.Close()"
+
+	ErrorsImportPath = `"github.com/funtimecoding/go-library/pkg/errors"`
 )
 
 var PackageBlocklist = []string{"api"}

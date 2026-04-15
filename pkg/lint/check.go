@@ -34,6 +34,7 @@ func Check(
 			StrayConstant,
 			Spacing,
 			DeferClose,
+			VariableGrouping,
 		},
 		fix,
 		verbose,

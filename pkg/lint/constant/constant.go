@@ -73,6 +73,9 @@ const (
 	DeferCloseText = "Use defer errors.PanicClose instead of defer x.Close()"
 
 	ErrorsImportPath = `"github.com/funtimecoding/go-library/pkg/errors"`
+
+	VariableGroupingKey  = "var_grouping"
+	VariableGroupingText = "Consecutive var declarations should use var (...) block"
 )
 
 var PackageBlocklist = []string{"api"}

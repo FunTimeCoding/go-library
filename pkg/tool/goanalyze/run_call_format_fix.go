@@ -14,24 +14,32 @@ func runCallFormatFix(
 	patterns []string,
 	diff bool,
 ) {
+	runCallFormatFixWithDirectory(patterns, "")
+}
+
+func runCallFormatFixWithDirectory(
+	patterns []string,
+	directory string,
+) {
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}
 	}
 
 	fileSet := token.NewFileSet()
-	all := load(fileSet, "", patterns)
+	all := load(fileSet, directory, patterns)
 	edits := findCallFormatEdits(all)
 
 	if len(edits) == 0 {
 		return
 	}
 
-	applyEdits(fileSet, edits, "", diff)
+	applyEdits(fileSet, edits, directory, false)
 }
 
 func findCallFormatEdits(all []*packages.Package) []edit {
 	var result []edit
 	sourceCache := make(map[string][]byte)
+	seen := make(map[token.Pos]bool)
 
 	for _, p := range all {
 		generated := make(map[string]bool)
@@ -73,10 +81,15 @@ func findCallFormatEdits(all []*packages.Package) []edit {
 						return true
 					}
 
+					if seen[call.Lparen] {
+						return true
+					}
+
 					if !call_format.IsViolation(p.Fset, call) {
 						return true
 					}
 
+					seen[call.Lparen] = true
 					fixes := call_format.BuildFixes(
 						p.Fset,
 						call,

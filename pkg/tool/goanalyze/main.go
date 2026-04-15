@@ -33,10 +33,15 @@ func Main(
 		return
 	}
 
+	if f.rename {
+		runVariableNamingFix(f.patterns, false)
+
+		return
+	}
+
 	if f.fix || f.diff {
 		runFix(f.patterns, f.diff)
 		runCallFormatFix(f.patterns, f.diff)
-		runVariableNamingFix(f.patterns, f.diff)
 
 		return
 	}

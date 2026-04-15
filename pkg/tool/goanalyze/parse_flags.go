@@ -13,6 +13,8 @@ func parseFlags() flags {
 			result.diff = true
 		case "--survey":
 			result.survey = true
+		case "--rename":
+			result.rename = true
 		default:
 			result.patterns = append(result.patterns, a)
 		}

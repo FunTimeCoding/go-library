@@ -57,3 +57,5 @@ Tool descriptions hint at risk level so Claude exercises caution.
 - `read_screen` raw ANSI mode (currently always stripped)
 - tmux -CC control mode integration (expose tmux panes as native sessions)
 - Event notifications: output changed, new session created
+- `send_sequence` — one-shot a sequence of inputs (e.g. ctrl+c, up, enter)
+  at a configurable interval (default 1s). Common pattern for daemon restarts.

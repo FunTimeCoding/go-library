@@ -91,6 +91,21 @@ Second phase: propose new constants for repeated literals.
   import rewrite harder
 - Filename must match function/struct name — preventive; 95%+ compliance today
 
+### Auto-fix messaging
+
+When goanalyze renames variables via `--fix` or `--rename`, the output should
+make it obvious the change was applied automatically — like golint's `(auto-fixed)`
+suffix. Currently models reading the output think the renames are suggestions.
+
+### Function signature formatting
+
+Two rules:
+- **Expand**: multi-arg single-line signatures → one argument per line when above
+  a threshold (mirrors `call_format` but for declarations). Must also split
+  shorthand types: `a, b string` → `a string,\nb string` (each param gets its
+  own type annotation)
+- **Collapse**: single-arg expanded signatures → single line when only one parameter
+
 ### Parked — manual conformance batches
 
 - Run golint stray_const, decide per-constant where it belongs

@@ -5,7 +5,10 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-func checkFunction(p *analysis.Pass, fn *ast.FuncDecl) {
+func checkFunction(
+	p *analysis.Pass,
+	fn *ast.FuncDecl,
+) {
 	variables := collectVariables(p.TypesInfo, fn.Body)
 
 	if len(variables) == 0 {

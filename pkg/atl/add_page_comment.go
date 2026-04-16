@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) AddPageComment(identifier string, body string) string {
+func (c *Client) AddPageComment(
+	identifier string,
+	body string,
+) string {
 	result, e := c.client.AddPageComment(
 		c.context,
 		identifier,

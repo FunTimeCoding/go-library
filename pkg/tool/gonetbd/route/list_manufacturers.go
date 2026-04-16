@@ -19,8 +19,9 @@ func (h *Router) ListManufacturers(
 		result = append(
 			result,
 			server.Manufacturer{
-			Identifier: m.Identifier, Name: m.Name,
-		})
+				Identifier: m.Identifier, Name: m.Name,
+			},
+		)
 	}
 
 	w.Header().Set(constant.ContentType, constant.Object)

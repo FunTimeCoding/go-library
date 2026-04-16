@@ -19,8 +19,12 @@ func (h *Router) CreateDeviceType(
 	w.Header().Set(constant.ContentType, constant.Object)
 	w.WriteHeader(http.StatusCreated)
 	errors.PanicOnError(
-		json.NewEncoder(w).Encode(generated.DeviceType{
-			Identifier: t.Identifier, Model: t.Model, Manufacturer: &m.Name,
-		}),
+		json.NewEncoder(w).Encode(
+			generated.DeviceType{
+				Identifier:   t.Identifier,
+				Model:        t.Model,
+				Manufacturer: &m.Name,
+			},
+		),
 	)
 }

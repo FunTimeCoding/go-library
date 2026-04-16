@@ -11,7 +11,10 @@ func createManufacturerCommand(c *netb.Client) *cobra.Command {
 		Use:   "create-manufacturer [name]",
 		Short: "Create a NetBox manufacturer",
 		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			fmt.Println(c.CreateManufacturer(arguments[0]))
 		},
 	}

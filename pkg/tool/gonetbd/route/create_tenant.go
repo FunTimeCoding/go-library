@@ -18,8 +18,10 @@ func (h *Router) CreateTenant(
 	w.Header().Set(constant.ContentType, constant.Object)
 	w.WriteHeader(http.StatusCreated)
 	errors.PanicOnError(
-		json.NewEncoder(w).Encode(generated.Tenant{
-			Identifier: t.Identifier, Name: t.Name,
-		}),
+		json.NewEncoder(w).Encode(
+			generated.Tenant{
+				Identifier: t.Identifier, Name: t.Name,
+			},
+		),
 	)
 }

@@ -6,7 +6,10 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-func check(p *analysis.Pass, d *ast.DeferStmt) {
+func check(
+	p *analysis.Pass,
+	d *ast.DeferStmt,
+) {
 	call, ok := d.Call.Fun.(*ast.SelectorExpr)
 
 	if !ok || call.Sel.Name != "Close" {

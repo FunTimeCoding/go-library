@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) SearchIssues(query string, limit *int) string {
+func (c *Client) SearchIssues(
+	query string,
+	limit *int,
+) string {
 	result, e := c.client.SearchIssues(
 		c.context,
 		&client.SearchIssuesParams{Query: query, Limit: limit},

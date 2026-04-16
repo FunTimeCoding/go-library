@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) CreateVirtualInterface(vmName string, name string) string {
+func (c *Client) CreateVirtualInterface(
+	vmName string,
+	name string,
+) string {
 	result, e := c.client.CreateVirtualInterface(
 		c.context,
 		vmName,

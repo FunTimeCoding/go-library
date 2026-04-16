@@ -19,8 +19,9 @@ func (h *Router) ListTenants(
 		result = append(
 			result,
 			server.Tenant{
-			Identifier: t.Identifier, Name: t.Name,
-		})
+				Identifier: t.Identifier, Name: t.Name,
+			},
+		)
 	}
 
 	w.Header().Set(constant.ContentType, constant.Object)

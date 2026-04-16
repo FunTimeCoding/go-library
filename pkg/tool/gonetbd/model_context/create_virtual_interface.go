@@ -14,16 +14,23 @@ func (s *Server) createVirtualInterface(
 	vmName, f := r.RequireString("virtual_machine")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf(
-			"virtual_machine is required: %v",
-			f,
-		)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"virtual_machine is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	name, f := r.RequireString("name")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("name is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"name is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	vm := s.client.VirtualMachineByName(vmName)

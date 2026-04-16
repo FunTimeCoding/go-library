@@ -7,7 +7,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
-func New(host string, port int, insecure bool) *Client {
+func New(
+	host string,
+	port int,
+	insecure bool,
+) *Client {
 	l := locator.New(host).Port(port)
 
 	if insecure {

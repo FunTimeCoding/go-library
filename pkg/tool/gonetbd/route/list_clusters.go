@@ -8,7 +8,10 @@ import (
 	"net/http"
 )
 
-func (h *Router) ListClusters(w http.ResponseWriter, _ *http.Request) {
+func (h *Router) ListClusters(
+	w http.ResponseWriter,
+	_ *http.Request,
+) {
 	clusters := h.client.Clusters()
 	result := make([]server.Cluster, 0, len(clusters))
 

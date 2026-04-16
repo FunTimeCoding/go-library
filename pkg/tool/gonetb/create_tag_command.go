@@ -11,7 +11,10 @@ func createTagCommand(c *netb.Client) *cobra.Command {
 		Use:   "create-tag [name]",
 		Short: "Create a NetBox tag",
 		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			fmt.Println(c.CreateTag(arguments[0]))
 		},
 	}

@@ -68,17 +68,18 @@ func TestRoundTripStorageToMarkdownToStorage(t *testing.T) {
 		t.Run(
 			c.name,
 			func(t *testing.T) {
-			markdown := ToMarkdown(c.storage)
-			t.Logf("storage → markdown:\n%s", markdown)
-			restored := ToStorage(markdown)
-			t.Logf("markdown → storage:\n%s", restored)
+				markdown := ToMarkdown(c.storage)
+				t.Logf("storage → markdown:\n%s", markdown)
+				restored := ToStorage(markdown)
+				t.Logf("markdown → storage:\n%s", restored)
 
-			// Round-trip the restored storage back to markdown
-			// to verify the semantic content survives
-			markdownAgain := ToMarkdown(restored)
-			t.Logf("storage → markdown (second pass):\n%s", markdownAgain)
-			assert.String(t, markdown, markdownAgain)
-		})
+				// Round-trip the restored storage back to markdown
+				// to verify the semantic content survives
+				markdownAgain := ToMarkdown(restored)
+				t.Logf("storage → markdown (second pass):\n%s", markdownAgain)
+				assert.String(t, markdown, markdownAgain)
+			},
+		)
 	}
 }
 
@@ -156,17 +157,18 @@ func TestRoundTripMarkdownToStorageToMarkdown(t *testing.T) {
 		t.Run(
 			c.name,
 			func(t *testing.T) {
-			storage := ToStorage(c.markdown)
-			t.Logf("markdown → storage:\n%s", storage)
-			restored := ToMarkdown(storage)
-			t.Logf("storage → markdown:\n%s", restored)
-			expect := c.markdown
+				storage := ToStorage(c.markdown)
+				t.Logf("markdown → storage:\n%s", storage)
+				restored := ToMarkdown(storage)
+				t.Logf("storage → markdown:\n%s", restored)
+				expect := c.markdown
 
-			if c.expect != "" {
-				expect = c.expect
-			}
+				if c.expect != "" {
+					expect = c.expect
+				}
 
-			assert.String(t, expect, restored)
-		})
+				assert.String(t, expect, restored)
+			},
+		)
 	}
 }

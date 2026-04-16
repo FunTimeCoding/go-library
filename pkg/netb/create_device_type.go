@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) CreateDeviceType(model string, manufacturer string) string {
+func (c *Client) CreateDeviceType(
+	model string,
+	manufacturer string,
+) string {
 	result, e := c.client.CreateDeviceType(
 		c.context,
 		client.CreateDeviceTypeRequest{

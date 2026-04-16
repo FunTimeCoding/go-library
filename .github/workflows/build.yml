@@ -5,8 +5,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - {name: Repository, uses: actions/checkout@v4}
-      - {name: Go, uses: actions/setup-go@v5, with: {go-version-file: go.mod}}
-      - {name: Dependency, run: 'go mod tidy'}
-      - {name: Build, run: 'go build -json ./...'}
-      - {name: Test, run: 'go test -json ./...'}
+    - {name: Repository, uses: actions/checkout@v4}
+    - {name: Go, uses: actions/setup-go@v5, with: {go-version-file: go.mod}}
+    - {name: Dependency, run: 'go mod tidy'}
+    - {name: Build, run: 'go build -json ./...'}
+    - {name: Test, run: 'go test -json ./...'}

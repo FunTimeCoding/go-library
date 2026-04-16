@@ -22,7 +22,14 @@ func updatePageCommand(c *atl.Client) *cobra.Command {
 				m = &message
 			}
 
-			fmt.Println(c.UpdatePage(arguments[0], arguments[1], arguments[2], m))
+			fmt.Println(
+				c.UpdatePage(
+					arguments[0],
+					arguments[1],
+					arguments[2],
+					m,
+				),
+			)
 		},
 	}
 	command.Flags().StringVar(&message, "message", "", "version comment")

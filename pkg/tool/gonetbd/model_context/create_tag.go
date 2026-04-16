@@ -14,7 +14,12 @@ func (s *Server) createTag(
 	name, f := r.RequireString("name")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("name is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"name is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	return mcp.NewToolResultText(

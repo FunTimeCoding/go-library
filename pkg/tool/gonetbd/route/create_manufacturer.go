@@ -18,8 +18,10 @@ func (h *Router) CreateManufacturer(
 	w.Header().Set(constant.ContentType, constant.Object)
 	w.WriteHeader(http.StatusCreated)
 	errors.PanicOnError(
-		json.NewEncoder(w).Encode(generated.Manufacturer{
-			Identifier: m.Identifier, Name: m.Name,
-		}),
+		json.NewEncoder(w).Encode(
+			generated.Manufacturer{
+				Identifier: m.Identifier, Name: m.Name,
+			},
+		),
 	)
 }

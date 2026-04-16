@@ -47,20 +47,22 @@ func ToMarkdown(markup string) string {
 			parts = append(
 				parts,
 				fmt.Sprintf(
-				"<!-- ac:%s -->\n```\n%s\n```\n<!-- /ac:%s -->",
-				name,
-				body,
-				name,
-			))
+					"<!-- ac:%s -->\n```\n%s\n```\n<!-- /ac:%s -->",
+					name,
+					body,
+					name,
+				),
+			)
 		} else {
 			parts = append(
 				parts,
 				fmt.Sprintf(
-				"<!-- ac:%s -->\n%s\n<!-- /ac:%s -->",
-				name,
-				strings.TrimSpace(markupToMarkdown(body)),
-				name,
-			))
+					"<!-- ac:%s -->\n%s\n<!-- /ac:%s -->",
+					name,
+					strings.TrimSpace(markupToMarkdown(body)),
+					name,
+				),
+			)
 		}
 
 		remaining = remaining[l[1]:]

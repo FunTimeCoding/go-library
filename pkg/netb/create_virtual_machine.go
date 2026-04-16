@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) CreateVirtualMachine(name string, cluster string) string {
+func (c *Client) CreateVirtualMachine(
+	name string,
+	cluster string,
+) string {
 	result, e := c.client.CreateVirtualMachine(
 		c.context,
 		client.CreateVirtualMachineRequest{

@@ -14,19 +14,34 @@ func (s *Server) createCluster(
 	name, f := r.RequireString("name")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("name is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"name is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	typeName, f := r.RequireString("type")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("type is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"type is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	siteName, f := r.RequireString("site")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("site is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"site is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	t := s.client.ClusterTypeByName(typeName)

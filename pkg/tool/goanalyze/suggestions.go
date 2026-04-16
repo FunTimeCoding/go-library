@@ -44,13 +44,16 @@ var suggestions = map[string]suggestion{
 	"func":   {letters: []string{"f"}, words: []string{"function"}},
 	"sig":    {letters: []string{"s"}, words: []string{"signature"}},
 	"pkg":    {letters: []string{"p"}, words: []string{"package"}},
-	"err":    {letters: []string{"e", "f", "g", "h"}, words: []string{"error"}},
-	"val":    {letters: []string{"v"}, words: []string{"value"}},
-	"args":   {words: []string{"arguments"}},
-	"opt":    {letters: []string{"o"}, words: []string{"option"}},
-	"cols":   {words: []string{"columns"}},
-	"loc":    {letters: []string{"l"}, words: []string{"location"}},
-	"dep":    {letters: []string{"d"}, words: []string{"dependency"}},
+	"err": {
+		letters: []string{"e", "f", "g", "h"},
+		words:   []string{"error"},
+	},
+	"val":  {letters: []string{"v"}, words: []string{"value"}},
+	"args": {words: []string{"arguments"}},
+	"opt":  {letters: []string{"o"}, words: []string{"option"}},
+	"cols": {words: []string{"columns"}},
+	"loc":  {letters: []string{"l"}, words: []string{"location"}},
+	"dep":  {letters: []string{"d"}, words: []string{"dependency"}},
 }
 
 var noSuggestion = map[string]bool{

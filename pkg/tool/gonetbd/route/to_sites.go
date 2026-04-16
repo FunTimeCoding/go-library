@@ -12,9 +12,10 @@ func toSites(sites []*site.Site) []server.Site {
 		result = append(
 			result,
 			server.Site{
-			Identifier: s.Identifier,
-			Name:       s.Name,
-		})
+				Identifier: s.Identifier,
+				Name:       s.Name,
+			},
+		)
 	}
 
 	return result

@@ -14,19 +14,34 @@ func (s *Server) createAddress(
 	device, f := r.RequireString("device")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("device is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"device is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	interfaceName, f := r.RequireString("interface")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("interface is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"interface is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	address, f := r.RequireString("address")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("address is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"address is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	d := s.client.DeviceByNameStrict(device)

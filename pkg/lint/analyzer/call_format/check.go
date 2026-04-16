@@ -6,7 +6,10 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-func check(p *analysis.Pass, call *ast.CallExpr) {
+func check(
+	p *analysis.Pass,
+	call *ast.CallExpr,
+) {
 	if len(call.Args) < 2 {
 		return
 	}

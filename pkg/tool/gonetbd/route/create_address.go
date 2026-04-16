@@ -21,9 +21,11 @@ func (h *Router) CreateAddress(
 	w.Header().Set(constant.ContentType, constant.Object)
 	w.WriteHeader(http.StatusCreated)
 	errors.PanicOnError(
-		json.NewEncoder(w).Encode(generated.Address{
-			Identifier: a.Identifier,
-			Address:    a.Address.String(),
-		}),
+		json.NewEncoder(w).Encode(
+			generated.Address{
+				Identifier: a.Identifier,
+				Address:    a.Address.String(),
+			},
+		),
 	)
 }

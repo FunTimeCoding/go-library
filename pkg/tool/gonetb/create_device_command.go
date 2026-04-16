@@ -16,17 +16,33 @@ func createDeviceCommand(c *netb.Client) *cobra.Command {
 		Use:   "create-device [name]",
 		Short: "Create a NetBox device",
 		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			var t *string
 
 			if tenant != "" {
 				t = &tenant
 			}
 
-			fmt.Println(c.CreateDevice(arguments[0], role, deviceType, site, t))
+			fmt.Println(
+				c.CreateDevice(
+					arguments[0],
+					role,
+					deviceType,
+					site,
+					t,
+				),
+			)
 		},
 	}
-	command.Flags().StringVar(&role, "role", "", "device role name (required)")
+	command.Flags().StringVar(
+		&role,
+		"role",
+		"",
+		"device role name (required)",
+	)
 	command.Flags().StringVar(
 		&deviceType,
 		"type",

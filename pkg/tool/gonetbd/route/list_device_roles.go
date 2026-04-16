@@ -19,8 +19,9 @@ func (h *Router) ListDeviceRoles(
 		result = append(
 			result,
 			server.DeviceRole{
-			Identifier: r.Identifier, Name: r.Name,
-		})
+				Identifier: r.Identifier, Name: r.Name,
+			},
+		)
 	}
 
 	w.Header().Set(constant.ContentType, constant.Object)

@@ -18,8 +18,10 @@ func (h *Router) CreateSite(
 	w.Header().Set(constant.ContentType, constant.Object)
 	w.WriteHeader(http.StatusCreated)
 	errors.PanicOnError(
-		json.NewEncoder(w).Encode(generated.Site{
-			Identifier: s.Identifier, Name: s.Name,
-		}),
+		json.NewEncoder(w).Encode(
+			generated.Site{
+				Identifier: s.Identifier, Name: s.Name,
+			},
+		),
 	)
 }

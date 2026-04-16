@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) AddIssueComment(key string, body string) string {
+func (c *Client) AddIssueComment(
+	key string,
+	body string,
+) string {
 	result, e := c.client.AddIssueComment(
 		c.context,
 		key,

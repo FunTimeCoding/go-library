@@ -6,7 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) CreateVirtualAddress(vmName string, interfaceName string, address string) string {
+func (c *Client) CreateVirtualAddress(
+	vmName string,
+	interfaceName string,
+	address string,
+) string {
 	result, e := c.client.CreateVirtualAddress(
 		c.context,
 		vmName,

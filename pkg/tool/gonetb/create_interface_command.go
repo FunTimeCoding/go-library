@@ -13,8 +13,17 @@ func createInterfaceCommand(c *netb.Client) *cobra.Command {
 		Use:   "create-interface [device] [name]",
 		Short: "Create a network interface on a device",
 		Args:  cobra.ExactArgs(2),
-		Run: func(_ *cobra.Command, arguments []string) {
-			fmt.Println(c.CreateInterface(arguments[0], arguments[1], interfaceType))
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
+			fmt.Println(
+				c.CreateInterface(
+					arguments[0],
+					arguments[1],
+					interfaceType,
+				),
+			)
 		},
 	}
 	command.Flags().StringVar(

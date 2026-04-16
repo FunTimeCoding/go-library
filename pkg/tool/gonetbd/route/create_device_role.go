@@ -18,8 +18,10 @@ func (h *Router) CreateDeviceRole(
 	w.Header().Set(constant.ContentType, constant.Object)
 	w.WriteHeader(http.StatusCreated)
 	errors.PanicOnError(
-		json.NewEncoder(w).Encode(generated.DeviceRole{
-			Identifier: r.Identifier, Name: r.Name,
-		}),
+		json.NewEncoder(w).Encode(
+			generated.DeviceRole{
+				Identifier: r.Identifier, Name: r.Name,
+			},
+		),
 	)
 }

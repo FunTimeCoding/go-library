@@ -8,7 +8,10 @@ import (
 	"net/http"
 )
 
-func (h *Router) ListClusterTypes(w http.ResponseWriter, _ *http.Request) {
+func (h *Router) ListClusterTypes(
+	w http.ResponseWriter,
+	_ *http.Request,
+) {
 	types := h.client.ClusterTypes()
 	result := make([]server.ClusterType, 0, len(types))
 

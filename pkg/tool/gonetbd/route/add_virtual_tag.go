@@ -8,7 +8,12 @@ import (
 	"net/http"
 )
 
-func (h *Router) AddVirtualTag(w http.ResponseWriter, _ *http.Request, name string, tag string) {
+func (h *Router) AddVirtualTag(
+	w http.ResponseWriter,
+	_ *http.Request,
+	name string,
+	tag string,
+) {
 	vm := h.client.AddVirtualTag(name, tag)
 	w.Header().Set(constant.ContentType, constant.Object)
 	entry := server.VirtualMachine{Identifier: vm.Identifier, Name: vm.Name}

@@ -20,8 +20,10 @@ func (h *Router) CreateVirtualInterface(
 	w.Header().Set(constant.ContentType, constant.Object)
 	w.WriteHeader(http.StatusCreated)
 	errors.PanicOnError(
-		json.NewEncoder(w).Encode(generated.VirtualInterface{
-			Identifier: i.GetId(), Name: i.GetName(),
-		}),
+		json.NewEncoder(w).Encode(
+			generated.VirtualInterface{
+				Identifier: i.GetId(), Name: i.GetName(),
+			},
+		),
 	)
 }

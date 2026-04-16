@@ -14,7 +14,10 @@ func createClusterCommand(c *netb.Client) *cobra.Command {
 		Use:   "create-cluster [name]",
 		Short: "Create a NetBox cluster",
 		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			fmt.Println(c.CreateCluster(arguments[0], clusterType, site))
 		},
 	}

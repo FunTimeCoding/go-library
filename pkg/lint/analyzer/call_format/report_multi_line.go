@@ -5,7 +5,10 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-func reportMultiLine(p *analysis.Pass, call *ast.CallExpr) {
+func reportMultiLine(
+	p *analysis.Pass,
+	call *ast.CallExpr,
+) {
 	openParenLine := p.Fset.Position(call.Lparen).Line
 	firstArgLine := p.Fset.Position(call.Args[0].Pos()).Line
 

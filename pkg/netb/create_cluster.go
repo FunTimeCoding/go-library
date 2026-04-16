@@ -6,7 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) CreateCluster(name string, clusterType string, site string) string {
+func (c *Client) CreateCluster(
+	name string,
+	clusterType string,
+	site string,
+) string {
 	result, e := c.client.CreateCluster(
 		c.context,
 		client.CreateClusterRequest{

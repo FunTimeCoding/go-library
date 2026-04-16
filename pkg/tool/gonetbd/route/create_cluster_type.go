@@ -8,11 +8,21 @@ import (
 	"net/http"
 )
 
-func (h *Router) CreateClusterType(w http.ResponseWriter, q *http.Request) {
+func (h *Router) CreateClusterType(
+	w http.ResponseWriter,
+	q *http.Request,
+) {
 	var body generated.CreateNameRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
 	t := h.client.CreateClusterType(body.Name)
 	w.Header().Set(constant.ContentType, constant.Object)
 	w.WriteHeader(http.StatusCreated)
-	errors.PanicOnError(json.NewEncoder(w).Encode(generated.ClusterType{Identifier: t.Identifier, Name: t.Name}))
+	errors.PanicOnError(
+		json.NewEncoder(w).Encode(
+			generated.ClusterType{
+				Identifier: t.Identifier,
+				Name:       t.Name,
+			},
+		),
+	)
 }

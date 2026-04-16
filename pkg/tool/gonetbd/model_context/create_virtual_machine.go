@@ -14,13 +14,23 @@ func (s *Server) createVirtualMachine(
 	name, f := r.RequireString("name")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("name is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"name is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	clusterName, f := r.RequireString("cluster")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("cluster is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"cluster is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	cl := s.client.ClusterByName(clusterName)

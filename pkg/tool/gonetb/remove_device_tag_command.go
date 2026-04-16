@@ -11,7 +11,10 @@ func removeDeviceTagCommand(c *netb.Client) *cobra.Command {
 		Use:   "remove-device-tag [device] [tag]",
 		Short: "Remove a tag from a device",
 		Args:  cobra.ExactArgs(2),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			fmt.Println(c.RemoveDeviceTag(arguments[0], arguments[1]))
 		},
 	}

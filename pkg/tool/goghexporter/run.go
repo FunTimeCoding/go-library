@@ -10,7 +10,12 @@ import (
 
 func Run(o *option.Exporter) {
 	m := metric.New(0, o.Verbose, nil)
-	p := poller.New(github.NewEnvironment(), o.Owner, o.Interval, m.Registry())
+	p := poller.New(
+		github.NewEnvironment(),
+		o.Owner,
+		o.Interval,
+		m.Registry(),
+	)
 	l := lifecycle.New(
 		lifecycle.WithVerbose(o.Verbose),
 		lifecycle.WithWorker(m),

@@ -13,7 +13,10 @@ func createDeviceTypeCommand(c *netb.Client) *cobra.Command {
 		Use:   "create-device-type [model]",
 		Short: "Create a NetBox device type",
 		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			fmt.Println(c.CreateDeviceType(arguments[0], manufacturer))
 		},
 	}

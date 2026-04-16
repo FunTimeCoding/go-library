@@ -7,8 +7,15 @@ func (s *Server) register() {
 		mcp.NewTool(
 			"jira_search",
 			mcp.WithDescription("Search Jira issues using JQL"),
-			mcp.WithString("query", mcp.Required(), mcp.Description("JQL query string")),
-			mcp.WithNumber("limit", mcp.Description("Maximum number of results")),
+			mcp.WithString(
+				"query",
+				mcp.Required(),
+				mcp.Description("JQL query string"),
+			),
+			mcp.WithNumber(
+				"limit",
+				mcp.Description("Maximum number of results"),
+			),
 		),
 		s.searchIssues,
 	)
@@ -47,7 +54,11 @@ func (s *Server) register() {
 		mcp.NewTool(
 			"confluence_get_page",
 			mcp.WithDescription("Get a Confluence page by ID with body content as markdown"),
-			mcp.WithString("identifier", mcp.Required(), mcp.Description("Page ID")),
+			mcp.WithString(
+				"identifier",
+				mcp.Required(),
+				mcp.Description("Page ID"),
+			),
 		),
 		s.getPage,
 	)
@@ -65,7 +76,11 @@ func (s *Server) register() {
 				mcp.Required(),
 				mcp.Description("Parent page ID"),
 			),
-			mcp.WithString("title", mcp.Required(), mcp.Description("Page title")),
+			mcp.WithString(
+				"title",
+				mcp.Required(),
+				mcp.Description("Page title"),
+			),
 			mcp.WithString(
 				"body",
 				mcp.Required(),
@@ -78,8 +93,16 @@ func (s *Server) register() {
 		mcp.NewTool(
 			"confluence_update_page",
 			mcp.WithDescription("Update a Confluence page with markdown content. Gets the current version automatically."),
-			mcp.WithString("identifier", mcp.Required(), mcp.Description("Page ID")),
-			mcp.WithString("title", mcp.Required(), mcp.Description("Page title")),
+			mcp.WithString(
+				"identifier",
+				mcp.Required(),
+				mcp.Description("Page ID"),
+			),
+			mcp.WithString(
+				"title",
+				mcp.Required(),
+				mcp.Description("Page title"),
+			),
 			mcp.WithString(
 				"body",
 				mcp.Required(),
@@ -112,8 +135,16 @@ func (s *Server) register() {
 		mcp.NewTool(
 			"confluence_add_comment",
 			mcp.WithDescription("Add a comment to a Confluence page"),
-			mcp.WithString("identifier", mcp.Required(), mcp.Description("Page ID")),
-			mcp.WithString("body", mcp.Required(), mcp.Description("Comment text")),
+			mcp.WithString(
+				"identifier",
+				mcp.Required(),
+				mcp.Description("Page ID"),
+			),
+			mcp.WithString(
+				"body",
+				mcp.Required(),
+				mcp.Description("Comment text"),
+			),
 		),
 		s.addPageComment,
 	)
@@ -121,7 +152,11 @@ func (s *Server) register() {
 		mcp.NewTool(
 			"jira_get_transitions",
 			mcp.WithDescription("List available transitions for a Jira issue"),
-			mcp.WithString("key", mcp.Required(), mcp.Description("Issue key")),
+			mcp.WithString(
+				"key",
+				mcp.Required(),
+				mcp.Description("Issue key"),
+			),
 		),
 		s.getTransitions,
 	)
@@ -129,7 +164,11 @@ func (s *Server) register() {
 		mcp.NewTool(
 			"jira_transition_issue",
 			mcp.WithDescription("Transition a Jira issue to a new status"),
-			mcp.WithString("key", mcp.Required(), mcp.Description("Issue key")),
+			mcp.WithString(
+				"key",
+				mcp.Required(),
+				mcp.Description("Issue key"),
+			),
 			mcp.WithString(
 				"transition_identifier",
 				mcp.Required(),
@@ -142,8 +181,16 @@ func (s *Server) register() {
 		mcp.NewTool(
 			"jira_add_comment",
 			mcp.WithDescription("Add a comment to a Jira issue"),
-			mcp.WithString("key", mcp.Required(), mcp.Description("Issue key")),
-			mcp.WithString("body", mcp.Required(), mcp.Description("Comment text")),
+			mcp.WithString(
+				"key",
+				mcp.Required(),
+				mcp.Description("Issue key"),
+			),
+			mcp.WithString(
+				"body",
+				mcp.Required(),
+				mcp.Description("Comment text"),
+			),
 		),
 		s.addIssueComment,
 	)

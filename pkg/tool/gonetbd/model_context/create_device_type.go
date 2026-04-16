@@ -14,13 +14,23 @@ func (s *Server) createDeviceType(
 	model, f := r.RequireString("model")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("model is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"model is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	manufacturer, f := r.RequireString("manufacturer")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("manufacturer is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"manufacturer is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	m := s.client.ManufacturerByName(manufacturer)

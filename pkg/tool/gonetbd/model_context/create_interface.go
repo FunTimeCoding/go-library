@@ -15,26 +15,45 @@ func (s *Server) createInterface(
 	device, f := r.RequireString("device")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("device is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"device is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	name, f := r.RequireString("name")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("name is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"name is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	interfaceType, f := r.RequireString("type")
 
 	if f != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("type is required: %v", f)), nil
+		return mcp.NewToolResultError(
+			fmt.Sprintf(
+				"type is required: %v",
+				f,
+			),
+		), nil
 	}
 
 	d := s.client.DeviceByNameStrict(device)
 
 	return mcp.NewToolResultText(
 		notation.MarshalIndent(
-			s.client.CreateInterface(d, name, upstream.InterfaceTypeValue(interfaceType)),
+			s.client.CreateInterface(
+				d,
+				name,
+				upstream.InterfaceTypeValue(interfaceType),
+			),
 		),
 	), nil
 }

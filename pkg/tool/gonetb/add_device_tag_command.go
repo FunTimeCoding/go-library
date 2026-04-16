@@ -11,7 +11,10 @@ func addDeviceTagCommand(c *netb.Client) *cobra.Command {
 		Use:   "add-device-tag [device] [tag]",
 		Short: "Add a tag to a device",
 		Args:  cobra.ExactArgs(2),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			fmt.Println(c.AddDeviceTag(arguments[0], arguments[1]))
 		},
 	}

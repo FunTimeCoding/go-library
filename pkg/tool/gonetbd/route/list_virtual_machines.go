@@ -8,7 +8,10 @@ import (
 	"net/http"
 )
 
-func (h *Router) ListVirtualMachines(w http.ResponseWriter, _ *http.Request) {
+func (h *Router) ListVirtualMachines(
+	w http.ResponseWriter,
+	_ *http.Request,
+) {
 	machines := h.client.VirtualMachines()
 	result := make([]server.VirtualMachine, 0, len(machines))
 

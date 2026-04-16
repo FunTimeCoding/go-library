@@ -7,7 +7,11 @@ import (
 	"net/http"
 )
 
-func (h *Router) ListDeviceTags(w http.ResponseWriter, _ *http.Request, name string) {
+func (h *Router) ListDeviceTags(
+	w http.ResponseWriter,
+	_ *http.Request,
+	name string,
+) {
 	w.Header().Set(constant.ContentType, constant.Object)
 	errors.PanicOnError(json.NewEncoder(w).Encode(h.client.DeviceTagNames(name)))
 }

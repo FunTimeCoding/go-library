@@ -4,6 +4,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -23,6 +24,98 @@ type Address struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// Cluster defines model for Cluster.
+type Cluster struct {
+	Identifier int32   `json:"identifier"`
+	Name       string  `json:"name"`
+	Site       *string `json:"site,omitempty"`
+	Type       *string `json:"type,omitempty"`
+}
+
+// ClusterType defines model for ClusterType.
+type ClusterType struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// CreateAddressRequest defines model for CreateAddressRequest.
+type CreateAddressRequest struct {
+	// Address IP address in CIDR notation (e.g. 144.76.220.60/32).
+	Address string `json:"address"`
+
+	// Interface Interface name on the device (e.g. eno1).
+	Interface string `json:"interface"`
+}
+
+// CreateClusterRequest defines model for CreateClusterRequest.
+type CreateClusterRequest struct {
+	// Name Cluster name.
+	Name string `json:"name"`
+
+	// Site Site name (must already exist).
+	Site string `json:"site"`
+
+	// Type Cluster type name (must already exist).
+	Type string `json:"type"`
+}
+
+// CreateDeviceRequest defines model for CreateDeviceRequest.
+type CreateDeviceRequest struct {
+	// Name Device name.
+	Name string `json:"name"`
+
+	// Role Device role name (must already exist).
+	Role string `json:"role"`
+
+	// Site Site name (must already exist).
+	Site string    `json:"site"`
+	Tags *[]string `json:"tags,omitempty"`
+
+	// Tenant Tenant name (must already exist). Optional.
+	Tenant *string `json:"tenant,omitempty"`
+
+	// Type Device type model name (must already exist).
+	Type string `json:"type"`
+}
+
+// CreateDeviceTypeRequest defines model for CreateDeviceTypeRequest.
+type CreateDeviceTypeRequest struct {
+	// Manufacturer Manufacturer name (must already exist).
+	Manufacturer string `json:"manufacturer"`
+
+	// Model Device type model name.
+	Model string `json:"model"`
+}
+
+// CreateInterfaceRequest defines model for CreateInterfaceRequest.
+type CreateInterfaceRequest struct {
+	// Name Interface name (e.g. eno1, eth0).
+	Name string `json:"name"`
+
+	// Type Interface type (e.g. 1000base-t, 10gbase-t).
+	Type string `json:"type"`
+}
+
+// CreateNameRequest defines model for CreateNameRequest.
+type CreateNameRequest struct {
+	Name string `json:"name"`
+}
+
+// CreateVirtualInterfaceRequest defines model for CreateVirtualInterfaceRequest.
+type CreateVirtualInterfaceRequest struct {
+	// Name Interface name (e.g. ens3, eth0).
+	Name string `json:"name"`
+}
+
+// CreateVirtualMachineRequest defines model for CreateVirtualMachineRequest.
+type CreateVirtualMachineRequest struct {
+	// Cluster Cluster name (must already exist).
+	Cluster string `json:"cluster"`
+
+	// Name Virtual machine name.
+	Name string `json:"name"`
+}
+
 // Device defines model for Device.
 type Device struct {
 	Identifier     int32     `json:"identifier"`
@@ -37,6 +130,19 @@ type Device struct {
 	Type           *string   `json:"type,omitempty"`
 }
 
+// DeviceRole defines model for DeviceRole.
+type DeviceRole struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// DeviceType defines model for DeviceType.
+type DeviceType struct {
+	Identifier   int32   `json:"identifier"`
+	Manufacturer *string `json:"manufacturer,omitempty"`
+	Model        string  `json:"model"`
+}
+
 // Interface defines model for Interface.
 type Interface struct {
 	Description     *string `json:"description,omitempty"`
@@ -46,10 +152,43 @@ type Interface struct {
 	Type            *string `json:"type,omitempty"`
 }
 
+// Manufacturer defines model for Manufacturer.
+type Manufacturer struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
 // Site defines model for Site.
 type Site struct {
 	Identifier int32  `json:"identifier"`
 	Name       string `json:"name"`
+}
+
+// Tag defines model for Tag.
+type Tag struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// Tenant defines model for Tenant.
+type Tenant struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// VirtualInterface defines model for VirtualInterface.
+type VirtualInterface struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// VirtualMachine defines model for VirtualMachine.
+type VirtualMachine struct {
+	Cluster    *string   `json:"cluster,omitempty"`
+	Identifier int32     `json:"identifier"`
+	Name       string    `json:"name"`
+	Site       *string   `json:"site,omitempty"`
+	Tags       *[]string `json:"tags,omitempty"`
 }
 
 // ListDevicesParams defines parameters for ListDevices.
@@ -57,6 +196,48 @@ type ListDevicesParams struct {
 	// Query Filter devices by name (case-insensitive contains). Omit for all.
 	Query *string `form:"query,omitempty" json:"query,omitempty"`
 }
+
+// CreateClusterTypeJSONRequestBody defines body for CreateClusterType for application/json ContentType.
+type CreateClusterTypeJSONRequestBody = CreateNameRequest
+
+// CreateClusterJSONRequestBody defines body for CreateCluster for application/json ContentType.
+type CreateClusterJSONRequestBody = CreateClusterRequest
+
+// CreateDeviceRoleJSONRequestBody defines body for CreateDeviceRole for application/json ContentType.
+type CreateDeviceRoleJSONRequestBody = CreateNameRequest
+
+// CreateDeviceTypeJSONRequestBody defines body for CreateDeviceType for application/json ContentType.
+type CreateDeviceTypeJSONRequestBody = CreateDeviceTypeRequest
+
+// CreateDeviceJSONRequestBody defines body for CreateDevice for application/json ContentType.
+type CreateDeviceJSONRequestBody = CreateDeviceRequest
+
+// CreateAddressJSONRequestBody defines body for CreateAddress for application/json ContentType.
+type CreateAddressJSONRequestBody = CreateAddressRequest
+
+// CreateInterfaceJSONRequestBody defines body for CreateInterface for application/json ContentType.
+type CreateInterfaceJSONRequestBody = CreateInterfaceRequest
+
+// CreateManufacturerJSONRequestBody defines body for CreateManufacturer for application/json ContentType.
+type CreateManufacturerJSONRequestBody = CreateNameRequest
+
+// CreateSiteJSONRequestBody defines body for CreateSite for application/json ContentType.
+type CreateSiteJSONRequestBody = CreateNameRequest
+
+// CreateTagJSONRequestBody defines body for CreateTag for application/json ContentType.
+type CreateTagJSONRequestBody = CreateNameRequest
+
+// CreateTenantJSONRequestBody defines body for CreateTenant for application/json ContentType.
+type CreateTenantJSONRequestBody = CreateNameRequest
+
+// CreateVirtualMachineJSONRequestBody defines body for CreateVirtualMachine for application/json ContentType.
+type CreateVirtualMachineJSONRequestBody = CreateVirtualMachineRequest
+
+// CreateVirtualAddressJSONRequestBody defines body for CreateVirtualAddress for application/json ContentType.
+type CreateVirtualAddressJSONRequestBody = CreateAddressRequest
+
+// CreateVirtualInterfaceJSONRequestBody defines body for CreateVirtualInterface for application/json ContentType.
+type CreateVirtualInterfaceJSONRequestBody = CreateVirtualInterfaceRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -131,8 +312,45 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// ListClusterTypes request
+	ListClusterTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateClusterTypeWithBody request with any body
+	CreateClusterTypeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateClusterType(ctx context.Context, body CreateClusterTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListClusters request
+	ListClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateClusterWithBody request with any body
+	CreateClusterWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateCluster(ctx context.Context, body CreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListDeviceRoles request
+	ListDeviceRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateDeviceRoleWithBody request with any body
+	CreateDeviceRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateDeviceRole(ctx context.Context, body CreateDeviceRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListDeviceTypes request
+	ListDeviceTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateDeviceTypeWithBody request with any body
+	CreateDeviceTypeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateDeviceType(ctx context.Context, body CreateDeviceTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListDevices request
 	ListDevices(ctx context.Context, params *ListDevicesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateDeviceWithBody request with any body
+	CreateDeviceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateDevice(ctx context.Context, body CreateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetDevice request
 	GetDevice(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -140,15 +358,255 @@ type ClientInterface interface {
 	// ListAddresses request
 	ListAddresses(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateAddressWithBody request with any body
+	CreateAddressWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateAddress(ctx context.Context, name string, body CreateAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListInterfaces request
 	ListInterfaces(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateInterfaceWithBody request with any body
+	CreateInterfaceWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateInterface(ctx context.Context, name string, body CreateInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListDeviceTags request
+	ListDeviceTags(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RemoveDeviceTag request
+	RemoveDeviceTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AddDeviceTag request
+	AddDeviceTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListManufacturers request
+	ListManufacturers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateManufacturerWithBody request with any body
+	CreateManufacturerWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateManufacturer(ctx context.Context, body CreateManufacturerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListSites request
 	ListSites(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSiteWithBody request with any body
+	CreateSiteWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateSite(ctx context.Context, body CreateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListTags request
+	ListTags(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateTagWithBody request with any body
+	CreateTagWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateTag(ctx context.Context, body CreateTagJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListTenants request
+	ListTenants(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateTenantWithBody request with any body
+	CreateTenantWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateTenant(ctx context.Context, body CreateTenantJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListVirtualMachines request
+	ListVirtualMachines(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateVirtualMachineWithBody request with any body
+	CreateVirtualMachineWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateVirtualMachine(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateVirtualAddressWithBody request with any body
+	CreateVirtualAddressWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateVirtualAddress(ctx context.Context, name string, body CreateVirtualAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateVirtualInterfaceWithBody request with any body
+	CreateVirtualInterfaceWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateVirtualInterface(ctx context.Context, name string, body CreateVirtualInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RemoveVirtualTag request
+	RemoveVirtualTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AddVirtualTag request
+	AddVirtualTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) ListClusterTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListClusterTypesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateClusterTypeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateClusterTypeRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateClusterType(ctx context.Context, body CreateClusterTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateClusterTypeRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListClustersRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateClusterWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateClusterRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateCluster(ctx context.Context, body CreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateClusterRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListDeviceRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDeviceRolesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDeviceRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceRoleRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDeviceRole(ctx context.Context, body CreateDeviceRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceRoleRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListDeviceTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDeviceTypesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDeviceTypeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceTypeRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDeviceType(ctx context.Context, body CreateDeviceTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceTypeRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) ListDevices(ctx context.Context, params *ListDevicesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListDevicesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDeviceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDevice(ctx context.Context, body CreateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -183,8 +641,128 @@ func (c *Client) ListAddresses(ctx context.Context, name string, reqEditors ...R
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateAddressWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAddressRequestWithBody(c.Server, name, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateAddress(ctx context.Context, name string, body CreateAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAddressRequest(c.Server, name, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListInterfaces(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListInterfacesRequest(c.Server, name)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateInterfaceWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateInterfaceRequestWithBody(c.Server, name, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateInterface(ctx context.Context, name string, body CreateInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateInterfaceRequest(c.Server, name, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListDeviceTags(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDeviceTagsRequest(c.Server, name)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RemoveDeviceTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveDeviceTagRequest(c.Server, name, tag)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddDeviceTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddDeviceTagRequest(c.Server, name, tag)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListManufacturers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListManufacturersRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateManufacturerWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateManufacturerRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateManufacturer(ctx context.Context, body CreateManufacturerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateManufacturerRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -205,6 +783,478 @@ func (c *Client) ListSites(ctx context.Context, reqEditors ...RequestEditorFn) (
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSiteWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSiteRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSite(ctx context.Context, body CreateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSiteRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListTags(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListTagsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTagWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTagRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTag(ctx context.Context, body CreateTagJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTagRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListTenants(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListTenantsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTenantWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTenantRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTenant(ctx context.Context, body CreateTenantJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTenantRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListVirtualMachines(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListVirtualMachinesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualMachineWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualMachineRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualMachine(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualMachineRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualAddressWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualAddressRequestWithBody(c.Server, name, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualAddress(ctx context.Context, name string, body CreateVirtualAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualAddressRequest(c.Server, name, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualInterfaceWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualInterfaceRequestWithBody(c.Server, name, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualInterface(ctx context.Context, name string, body CreateVirtualInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualInterfaceRequest(c.Server, name, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RemoveVirtualTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveVirtualTagRequest(c.Server, name, tag)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddVirtualTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddVirtualTagRequest(c.Server, name, tag)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NewListClusterTypesRequest generates requests for ListClusterTypes
+func NewListClusterTypesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/cluster-types")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateClusterTypeRequest calls the generic CreateClusterType builder with application/json body
+func NewCreateClusterTypeRequest(server string, body CreateClusterTypeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateClusterTypeRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateClusterTypeRequestWithBody generates requests for CreateClusterType with any type of body
+func NewCreateClusterTypeRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/cluster-types")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListClustersRequest generates requests for ListClusters
+func NewListClustersRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/clusters")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateClusterRequest calls the generic CreateCluster builder with application/json body
+func NewCreateClusterRequest(server string, body CreateClusterJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateClusterRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateClusterRequestWithBody generates requests for CreateCluster with any type of body
+func NewCreateClusterRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/clusters")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListDeviceRolesRequest generates requests for ListDeviceRoles
+func NewListDeviceRolesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/device-roles")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateDeviceRoleRequest calls the generic CreateDeviceRole builder with application/json body
+func NewCreateDeviceRoleRequest(server string, body CreateDeviceRoleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDeviceRoleRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateDeviceRoleRequestWithBody generates requests for CreateDeviceRole with any type of body
+func NewCreateDeviceRoleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/device-roles")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListDeviceTypesRequest generates requests for ListDeviceTypes
+func NewListDeviceTypesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/device-types")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateDeviceTypeRequest calls the generic CreateDeviceType builder with application/json body
+func NewCreateDeviceTypeRequest(server string, body CreateDeviceTypeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDeviceTypeRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateDeviceTypeRequestWithBody generates requests for CreateDeviceType with any type of body
+func NewCreateDeviceTypeRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/device-types")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
 }
 
 // NewListDevicesRequest generates requests for ListDevices
@@ -252,6 +1302,46 @@ func NewListDevicesRequest(server string, params *ListDevicesParams) (*http.Requ
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewCreateDeviceRequest calls the generic CreateDevice builder with application/json body
+func NewCreateDeviceRequest(server string, body CreateDeviceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDeviceRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateDeviceRequestWithBody generates requests for CreateDevice with any type of body
+func NewCreateDeviceRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/create")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -324,6 +1414,53 @@ func NewListAddressesRequest(server string, name string) (*http.Request, error) 
 	return req, nil
 }
 
+// NewCreateAddressRequest calls the generic CreateAddress builder with application/json body
+func NewCreateAddressRequest(server string, name string, body CreateAddressJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateAddressRequestWithBody(server, name, "application/json", bodyReader)
+}
+
+// NewCreateAddressRequestWithBody generates requests for CreateAddress with any type of body
+func NewCreateAddressRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s/addresses/create", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListInterfacesRequest generates requests for ListInterfaces
 func NewListInterfacesRequest(server string, name string) (*http.Request, error) {
 	var err error
@@ -358,6 +1495,236 @@ func NewListInterfacesRequest(server string, name string) (*http.Request, error)
 	return req, nil
 }
 
+// NewCreateInterfaceRequest calls the generic CreateInterface builder with application/json body
+func NewCreateInterfaceRequest(server string, name string, body CreateInterfaceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateInterfaceRequestWithBody(server, name, "application/json", bodyReader)
+}
+
+// NewCreateInterfaceRequestWithBody generates requests for CreateInterface with any type of body
+func NewCreateInterfaceRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s/interfaces/create", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListDeviceTagsRequest generates requests for ListDeviceTags
+func NewListDeviceTagsRequest(server string, name string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s/tags", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRemoveDeviceTagRequest generates requests for RemoveDeviceTag
+func NewRemoveDeviceTagRequest(server string, name string, tag string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tag", tag, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s/tags/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAddDeviceTagRequest generates requests for AddDeviceTag
+func NewAddDeviceTagRequest(server string, name string, tag string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tag", tag, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s/tags/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListManufacturersRequest generates requests for ListManufacturers
+func NewListManufacturersRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/manufacturers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateManufacturerRequest calls the generic CreateManufacturer builder with application/json body
+func NewCreateManufacturerRequest(server string, body CreateManufacturerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateManufacturerRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateManufacturerRequestWithBody generates requests for CreateManufacturer with any type of body
+func NewCreateManufacturerRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/manufacturers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListSitesRequest generates requests for ListSites
 func NewListSitesRequest(server string) (*http.Request, error) {
 	var err error
@@ -378,6 +1745,423 @@ func NewListSitesRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateSiteRequest calls the generic CreateSite builder with application/json body
+func NewCreateSiteRequest(server string, body CreateSiteJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSiteRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateSiteRequestWithBody generates requests for CreateSite with any type of body
+func NewCreateSiteRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/sites")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListTagsRequest generates requests for ListTags
+func NewListTagsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tags")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateTagRequest calls the generic CreateTag builder with application/json body
+func NewCreateTagRequest(server string, body CreateTagJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateTagRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateTagRequestWithBody generates requests for CreateTag with any type of body
+func NewCreateTagRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tags")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListTenantsRequest generates requests for ListTenants
+func NewListTenantsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tenants")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateTenantRequest calls the generic CreateTenant builder with application/json body
+func NewCreateTenantRequest(server string, body CreateTenantJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateTenantRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateTenantRequestWithBody generates requests for CreateTenant with any type of body
+func NewCreateTenantRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tenants")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListVirtualMachinesRequest generates requests for ListVirtualMachines
+func NewListVirtualMachinesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/virtual-machines")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateVirtualMachineRequest calls the generic CreateVirtualMachine builder with application/json body
+func NewCreateVirtualMachineRequest(server string, body CreateVirtualMachineJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateVirtualMachineRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateVirtualMachineRequestWithBody generates requests for CreateVirtualMachine with any type of body
+func NewCreateVirtualMachineRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/virtual-machines")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCreateVirtualAddressRequest calls the generic CreateVirtualAddress builder with application/json body
+func NewCreateVirtualAddressRequest(server string, name string, body CreateVirtualAddressJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateVirtualAddressRequestWithBody(server, name, "application/json", bodyReader)
+}
+
+// NewCreateVirtualAddressRequestWithBody generates requests for CreateVirtualAddress with any type of body
+func NewCreateVirtualAddressRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/virtual-machines/%s/addresses/create", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCreateVirtualInterfaceRequest calls the generic CreateVirtualInterface builder with application/json body
+func NewCreateVirtualInterfaceRequest(server string, name string, body CreateVirtualInterfaceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateVirtualInterfaceRequestWithBody(server, name, "application/json", bodyReader)
+}
+
+// NewCreateVirtualInterfaceRequestWithBody generates requests for CreateVirtualInterface with any type of body
+func NewCreateVirtualInterfaceRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/virtual-machines/%s/interfaces/create", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRemoveVirtualTagRequest generates requests for RemoveVirtualTag
+func NewRemoveVirtualTagRequest(server string, name string, tag string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tag", tag, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/virtual-machines/%s/tags/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAddVirtualTagRequest generates requests for AddVirtualTag
+func NewAddVirtualTagRequest(server string, name string, tag string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tag", tag, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/virtual-machines/%s/tags/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -428,8 +2212,45 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// ListClusterTypesWithResponse request
+	ListClusterTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClusterTypesResponse, error)
+
+	// CreateClusterTypeWithBodyWithResponse request with any body
+	CreateClusterTypeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateClusterTypeResponse, error)
+
+	CreateClusterTypeWithResponse(ctx context.Context, body CreateClusterTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateClusterTypeResponse, error)
+
+	// ListClustersWithResponse request
+	ListClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClustersResponse, error)
+
+	// CreateClusterWithBodyWithResponse request with any body
+	CreateClusterWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateClusterResponse, error)
+
+	CreateClusterWithResponse(ctx context.Context, body CreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateClusterResponse, error)
+
+	// ListDeviceRolesWithResponse request
+	ListDeviceRolesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListDeviceRolesResponse, error)
+
+	// CreateDeviceRoleWithBodyWithResponse request with any body
+	CreateDeviceRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceRoleResponse, error)
+
+	CreateDeviceRoleWithResponse(ctx context.Context, body CreateDeviceRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceRoleResponse, error)
+
+	// ListDeviceTypesWithResponse request
+	ListDeviceTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListDeviceTypesResponse, error)
+
+	// CreateDeviceTypeWithBodyWithResponse request with any body
+	CreateDeviceTypeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceTypeResponse, error)
+
+	CreateDeviceTypeWithResponse(ctx context.Context, body CreateDeviceTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceTypeResponse, error)
+
 	// ListDevicesWithResponse request
 	ListDevicesWithResponse(ctx context.Context, params *ListDevicesParams, reqEditors ...RequestEditorFn) (*ListDevicesResponse, error)
+
+	// CreateDeviceWithBodyWithResponse request with any body
+	CreateDeviceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceResponse, error)
+
+	CreateDeviceWithResponse(ctx context.Context, body CreateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceResponse, error)
 
 	// GetDeviceWithResponse request
 	GetDeviceWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*GetDeviceResponse, error)
@@ -437,11 +2258,259 @@ type ClientWithResponsesInterface interface {
 	// ListAddressesWithResponse request
 	ListAddressesWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*ListAddressesResponse, error)
 
+	// CreateAddressWithBodyWithResponse request with any body
+	CreateAddressWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAddressResponse, error)
+
+	CreateAddressWithResponse(ctx context.Context, name string, body CreateAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAddressResponse, error)
+
 	// ListInterfacesWithResponse request
 	ListInterfacesWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*ListInterfacesResponse, error)
 
+	// CreateInterfaceWithBodyWithResponse request with any body
+	CreateInterfaceWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInterfaceResponse, error)
+
+	CreateInterfaceWithResponse(ctx context.Context, name string, body CreateInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateInterfaceResponse, error)
+
+	// ListDeviceTagsWithResponse request
+	ListDeviceTagsWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*ListDeviceTagsResponse, error)
+
+	// RemoveDeviceTagWithResponse request
+	RemoveDeviceTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*RemoveDeviceTagResponse, error)
+
+	// AddDeviceTagWithResponse request
+	AddDeviceTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*AddDeviceTagResponse, error)
+
+	// ListManufacturersWithResponse request
+	ListManufacturersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListManufacturersResponse, error)
+
+	// CreateManufacturerWithBodyWithResponse request with any body
+	CreateManufacturerWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateManufacturerResponse, error)
+
+	CreateManufacturerWithResponse(ctx context.Context, body CreateManufacturerJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateManufacturerResponse, error)
+
 	// ListSitesWithResponse request
 	ListSitesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSitesResponse, error)
+
+	// CreateSiteWithBodyWithResponse request with any body
+	CreateSiteWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSiteResponse, error)
+
+	CreateSiteWithResponse(ctx context.Context, body CreateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSiteResponse, error)
+
+	// ListTagsWithResponse request
+	ListTagsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTagsResponse, error)
+
+	// CreateTagWithBodyWithResponse request with any body
+	CreateTagWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTagResponse, error)
+
+	CreateTagWithResponse(ctx context.Context, body CreateTagJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTagResponse, error)
+
+	// ListTenantsWithResponse request
+	ListTenantsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTenantsResponse, error)
+
+	// CreateTenantWithBodyWithResponse request with any body
+	CreateTenantWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTenantResponse, error)
+
+	CreateTenantWithResponse(ctx context.Context, body CreateTenantJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTenantResponse, error)
+
+	// ListVirtualMachinesWithResponse request
+	ListVirtualMachinesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error)
+
+	// CreateVirtualMachineWithBodyWithResponse request with any body
+	CreateVirtualMachineWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error)
+
+	CreateVirtualMachineWithResponse(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error)
+
+	// CreateVirtualAddressWithBodyWithResponse request with any body
+	CreateVirtualAddressWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualAddressResponse, error)
+
+	CreateVirtualAddressWithResponse(ctx context.Context, name string, body CreateVirtualAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualAddressResponse, error)
+
+	// CreateVirtualInterfaceWithBodyWithResponse request with any body
+	CreateVirtualInterfaceWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualInterfaceResponse, error)
+
+	CreateVirtualInterfaceWithResponse(ctx context.Context, name string, body CreateVirtualInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualInterfaceResponse, error)
+
+	// RemoveVirtualTagWithResponse request
+	RemoveVirtualTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*RemoveVirtualTagResponse, error)
+
+	// AddVirtualTagWithResponse request
+	AddVirtualTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*AddVirtualTagResponse, error)
+}
+
+type ListClusterTypesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]ClusterType
+}
+
+// Status returns HTTPResponse.Status
+func (r ListClusterTypesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListClusterTypesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateClusterTypeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *ClusterType
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateClusterTypeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateClusterTypeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListClustersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Cluster
+}
+
+// Status returns HTTPResponse.Status
+func (r ListClustersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListClustersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateClusterResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Cluster
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateClusterResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListDeviceRolesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]DeviceRole
+}
+
+// Status returns HTTPResponse.Status
+func (r ListDeviceRolesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListDeviceRolesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateDeviceRoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DeviceRole
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateDeviceRoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateDeviceRoleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListDeviceTypesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]DeviceType
+}
+
+// Status returns HTTPResponse.Status
+func (r ListDeviceTypesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListDeviceTypesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateDeviceTypeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DeviceType
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateDeviceTypeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateDeviceTypeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type ListDevicesResponse struct {
@@ -460,6 +2529,28 @@ func (r ListDevicesResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r ListDevicesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateDeviceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Device
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateDeviceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateDeviceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -510,6 +2601,28 @@ func (r ListAddressesResponse) StatusCode() int {
 	return 0
 }
 
+type CreateAddressResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Address
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateAddressResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateAddressResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListInterfacesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -526,6 +2639,138 @@ func (r ListInterfacesResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r ListInterfacesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateInterfaceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Interface
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateInterfaceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateInterfaceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListDeviceTagsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]string
+}
+
+// Status returns HTTPResponse.Status
+func (r ListDeviceTagsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListDeviceTagsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RemoveDeviceTagResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Device
+}
+
+// Status returns HTTPResponse.Status
+func (r RemoveDeviceTagResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RemoveDeviceTagResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AddDeviceTagResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Device
+}
+
+// Status returns HTTPResponse.Status
+func (r AddDeviceTagResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AddDeviceTagResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListManufacturersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Manufacturer
+}
+
+// Status returns HTTPResponse.Status
+func (r ListManufacturersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListManufacturersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateManufacturerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Manufacturer
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateManufacturerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateManufacturerResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -554,6 +2799,352 @@ func (r ListSitesResponse) StatusCode() int {
 	return 0
 }
 
+type CreateSiteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Site
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateSiteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSiteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListTagsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Tag
+}
+
+// Status returns HTTPResponse.Status
+func (r ListTagsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListTagsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateTagResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Tag
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateTagResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateTagResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListTenantsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Tenant
+}
+
+// Status returns HTTPResponse.Status
+func (r ListTenantsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListTenantsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateTenantResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Tenant
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateTenantResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateTenantResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListVirtualMachinesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]VirtualMachine
+}
+
+// Status returns HTTPResponse.Status
+func (r ListVirtualMachinesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListVirtualMachinesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateVirtualMachineResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *VirtualMachine
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateVirtualMachineResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateVirtualMachineResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateVirtualAddressResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Address
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateVirtualAddressResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateVirtualAddressResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateVirtualInterfaceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *VirtualInterface
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateVirtualInterfaceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateVirtualInterfaceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RemoveVirtualTagResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *VirtualMachine
+}
+
+// Status returns HTTPResponse.Status
+func (r RemoveVirtualTagResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RemoveVirtualTagResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AddVirtualTagResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *VirtualMachine
+}
+
+// Status returns HTTPResponse.Status
+func (r AddVirtualTagResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AddVirtualTagResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ListClusterTypesWithResponse request returning *ListClusterTypesResponse
+func (c *ClientWithResponses) ListClusterTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClusterTypesResponse, error) {
+	rsp, err := c.ListClusterTypes(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListClusterTypesResponse(rsp)
+}
+
+// CreateClusterTypeWithBodyWithResponse request with arbitrary body returning *CreateClusterTypeResponse
+func (c *ClientWithResponses) CreateClusterTypeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateClusterTypeResponse, error) {
+	rsp, err := c.CreateClusterTypeWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateClusterTypeResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateClusterTypeWithResponse(ctx context.Context, body CreateClusterTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateClusterTypeResponse, error) {
+	rsp, err := c.CreateClusterType(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateClusterTypeResponse(rsp)
+}
+
+// ListClustersWithResponse request returning *ListClustersResponse
+func (c *ClientWithResponses) ListClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClustersResponse, error) {
+	rsp, err := c.ListClusters(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListClustersResponse(rsp)
+}
+
+// CreateClusterWithBodyWithResponse request with arbitrary body returning *CreateClusterResponse
+func (c *ClientWithResponses) CreateClusterWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateClusterResponse, error) {
+	rsp, err := c.CreateClusterWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateClusterResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateClusterWithResponse(ctx context.Context, body CreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateClusterResponse, error) {
+	rsp, err := c.CreateCluster(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateClusterResponse(rsp)
+}
+
+// ListDeviceRolesWithResponse request returning *ListDeviceRolesResponse
+func (c *ClientWithResponses) ListDeviceRolesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListDeviceRolesResponse, error) {
+	rsp, err := c.ListDeviceRoles(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListDeviceRolesResponse(rsp)
+}
+
+// CreateDeviceRoleWithBodyWithResponse request with arbitrary body returning *CreateDeviceRoleResponse
+func (c *ClientWithResponses) CreateDeviceRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceRoleResponse, error) {
+	rsp, err := c.CreateDeviceRoleWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceRoleResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateDeviceRoleWithResponse(ctx context.Context, body CreateDeviceRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceRoleResponse, error) {
+	rsp, err := c.CreateDeviceRole(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceRoleResponse(rsp)
+}
+
+// ListDeviceTypesWithResponse request returning *ListDeviceTypesResponse
+func (c *ClientWithResponses) ListDeviceTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListDeviceTypesResponse, error) {
+	rsp, err := c.ListDeviceTypes(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListDeviceTypesResponse(rsp)
+}
+
+// CreateDeviceTypeWithBodyWithResponse request with arbitrary body returning *CreateDeviceTypeResponse
+func (c *ClientWithResponses) CreateDeviceTypeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceTypeResponse, error) {
+	rsp, err := c.CreateDeviceTypeWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceTypeResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateDeviceTypeWithResponse(ctx context.Context, body CreateDeviceTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceTypeResponse, error) {
+	rsp, err := c.CreateDeviceType(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceTypeResponse(rsp)
+}
+
 // ListDevicesWithResponse request returning *ListDevicesResponse
 func (c *ClientWithResponses) ListDevicesWithResponse(ctx context.Context, params *ListDevicesParams, reqEditors ...RequestEditorFn) (*ListDevicesResponse, error) {
 	rsp, err := c.ListDevices(ctx, params, reqEditors...)
@@ -561,6 +3152,23 @@ func (c *ClientWithResponses) ListDevicesWithResponse(ctx context.Context, param
 		return nil, err
 	}
 	return ParseListDevicesResponse(rsp)
+}
+
+// CreateDeviceWithBodyWithResponse request with arbitrary body returning *CreateDeviceResponse
+func (c *ClientWithResponses) CreateDeviceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceResponse, error) {
+	rsp, err := c.CreateDeviceWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateDeviceWithResponse(ctx context.Context, body CreateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceResponse, error) {
+	rsp, err := c.CreateDevice(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceResponse(rsp)
 }
 
 // GetDeviceWithResponse request returning *GetDeviceResponse
@@ -581,6 +3189,23 @@ func (c *ClientWithResponses) ListAddressesWithResponse(ctx context.Context, nam
 	return ParseListAddressesResponse(rsp)
 }
 
+// CreateAddressWithBodyWithResponse request with arbitrary body returning *CreateAddressResponse
+func (c *ClientWithResponses) CreateAddressWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAddressResponse, error) {
+	rsp, err := c.CreateAddressWithBody(ctx, name, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAddressResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateAddressWithResponse(ctx context.Context, name string, body CreateAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAddressResponse, error) {
+	rsp, err := c.CreateAddress(ctx, name, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAddressResponse(rsp)
+}
+
 // ListInterfacesWithResponse request returning *ListInterfacesResponse
 func (c *ClientWithResponses) ListInterfacesWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*ListInterfacesResponse, error) {
 	rsp, err := c.ListInterfaces(ctx, name, reqEditors...)
@@ -590,6 +3215,76 @@ func (c *ClientWithResponses) ListInterfacesWithResponse(ctx context.Context, na
 	return ParseListInterfacesResponse(rsp)
 }
 
+// CreateInterfaceWithBodyWithResponse request with arbitrary body returning *CreateInterfaceResponse
+func (c *ClientWithResponses) CreateInterfaceWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInterfaceResponse, error) {
+	rsp, err := c.CreateInterfaceWithBody(ctx, name, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateInterfaceResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateInterfaceWithResponse(ctx context.Context, name string, body CreateInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateInterfaceResponse, error) {
+	rsp, err := c.CreateInterface(ctx, name, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateInterfaceResponse(rsp)
+}
+
+// ListDeviceTagsWithResponse request returning *ListDeviceTagsResponse
+func (c *ClientWithResponses) ListDeviceTagsWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*ListDeviceTagsResponse, error) {
+	rsp, err := c.ListDeviceTags(ctx, name, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListDeviceTagsResponse(rsp)
+}
+
+// RemoveDeviceTagWithResponse request returning *RemoveDeviceTagResponse
+func (c *ClientWithResponses) RemoveDeviceTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*RemoveDeviceTagResponse, error) {
+	rsp, err := c.RemoveDeviceTag(ctx, name, tag, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveDeviceTagResponse(rsp)
+}
+
+// AddDeviceTagWithResponse request returning *AddDeviceTagResponse
+func (c *ClientWithResponses) AddDeviceTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*AddDeviceTagResponse, error) {
+	rsp, err := c.AddDeviceTag(ctx, name, tag, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddDeviceTagResponse(rsp)
+}
+
+// ListManufacturersWithResponse request returning *ListManufacturersResponse
+func (c *ClientWithResponses) ListManufacturersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListManufacturersResponse, error) {
+	rsp, err := c.ListManufacturers(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListManufacturersResponse(rsp)
+}
+
+// CreateManufacturerWithBodyWithResponse request with arbitrary body returning *CreateManufacturerResponse
+func (c *ClientWithResponses) CreateManufacturerWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateManufacturerResponse, error) {
+	rsp, err := c.CreateManufacturerWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateManufacturerResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateManufacturerWithResponse(ctx context.Context, body CreateManufacturerJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateManufacturerResponse, error) {
+	rsp, err := c.CreateManufacturer(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateManufacturerResponse(rsp)
+}
+
 // ListSitesWithResponse request returning *ListSitesResponse
 func (c *ClientWithResponses) ListSitesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSitesResponse, error) {
 	rsp, err := c.ListSites(ctx, reqEditors...)
@@ -597,6 +3292,361 @@ func (c *ClientWithResponses) ListSitesWithResponse(ctx context.Context, reqEdit
 		return nil, err
 	}
 	return ParseListSitesResponse(rsp)
+}
+
+// CreateSiteWithBodyWithResponse request with arbitrary body returning *CreateSiteResponse
+func (c *ClientWithResponses) CreateSiteWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSiteResponse, error) {
+	rsp, err := c.CreateSiteWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSiteResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateSiteWithResponse(ctx context.Context, body CreateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSiteResponse, error) {
+	rsp, err := c.CreateSite(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSiteResponse(rsp)
+}
+
+// ListTagsWithResponse request returning *ListTagsResponse
+func (c *ClientWithResponses) ListTagsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTagsResponse, error) {
+	rsp, err := c.ListTags(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListTagsResponse(rsp)
+}
+
+// CreateTagWithBodyWithResponse request with arbitrary body returning *CreateTagResponse
+func (c *ClientWithResponses) CreateTagWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTagResponse, error) {
+	rsp, err := c.CreateTagWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTagResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateTagWithResponse(ctx context.Context, body CreateTagJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTagResponse, error) {
+	rsp, err := c.CreateTag(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTagResponse(rsp)
+}
+
+// ListTenantsWithResponse request returning *ListTenantsResponse
+func (c *ClientWithResponses) ListTenantsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTenantsResponse, error) {
+	rsp, err := c.ListTenants(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListTenantsResponse(rsp)
+}
+
+// CreateTenantWithBodyWithResponse request with arbitrary body returning *CreateTenantResponse
+func (c *ClientWithResponses) CreateTenantWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTenantResponse, error) {
+	rsp, err := c.CreateTenantWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTenantResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateTenantWithResponse(ctx context.Context, body CreateTenantJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTenantResponse, error) {
+	rsp, err := c.CreateTenant(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTenantResponse(rsp)
+}
+
+// ListVirtualMachinesWithResponse request returning *ListVirtualMachinesResponse
+func (c *ClientWithResponses) ListVirtualMachinesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error) {
+	rsp, err := c.ListVirtualMachines(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListVirtualMachinesResponse(rsp)
+}
+
+// CreateVirtualMachineWithBodyWithResponse request with arbitrary body returning *CreateVirtualMachineResponse
+func (c *ClientWithResponses) CreateVirtualMachineWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error) {
+	rsp, err := c.CreateVirtualMachineWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualMachineResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateVirtualMachineWithResponse(ctx context.Context, body CreateVirtualMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualMachineResponse, error) {
+	rsp, err := c.CreateVirtualMachine(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualMachineResponse(rsp)
+}
+
+// CreateVirtualAddressWithBodyWithResponse request with arbitrary body returning *CreateVirtualAddressResponse
+func (c *ClientWithResponses) CreateVirtualAddressWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualAddressResponse, error) {
+	rsp, err := c.CreateVirtualAddressWithBody(ctx, name, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualAddressResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateVirtualAddressWithResponse(ctx context.Context, name string, body CreateVirtualAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualAddressResponse, error) {
+	rsp, err := c.CreateVirtualAddress(ctx, name, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualAddressResponse(rsp)
+}
+
+// CreateVirtualInterfaceWithBodyWithResponse request with arbitrary body returning *CreateVirtualInterfaceResponse
+func (c *ClientWithResponses) CreateVirtualInterfaceWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualInterfaceResponse, error) {
+	rsp, err := c.CreateVirtualInterfaceWithBody(ctx, name, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualInterfaceResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateVirtualInterfaceWithResponse(ctx context.Context, name string, body CreateVirtualInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualInterfaceResponse, error) {
+	rsp, err := c.CreateVirtualInterface(ctx, name, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualInterfaceResponse(rsp)
+}
+
+// RemoveVirtualTagWithResponse request returning *RemoveVirtualTagResponse
+func (c *ClientWithResponses) RemoveVirtualTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*RemoveVirtualTagResponse, error) {
+	rsp, err := c.RemoveVirtualTag(ctx, name, tag, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveVirtualTagResponse(rsp)
+}
+
+// AddVirtualTagWithResponse request returning *AddVirtualTagResponse
+func (c *ClientWithResponses) AddVirtualTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*AddVirtualTagResponse, error) {
+	rsp, err := c.AddVirtualTag(ctx, name, tag, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddVirtualTagResponse(rsp)
+}
+
+// ParseListClusterTypesResponse parses an HTTP response from a ListClusterTypesWithResponse call
+func ParseListClusterTypesResponse(rsp *http.Response) (*ListClusterTypesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListClusterTypesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []ClusterType
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateClusterTypeResponse parses an HTTP response from a CreateClusterTypeWithResponse call
+func ParseCreateClusterTypeResponse(rsp *http.Response) (*CreateClusterTypeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateClusterTypeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest ClusterType
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListClustersResponse parses an HTTP response from a ListClustersWithResponse call
+func ParseListClustersResponse(rsp *http.Response) (*ListClustersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListClustersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Cluster
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateClusterResponse parses an HTTP response from a CreateClusterWithResponse call
+func ParseCreateClusterResponse(rsp *http.Response) (*CreateClusterResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateClusterResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Cluster
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListDeviceRolesResponse parses an HTTP response from a ListDeviceRolesWithResponse call
+func ParseListDeviceRolesResponse(rsp *http.Response) (*ListDeviceRolesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListDeviceRolesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []DeviceRole
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateDeviceRoleResponse parses an HTTP response from a CreateDeviceRoleWithResponse call
+func ParseCreateDeviceRoleResponse(rsp *http.Response) (*CreateDeviceRoleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDeviceRoleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DeviceRole
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListDeviceTypesResponse parses an HTTP response from a ListDeviceTypesWithResponse call
+func ParseListDeviceTypesResponse(rsp *http.Response) (*ListDeviceTypesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListDeviceTypesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []DeviceType
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateDeviceTypeResponse parses an HTTP response from a CreateDeviceTypeWithResponse call
+func ParseCreateDeviceTypeResponse(rsp *http.Response) (*CreateDeviceTypeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDeviceTypeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DeviceType
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseListDevicesResponse parses an HTTP response from a ListDevicesWithResponse call
@@ -619,6 +3669,32 @@ func ParseListDevicesResponse(rsp *http.Response) (*ListDevicesResponse, error) 
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateDeviceResponse parses an HTTP response from a CreateDeviceWithResponse call
+func ParseCreateDeviceResponse(rsp *http.Response) (*CreateDeviceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDeviceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Device
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
 
 	}
 
@@ -677,6 +3753,32 @@ func ParseListAddressesResponse(rsp *http.Response) (*ListAddressesResponse, err
 	return response, nil
 }
 
+// ParseCreateAddressResponse parses an HTTP response from a CreateAddressWithResponse call
+func ParseCreateAddressResponse(rsp *http.Response) (*CreateAddressResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateAddressResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Address
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListInterfacesResponse parses an HTTP response from a ListInterfacesWithResponse call
 func ParseListInterfacesResponse(rsp *http.Response) (*ListInterfacesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -703,6 +3805,162 @@ func ParseListInterfacesResponse(rsp *http.Response) (*ListInterfacesResponse, e
 	return response, nil
 }
 
+// ParseCreateInterfaceResponse parses an HTTP response from a CreateInterfaceWithResponse call
+func ParseCreateInterfaceResponse(rsp *http.Response) (*CreateInterfaceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateInterfaceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Interface
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListDeviceTagsResponse parses an HTTP response from a ListDeviceTagsWithResponse call
+func ParseListDeviceTagsResponse(rsp *http.Response) (*ListDeviceTagsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListDeviceTagsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []string
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRemoveDeviceTagResponse parses an HTTP response from a RemoveDeviceTagWithResponse call
+func ParseRemoveDeviceTagResponse(rsp *http.Response) (*RemoveDeviceTagResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RemoveDeviceTagResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Device
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAddDeviceTagResponse parses an HTTP response from a AddDeviceTagWithResponse call
+func ParseAddDeviceTagResponse(rsp *http.Response) (*AddDeviceTagResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AddDeviceTagResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Device
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListManufacturersResponse parses an HTTP response from a ListManufacturersWithResponse call
+func ParseListManufacturersResponse(rsp *http.Response) (*ListManufacturersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListManufacturersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Manufacturer
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateManufacturerResponse parses an HTTP response from a CreateManufacturerWithResponse call
+func ParseCreateManufacturerResponse(rsp *http.Response) (*CreateManufacturerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateManufacturerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Manufacturer
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListSitesResponse parses an HTTP response from a ListSitesWithResponse call
 func ParseListSitesResponse(rsp *http.Response) (*ListSitesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -719,6 +3977,292 @@ func ParseListSitesResponse(rsp *http.Response) (*ListSitesResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []Site
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateSiteResponse parses an HTTP response from a CreateSiteWithResponse call
+func ParseCreateSiteResponse(rsp *http.Response) (*CreateSiteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSiteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Site
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListTagsResponse parses an HTTP response from a ListTagsWithResponse call
+func ParseListTagsResponse(rsp *http.Response) (*ListTagsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListTagsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Tag
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateTagResponse parses an HTTP response from a CreateTagWithResponse call
+func ParseCreateTagResponse(rsp *http.Response) (*CreateTagResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateTagResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Tag
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListTenantsResponse parses an HTTP response from a ListTenantsWithResponse call
+func ParseListTenantsResponse(rsp *http.Response) (*ListTenantsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListTenantsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Tenant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateTenantResponse parses an HTTP response from a CreateTenantWithResponse call
+func ParseCreateTenantResponse(rsp *http.Response) (*CreateTenantResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateTenantResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Tenant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListVirtualMachinesResponse parses an HTTP response from a ListVirtualMachinesWithResponse call
+func ParseListVirtualMachinesResponse(rsp *http.Response) (*ListVirtualMachinesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListVirtualMachinesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []VirtualMachine
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateVirtualMachineResponse parses an HTTP response from a CreateVirtualMachineWithResponse call
+func ParseCreateVirtualMachineResponse(rsp *http.Response) (*CreateVirtualMachineResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateVirtualMachineResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest VirtualMachine
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateVirtualAddressResponse parses an HTTP response from a CreateVirtualAddressWithResponse call
+func ParseCreateVirtualAddressResponse(rsp *http.Response) (*CreateVirtualAddressResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateVirtualAddressResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Address
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateVirtualInterfaceResponse parses an HTTP response from a CreateVirtualInterfaceWithResponse call
+func ParseCreateVirtualInterfaceResponse(rsp *http.Response) (*CreateVirtualInterfaceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateVirtualInterfaceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest VirtualInterface
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRemoveVirtualTagResponse parses an HTTP response from a RemoveVirtualTagWithResponse call
+func ParseRemoveVirtualTagResponse(rsp *http.Response) (*RemoveVirtualTagResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RemoveVirtualTagResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VirtualMachine
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAddVirtualTagResponse parses an HTTP response from a AddVirtualTagWithResponse call
+func ParseAddVirtualTagResponse(rsp *http.Response) (*AddVirtualTagResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AddVirtualTagResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VirtualMachine
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

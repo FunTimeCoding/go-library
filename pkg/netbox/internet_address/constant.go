@@ -9,6 +9,9 @@ const (
 	// VirtualMachineAddress when assigning an IP address to a virtual machine
 	VirtualMachineAddress = "virtualization.vm"
 
+	// VirtualInterfaceAddress when assigning an IP address to a VM interface
+	VirtualInterfaceAddress = "virtualization.vminterface"
+
 	// SubnetAddress  when assigning an IP address to a prefix/subnet
 	SubnetAddress = "ipam.prefix"
 
@@ -21,5 +24,6 @@ var ObjectTypes = []string{
 	DeviceAddress,
 	constant.InterfaceAddress,
 	VirtualMachineAddress,
+	VirtualInterfaceAddress,
 	SubnetAddress,
 }

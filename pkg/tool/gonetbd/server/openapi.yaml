@@ -80,6 +80,29 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Address"
+  /api/v1/devices/{name}/addresses/create:
+    post:
+      operationId: createAddress
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Device name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAddressRequest"
+      responses:
+        "201":
+          description: Created address.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
   /api/v1/sites:
     get:
       operationId: listSites
@@ -92,6 +115,431 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Site"
+    post:
+      operationId: createSite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNameRequest"
+      responses:
+        "201":
+          description: Created site.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Site"
+  /api/v1/tenants:
+    get:
+      operationId: listTenants
+      responses:
+        "200":
+          description: All tenants.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tenant"
+    post:
+      operationId: createTenant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNameRequest"
+      responses:
+        "201":
+          description: Created tenant.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tenant"
+  /api/v1/device-roles:
+    get:
+      operationId: listDeviceRoles
+      responses:
+        "200":
+          description: All device roles.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeviceRole"
+    post:
+      operationId: createDeviceRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNameRequest"
+      responses:
+        "201":
+          description: Created device role.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeviceRole"
+  /api/v1/manufacturers:
+    get:
+      operationId: listManufacturers
+      responses:
+        "200":
+          description: All manufacturers.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Manufacturer"
+    post:
+      operationId: createManufacturer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNameRequest"
+      responses:
+        "201":
+          description: Created manufacturer.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Manufacturer"
+  /api/v1/device-types:
+    get:
+      operationId: listDeviceTypes
+      responses:
+        "200":
+          description: All device types.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeviceType"
+    post:
+      operationId: createDeviceType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDeviceTypeRequest"
+      responses:
+        "201":
+          description: Created device type.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeviceType"
+  /api/v1/devices/{name}/interfaces/create:
+    post:
+      operationId: createInterface
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Device name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInterfaceRequest"
+      responses:
+        "201":
+          description: Created interface.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Interface"
+  /api/v1/devices/create:
+    post:
+      operationId: createDevice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDeviceRequest"
+      responses:
+        "201":
+          description: Created device.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+  /api/v1/cluster-types:
+    get:
+      operationId: listClusterTypes
+      responses:
+        "200":
+          description: All cluster types.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ClusterType"
+    post:
+      operationId: createClusterType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNameRequest"
+      responses:
+        "201":
+          description: Created cluster type.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClusterType"
+  /api/v1/clusters:
+    get:
+      operationId: listClusters
+      responses:
+        "200":
+          description: All clusters.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cluster"
+    post:
+      operationId: createCluster
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateClusterRequest"
+      responses:
+        "201":
+          description: Created cluster.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cluster"
+  /api/v1/virtual-machines:
+    get:
+      operationId: listVirtualMachines
+      responses:
+        "200":
+          description: All virtual machines.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VirtualMachine"
+    post:
+      operationId: createVirtualMachine
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVirtualMachineRequest"
+      responses:
+        "201":
+          description: Created virtual machine.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualMachine"
+  /api/v1/virtual-machines/{name}/interfaces/create:
+    post:
+      operationId: createVirtualInterface
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Virtual machine name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVirtualInterfaceRequest"
+      responses:
+        "201":
+          description: Created VM interface.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualInterface"
+  /api/v1/virtual-machines/{name}/addresses/create:
+    post:
+      operationId: createVirtualAddress
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Virtual machine name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAddressRequest"
+      responses:
+        "201":
+          description: Created address on VM interface.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+  /api/v1/tags:
+    get:
+      operationId: listTags
+      responses:
+        "200":
+          description: All tags.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+    post:
+      operationId: createTag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNameRequest"
+      responses:
+        "201":
+          description: Created tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+  /api/v1/devices/{name}/tags:
+    get:
+      operationId: listDeviceTags
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Device name.
+      responses:
+        "200":
+          description: Tags on the device.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/devices/{name}/tags/{tag}:
+    put:
+      operationId: addDeviceTag
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Device name.
+      - name: tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Tag name.
+      responses:
+        "200":
+          description: Tag added. Returns updated device.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+    delete:
+      operationId: removeDeviceTag
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Device name.
+      - name: tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Tag name.
+      responses:
+        "200":
+          description: Tag removed. Returns updated device.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+  /api/v1/virtual-machines/{name}/tags/{tag}:
+    put:
+      operationId: addVirtualTag
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Virtual machine name.
+      - name: tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Tag name.
+      responses:
+        "200":
+          description: Tag added. Returns updated VM.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualMachine"
+    delete:
+      operationId: removeVirtualTag
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Virtual machine name.
+      - name: tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Tag name.
+      responses:
+        "200":
+          description: Tag removed. Returns updated VM.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualMachine"
 components:
   schemas:
     Device:
@@ -156,6 +604,225 @@ components:
         objectType:
           type: string
     Site:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+    Tenant:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+    DeviceRole:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+    Manufacturer:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+    DeviceType:
+      type: object
+      required:
+      - identifier
+      - model
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        model:
+          type: string
+        manufacturer:
+          type: string
+    CreateNameRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+    CreateDeviceTypeRequest:
+      type: object
+      required:
+      - model
+      - manufacturer
+      properties:
+        model:
+          type: string
+          description: Device type model name.
+        manufacturer:
+          type: string
+          description: Manufacturer name (must already exist).
+    CreateInterfaceRequest:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+          description: Interface name (e.g. eno1, eth0).
+        type:
+          type: string
+          description: Interface type (e.g. 1000base-t, 10gbase-t).
+    CreateAddressRequest:
+      type: object
+      required:
+      - interface
+      - address
+      properties:
+        interface:
+          type: string
+          description: Interface name on the device (e.g. eno1).
+        address:
+          type: string
+          description: IP address in CIDR notation (e.g. 144.76.220.60/32).
+    CreateDeviceRequest:
+      type: object
+      required:
+      - name
+      - role
+      - type
+      - site
+      properties:
+        name:
+          type: string
+          description: Device name.
+        role:
+          type: string
+          description: Device role name (must already exist).
+        type:
+          type: string
+          description: Device type model name (must already exist).
+        site:
+          type: string
+          description: Site name (must already exist).
+        tenant:
+          type: string
+          description: Tenant name (must already exist). Optional.
+        tags:
+          type: array
+          items:
+            type: string
+    ClusterType:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+    Cluster:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+        type:
+          type: string
+        site:
+          type: string
+    VirtualMachine:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+        cluster:
+          type: string
+        site:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    CreateClusterRequest:
+      type: object
+      required:
+      - name
+      - type
+      - site
+      properties:
+        name:
+          type: string
+          description: Cluster name.
+        type:
+          type: string
+          description: Cluster type name (must already exist).
+        site:
+          type: string
+          description: Site name (must already exist).
+    CreateVirtualMachineRequest:
+      type: object
+      required:
+      - name
+      - cluster
+      properties:
+        name:
+          type: string
+          description: Virtual machine name.
+        cluster:
+          type: string
+          description: Cluster name (must already exist).
+    VirtualInterface:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+    CreateVirtualInterfaceRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Interface name (e.g. ens3, eth0).
+    Tag:
       type: object
       required:
       - identifier

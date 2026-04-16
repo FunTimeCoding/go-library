@@ -27,6 +27,98 @@ type Address struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// Cluster defines model for Cluster.
+type Cluster struct {
+	Identifier int32   `json:"identifier"`
+	Name       string  `json:"name"`
+	Site       *string `json:"site,omitempty"`
+	Type       *string `json:"type,omitempty"`
+}
+
+// ClusterType defines model for ClusterType.
+type ClusterType struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// CreateAddressRequest defines model for CreateAddressRequest.
+type CreateAddressRequest struct {
+	// Address IP address in CIDR notation (e.g. 144.76.220.60/32).
+	Address string `json:"address"`
+
+	// Interface Interface name on the device (e.g. eno1).
+	Interface string `json:"interface"`
+}
+
+// CreateClusterRequest defines model for CreateClusterRequest.
+type CreateClusterRequest struct {
+	// Name Cluster name.
+	Name string `json:"name"`
+
+	// Site Site name (must already exist).
+	Site string `json:"site"`
+
+	// Type Cluster type name (must already exist).
+	Type string `json:"type"`
+}
+
+// CreateDeviceRequest defines model for CreateDeviceRequest.
+type CreateDeviceRequest struct {
+	// Name Device name.
+	Name string `json:"name"`
+
+	// Role Device role name (must already exist).
+	Role string `json:"role"`
+
+	// Site Site name (must already exist).
+	Site string    `json:"site"`
+	Tags *[]string `json:"tags,omitempty"`
+
+	// Tenant Tenant name (must already exist). Optional.
+	Tenant *string `json:"tenant,omitempty"`
+
+	// Type Device type model name (must already exist).
+	Type string `json:"type"`
+}
+
+// CreateDeviceTypeRequest defines model for CreateDeviceTypeRequest.
+type CreateDeviceTypeRequest struct {
+	// Manufacturer Manufacturer name (must already exist).
+	Manufacturer string `json:"manufacturer"`
+
+	// Model Device type model name.
+	Model string `json:"model"`
+}
+
+// CreateInterfaceRequest defines model for CreateInterfaceRequest.
+type CreateInterfaceRequest struct {
+	// Name Interface name (e.g. eno1, eth0).
+	Name string `json:"name"`
+
+	// Type Interface type (e.g. 1000base-t, 10gbase-t).
+	Type string `json:"type"`
+}
+
+// CreateNameRequest defines model for CreateNameRequest.
+type CreateNameRequest struct {
+	Name string `json:"name"`
+}
+
+// CreateVirtualInterfaceRequest defines model for CreateVirtualInterfaceRequest.
+type CreateVirtualInterfaceRequest struct {
+	// Name Interface name (e.g. ens3, eth0).
+	Name string `json:"name"`
+}
+
+// CreateVirtualMachineRequest defines model for CreateVirtualMachineRequest.
+type CreateVirtualMachineRequest struct {
+	// Cluster Cluster name (must already exist).
+	Cluster string `json:"cluster"`
+
+	// Name Virtual machine name.
+	Name string `json:"name"`
+}
+
 // Device defines model for Device.
 type Device struct {
 	Identifier     int32     `json:"identifier"`
@@ -41,6 +133,19 @@ type Device struct {
 	Type           *string   `json:"type,omitempty"`
 }
 
+// DeviceRole defines model for DeviceRole.
+type DeviceRole struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// DeviceType defines model for DeviceType.
+type DeviceType struct {
+	Identifier   int32   `json:"identifier"`
+	Manufacturer *string `json:"manufacturer,omitempty"`
+	Model        string  `json:"model"`
+}
+
 // Interface defines model for Interface.
 type Interface struct {
 	Description     *string `json:"description,omitempty"`
@@ -50,10 +155,43 @@ type Interface struct {
 	Type            *string `json:"type,omitempty"`
 }
 
+// Manufacturer defines model for Manufacturer.
+type Manufacturer struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
 // Site defines model for Site.
 type Site struct {
 	Identifier int32  `json:"identifier"`
 	Name       string `json:"name"`
+}
+
+// Tag defines model for Tag.
+type Tag struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// Tenant defines model for Tenant.
+type Tenant struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// VirtualInterface defines model for VirtualInterface.
+type VirtualInterface struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// VirtualMachine defines model for VirtualMachine.
+type VirtualMachine struct {
+	Cluster    *string   `json:"cluster,omitempty"`
+	Identifier int32     `json:"identifier"`
+	Name       string    `json:"name"`
+	Site       *string   `json:"site,omitempty"`
+	Tags       *[]string `json:"tags,omitempty"`
 }
 
 // ListDevicesParams defines parameters for ListDevices.
@@ -62,11 +200,80 @@ type ListDevicesParams struct {
 	Query *string `form:"query,omitempty" json:"query,omitempty"`
 }
 
+// CreateClusterTypeJSONRequestBody defines body for CreateClusterType for application/json ContentType.
+type CreateClusterTypeJSONRequestBody = CreateNameRequest
+
+// CreateClusterJSONRequestBody defines body for CreateCluster for application/json ContentType.
+type CreateClusterJSONRequestBody = CreateClusterRequest
+
+// CreateDeviceRoleJSONRequestBody defines body for CreateDeviceRole for application/json ContentType.
+type CreateDeviceRoleJSONRequestBody = CreateNameRequest
+
+// CreateDeviceTypeJSONRequestBody defines body for CreateDeviceType for application/json ContentType.
+type CreateDeviceTypeJSONRequestBody = CreateDeviceTypeRequest
+
+// CreateDeviceJSONRequestBody defines body for CreateDevice for application/json ContentType.
+type CreateDeviceJSONRequestBody = CreateDeviceRequest
+
+// CreateAddressJSONRequestBody defines body for CreateAddress for application/json ContentType.
+type CreateAddressJSONRequestBody = CreateAddressRequest
+
+// CreateInterfaceJSONRequestBody defines body for CreateInterface for application/json ContentType.
+type CreateInterfaceJSONRequestBody = CreateInterfaceRequest
+
+// CreateManufacturerJSONRequestBody defines body for CreateManufacturer for application/json ContentType.
+type CreateManufacturerJSONRequestBody = CreateNameRequest
+
+// CreateSiteJSONRequestBody defines body for CreateSite for application/json ContentType.
+type CreateSiteJSONRequestBody = CreateNameRequest
+
+// CreateTagJSONRequestBody defines body for CreateTag for application/json ContentType.
+type CreateTagJSONRequestBody = CreateNameRequest
+
+// CreateTenantJSONRequestBody defines body for CreateTenant for application/json ContentType.
+type CreateTenantJSONRequestBody = CreateNameRequest
+
+// CreateVirtualMachineJSONRequestBody defines body for CreateVirtualMachine for application/json ContentType.
+type CreateVirtualMachineJSONRequestBody = CreateVirtualMachineRequest
+
+// CreateVirtualAddressJSONRequestBody defines body for CreateVirtualAddress for application/json ContentType.
+type CreateVirtualAddressJSONRequestBody = CreateAddressRequest
+
+// CreateVirtualInterfaceJSONRequestBody defines body for CreateVirtualInterface for application/json ContentType.
+type CreateVirtualInterfaceJSONRequestBody = CreateVirtualInterfaceRequest
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
+	// (GET /api/v1/cluster-types)
+	ListClusterTypes(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/cluster-types)
+	CreateClusterType(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/clusters)
+	ListClusters(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/clusters)
+	CreateCluster(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/device-roles)
+	ListDeviceRoles(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/device-roles)
+	CreateDeviceRole(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/device-types)
+	ListDeviceTypes(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/device-types)
+	CreateDeviceType(w http.ResponseWriter, r *http.Request)
+
 	// (GET /api/v1/devices)
 	ListDevices(w http.ResponseWriter, r *http.Request, params ListDevicesParams)
+
+	// (POST /api/v1/devices/create)
+	CreateDevice(w http.ResponseWriter, r *http.Request)
 
 	// (GET /api/v1/devices/{name})
 	GetDevice(w http.ResponseWriter, r *http.Request, name string)
@@ -74,11 +281,65 @@ type ServerInterface interface {
 	// (GET /api/v1/devices/{name}/addresses)
 	ListAddresses(w http.ResponseWriter, r *http.Request, name string)
 
+	// (POST /api/v1/devices/{name}/addresses/create)
+	CreateAddress(w http.ResponseWriter, r *http.Request, name string)
+
 	// (GET /api/v1/devices/{name}/interfaces)
 	ListInterfaces(w http.ResponseWriter, r *http.Request, name string)
 
+	// (POST /api/v1/devices/{name}/interfaces/create)
+	CreateInterface(w http.ResponseWriter, r *http.Request, name string)
+
+	// (GET /api/v1/devices/{name}/tags)
+	ListDeviceTags(w http.ResponseWriter, r *http.Request, name string)
+
+	// (DELETE /api/v1/devices/{name}/tags/{tag})
+	RemoveDeviceTag(w http.ResponseWriter, r *http.Request, name string, tag string)
+
+	// (PUT /api/v1/devices/{name}/tags/{tag})
+	AddDeviceTag(w http.ResponseWriter, r *http.Request, name string, tag string)
+
+	// (GET /api/v1/manufacturers)
+	ListManufacturers(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/manufacturers)
+	CreateManufacturer(w http.ResponseWriter, r *http.Request)
+
 	// (GET /api/v1/sites)
 	ListSites(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/sites)
+	CreateSite(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/tags)
+	ListTags(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/tags)
+	CreateTag(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/tenants)
+	ListTenants(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/tenants)
+	CreateTenant(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/virtual-machines)
+	ListVirtualMachines(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/virtual-machines)
+	CreateVirtualMachine(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/virtual-machines/{name}/addresses/create)
+	CreateVirtualAddress(w http.ResponseWriter, r *http.Request, name string)
+
+	// (POST /api/v1/virtual-machines/{name}/interfaces/create)
+	CreateVirtualInterface(w http.ResponseWriter, r *http.Request, name string)
+
+	// (DELETE /api/v1/virtual-machines/{name}/tags/{tag})
+	RemoveVirtualTag(w http.ResponseWriter, r *http.Request, name string, tag string)
+
+	// (PUT /api/v1/virtual-machines/{name}/tags/{tag})
+	AddVirtualTag(w http.ResponseWriter, r *http.Request, name string, tag string)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -89,6 +350,118 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
+
+// ListClusterTypes operation middleware
+func (siw *ServerInterfaceWrapper) ListClusterTypes(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListClusterTypes(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateClusterType operation middleware
+func (siw *ServerInterfaceWrapper) CreateClusterType(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateClusterType(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListClusters operation middleware
+func (siw *ServerInterfaceWrapper) ListClusters(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListClusters(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateCluster operation middleware
+func (siw *ServerInterfaceWrapper) CreateCluster(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateCluster(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListDeviceRoles operation middleware
+func (siw *ServerInterfaceWrapper) ListDeviceRoles(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListDeviceRoles(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateDeviceRole operation middleware
+func (siw *ServerInterfaceWrapper) CreateDeviceRole(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateDeviceRole(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListDeviceTypes operation middleware
+func (siw *ServerInterfaceWrapper) ListDeviceTypes(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListDeviceTypes(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateDeviceType operation middleware
+func (siw *ServerInterfaceWrapper) CreateDeviceType(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateDeviceType(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
 
 // ListDevices operation middleware
 func (siw *ServerInterfaceWrapper) ListDevices(w http.ResponseWriter, r *http.Request) {
@@ -108,6 +481,20 @@ func (siw *ServerInterfaceWrapper) ListDevices(w http.ResponseWriter, r *http.Re
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.ListDevices(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateDevice operation middleware
+func (siw *ServerInterfaceWrapper) CreateDevice(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateDevice(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -167,6 +554,31 @@ func (siw *ServerInterfaceWrapper) ListAddresses(w http.ResponseWriter, r *http.
 	handler.ServeHTTP(w, r)
 }
 
+// CreateAddress operation middleware
+func (siw *ServerInterfaceWrapper) CreateAddress(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateAddress(w, r, name)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListInterfaces operation middleware
 func (siw *ServerInterfaceWrapper) ListInterfaces(w http.ResponseWriter, r *http.Request) {
 
@@ -192,11 +604,373 @@ func (siw *ServerInterfaceWrapper) ListInterfaces(w http.ResponseWriter, r *http
 	handler.ServeHTTP(w, r)
 }
 
+// CreateInterface operation middleware
+func (siw *ServerInterfaceWrapper) CreateInterface(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateInterface(w, r, name)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListDeviceTags operation middleware
+func (siw *ServerInterfaceWrapper) ListDeviceTags(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListDeviceTags(w, r, name)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// RemoveDeviceTag operation middleware
+func (siw *ServerInterfaceWrapper) RemoveDeviceTag(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "tag" -------------
+	var tag string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "tag", r.PathValue("tag"), &tag, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "tag", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.RemoveDeviceTag(w, r, name, tag)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// AddDeviceTag operation middleware
+func (siw *ServerInterfaceWrapper) AddDeviceTag(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "tag" -------------
+	var tag string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "tag", r.PathValue("tag"), &tag, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "tag", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.AddDeviceTag(w, r, name, tag)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListManufacturers operation middleware
+func (siw *ServerInterfaceWrapper) ListManufacturers(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListManufacturers(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateManufacturer operation middleware
+func (siw *ServerInterfaceWrapper) CreateManufacturer(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateManufacturer(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListSites operation middleware
 func (siw *ServerInterfaceWrapper) ListSites(w http.ResponseWriter, r *http.Request) {
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.ListSites(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateSite operation middleware
+func (siw *ServerInterfaceWrapper) CreateSite(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateSite(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListTags operation middleware
+func (siw *ServerInterfaceWrapper) ListTags(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListTags(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateTag operation middleware
+func (siw *ServerInterfaceWrapper) CreateTag(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateTag(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListTenants operation middleware
+func (siw *ServerInterfaceWrapper) ListTenants(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListTenants(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateTenant operation middleware
+func (siw *ServerInterfaceWrapper) CreateTenant(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateTenant(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListVirtualMachines operation middleware
+func (siw *ServerInterfaceWrapper) ListVirtualMachines(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListVirtualMachines(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateVirtualMachine operation middleware
+func (siw *ServerInterfaceWrapper) CreateVirtualMachine(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateVirtualMachine(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateVirtualAddress operation middleware
+func (siw *ServerInterfaceWrapper) CreateVirtualAddress(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateVirtualAddress(w, r, name)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateVirtualInterface operation middleware
+func (siw *ServerInterfaceWrapper) CreateVirtualInterface(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateVirtualInterface(w, r, name)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// RemoveVirtualTag operation middleware
+func (siw *ServerInterfaceWrapper) RemoveVirtualTag(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "tag" -------------
+	var tag string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "tag", r.PathValue("tag"), &tag, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "tag", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.RemoveVirtualTag(w, r, name, tag)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// AddVirtualTag operation middleware
+func (siw *ServerInterfaceWrapper) AddVirtualTag(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "tag" -------------
+	var tag string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "tag", r.PathValue("tag"), &tag, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "tag", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.AddVirtualTag(w, r, name, tag)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -326,11 +1100,38 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/cluster-types", wrapper.ListClusterTypes)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/cluster-types", wrapper.CreateClusterType)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/clusters", wrapper.ListClusters)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/clusters", wrapper.CreateCluster)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/device-roles", wrapper.ListDeviceRoles)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/device-roles", wrapper.CreateDeviceRole)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/device-types", wrapper.ListDeviceTypes)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/device-types", wrapper.CreateDeviceType)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/devices", wrapper.ListDevices)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/devices/create", wrapper.CreateDevice)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/devices/{name}", wrapper.GetDevice)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/devices/{name}/addresses", wrapper.ListAddresses)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/devices/{name}/addresses/create", wrapper.CreateAddress)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/devices/{name}/interfaces", wrapper.ListInterfaces)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/devices/{name}/interfaces/create", wrapper.CreateInterface)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/devices/{name}/tags", wrapper.ListDeviceTags)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/devices/{name}/tags/{tag}", wrapper.RemoveDeviceTag)
+	m.HandleFunc("PUT "+options.BaseURL+"/api/v1/devices/{name}/tags/{tag}", wrapper.AddDeviceTag)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/manufacturers", wrapper.ListManufacturers)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/manufacturers", wrapper.CreateManufacturer)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/sites", wrapper.ListSites)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/sites", wrapper.CreateSite)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/tags", wrapper.ListTags)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/tags", wrapper.CreateTag)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/tenants", wrapper.ListTenants)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/tenants", wrapper.CreateTenant)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/virtual-machines", wrapper.ListVirtualMachines)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/virtual-machines", wrapper.CreateVirtualMachine)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/virtual-machines/{name}/addresses/create", wrapper.CreateVirtualAddress)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/virtual-machines/{name}/interfaces/create", wrapper.CreateVirtualInterface)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/virtual-machines/{name}/tags/{tag}", wrapper.RemoveVirtualTag)
+	m.HandleFunc("PUT "+options.BaseURL+"/api/v1/virtual-machines/{name}/tags/{tag}", wrapper.AddVirtualTag)
 
 	return m
 }
@@ -338,17 +1139,34 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"BAAA//90+L2O6DsAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

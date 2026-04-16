@@ -23,11 +23,11 @@ func collect(
 	query := fmt.Sprintf(`{namespace="%s"} | json`, namespace)
 
 	if route != "" {
-		query += fmt.Sprintf(`, http_route="%s"`, route)
+		query += fmt.Sprintf(` | http_route="%s"`, route)
 	}
 
 	if m != "" {
-		query += fmt.Sprintf(`, msg="%s"`, m)
+		query += fmt.Sprintf(` | msg="%s"`, m)
 	}
 
 	if m == "" {

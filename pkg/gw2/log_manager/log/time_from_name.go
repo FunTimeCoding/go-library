@@ -3,13 +3,13 @@ package log
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/split/key_value"
 	library "github.com/funtimecoding/go-library/pkg/time"
-	"strings"
+	"path/filepath"
 	"time"
 )
 
 func timeFromName(fileName string) time.Time {
-	parts := strings.Split(fileName, "\\")
-	date, _ := key_value.Dot(parts[len(parts)-1])
+	base := filepath.Base(fileName)
+	date, _ := key_value.Dot(base)
 
 	return library.Parse("20060102-150405", date)
 }

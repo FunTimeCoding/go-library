@@ -1,8 +1,7 @@
 ---
 name: goghexporter
 on: {push: {tags: ['v*']}}
-env:
-  REGISTRY: ghcr.io
+env: {REGISTRY: ghcr.io}
 jobs:
   container:
     runs-on: ubuntu-latest
@@ -10,7 +9,8 @@ jobs:
     steps:
     - {name: Repository, uses: actions/checkout@v4, with: {fetch-depth: 0}}
     - {name: Go, uses: actions/setup-go@v5, with: {go-version-file: go.mod}}
-    - {name: Build, run: 'go run cmd/gobuild/main.go --linux-amd64 goghexporter'}
+    - name: Build
+      run: go run cmd/gobuild/main.go --linux-amd64 goghexporter
     - name: Lowercase image
       run: echo "IMAGE_LC=${GITHUB_REPOSITORY_OWNER@L}/goghexporter" >> $GITHUB_ENV
     - name: Login

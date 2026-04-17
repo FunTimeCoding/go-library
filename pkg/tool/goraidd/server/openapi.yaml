@@ -1,0 +1,93 @@
+---
+openapi: "3.0.0"
+info:
+  title: goraidd
+  version: 1.0.0
+paths:
+  /api/v1/logs:
+    get:
+      operationId: getLogs
+      responses:
+        "200":
+          description: Available combat logs.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LogResponse"
+  /api/v1/reports:
+    get:
+      operationId: getReports
+      responses:
+        "200":
+          description: Generated report files.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReportResponse"
+  /api/v1/generate:
+    post:
+      operationId: postGenerate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateRequest"
+      responses:
+        "201":
+          description: Report generation started.
+        "501":
+          description: Not yet implemented.
+components:
+  schemas:
+    LogResponse:
+      type: object
+      required:
+      - fileName
+      - time
+      - duration
+      - mapId
+      - playerCount
+      - players
+      properties:
+        fileName:
+          type: string
+        time:
+          type: string
+        duration:
+          type: string
+        mapId:
+          type: integer
+        playerCount:
+          type: integer
+        players:
+          type: array
+          items:
+            type: string
+    ReportResponse:
+      type: object
+      required:
+      - fileName
+      - time
+      - size
+      properties:
+        fileName:
+          type: string
+        time:
+          type: string
+        size:
+          type: integer
+          format: int64
+    GenerateRequest:
+      type: object
+      required:
+      - fileNames
+      properties:
+        fileNames:
+          type: array
+          items:
+            type: string

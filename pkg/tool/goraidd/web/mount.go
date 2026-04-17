@@ -1,0 +1,9 @@
+package web
+
+import "net/http"
+
+func (s *Server) Mount(m *http.ServeMux) {
+	m.HandleFunc("GET /{$}", s.logs)
+	m.HandleFunc("GET /reports", s.reports)
+	m.HandleFunc("GET /reports/{fileName}", s.reportDownload)
+}

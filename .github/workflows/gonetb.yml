@@ -1,8 +1,7 @@
 ---
 name: gonetb
 on: {push: {tags: ['v*']}}
-env:
-  REGISTRY: ghcr.io
+env: {REGISTRY: ghcr.io}
 jobs:
   container:
     runs-on: ubuntu-latest

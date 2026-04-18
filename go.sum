@@ -60,7 +60,7 @@ github.com/alecthomas/units v0.0.0-20240927000941-0f3dac36c52b h1:mimo19zliBX/vS
 github.com/alecthomas/units v0.0.0-20240927000941-0f3dac36c52b/go.mod h1:fvzegU4vN3H1qMT+8wDmzjAcDONcgo2/SZ/TyfdUOFs=
 github.com/amikos-tech/chroma-go v0.4.1 h1:WIcFTSjRgnVTYKWhgZYKaEUOjK6+BpGfVQRqdMIAfrw=
 github.com/amikos-tech/chroma-go v0.4.1/go.mod h1:q2kwMTUpWUP7ME3d7RjmVQlmBcJx9BKrrH7UhT91DRY=
-github.com/amikos-tech/chroma-go-local v0.3.4 h1:NUCaw0R+nNWd9h004MYCGY1LZGO7JjUWzXeYRbw1xSg=
+github.com/amikos-tech/chroma-go-local v0.3.4 h1:7yFDZuu9qRtRd/w6sZZqWwk/j1dcw3+Ly8MBuf3H+KI=
 github.com/amikos-tech/chroma-go-local v0.3.4/go.mod h1:U37BtxfJldfcpiya6nelgy+SdMesYOVub9kcnRknTrk=
 github.com/amikos-tech/pure-onnx v0.0.1 h1:FGMe+NyPOAlaMce+QFn2o+PkREXtHztAHgU1BOIqwz4=
 github.com/amikos-tech/pure-onnx v0.0.1/go.mod h1:pTYlj5NC8Q5vyhB0tYWliJOCPUuoIWm/8qsyit/84Y4=

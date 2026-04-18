@@ -8,21 +8,60 @@ import (
 	g "maragu.dev/gomponents"
 	h "maragu.dev/gomponents/html"
 	"net/http"
+	"time"
 )
 
 func (s *Server) logs(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	logs := log.NewSlice(
+	all := log.NewSlice(
 		gw2.ParseLogs(
 			system.ReadBytes(s.logCachePath, gw2Constant.LogFile),
 			false,
 		),
 	)
+	startValue := r.URL.Query().Get("start")
+	endValue := r.URL.Query().Get("end")
+	var filtered []*log.Log
+
+	for _, l := range all {
+		if startValue != "" {
+			start, e := time.Parse("2006-01-02T15:04", startValue)
+
+			if e == nil && l.Time.Before(start) {
+				continue
+			}
+		}
+
+		if endValue != "" {
+			end, e := time.Parse("2006-01-02T15:04", endValue)
+
+			if e == nil && l.Time.After(end) {
+				continue
+			}
+		}
+
+		filtered = append(filtered, l)
+	}
+
+	total := len(filtered)
+	offset := parseIntParameter(r, "offset", 0)
+
+	if offset > total {
+		offset = total
+	}
+
+	end := offset + pageSize
+
+	if end > total {
+		end = total
+	}
+
+	page := filtered[offset:end]
 
 	if s.isHTMX(r) {
-		renderFragment(w, logsTable(logs))
+		renderFragment(w, logsTable(page, offset, total, startValue, endValue))
 
 		return
 	}
@@ -32,12 +71,13 @@ func (s *Server) logs(
 		layout(
 			"Logs",
 			"/",
-			h.H1(g.Text("Combat Logs")),
+			h.H1(g.Textf("Combat Logs (%d)", total)),
+			dateFilter(startValue, endValue),
 			h.Form(
 				h.Class("generate-form"),
 				h.Method("post"),
-				h.Action("/api/generate"),
-				logsTable(logs),
+				h.Action("/api/v1/generate"),
+				logsTable(page, offset, total, startValue, endValue),
 				h.Button(
 					h.Type("submit"),
 					g.Text("Generate Report"),

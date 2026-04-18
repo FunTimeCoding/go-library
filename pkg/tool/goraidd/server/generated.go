@@ -14,8 +14,10 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/getkin/kin-openapi/openapi3"
+	"github.com/oapi-codegen/runtime"
 )
 
 // GenerateRequest defines model for GenerateRequest.
@@ -33,11 +35,25 @@ type LogResponse struct {
 	Time        string   `json:"time"`
 }
 
+// LogsResponse defines model for LogsResponse.
+type LogsResponse struct {
+	Logs  []LogResponse `json:"logs"`
+	Total int           `json:"total"`
+}
+
 // ReportResponse defines model for ReportResponse.
 type ReportResponse struct {
 	FileName string `json:"fileName"`
 	Size     int64  `json:"size"`
 	Time     string `json:"time"`
+}
+
+// GetLogsParams defines parameters for GetLogs.
+type GetLogsParams struct {
+	Offset *int       `form:"offset,omitempty" json:"offset,omitempty"`
+	Limit  *int       `form:"limit,omitempty" json:"limit,omitempty"`
+	Start  *time.Time `form:"start,omitempty" json:"start,omitempty"`
+	End    *time.Time `form:"end,omitempty" json:"end,omitempty"`
 }
 
 // PostGenerateJSONRequestBody defines body for PostGenerate for application/json ContentType.
@@ -50,7 +66,7 @@ type ServerInterface interface {
 	PostGenerate(w http.ResponseWriter, r *http.Request)
 
 	// (GET /api/v1/logs)
-	GetLogs(w http.ResponseWriter, r *http.Request)
+	GetLogs(w http.ResponseWriter, r *http.Request, params GetLogsParams)
 
 	// (GET /api/v1/reports)
 	GetReports(w http.ResponseWriter, r *http.Request)
@@ -82,8 +98,45 @@ func (siw *ServerInterfaceWrapper) PostGenerate(w http.ResponseWriter, r *http.R
 // GetLogs operation middleware
 func (siw *ServerInterfaceWrapper) GetLogs(w http.ResponseWriter, r *http.Request) {
 
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetLogsParams
+
+	// ------------- Optional query parameter "offset" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "offset", r.URL.Query(), &params.Offset, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "offset", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "start" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "start", r.URL.Query(), &params.Start, runtime.BindQueryParameterOptions{Type: "string", Format: "date-time"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "start", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "end" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "end", r.URL.Query(), &params.End, runtime.BindQueryParameterOptions{Type: "string", Format: "date-time"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "end", Err: err})
+		return
+	}
+
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.GetLogs(w, r)
+		siw.Handler.GetLogs(w, r, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -237,15 +290,16 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/7xUzW7bPBB8FWG/7yhYdv8OurU9BAWCoPC16IGW1soGEpdZrgyogd69ICnFjq0YTQ+9",
-	"UfvDnRnO6gkq7hxbtOqhfAJf3WNn4vEGLYpR3OJjj15DyAk7FCWMBXtq8c506YMUu3jQwSGU4FXINjDm",
-	"c8CImAHGMQfBx54Eayh/nNzx87mSdw9YaWi95WaL3rH1eDm+7sUosV0cOt+7mOyM+1afZMgqNigh5Voz",
-	"oHzl3uq1gjdRzkFpEckrWsDUkB8pzphfAjyiWRJvi45FX9fvqkSefsXEnqUzmiT49AHyBUX+llwccQk8",
-	"NJLdc7yStA25hsVQHegfUHx8c9is1qt1mM8OrXEEJbyPoRyc0ftIsTCOisOmaCYrRxE4eTlIEcUNVoDv",
-	"7HU2PCTk6PUL10OordgqJkcY51qqYmPx4JP70tKE0/+Ceyjhv+K4VcW0UsX5Po0vJVLpMQbSe0X879ab",
-	"6HT0lZBLZp/eNZs4EdvMqxHFehXU+LjUcseaDagZda7FDm0qjgBmiVpu4sgGF9S5Qb0N+Qt46zep87ww",
-	"12Q63fnLv8eYn1H7fDDUml2LWcXdzmgWiJyTkyjZVX7bqeRfUDzbzD9gOXunzhKVLKzTRHMcfwcAAP//",
-	"D4YQ1cUFAAA=",
+	"H4sIAAAAAAAC/6xVzY7TMBB+lWjgGDZdYDnkBhxWSGiFel3twU0mWa8Sj2tPKoUq745sJ9umcQsFbqk9",
+	"Hn9/4+6hoFaTQsUW8j3Y4hlb4T/vUaERjGvcdmjZLWlDGg1L9AWVbPBBtOGHZGz9B/caIQfLRqoahnRa",
+	"EMaIHoYhBYPbThosIX886vH0WkmbFyzYHf1O9RqtJmVxeX3ZGcGSVPTSqW90sxX6W3m0IxVjjcZt6Ub0",
+	"aL5Sp/hSwVWUU2AZRXJGCxgPpAeKE+Y5wAOaM+LZ8+o1VM9JvDVYQQ5vskMgsjEN2bEPMXrEoonJdUIw",
+	"1KXh7hjkNWoyfB70RVet/Ok3KjKt4ADj00dIIyb+rR/+iiVwd1CqinxLyY3bq8kIWTrHdmisjync3qxu",
+	"Vu5+0qiElpDDB7+Ughb87ClmQstsd5vV4/R5ESiMn5PC58GlF36Q5WlGISBHy1+o7F1tQYoxhFho3cjC",
+	"H8xebBiY4OzvfD99Aoa5RGw69AvBL4///erWDyfawkgd5nP0NRk5SVKJZWEYyxunxl3syANx0iMnstUN",
+	"tqhCsQcwSTRFuMaIOvfIbgC8tEa0yH5oH/cgXfdth6aHFJQPE1BVWXTzdJClxEp0DUO+SiOxjrdpZCvP",
+	"dLm7oo3XZtbmNdKlYHw3hnER3ng3VOX1vZ4Wrq7+W6hm75I3dO78552Qjdg0mBTUbgQnzudT741P1EX7",
+	"12PJP1L5owfy5OFa/ustWE6jVSaBSuJem5HmMPwKAAD//0ul/r6XBwAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

@@ -15,16 +15,54 @@ import (
 func (h *Router) GetLogs(
 	w http.ResponseWriter,
 	_ *http.Request,
+	params generated.GetLogsParams,
 ) {
-	logs := log.NewSlice(
+	all := log.NewSlice(
 		gw2.ParseLogs(
 			system.ReadBytes(h.logCachePath, gw2Constant.LogFile),
 			false,
 		),
 	)
+	var logs []*log.Log
+
+	for _, l := range all {
+		if params.Start != nil && l.Time.Before(*params.Start) {
+			continue
+		}
+
+		if params.End != nil && l.Time.After(*params.End) {
+			continue
+		}
+
+		logs = append(logs, l)
+	}
+
+	total := len(logs)
+	offset := 0
+	limit := 50
+
+	if params.Offset != nil {
+		offset = *params.Offset
+	}
+
+	if params.Limit != nil {
+		limit = *params.Limit
+	}
+
+	if offset > total {
+		offset = total
+	}
+
+	end := offset + limit
+
+	if end > total {
+		end = total
+	}
+
+	page := logs[offset:end]
 	var result []generated.LogResponse
 
-	for _, l := range logs {
+	for _, l := range page {
 		result = append(
 			result,
 			generated.LogResponse{
@@ -38,5 +76,8 @@ func (h *Router) GetLogs(
 	}
 
 	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(json.NewEncoder(w).Encode(result))
+	errors.PanicOnError(json.NewEncoder(w).Encode(generated.LogsResponse{
+		Total: total,
+		Logs:  result,
+	}))
 }

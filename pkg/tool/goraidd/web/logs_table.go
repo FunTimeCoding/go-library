@@ -7,12 +7,12 @@ import (
 	h "maragu.dev/gomponents/html"
 )
 
-func logsTable(logs []*log.Log) g.Node {
+func logsTable(logs []*log.Log, offset, total int, startValue, endValue string) g.Node {
 	if len(logs) == 0 {
 		return h.P(h.Em(g.Text("No logs found.")))
 	}
 
-	return h.Table(
+	return g.Group([]g.Node{paginationControls(offset, total, startValue, endValue), h.Table(
 		h.THead(
 			h.Tr(
 				h.Th(),
@@ -48,5 +48,5 @@ func logsTable(logs []*log.Log) g.Node {
 				},
 			),
 		),
-	)
+	), paginationControls(offset, total, startValue, endValue)})
 }

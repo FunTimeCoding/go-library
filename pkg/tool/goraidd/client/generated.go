@@ -12,6 +12,9 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
+
+	"github.com/oapi-codegen/runtime"
 )
 
 // GenerateRequest defines model for GenerateRequest.
@@ -29,11 +32,25 @@ type LogResponse struct {
 	Time        string   `json:"time"`
 }
 
+// LogsResponse defines model for LogsResponse.
+type LogsResponse struct {
+	Logs  []LogResponse `json:"logs"`
+	Total int           `json:"total"`
+}
+
 // ReportResponse defines model for ReportResponse.
 type ReportResponse struct {
 	FileName string `json:"fileName"`
 	Size     int64  `json:"size"`
 	Time     string `json:"time"`
+}
+
+// GetLogsParams defines parameters for GetLogs.
+type GetLogsParams struct {
+	Offset *int       `form:"offset,omitempty" json:"offset,omitempty"`
+	Limit  *int       `form:"limit,omitempty" json:"limit,omitempty"`
+	Start  *time.Time `form:"start,omitempty" json:"start,omitempty"`
+	End    *time.Time `form:"end,omitempty" json:"end,omitempty"`
 }
 
 // PostGenerateJSONRequestBody defines body for PostGenerate for application/json ContentType.
@@ -118,7 +135,7 @@ type ClientInterface interface {
 	PostGenerate(ctx context.Context, body PostGenerateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLogs request
-	GetLogs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetLogs(ctx context.Context, params *GetLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetReports request
 	GetReports(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -148,8 +165,8 @@ func (c *Client) PostGenerate(ctx context.Context, body PostGenerateJSONRequestB
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetLogs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLogsRequest(c.Server)
+func (c *Client) GetLogs(ctx context.Context, params *GetLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLogsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +230,7 @@ func NewPostGenerateRequestWithBody(server string, contentType string, body io.R
 }
 
 // NewGetLogsRequest generates requests for GetLogs
-func NewGetLogsRequest(server string) (*http.Request, error) {
+func NewGetLogsRequest(server string, params *GetLogsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -229,6 +246,76 @@ func NewGetLogsRequest(server string) (*http.Request, error) {
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Start != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start", *params.Start, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.End != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end", *params.End, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -315,7 +402,7 @@ type ClientWithResponsesInterface interface {
 	PostGenerateWithResponse(ctx context.Context, body PostGenerateJSONRequestBody, reqEditors ...RequestEditorFn) (*PostGenerateResponse, error)
 
 	// GetLogsWithResponse request
-	GetLogsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLogsResponse, error)
+	GetLogsWithResponse(ctx context.Context, params *GetLogsParams, reqEditors ...RequestEditorFn) (*GetLogsResponse, error)
 
 	// GetReportsWithResponse request
 	GetReportsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetReportsResponse, error)
@@ -345,7 +432,7 @@ func (r PostGenerateResponse) StatusCode() int {
 type GetLogsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]LogResponse
+	JSON200      *LogsResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -404,8 +491,8 @@ func (c *ClientWithResponses) PostGenerateWithResponse(ctx context.Context, body
 }
 
 // GetLogsWithResponse request returning *GetLogsResponse
-func (c *ClientWithResponses) GetLogsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLogsResponse, error) {
-	rsp, err := c.GetLogs(ctx, reqEditors...)
+func (c *ClientWithResponses) GetLogsWithResponse(ctx context.Context, params *GetLogsParams, reqEditors ...RequestEditorFn) (*GetLogsResponse, error) {
+	rsp, err := c.GetLogs(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -452,7 +539,7 @@ func ParseGetLogsResponse(rsp *http.Response) (*GetLogsResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []LogResponse
+		var dest LogsResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

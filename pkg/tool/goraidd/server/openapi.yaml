@@ -7,15 +7,38 @@ paths:
   /api/v1/logs:
     get:
       operationId: getLogs
+      parameters:
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: start
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: end
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
       responses:
         "200":
           description: Available combat logs.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/LogResponse"
+                $ref: "#/components/schemas/LogsResponse"
   /api/v1/reports:
     get:
       operationId: getReports
@@ -44,6 +67,18 @@ paths:
           description: Not yet implemented.
 components:
   schemas:
+    LogsResponse:
+      type: object
+      required:
+      - total
+      - logs
+      properties:
+        total:
+          type: integer
+        logs:
+          type: array
+          items:
+            $ref: "#/components/schemas/LogResponse"
     LogResponse:
       type: object
       required:

@@ -1,5 +1,5 @@
 FROM python:3.12-slim
-RUN pip install --no-cache-dir playwright aiofiles xlwt && \
+RUN pip install --no-cache-dir playwright aiofiles xlrd xlutils xlwt xlsxwriter jsons requests && \
     playwright install --with-deps chromium
 COPY tmp/goraidparsed/linux-amd64/goraidparsed /usr/local/bin/goraidparsed
 COPY container/goraidparsed/parser/ /opt/parser/

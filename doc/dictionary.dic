@@ -87,8 +87,6 @@ gojira
 gokevt
 golint
 goloki
-goraid
-goraidd
 gomaintlog
 gomaintlogd
 gomatmcp
@@ -96,6 +94,9 @@ gomonitor
 gomonitord
 gonetb
 gonetbd
+goraid
+goraidd
+goraidparsed
 gosentry
 gosilence
 gosublmcp

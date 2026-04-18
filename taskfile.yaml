@@ -27,6 +27,8 @@ tasks:
     - cd pkg/tool/gonetbd/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     - cd pkg/tool/goraidd/server && oapi-codegen --config config.yaml openapi.yaml
     - cd pkg/tool/goraidd/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goraidparsed/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goraidparsed/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:

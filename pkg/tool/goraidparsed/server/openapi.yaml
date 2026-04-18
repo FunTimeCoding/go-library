@@ -1,0 +1,63 @@
+---
+openapi: "3.0.0"
+info:
+  title: goraidparsed
+  version: 1.0.0
+paths:
+  /api/v1/generate:
+    post:
+      operationId: postGenerate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateRequest"
+      responses:
+        "200":
+          description: Report generated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerateResponse"
+  /api/v1/status:
+    get:
+      operationId: getStatus
+      responses:
+        "200":
+          description: Service status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+components:
+  schemas:
+    GenerateRequest:
+      type: object
+      required:
+      - files
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+        date:
+          type: string
+          format: date-time
+    GenerateResponse:
+      type: object
+      required:
+      - path
+      - tidCount
+      properties:
+        path:
+          type: string
+        tidCount:
+          type: integer
+    StatusResponse:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          type: string

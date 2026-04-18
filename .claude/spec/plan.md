@@ -37,9 +37,31 @@ full design document.
 
 - **Delete completed sections** as the work is done, not after the whole
   plan is finished. The file shrinks as progress is made.
-- **Delete the file** when all sections are gone.
-- Most plans should be deleted when done - code and git history are
-  the primary record.
+- **Delete the file** when all sections are gone and no deferred items
+  remain. Code and git history are the primary record.
+- **Don't delete plans with remaining items.** If a plan has deferred
+  work, migration steps, or items waiting on deployment, it stays until
+  those are resolved. Discuss with the user what to do with deferred
+  items — whether they stay in the plan, move to a design doc as
+  remaining work, or get extracted to their own seed.
+
+## Completion
+
+When implementation is done but before deleting the plan:
+
+1. **Update design docs** in `doc/design/` to reflect what was built.
+   The design doc is the final destination for system knowledge; plans
+   are working documents that disappear.
+2. **Review the seed** (if one exists) for what graduated vs what's
+   still live. Mark completed parts, frame the next step.
+3. **Give deferred items homes.** Tangential discoveries (bugs found,
+   infrastructure issues, ideas for adjacent features) should be
+   extracted to their own seeds, not left in the plan or silently
+   dropped.
+4. **Discuss disposition with the user.** Where things live affects
+   visibility and priority. Whether remaining work goes in a design
+   doc (long-term, less visible) vs stays in the plan (active, more
+   visible) is a collaborative decision, not a mechanical filing step.
 
 ## Preserving
 

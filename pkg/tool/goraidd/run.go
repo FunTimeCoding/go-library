@@ -12,7 +12,7 @@ import (
 )
 
 func Run(o *option.Raid) {
-	parser := raid_parser.New("localhost:8081")
+	parser := raid_parser.New("localhost:8081", true)
 	l := lifecycle.New(
 		lifecycle.WithServer(
 			webConstant.Listen,

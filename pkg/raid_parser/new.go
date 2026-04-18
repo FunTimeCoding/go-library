@@ -7,8 +7,17 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
-func New(host string) *Client {
-	c, e := client.NewClientWithResponses(locator.New(host).String())
+func New(
+	host string,
+	insecure bool,
+) *Client {
+	l := locator.New(host)
+
+	if insecure {
+		l.Insecure()
+	}
+
+	c, e := client.NewClientWithResponses(l.String())
 	errors.PanicOnError(e)
 
 	return &Client{context: context.Background(), client: c}

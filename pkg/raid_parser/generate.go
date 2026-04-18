@@ -7,7 +7,10 @@ import (
 	"time"
 )
 
-func (c *Client) Generate(files []string, date *time.Time) string {
+func (c *Client) Generate(
+	files []string,
+	date *time.Time,
+) string {
 	result, e := c.client.PostGenerate(
 		c.context,
 		client.PostGenerateJSONRequestBody{

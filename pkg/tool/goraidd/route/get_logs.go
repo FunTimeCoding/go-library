@@ -10,6 +10,7 @@ import (
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
+	"slices"
 )
 
 func (h *Router) GetLogs(
@@ -37,6 +38,7 @@ func (h *Router) GetLogs(
 		logs = append(logs, l)
 	}
 
+	slices.Reverse(logs)
 	total := len(logs)
 	offset := 0
 	limit := 50

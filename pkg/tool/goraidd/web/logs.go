@@ -8,6 +8,7 @@ import (
 	g "maragu.dev/gomponents"
 	h "maragu.dev/gomponents/html"
 	"net/http"
+	"slices"
 	"time"
 )
 
@@ -23,6 +24,11 @@ func (s *Server) logs(
 	)
 	startValue := r.URL.Query().Get("start")
 	endValue := r.URL.Query().Get("end")
+
+	if startValue == "" {
+		startValue = time.Now().Format("2006-01-02") + "T00:00"
+	}
+
 	var filtered []*log.Log
 
 	for _, l := range all {
@@ -45,6 +51,7 @@ func (s *Server) logs(
 		filtered = append(filtered, l)
 	}
 
+	slices.Reverse(filtered)
 	total := len(filtered)
 	offset := parseIntParameter(r, "offset", 0)
 
@@ -76,7 +83,7 @@ func (s *Server) logs(
 			h.Form(
 				h.Class("generate-form"),
 				h.Method("post"),
-				h.Action("/api/v1/generate"),
+				h.Action("/generate"),
 				logsTable(page, offset, total, startValue, endValue),
 				h.Button(
 					h.Type("submit"),

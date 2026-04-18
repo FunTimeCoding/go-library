@@ -22,10 +22,10 @@ func TestRunLifecycle(t *testing.T) {
 			address,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
-					route.New(logCachePath, outputPath),
+					route.New(logCachePath, "", outputPath, nil),
 					m,
 				)
-				web.NewServer(logCachePath, "", outputPath).Mount(m)
+				web.NewServer(logCachePath, "", outputPath, nil).Mount(m)
 			},
 		),
 	)

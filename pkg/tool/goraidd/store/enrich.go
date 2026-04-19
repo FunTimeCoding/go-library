@@ -33,7 +33,7 @@ func (s *Store) enrichFile(path string) {
 		return
 	}
 
-	timestamp, e := time.Parse("2006-01-02 15:04:05 -07", fight.TimeStartStd)
+	timestamp, e := time.Parse("2006-01-02 15:04:05 -07:00", fight.TimeStartStd)
 
 	if e != nil {
 		slog.Error(

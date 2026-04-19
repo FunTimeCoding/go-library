@@ -15,7 +15,6 @@ import (
 func PlayerStats() {
 	argument.ParseBind()
 	directory := argument.RequiredPositional(0, "DIRECTORY")
-
 	entries, e := os.ReadDir(directory)
 	errors.PanicOnError(e)
 	var allStats []elite_parser.PlayerFightStat

@@ -3,6 +3,7 @@ package store
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/raid"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -70,7 +71,7 @@ func (s *Store) enrichFile(path string) {
 	enemyTeamsString := string(enemyTeamsJSON)
 	zevtcBase := strings.TrimSuffix(name, "_detailed_wvw_kill.json")
 	slog.Info("enriching fight", "file", name, "zevtc", zevtcBase)
-	result := s.mapper.
+	result := s.mapper.Model(&raid.Fight{}).
 		Where("filename LIKE ?", "%"+zevtcBase+"%").
 		Updates(
 			map[string]any{

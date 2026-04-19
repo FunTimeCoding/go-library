@@ -1,9 +1,9 @@
 package raid
 
 type PlayerFightStat struct {
-	ID                uint    `gorm:"primaryKey"`
-	Filename          string  `gorm:"index"`
-	Account           string  `gorm:"index"`
+	ID                uint   `gorm:"primaryKey"`
+	Filename          string `gorm:"index"`
+	Account           string `gorm:"index"`
 	Name              string
 	Profession        string
 	GroupNumber       int
@@ -29,4 +29,5 @@ type PlayerFightStat struct {
 	QuicknessUptime   float64
 	ProtectionUptime  float64
 	ResistanceUptime  float64
+	DistToCom         float64
 }

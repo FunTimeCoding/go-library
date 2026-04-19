@@ -66,8 +66,8 @@ const (
 	MissingBlankBetweenVariableConstantKey  = "missing_blank_between_var_const"
 	MissingBlankBetweenVariableConstantText = "Missing blank line between top-level const and var declarations"
 
-	TrackedBinaryKey  = "tracked_binary"
-	TrackedBinaryText = "Tracked binary executable"
+	StrayBinaryKey  = "stray_binary"
+	StrayBinaryText = "Stray binary detected"
 
 	VariableGroupingKey  = "var_grouping"
 	VariableGroupingText = "Consecutive var declarations should use var (...) block"

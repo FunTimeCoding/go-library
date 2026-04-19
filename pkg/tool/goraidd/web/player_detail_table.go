@@ -18,22 +18,21 @@ func playerDetailTable(rows []store.ProfessionRow) g.Node {
 			h.Tr(
 				h.Th(g.Text("Profession")),
 				h.Th(g.Text("Fights")),
-				h.Th(g.Text("Damage")),
-				h.Th(g.Text("DPS")),
-				h.Th(g.Text("Deaths")),
-				h.Th(g.Text("Strips")),
+				h.Th(g.Text("Dmg/s")),
+				h.Th(g.Text("Heal/s")),
+				h.Th(g.Text("Clean/s")),
+				h.Th(g.Text("Strip/s")),
+				h.Th(g.Text("Downs/s")),
+				h.Th(g.Text("Death/m")),
+				h.Th(g.Text("Tag Dist")),
 			),
 		),
 		h.TBody(
 			g.Map(
 				rows,
 				func(r store.ProfessionRow) g.Node {
-					dps := 0
-
-					if r.ActiveTimeMS > 0 {
-						dps = r.Damage * 1000 / r.ActiveTimeMS
-					}
-
+					seconds := float64(r.ActiveTimeMS) / 1000
+					minutes := seconds / 60
 					icon := fmt.Sprintf(
 						"/static/icons/%s.png",
 						strings.ToLower(r.Profession),
@@ -49,10 +48,13 @@ func playerDetailTable(rows []store.ProfessionRow) g.Node {
 							g.Textf(" %s", r.Profession),
 						),
 						h.Td(g.Textf("%d", r.Fights)),
-						h.Td(g.Textf("%d", r.Damage)),
-						h.Td(g.Textf("%d", dps)),
-						h.Td(g.Textf("%d", r.DeadCount)),
-						h.Td(g.Textf("%d", r.BoonStrips)),
+						h.Td(g.Text(perSecond(r.Damage, seconds))),
+						h.Td(g.Text(perSecond(r.Healing, seconds))),
+						h.Td(g.Text(perSecond(r.ConditionCleanses, seconds))),
+						h.Td(g.Text(perSecond(r.BoonStrips, seconds))),
+						h.Td(g.Text(perSecond(r.Downs, seconds))),
+						h.Td(g.Text(perMinute(r.DeadCount, minutes))),
+						h.Td(g.Textf("%.0f", r.DistToCom)),
 					)
 				},
 			),

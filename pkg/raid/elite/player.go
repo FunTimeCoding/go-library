@@ -16,4 +16,5 @@ type Player struct {
 	BuffUptimes     []Buff         `json:"buffUptimesActive"`
 	ExtHealing      *ExtHealing    `json:"extHealingStats"`
 	ExtBarrier      *ExtBarrier    `json:"extBarrierStats"`
+	StatsAll        []StatsAll     `json:"statsAll"`
 }

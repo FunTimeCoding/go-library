@@ -74,7 +74,12 @@ func Lint(
 		}
 
 		if isExecutable(v.Read(p)) {
-			fmt.Printf("%s: %s\n", lintConstant.TrackedBinaryText, p)
+			if fix {
+				system.Remove(p)
+				fmt.Printf("%s (deleted): %s\n", lintConstant.StrayBinaryText, p)
+			} else {
+				fmt.Printf("%s: %s\n", lintConstant.StrayBinaryText, p)
+			}
 		}
 	}
 

@@ -15,5 +15,9 @@ func extractIdentity(player elite.Player) Identity {
 		result.ActiveTimeMS = player.ActiveTimes[0]
 	}
 
+	if len(player.StatsAll) > 0 {
+		result.DistToCom = player.StatsAll[0].DistToCom
+	}
+
 	return result
 }

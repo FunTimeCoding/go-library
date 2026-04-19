@@ -7,4 +7,5 @@ type Identity struct {
 	Group        int
 	Commander    bool
 	ActiveTimeMS int
+	DistToCom    float64
 }

@@ -139,6 +139,7 @@ func (s *Store) enrichFile(path string) {
 			QuicknessUptime:   stat.Boons.Quickness,
 			ProtectionUptime:  stat.Boons.Protection,
 			ResistanceUptime:  stat.Boons.Resistance,
+			DistToCom:         stat.Identity.DistToCom,
 		}
 		errors.PanicOnError(s.mapper.Create(&row).Error)
 	}

@@ -77,7 +77,7 @@ func (h *Router) PostGenerate(
 
 	tiddlerScript := filepath.Join(
 		h.parserPath,
-		"SnekTiddlerGenerator.py",
+		"tiddler_import.py",
 	)
 
 	// Copy the template to work dir so Playwright can save alongside it

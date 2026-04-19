@@ -1,17 +1,20 @@
 package route
 
-import "github.com/funtimecoding/go-library/pkg/raid_parser"
+import (
+	"github.com/funtimecoding/go-library/pkg/raid_parser"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/store"
+)
 
 func New(
-	logCachePath string,
+	s *store.Store,
 	eliteInsightsPath string,
 	outputPath string,
-	parser *raid_parser.Client,
+	p *raid_parser.Client,
 ) *Router {
 	return &Router{
-		logCachePath:      logCachePath,
+		store:             s,
 		eliteInsightsPath: eliteInsightsPath,
 		outputPath:        outputPath,
-		parser:            parser,
+		parser:            p,
 	}
 }

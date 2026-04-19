@@ -2,15 +2,12 @@ package route
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/gw2"
-	gw2Constant "github.com/funtimecoding/go-library/pkg/gw2/constant"
-	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
-	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/raid"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
-	"slices"
 )
 
 func (h *Router) GetLogs(
@@ -18,28 +15,22 @@ func (h *Router) GetLogs(
 	_ *http.Request,
 	params generated.GetLogsParams,
 ) {
-	all := log.NewSlice(
-		gw2.ParseLogs(
-			system.ReadBytes(h.logCachePath, gw2Constant.LogFile),
-			false,
-		),
-	)
-	var logs []*log.Log
+	all := h.store.Fights()
+	var fights []raid.Fight
 
-	for _, l := range all {
-		if params.Start != nil && l.Time.Before(*params.Start) {
+	for _, f := range all {
+		if params.Start != nil && f.Timestamp.Before(*params.Start) {
 			continue
 		}
 
-		if params.End != nil && l.Time.After(*params.End) {
+		if params.End != nil && f.Timestamp.After(*params.End) {
 			continue
 		}
 
-		logs = append(logs, l)
+		fights = append(fights, f)
 	}
 
-	slices.Reverse(logs)
-	total := len(logs)
+	total := len(fights)
 	offset := 0
 	limit := 50
 
@@ -61,25 +52,30 @@ func (h *Router) GetLogs(
 		end = total
 	}
 
-	page := logs[offset:end]
+	page := fights[offset:end]
 	var result []generated.LogResponse
 
-	for _, l := range page {
+	for _, f := range page {
 		result = append(
 			result,
 			generated.LogResponse{
-				FileName:    l.Raw.FileName,
-				Time:        l.Time.Format("2006-01-02 15:04:05"),
-				Duration:    l.Raw.EncounterDuration,
-				MapId:       l.Raw.MapID,
-				PlayerCount: len(l.Raw.Players),
-				Players:     l.Accounts,
-			})
+				FileName:    f.Filename,
+				Time:        f.Timestamp.Format("2006-01-02 15:04:05"),
+				Duration:    fmt.Sprintf("%dms", f.DurationMS),
+				MapId:       f.MapID,
+				PlayerCount: f.AlliedCount,
+				Players:     nil,
+			},
+		)
 	}
 
 	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(json.NewEncoder(w).Encode(generated.LogsResponse{
-		Total: total,
-		Logs:  result,
-	}))
+	errors.PanicOnError(
+		json.NewEncoder(w).Encode(
+			generated.LogsResponse{
+				Total: total,
+				Logs:  result,
+			},
+		),
+	)
 }

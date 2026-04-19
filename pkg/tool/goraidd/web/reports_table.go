@@ -18,6 +18,7 @@ func reportsTable(reports []os.DirEntry) g.Node {
 			h.Tr(
 				h.Th(g.Text("Report")),
 				h.Th(g.Text("Size")),
+				h.Th(),
 			),
 		),
 		h.TBody(
@@ -42,6 +43,22 @@ func reportsTable(reports []os.DirEntry) g.Node {
 						h.Td(
 							h.Class("report-size"),
 							g.Text(formatSize(info.Size())),
+						),
+						h.Td(
+							h.Form(
+								h.Method("post"),
+								h.Action(
+									fmt.Sprintf(
+										"/reports/%s/delete",
+										entry.Name(),
+									),
+								),
+								h.Button(
+									h.Type("submit"),
+									h.Class("secondary outline"),
+									g.Text("Delete"),
+								),
+							),
 						),
 					)
 				},

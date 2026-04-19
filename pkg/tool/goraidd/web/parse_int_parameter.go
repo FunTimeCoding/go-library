@@ -5,7 +5,11 @@ import (
 	"strconv"
 )
 
-func parseIntParameter(r *http.Request, name string, fallback int) int {
+func parseIntParameter(
+	r *http.Request,
+	name string,
+	fallback int,
+) int {
 	value := r.URL.Query().Get(name)
 
 	if value == "" {

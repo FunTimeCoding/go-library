@@ -31,7 +31,8 @@ func (h *Router) GetReports(
 				FileName: entry.Name(),
 				Time:     info.ModTime().Format("2006-01-02 15:04:05"),
 				Size:     info.Size(),
-			})
+			},
+		)
 	}
 
 	w.Header().Set(constant.ContentType, constant.Object)

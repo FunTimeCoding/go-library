@@ -1,14 +1,10 @@
 package web
 
 import (
-	"github.com/funtimecoding/go-library/pkg/gw2"
-	gw2Constant "github.com/funtimecoding/go-library/pkg/gw2/constant"
-	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
-	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/raid"
 	g "maragu.dev/gomponents"
 	h "maragu.dev/gomponents/html"
 	"net/http"
-	"slices"
 	"time"
 )
 
@@ -16,43 +12,81 @@ func (s *Server) logs(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	all := log.NewSlice(
-		gw2.ParseLogs(
-			system.ReadBytes(s.logCachePath, gw2Constant.LogFile),
-			false,
-		),
-	)
+	all := s.store.Fights()
+	filtered := r.URL.Query().Has("start") || r.URL.Query().Has("end")
 	startValue := r.URL.Query().Get("start")
 	endValue := r.URL.Query().Get("end")
 
-	if startValue == "" {
+	if !filtered {
 		startValue = time.Now().Format("2006-01-02") + "T00:00"
+		endValue = time.Now().Format("2006-01-02") + "T23:59"
 	}
 
-	var filtered []*log.Log
+	var fights []raid.Fight
 
-	for _, l := range all {
-		if startValue != "" {
-			start, e := time.Parse("2006-01-02T15:04", startValue)
+	if filtered {
+		for _, f := range all {
+			if startValue != "" {
+				start, e := time.Parse("2006-01-02T15:04", startValue)
 
-			if e == nil && l.Time.Before(start) {
-				continue
+				if e == nil && f.Timestamp.Before(start) {
+					continue
+				}
 			}
-		}
 
-		if endValue != "" {
-			end, e := time.Parse("2006-01-02T15:04", endValue)
+			if endValue != "" {
+				end, e := time.Parse("2006-01-02T15:04", endValue)
 
-			if e == nil && l.Time.After(end) {
-				continue
+				if e == nil && f.Timestamp.After(end) {
+					continue
+				}
 			}
-		}
 
-		filtered = append(filtered, l)
+			fights = append(fights, f)
+		}
+	} else {
+		if len(all) > pageSize {
+			fights = all[:pageSize]
+		} else {
+			fights = all
+		}
 	}
 
-	slices.Reverse(filtered)
-	total := len(filtered)
+	total := len(fights)
+
+	if filtered {
+		if s.isHTMX(r) {
+			renderFragment(
+				w,
+				logsTable(fights, 0, total, startValue, endValue, true),
+			)
+
+			return
+		}
+
+		renderPage(
+			w,
+			layout(
+				"Logs",
+				"/",
+				h.H1(g.Textf("Combat Logs (%d)", total)),
+				dateFilter(startValue, endValue),
+				h.Form(
+					h.Class("generate-form"),
+					h.Method("post"),
+					h.Action("/generate"),
+					logsTable(fights, 0, total, startValue, endValue, true),
+					h.Button(
+						h.Type("submit"),
+						g.Text("Generate Report"),
+					),
+				),
+			),
+		)
+
+		return
+	}
+
 	offset := parseIntParameter(r, "offset", 0)
 
 	if offset > total {
@@ -65,10 +99,13 @@ func (s *Server) logs(
 		end = total
 	}
 
-	page := filtered[offset:end]
+	page := fights[offset:end]
 
 	if s.isHTMX(r) {
-		renderFragment(w, logsTable(page, offset, total, startValue, endValue))
+		renderFragment(
+			w,
+			logsTable(page, offset, total, startValue, endValue, false),
+		)
 
 		return
 	}
@@ -84,7 +121,7 @@ func (s *Server) logs(
 				h.Class("generate-form"),
 				h.Method("post"),
 				h.Action("/generate"),
-				logsTable(page, offset, total, startValue, endValue),
+				logsTable(page, offset, total, startValue, endValue, false),
 				h.Button(
 					h.Type("submit"),
 					g.Text("Generate Report"),

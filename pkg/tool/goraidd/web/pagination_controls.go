@@ -5,7 +5,10 @@ import (
 	h "maragu.dev/gomponents/html"
 )
 
-func paginationControls(offset, total int, startValue, endValue string) g.Node {
+func paginationControls(
+	offset, total int,
+	startValue, endValue string,
+) g.Node {
 	var nodes []g.Node
 
 	if offset > 0 {

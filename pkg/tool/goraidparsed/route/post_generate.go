@@ -1,11 +1,13 @@
 package route
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/server"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/exec"
@@ -26,11 +28,16 @@ func (h *Router) PostGenerate(
 		date = *body.Date
 	}
 
+	slog.Info("generate request", "files", body.Files)
 	workdir, e := os.MkdirTemp("", "goraidparsed-")
 	errors.PanicOnError(e)
+	slog.Info("workdir created", "path", workdir)
 	defer func() { errors.PanicOnError(os.RemoveAll(workdir)) }()
 
 	for _, file := range body.Files {
+		_, statError := os.Stat(file)
+		exists := statError == nil
+		slog.Info("symlink target", "path", file, "exists", exists)
 		target := filepath.Join(workdir, filepath.Base(file))
 		errors.PanicOnError(os.Symlink(file, target))
 	}
@@ -47,10 +54,17 @@ func (h *Router) PostGenerate(
 		"-d",
 		dateArgument,
 	)
+	var parseOutput bytes.Buffer
 	parseCommand.Dir = h.parserPath
-	parseCommand.Stdout = os.Stdout
-	parseCommand.Stderr = os.Stderr
-	errors.PanicOnError(parseCommand.Run())
+	parseCommand.Stdout = &parseOutput
+	parseCommand.Stderr = &parseOutput
+
+	if parseError := parseCommand.Run(); parseError != nil {
+		slog.Error("parser failed", "output", parseOutput.String())
+		errors.PanicOnError(parseError)
+	}
+
+	slog.Info("parser completed", "output", parseOutput.String())
 	tidCount := 0
 	entries, f := os.ReadDir(workdir)
 	errors.PanicOnError(f)
@@ -77,10 +91,17 @@ func (h *Router) PostGenerate(
 		"--download",
 		workdir,
 	)
+	var tiddlerOutput bytes.Buffer
 	importCommand.Dir = h.parserPath
-	importCommand.Stdout = os.Stdout
-	importCommand.Stderr = os.Stderr
-	errors.PanicOnError(importCommand.Run())
+	importCommand.Stdout = &tiddlerOutput
+	importCommand.Stderr = &tiddlerOutput
+
+	if tiddlerError := importCommand.Run(); tiddlerError != nil {
+		slog.Error("tiddler generator failed", "output", tiddlerOutput.String())
+		errors.PanicOnError(tiddlerError)
+	}
+
+	slog.Info("tiddler generator completed", "output", tiddlerOutput.String())
 	reportName := fmt.Sprintf(
 		"ONYX Log %s.html",
 		date.Format("2006-01-02"),

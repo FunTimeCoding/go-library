@@ -18,7 +18,7 @@ func (s *Server) generate(
 	for _, fileName := range fileNames {
 		base := filepath.Base(fileName)
 		timestamp := strings.TrimSuffix(base, filepath.Ext(base))
-		notationName := timestamp + "_wvw_kill.json"
+		notationName := timestamp + "_detailed_wvw_kill.json"
 		files = append(
 			files,
 			filepath.Join(s.eliteInsightsPath, notationName),

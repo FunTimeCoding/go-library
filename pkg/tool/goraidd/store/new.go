@@ -11,6 +11,7 @@ func New(
 	logCachePath string,
 	eliteInsightsPath string,
 ) *Store {
+	errors.PanicOnError(mapper.AutoMigrate(&raid.Raid{}))
 	errors.PanicOnError(mapper.AutoMigrate(&raid.Fight{}))
 	errors.PanicOnError(mapper.AutoMigrate(&raid.PlayerFightStat{}))
 	s := &Store{

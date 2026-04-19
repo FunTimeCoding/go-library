@@ -2,17 +2,14 @@ package store
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 
-func (s *Store) PlayerDetail(account string) []PlayerRaidRow {
-	var rows []PlayerRaidRow
+func (s *Store) RaidPlayerStats(raidID int) []RaidPlayerRow {
+	var rows []RaidPlayerRow
 	errors.PanicOnError(
 		s.mapper.
 			Table("player_fight_stats").
 			Select(
-				"raids.id as raid_id",
-				"raids.name as raid_name",
-				"raids.date as raid_date",
-				`(SELECT count(*) FROM fights f2
-				  WHERE f2.raid_id = raids.id) as raid_fights`,
+				"player_fight_stats.account",
+				"max(player_fight_stats.name) as name",
 				"profession",
 				"count(*) as fights",
 				"sum(damage) as damage",
@@ -28,10 +25,9 @@ func (s *Store) PlayerDetail(account string) []PlayerRaidRow {
 			Joins(
 				"JOIN fights ON fights.filename = player_fight_stats.filename",
 			).
-			Joins("JOIN raids ON raids.id = fights.raid_id").
-			Where("player_fight_stats.account = ?", account).
-			Group("raids.id, raids.name, raids.date, profession").
-			Order("raids.date DESC, sum(damage) DESC").
+			Where("fights.raid_id = ?", raidID).
+			Group("player_fight_stats.account, profession").
+			Order("sum(damage) DESC").
 			Find(&rows).Error,
 	)
 

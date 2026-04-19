@@ -5,10 +5,13 @@ import "fmt"
 func perSecond(
 	total int,
 	seconds float64,
+	decimals int,
 ) string {
 	if seconds <= 0 {
 		return "—"
 	}
 
-	return fmt.Sprintf("%.1f", float64(total)/seconds)
+	format := fmt.Sprintf("%%.%df", decimals)
+
+	return fmt.Sprintf(format, float64(total)/seconds)
 }

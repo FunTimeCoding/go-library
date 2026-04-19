@@ -1,6 +1,8 @@
 package store
 
-type ProfessionRow struct {
+type RaidPlayerRow struct {
+	Account           string
+	Name              string
 	Profession        string
 	Fights            int
 	Damage            int

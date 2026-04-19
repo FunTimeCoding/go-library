@@ -9,8 +9,8 @@ import (
 func (s *Store) PlayerAttendance(since time.Time) []AttendanceRow {
 	var available int64
 	errors.PanicOnError(
-		s.mapper.Model(&raid.Fight{}).
-			Where("enriched = ? AND timestamp >= ?", true, since).
+		s.mapper.Model(&raid.Raid{}).
+			Where("date >= ?", since).
 			Count(&available).Error,
 	)
 	var rows []AttendanceRow
@@ -19,9 +19,12 @@ func (s *Store) PlayerAttendance(since time.Time) []AttendanceRow {
 			Select(
 				"account",
 				"string_agg(DISTINCT name, ', ' ORDER BY name) as characters",
-				"count(*) as fights",
+				"count(DISTINCT fights.raid_id) as fights",
 			).
-			Joins("JOIN fights ON fights.filename = player_fight_stats.filename").
+			Joins(
+				"JOIN fights ON fights.filename = player_fight_stats.filename",
+			).
+			Where("fights.raid_id IS NOT NULL").
 			Where("fights.timestamp >= ?", since).
 			Group("account").
 			Order("fights DESC").

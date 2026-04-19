@@ -36,6 +36,7 @@ func layout(
 					h.Ul(
 						navigationLink("/", "Logs", currentPath),
 						navigationLink("/reports", "Reports", currentPath),
+						navigationLink("/raids", "Raids", currentPath),
 						navigationLink("/players", "Players", currentPath),
 					),
 				),

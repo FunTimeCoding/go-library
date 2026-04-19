@@ -1,6 +1,12 @@
 package store
 
-type ProfessionRow struct {
+import "time"
+
+type PlayerRaidRow struct {
+	RaidID            uint
+	RaidName          string
+	RaidDate          time.Time
+	RaidFights        int
 	Profession        string
 	Fights            int
 	Damage            int

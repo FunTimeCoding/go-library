@@ -14,4 +14,5 @@ type Fight struct {
 	EnemyTeams   *string   `json:"enemy_teams,omitempty"`
 	Success      bool      `json:"success"`
 	Enriched     bool      `gorm:"not null;default:false" json:"enriched"`
+	RaidID       *uint     `json:"raid_id,omitempty"`
 }

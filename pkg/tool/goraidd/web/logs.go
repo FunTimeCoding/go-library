@@ -74,11 +74,17 @@ func (s *Server) logs(
 				h.Form(
 					h.Class("generate-form"),
 					h.Method("post"),
-					h.Action("/generate"),
 					logsTable(fights, 0, total, startValue, endValue, true),
 					h.Button(
 						h.Type("submit"),
+						h.FormAction("/generate"),
 						g.Text("Generate Report"),
+					),
+					h.Button(
+						h.Type("submit"),
+						h.FormAction("/raids/create"),
+						h.Class("secondary"),
+						g.Text("Create Raid"),
 					),
 				),
 			),
@@ -120,11 +126,17 @@ func (s *Server) logs(
 			h.Form(
 				h.Class("generate-form"),
 				h.Method("post"),
-				h.Action("/generate"),
 				logsTable(page, offset, total, startValue, endValue, false),
 				h.Button(
 					h.Type("submit"),
+					h.FormAction("/generate"),
 					g.Text("Generate Report"),
+				),
+				h.Button(
+					h.Type("submit"),
+					h.FormAction("/raids/create"),
+					h.Class("secondary"),
+					g.Text("Create Raid"),
 				),
 			),
 		),

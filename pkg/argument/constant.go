@@ -41,6 +41,7 @@ const (
 	Hardware       = "hardware"
 	Header         = "header"
 	Host           = "host"
+	Image          = "image"
 	Information    = "information"
 	Interactive    = "interactive"
 	Interval       = "interval"

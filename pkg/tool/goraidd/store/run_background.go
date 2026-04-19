@@ -7,10 +7,12 @@ import (
 	"log/slog"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func (s *Store) RunBackground(stop <-chan struct{}) {
 	s.enrichExisting()
+	s.cleanup()
 	watcher, e := fsnotify.NewWatcher()
 	errors.PanicOnError(e)
 	defer func() { errors.PanicOnError(watcher.Close()) }()
@@ -23,11 +25,15 @@ func (s *Store) RunBackground(stop <-chan struct{}) {
 		"eliteInsights",
 		s.eliteInsightsPath,
 	)
+	cleanupTicker := time.NewTicker(24 * time.Hour)
+	defer cleanupTicker.Stop()
 
 	for {
 		select {
 		case <-stop:
 			return
+		case <-cleanupTicker.C:
+			s.cleanup()
 		case event, ok := <-watcher.Events:
 			if !ok {
 				return

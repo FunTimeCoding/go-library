@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/raid"
+	"github.com/funtimecoding/go-library/pkg/raid/elite"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -26,7 +27,7 @@ func (s *Store) enrichFile(path string) {
 		return
 	}
 
-	var fight detailedFight
+	var fight elite.Fight
 
 	if e := json.Unmarshal(data, &fight); e != nil {
 		slog.Error("enrich parse failed", "path", path, "error", e)
@@ -34,7 +35,10 @@ func (s *Store) enrichFile(path string) {
 		return
 	}
 
-	timestamp, e := time.Parse("2006-01-02 15:04:05 -07:00", fight.TimeStartStd)
+	timestamp, e := time.Parse(
+		"2006-01-02 15:04:05 -07:00",
+		fight.TimeStartStd,
+	)
 
 	if e != nil {
 		slog.Error(

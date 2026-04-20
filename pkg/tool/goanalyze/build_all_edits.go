@@ -24,7 +24,7 @@ func buildAllEdits(
 		replacement := replaceSegment(v.ident.Name, v.segment, v.fix)
 		references := findAllReferences(all, v.object)
 		fmt.Printf(
-			"%s → %s (%d references)\n",
+			"Renamed: %s → %s (%d references)\n",
 			v.ident.Name,
 			replacement,
 			len(references),

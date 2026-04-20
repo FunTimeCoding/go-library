@@ -1,0 +1,245 @@
+---
+openapi: "3.0.0"
+info:
+  title: gopgd
+  version: 1.0.0
+paths:
+  /api/v1/instances:
+    get:
+      operationId: listInstances
+      responses:
+        "200":
+          description: All configured instances.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Instance"
+  /api/v1/query:
+    post:
+      operationId: query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequest"
+      responses:
+        "200":
+          description: Query result rows.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        "400":
+          description: Missing or invalid parameters.
+  /api/v1/explain:
+    post:
+      operationId: explain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExplainRequest"
+      responses:
+        "200":
+          description: Explain plan.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        "400":
+          description: Missing or invalid parameters.
+  /api/v1/schemas:
+    get:
+      operationId: listSchemas
+      parameters:
+      - name: instance
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Instance name.
+      responses:
+        "200":
+          description: Schemas in the database.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        "400":
+          description: Missing instance parameter.
+  /api/v1/tables:
+    get:
+      operationId: listTables
+      parameters:
+      - name: instance
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Instance name.
+      - name: schema
+        in: query
+        required: false
+        schema:
+          type: string
+          default: public
+        description: Schema name.
+      responses:
+        "200":
+          description: Tables in the schema.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        "400":
+          description: Missing instance parameter.
+  /api/v1/tables/{table}:
+    get:
+      operationId: describeTable
+      parameters:
+      - name: table
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Table name.
+      - name: instance
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Instance name.
+      - name: schema
+        in: query
+        required: false
+        schema:
+          type: string
+          default: public
+        description: Schema name.
+      responses:
+        "200":
+          description: Column definitions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        "404":
+          description: Table not found.
+  /api/v1/indexes:
+    get:
+      operationId: listIndexes
+      parameters:
+      - name: instance
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Instance name.
+      - name: table
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Table name.
+      - name: schema
+        in: query
+        required: false
+        schema:
+          type: string
+          default: public
+        description: Schema name.
+      responses:
+        "200":
+          description: Indexes on the table.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        "400":
+          description: Missing parameters.
+  /api/v1/table-sizes:
+    get:
+      operationId: tableSizes
+      parameters:
+      - name: instance
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Instance name.
+      - name: schema
+        in: query
+        required: false
+        schema:
+          type: string
+          default: public
+        description: Schema name.
+      responses:
+        "200":
+          description: Table sizes and row counts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        "400":
+          description: Missing instance parameter.
+components:
+  schemas:
+    Instance:
+      type: object
+      required:
+      - name
+      - host
+      - port
+      - database
+      properties:
+        name:
+          type: string
+        host:
+          type: string
+        port:
+          type: integer
+        database:
+          type: string
+    QueryRequest:
+      type: object
+      required:
+      - instance
+      - sql
+      properties:
+        instance:
+          type: string
+          description: Instance name.
+        sql:
+          type: string
+          description: SQL to execute.
+    ExplainRequest:
+      type: object
+      required:
+      - instance
+      - sql
+      properties:
+        instance:
+          type: string
+          description: Instance name.
+        sql:
+          type: string
+          description: SQL to explain.
+        analyze:
+          type: boolean
+          description: Run EXPLAIN ANALYZE.
+          default: false
+    QueryResult:
+      type: object
+      required:
+      - rows
+      properties:
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties: true

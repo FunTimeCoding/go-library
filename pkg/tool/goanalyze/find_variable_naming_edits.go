@@ -42,7 +42,7 @@ func findVariableNamingEdits(all []*packages.Package) []edit {
 
 						seen[rename.Object.Pos()] = true
 						fmt.Printf(
-							"%s → %s\n",
+							"Renamed: %s → %s\n",
 							rename.Object.Name(),
 							rename.NewName,
 						)

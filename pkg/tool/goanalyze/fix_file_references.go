@@ -26,7 +26,7 @@ func fixFileReferences(
 
 		if !bytes.Equal(replaced, modified) {
 			fmt.Printf(
-				"%s → %s (unloaded: %s)\n",
+				"Renamed: %s → %s (unloaded: %s)\n",
 				r.oldName,
 				r.newName,
 				path,

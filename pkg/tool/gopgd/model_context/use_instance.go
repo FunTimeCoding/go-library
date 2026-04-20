@@ -1,0 +1,39 @@
+package model_context
+
+import (
+	"context"
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+)
+
+type useInstanceArguments struct {
+	Instance string `json:"instance"`
+}
+
+func (s *Server) useInstance(
+	x context.Context,
+	_ mcp.CallToolRequest,
+	a useInstanceArguments,
+) (*mcp.CallToolResult, error) {
+	if a.Instance == "" {
+		return response.Fail("instance is required")
+	}
+
+	if _, ok := s.store.Instance(a.Instance); !ok {
+		return response.Fail("unknown instance: %s", a.Instance)
+	}
+
+	session := server.ClientSessionFromContext(x)
+
+	if session == nil {
+		return response.Fail("no session")
+	}
+
+	s.store.SetActiveInstance(session.SessionID(), a.Instance)
+
+	return mcp.NewToolResultText(
+		fmt.Sprintf("active instance set to %s", a.Instance),
+	), nil
+}

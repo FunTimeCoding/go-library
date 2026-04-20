@@ -63,10 +63,10 @@ func TestStopEmpty(t *testing.T) {
 }
 
 func TestRunServerResponds(t *testing.T) {
-	p := system.FindUnusedPort(19000)
+	p, n := system.ClaimPort()
 	l := New(
-		WithServer(
-			fmt.Sprintf(":%d", p),
+		WithListener(
+			n,
 			func(m *http.ServeMux) {
 				m.HandleFunc(
 					"/health",
@@ -91,10 +91,10 @@ func TestRunServerResponds(t *testing.T) {
 }
 
 func TestStopServerShutsDown(t *testing.T) {
-	p := system.FindUnusedPort(19100)
+	p, n := system.ClaimPort()
 	l := New(
-		WithServer(
-			fmt.Sprintf(":%d", p),
+		WithListener(
+			n,
 			func(m *http.ServeMux) {
 				m.HandleFunc(
 					"/health",
@@ -155,11 +155,11 @@ func TestRunServerMiddleware(t *testing.T) {
 
 func TestRunMixedOrder(t *testing.T) {
 	var log []string
-	p := system.FindUnusedPort(19200)
+	p, n := system.ClaimPort()
 	l := New(
 		WithWorker(&worker{log: &log, tag: "a"}),
-		WithServer(
-			fmt.Sprintf(":%d", p),
+		WithListener(
+			n,
 			func(m *http.ServeMux) {
 				log = append(log, "start:server")
 				m.HandleFunc(

@@ -12,11 +12,10 @@ import (
 )
 
 func TestRunLifecycle(t *testing.T) {
-	port := system.FindUnusedPort(19700)
-	address := fmt.Sprintf(":%d", port)
+	port, n := system.ClaimPort()
 	l := lifecycle.New(
-		lifecycle.WithServer(
-			address,
+		lifecycle.WithListener(
+			n,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
 					route.New("", "", t.TempDir()),

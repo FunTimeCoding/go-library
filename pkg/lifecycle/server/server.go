@@ -1,6 +1,9 @@
 package server
 
-import "net/http"
+import (
+	"net"
+	"net/http"
+)
 
 type Server struct {
 	Mux        *http.ServeMux
@@ -8,5 +11,6 @@ type Server struct {
 	Setup      func(*http.ServeMux)
 	Middleware func(http.Handler) http.Handler
 	Address    string
+	listener   net.Listener
 	protected  bool
 }

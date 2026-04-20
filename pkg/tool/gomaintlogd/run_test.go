@@ -1,7 +1,6 @@
 package gomaintlogd
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
@@ -21,10 +20,10 @@ import (
 func setup(t *testing.T) (*store.Store, int, *lifecycle.Lifecycle) {
 	t.Helper()
 	s := store.NewSQLite(filepath.Join(t.TempDir(), "test.db"))
-	port := system.FindUnusedPort(19600)
+	port, n := system.ClaimPort()
 	l := lifecycle.New(
-		lifecycle.WithServer(
-			fmt.Sprintf(":%d", port),
+		lifecycle.WithListener(
+			n,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s), m)
 				generative.New(model_context.New(s).Nested()).Setup(m)

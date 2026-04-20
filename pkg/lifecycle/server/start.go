@@ -20,5 +20,9 @@ func (s *Server) Start() {
 		s.http.WriteTimeout = readWriteTimeout
 	}
 
-	web.ServeAsynchronous(s.http)
+	if s.listener != nil {
+		web.ServeListenerAsynchronous(s.http, s.listener)
+	} else {
+		web.ServeAsynchronous(s.http)
+	}
 }

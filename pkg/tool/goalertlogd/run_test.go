@@ -48,12 +48,11 @@ func TestRunLifecycle(t *testing.T) {
 	g := logger.New(context.Background())
 	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
-	port := system.FindUnusedPort(19400)
-	address := fmt.Sprintf(":%d", port)
+	port, n := system.ClaimPort()
 	l := lifecycle.New(
 		lifecycle.WithWorker(p),
-		lifecycle.WithServer(
-			address,
+		lifecycle.WithListener(
+			n,
 			func(m *http.ServeMux) {
 				server.HandlerFromMux(route.New(s, p), m)
 				web.NewServer(s, p).Mount(m)
@@ -148,12 +147,11 @@ func TestGeneratedClient(t *testing.T) {
 	g := logger.New(context.Background())
 	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
-	port := system.FindUnusedPort(19500)
-	address := fmt.Sprintf(":%d", port)
+	port, n := system.ClaimPort()
 	l := lifecycle.New(
 		lifecycle.WithWorker(p),
-		lifecycle.WithServer(
-			address,
+		lifecycle.WithListener(
+			n,
 			func(m *http.ServeMux) {
 				server.HandlerFromMux(route.New(s, p), m)
 			},

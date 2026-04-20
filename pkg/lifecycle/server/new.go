@@ -3,13 +3,9 @@ package server
 import "net/http"
 
 func New(
-	mux *http.ServeMux,
+	m *http.ServeMux,
 	setup func(*http.ServeMux),
 	address string,
 ) *Server {
-	return &Server{
-		Mux:     mux,
-		Setup:   setup,
-		Address: address,
-	}
+	return &Server{Mux: m, Setup: setup, Address: address}
 }

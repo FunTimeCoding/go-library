@@ -1,0 +1,41 @@
+package tool
+
+import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/mark3labs/mcp-go/mcp"
+	"io"
+)
+
+type getPipelineJobOutputArguments struct {
+	Project string `json:"project"`
+	Job     int64  `json:"job"`
+}
+
+func (t *Tool) GetPipelineJobOutput(
+	_ context.Context,
+	_ mcp.CallToolRequest,
+	a getPipelineJobOutputArguments,
+) (*mcp.CallToolResult, error) {
+	if a.Project == "" {
+		return response.Fail("project is required")
+	}
+
+	if a.Job == 0 {
+		return response.Fail("job is required")
+	}
+
+	r, _, e := t.client.Jobs.GetTraceFile(a.Project, a.Job)
+
+	if e != nil {
+		return response.Fail("get pipeline job output: %v", e)
+	}
+
+	b, e := io.ReadAll(r)
+
+	if e != nil {
+		return response.Fail("read job output: %v", e)
+	}
+
+	return mcp.NewToolResultText(string(b)), nil
+}

@@ -10,7 +10,7 @@ tasks:
     - golangci-lint run
     - goanalyze --fix ./...
     silent: true
-  test: {cmds: ['gotestsum --format standard-quiet'], silent: true}
+  test: {cmds: ['gotestsum --format dots'], silent: true}
   check:
     cmds:
     - gosec -fmt=json -out=tmp/gosec.json -stdout -verbose=text -no-fail ./...

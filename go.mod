@@ -29,14 +29,15 @@ require (
 	github.com/docker/go-units v0.5.0
 	github.com/essentialkaos/go-confluence/v6 v6.0.4
 	github.com/fatih/color v1.19.0
+	github.com/fsnotify/fsnotify v1.9.0
 	github.com/gage-technologies/mistral-go v1.1.0
-	github.com/gdamore/tcell/v2 v2.13.8
+	github.com/gdamore/tcell/v2 v2.13.9
 	github.com/getkin/kin-openapi v0.135.0
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.45.1
 	github.com/go-git/go-billy/v5 v5.8.0
 	github.com/go-git/go-git/v5 v5.18.0
-	github.com/go-openapi/runtime v0.29.3
+	github.com/go-openapi/runtime v0.29.4
 	github.com/go-openapi/strfmt v0.26.1
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/go-test/deep v1.1.1
@@ -49,7 +50,7 @@ require (
 	github.com/hashicorp/vault-client-go v0.4.3
 	github.com/hupe1980/go-tiktoken v0.0.10
 	github.com/jackc/pgconn v1.14.3
-	github.com/jackc/pgx/v5 v5.9.1
+	github.com/jackc/pgx/v5 v5.9.2
 	github.com/kestra-io/client-sdk/go-sdk v1.0.1
 	github.com/liushuangls/go-anthropic/v2 v2.18.0
 	github.com/luthermonson/go-proxmox v0.4.1
@@ -88,7 +89,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
-	gitlab.com/gitlab-org/api/client-go/v2 v2.20.0
+	gitlab.com/gitlab-org/api/client-go/v2 v2.20.1
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.50.0
 	golang.org/x/mod v0.35.0
@@ -160,7 +161,6 @@ require (
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/francoispqt/gojay v1.2.13 // indirect
-	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.12 // indirect
 	github.com/gdamore/encoding v1.0.1 // indirect
 	github.com/getlantern/context v0.0.0-20190109183933-c447772a6520 // indirect
@@ -186,15 +186,15 @@ require (
 	github.com/go-openapi/spec v0.22.4 // indirect
 	github.com/go-openapi/swag v0.25.5 // indirect
 	github.com/go-openapi/swag/cmdutils v0.25.5 // indirect
-	github.com/go-openapi/swag/conv v0.25.5 // indirect
-	github.com/go-openapi/swag/fileutils v0.25.5 // indirect
+	github.com/go-openapi/swag/conv v0.26.0 // indirect
+	github.com/go-openapi/swag/fileutils v0.26.0 // indirect
 	github.com/go-openapi/swag/jsonname v0.25.5 // indirect
-	github.com/go-openapi/swag/jsonutils v0.25.5 // indirect
+	github.com/go-openapi/swag/jsonutils v0.26.0 // indirect
 	github.com/go-openapi/swag/loading v0.25.5 // indirect
 	github.com/go-openapi/swag/mangling v0.25.5 // indirect
 	github.com/go-openapi/swag/netutils v0.25.5 // indirect
-	github.com/go-openapi/swag/stringutils v0.25.5 // indirect
-	github.com/go-openapi/swag/typeutils v0.25.5 // indirect
+	github.com/go-openapi/swag/stringutils v0.26.0 // indirect
+	github.com/go-openapi/swag/typeutils v0.26.0 // indirect
 	github.com/go-openapi/swag/yamlutils v0.25.5 // indirect
 	github.com/go-openapi/validate v0.25.2 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect

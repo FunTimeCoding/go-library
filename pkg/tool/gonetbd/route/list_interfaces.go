@@ -1,9 +1,7 @@
 package route
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -13,8 +11,5 @@ func (h *Router) ListInterfaces(
 	name string,
 ) {
 	d := h.client.DeviceByNameStrict(name)
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(toInterfaces(h.client.DeviceInterfaces(d.Identifier))),
-	)
+	web.EncodeNotation(w, toInterfaces(h.client.DeviceInterfaces(d.Identifier)))
 }

@@ -73,6 +73,12 @@
   | `defer f.Close()` | `defer errors.PanicClose(f)` |
   | `f.Write(b)` | `_, e = f.Write(b); errors.PanicOnError(e)` |
   | `transform.String(t, s)` | `result, _, e := transform.String(t, s); errors.PanicOnError(e)` |
+  | `w.Header().Set(...); json.NewEncoder(w).Encode(v)` | `web.EncodeNotation(w, v)` |
+  | `json.NewEncoder(w).Encode(v)` (header set separately) | `web.Encode(w, v)` |
+  | `w.Header().Set(constant.ContentType, constant.Object)` | `web.ObjectHeader(w)` |
+  | `mcp.NewToolResultError(fmt.Sprintf(...))` | `response.Fail(...)` |
+  | `mcp.NewToolResultText(notation.MarshalIndent(v))` | `response.SuccessAny(v)` |
+  | `mcp.NewToolResultText("message")` | `response.Success("message")` |
 
   **Touch pattern in tests:** `errors.PanicClose(system.Create(path))` creates an empty file and closes it in one line.
 
@@ -81,7 +87,7 @@
 - **One-file-per-function** - each function or method lives in its own file. File name is the snake_case form of the function name: `addFileToTar()` → `add_file_to_tar.go`, `httpFail()` → `http_fail.go`.
 - **One-type-per-file** - struct definitions go in a file named after the struct (snake_case): `type Store struct` → `store.go`.
 - **Constants in `constant.go`** - exported constants get their own `constant.go` file in the package. Prefer a single flat `constant.go` per package. When an iota enum is defined with a named type, both the type and the const values belong in the same constant package — separating them creates circular imports.
-- **Reuse existing constants** - use `web/constant.Listen`, `web/constant.Object`, `web/constant.ContentType`, `argument.Name`, etc. Never hardcode strings that already have a constant in the codebase.
+- **Reuse existing constants** - use `web/constant.Listen`, `argument.Name`, `parameter.Query`, `parameter.Limit`, etc. Never hardcode strings that already have a constant in the codebase. MCP parameter names shared across tools live in `generative/model_context/parameter/`.
 - **Option struct naming** - named after the domain concept, not `Option` (e.g., `option.Log`, `option.Build`, `option.Commit`). File named after the struct. Constructor in `new.go` returns pointer.
 - **Stub tests** - every package gets at least one `_test.go`. When a package has real tests, no stub is needed. Use `assert.Stub(t)` only in packages with no other tests, to prevent `?` in gotestsum output. Constructor tests use `assert.NotNil(t, New(...))`.
 - Tests use `assert.*` helpers to reduce nesting
@@ -100,12 +106,12 @@
 ## Import Aliases
 
 - **No acronyms** in package names or import aliases
-- Alias only when the last path segment is ambiguous or collides with another import
+- Alias only when package names collide in the same file
 - Alias by the subsystem name, not the role in the current file:
-  - `generative` for `pkg/generative/model_context/server` (the MCP HTTP transport)
-  - `web` for `pkg/web/constant`
-  - `sentry` for `pkg/errors/sentry/constant`
-- **The more local package keeps the natural name** - when two packages share a last segment (e.g., both called `server`), the tool's own generated `server/` package is imported unaliased; the shared infrastructure package gets the alias
+  - `generative` for `pkg/generative/model_context/server` (when it collides with the tool's own `server/`)
+  - `generated` for the oapi-codegen `server/` package (when it collides with another `server/`)
+  - `webConstant` for `pkg/web/constant` (when it collides with a local `constant/`)
+- **The more local package keeps the natural name** - when two packages share a last segment (e.g., both called `server`), the tool's own package is imported unaliased; the shared infrastructure package gets the alias. In files that only import one of them, no alias is needed.
 
 ## Interfaces
 

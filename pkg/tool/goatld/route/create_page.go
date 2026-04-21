@@ -3,8 +3,9 @@ package route
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	generated "github.com/funtimecoding/go-library/pkg/tool/goatld/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/convert"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -12,17 +13,19 @@ func (h *Router) CreatePage(
 	w http.ResponseWriter,
 	q *http.Request,
 ) {
-	var body generated.CreatePageJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	page := h.confluence.CreatePage(
-		body.SpaceIdentifier,
-		body.ParentIdentifier,
-		body.Title,
-		body.Body,
-	)
-	w.Header().Set(constant.ContentType, constant.Object)
+	var b server.CreatePageJSONRequestBody
+	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&b))
+	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(toConfluencePageDetail(page)),
+	web.Encode(
+		w,
+		convert.ConfluencePageDetail(
+			h.confluence.CreatePage(
+				b.SpaceIdentifier,
+				b.ParentIdentifier,
+				b.Title,
+				b.Body,
+			),
+		),
 	)
 }

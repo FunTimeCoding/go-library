@@ -2,9 +2,10 @@ package model_context
 
 import (
 	"context"
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/netbox/tenant"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -12,48 +13,28 @@ func (s *Server) createDevice(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	name, f := r.RequireString("name")
+	name, f := r.RequireString(parameter.Name)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"name is required: %v",
-				f,
-			),
-		), nil
+		return response.Fail("name is required: %v", f)
 	}
 
-	roleName, f := r.RequireString("role")
+	roleName, g := r.RequireString(constant.Role)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"role is required: %v",
-				f,
-			),
-		), nil
+	if g != nil {
+		return response.Fail("role is required: %v", g)
 	}
 
-	typeName, f := r.RequireString("type")
+	typeName, h := r.RequireString(constant.Type)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"type is required: %v",
-				f,
-			),
-		), nil
+	if h != nil {
+		return response.Fail("type is required: %v", h)
 	}
 
-	siteName, f := r.RequireString("site")
+	siteName, i := r.RequireString(constant.Site)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"site is required: %v",
-				f,
-			),
-		), nil
+	if i != nil {
+		return response.Fail("site is required: %v", i)
 	}
 
 	role := s.client.DeviceRoleByName(roleName)
@@ -61,13 +42,11 @@ func (s *Server) createDevice(
 	site := s.client.SiteByName(siteName)
 	var ten *tenant.Tenant
 
-	if t := r.GetString("tenant", ""); t != "" {
+	if t := r.GetString(constant.Tenant, ""); t != "" {
 		ten = s.client.TenantByName(t)
 	}
 
-	return mcp.NewToolResultText(
-		notation.MarshalIndent(
-			s.client.CreateDevice(name, role, nil, deviceType, site, ten),
-		),
-	), nil
+	return response.SuccessAny(
+		s.client.CreateDevice(name, role, nil, deviceType, site, ten),
+	)
 }

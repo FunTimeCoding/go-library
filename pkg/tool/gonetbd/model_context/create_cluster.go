@@ -2,8 +2,9 @@ package model_context
 
 import (
 	"context"
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -11,43 +12,26 @@ func (s *Server) createCluster(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	name, f := r.RequireString("name")
+	name, f := r.RequireString(parameter.Name)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"name is required: %v",
-				f,
-			),
-		), nil
+		return response.Fail("name is required: %v", f)
 	}
 
-	typeName, f := r.RequireString("type")
+	typeName, g := r.RequireString(constant.Type)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"type is required: %v",
-				f,
-			),
-		), nil
+	if g != nil {
+		return response.Fail("type is required: %v", g)
 	}
 
-	siteName, f := r.RequireString("site")
+	siteName, h := r.RequireString(constant.Site)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"site is required: %v",
-				f,
-			),
-		), nil
+	if h != nil {
+		return response.Fail("site is required: %v", h)
 	}
 
 	t := s.client.ClusterTypeByName(typeName)
 	site := s.client.SiteByName(siteName)
 
-	return mcp.NewToolResultText(
-		notation.MarshalIndent(s.client.CreateCluster(name, t, site)),
-	), nil
+	return response.SuccessAny(s.client.CreateCluster(name, t, site))
 }

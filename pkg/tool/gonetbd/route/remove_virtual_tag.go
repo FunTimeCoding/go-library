@@ -1,10 +1,8 @@
 package route
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -15,12 +13,11 @@ func (h *Router) RemoveVirtualTag(
 	tag string,
 ) {
 	vm := h.client.RemoveVirtualTag(name, tag)
-	w.Header().Set(constant.ContentType, constant.Object)
 	entry := server.VirtualMachine{Identifier: vm.Identifier, Name: vm.Name}
 
 	if len(vm.Tags) > 0 {
 		entry.Tags = &vm.Tags
 	}
 
-	errors.PanicOnError(json.NewEncoder(w).Encode(entry))
+	web.EncodeNotation(w, entry)
 }

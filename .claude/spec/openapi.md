@@ -75,7 +75,7 @@ lifecycle.WithServer(
 )
 ```
 
-The `generated` alias is the standard across all services - it makes clear the package is codegen output, and frees up the unaliased `server` name for any domain service package.
+Alias only when package names collide. In `run.go`, both the oapi-codegen server and the MCP generative server are imported — alias as `generated` and `generative` respectively. In route files that only import one server package, use the bare `server` name without alias.
 
 If the service has existing manual routes alongside generated ones, both can coexist on the same mux.
 
@@ -91,15 +91,25 @@ type Router struct {
 }
 ```
 
-`route/<operation>.go` - implements the generated `ServerInterface` method. Use the `generated` alias for the server package:
+`route/<operation>.go` - implements the generated `ServerInterface` method:
 
 ```go
 func (r *Router) PostDeploy(w http.ResponseWriter, q *http.Request) {
-    var body generated.PostDeployJSONRequestBody
+    var body server.PostDeployJSONRequestBody
     errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-    result := r.deploy.TriggerTargets(body.Targets)
-    w.Header().Set(constant.ContentType, constant.Object)
-    errors.PanicOnError(json.NewEncoder(w).Encode(generated.DeployResponse{Tag: result}))
+    web.EncodeNotation(w, server.DeployResponse{
+        Tag: r.deploy.TriggerTargets(body.Targets),
+    })
+}
+```
+
+Use `web.EncodeNotation(w, result)` for the common case (200 + JSON). For non-200 status codes, use `web.ObjectHeader(w)` + `w.WriteHeader(...)` + `web.Encode(w, result)` separately.
+
+When a route uses converters shared with `model_context/`, import the `convert/` package:
+
+```go
+func (h *Router) GetIssue(w http.ResponseWriter, _ *http.Request, key string) {
+    web.EncodeNotation(w, convert.JiraIssue(h.jira.Issue(key)))
 }
 ```
 

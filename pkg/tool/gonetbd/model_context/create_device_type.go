@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -11,31 +11,19 @@ func (s *Server) createDeviceType(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	model, f := r.RequireString("model")
+	model, f := r.RequireString(constant.Model)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"model is required: %v",
-				f,
-			),
-		), nil
+		return response.Fail("model is required: %v", f)
 	}
 
-	manufacturer, f := r.RequireString("manufacturer")
+	manufacturer, g := r.RequireString(constant.Manufacturer)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"manufacturer is required: %v",
-				f,
-			),
-		), nil
+	if g != nil {
+		return response.Fail("manufacturer is required: %v", g)
 	}
 
 	m := s.client.ManufacturerByName(manufacturer)
 
-	return mcp.NewToolResultText(
-		notation.MarshalIndent(s.client.CreateDeviceType(model, m)),
-	), nil
+	return response.SuccessAny(s.client.CreateDeviceType(model, m))
 }

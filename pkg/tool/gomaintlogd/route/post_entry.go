@@ -3,9 +3,9 @@ package route
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -13,7 +13,7 @@ func (h *Router) PostEntry(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	var body generated.PostEntryJSONRequestBody
+	var body server.PostEntryJSONRequestBody
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
 	e := store.NewEntry()
 	e.Action = body.Action
@@ -36,6 +36,5 @@ func (h *Router) PostEntry(
 	}
 
 	errors.PanicOnError(h.store.Add(e))
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(json.NewEncoder(w).Encode(toResponse([]store.Entry{*e})[0]))
+	web.EncodeNotation(w, toResponse([]store.Entry{*e})[0])
 }

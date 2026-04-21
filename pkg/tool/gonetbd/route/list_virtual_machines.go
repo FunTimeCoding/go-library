@@ -1,10 +1,8 @@
 package route
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -35,6 +33,5 @@ func (h *Router) ListVirtualMachines(
 		result = append(result, entry)
 	}
 
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(json.NewEncoder(w).Encode(result))
+	web.EncodeNotation(w, result)
 }

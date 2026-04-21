@@ -1,30 +1,35 @@
 package model_context
 
-import "github.com/mark3labs/mcp-go/mcp"
+import (
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/constant"
+	"github.com/mark3labs/mcp-go/mcp"
+)
 
 func (s *Server) register() {
 	s.server.AddTool(
 		mcp.NewTool(
-			"jira_search",
+			constant.JiraSearch,
 			mcp.WithDescription("Search Jira issues using JQL"),
 			mcp.WithString(
-				"query",
+				parameter.Query,
 				mcp.Required(),
 				mcp.Description("JQL query string"),
 			),
 			mcp.WithNumber(
-				"limit",
-				mcp.Description("Maximum number of results"),
+				parameter.Limit,
+				mcp.Required(),
+				mcp.Description("Maximum number of results (e.g. 25)"),
 			),
 		),
 		s.searchIssues,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"jira_get_issue",
+			constant.JiraGetIssue,
 			mcp.WithDescription("Get a Jira issue by key"),
 			mcp.WithString(
-				"key",
+				parameter.Key,
 				mcp.Required(),
 				mcp.Description("Issue key (e.g. PROJ-123)"),
 			),
@@ -33,17 +38,30 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"jira_list_projects",
-			mcp.WithDescription("List all visible Jira projects"),
+			constant.JiraSearchProjects,
+			mcp.WithDescription("Search Jira projects by key or name"),
+			mcp.WithString(
+				parameter.Query,
+				mcp.Description("Filter by key (exact, case-insensitive) or name (case-insensitive contains). Omit to list all."),
+			),
+			mcp.WithNumber(
+				parameter.Limit,
+				mcp.Required(),
+				mcp.Description("Maximum number of results (e.g. 25)"),
+			),
+			mcp.WithBoolean(
+				constant.IncludeDescriptions,
+				mcp.Description("Fetch full project details including description (slower, one API call per result). Defaults to false."),
+			),
 		),
-		s.listProjects,
+		s.searchProjects,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"confluence_search",
+			constant.ConfluenceSearch,
 			mcp.WithDescription("Search Confluence pages using CQL or plain text"),
 			mcp.WithString(
-				"query",
+				parameter.Query,
 				mcp.Required(),
 				mcp.Description("CQL query string or plain text"),
 			),
@@ -52,10 +70,10 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"confluence_get_page",
+			constant.ConfluenceGetPage,
 			mcp.WithDescription("Get a Confluence page by ID with body content as markdown"),
 			mcp.WithString(
-				"identifier",
+				parameter.Identifier,
 				mcp.Required(),
 				mcp.Description("Page ID"),
 			),
@@ -64,25 +82,25 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"confluence_create_page",
+			constant.ConfluenceCreatePage,
 			mcp.WithDescription("Create a new Confluence page with markdown content"),
 			mcp.WithString(
-				"space_identifier",
+				constant.SpaceIdentifier,
 				mcp.Required(),
 				mcp.Description("Space ID"),
 			),
 			mcp.WithString(
-				"parent_identifier",
+				constant.ParentIdentifier,
 				mcp.Required(),
 				mcp.Description("Parent page ID"),
 			),
 			mcp.WithString(
-				"title",
+				parameter.Title,
 				mcp.Required(),
 				mcp.Description("Page title"),
 			),
 			mcp.WithString(
-				"body",
+				parameter.Body,
 				mcp.Required(),
 				mcp.Description("Page content in markdown"),
 			),
@@ -91,40 +109,40 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"confluence_update_page",
+			constant.ConfluenceUpdatePage,
 			mcp.WithDescription("Update a Confluence page with markdown content. Gets the current version automatically."),
 			mcp.WithString(
-				"identifier",
+				parameter.Identifier,
 				mcp.Required(),
 				mcp.Description("Page ID"),
 			),
 			mcp.WithString(
-				"title",
+				parameter.Title,
 				mcp.Required(),
 				mcp.Description("Page title"),
 			),
 			mcp.WithString(
-				"body",
+				parameter.Body,
 				mcp.Required(),
 				mcp.Description("Full page content in markdown"),
 			),
-			mcp.WithString("message", mcp.Description("Version comment")),
+			mcp.WithString(parameter.Message, mcp.Description("Version comment")),
 		),
 		s.updatePage,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"confluence_list_spaces",
+			constant.ConfluenceListSpaces,
 			mcp.WithDescription("List all visible Confluence spaces"),
 		),
 		s.listSpaces,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"confluence_get_page_children",
+			constant.ConfluenceGetPageChildren,
 			mcp.WithDescription("List child pages of a Confluence page"),
 			mcp.WithString(
-				"identifier",
+				parameter.Identifier,
 				mcp.Required(),
 				mcp.Description("Parent page ID"),
 			),
@@ -133,15 +151,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"confluence_add_comment",
+			constant.ConfluenceAddComment,
 			mcp.WithDescription("Add a comment to a Confluence page"),
 			mcp.WithString(
-				"identifier",
+				parameter.Identifier,
 				mcp.Required(),
 				mcp.Description("Page ID"),
 			),
 			mcp.WithString(
-				"body",
+				parameter.Body,
 				mcp.Required(),
 				mcp.Description("Comment text"),
 			),
@@ -150,10 +168,10 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"jira_get_transitions",
+			constant.JiraGetTransitions,
 			mcp.WithDescription("List available transitions for a Jira issue"),
 			mcp.WithString(
-				"key",
+				parameter.Key,
 				mcp.Required(),
 				mcp.Description("Issue key"),
 			),
@@ -162,15 +180,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"jira_transition_issue",
+			constant.JiraTransitionIssue,
 			mcp.WithDescription("Transition a Jira issue to a new status"),
 			mcp.WithString(
-				"key",
+				parameter.Key,
 				mcp.Required(),
 				mcp.Description("Issue key"),
 			),
 			mcp.WithString(
-				"transition_identifier",
+				constant.TransitionIdentifier,
 				mcp.Required(),
 				mcp.Description("Transition ID from jira_get_transitions"),
 			),
@@ -179,15 +197,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"jira_add_comment",
+			constant.JiraAddComment,
 			mcp.WithDescription("Add a comment to a Jira issue"),
 			mcp.WithString(
-				"key",
+				parameter.Key,
 				mcp.Required(),
 				mcp.Description("Issue key"),
 			),
 			mcp.WithString(
-				"body",
+				parameter.Body,
 				mcp.Required(),
 				mcp.Description("Comment text"),
 			),

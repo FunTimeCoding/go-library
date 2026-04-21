@@ -1,12 +1,12 @@
-package route
+package convert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
 )
 
-func toConfluencePageDetail(p *page.Page) server.ConfluencePageDetail {
-	result := server.ConfluencePageDetail{
+func ConfluencePageDetail(p *page.Page) *server.ConfluencePageDetail {
+	result := &server.ConfluencePageDetail{
 		Identifier: p.Identifier,
 		Title:      p.Name,
 	}
@@ -20,8 +20,7 @@ func toConfluencePageDetail(p *page.Page) server.ConfluencePageDetail {
 	}
 
 	if p.Raw.Body.Storage.Value != "" {
-		body := page.ToMarkdown(p.Raw.Body.Storage.Value)
-		result.Body = &body
+		result.Body = new(page.ToMarkdown(p.Raw.Body.Storage.Value))
 	}
 
 	return result

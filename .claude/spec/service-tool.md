@@ -98,13 +98,14 @@ func Alerts(s *store.Store) http.HandlerFunc {
         r *http.Request,
     ) {
         // ...
-        w.Header().Set(constant.ContentType, constant.Object)
-        errors.PanicOnError(json.NewEncoder(w).Encode(result))
+        web.EncodeNotation(w, result)
     }
 }
 ```
 
-- Use `web/constant.ContentType` and `web/constant.Object` for JSON responses
+- `web.EncodeNotation(w, result)` — sets Content-Type JSON header and encodes result as JSON (the common case)
+- `web.Encode(w, result)` — encodes result as JSON without setting headers (use when headers are set separately, e.g. with a non-200 status code)
+- `web.ObjectHeader(w)` — sets Content-Type JSON header only (use with `web.Encode` when you need a custom status code between header and body)
 - Use `argument.*` constants for query parameter names
 - Response structs in `response.go`, constants in `constant.go`
 

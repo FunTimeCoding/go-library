@@ -2,7 +2,7 @@ package model_context
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -10,7 +10,5 @@ func (s *Server) listSites(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	return mcp.NewToolResultText(
-		notation.MarshalIndent(s.client.Sites()),
-	), nil
+	return response.SuccessAny(s.client.Sites())
 }

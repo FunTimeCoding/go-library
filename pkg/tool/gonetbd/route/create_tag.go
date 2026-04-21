@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -15,14 +15,13 @@ func (h *Router) CreateTag(
 	var body generated.CreateNameRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
 	t := h.client.CreateTag(body.Name)
-	w.Header().Set(constant.ContentType, constant.Object)
+	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(
-			generated.Tag{
-				Identifier: t.Identifier,
-				Name:       t.Name,
-			},
-		),
+	web.Encode(
+		w,
+		generated.Tag{
+			Identifier: t.Identifier,
+			Name:       t.Name,
+		},
 	)
 }

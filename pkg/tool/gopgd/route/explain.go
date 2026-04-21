@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gopgd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -27,10 +27,5 @@ func (h *Router) Explain(
 		fmt.Sprintf("%s %s", prefix, body.Sql),
 	)
 	errors.PanicOnError(e)
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(
-			server.QueryResult{Rows: toRows(rows)},
-		),
-	)
+	web.EncodeNotation(w, server.QueryResult{Rows: toRows(rows)})
 }

@@ -2,7 +2,9 @@ package model_context
 
 import (
 	"context"
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -10,23 +12,19 @@ func (s *Server) transitionIssue(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	key, f := r.RequireString("key")
+	key, f := r.RequireString(parameter.Key)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("key is required: %v", f),
-		), nil
+		return response.Fail("key is required: %v", f)
 	}
 
-	transition, f := r.RequireString("transition_identifier")
+	transition, g := r.RequireString(constant.TransitionIdentifier)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("transition_identifier is required: %v", f),
-		), nil
+	if g != nil {
+		return response.Fail("transition_identifier is required: %v", g)
 	}
 
 	s.jira.Transition(key, transition)
 
-	return mcp.NewToolResultText("transition applied"), nil
+	return response.Success("transition applied")
 }

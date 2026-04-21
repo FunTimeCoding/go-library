@@ -2,7 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -10,23 +11,19 @@ func (s *Server) addIssueComment(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	key, f := r.RequireString("key")
+	key, f := r.RequireString(parameter.Key)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("key is required: %v", f),
-		), nil
+		return response.Fail("key is required: %v", f)
 	}
 
-	body, f := r.RequireString("body")
+	body, g := r.RequireString(parameter.Body)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("body is required: %v", f),
-		), nil
+	if g != nil {
+		return response.Fail("body is required: %v", g)
 	}
 
 	s.jira.Comment(key, body)
 
-	return mcp.NewToolResultText("comment added"), nil
+	return response.Success("comment added")
 }

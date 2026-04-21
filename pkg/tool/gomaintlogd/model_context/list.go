@@ -2,8 +2,10 @@ package model_context
 
 import (
 	"context"
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
 	"github.com/mark3labs/mcp-go/mcp"
 	"time"
@@ -15,59 +17,57 @@ func (s *Server) list(
 ) (*mcp.CallToolResult, error) {
 	filter := store.NewFilter()
 
-	if y := r.GetString("system", ""); y != "" {
+	if y := r.GetString(constant.System, ""); y != "" {
 		filter.System = y
 	}
 
-	if v := r.GetString("service", ""); v != "" {
+	if v := r.GetString(constant.Service, ""); v != "" {
 		filter.Service = v
 	}
 
-	if u := r.GetString("user", ""); u != "" {
+	if u := r.GetString(constant.User, ""); u != "" {
 		filter.User = u
 	}
 
-	if since := r.GetString("since", ""); since != "" {
+	if since := r.GetString(constant.Since, ""); since != "" {
 		i, parseFail := time.Parse(time.RFC3339, since)
 
 		if parseFail != nil {
-			return mcp.NewToolResultError(
-				fmt.Sprintf("invalid since format: %v", parseFail),
-			), nil
+			return response.Fail(
+				"invalid since format: %v",
+				parseFail,
+			)
 		}
 
 		filter.Since = i
 	}
 
-	if until := r.GetString("until", ""); until != "" {
+	if until := r.GetString(constant.Until, ""); until != "" {
 		u, parseFail := time.Parse(time.RFC3339, until)
 
 		if parseFail != nil {
-			return mcp.NewToolResultError(
-				fmt.Sprintf("invalid until format: %v", parseFail),
-			), nil
+			return response.Fail(
+				"invalid until format: %v",
+				parseFail,
+			)
 		}
 
 		filter.Until = u
 	}
 
-	if l := r.GetFloat("limit", 0); l > 0 {
+	if l := r.GetFloat(parameter.Limit, 0); l > 0 {
 		filter.Limit = int(l)
 	}
 
 	entries, e := s.store.List(filter)
 
 	if e != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("failed to list entries: %v", e),
-		), nil
+		return response.Fail("failed to list entries: %v", e)
 	}
 
-	return mcp.NewToolResultText(
-		fmt.Sprintf(
-			"Found %d entries:\n%s",
-			len(entries),
-			notation.MarshalIndent(entries),
-		),
-	), nil
+	return response.Success(
+		"Found %d entries:\n%s",
+		len(entries),
+		notation.MarshalIndent(entries),
+	)
 }

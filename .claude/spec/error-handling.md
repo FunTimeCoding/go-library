@@ -64,25 +64,28 @@ if e := w.store.UpdateStatus(job.ID, "processing"); e != nil {
 ### MCP exception: translate to tool result
 
 MCP handlers have no recovery middleware. Panics would crash the handler without
-producing a response. All errors must be translated to `mcp.NewToolResultError`.
+producing a response. All errors must be translated to tool results.
 
 Two tiers:
 
-**Input validation** (bad params from the model): return a tool error. No Sentry —
-these are model mistakes, not infrastructure failures.
+**Tier 1 — Input validation** (bad params from the model): use `response.Fail`. No
+Sentry — these are model mistakes, not infrastructure failures.
 
 ```go
-id, f := r.RequireString("id")
+id, f := r.RequireString(parameter.Identifier)
 
 if f != nil {
-    return mcp.NewToolResultError("id is required"), nil
+    return response.Fail("identifier is required: %v", f)
 }
 ```
 
-**Infrastructure failure** (store, DB, external call): return a generic tool error
-AND capture to Sentry. The message to the model is generic — do not leak internal
-error details that would confuse the model. The error detail goes to Sentry for
-retroactive analysis.
+`response.Fail` wraps `mcp.NewToolResultError` with `fmt.Sprintf` and returns the
+standard `(*mcp.CallToolResult, error)` tuple. Use it for all input validation.
+
+**Tier 2 — Infrastructure failure** (store, DB, external call): return a generic tool
+error AND capture to Sentry. The message to the model should be phrased for easy
+understanding — do not leak raw Go error strings. The error detail goes to Sentry
+for retroactive analysis.
 
 ```go
 if e := s.store.UpdateRecord(id); e != nil {
@@ -90,12 +93,13 @@ if e := s.store.UpdateRecord(id); e != nil {
         s.hub.CaptureException(e)
     }
 
-    return mcp.NewToolResultError("failed to update record"), nil
+    return response.Fail("failed to update record")
 }
 ```
 
 The hub must be threaded into the MCP server and nil-guarded (same pattern as web
-and workers).
+and workers). Tier 2 stays manual (hub capture + response) because it requires
+Sentry access that `response.Fail` intentionally does not have.
 
 ## Store Method Rule
 

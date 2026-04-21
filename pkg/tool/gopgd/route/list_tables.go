@@ -1,10 +1,9 @@
 package route
 
 import (
-	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gopgd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -21,10 +20,5 @@ func (h *Router) ListTables(
 
 	rows, e := h.store.ListTables(r.Context(), params.Instance, schema)
 	errors.PanicOnError(e)
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(
-			server.QueryResult{Rows: toRows(rows)},
-		),
-	)
+	web.EncodeNotation(w, server.QueryResult{Rows: toRows(rows)})
 }

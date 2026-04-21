@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -11,15 +11,11 @@ func (s *Server) searchPages(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	query, f := r.RequireString("query")
+	query, f := r.RequireString(parameter.Query)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("query is required: %v", f),
-		), nil
+		return response.Fail("query is required: %v", f)
 	}
 
-	return mcp.NewToolResultText(
-		notation.MarshalIndent(s.confluence.Search(query)),
-	), nil
+	return response.SuccessAny(s.confluence.Search(query))
 }

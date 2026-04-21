@@ -1,10 +1,8 @@
 package route
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gopgd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -26,6 +24,5 @@ func (h *Router) ListInstances(
 		)
 	}
 
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(json.NewEncoder(w).Encode(result))
+	web.EncodeNotation(w, result)
 }

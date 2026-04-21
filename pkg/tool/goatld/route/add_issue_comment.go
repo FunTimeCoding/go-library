@@ -3,7 +3,7 @@ package route
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	generated "github.com/funtimecoding/go-library/pkg/tool/goatld/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
 	"net/http"
 )
 
@@ -12,8 +12,8 @@ func (h *Router) AddIssueComment(
 	q *http.Request,
 	key string,
 ) {
-	var body generated.CommentRequest
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	h.jira.Comment(key, body.Body)
+	var r server.CommentRequest
+	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&r))
+	h.jira.Comment(key, r.Body)
 	w.WriteHeader(http.StatusNoContent)
 }

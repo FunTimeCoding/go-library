@@ -2,8 +2,9 @@ package model_context
 
 import (
 	"context"
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
 	"github.com/mark3labs/mcp-go/mcp"
 	"time"
@@ -13,60 +14,53 @@ func (s *Server) add(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	action, f := r.RequireString("action")
+	action, f := r.RequireString(constant.Action)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("action is required: %v", f),
-		), nil
+		return response.Fail("action is required: %v", f)
 	}
 
-	user, f := r.RequireString("user")
+	user, g := r.RequireString(constant.User)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("user is required: %v", f),
-		), nil
+	if g != nil {
+		return response.Fail("user is required: %v", g)
 	}
 
 	e := store.NewEntry()
 	e.Action = action
 	e.User = user
 
-	if y := r.GetString("system", ""); y != "" {
+	if y := r.GetString(constant.System, ""); y != "" {
 		e.System = y
 	}
 
-	if v := r.GetString("service", ""); v != "" {
+	if v := r.GetString(constant.Service, ""); v != "" {
 		e.Service = v
 	}
 
-	if d := r.GetString("description", ""); d != "" {
+	if d := r.GetString(constant.Description, ""); d != "" {
 		e.Description = d
 	}
 
-	if stamp := r.GetString("timestamp", ""); stamp != "" {
+	if stamp := r.GetString(constant.Timestamp, ""); stamp != "" {
 		t, parseFail := time.Parse(time.RFC3339, stamp)
 
 		if parseFail != nil {
-			return mcp.NewToolResultError(
-				fmt.Sprintf("invalid timestamp format: %v", parseFail),
-			), nil
+			return response.Fail(
+				"invalid timestamp format: %v",
+				parseFail,
+			)
 		}
 
 		e.Timestamp = t
 	}
 
-	if g := s.store.Add(e); g != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("failed to add entry: %v", g),
-		), nil
+	if h := s.store.Add(e); h != nil {
+		return response.Fail("failed to add entry: %v", h)
 	}
 
-	return mcp.NewToolResultText(
-		fmt.Sprintf(
-			"Entry added successfully:\n%s",
-			notation.MarshalIndent(e),
-		),
-	), nil
+	return response.Success(
+		"Entry added successfully:\n%s",
+		notation.MarshalIndent(e),
+	)
 }

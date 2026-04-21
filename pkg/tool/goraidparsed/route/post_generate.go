@@ -7,7 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"log/slog"
 	"net/http"
 	"os"
@@ -135,9 +135,8 @@ func (h *Router) PostGenerate(
 
 	reportPath := filepath.Join(h.outputPath, reportName)
 	system.Move(reportSource, reportPath)
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(json.NewEncoder(w).Encode(generated.GenerateResponse{
+	web.EncodeNotation(w, generated.GenerateResponse{
 		Path:     reportPath,
 		TidCount: tidCount,
-	}))
+	})
 }

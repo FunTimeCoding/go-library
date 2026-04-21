@@ -2,7 +2,6 @@ package model_context
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
@@ -33,7 +32,5 @@ func (s *Server) useInstance(
 
 	s.store.SetActiveInstance(session.SessionID(), a.Instance)
 
-	return mcp.NewToolResultText(
-		fmt.Sprintf("active instance set to %s", a.Instance),
-	), nil
+	return response.Success("active instance set to %s", a.Instance)
 }

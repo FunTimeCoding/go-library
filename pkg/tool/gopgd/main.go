@@ -21,7 +21,11 @@ func Main(
 		defer func() { r.RecoverFlush(recover()) }()
 	}
 
-	pflag.String(configurationFlag, "gopgd.yaml", "Configuration file path")
+	pflag.String(
+		configurationFlag,
+		"gopgd.yaml",
+		"Configuration file path",
+	)
 	monitor.ParseBind(version, gitHash, buildDate)
 	Run(config.Load(viper.GetString(configurationFlag)))
 }

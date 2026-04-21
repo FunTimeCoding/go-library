@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -11,43 +11,26 @@ func (s *Server) createAddress(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	device, f := r.RequireString("device")
+	device, f := r.RequireString(constant.Device)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"device is required: %v",
-				f,
-			),
-		), nil
+		return response.Fail("device is required: %v", f)
 	}
 
-	interfaceName, f := r.RequireString("interface")
+	interfaceName, g := r.RequireString(constant.Interface)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"interface is required: %v",
-				f,
-			),
-		), nil
+	if g != nil {
+		return response.Fail("interface is required: %v", g)
 	}
 
-	address, f := r.RequireString("address")
+	address, h := r.RequireString(constant.Address)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"address is required: %v",
-				f,
-			),
-		), nil
+	if h != nil {
+		return response.Fail("address is required: %v", h)
 	}
 
 	d := s.client.DeviceByNameStrict(device)
 	i := s.client.DeviceInterfaceByNameStrict(d, interfaceName)
 
-	return mcp.NewToolResultText(
-		notation.MarshalIndent(s.client.CreateAddress(i.Identifier, address)),
-	), nil
+	return response.SuccessAny(s.client.CreateAddress(i.Identifier, address))
 }

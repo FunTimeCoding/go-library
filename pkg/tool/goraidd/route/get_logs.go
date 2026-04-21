@@ -1,12 +1,10 @@
 package route
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/raid"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -69,13 +67,11 @@ func (h *Router) GetLogs(
 		)
 	}
 
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(
-			generated.LogsResponse{
-				Total: total,
-				Logs:  result,
-			},
-		),
+	web.EncodeNotation(
+		w,
+		generated.LogsResponse{
+			Total: total,
+			Logs:  result,
+		},
 	)
 }

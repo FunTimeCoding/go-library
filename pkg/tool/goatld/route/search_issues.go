@@ -1,26 +1,26 @@
 package route
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
 func (h *Router) SearchIssues(
 	w http.ResponseWriter,
 	_ *http.Request,
-	params server.SearchIssuesParams,
+	p server.SearchIssuesParams,
 ) {
-	var issues []server.JiraIssue
+	var issues []*server.JiraIssue
 
-	if params.Limit != nil {
-		issues = toJiraIssues(h.jira.SearchLimit(*params.Limit, params.Query))
+	if p.Limit != nil {
+		issues = convert.JiraIssues(
+			h.jira.SearchLimit(*p.Limit, p.Query),
+		)
 	} else {
-		issues = toJiraIssues(h.jira.Search(params.Query))
+		issues = convert.JiraIssues(h.jira.Search(p.Query))
 	}
 
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(json.NewEncoder(w).Encode(issues))
+	web.EncodeNotation(w, issues)
 }

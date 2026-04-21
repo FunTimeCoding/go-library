@@ -1,10 +1,8 @@
 package route
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 	"time"
 )
@@ -26,10 +24,5 @@ func (h *Router) GetRecentAlerts(
 		end = *params.End
 	}
 
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(
-			toResponse(h.store.ByTimeRange(start, end)),
-		),
-	)
+	web.EncodeNotation(w, toResponse(h.store.ByTimeRange(start, end)))
 }

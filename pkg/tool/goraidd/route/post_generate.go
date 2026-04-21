@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -29,7 +29,7 @@ func (h *Router) PostGenerate(
 	}
 
 	result := h.parser.Generate(files, nil)
-	w.Header().Set(constant.ContentType, constant.Object)
+	web.ObjectHeader(w)
 	_, e := w.Write([]byte(result))
 	errors.PanicOnError(e)
 }

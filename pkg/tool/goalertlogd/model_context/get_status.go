@@ -2,7 +2,7 @@ package model_context
 
 import (
 	"context"
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -14,16 +14,15 @@ func (s *Server) getStatus(
 	lastPoll := s.poller.LastPoll()
 
 	if lastPoll.IsZero() {
-		return mcp.NewToolResultText(
-			fmt.Sprintf("Total records: %d\nLast poll: never", totalRecords),
-		), nil
+		return response.Success(
+			"Total records: %d\nLast poll: never",
+			totalRecords,
+		)
 	}
 
-	return mcp.NewToolResultText(
-		fmt.Sprintf(
-			"Total records: %d\nLast poll: %s",
-			totalRecords,
-			lastPoll.Format("2006-01-02T15:04:05Z07:00"),
-		),
-	), nil
+	return response.Success(
+		"Total records: %d\nLast poll: %s",
+		totalRecords,
+		lastPoll.Format("2006-01-02T15:04:05Z07:00"),
+	)
 }

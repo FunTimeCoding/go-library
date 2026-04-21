@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -11,29 +11,17 @@ func (s *Server) addVirtualTag(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	name, f := r.RequireString("virtual_machine")
+	name, f := r.RequireString(constant.VirtualMachine)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"virtual_machine is required: %v",
-				f,
-			),
-		), nil
+		return response.Fail("virtual_machine is required: %v", f)
 	}
 
-	tag, f := r.RequireString("tag")
+	tag, g := r.RequireString(constant.Tag)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf(
-				"tag is required: %v",
-				f,
-			),
-		), nil
+	if g != nil {
+		return response.Fail("tag is required: %v", g)
 	}
 
-	return mcp.NewToolResultText(
-		notation.MarshalIndent(s.client.AddVirtualTag(name, tag)),
-	), nil
+	return response.SuccessAny(s.client.AddVirtualTag(name, tag))
 }

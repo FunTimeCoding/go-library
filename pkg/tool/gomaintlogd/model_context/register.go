@@ -1,46 +1,50 @@
 package model_context
 
-import "github.com/mark3labs/mcp-go/mcp"
+import (
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
+	"github.com/mark3labs/mcp-go/mcp"
+)
 
 func (s *Server) register() {
 	s.server.AddTool(
 		mcp.NewTool(
-			"add_entry",
+			constant.AddEntry,
 			mcp.WithDescription("Add a new maintenance log entry"),
 			mcp.WithString(
-				"action",
+				constant.Action,
 				mcp.Required(),
 				mcp.Description(
 					"Brief description of what was done (e.g., 'restarted service', 'deployed v1.2.3')",
 				),
 			),
 			mcp.WithString(
-				"user",
+				constant.User,
 				mcp.Required(),
 				mcp.Description(
 					"Who performed the action (username, email, or identifier)",
 				),
 			),
 			mcp.WithString(
-				"system",
+				constant.System,
 				mcp.Description(
 					"System identifier (node name, hostname, IP address) - optional",
 				),
 			),
 			mcp.WithString(
-				"service",
+				constant.Service,
 				mcp.Description(
 					"Service identifier (project name, deployment, application) - optional",
 				),
 			),
 			mcp.WithString(
-				"description",
+				constant.Description,
 				mcp.Description(
 					"Additional details or context about the action - optional",
 				),
 			),
 			mcp.WithString(
-				"timestamp",
+				constant.Timestamp,
 				mcp.Description(
 					"When the event happened (RFC3339 format) - defaults to now if not provided",
 				),
@@ -50,36 +54,36 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"list_entries",
+			constant.ListEntries,
 			mcp.WithDescription(
 				"List maintenance log entries with optional filters",
 			),
 			mcp.WithString(
-				"system",
+				constant.System,
 				mcp.Description("Filter by system identifier"),
 			),
 			mcp.WithString(
-				"service",
+				constant.Service,
 				mcp.Description("Filter by service identifier"),
 			),
 			mcp.WithString(
-				"user",
+				constant.User,
 				mcp.Description("Filter by user"),
 			),
 			mcp.WithString(
-				"since",
+				constant.Since,
 				mcp.Description(
 					"Show entries since this time (RFC3339 format)",
 				),
 			),
 			mcp.WithString(
-				"until",
+				constant.Until,
 				mcp.Description(
 					"Show entries until this time (RFC3339 format)",
 				),
 			),
 			mcp.WithNumber(
-				"limit",
+				parameter.Limit,
 				mcp.Description(
 					"Maximum number of entries to return (default: all)",
 				),
@@ -89,37 +93,37 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"update_entry",
+			constant.UpdateEntry,
 			mcp.WithDescription(
 				"Update an existing maintenance log entry",
 			),
 			mcp.WithNumber(
-				"id",
+				constant.Identifier,
 				mcp.Required(),
 				mcp.Description("ID of the entry to update"),
 			),
 			mcp.WithString(
-				"action",
+				constant.Action,
 				mcp.Description("Updated action description"),
 			),
 			mcp.WithString(
-				"user",
+				constant.User,
 				mcp.Description("Updated user"),
 			),
 			mcp.WithString(
-				"system",
+				constant.System,
 				mcp.Description("Updated system identifier"),
 			),
 			mcp.WithString(
-				"service",
+				constant.Service,
 				mcp.Description("Updated service identifier"),
 			),
 			mcp.WithString(
-				"description",
+				constant.Description,
 				mcp.Description("Updated description"),
 			),
 			mcp.WithString(
-				"timestamp",
+				constant.Timestamp,
 				mcp.Description(
 					"Updated timestamp (RFC3339 format)",
 				),
@@ -129,12 +133,12 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"delete_entry",
+			constant.DeleteEntry,
 			mcp.WithDescription(
 				"Delete a maintenance log entry",
 			),
 			mcp.WithNumber(
-				"id",
+				constant.Identifier,
 				mcp.Required(),
 				mcp.Description("ID of the entry to delete"),
 			),

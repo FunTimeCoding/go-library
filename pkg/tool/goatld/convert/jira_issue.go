@@ -1,4 +1,4 @@
-package route
+package convert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-func toJiraIssue(i *issue.Issue) server.JiraIssue {
-	result := server.JiraIssue{
+func JiraIssue(i *issue.Issue) *server.JiraIssue {
+	result := &server.JiraIssue{
 		Key:     i.Key,
 		Summary: i.Summary,
 		Status:  i.Status,
@@ -31,13 +31,11 @@ func toJiraIssue(i *issue.Issue) server.JiraIssue {
 	}
 
 	if i.Create != nil && !i.Create.IsZero() {
-		s := i.Create.Format(time.RFC3339)
-		result.Created = &s
+		result.Created = new(i.Create.Format(time.RFC3339))
 	}
 
 	if i.Due != nil && !i.Due.IsZero() {
-		s := i.Due.Format(time.RFC3339)
-		result.Due = &s
+		result.Due = new(i.Due.Format(time.RFC3339))
 	}
 
 	if i.Link != "" {

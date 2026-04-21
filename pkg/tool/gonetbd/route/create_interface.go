@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	upstream "github.com/netbox-community/go-netbox/v4"
 	"net/http"
 )
@@ -22,8 +22,6 @@ func (h *Router) CreateInterface(
 		body.Name,
 		upstream.InterfaceTypeValue(body.Type),
 	)
-	w.Header().Set(constant.ContentType, constant.Object)
-	w.WriteHeader(http.StatusCreated)
 	result := generated.Interface{
 		Identifier: i.Identifier,
 		Name:       i.Name,
@@ -34,5 +32,7 @@ func (h *Router) CreateInterface(
 		result.Type = &s
 	}
 
-	errors.PanicOnError(json.NewEncoder(w).Encode(result))
+	web.ObjectHeader(w)
+	w.WriteHeader(http.StatusCreated)
+	web.Encode(w, result)
 }

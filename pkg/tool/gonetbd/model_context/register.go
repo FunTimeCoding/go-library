@@ -1,14 +1,18 @@
 package model_context
 
-import "github.com/mark3labs/mcp-go/mcp"
+import (
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/mark3labs/mcp-go/mcp"
+)
 
 func (s *Server) register() {
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_devices",
+			constant.NetboxListDevices,
 			mcp.WithDescription("List NetBox devices, optionally filtered by name"),
 			mcp.WithString(
-				"query",
+				parameter.Query,
 				mcp.Description("Filter by name (case-insensitive contains)"),
 			),
 		),
@@ -16,10 +20,10 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_get_device",
+			constant.NetboxGetDevice,
 			mcp.WithDescription("Get a NetBox device by exact name"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Device name"),
 			),
@@ -28,10 +32,10 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_interfaces",
+			constant.NetboxListInterfaces,
 			mcp.WithDescription("List interfaces for a NetBox device"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Device name"),
 			),
@@ -40,10 +44,10 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_addresses",
+			constant.NetboxListAddresses,
 			mcp.WithDescription("List IP addresses assigned to a NetBox device"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Device name"),
 			),
@@ -52,45 +56,45 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_sites",
+			constant.NetboxListSites,
 			mcp.WithDescription("List all NetBox sites"),
 		),
 		s.listSites,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_tenants",
+			constant.NetboxListTenants,
 			mcp.WithDescription("List all NetBox tenants"),
 		),
 		s.listTenants,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_device_roles",
+			constant.NetboxListDeviceRoles,
 			mcp.WithDescription("List all NetBox device roles"),
 		),
 		s.listDeviceRoles,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_manufacturers",
+			constant.NetboxListManufacturers,
 			mcp.WithDescription("List all NetBox manufacturers"),
 		),
 		s.listManufacturers,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_device_types",
+			constant.NetboxListDeviceTypes,
 			mcp.WithDescription("List all NetBox device types"),
 		),
 		s.listDeviceTypes,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_site",
+			constant.NetboxCreateSite,
 			mcp.WithDescription("Create a NetBox site"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Site name"),
 			),
@@ -99,10 +103,10 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_tenant",
+			constant.NetboxCreateTenant,
 			mcp.WithDescription("Create a NetBox tenant"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Tenant name"),
 			),
@@ -111,10 +115,10 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_device_role",
+			constant.NetboxCreateDeviceRole,
 			mcp.WithDescription("Create a NetBox device role"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Role name"),
 			),
@@ -123,10 +127,10 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_manufacturer",
+			constant.NetboxCreateManufacturer,
 			mcp.WithDescription("Create a NetBox manufacturer"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Manufacturer name"),
 			),
@@ -135,15 +139,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_device_type",
+			constant.NetboxCreateDeviceType,
 			mcp.WithDescription("Create a NetBox device type"),
 			mcp.WithString(
-				"model",
+				constant.Model,
 				mcp.Required(),
 				mcp.Description("Model name"),
 			),
 			mcp.WithString(
-				"manufacturer",
+				constant.Manufacturer,
 				mcp.Required(),
 				mcp.Description("Manufacturer name (must exist)"),
 			),
@@ -152,30 +156,30 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_device",
+			constant.NetboxCreateDevice,
 			mcp.WithDescription("Create a NetBox device. Requires site, role, and device type to exist."),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Device name"),
 			),
 			mcp.WithString(
-				"role",
+				constant.Role,
 				mcp.Required(),
 				mcp.Description("Device role name"),
 			),
 			mcp.WithString(
-				"type",
+				constant.Type,
 				mcp.Required(),
 				mcp.Description("Device type model name"),
 			),
 			mcp.WithString(
-				"site",
+				constant.Site,
 				mcp.Required(),
 				mcp.Description("Site name"),
 			),
 			mcp.WithString(
-				"tenant",
+				constant.Tenant,
 				mcp.Description("Tenant name (optional)"),
 			),
 		),
@@ -183,20 +187,20 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_interface",
+			constant.NetboxCreateInterface,
 			mcp.WithDescription("Create a network interface on a NetBox device"),
 			mcp.WithString(
-				"device",
+				constant.Device,
 				mcp.Required(),
 				mcp.Description("Device name"),
 			),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Interface name (e.g. eno1, eth0)"),
 			),
 			mcp.WithString(
-				"type",
+				constant.Type,
 				mcp.Required(),
 				mcp.Description("Interface type (e.g. 1000base-t, 10gbase-t)"),
 			),
@@ -205,20 +209,20 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_address",
+			constant.NetboxCreateAddress,
 			mcp.WithDescription("Assign an IP address to a device interface"),
 			mcp.WithString(
-				"device",
+				constant.Device,
 				mcp.Required(),
 				mcp.Description("Device name"),
 			),
 			mcp.WithString(
-				"interface",
+				constant.Interface,
 				mcp.Required(),
 				mcp.Description("Interface name (e.g. eno1)"),
 			),
 			mcp.WithString(
-				"address",
+				constant.Address,
 				mcp.Required(),
 				mcp.Description("IP address in CIDR notation (e.g. 144.76.220.60/32)"),
 			),
@@ -227,31 +231,31 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_cluster_types",
+			constant.NetboxListClusterTypes,
 			mcp.WithDescription("List all NetBox cluster types"),
 		),
 		s.listClusterTypes,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_clusters",
+			constant.NetboxListClusters,
 			mcp.WithDescription("List all NetBox clusters"),
 		),
 		s.listClusters,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_virtual_machines",
+			constant.NetboxListVirtualMachines,
 			mcp.WithDescription("List all NetBox virtual machines"),
 		),
 		s.listVirtualMachines,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_cluster_type",
+			constant.NetboxCreateClusterType,
 			mcp.WithDescription("Create a NetBox cluster type"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Cluster type name"),
 			),
@@ -260,20 +264,20 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_cluster",
+			constant.NetboxCreateCluster,
 			mcp.WithDescription("Create a NetBox cluster (VM host grouping)"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Cluster name"),
 			),
 			mcp.WithString(
-				"type",
+				constant.Type,
 				mcp.Required(),
 				mcp.Description("Cluster type name"),
 			),
 			mcp.WithString(
-				"site",
+				constant.Site,
 				mcp.Required(),
 				mcp.Description("Site name"),
 			),
@@ -282,15 +286,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_virtual_machine",
+			constant.NetboxCreateVirtualMachine,
 			mcp.WithDescription("Create a NetBox virtual machine assigned to a cluster"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("VM name"),
 			),
 			mcp.WithString(
-				"cluster",
+				constant.Cluster,
 				mcp.Required(),
 				mcp.Description("Cluster name"),
 			),
@@ -299,15 +303,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_virtual_interface",
+			constant.NetboxCreateVirtualInterface,
 			mcp.WithDescription("Create an interface on a NetBox virtual machine"),
 			mcp.WithString(
-				"virtual_machine",
+				constant.VirtualMachine,
 				mcp.Required(),
 				mcp.Description("VM name"),
 			),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Interface name (e.g. ens3)"),
 			),
@@ -316,20 +320,20 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_virtual_address",
+			constant.NetboxCreateVirtualAddress,
 			mcp.WithDescription("Assign an IP address to a virtual machine interface"),
 			mcp.WithString(
-				"virtual_machine",
+				constant.VirtualMachine,
 				mcp.Required(),
 				mcp.Description("VM name"),
 			),
 			mcp.WithString(
-				"interface",
+				constant.Interface,
 				mcp.Required(),
 				mcp.Description("Interface name"),
 			),
 			mcp.WithString(
-				"address",
+				constant.Address,
 				mcp.Required(),
 				mcp.Description("IP in CIDR notation"),
 			),
@@ -338,17 +342,17 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_list_tags",
+			constant.NetboxListTags,
 			mcp.WithDescription("List all NetBox tags"),
 		),
 		s.listTags,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_create_tag",
+			constant.NetboxCreateTag,
 			mcp.WithDescription("Create a NetBox tag"),
 			mcp.WithString(
-				"name",
+				parameter.Name,
 				mcp.Required(),
 				mcp.Description("Tag name"),
 			),
@@ -357,15 +361,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_add_device_tag",
+			constant.NetboxAddDeviceTag,
 			mcp.WithDescription("Add a tag to a device"),
 			mcp.WithString(
-				"device",
+				constant.Device,
 				mcp.Required(),
 				mcp.Description("Device name"),
 			),
 			mcp.WithString(
-				"tag",
+				constant.Tag,
 				mcp.Required(),
 				mcp.Description("Tag name"),
 			),
@@ -374,15 +378,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_remove_device_tag",
+			constant.NetboxRemoveDeviceTag,
 			mcp.WithDescription("Remove a tag from a device"),
 			mcp.WithString(
-				"device",
+				constant.Device,
 				mcp.Required(),
 				mcp.Description("Device name"),
 			),
 			mcp.WithString(
-				"tag",
+				constant.Tag,
 				mcp.Required(),
 				mcp.Description("Tag name"),
 			),
@@ -391,15 +395,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_add_virtual_tag",
+			constant.NetboxAddVirtualTag,
 			mcp.WithDescription("Add a tag to a virtual machine"),
 			mcp.WithString(
-				"virtual_machine",
+				constant.VirtualMachine,
 				mcp.Required(),
 				mcp.Description("VM name"),
 			),
 			mcp.WithString(
-				"tag",
+				constant.Tag,
 				mcp.Required(),
 				mcp.Description("Tag name"),
 			),
@@ -408,15 +412,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			"netbox_remove_virtual_tag",
+			constant.NetboxRemoveVirtualTag,
 			mcp.WithDescription("Remove a tag from a virtual machine"),
 			mcp.WithString(
-				"virtual_machine",
+				constant.VirtualMachine,
 				mcp.Required(),
 				mcp.Description("VM name"),
 			),
 			mcp.WithString(
-				"tag",
+				constant.Tag,
 				mcp.Required(),
 				mcp.Description("Tag name"),
 			),

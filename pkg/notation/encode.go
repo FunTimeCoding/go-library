@@ -9,18 +9,18 @@ import (
 )
 
 func Encode(
-	object any,
+	a any,
 	indent bool,
 ) string {
-	buffer := &bytes.Buffer{}
-	encoder := json.NewEncoder(buffer)
-	encoder.SetEscapeHTML(false)
+	b := &bytes.Buffer{}
+	e := json.NewEncoder(b)
+	e.SetEscapeHTML(false)
 
 	if indent {
-		encoder.SetIndent("", "    ")
+		e.SetIndent("", "    ")
 	}
 
-	errors.PanicOnError(encoder.Encode(object))
+	errors.PanicOnError(e.Encode(a))
 
-	return strings.TrimSuffix(buffer.String(), separator.Unix)
+	return strings.TrimSuffix(b.String(), separator.Unix)
 }

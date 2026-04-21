@@ -1,0 +1,14 @@
+package constant
+
+const (
+	GetAlerts       = "get_alerts"
+	GetRecentAlerts = "get_recent_alerts"
+	GetTopAlerts    = "get_top_alerts"
+	GetStatus       = "get_status"
+)
+
+const (
+	End   = "end"
+	N     = "n"
+	Start = "start"
+)

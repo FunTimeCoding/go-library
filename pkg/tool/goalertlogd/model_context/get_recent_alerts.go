@@ -2,8 +2,9 @@ package model_context
 
 import (
 	"context"
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"time"
 )
@@ -16,25 +17,21 @@ func (s *Server) getRecentAlerts(
 	start := now.Add(-1 * time.Hour)
 	end := now
 
-	if v := r.GetString("start", ""); v != "" {
+	if v := r.GetString(constant.Start, ""); v != "" {
 		t, e := time.Parse(time.RFC3339, v)
 
 		if e != nil {
-			return mcp.NewToolResultError(
-				fmt.Sprintf("invalid start format: %v", e),
-			), nil
+			return response.Fail("invalid start format: %v", e)
 		}
 
 		start = t
 	}
 
-	if v := r.GetString("end", ""); v != "" {
+	if v := r.GetString(constant.End, ""); v != "" {
 		t, e := time.Parse(time.RFC3339, v)
 
 		if e != nil {
-			return mcp.NewToolResultError(
-				fmt.Sprintf("invalid end format: %v", e),
-			), nil
+			return response.Fail("invalid end format: %v", e)
 		}
 
 		end = t
@@ -42,11 +39,9 @@ func (s *Server) getRecentAlerts(
 
 	records := s.store.ByTimeRange(start, end)
 
-	return mcp.NewToolResultText(
-		fmt.Sprintf(
-			"Found %d alerts:\n%s",
-			len(records),
-			notation.MarshalIndent(records),
-		),
-	), nil
+	return response.Success(
+		"Found %d alerts:\n%s",
+		len(records),
+		notation.MarshalIndent(records),
+	)
 }

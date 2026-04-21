@@ -1,9 +1,7 @@
 package route
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -12,6 +10,5 @@ func (h *Router) ListDeviceTags(
 	_ *http.Request,
 	name string,
 ) {
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(json.NewEncoder(w).Encode(h.client.DeviceTagNames(name)))
+	web.EncodeNotation(w, h.client.DeviceTagNames(name))
 }

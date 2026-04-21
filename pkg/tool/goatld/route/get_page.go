@@ -1,9 +1,8 @@
 package route
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/convert"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -12,10 +11,8 @@ func (h *Router) GetPage(
 	_ *http.Request,
 	identifier string,
 ) {
-	w.Header().Set(constant.ContentType, constant.Object)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(
-			toConfluencePageDetail(h.confluence.Page(identifier)),
-		),
+	web.EncodeNotation(
+		w,
+		convert.ConfluencePageDetail(h.confluence.Page(identifier)),
 	)
 }

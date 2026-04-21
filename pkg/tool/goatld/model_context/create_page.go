@@ -2,8 +2,9 @@ package model_context
 
 import (
 	"context"
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -11,39 +12,31 @@ func (s *Server) createPage(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	space, f := r.RequireString("space_identifier")
+	space, e := r.RequireString(constant.SpaceIdentifier)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("space_identifier is required: %v", f),
-		), nil
+	if e != nil {
+		return response.Fail("space_identifier is required: %v", e)
 	}
 
-	parent, f := r.RequireString("parent_identifier")
+	parent, f := r.RequireString(constant.ParentIdentifier)
 
 	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("parent_identifier is required: %v", f),
-		), nil
+		return response.Fail("parent_identifier is required: %v", f)
 	}
 
-	title, f := r.RequireString("title")
+	title, g := r.RequireString(parameter.Title)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("title is required: %v", f),
-		), nil
+	if g != nil {
+		return response.Fail("title is required: %v", g)
 	}
 
-	body, f := r.RequireString("body")
+	body, h := r.RequireString(parameter.Body)
 
-	if f != nil {
-		return mcp.NewToolResultError(
-			fmt.Sprintf("body is required: %v", f),
-		), nil
+	if h != nil {
+		return response.Fail("body is required: %v", h)
 	}
 
-	page := s.confluence.CreatePage(space, parent, title, body)
-
-	return mcp.NewToolResultText(notation.MarshalIndent(page)), nil
+	return response.SuccessAny(
+		s.confluence.CreatePage(space, parent, title, body),
+	)
 }

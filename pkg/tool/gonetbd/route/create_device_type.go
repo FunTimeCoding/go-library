@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/server"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
@@ -16,15 +16,14 @@ func (h *Router) CreateDeviceType(
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
 	m := h.client.ManufacturerByName(body.Manufacturer)
 	t := h.client.CreateDeviceType(body.Model, m)
-	w.Header().Set(constant.ContentType, constant.Object)
+	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
-	errors.PanicOnError(
-		json.NewEncoder(w).Encode(
-			generated.DeviceType{
-				Identifier:   t.Identifier,
-				Model:        t.Model,
-				Manufacturer: &m.Name,
-			},
-		),
+	web.Encode(
+		w,
+		generated.DeviceType{
+			Identifier:   t.Identifier,
+			Model:        t.Model,
+			Manufacturer: &m.Name,
+		},
 	)
 }

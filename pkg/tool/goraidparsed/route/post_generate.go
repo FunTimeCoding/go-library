@@ -98,7 +98,11 @@ func (h *Router) PostGenerate(
 	importCommand.Stderr = &tiddlerOutput
 
 	if tiddlerError := importCommand.Run(); tiddlerError != nil {
-		slog.Error("tiddler generator failed", "output", tiddlerOutput.String())
+		slog.Error(
+			"tiddler generator failed",
+			"output",
+			tiddlerOutput.String(),
+		)
 		errors.PanicOnError(tiddlerError)
 	}
 
@@ -138,7 +142,8 @@ func (h *Router) PostGenerate(
 	web.EncodeNotation(
 		w,
 		generated.GenerateResponse{
-		Path:     reportPath,
-		TidCount: tidCount,
-	})
+			Path:     reportPath,
+			TidCount: tidCount,
+		},
+	)
 }

@@ -6,6 +6,9 @@ import (
 	"net/http"
 )
 
-func Encode(w http.ResponseWriter, a any) {
+func Encode(
+	w http.ResponseWriter,
+	a any,
+) {
 	errors.PanicOnError(json.NewEncoder(w).Encode(a))
 }

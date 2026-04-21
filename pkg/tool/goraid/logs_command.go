@@ -52,7 +52,12 @@ func logsCommand(c *raid.Client) *cobra.Command {
 		},
 	}
 	command.Flags().IntVar(&offset, "offset", 0, "offset into log list")
-	command.Flags().IntVar(&limit, "limit", 0, "maximum number of logs to return")
+	command.Flags().IntVar(
+		&limit,
+		"limit",
+		0,
+		"maximum number of logs to return",
+	)
 	command.Flags().StringVar(
 		&start,
 		"start",

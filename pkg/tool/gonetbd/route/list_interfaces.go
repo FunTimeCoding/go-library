@@ -11,5 +11,8 @@ func (h *Router) ListInterfaces(
 	name string,
 ) {
 	d := h.client.DeviceByNameStrict(name)
-	web.EncodeNotation(w, toInterfaces(h.client.DeviceInterfaces(d.Identifier)))
+	web.EncodeNotation(
+		w,
+		toInterfaces(h.client.DeviceInterfaces(d.Identifier)),
+	)
 }

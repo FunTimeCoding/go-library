@@ -82,10 +82,11 @@ type JiraIssue struct {
 
 // JiraProject defines model for JiraProject.
 type JiraProject struct {
-	Key  string  `json:"key"`
-	Link *string `json:"link,omitempty"`
-	Name string  `json:"name"`
-	Type *string `json:"type,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Key         string  `json:"key"`
+	Link        *string `json:"link,omitempty"`
+	Name        string  `json:"name"`
+	Type        *string `json:"type,omitempty"`
 }
 
 // JiraTransition defines model for JiraTransition.

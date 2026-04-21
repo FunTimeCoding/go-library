@@ -126,7 +126,10 @@ func (s *Server) register() {
 				mcp.Required(),
 				mcp.Description("Full page content in markdown"),
 			),
-			mcp.WithString(parameter.Message, mcp.Description("Version comment")),
+			mcp.WithString(
+				parameter.Message,
+				mcp.Description("Version comment"),
+			),
 		),
 		s.updatePage,
 	)

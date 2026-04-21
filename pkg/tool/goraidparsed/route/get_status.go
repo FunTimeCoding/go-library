@@ -13,6 +13,7 @@ func (h *Router) GetStatus(
 	web.EncodeNotation(
 		w,
 		generated.StatusResponse{
-		Status: "ok",
-	})
+			Status: "ok",
+		},
+	)
 }

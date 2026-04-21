@@ -21,7 +21,7 @@ func Run(o *option.Raid) {
 	go s.RunBackground(stop)
 	l := lifecycle.New(
 		lifecycle.WithServer(
-			webConstant.Listen,
+			webConstant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
 					route.New(

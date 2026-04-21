@@ -44,12 +44,15 @@ func Main(
         defer func() { r.RecoverFlush(recover()) }()
     }
 
+    pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
     monitor.ParseBind(version, gitHash, buildDate)
-    // ... flags, option struct, delegate
+    o := option.New()
+    o.Port = argument.RequiredInteger(argument.Port)
+    Run(o)
 }
 ```
 
-`monitor.ParseBind` adds `--version` flag, calls `argument.ParseBind()`, and exits on `--version`. Argument registration order: reusable monitor helpers first, then domain-specific `pflag` calls, then `monitor.ParseBind()`.
+`monitor.ParseBind` adds `--version` flag, calls `argument.ParseBind()`, and exits on `--version`. Argument registration order: domain-specific `pflag` calls first, then `monitor.ParseBind()`. After parsing, populate the option struct using `argument.RequiredInteger` (or `argument.RequiredString`, `environment.Required`, etc.).
 
 ## Sentry Integration
 

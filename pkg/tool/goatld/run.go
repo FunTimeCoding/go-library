@@ -7,14 +7,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/route"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goatld/server"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
 func Run(o *option.Atlassian) {
 	lifecycle.New(
 		lifecycle.WithServer(
-			web.Listen,
+			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(o.Jira, o.Confluence), m)
 				generative.New(

@@ -42,7 +42,19 @@ pkg/tool/go<tool>/
 
 See `entrypoint.md` for linker variables, `Main()`, and sentry setup.
 
-`Main()` registers flags, builds the option struct, and calls `Run()`. Sentry and `monitor.ParseBind` are handled per the entrypoint convention.
+`Main()` registers the `--port` flag, builds the option struct, and calls `Run()`. Sentry and `monitor.ParseBind` are handled per the entrypoint convention.
+
+```go
+pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
+monitor.ParseBind(version, gitHash, buildDate)
+o := option.New()
+o.Port = argument.RequiredInteger(argument.Port)
+Run(o)
+```
+
+- `web.ListenPort` (8080) is the default; override with `--port`
+- `argument.RequiredInteger` reads the flag value via viper
+- Port lives in the option struct as `int`, not as a formatted address string
 
 ## Run Function
 
@@ -52,26 +64,26 @@ See `entrypoint.md` for linker variables, `Main()`, and sentry setup.
 func Run(o *option.Log) {
     s := store.New(o.DatabasePath)
     defer s.Close()
-    l := lifecycle.New(
+    lifecycle.New(
         lifecycle.WithWorker(
             poller.New(client, s, 1*time.Minute),
         ),
         lifecycle.WithServer(
-            constant.Listen,
+            web.AddressPort(o.Port),
             func(m *http.ServeMux) {
                 m.HandleFunc("/api/alerts", route.Alerts(s))
             },
         ),
-    )
-    l.RunUntilSignal()
+    ).RunUntilSignal()
 }
 ```
 
 Key conventions:
-- Server address uses `web/constant.Listen` (`:8080`)
+- Server address uses `web.AddressPort(o.Port)` to format the port as `":8080"`
 - Routes registered in the `func(*http.ServeMux)` callback
 - `RunUntilSignal()` handles run, signal block, and reverse-order stop
 - Store closed via `defer` before lifecycle starts
+- Avoid declaring intermediate variables for lifecycle or generative server when only used once
 
 ## Route Functions
 

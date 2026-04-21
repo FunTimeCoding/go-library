@@ -1,7 +1,7 @@
 package integers32
 
-import "fmt"
+import "strconv"
 
 func ToString(number int32) string {
-	return fmt.Sprintf("%d", number)
+	return strconv.FormatInt(int64(number), 10)
 }

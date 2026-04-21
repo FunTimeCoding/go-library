@@ -4,3 +4,4 @@
 /.claude/settings.local.json
 __pycache__/
 js/firefox_bridge/Readability.js
+js/firefox_bridge/.amo-upload-uuid

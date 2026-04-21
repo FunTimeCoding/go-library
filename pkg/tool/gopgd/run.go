@@ -16,7 +16,7 @@ func Run(c *config.Configuration) {
 	s := store.New(c)
 	lifecycle.New(
 		lifecycle.WithServer(
-			web.Listen,
+			web.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s), m)
 				generative.New(

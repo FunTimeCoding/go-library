@@ -7,14 +7,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/route"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/server"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
 
 func Run(o *option.Netbox) {
 	lifecycle.New(
 		lifecycle.WithServer(
-			web.Listen,
+			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(o.Client), m)
 				generative.New(

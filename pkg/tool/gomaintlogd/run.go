@@ -20,7 +20,7 @@ func Run(o *option.Log) {
 	defer s.Close()
 	l := lifecycle.New(
 		lifecycle.WithServer(
-			webConstant.Listen,
+			webConstant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s), m)
 				generative.New(model_context.New(s).Nested()).Setup(m)

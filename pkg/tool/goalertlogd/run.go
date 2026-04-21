@@ -36,7 +36,7 @@ func Run(o *option.Log) {
 		lifecycle.WithWorker(e),
 		lifecycle.WithWorker(p),
 		lifecycle.WithServer(
-			webConstant.Listen,
+			webConstant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s, p), m)
 				generative.New(model_context.New(s, p).Nested()).Setup(m)

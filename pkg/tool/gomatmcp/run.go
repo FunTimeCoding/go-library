@@ -25,14 +25,12 @@ func Run() {
 
 	s := server.NewMCPServer("Mattermost MCP", constant.DefaultVersion)
 	addTool(s, tool.New(m, o), o != nil)
-	v := generative.New(s)
-	b := lifecycle.New(
+	lifecycle.New(
 		lifecycle.WithServer(
-			web.Listen,
-			func(mx *http.ServeMux) {
-				v.Setup(mx)
+			web.ListenAddress,
+			func(u *http.ServeMux) {
+				generative.New(s).Setup(u)
 			},
 		),
-	)
-	b.RunUntilSignal()
+	).RunUntilSignal()
 }

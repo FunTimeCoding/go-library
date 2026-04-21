@@ -1,7 +1,7 @@
 package integers
 
-import "fmt"
+import "strconv"
 
 func ToString(number int) string {
-	return fmt.Sprintf("%d", number)
+	return strconv.Itoa(number)
 }

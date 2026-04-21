@@ -17,7 +17,7 @@ func (a *Alert) formatName(f *option.Format) string {
 
 	if f.HasTag(tag.Emoji) {
 		if v := a.emoji(); len(v) > 0 {
-			result = key_value.Space(join.Empty(v), result)
+			result = key_value.Space(join.Empty(v...), result)
 		}
 	}
 

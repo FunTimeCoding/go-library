@@ -107,22 +107,22 @@ import (
     generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
     "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/model_context"
     generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/server"
+    "github.com/funtimecoding/go-library/pkg/web"
 )
 
-lifecycle.WithServerTimeout(
-    web.Listen,
+lifecycle.WithServer(
+    web.AddressPort(o.Port),
     func(m *http.ServeMux) {
         generated.HandlerFromMux(route.New(s, p), m)
         generative.New(model_context.New(s, p).Nested()).Setup(m)
     },
-    0,
-    0,
 )
 ```
 
 - `generative` is the standard alias for `pkg/generative/model_context/server` (the HTTP transport infrastructure)
 - `generated` is the standard alias for the oapi-codegen server package (`pkg/tool/go<tool>d/server`)
 - The local `model_context` package is imported without alias
+- `generative.New(...)` is called directly inside the closure, not assigned to a variable outside it
 
 ## What Not To Do
 

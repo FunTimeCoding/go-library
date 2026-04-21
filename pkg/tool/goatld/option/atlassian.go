@@ -8,4 +8,5 @@ import (
 type Atlassian struct {
 	Jira       *jira.Client
 	Confluence *confluence.Client
+	Port       int
 }

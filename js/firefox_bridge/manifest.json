@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Firefox Bridge",
-  "version": "1.0.0",
+  "name": "Browser Bridge",
+  "version": "1.0.1",
   "description": "Bridge for MCP access to Firefox tabs and content",
   "permissions": [
     "tabs",
@@ -12,5 +12,10 @@
   "background": {
     "scripts": ["bridge.js", "background.js"],
     "persistent": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{6a4363a0-49d6-415b-9ea6-e0feda0b78f5}"
+    }
   }
 }

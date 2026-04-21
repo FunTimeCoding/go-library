@@ -108,18 +108,15 @@ func Run(o *option.Config) {
     // 1. Construct components
     e := metric.New(0, o.Verbose, nil)
 
-    // 2. Build lifecycle in desired start order
-    l := lifecycle.New(
+    // 2. Build lifecycle in desired start order, run until signal
+    lifecycle.New(
         lifecycle.WithVerbose(o.Verbose),
         lifecycle.WithWorker(e),
         lifecycle.WithWorker(ticker.New(5*time.Minute, func() { ... })),
-        lifecycle.WithServer(":8080", func(m *http.ServeMux) {
+        lifecycle.WithServer(web.AddressPort(o.Port), func(m *http.ServeMux) {
             m.HandleFunc("/health", health)
         }),
-    )
-
-    // 3. Run until signal, stop in reverse order
-    l.RunUntilSignal()
+    ).RunUntilSignal()
 }
 ```
 

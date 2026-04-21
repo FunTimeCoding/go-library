@@ -135,7 +135,9 @@ func (h *Router) PostGenerate(
 
 	reportPath := filepath.Join(h.outputPath, reportName)
 	system.Move(reportSource, reportPath)
-	web.EncodeNotation(w, generated.GenerateResponse{
+	web.EncodeNotation(
+		w,
+		generated.GenerateResponse{
 		Path:     reportPath,
 		TidCount: tidCount,
 	})

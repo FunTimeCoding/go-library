@@ -3,7 +3,7 @@ package lint
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
-	lintConstant "github.com/funtimecoding/go-library/pkg/lint/constant"
+	lint "github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
@@ -76,14 +76,18 @@ func Lint(
 		if isExecutable(v.Read(p)) {
 			if fix {
 				system.Remove(p)
-				fmt.Printf("%s (deleted): %s\n", lintConstant.StrayBinaryText, p)
+				fmt.Printf(
+					"%s (deleted): %s\n",
+					lint.StrayBinaryText,
+					p,
+				)
 			} else {
-				fmt.Printf("%s: %s\n", lintConstant.StrayBinaryText, p)
+				fmt.Printf("%s: %s\n", lint.StrayBinaryText, p)
 			}
 		}
 	}
 
-	fixes := Check(v, skip, fix, verbose)
+	fixes := Check(v, skip, fix, verbose, false)
 
 	if fix {
 		fixes.Flush(constant.CurrentDirectory)

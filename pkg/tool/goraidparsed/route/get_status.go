@@ -10,7 +10,9 @@ func (h *Router) GetStatus(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, generated.StatusResponse{
+	web.EncodeNotation(
+		w,
+		generated.StatusResponse{
 		Status: "ok",
 	})
 }

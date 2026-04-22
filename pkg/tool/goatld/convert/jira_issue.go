@@ -22,8 +22,9 @@ func JiraIssue(i *issue.Issue) *server.JiraIssue {
 		result.Priority = &i.Priority
 	}
 
-	if i.Initials != "" {
-		result.Assignee = &i.Initials
+	if i.Raw.Fields.Assignee != nil &&
+		i.Raw.Fields.Assignee.DisplayName != "" {
+		result.Assignee = &i.Raw.Fields.Assignee.DisplayName
 	}
 
 	if len(i.Labels) > 0 {

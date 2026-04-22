@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/mark3labs/mcp-go/mcp"
-	"time"
 )
 
 type getUserProfileArguments struct {
@@ -41,7 +40,7 @@ func (t *Tool) GetUserProfile(
 			"position":   u.Position,
 			"roles":      u.Roles,
 			"is_bot":     u.IsBot,
-			"create_at":  time.Unix(u.CreateAt/1000, 0).Format(time.RFC3339),
+			"create_at":  formatMilli(u.CreateAt),
 		},
 	)
 }

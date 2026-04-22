@@ -2,8 +2,11 @@ package model_context
 
 import (
 	"context"
+	"github.com/andygrunwald/go-jira"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -18,7 +21,29 @@ func (s *Server) getIssue(
 		return response.Fail("key is required: %v", f)
 	}
 
-	return response.SuccessAny(
-		convert.JiraIssue(s.jira.Issue(key)),
+	i := s.jira.Issue(key)
+	includeCustom := r.GetBool(constant.CustomFields, false)
+	includeComments := r.GetBool(constant.Comments, false)
+	var t *jira.MetaIssueType
+
+	if includeCustom {
+		p := s.jira.MetaProject(i.Raw.Fields.Project.Key)
+		t = p.GetIssueTypeWithName(i.Type)
+	}
+
+	result := convert.JiraIssueWithCustomFields(
+		i,
+		t,
+		includeComments,
 	)
+	value := i.CustomValue(constant.ChecklistField)
+
+	if value != "" &&
+		value != issue.NilValue &&
+		value != issue.UnknownField &&
+		value != issue.UnknownValue {
+		result.Checklist = ParseChecklist(value)
+	}
+
+	return response.SuccessAny(result)
 }

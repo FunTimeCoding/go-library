@@ -1,8 +1,16 @@
 package constant
 
 const (
+	MyChannels        = "my_channels"
+	MyThreads         = "my_threads"
+	SearchChannels    = "search_channels"
+	SearchMessages    = "search_messages"
+	SearchUsers       = "search_users"
+	DownloadFile      = "download_file"
+	UploadFile        = "upload_file"
 	ListChannels      = "list_channels"
 	GetChannelHistory = "get_channel_history"
+	SendDirectMessage = "send_dm"
 	PostMessage       = "post_message"
 	ReplyToThread     = "reply_to_thread"
 	AddReaction       = "add_reaction"

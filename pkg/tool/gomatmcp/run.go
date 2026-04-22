@@ -7,27 +7,28 @@ import (
 	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/tool"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/mark3labs/mcp-go/server"
 	"net/http"
 )
 
-func Run() {
-	m := mattermost.NewEnvironment()
-	var o *monitor.Monitor
+func Run(o *option.Mattermost) {
+	c := mattermost.NewEnvironment()
+	var m *monitor.Monitor
 
-	if c := monitor.LoadConfiguration(); c.Enabled {
-		o = monitor.New(m, c)
-		errors.PanicOnError(o.Start())
-		defer o.Stop()
+	if v := monitor.LoadConfiguration(); v.Enabled {
+		m = monitor.New(c, v)
+		errors.PanicOnError(m.Start())
+		defer m.Stop()
 	}
 
 	s := server.NewMCPServer("Mattermost MCP", constant.DefaultVersion)
-	addTool(s, tool.New(m, o), o != nil)
+	addTool(s, tool.New(c, m), m != nil)
 	lifecycle.New(
 		lifecycle.WithServer(
-			web.ListenAddress,
+			web.AddressPort(o.Port),
 			func(u *http.ServeMux) {
 				generative.New(s).Setup(u)
 			},

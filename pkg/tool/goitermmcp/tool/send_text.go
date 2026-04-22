@@ -9,6 +9,7 @@ import (
 type sendTextArguments struct {
 	SessionIdentifier string `json:"session_id"`
 	Text              string `json:"text"`
+	SendEnter         bool   `json:"send_enter"`
 }
 
 func (t *Tool) SendText(
@@ -24,6 +25,14 @@ func (t *Tool) SendText(
 
 	if e != nil {
 		return response.Fail("send text: %v", e)
+	}
+
+	if arguments.SendEnter {
+		f := t.client.SendKey(arguments.SessionIdentifier, "enter")
+
+		if f != nil {
+			return response.Fail("send enter: %v", f)
+		}
 	}
 
 	return response.Success("sent: %s", arguments.Text)

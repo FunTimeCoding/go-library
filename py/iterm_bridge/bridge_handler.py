@@ -11,12 +11,14 @@ except ImportError:
 
 class BridgeHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == "/sessions":
+        path, _, query_string = self.path.partition("?")
+
+        if path == "/sessions":
             result = self._run(bridge_core.list_sessions(self.server.connection))
             self._json_response({"sessions": result})
             return
 
-        match = re.match(r"^/sessions/([^/]+)/screen$", self.path)
+        match = re.match(r"^/sessions/([^/]+)/screen$", path)
 
         if match:
             session_id = match.group(1)
@@ -31,16 +33,14 @@ class BridgeHandler(BaseHTTPRequestHandler):
             self._json_response(result)
             return
 
-        match = re.match(r"^/sessions/([^/]+)/history$", self.path)
+        match = re.match(r"^/sessions/([^/]+)/history$", path)
 
         if match:
             session_id = match.group(1)
             count = 50
 
-            query = self.path.split("?", 1)
-
-            if len(query) > 1:
-                for pair in query[1].split("&"):
+            if query_string:
+                for pair in query_string.split("&"):
                     key, _, value = pair.partition("=")
 
                     if key == "count":

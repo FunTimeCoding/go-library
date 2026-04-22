@@ -63,7 +63,7 @@ func addTool(
 			constant.SendText,
 			mcp.WithDescription(
 				"Send text to an iTerm2 session as if typed. "+
-					"Does NOT send enter — use send_key for that. "+
+					"Set send_enter to also press enter after the text. "+
 					"Exercise caution: check what session is running "+
 					"(job_name, command_line) before sending to avoid "+
 					"unintended commands on production servers.",
@@ -78,6 +78,12 @@ func addTool(
 				mcp.Required(),
 				mcp.Description("Text to send"),
 			),
+			mcp.WithBoolean(
+				"send_enter",
+				mcp.Description(
+					"Press enter after sending the text (default false)",
+				),
+			),
 		),
 		mcp.NewTypedToolHandler(t.SendText),
 	)
@@ -85,7 +91,8 @@ func addTool(
 		mcp.NewTool(
 			constant.SendKey,
 			mcp.WithDescription(
-				"Send a named key to an iTerm2 session. "+
+				"Send a sequence of named keys to an iTerm2 session "+
+					"with a configurable interval between each. "+
 					"Valid keys: enter, tab, escape, ctrl+c, ctrl+d, ctrl+z, "+
 					"ctrl+l, ctrl+a, ctrl+e, ctrl+r, ctrl+w, ctrl+u, "+
 					"up, down, left, right, backspace, delete. "+
@@ -97,10 +104,20 @@ func addTool(
 				mcp.Required(),
 				mcp.Description("iTerm2 session identifier"),
 			),
-			mcp.WithString(
-				"key",
+			mcp.WithArray(
+				"keys",
 				mcp.Required(),
-				mcp.Description("Key name (e.g. enter, ctrl+c, tab, up)"),
+				mcp.Description(
+					"Array of key names to send in sequence "+
+						"(e.g. [\"ctrl+c\", \"up\", \"enter\"])",
+				),
+				mcp.WithStringItems(),
+			),
+			mcp.WithNumber(
+				"interval",
+				mcp.Description(
+					"Seconds between each key (default 1, minimum 1)",
+				),
 			),
 		),
 		mcp.NewTypedToolHandler(t.SendKey),

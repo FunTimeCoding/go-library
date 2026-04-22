@@ -6,7 +6,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
-	"time"
 )
 
 type postMessageArguments struct {
@@ -50,7 +49,7 @@ func (t *Tool) PostMessage(
 			"id":         p.Id,
 			"channel_id": p.ChannelId,
 			"message":    p.Message,
-			"create_at":  time.Unix(p.CreateAt/1000, 0).Format(time.RFC3339),
+			"create_at":  formatMilli(p.CreateAt),
 		},
 	)
 }

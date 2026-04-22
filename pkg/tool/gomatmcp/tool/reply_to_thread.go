@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/mark3labs/mcp-go/mcp"
-	"time"
 )
 
 type replyToThreadArguments struct {
@@ -46,7 +45,7 @@ func (t *Tool) ReplyToThread(
 			"channel_id": p.ChannelId,
 			"root_id":    p.RootId,
 			"message":    p.Message,
-			"create_at":  time.Unix(p.CreateAt/1000, 0).Format(time.RFC3339),
+			"create_at":  formatMilli(p.CreateAt),
 		},
 	)
 }

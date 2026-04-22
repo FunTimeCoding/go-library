@@ -62,8 +62,8 @@ async def read_history(connection, session_id, count):
     line_info = await session.async_get_contents(start, length)
     lines = []
 
-    for i in range(line_info.number_of_lines):
-        lines.append(line_info.line(i).string)
+    for line in line_info:
+        lines.append(line.string)
 
     return {
         "session_id": session_id,

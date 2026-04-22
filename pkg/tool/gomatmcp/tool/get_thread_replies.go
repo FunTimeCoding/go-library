@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/mark3labs/mcp-go/mcp"
-	"time"
 )
 
 type getThreadRepliesArguments struct {
@@ -30,20 +29,29 @@ func (t *Tool) GetThreadReplies(
 
 	parent := t.client.FindPost(a.PostID)
 	replies := t.client.Thread(parent)
+	t.client.Enrich(replies)
 	type row struct {
-		ID       string `json:"id"`
-		UserID   string `json:"user_id"`
-		Message  string `json:"message"`
-		CreateAt string `json:"create_at"`
+		ID       string   `json:"id"`
+		Username string   `json:"username"`
+		Message  string   `json:"message"`
+		CreateAt string   `json:"create_at"`
+		FileIds  []string `json:"file_ids,omitempty"`
 	}
 	rows := make([]row, len(replies))
 
 	for i, r := range replies {
 		rows[i] = row{
 			ID:       r.Raw.Id,
-			UserID:   r.Raw.UserId,
 			Message:  r.Message,
-			CreateAt: r.Create.Format(time.RFC3339),
+			CreateAt: formatTime(r.Create),
+		}
+
+		if r.User != nil {
+			rows[i].Username = r.User.Username
+		}
+
+		if len(r.Raw.FileIds) > 0 {
+			rows[i].FileIds = r.Raw.FileIds
 		}
 	}
 

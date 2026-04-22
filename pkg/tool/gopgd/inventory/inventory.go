@@ -1,5 +1,5 @@
-package config
+package inventory
 
-type Configuration struct {
+type Inventory struct {
 	Instances []Instance `yaml:"instances"`
 }

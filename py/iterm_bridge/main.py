@@ -44,4 +44,7 @@ async def main(connection):
         print("iTermBridge: stopped")
 
 
-iterm2.run_until_complete(main)
+try:
+    iterm2.run_until_complete(main)
+except KeyboardInterrupt:
+    pass

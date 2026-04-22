@@ -1,11 +1,14 @@
 package gopgd
 
 import (
+	"github.com/funtimecoding/go-library/pkg/argument"
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/funtimecoding/go-library/pkg/tool/gopgd/config"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/inventory"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/option"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -21,11 +24,15 @@ func Main(
 		defer func() { r.RecoverFlush(recover()) }()
 	}
 
+	pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
 	pflag.String(
-		configurationFlag,
+		argument.Inventory,
 		"gopgd.yaml",
-		"Configuration file path",
+		"Inventory file path",
 	)
 	monitor.ParseBind(version, gitHash, buildDate)
-	Run(config.Load(viper.GetString(configurationFlag)))
+	o := option.New()
+	o.Port = argument.RequiredInteger(argument.Port)
+	o.Inventory = inventory.Load(viper.GetString(argument.Inventory))
+	Run(o)
 }

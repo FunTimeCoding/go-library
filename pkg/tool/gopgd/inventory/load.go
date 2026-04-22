@@ -1,4 +1,4 @@
-package config
+package inventory
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
@@ -6,8 +6,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func Load(path string) *Configuration {
-	result := &Configuration{}
+func Load(path string) *Inventory {
+	result := &Inventory{}
 	errors.PanicOnError(yaml.Unmarshal(system.ReadBytesUnsafe(path), result))
 
 	return result

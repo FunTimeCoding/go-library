@@ -1,13 +1,13 @@
 package store
 
 import (
-	"github.com/funtimecoding/go-library/pkg/tool/gopgd/config"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/inventory"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func New(c *config.Configuration) *Store {
+func New(i *inventory.Inventory) *Store {
 	return &Store{
-		configuration: c,
-		pools:         make(map[string]*pgxpool.Pool),
+		inventory: i,
+		pools:     make(map[string]*pgxpool.Pool),
 	}
 }

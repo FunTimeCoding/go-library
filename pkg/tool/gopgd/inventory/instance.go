@@ -1,6 +1,4 @@
-package config
-
-import "fmt"
+package inventory
 
 type Instance struct {
 	Name     string `yaml:"name"`
@@ -9,15 +7,4 @@ type Instance struct {
 	Database string `yaml:"database"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
-}
-
-func (i *Instance) Locator() string {
-	return fmt.Sprintf(
-		"postgres://%s:%s@%s:%d/%s",
-		i.User,
-		i.Password,
-		i.Host,
-		i.Port,
-		i.Database,
-	)
 }

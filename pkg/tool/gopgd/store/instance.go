@@ -1,11 +1,11 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/gopgd/config"
+import "github.com/funtimecoding/go-library/pkg/tool/gopgd/inventory"
 
-func (s *Store) Instance(name string) (*config.Instance, bool) {
-	for i := range s.configuration.Instances {
-		if s.configuration.Instances[i].Name == name {
-			return &s.configuration.Instances[i], true
+func (s *Store) Instance(name string) (*inventory.Instance, bool) {
+	for i := range s.inventory.Instances {
+		if s.inventory.Instances[i].Name == name {
+			return &s.inventory.Instances[i], true
 		}
 	}
 

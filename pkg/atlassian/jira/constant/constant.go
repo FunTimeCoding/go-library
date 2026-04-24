@@ -19,6 +19,9 @@ const (
 	IssueCountType = "issueCount"
 
 	AllowedValuesKey = "allowedValues"
+
+	CommentPageSize = 100
+	CommentCap      = 20
 )
 
 // API paths

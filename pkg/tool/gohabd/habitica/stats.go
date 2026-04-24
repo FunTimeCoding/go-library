@@ -1,0 +1,10 @@
+package habitica
+
+type Stats struct {
+	HP    float64 `json:"hp"`
+	MP    float64 `json:"mp"`
+	XP    float64 `json:"exp"`
+	GP    float64 `json:"gp"`
+	Level int     `json:"lvl"`
+	Class string  `json:"class"`
+}

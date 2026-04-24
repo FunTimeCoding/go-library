@@ -21,6 +21,7 @@ coolify
 funtimecoding
 gdamore
 grafana
+habitica
 homeassistant
 jdoe
 jellyfin
@@ -84,6 +85,8 @@ goghpr
 gogithub
 gogitlab
 gogitstatus
+gohab
+gohabd
 goimage
 goitermmcp
 gojira
@@ -97,6 +100,8 @@ gomonitor
 gomonitord
 gonetb
 gonetbd
+gopg
+gopgd
 goraid
 goraidd
 goraidparsed

@@ -1,0 +1,48 @@
+package habitica
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system"
+	"io"
+	"net/http"
+)
+
+func (c *Client) do(
+	method string,
+	path string,
+	body any,
+) *http.Response {
+	var reader io.Reader
+
+	if body != nil {
+		b, e := json.Marshal(body)
+		errors.PanicOnError(e)
+		reader = bytes.NewReader(b)
+	}
+
+	r, e := http.NewRequest(method, c.baseURL+path, reader)
+	errors.PanicOnError(e)
+	r.Header.Set(userHeader, c.userID)
+	r.Header.Set(tokenHeader, c.token)
+	r.Header.Set("Content-Type", "application/json")
+	result, f := c.http.Do(r)
+	errors.PanicOnError(f)
+
+	if result.StatusCode >= http.StatusBadRequest {
+		b := system.ReadAll(result.Body)
+		panic(
+			fmt.Sprintf(
+				"habitica %s %s: %d %s",
+				method,
+				path,
+				result.StatusCode,
+				string(b),
+			),
+		)
+	}
+
+	return result
+}

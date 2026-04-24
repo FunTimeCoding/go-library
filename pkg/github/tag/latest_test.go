@@ -2,7 +2,7 @@ package tag
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/google/go-github/v84/github"
+	"github.com/google/go-github/v85/github"
 	"testing"
 )
 

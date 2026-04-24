@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/strings"
-	"github.com/google/go-github/v84/github"
+	"github.com/google/go-github/v85/github"
 	"testing"
 	"time"
 )

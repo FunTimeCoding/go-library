@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/google/go-github/v84/github"
+import "github.com/google/go-github/v85/github"
 
 func NewSlice(v []*github.Repository) []*Repository {
 	var result []*Repository

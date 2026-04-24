@@ -3,18 +3,15 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
-type useInstanceArguments struct {
-	Instance string `json:"instance"`
-}
-
 func (s *Server) useInstance(
 	x context.Context,
 	_ mcp.CallToolRequest,
-	a useInstanceArguments,
+	a argument.UseInstance,
 ) (*mcp.CallToolResult, error) {
 	if a.Instance == "" {
 		return response.Fail("instance is required")

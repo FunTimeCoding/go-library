@@ -2,30 +2,25 @@ package tool
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/generative/mark/request"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type navigateArguments struct {
-	TabIdentifier request.Integer `json:"tab_id"`
-	Locator       string          `json:"url"`
-}
 
 func (t *Tool) Navigate(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments navigateArguments,
+	a argument.Navigate,
 ) (*mcp.CallToolResult, error) {
-	if arguments.Locator == "" {
+	if a.Locator == "" {
 		return response.Fail("url is required")
 	}
 
-	e := t.client.Navigate(int(arguments.TabIdentifier), arguments.Locator)
+	e := t.client.Navigate(int(a.TabIdentifier), a.Locator)
 
 	if e != nil {
 		return response.Fail("navigate: %v", e)
 	}
 
-	return response.Success("navigated to %s", arguments.Locator)
+	return response.Success("navigated to %s", a.Locator)
 }

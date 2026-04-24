@@ -2,7 +2,7 @@ package runner
 
 import "gitlab.com/gitlab-org/api/client-go/v2"
 
-func FromDetail(v *gitlab.RunnerDetails) *Runner {
+func NewDetail(v *gitlab.RunnerDetails) *Runner {
 	return &Runner{
 		Identifier:  v.ID,
 		Name:        v.Name,

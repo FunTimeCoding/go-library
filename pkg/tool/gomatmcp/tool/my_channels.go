@@ -4,21 +4,16 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 	"sort"
 )
 
-type myChannelsArguments struct {
-	Limit      int    `json:"limit"`
-	TypeFilter string `json:"type"`
-	Since      string `json:"since"`
-}
-
 func (t *Tool) MyChannels(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments myChannelsArguments,
+	a argument.MyChannels,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -26,7 +21,7 @@ func (t *Tool) MyChannels(
 			e = nil
 		}
 	}()
-	limit := arguments.Limit
+	limit := a.Limit
 
 	if limit <= 0 {
 		limit = 30
@@ -42,8 +37,8 @@ func (t *Tool) MyChannels(
 		},
 	)
 
-	if arguments.Since != "" {
-		since, f := parseSince(arguments.Since)
+	if a.Since != "" {
+		since, f := parseSince(a.Since)
 
 		if f != nil {
 			return response.Fail(
@@ -64,11 +59,11 @@ func (t *Tool) MyChannels(
 		channels = filtered
 	}
 
-	if arguments.TypeFilter != "" {
+	if a.TypeFilter != "" {
 		var filtered []*model.Channel
 
 		for _, c := range channels {
-			if string(c.Type) == arguments.TypeFilter {
+			if string(c.Type) == a.TypeFilter {
 				filtered = append(filtered, c)
 			}
 		}

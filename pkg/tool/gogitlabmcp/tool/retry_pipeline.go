@@ -3,18 +3,14 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type retryPipelineArguments struct {
-	Project  string `json:"project"`
-	Pipeline int64  `json:"pipeline"`
-}
 
 func (t *Tool) RetryPipeline(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a retryPipelineArguments,
+	a argument.RetryPipeline,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

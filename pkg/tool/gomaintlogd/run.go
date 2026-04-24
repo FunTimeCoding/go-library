@@ -24,7 +24,7 @@ func Run(o *option.Log) {
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s), m)
 				generative.New(model_context.New(s).Nested()).Setup(m)
-				web.NewServer(s).Mount(m)
+				web.New(s).Mount(m)
 			},
 		),
 	)

@@ -55,7 +55,7 @@ func TestRunLifecycle(t *testing.T) {
 			n,
 			func(m *http.ServeMux) {
 				server.HandlerFromMux(route.New(s, p), m)
-				web.NewServer(s, p).Mount(m)
+				web.New(s, p).Mount(m)
 			},
 		),
 	)

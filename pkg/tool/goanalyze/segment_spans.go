@@ -5,12 +5,6 @@ import (
 	"unicode"
 )
 
-type segmentSpan struct {
-	start int
-	end   int
-	lower string
-}
-
 func segmentSpans(name string) []segmentSpan {
 	var result []segmentSpan
 	offset := 0

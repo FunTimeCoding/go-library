@@ -7,7 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 )
 
-func (c *Client) OrganizationTeams(organization string) []response.Team {
+func (c *Client) Teams(organization string) []response.Team {
 	var result []response.Team
 	errors.PanicOnError(
 		json.Unmarshal(

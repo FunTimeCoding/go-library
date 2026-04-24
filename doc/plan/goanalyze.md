@@ -12,6 +12,8 @@ Registered in `multichecker.Main`:
 - `struct_literal` — flags `&pkg.X{}` for owned packages
 - `call_format` — flags multi-arg calls where arguments share a line
 - `defer_close` — flags `defer x.Close()` where x implements `io.Closer`
+- `file_identity` — one identity per file, filename matches identity in snake_case
+- `type_receiver` — flags packages with more than one type that has method receivers
 - `variable_naming` — deterministic type-based letter assignment for local variables
 
 Fix paths: `--fix` (naming renames + call formatting), `--rename` (variable naming)
@@ -89,7 +91,6 @@ Second phase: propose new constants for repeated literals.
 
 - stdlib call replacement: `os.Create` etc. → go-library wrappers — call site easy,
   import rewrite harder
-- Filename must match function/struct name — preventive; 95%+ compliance today
 
 ### Auto-fix messaging
 

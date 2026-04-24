@@ -31,7 +31,7 @@ func (s *Server) getIssue(
 		t = p.GetIssueTypeWithName(i.Type)
 	}
 
-	result := convert.JiraIssueWithCustomFields(
+	result := convert.JiraIssueCustomFields(
 		i,
 		t,
 		includeComments,

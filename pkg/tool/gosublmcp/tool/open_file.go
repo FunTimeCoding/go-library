@@ -3,23 +3,20 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type openFileArguments struct {
-	FilePath string `json:"file_path"`
-}
 
 func (t *Tool) OpenFile(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments openFileArguments,
+	a argument.OpenFile,
 ) (*mcp.CallToolResult, error) {
-	if arguments.FilePath == "" {
+	if a.FilePath == "" {
 		return response.Fail("file_path is required")
 	}
 
-	v, e := t.client.OpenFile(arguments.FilePath)
+	v, e := t.client.OpenFile(a.FilePath)
 
 	if e != nil {
 		return response.Fail("open file: %v", e)

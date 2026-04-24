@@ -24,9 +24,6 @@ const (
 	PackageNameKey  = "package_name"
 	PackageNameText = "Blacklisted package name"
 
-	MultipleExportedTypesKey  = "multiple_exported_types"
-	MultipleExportedTypesText = "Multiple exported types in one file"
-
 	MissingTestFileKey  = "missing_test_file"
 	MissingTestFileText = "No test file in package"
 
@@ -47,9 +44,6 @@ const (
 
 	ForbiddenImportKey  = "forbidden_import"
 	ForbiddenImportText = `Use "github.com/spf13/pflag" instead of "flag"`
-
-	MultipleFunctionsKey  = "multiple_functions"
-	MultipleFunctionsText = "Multiple function definitions in one file"
 
 	StrayConstantKey  = "stray_const"
 	StrayConstantText = "Top-level const outside of a constant file or constant package"

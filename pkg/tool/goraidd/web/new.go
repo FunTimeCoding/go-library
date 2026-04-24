@@ -5,16 +5,16 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/store"
 )
 
-func NewServer(
-	store *store.Store,
+func New(
+	s *store.Store,
 	eliteInsightsPath string,
 	outputPath string,
-	parser *raid_parser.Client,
+	p *raid_parser.Client,
 ) *Server {
 	return &Server{
-		store:             store,
+		store:             s,
 		eliteInsightsPath: eliteInsightsPath,
 		outputPath:        outputPath,
-		parser:            parser,
+		parser:            p,
 	}
 }

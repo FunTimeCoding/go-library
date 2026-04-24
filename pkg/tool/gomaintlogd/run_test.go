@@ -19,7 +19,7 @@ import (
 
 func setup(t *testing.T) (*store.Store, int, *lifecycle.Lifecycle) {
 	t.Helper()
-	s := store.NewSQLite(filepath.Join(t.TempDir(), "test.db"))
+	s := store.NewLite(filepath.Join(t.TempDir(), "test.db"))
 	port, n := system.ClaimPort()
 	l := lifecycle.New(
 		lifecycle.WithListener(
@@ -27,7 +27,7 @@ func setup(t *testing.T) (*store.Store, int, *lifecycle.Lifecycle) {
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s), m)
 				generative.New(model_context.New(s).Nested()).Setup(m)
-				web.NewServer(s).Mount(m)
+				web.New(s).Mount(m)
 			},
 		),
 	)

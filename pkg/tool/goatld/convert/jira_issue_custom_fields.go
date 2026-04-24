@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func JiraIssueWithCustomFields(
+func JiraIssueCustomFields(
 	i *issue.Issue,
 	t *jira.MetaIssueType,
 	includeComments bool,

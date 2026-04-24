@@ -80,7 +80,7 @@ func main() {
 	secure_shell.ParsePrivateKey([]byte{})
 	secure_shell.Listen(nil, "")
 	client.NewContextStrict("")
-	client.NewInCLuster("")
+	client.NewInCluster("")
 	chromium.NewCombined("")
 	monitor.BindGeneric()
 	brave.OpenProfileLink("", "")

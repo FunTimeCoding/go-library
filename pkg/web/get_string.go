@@ -6,5 +6,5 @@ func GetString(
 	c *http.Client,
 	locator string,
 ) string {
-	return ReadString(Get(c, locator))
+	return ReadString(GetRaw(c, locator))
 }

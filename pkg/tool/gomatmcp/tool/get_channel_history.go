@@ -5,22 +5,16 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/post"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 	"time"
 )
 
-type getChannelHistoryArguments struct {
-	ChannelID   string `json:"channel_id"`
-	ChannelName string `json:"channel_name"`
-	Limit       int    `json:"limit"`
-	Since       string `json:"since"`
-}
-
 func (t *Tool) GetChannelHistory(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments getChannelHistoryArguments,
+	a argument.GetChannelHistory,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -29,11 +23,11 @@ func (t *Tool) GetChannelHistory(
 		}
 	}()
 
-	if arguments.ChannelID == "" && arguments.ChannelName == "" {
+	if a.ChannelID == "" && a.ChannelName == "" {
 		return response.Fail("channel_id or channel_name is required")
 	}
 
-	limit := arguments.Limit
+	limit := a.Limit
 
 	if limit <= 0 {
 		limit = 30
@@ -41,16 +35,16 @@ func (t *Tool) GetChannelHistory(
 
 	var ch *model.Channel
 
-	if arguments.ChannelName != "" {
-		ch = t.client.TeamChannel(arguments.ChannelName)
+	if a.ChannelName != "" {
+		ch = t.client.TeamChannel(a.ChannelName)
 	} else {
-		ch = t.client.Channel(arguments.ChannelID)
+		ch = t.client.Channel(a.ChannelID)
 	}
 
 	var posts []*post.Post
 
-	if arguments.Since != "" {
-		since, f := parseSince(arguments.Since)
+	if a.Since != "" {
+		since, f := parseSince(a.Since)
 
 		if f != nil {
 			return response.Fail(

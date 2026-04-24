@@ -1,6 +1,6 @@
 package request_context
 
-func (c *Context) BodyByte() []byte {
+func (c *Context) BodyBytes() []byte {
 	c.readBody()
 
 	return c.bodyByte

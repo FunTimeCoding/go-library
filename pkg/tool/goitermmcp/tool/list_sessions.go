@@ -3,15 +3,14 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type listSessionsArguments struct{}
 
 func (t *Tool) ListSessions(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	_ listSessionsArguments,
+	_ argument.ListSessions,
 ) (*mcp.CallToolResult, error) {
 	v, e := t.client.Sessions()
 

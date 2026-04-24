@@ -3,19 +3,15 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"io"
 )
 
-type getPipelineJobOutputArguments struct {
-	Project string `json:"project"`
-	Job     int64  `json:"job"`
-}
-
 func (t *Tool) GetPipelineJobOutput(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a getPipelineJobOutputArguments,
+	a argument.GetPipelineJobOutput,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

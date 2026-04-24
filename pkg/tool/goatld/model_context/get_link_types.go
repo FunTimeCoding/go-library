@@ -7,16 +7,6 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-type linkType struct {
-	Name    string `json:"name"`
-	Inward  string `json:"inward"`
-	Outward string `json:"outward"`
-}
-
-type linkTypeResponse struct {
-	IssueLinkTypes []linkType `json:"issueLinkTypes"`
-}
-
 func (s *Server) getLinkTypes(
 	_ context.Context,
 	_ mcp.CallToolRequest,

@@ -3,20 +3,15 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-type getFileContentsArguments struct {
-	Project   string `json:"project"`
-	Path      string `json:"path"`
-	Reference string `json:"reference"`
-}
-
 func (t *Tool) GetFileContents(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a getFileContentsArguments,
+	a argument.GetFileContents,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

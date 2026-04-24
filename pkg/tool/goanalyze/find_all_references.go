@@ -1,16 +1,10 @@
 package goanalyze
 
 import (
-	"go/ast"
 	"go/token"
 	"go/types"
 	"golang.org/x/tools/go/packages"
 )
-
-type reference struct {
-	ident *ast.Ident
-	p     *packages.Package
-}
 
 func findAllReferences(
 	all []*packages.Package,

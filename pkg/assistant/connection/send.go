@@ -2,7 +2,7 @@ package connection
 
 import "fmt"
 
-func (c *Connection) sendCommand(
+func (c *Connection) send(
 	o command,
 	s Subscriber,
 ) (uint64, error) {

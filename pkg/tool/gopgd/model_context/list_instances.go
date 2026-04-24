@@ -3,16 +3,15 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
-type listInstancesArguments struct{}
-
 func (s *Server) listInstances(
 	x context.Context,
 	_ mcp.CallToolRequest,
-	_ listInstancesArguments,
+	_ argument.ListInstances,
 ) (*mcp.CallToolResult, error) {
 	var active string
 

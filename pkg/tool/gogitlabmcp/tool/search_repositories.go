@@ -3,18 +3,15 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-type searchRepositoriesArguments struct {
-	Query string `json:"query"`
-}
-
 func (t *Tool) SearchRepositories(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a searchRepositoriesArguments,
+	a argument.SearchRepositories,
 ) (*mcp.CallToolResult, error) {
 	if a.Query == "" {
 		return response.Fail("query is required")

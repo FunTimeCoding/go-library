@@ -3,17 +3,14 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type queryArguments struct {
-	SQL string `json:"sql"`
-}
 
 func (s *Server) query(
 	x context.Context,
 	_ mcp.CallToolRequest,
-	a queryArguments,
+	a argument.Query,
 ) (*mcp.CallToolResult, error) {
 	instance, ok := s.activeInstance(x)
 

@@ -3,17 +3,14 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type tableSizesArguments struct {
-	Schema string `json:"schema"`
-}
 
 func (s *Server) tableSizes(
 	x context.Context,
 	_ mcp.CallToolRequest,
-	a tableSizesArguments,
+	a argument.TableSizes,
 ) (*mcp.CallToolResult, error) {
 	instance, ok := s.activeInstance(x)
 

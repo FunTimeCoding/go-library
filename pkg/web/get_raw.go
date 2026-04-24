@@ -2,7 +2,7 @@ package web
 
 import "net/http"
 
-func Get(
+func GetRaw(
 	c *http.Client,
 	locator string,
 ) *http.Response {

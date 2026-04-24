@@ -4,17 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type getUserProfileArguments struct {
-	UserID string `json:"user_id"`
-}
 
 func (t *Tool) GetUserProfile(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments getUserProfileArguments,
+	a argument.GetUserProfile,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -23,11 +20,11 @@ func (t *Tool) GetUserProfile(
 		}
 	}()
 
-	if arguments.UserID == "" {
+	if a.UserID == "" {
 		return response.Fail("user_id is required")
 	}
 
-	u := t.client.User(arguments.UserID)
+	u := t.client.User(a.UserID)
 
 	return response.SuccessAny(
 		map[string]any{

@@ -3,18 +3,14 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type listIndexesArguments struct {
-	Table  string `json:"table"`
-	Schema string `json:"schema"`
-}
 
 func (s *Server) listIndexes(
 	x context.Context,
 	_ mcp.CallToolRequest,
-	a listIndexesArguments,
+	a argument.ListIndexes,
 ) (*mcp.CallToolResult, error) {
 	instance, ok := s.activeInstance(x)
 

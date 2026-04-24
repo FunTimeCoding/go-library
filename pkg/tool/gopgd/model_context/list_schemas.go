@@ -3,15 +3,14 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type listSchemasArguments struct{}
 
 func (s *Server) listSchemas(
 	x context.Context,
 	_ mcp.CallToolRequest,
-	_ listSchemasArguments,
+	_ argument.ListSchemas,
 ) (*mcp.CallToolResult, error) {
 	instance, ok := s.activeInstance(x)
 

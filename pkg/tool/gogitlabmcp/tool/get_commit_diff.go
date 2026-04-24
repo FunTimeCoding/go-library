@@ -3,19 +3,15 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-type getCommitDiffArguments struct {
-	Project string `json:"project"`
-	Sha     string `json:"sha"`
-}
-
 func (t *Tool) GetCommitDiff(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a getCommitDiffArguments,
+	a argument.GetCommitDiff,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

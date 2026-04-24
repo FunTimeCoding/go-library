@@ -4,19 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type replyToThreadArguments struct {
-	ChannelID string `json:"channel_id"`
-	PostID    string `json:"post_id"`
-	Message   string `json:"message"`
-}
 
 func (t *Tool) ReplyToThread(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a replyToThreadArguments,
+	a argument.ReplyToThread,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {

@@ -8,7 +8,7 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-func NewInCLuster(cluster string) *Client {
+func NewInCluster(cluster string) *Client {
 	configuration, e := rest.InClusterConfig()
 	errors.PanicOnError(e)
 	result := Stub()

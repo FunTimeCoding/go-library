@@ -11,7 +11,7 @@ func newStore(o *option.Log) *store.Store {
 	}
 
 	if o.SQLitePath != "" {
-		return store.NewSQLite(o.SQLitePath)
+		return store.NewLite(o.SQLitePath)
 	}
 
 	panic("set POSTGRES_LOCATOR or SQLITE_PATH")

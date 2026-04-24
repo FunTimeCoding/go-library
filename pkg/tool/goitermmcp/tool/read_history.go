@@ -2,28 +2,23 @@ package tool
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/generative/mark/request"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type readHistoryArguments struct {
-	SessionIdentifier string          `json:"session_id"`
-	Count             request.Integer `json:"count"`
-}
 
 func (t *Tool) ReadHistory(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments readHistoryArguments,
+	a argument.ReadHistory,
 ) (*mcp.CallToolResult, error) {
-	count := int(arguments.Count)
+	count := int(a.Count)
 
 	if count <= 0 {
 		count = 50
 	}
 
-	v, e := t.client.ReadHistory(arguments.SessionIdentifier, count)
+	v, e := t.client.ReadHistory(a.SessionIdentifier, count)
 
 	if e != nil {
 		return response.Fail("read history: %v", e)

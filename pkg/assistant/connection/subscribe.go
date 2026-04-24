@@ -6,6 +6,6 @@ func (c *Connection) Subscribe(
 	event string,
 	s Subscriber,
 ) {
-	_, e := c.sendCommand(&subscribeCommand{Type: Subscribe, Event: event}, s)
+	_, e := c.send(&subscribeCommand{Type: Subscribe, Event: event}, s)
 	errors.PanicOnError(e)
 }

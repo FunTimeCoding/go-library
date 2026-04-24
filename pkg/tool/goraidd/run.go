@@ -32,7 +32,7 @@ func Run(o *option.Raid) {
 					),
 					m,
 				)
-				web.NewServer(
+				web.New(
 					s,
 					o.EliteInsightsPath,
 					o.OutputPath,

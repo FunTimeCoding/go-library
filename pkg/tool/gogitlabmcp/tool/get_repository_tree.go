@@ -3,21 +3,15 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-type getRepositoryTreeArguments struct {
-	Project   string `json:"project"`
-	Path      string `json:"path"`
-	Reference string `json:"reference"`
-	Recursive bool   `json:"recursive"`
-}
-
 func (t *Tool) GetRepositoryTree(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a getRepositoryTreeArguments,
+	a argument.GetRepositoryTree,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

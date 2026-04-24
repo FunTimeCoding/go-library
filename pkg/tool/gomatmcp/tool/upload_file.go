@@ -4,23 +4,17 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 	"os"
 	"path/filepath"
 )
 
-type uploadFileArguments struct {
-	ChannelID   string `json:"channel_id"`
-	ChannelName string `json:"channel_name"`
-	Path        string `json:"path"`
-	Message     string `json:"message"`
-}
-
 func (t *Tool) UploadFile(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments uploadFileArguments,
+	a argument.UploadFile,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -29,17 +23,17 @@ func (t *Tool) UploadFile(
 		}
 	}()
 
-	if arguments.Path == "" {
+	if a.Path == "" {
 		return response.Fail("path is required")
 	}
 
-	if arguments.ChannelID == "" && arguments.ChannelName == "" {
+	if a.ChannelID == "" && a.ChannelName == "" {
 		return response.Fail(
 			"channel_id or channel_name is required",
 		)
 	}
 
-	data, f := os.ReadFile(arguments.Path)
+	data, f := os.ReadFile(a.Path)
 
 	if f != nil {
 		return response.Fail("read file failed: %v", f)
@@ -47,17 +41,17 @@ func (t *Tool) UploadFile(
 
 	var ch *model.Channel
 
-	if arguments.ChannelName != "" {
-		ch = t.client.TeamChannel(arguments.ChannelName)
+	if a.ChannelName != "" {
+		ch = t.client.TeamChannel(a.ChannelName)
 	} else {
-		ch = t.client.Channel(arguments.ChannelID)
+		ch = t.client.Channel(a.ChannelID)
 	}
 
 	upload, _, g := t.client.Nested().UploadFile(
 		t.client.Context(),
 		data,
 		ch.Id,
-		filepath.Base(arguments.Path),
+		filepath.Base(a.Path),
 	)
 
 	if g != nil {
@@ -69,10 +63,10 @@ func (t *Tool) UploadFile(
 	}
 
 	fileIdentifier := upload.FileInfos[0].Id
-	message := arguments.Message
+	message := a.Message
 
 	if message == "" {
-		message = filepath.Base(arguments.Path)
+		message = filepath.Base(a.Path)
 	}
 
 	post := &model.Post{
@@ -93,7 +87,7 @@ func (t *Tool) UploadFile(
 		map[string]any{
 			"post_id":   created.Id,
 			"file_id":   fileIdentifier,
-			"file_name": filepath.Base(arguments.Path),
+			"file_name": filepath.Base(a.Path),
 			"channel":   t.channelDisplayName(ch),
 			"message":   message,
 			"create_at": formatMilli(created.CreateAt),

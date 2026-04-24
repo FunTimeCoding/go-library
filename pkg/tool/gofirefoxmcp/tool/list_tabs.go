@@ -3,15 +3,14 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type listTabsArguments struct{}
 
 func (t *Tool) ListTabs(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	_ listTabsArguments,
+	_ argument.ListTabs,
 ) (*mcp.CallToolResult, error) {
 	v, e := t.client.Tabs()
 

@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 )
 
-func NewServer(
+func New(
 	s *store.Store,
 	p *poller.Poller,
 ) *Server {

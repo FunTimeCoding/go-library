@@ -26,8 +26,6 @@ func Check(
 			Function,
 			Variable,
 			PackageName,
-			TypeCount,
-			FunctionCount,
 			StrayConstant,
 			Spacing,
 			VariableGrouping,

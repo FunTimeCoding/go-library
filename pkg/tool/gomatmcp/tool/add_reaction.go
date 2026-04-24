@@ -4,18 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type addReactionArguments struct {
-	PostID    string `json:"post_id"`
-	EmojiName string `json:"emoji_name"`
-}
 
 func (t *Tool) AddReaction(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments addReactionArguments,
+	a argument.AddReaction,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -24,21 +20,21 @@ func (t *Tool) AddReaction(
 		}
 	}()
 
-	if arguments.PostID == "" {
+	if a.PostID == "" {
 		return response.Fail("post_id is required")
 	}
 
-	if arguments.EmojiName == "" {
+	if a.EmojiName == "" {
 		return response.Fail("emoji_name is required")
 	}
 
-	p := t.client.FindPost(arguments.PostID)
-	t.client.React(p, arguments.EmojiName)
+	p := t.client.FindPost(a.PostID)
+	t.client.React(p, a.EmojiName)
 
 	return response.SuccessAny(
 		map[string]any{
-			"post_id":    arguments.PostID,
-			"emoji_name": arguments.EmojiName,
+			"post_id":    a.PostID,
+			"emoji_name": a.EmojiName,
 		},
 	)
 }

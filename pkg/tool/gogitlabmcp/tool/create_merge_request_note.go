@@ -3,20 +3,15 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-type createMergeRequestNoteArguments struct {
-	Project      string `json:"project"`
-	MergeRequest int64  `json:"merge_request"`
-	Body         string `json:"body"`
-}
-
 func (t *Tool) CreateMergeRequestNote(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a createMergeRequestNoteArguments,
+	a argument.CreateMergeRequestNote,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

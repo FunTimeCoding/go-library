@@ -5,7 +5,7 @@ import (
 	"net"
 )
 
-func UnixSocket(address string) net.Conn {
+func Socket(address string) net.Conn {
 	result, e := net.Dial("unix", address)
 	errors.PanicOnError(e)
 

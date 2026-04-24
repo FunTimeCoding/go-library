@@ -7,7 +7,7 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-func (t *Tool) RunMonitoring(
+func (t *Tool) Monitoring(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (result *mcp.CallToolResult, e error) {

@@ -2,32 +2,25 @@ package tool
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/generative/mark/request"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type groupTabsArguments struct {
-	TabIdentifiers  []int           `json:"tab_ids"`
-	GroupIdentifier request.Integer `json:"group_id"`
-	Title           string          `json:"title"`
-	Color           string          `json:"color"`
-}
 
 func (t *Tool) GroupTabs(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments groupTabsArguments,
+	a argument.GroupTabs,
 ) (*mcp.CallToolResult, error) {
-	if len(arguments.TabIdentifiers) == 0 {
+	if len(a.TabIdentifiers) == 0 {
 		return response.Fail("tab_ids is required")
 	}
 
 	groupIdentifier, e := t.client.GroupTabs(
-		arguments.TabIdentifiers,
-		int(arguments.GroupIdentifier),
-		arguments.Title,
-		arguments.Color,
+		a.TabIdentifiers,
+		int(a.GroupIdentifier),
+		a.Title,
+		a.Color,
 	)
 
 	if e != nil {

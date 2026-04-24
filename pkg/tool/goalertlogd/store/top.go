@@ -9,15 +9,6 @@ import (
 	"time"
 )
 
-type topEntry struct {
-	name            string
-	count           int
-	totalDuration   time.Duration
-	resolvedCount   int
-	currentlyFiring int
-	severity        string
-}
-
 func (s *Store) Top(
 	n int,
 	start time.Time,

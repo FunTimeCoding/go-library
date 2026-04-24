@@ -6,5 +6,5 @@ func GetBytes(
 	c *http.Client,
 	locator string,
 ) []byte {
-	return ReadBytes(Get(c, locator))
+	return ReadBytes(GetRaw(c, locator))
 }

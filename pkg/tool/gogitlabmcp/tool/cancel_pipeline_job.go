@@ -3,18 +3,14 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type cancelPipelineJobArguments struct {
-	Project string `json:"project"`
-	Job     int64  `json:"job"`
-}
 
 func (t *Tool) CancelPipelineJob(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a cancelPipelineJobArguments,
+	a argument.CancelPipelineJob,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

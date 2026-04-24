@@ -5,17 +5,14 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/post"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type searchMessagesArguments struct {
-	Terms string `json:"terms"`
-}
 
 func (t *Tool) SearchMessages(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments searchMessagesArguments,
+	a argument.SearchMessages,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -24,7 +21,7 @@ func (t *Tool) SearchMessages(
 		}
 	}()
 
-	if arguments.Terms == "" {
+	if a.Terms == "" {
 		return response.Fail("terms is required")
 	}
 
@@ -32,7 +29,7 @@ func (t *Tool) SearchMessages(
 	list, _, f := t.client.Nested().SearchPosts(
 		t.client.Context(),
 		team.Id,
-		arguments.Terms,
+		a.Terms,
 		false,
 	)
 

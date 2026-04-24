@@ -3,22 +3,15 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-type createProjectVariableArguments struct {
-	Project   string `json:"project"`
-	Key       string `json:"key"`
-	Value     string `json:"value"`
-	Protected bool   `json:"protected"`
-	Masked    bool   `json:"masked"`
-}
-
 func (t *Tool) CreateProjectVariable(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a createProjectVariableArguments,
+	a argument.CreateProjectVariable,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

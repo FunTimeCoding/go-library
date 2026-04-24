@@ -354,7 +354,7 @@ func addTool(
 					"Run topic monitoring immediately",
 				),
 			),
-			t.RunMonitoring,
+			t.Monitoring,
 		)
 	}
 }

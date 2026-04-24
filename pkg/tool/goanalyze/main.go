@@ -5,10 +5,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/call_format"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/defer_close"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/file_identity"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/forbidden_call"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/naming"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/string_concatenation"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/type_receiver"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/variable_naming"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"golang.org/x/tools/go/analysis/multichecker"
@@ -53,6 +55,8 @@ func Main(
 		struct_literal.Analyzer,
 		call_format.Analyzer,
 		defer_close.Analyzer,
+		file_identity.Analyzer,
+		type_receiver.Analyzer,
 		variable_naming.Analyzer,
 	)
 }

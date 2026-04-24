@@ -4,20 +4,15 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-type myThreadsArguments struct {
-	Limit      int    `json:"limit"`
-	UnreadOnly bool   `json:"unread_only"`
-	Since      string `json:"since"`
-}
-
 func (t *Tool) MyThreads(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments myThreadsArguments,
+	a argument.MyThreads,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -25,7 +20,7 @@ func (t *Tool) MyThreads(
 			e = nil
 		}
 	}()
-	limit := arguments.Limit
+	limit := a.Limit
 
 	if limit <= 0 {
 		limit = 20
@@ -38,8 +33,8 @@ func (t *Tool) MyThreads(
 		Extended: true,
 	}
 
-	if arguments.Since != "" {
-		since, g := parseSince(arguments.Since)
+	if a.Since != "" {
+		since, g := parseSince(a.Since)
 
 		if g != nil {
 			return response.Fail(
@@ -79,7 +74,7 @@ func (t *Tool) MyThreads(
 	var rows []row
 
 	for _, thread := range threads.Threads {
-		if arguments.UnreadOnly && thread.UnreadReplies == 0 {
+		if a.UnreadOnly && thread.UnreadReplies == 0 {
 			continue
 		}
 

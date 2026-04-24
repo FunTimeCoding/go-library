@@ -3,19 +3,15 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-type mergeRequestDiscussionsArguments struct {
-	Project      string `json:"project"`
-	MergeRequest int64  `json:"merge_request"`
-}
-
 func (t *Tool) MergeRequestDiscussions(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a mergeRequestDiscussionsArguments,
+	a argument.MergeRequestDiscussions,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

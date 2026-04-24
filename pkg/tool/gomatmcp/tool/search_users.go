@@ -4,18 +4,15 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-type searchUsersArguments struct {
-	Query string `json:"query"`
-}
-
 func (t *Tool) SearchUsers(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments searchUsersArguments,
+	a argument.SearchUsers,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -24,7 +21,7 @@ func (t *Tool) SearchUsers(
 		}
 	}()
 
-	if arguments.Query == "" {
+	if a.Query == "" {
 		return response.Fail("query is required")
 	}
 
@@ -32,7 +29,7 @@ func (t *Tool) SearchUsers(
 	autocomplete, _, f := t.client.Nested().AutocompleteUsersInTeam(
 		t.client.Context(),
 		team.Id,
-		arguments.Query,
+		a.Query,
 		20,
 		model.HeaderEtagClient,
 	)

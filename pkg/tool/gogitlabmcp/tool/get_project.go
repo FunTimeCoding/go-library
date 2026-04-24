@@ -3,17 +3,14 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type getProjectArguments struct {
-	Project string `json:"project"`
-}
 
 func (t *Tool) GetProject(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a getProjectArguments,
+	a argument.GetProject,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

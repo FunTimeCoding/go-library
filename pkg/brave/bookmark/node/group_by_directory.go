@@ -2,11 +2,6 @@ package node
 
 import "github.com/funtimecoding/go-library/pkg/brave/bookmark"
 
-type DirectoryGroup struct {
-	Directory *Node
-	Links     []*Node
-}
-
 func GroupByDirectory(n *Node) []*DirectoryGroup {
 	var result []*DirectoryGroup
 	var traverse func(n *Node)

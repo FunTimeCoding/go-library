@@ -2,24 +2,19 @@ package tool
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/generative/mark/request"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type readTabArguments struct {
-	TabIdentifier request.Integer `json:"tab_id"`
-	Raw           request.Boolean `json:"raw"`
-}
 
 func (t *Tool) ReadTab(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments readTabArguments,
+	a argument.ReadTab,
 ) (*mcp.CallToolResult, error) {
 	v, e := t.client.ReadTab(
-		int(arguments.TabIdentifier),
-		bool(arguments.Raw),
+		int(a.TabIdentifier),
+		bool(a.Raw),
 	)
 
 	if e != nil {

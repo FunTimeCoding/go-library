@@ -4,20 +4,16 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"os"
 	"path/filepath"
 )
 
-type downloadFileArguments struct {
-	FileIdentifier string `json:"file_id"`
-	Path           string `json:"path"`
-}
-
 func (t *Tool) DownloadFile(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments downloadFileArguments,
+	a argument.DownloadFile,
 ) (result *mcp.CallToolResult, e error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -26,13 +22,13 @@ func (t *Tool) DownloadFile(
 		}
 	}()
 
-	if arguments.FileIdentifier == "" {
+	if a.FileIdentifier == "" {
 		return response.Fail("file_id is required")
 	}
 
 	info, _, f := t.client.Nested().GetFileInfo(
 		t.client.Context(),
-		arguments.FileIdentifier,
+		a.FileIdentifier,
 	)
 
 	if f != nil {
@@ -41,14 +37,14 @@ func (t *Tool) DownloadFile(
 
 	data, _, g := t.client.Nested().GetFile(
 		t.client.Context(),
-		arguments.FileIdentifier,
+		a.FileIdentifier,
 	)
 
 	if g != nil {
 		return response.Fail("download failed: %v", g)
 	}
 
-	path := arguments.Path
+	path := a.Path
 
 	if path == "" {
 		path = filepath.Join(os.TempDir(), info.Name)

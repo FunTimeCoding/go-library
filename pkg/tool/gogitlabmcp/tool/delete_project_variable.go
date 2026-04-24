@@ -3,18 +3,14 @@ package tool
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type deleteProjectVariableArguments struct {
-	Project string `json:"project"`
-	Key     string `json:"key"`
-}
 
 func (t *Tool) DeleteProjectVariable(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	a deleteProjectVariableArguments,
+	a argument.DeleteProjectVariable,
 ) (*mcp.CallToolResult, error) {
 	if a.Project == "" {
 		return response.Fail("project is required")

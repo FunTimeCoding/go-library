@@ -2,32 +2,25 @@ package tool
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/generative/mark/request"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
-
-type editViewArguments struct {
-	ViewIdentifier request.Integer `json:"view_id"`
-	OldString      string          `json:"old_string"`
-	NewString      string          `json:"new_string"`
-	ReplaceAll     request.Boolean `json:"replace_all"`
-}
 
 func (t *Tool) EditView(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-	arguments editViewArguments,
+	a argument.EditView,
 ) (*mcp.CallToolResult, error) {
-	if arguments.OldString == "" {
+	if a.OldString == "" {
 		return response.Fail("old_string is required")
 	}
 
 	v, e := t.client.EditView(
-		int(arguments.ViewIdentifier),
-		arguments.OldString,
-		arguments.NewString,
-		bool(arguments.ReplaceAll),
+		int(a.ViewIdentifier),
+		a.OldString,
+		a.NewString,
+		bool(a.ReplaceAll),
 	)
 
 	if e != nil {

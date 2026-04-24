@@ -6,7 +6,7 @@ import (
 )
 
 type identity struct {
-	name   string
-	position    token.Pos
-	method *ast.FuncDecl
+	name     string
+	position token.Pos
+	method   *ast.FuncDecl
 }

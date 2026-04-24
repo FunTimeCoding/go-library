@@ -4,4 +4,8 @@ import "net/http"
 
 type Server struct{}
 
-func (s *Server) handle(_ http.ResponseWriter, _ *http.Request) {}
+func (s *Server) handle(
+	_ http.ResponseWriter,
+	_ *http.Request,
+) {
+}

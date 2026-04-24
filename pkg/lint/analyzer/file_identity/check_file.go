@@ -7,7 +7,11 @@ import (
 	"strings"
 )
 
-func checkFile(p *analysis.Pass, file *ast.File, name string) {
+func checkFile(
+	p *analysis.Pass,
+	file *ast.File,
+	name string,
+) {
 	types := map[string]bool{}
 	var identities []identity
 
@@ -28,10 +32,8 @@ func checkFile(p *analysis.Pass, file *ast.File, name string) {
 			types[t.Name.Name] = true
 			identities = append(
 				identities,
-				identity{
-				name: t.Name.Name,
-				position:  t.Pos(),
-			})
+				identity{name: t.Name.Name, position: t.Pos()},
+			)
 		}
 	}
 
@@ -45,10 +47,8 @@ func checkFile(p *analysis.Pass, file *ast.File, name string) {
 		if f.Recv == nil {
 			identities = append(
 				identities,
-				identity{
-				name: f.Name.Name,
-				position:  f.Pos(),
-			})
+				identity{name: f.Name.Name, position: f.Pos()},
+			)
 
 			continue
 		}
@@ -61,11 +61,8 @@ func checkFile(p *analysis.Pass, file *ast.File, name string) {
 
 		identities = append(
 			identities,
-			identity{
-			name:   f.Name.Name,
-			position:    f.Pos(),
-			method: f,
-		})
+			identity{name: f.Name.Name, position: f.Pos(), method: f},
+		)
 	}
 
 	if len(identities) > 1 {

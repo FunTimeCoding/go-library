@@ -3,6 +3,7 @@ package store
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/raid/elite"
 	"github.com/funtimecoding/go-library/pkg/raid/elite_parser"
@@ -17,7 +18,7 @@ import (
 func (s *Store) enrichFile(path string) {
 	name := filepath.Base(path)
 
-	if !strings.HasSuffix(name, "_detailed_wvw_kill.json") {
+	if !strings.HasSuffix(name, constant.DetailedWvWKillSuffix) {
 		return
 	}
 
@@ -31,24 +32,24 @@ func (s *Store) enrichFile(path string) {
 
 	var fight elite.Fight
 
-	if e := json.Unmarshal(b, &fight); e != nil {
-		slog.Error("enrich parse failed", "path", path, "error", e)
+	if f := json.Unmarshal(b, &fight); f != nil {
+		slog.Error("enrich parse failed", "path", path, "error", f)
 
 		return
 	}
 
-	timestamp, e := time.Parse(
+	timestamp, g := time.Parse(
 		"2006-01-02 15:04:05 -07:00",
 		fight.TimeStartStd,
 	)
 
-	if e != nil {
+	if g != nil {
 		slog.Error(
 			"enrich timestamp parse failed",
 			"value",
 			fight.TimeStartStd,
 			"error",
-			e,
+			g,
 		)
 
 		return
@@ -75,8 +76,7 @@ func (s *Store) enrichFile(path string) {
 	enemyTeamsJSON, marshalError := json.Marshal(enemyTeams)
 	errors.PanicOnError(marshalError)
 	enemyTeamsString := string(enemyTeamsJSON)
-	zevtcBase := strings.TrimSuffix(name, "_detailed_wvw_kill.json")
-	slog.Info("enriching fight", "file", name, "zevtc", zevtcBase)
+	zevtcBase := strings.TrimSuffix(name, constant.DetailedWvWKillSuffix)
 	var fightRow raid.Fight
 	lookup := s.mapper.
 		Where("filename LIKE ?", join.Empty("%", zevtcBase, "%")).
@@ -88,6 +88,11 @@ func (s *Store) enrichFile(path string) {
 		return
 	}
 
+	if fightRow.Enriched {
+		return
+	}
+
+	slog.Info("enriching fight", "file", name, "zevtc", zevtcBase)
 	s.mapper.Model(&fightRow).Updates(
 		map[string]any{
 			"timestamp":      timestamp,

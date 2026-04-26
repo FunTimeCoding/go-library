@@ -3,7 +3,7 @@ package store
 import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	gw2Constant "github.com/funtimecoding/go-library/pkg/gw2/constant"
+	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"log/slog"
 	"path/filepath"
 	"strings"
@@ -43,12 +43,12 @@ func (s *Store) RunBackground(stop <-chan struct{}) {
 				continue
 			}
 
-			if filepath.Base(event.Name) == gw2Constant.LogFile {
+			if filepath.Base(event.Name) == constant.LogFile {
 				slog.Info("log cache changed, syncing")
 				s.syncLogCache()
 			}
 
-			if strings.HasSuffix(event.Name, "_detailed_wvw_kill.json") {
+			if strings.HasSuffix(event.Name, constant.DetailedWvWKillSuffix) {
 				s.enrichFile(event.Name)
 			}
 		case watchError, ok := <-watcher.Errors:

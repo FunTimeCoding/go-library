@@ -1,10 +1,12 @@
 package store
 
 import (
+	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func (s *Store) enrichExisting() {
@@ -16,9 +18,32 @@ func (s *Store) enrichExisting() {
 		return
 	}
 
+	cutoff := time.Now().AddDate(0, 0, -enrichCutoffDays)
+
 	for _, entry := range entries {
-		if strings.HasSuffix(entry.Name(), "_detailed_wvw_kill.json") {
-			s.enrichFile(filepath.Join(s.eliteInsightsPath, entry.Name()))
+		name := entry.Name()
+
+		if !strings.HasSuffix(name, constant.DetailedWvWKillSuffix) {
+			continue
 		}
+
+		if len(name) < fileDatePrefixLength {
+			continue
+		}
+
+		fileDate, parseError := time.Parse(
+			fileDateLayout,
+			name[:fileDatePrefixLength],
+		)
+
+		if parseError != nil {
+			continue
+		}
+
+		if fileDate.Before(cutoff) {
+			continue
+		}
+
+		s.enrichFile(filepath.Join(s.eliteInsightsPath, name))
 	}
 }

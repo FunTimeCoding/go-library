@@ -10,6 +10,8 @@ const (
 	AleevaPrefix   = "aleeva-"
 	NotationSuffix = ".json"
 
+	DetailedWvWKillSuffix = "_detailed_wvw_kill.json"
+
 	MembersPrefix = "members_"
 
 	RemoteFile = "ApiDataCache.json"

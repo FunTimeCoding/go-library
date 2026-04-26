@@ -2,7 +2,7 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gw2"
-	gw2Constant "github.com/funtimecoding/go-library/pkg/gw2/constant"
+	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"github.com/funtimecoding/go-library/pkg/gw2/log_manager/log"
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -12,7 +12,7 @@ import (
 )
 
 func (s *Store) syncLogCache() {
-	path := filepath.Join(s.logCachePath, gw2Constant.LogFile)
+	path := filepath.Join(s.logCachePath, constant.LogFile)
 
 	if _, e := os.Stat(path); e != nil {
 		slog.Warn("log cache not found", "path", path)
@@ -20,7 +20,7 @@ func (s *Store) syncLogCache() {
 		return
 	}
 
-	b := system.ReadBytes(s.logCachePath, gw2Constant.LogFile)
+	b := system.ReadBytes(s.logCachePath, constant.LogFile)
 	logs := log.NewSlice(gw2.ParseLogs(b, false))
 	count := 0
 

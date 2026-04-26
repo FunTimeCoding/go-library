@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"github.com/funtimecoding/go-library/pkg/raid/elite"
 	"github.com/funtimecoding/go-library/pkg/raid/elite_parser"
 	"os"
@@ -22,7 +23,7 @@ func PlayerStats() {
 	skipped := 0
 
 	for _, entry := range entries {
-		if !strings.HasSuffix(entry.Name(), "_detailed_wvw_kill.json") {
+		if !strings.HasSuffix(entry.Name(), constant.DetailedWvWKillSuffix) {
 			continue
 		}
 

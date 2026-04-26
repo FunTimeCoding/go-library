@@ -1,6 +1,9 @@
 package report
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Section struct {
 	title         string
@@ -9,11 +12,11 @@ type Section struct {
 	renderables   []renderable
 }
 
-func (s *Section) indentDeeper() {
+func (s *Section) IndentDeeper() {
 	s.indent += 1
 
 	for _, e := range s.renderables {
-		e.indentDeeper()
+		e.IndentDeeper()
 	}
 }
 
@@ -30,7 +33,7 @@ func (s *Section) Render() string {
 		return ""
 	}
 
-	result := fmt.Sprintf("%s%s", spaces(s.indent), s.title)
+	result := fmt.Sprintf("%s%s", strings.Repeat("  ", s.indent), s.title)
 
 	for _, e := range s.renderables {
 		result = fmt.Sprintf("%s\n%s", result, e.Render())

@@ -3,6 +3,7 @@ package route
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -21,7 +22,7 @@ func (h *Router) PostGenerate(
 	for _, fileName := range body.FileNames {
 		base := filepath.Base(fileName)
 		timestamp := strings.TrimSuffix(base, filepath.Ext(base))
-		notationName := timestamp + "_detailed_wvw_kill.json"
+		notationName := join.Empty(timestamp, "_detailed_wvw_kill.json")
 		files = append(
 			files,
 			filepath.Join(h.eliteInsightsPath, notationName),

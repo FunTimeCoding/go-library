@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/mattermost/mattermost/server/public/model"
 	"strings"
 )
@@ -30,7 +31,7 @@ func (t *Tool) channelDisplayName(c *model.Channel) string {
 		}
 
 		if !resolved {
-			return me.Username + " (self)"
+			return join.Empty(me.Username, " (self)")
 		}
 	}
 

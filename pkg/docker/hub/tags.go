@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/docker/hub/constant"
 	"github.com/funtimecoding/go-library/pkg/docker/hub/tag"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/web"
 	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 )
@@ -12,7 +13,7 @@ import (
 func (c *Client) Tags(image string) []*tag.Tag {
 	r := web.NewGet(
 		c.base.Copy().Path(
-			image+"/tags",
+			join.Empty(image, "/tags"),
 		).Set(constant.PageSizeParameter, constant.PageSize).String(),
 	)
 	r.Header.Set(webConstant.Accept, webConstant.Object)

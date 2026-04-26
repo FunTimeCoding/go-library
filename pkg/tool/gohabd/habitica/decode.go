@@ -11,10 +11,10 @@ func (c *Client) decode(
 	result any,
 ) {
 	var envelope struct {
-		Data json.RawMessage `json:"data"`
+		Payload json.RawMessage `json:"data"`
 	}
 	e := json.NewDecoder(r.Body).Decode(&envelope)
 	errors.PanicOnError(e)
-	f := json.Unmarshal(envelope.Data, result)
+	f := json.Unmarshal(envelope.Payload, result)
 	errors.PanicOnError(f)
 }

@@ -1,15 +1,16 @@
 package report
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/text/report/line"
+)
 
 func (s *Section) Integer(
 	name string,
 	i int,
 ) {
-	s.appendRenderable(
-		&line{
-			value:  fmt.Sprintf("%s: %d", name, i),
-			indent: s.indent + 1,
-		},
-	)
+	l := line.New()
+	l.Value = fmt.Sprintf("%s: %d", name, i)
+	l.Indent = s.indent + 1
+	s.appendRenderable(l)
 }

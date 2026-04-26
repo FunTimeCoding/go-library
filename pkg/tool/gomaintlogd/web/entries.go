@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
 	g "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx"
@@ -16,25 +17,25 @@ func (s *Server) entries(
 ) {
 	f := store.NewFilter()
 
-	if v := r.URL.Query().Get("system"); v != "" {
+	if v := r.URL.Query().Get(constant.System); v != "" {
 		f.System = v
 	}
 
-	if v := r.URL.Query().Get("service"); v != "" {
+	if v := r.URL.Query().Get(constant.Service); v != "" {
 		f.Service = v
 	}
 
-	if v := r.URL.Query().Get("user"); v != "" {
+	if v := r.URL.Query().Get(constant.User); v != "" {
 		f.User = v
 	}
 
-	if v := r.URL.Query().Get("since"); v != "" {
+	if v := r.URL.Query().Get(constant.Since); v != "" {
 		if t, e := time.Parse("2006-01-02T15:04", v); e == nil {
 			f.Since = t
 		}
 	}
 
-	if v := r.URL.Query().Get("until"); v != "" {
+	if v := r.URL.Query().Get(constant.Until); v != "" {
 		if t, e := time.Parse("2006-01-02T15:04", v); e == nil {
 			f.Until = t
 		}
@@ -67,7 +68,7 @@ func (s *Server) entries(
 						g.Text("System"),
 						h.Input(
 							h.Type("text"),
-							h.Name("system"),
+							h.Name(constant.System),
 							h.Value(f.System),
 							h.Placeholder("e.g. worker1"),
 						),
@@ -76,7 +77,7 @@ func (s *Server) entries(
 						g.Text("Service"),
 						h.Input(
 							h.Type("text"),
-							h.Name("service"),
+							h.Name(constant.Service),
 							h.Value(f.Service),
 							h.Placeholder("e.g. nginx"),
 						),
@@ -85,7 +86,7 @@ func (s *Server) entries(
 						g.Text("User"),
 						h.Input(
 							h.Type("text"),
-							h.Name("user"),
+							h.Name(constant.User),
 							h.Value(f.User),
 						),
 					),
@@ -96,14 +97,14 @@ func (s *Server) entries(
 						g.Text("Since"),
 						h.Input(
 							h.Type("datetime-local"),
-							h.Name("since"),
+							h.Name(constant.Since),
 						),
 					),
 					h.Label(
 						g.Text("Until"),
 						h.Input(
 							h.Type("datetime-local"),
-							h.Name("until"),
+							h.Name(constant.Until),
 						),
 					),
 					h.Label(

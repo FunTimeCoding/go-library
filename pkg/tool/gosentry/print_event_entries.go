@@ -9,12 +9,12 @@ func printEventEntries(entries []response.EventEntry) {
 	for _, entry := range entries {
 		switch entry.Type {
 		case "exception":
-			printException(entry.Data.Values)
+			printException(entry.Payload.Values)
 		case "message":
-			m := entry.Data.Formatted
+			m := entry.Payload.Formatted
 
 			if m == "" {
-				m = entry.Data.Message
+				m = entry.Payload.Message
 			}
 
 			if m != "" {

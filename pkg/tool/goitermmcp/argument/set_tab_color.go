@@ -1,10 +1,10 @@
 package argument
 
-import "github.com/funtimecoding/go-library/pkg/generative/mark/request"
+import "github.com/funtimecoding/go-library/pkg/generative/mark/request/integer"
 
 type SetTabColor struct {
 	SessionIdentifier string          `json:"session_id"`
-	Red               request.Integer `json:"red"`
-	Green             request.Integer `json:"green"`
-	Blue              request.Integer `json:"blue"`
+	Red               integer.Integer `json:"red"`
+	Green             integer.Integer `json:"green"`
+	Blue              integer.Integer `json:"blue"`
 }

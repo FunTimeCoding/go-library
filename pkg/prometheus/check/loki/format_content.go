@@ -3,6 +3,7 @@ package loki
 import (
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/message"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	telemetry "github.com/funtimecoding/go-library/pkg/web/telemetry/constant"
 	"strings"
 )
@@ -15,7 +16,7 @@ func formatContent(
 	body := strings.TrimSpace(v.Value(telemetry.Body))
 
 	if route != "" && body != "" {
-		return formatRoute(route, f) + " " + body
+		return join.Empty(formatRoute(route, f), " ", body)
 	}
 
 	if route != "" {

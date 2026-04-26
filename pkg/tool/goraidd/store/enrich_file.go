@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/raid/elite"
 	"github.com/funtimecoding/go-library/pkg/raid/elite_parser"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -20,7 +21,7 @@ func (s *Store) enrichFile(path string) {
 		return
 	}
 
-	data, e := os.ReadFile(path)
+	b, e := os.ReadFile(path)
 
 	if e != nil {
 		slog.Error("enrich read failed", "path", path, "error", e)
@@ -30,7 +31,7 @@ func (s *Store) enrichFile(path string) {
 
 	var fight elite.Fight
 
-	if e := json.Unmarshal(data, &fight); e != nil {
+	if e := json.Unmarshal(b, &fight); e != nil {
 		slog.Error("enrich parse failed", "path", path, "error", e)
 
 		return
@@ -78,7 +79,7 @@ func (s *Store) enrichFile(path string) {
 	slog.Info("enriching fight", "file", name, "zevtc", zevtcBase)
 	var fightRow raid.Fight
 	lookup := s.mapper.
-		Where("filename LIKE ?", "%"+zevtcBase+"%").
+		Where("filename LIKE ?", join.Empty("%", zevtcBase, "%")).
 		First(&fightRow)
 
 	if lookup.Error != nil {
@@ -107,41 +108,40 @@ func (s *Store) enrichFile(path string) {
 	}
 
 	s.mapper.Where("filename = ?", fightRow.Filename).
-		Delete(&raid.PlayerFightStat{})
+		Delete(raid.NewPlayerFightStat())
 	stats := elite_parser.Extract(&fight)
 
 	for _, stat := range stats {
-		row := raid.PlayerFightStat{
-			Filename:          fightRow.Filename,
-			Account:           stat.Identity.Account,
-			Name:              stat.Identity.Name,
-			Profession:        stat.Identity.Profession,
-			GroupNumber:       stat.Identity.Group,
-			Commander:         stat.Identity.Commander,
-			ActiveTimeMS:      stat.Identity.ActiveTimeMS,
-			Damage:            stat.Offensive.Damage,
-			DamageTaken:       stat.Defensive.DamageTaken,
-			DownCount:         stat.Defensive.DownCount,
-			DeadCount:         stat.Defensive.DeadCount,
-			Kills:             stat.Offensive.Kills,
-			Downs:             stat.Offensive.Downs,
-			BoonStrips:        stat.Support.BoonStrips,
-			ConditionCleanses: stat.Support.ConditionCleanses,
-			Healing:           stat.Support.Healing,
-			Barrier:           stat.Support.Barrier,
-			DodgeCount:        stat.Defensive.DodgeCount,
-			EvadedCount:       stat.Defensive.EvadedCount,
-			BlockedCount:      stat.Defensive.BlockedCount,
-			InvulnedCount:     stat.Defensive.InvulnedCount,
-			StabilityUptime:   stat.Boons.Stability,
-			MightUptime:       stat.Boons.Might,
-			FuryUptime:        stat.Boons.Fury,
-			QuicknessUptime:   stat.Boons.Quickness,
-			ProtectionUptime:  stat.Boons.Protection,
-			ResistanceUptime:  stat.Boons.Resistance,
-			DistToCom:         stat.Identity.DistToCom,
-		}
-		errors.PanicOnError(s.mapper.Create(&row).Error)
+		row := raid.NewPlayerFightStat()
+		row.Filename = fightRow.Filename
+		row.Account = stat.Identity.Account
+		row.Name = stat.Identity.Name
+		row.Profession = stat.Identity.Profession
+		row.GroupNumber = stat.Identity.Group
+		row.Commander = stat.Identity.Commander
+		row.ActiveTimeMS = stat.Identity.ActiveTimeMS
+		row.Damage = stat.Offensive.Damage
+		row.DamageTaken = stat.Defensive.DamageTaken
+		row.DownCount = stat.Defensive.DownCount
+		row.DeadCount = stat.Defensive.DeadCount
+		row.Kills = stat.Offensive.Kills
+		row.Downs = stat.Offensive.Downs
+		row.BoonStrips = stat.Support.BoonStrips
+		row.ConditionCleanses = stat.Support.ConditionCleanses
+		row.Healing = stat.Support.Healing
+		row.Barrier = stat.Support.Barrier
+		row.DodgeCount = stat.Defensive.DodgeCount
+		row.EvadedCount = stat.Defensive.EvadedCount
+		row.BlockedCount = stat.Defensive.BlockedCount
+		row.InvulnedCount = stat.Defensive.InvulnedCount
+		row.StabilityUptime = stat.Boons.Stability
+		row.MightUptime = stat.Boons.Might
+		row.FuryUptime = stat.Boons.Fury
+		row.QuicknessUptime = stat.Boons.Quickness
+		row.ProtectionUptime = stat.Boons.Protection
+		row.ResistanceUptime = stat.Boons.Resistance
+		row.DistToCom = stat.Identity.DistToCom
+		errors.PanicOnError(s.mapper.Create(row).Error)
 	}
 
 	slog.Info(

@@ -16,9 +16,7 @@ func addTool(
 		mcp.NewTool(
 			constant.MyChannels,
 			mcp.WithDescription(
-				"List your channels sorted by most recent"+
-					" activity. Includes public, private,"+
-					" DM, and group DM channels.",
+				"List your channels sorted by most recent activity. Includes public, private, DM, and group DM channels.",
 			),
 			mcp.WithNumber(
 				"limit",
@@ -28,15 +26,13 @@ func addTool(
 			mcp.WithString(
 				"type",
 				mcp.Description(
-					"Filter by type: D (DM), G (group DM),"+
-						" O (public), P (private). Omit for all.",
+					"Filter by type: D (DM), G (group DM), O (public), P (private). Omit for all.",
 				),
 			),
 			mcp.WithString(
 				"since",
 				mcp.Description(
-					"Only channels with activity since this"+
-						" time (e.g. \"2026-04-22 15:00\")",
+					"Only channels with activity since this time (e.g. \"2026-04-22 15:00\")",
 				),
 			),
 		),
@@ -46,9 +42,7 @@ func addTool(
 		mcp.NewTool(
 			constant.MyThreads,
 			mcp.WithDescription(
-				"List your subscribed threads sorted by"+
-					" most recent reply. Shows unread counts,"+
-					" participants, and the original message.",
+				"List your subscribed threads sorted by most recent reply. Shows unread counts, participants, and the original message.",
 			),
 			mcp.WithNumber(
 				"limit",
@@ -64,8 +58,7 @@ func addTool(
 			mcp.WithString(
 				"since",
 				mcp.Description(
-					"Only threads with activity since this"+
-						" time (e.g. \"2026-04-22 15:00\")",
+					"Only threads with activity since this time (e.g. \"2026-04-22 15:00\")",
 				),
 			),
 		),
@@ -75,8 +68,7 @@ func addTool(
 		mcp.NewTool(
 			constant.SearchChannels,
 			mcp.WithDescription(
-				"Search for channels by name. Returns"+
-					" channels you have access to.",
+				"Search for channels by name. Returns channels you have access to.",
 			),
 			mcp.WithString(
 				"query",
@@ -90,12 +82,7 @@ func addTool(
 		mcp.NewTool(
 			constant.SearchMessages,
 			mcp.WithDescription(
-				"Search messages across all channels."+
-					" Supports Mattermost search syntax:"+
-					" from:username, in:channelname,"+
-					" before:2026-04-22, after:2026-04-20."+
-					" Plain text matches posts containing"+
-					" those words.",
+				"Search messages across all channels. Supports Mattermost search syntax: from:username, in:channelname, before:2026-04-22, after:2026-04-20. Plain text matches posts containing those words.",
 			),
 			mcp.WithString(
 				"terms",
@@ -109,8 +96,7 @@ func addTool(
 		mcp.NewTool(
 			constant.SearchUsers,
 			mcp.WithDescription(
-				"Search users by username, first name,"+
-					" last name, or nickname.",
+				"Search users by username, first name, last name, or nickname.",
 			),
 			mcp.WithString(
 				"query",
@@ -124,8 +110,7 @@ func addTool(
 		mcp.NewTool(
 			constant.DownloadFile,
 			mcp.WithDescription(
-				"Download a file from Mattermost to a"+
-					" local path. Defaults to /tmp/<filename>.",
+				"Download a file from Mattermost to a local path. Defaults to /tmp/<filename>.",
 			),
 			mcp.WithString(
 				"file_id",
@@ -145,8 +130,7 @@ func addTool(
 		mcp.NewTool(
 			constant.UploadFile,
 			mcp.WithDescription(
-				"Upload a local file to a Mattermost"+
-					" channel or DM as an attachment.",
+				"Upload a local file to a Mattermost channel or DM as an attachment.",
 			),
 			mcp.WithString(
 				"path",
@@ -164,8 +148,7 @@ func addTool(
 			mcp.WithString(
 				"message",
 				mcp.Description(
-					"Message to post with the file"+
-						" (default: filename)",
+					"Message to post with the file (default: filename)",
 				),
 			),
 		),
@@ -229,9 +212,7 @@ func addTool(
 			mcp.WithString(
 				"since",
 				mcp.Description(
-					"Only messages since this time"+
-						" (e.g. \"2026-04-22 15:00\")."+
-						" Overrides limit.",
+					"Only messages since this time (e.g. \"2026-04-22 15:00\"). Overrides limit.",
 				),
 			),
 		),

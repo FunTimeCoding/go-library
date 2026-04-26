@@ -22,7 +22,6 @@ func Check(
 		paths,
 		[]Checker{
 			Import,
-			ForbiddenImport,
 			Function,
 			Variable,
 			PackageName,

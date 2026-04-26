@@ -20,8 +20,8 @@ func (s *Store) syncLogCache() {
 		return
 	}
 
-	data := system.ReadBytes(s.logCachePath, gw2Constant.LogFile)
-	logs := log.NewSlice(gw2.ParseLogs(data, false))
+	b := system.ReadBytes(s.logCachePath, gw2Constant.LogFile)
+	logs := log.NewSlice(gw2.ParseLogs(b, false))
 	count := 0
 
 	for _, l := range logs {

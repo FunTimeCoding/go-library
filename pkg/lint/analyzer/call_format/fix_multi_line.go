@@ -1,6 +1,7 @@
 package call_format
 
 import (
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"go/ast"
 	"go/token"
 )
@@ -20,7 +21,7 @@ func fixMultiLine(
 			Fix{
 				Position: call.Lparen + 1,
 				End:      call.Args[0].Pos(),
-				NewText:  "\n" + argIndent,
+				NewText:  join.Empty("\n", argIndent),
 			},
 		)
 	}
@@ -35,7 +36,7 @@ func fixMultiLine(
 				Fix{
 					Position: call.Args[i-1].End(),
 					End:      call.Args[i].Pos(),
-					NewText:  ",\n" + argIndent,
+					NewText:  join.Empty(",\n", argIndent),
 				},
 			)
 		}

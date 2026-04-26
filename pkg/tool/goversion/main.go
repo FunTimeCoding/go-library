@@ -3,6 +3,7 @@ package goversion
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
@@ -46,7 +47,10 @@ func Main(
 	o.All = viper.GetBool(argument.All)
 	o.Path = argument.PositionalFallback(
 		0,
-		environment.Fallback(status.RepositoryRootEnvironment, "."),
+		environment.Fallback(
+			status.RepositoryRootEnvironment,
+			constant.CurrentDirectory,
+		),
 	)
 	o.Depth = viper.GetInt(argument.Depth)
 

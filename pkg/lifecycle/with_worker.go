@@ -2,14 +2,14 @@ package lifecycle
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
-	"github.com/funtimecoding/go-library/pkg/lifecycle/component"
+	"github.com/funtimecoding/go-library/pkg/lifecycle/worker"
 )
 
 func WithWorker(w face.Worker) Option {
 	return func(l *Lifecycle) {
 		l.component = append(
 			l.component,
-			component.New(w),
+			worker.New(w),
 		)
 	}
 }

@@ -2,6 +2,7 @@ package kestra
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/kestra/transport"
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
@@ -35,11 +36,11 @@ func New(
 
 	if result.user != "" && result.password != "" {
 		l := web.Client()
-		l.Transport = &basicTransport{
-			username: result.user,
-			password: result.password,
-			r:        http.DefaultTransport,
-		}
+		l.Transport = transport.New(
+			result.user,
+			result.password,
+			http.DefaultTransport,
+		)
 		c.HTTPClient = l
 	}
 

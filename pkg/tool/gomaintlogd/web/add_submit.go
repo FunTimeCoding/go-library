@@ -2,7 +2,8 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
 	g "maragu.dev/gomponents"
 	h "maragu.dev/gomponents/html"
 	"net/http"
@@ -13,12 +14,12 @@ func (s *Server) addSubmit(
 	r *http.Request,
 ) {
 	errors.PanicOnError(r.ParseForm())
-	e := store.NewEntry()
-	e.Action = r.FormValue("action")
-	e.User = r.FormValue("user")
-	e.System = r.FormValue("system")
-	e.Service = r.FormValue("service")
-	e.Description = r.FormValue("description")
+	e := entry.New()
+	e.Action = r.FormValue(constant.Action)
+	e.User = r.FormValue(constant.User)
+	e.System = r.FormValue(constant.System)
+	e.Service = r.FormValue(constant.Service)
+	e.Description = r.FormValue(constant.Description)
 	errors.PanicOnError(s.store.Add(e))
 	renderFragment(
 		w,

@@ -9,6 +9,8 @@ const (
 	RequestStart = "request_start"
 
 	OriginAll = "*"
+
+	FormMethod = "method"
 )
 
 var OkayStatusCodes = []int{http.StatusOK, http.StatusCreated}

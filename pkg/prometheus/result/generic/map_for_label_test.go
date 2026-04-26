@@ -26,7 +26,7 @@ func TestMapForLabel(t *testing.T) {
 					Value:  "1",
 				},
 			},
-			"container",
+			constant.ContainerLabel,
 		),
 	)
 }

@@ -42,9 +42,6 @@ const (
 	MissingSentryKey  = "missing_sentry"
 	MissingSentryText = "No sentry reporter in program"
 
-	ForbiddenImportKey  = "forbidden_import"
-	ForbiddenImportText = `Use "github.com/spf13/pflag" instead of "flag"`
-
 	StrayConstantKey  = "stray_const"
 	StrayConstantText = "Top-level const outside of a constant file or constant package"
 

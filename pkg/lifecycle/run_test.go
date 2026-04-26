@@ -4,30 +4,18 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/lifecycle/mock_worker"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"net/http"
 	"testing"
 )
 
-type worker struct {
-	tag string
-	log *[]string
-}
-
-func (w *worker) Start() {
-	*w.log = append(*w.log, fmt.Sprintf("start:%s", w.tag))
-}
-
-func (w *worker) Stop() {
-	*w.log = append(*w.log, fmt.Sprintf("stop:%s", w.tag))
-}
-
 func TestRunWorkerStartOrder(t *testing.T) {
 	var log []string
 	l := New(
-		WithWorker(&worker{log: &log, tag: "a"}),
-		WithWorker(&worker{log: &log, tag: "b"}),
-		WithWorker(&worker{log: &log, tag: "c"}),
+		WithWorker(mock_worker.New("a", &log)),
+		WithWorker(mock_worker.New("b", &log)),
+		WithWorker(mock_worker.New("c", &log)),
 	)
 	l.Run()
 	assert.Count(t, 3, log)
@@ -39,9 +27,9 @@ func TestRunWorkerStartOrder(t *testing.T) {
 func TestStopWorkerReverseOrder(t *testing.T) {
 	var log []string
 	l := New(
-		WithWorker(&worker{log: &log, tag: "a"}),
-		WithWorker(&worker{log: &log, tag: "b"}),
-		WithWorker(&worker{log: &log, tag: "c"}),
+		WithWorker(mock_worker.New("a", &log)),
+		WithWorker(mock_worker.New("b", &log)),
+		WithWorker(mock_worker.New("c", &log)),
 	)
 	l.Run()
 	log = nil
@@ -157,7 +145,7 @@ func TestRunMixedOrder(t *testing.T) {
 	var log []string
 	p, n := system.ClaimPort()
 	l := New(
-		WithWorker(&worker{log: &log, tag: "a"}),
+		WithWorker(mock_worker.New("a", &log)),
 		WithListener(
 			n,
 			func(m *http.ServeMux) {
@@ -173,7 +161,7 @@ func TestRunMixedOrder(t *testing.T) {
 				)
 			},
 		),
-		WithWorker(&worker{log: &log, tag: "b"}),
+		WithWorker(mock_worker.New("b", &log)),
 	)
 	l.Run()
 	assert.Count(t, 3, log)

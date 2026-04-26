@@ -1,5 +1,5 @@
 package connection
 
 type command interface {
-	setIdentifier(uint64)
+	SetIdentifier(uint64)
 }

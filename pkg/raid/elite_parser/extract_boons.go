@@ -6,13 +6,13 @@ func extractBoons(player elite.Player) Boons {
 	var result Boons
 
 	for _, buff := range player.BuffUptimes {
-		if len(buff.BuffData) == 0 {
+		if len(buff.Entries) == 0 {
 			continue
 		}
 
-		uptime := buff.BuffData[0].Uptime
+		uptime := buff.Entries[0].Uptime
 
-		switch buff.ID {
+		switch buff.Identifier {
 		case elite.BuffStability:
 			result.Stability = uptime
 		case elite.BuffMight:

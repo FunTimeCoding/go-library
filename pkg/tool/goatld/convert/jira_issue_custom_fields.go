@@ -3,6 +3,7 @@ package convert
 import (
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"strings"
 )
 
@@ -26,7 +27,7 @@ func JiraIssueCustomFields(
 				continue
 			}
 
-			name, e := t.Fields.String(key + "/name")
+			name, e := t.Fields.String(join.Empty(key, "/name"))
 
 			if e != nil {
 				continue

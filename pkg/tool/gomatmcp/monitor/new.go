@@ -2,6 +2,7 @@ package monitor
 
 import (
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/monitor/scheduler"
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
@@ -15,7 +16,7 @@ func New(
 		channelCache:         make(map[string]*model.Channel),
 		lastCheckMillisecond: make(map[string]int64),
 	}
-	m.scheduler = newScheduler(o.Schedule, m.run)
+	m.scheduler = scheduler.New(o.Schedule, m.run)
 
 	return m
 }

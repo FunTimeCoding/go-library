@@ -1,8 +1,8 @@
 package argument
 
-import "github.com/funtimecoding/go-library/pkg/generative/mark/request"
+import "github.com/funtimecoding/go-library/pkg/generative/mark/request/integer"
 
 type SaveView struct {
-	ViewIdentifier request.Integer `json:"view_id"`
+	ViewIdentifier integer.Integer `json:"view_id"`
 	FilePath       string          `json:"file_path"`
 }

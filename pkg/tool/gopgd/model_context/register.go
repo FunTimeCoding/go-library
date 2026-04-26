@@ -10,8 +10,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.ListInstances,
 			mcp.WithDescription(
-				"List all configured PostgreSQL instances. "+
-					"Shows which instance is currently active.",
+				"List all configured PostgreSQL instances. Shows which instance is currently active.",
 			),
 		),
 		mcp.NewTypedToolHandler(s.listInstances),
@@ -20,8 +19,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.UseInstance,
 			mcp.WithDescription(
-				"Set the active PostgreSQL instance for this session. "+
-					"Required before using any other tool.",
+				"Set the active PostgreSQL instance for this session. Required before using any other tool.",
 			),
 			mcp.WithString(
 				"instance",

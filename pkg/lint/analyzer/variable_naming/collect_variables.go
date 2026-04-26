@@ -6,7 +6,7 @@ import (
 )
 
 func collectVariables(
-	info *types.Info,
+	y *types.Info,
 	body *ast.BlockStmt,
 ) []typedVariable {
 	var result []typedVariable
@@ -15,9 +15,9 @@ func collectVariables(
 		func(n ast.Node) bool {
 			switch node := n.(type) {
 			case *ast.AssignStmt:
-				collectFromAssign(info, node, &result)
+				collectFromAssign(y, node, &result)
 			case *ast.RangeStmt:
-				collectFromRange(info, node, &result)
+				collectFromRange(y, node, &result)
 			}
 
 			return true

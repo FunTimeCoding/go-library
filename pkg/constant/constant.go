@@ -27,7 +27,6 @@ const (
 	Architecture  = "GOARCH"
 	Proxy         = "GOPROXY"
 
-	False  = "0"
 	Direct = "direct"
 
 	CurrentDirectory     = "."

@@ -8,15 +8,13 @@ import (
 )
 
 func TestIssue(t *testing.T) {
-	actual := New(
-		&response.Issue{
-			ID:        "1",
-			Type:      strings.Bravo,
-			Title:     strings.Charlie,
-			Permalink: strings.Delta,
-			Project:   Project{Name: strings.Alfa},
-		},
-	)
+	r := response.NewIssue()
+	r.ID = "1"
+	r.Type = strings.Bravo
+	r.Title = strings.Charlie
+	r.Permalink = strings.Delta
+	r.Project.Name = strings.Alfa
+	actual := New(r)
 	actual.Create = nil
 	actual.Raw = nil
 	assert.Any(

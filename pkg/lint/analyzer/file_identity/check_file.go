@@ -1,6 +1,7 @@
 package file_identity
 
 import (
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"go/ast"
 	goTypes "go/types"
 	"golang.org/x/tools/go/analysis"
@@ -90,7 +91,7 @@ func checkFile(
 		}
 	}
 
-	stem := strings.TrimSuffix(name, ".go")
+	stem := strings.TrimSuffix(name, constant.GoExtension)
 	expected := toSnakeCase(sole.name)
 
 	if stem != expected {

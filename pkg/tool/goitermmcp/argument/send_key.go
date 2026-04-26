@@ -1,9 +1,9 @@
 package argument
 
-import "github.com/funtimecoding/go-library/pkg/generative/mark/request"
+import "github.com/funtimecoding/go-library/pkg/generative/mark/request/integer"
 
 type SendKey struct {
 	SessionIdentifier string          `json:"session_id"`
 	Keys              []string        `json:"keys"`
-	Interval          request.Integer `json:"interval"`
+	Interval          integer.Integer `json:"interval"`
 }

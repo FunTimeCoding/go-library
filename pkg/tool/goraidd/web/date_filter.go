@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/constant"
 	g "maragu.dev/gomponents"
 	h "maragu.dev/gomponents/html"
 )
@@ -8,7 +9,7 @@ import (
 func dateFilter(startValue, endValue string) g.Node {
 	return h.Form(
 		h.Class("filter-form"),
-		h.Method("get"),
+		h.Method(constant.Get),
 		h.Action("/"),
 		h.Div(
 			h.Class("grid"),

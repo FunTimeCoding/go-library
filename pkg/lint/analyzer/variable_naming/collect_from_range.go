@@ -6,7 +6,7 @@ import (
 )
 
 func collectFromRange(
-	info *types.Info,
+	y *types.Info,
 	s *ast.RangeStmt,
 	result *[]typedVariable,
 ) {
@@ -21,7 +21,7 @@ func collectFromRange(
 			continue
 		}
 
-		o := info.ObjectOf(ident)
+		o := y.ObjectOf(ident)
 
 		if o == nil {
 			continue

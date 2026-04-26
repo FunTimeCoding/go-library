@@ -2,6 +2,7 @@ package missing
 
 import (
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary/constant"
@@ -29,7 +30,7 @@ func Run() {
 	scanned := 0
 	errors.PanicOnError(
 		filepath.WalkDir(
-			".",
+			library.CurrentDirectory,
 			func(
 				path string,
 				d fs.DirEntry,

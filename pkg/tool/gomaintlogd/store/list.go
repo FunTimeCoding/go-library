@@ -1,9 +1,12 @@
 package store
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
+)
 
-func (s *Store) List(f *Filter) ([]Entry, error) {
-	q := s.database.Model(&Entry{})
+func (s *Store) List(f *Filter) ([]entry.Entry, error) {
+	q := s.database.Model(entry.New())
 
 	if f != nil {
 		if f.System != "" {
@@ -31,7 +34,7 @@ func (s *Store) List(f *Filter) ([]Entry, error) {
 		}
 	}
 
-	var result []Entry
+	var result []entry.Entry
 
 	if e := q.Order("timestamp DESC").Find(&result).Error; e != nil {
 		return nil, fmt.Errorf("failed to list entries: %w", e)

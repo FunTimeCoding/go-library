@@ -1,6 +1,6 @@
 package report
 
 func (s *Section) AppendSection(other *Section) {
-	other.indentDeeper()
+	other.IndentDeeper()
 	s.appendRenderable(other)
 }

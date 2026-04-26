@@ -25,7 +25,7 @@ func reportsTable(reports []os.DirEntry) g.Node {
 			g.Map(
 				reports,
 				func(entry os.DirEntry) g.Node {
-					info, e := entry.Info()
+					i, e := entry.Info()
 					errors.PanicOnError(e)
 
 					return h.Tr(
@@ -42,7 +42,7 @@ func reportsTable(reports []os.DirEntry) g.Node {
 						),
 						h.Td(
 							h.Class("report-size"),
-							g.Text(formatSize(info.Size())),
+							g.Text(formatSize(i.Size())),
 						),
 						h.Td(
 							h.Form(

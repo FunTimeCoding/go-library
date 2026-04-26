@@ -16,7 +16,7 @@ func (m *Monitor) Start() error {
 		m.lastCheckMillisecond[name] = now
 	}
 
-	if e := m.scheduler.start(); e != nil {
+	if e := m.scheduler.Start(); e != nil {
 		return fmt.Errorf("scheduler: %w", e)
 	}
 

@@ -1,7 +1,7 @@
 package option
 
 import (
-	"github.com/stretchr/testify/assert"
+	"github.com/funtimecoding/go-library/pkg/assert"
 	"testing"
 )
 

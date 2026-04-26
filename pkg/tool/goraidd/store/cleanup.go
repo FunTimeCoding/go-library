@@ -21,13 +21,13 @@ func (s *Store) cleanup() {
 	deleted := 0
 
 	for _, entry := range entries {
-		info, e := entry.Info()
+		i, e := entry.Info()
 
 		if e != nil {
 			continue
 		}
 
-		if info.ModTime().After(cutoff) {
+		if i.ModTime().After(cutoff) {
 			continue
 		}
 

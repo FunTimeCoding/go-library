@@ -9,13 +9,13 @@ import (
 func (s *Store) PlayerAttendance(since time.Time) []AttendanceRow {
 	var available int64
 	errors.PanicOnError(
-		s.mapper.Model(&raid.Raid{}).
+		s.mapper.Model(raid.NewRaid()).
 			Where("date >= ?", since).
 			Count(&available).Error,
 	)
 	var rows []AttendanceRow
 	errors.PanicOnError(
-		s.mapper.Model(&raid.PlayerFightStat{}).
+		s.mapper.Model(raid.NewPlayerFightStat()).
 			Select(
 				"account",
 				"string_agg(DISTINCT name, ', ' ORDER BY name) as characters",

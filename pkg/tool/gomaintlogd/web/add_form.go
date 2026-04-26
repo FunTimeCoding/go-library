@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	g "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx"
 	h "maragu.dev/gomponents/html"
@@ -16,7 +17,7 @@ func addForm() g.Node {
 			g.Text("Action (required)"),
 			h.Input(
 				h.Type("text"),
-				h.Name("action"),
+				h.Name(constant.Action),
 				h.Required(),
 				h.Placeholder("e.g. restarted web server"),
 			),
@@ -25,7 +26,7 @@ func addForm() g.Node {
 			g.Text("User (required)"),
 			h.Input(
 				h.Type("text"),
-				h.Name("user"),
+				h.Name(constant.User),
 				h.Required(),
 				h.Placeholder("e.g. jdoe"),
 			),
@@ -36,7 +37,7 @@ func addForm() g.Node {
 				g.Text("System"),
 				h.Input(
 					h.Type("text"),
-					h.Name("system"),
+					h.Name(constant.System),
 					h.Placeholder("e.g. worker1"),
 				),
 			),
@@ -44,7 +45,7 @@ func addForm() g.Node {
 				g.Text("Service"),
 				h.Input(
 					h.Type("text"),
-					h.Name("service"),
+					h.Name(constant.Service),
 					h.Placeholder("e.g. nginx"),
 				),
 			),
@@ -52,7 +53,7 @@ func addForm() g.Node {
 		h.Label(
 			g.Text("Description"),
 			h.Textarea(
-				h.Name("description"),
+				h.Name(constant.Description),
 				h.Placeholder("Optional details..."),
 				h.Rows("3"),
 			),

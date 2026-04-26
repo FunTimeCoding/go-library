@@ -1,10 +1,16 @@
 package elite_parser
 
+import "github.com/funtimecoding/go-library/pkg/strings/join"
+
 func Aggregate(stats []PlayerFightStat) map[string]*AggregatedPlayer {
 	players := map[string]*AggregatedPlayer{}
 
 	for _, stat := range stats {
-		key := stat.Identity.Account + "|" + stat.Identity.Profession
+		key := join.Empty(
+			stat.Identity.Account,
+			"|",
+			stat.Identity.Profession,
+		)
 		p, exists := players[key]
 
 		if !exists {

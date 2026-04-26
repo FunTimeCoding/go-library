@@ -1,5 +1,7 @@
 package habitica
 
+import "github.com/funtimecoding/go-library/pkg/strings/join"
+
 func (c *Client) Score(
 	taskID string,
 	direction string,
@@ -9,7 +11,7 @@ func (c *Client) Score(
 	}
 
 	var result ScoreResult
-	c.post("/tasks/"+taskID+"/score/"+direction, nil, &result)
+	c.post(join.Empty("/tasks/", taskID, "/score/", direction), nil, &result)
 
 	return result
 }

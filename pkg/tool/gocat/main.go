@@ -2,6 +2,7 @@ package gocat
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
@@ -27,7 +28,7 @@ func Main(
 	}
 
 	monitor.ParseBind(version, gitHash, buildDate)
-	pattern := filepath.Join(".", "*.go")
+	pattern := filepath.Join(constant.CurrentDirectory, "*.go")
 	files := slice.StripSuffix(system.Glob(pattern), "_test.go")
 
 	if len(files) == 0 {

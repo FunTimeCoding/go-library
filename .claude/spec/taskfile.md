@@ -30,12 +30,12 @@ tasks:
 
 | Task | Command | Purpose |
 |------|---------|---------|
-| `lint` | `golint --fix` + `goanalyze ./...` + `golangci-lint run` | Lint with auto-fix, AST analysis, then static analysis |
-| `test` | `gotestsum --format standard-quiet` | Run tests with minimal output |
+| `lint` | `golint --fix` + `golangci-lint run` + `gofix ./...` + `goanalyze ./...` | Lint with auto-fix, static analysis, then AST fix and check. `goanalyze --rename` includes variable naming. |
+| `test` | `gotestsum --format dots` | Run tests with minimal output |
 | `build` | `go run cmd/gobuild/main.go` | Cross-compile all binaries via gobuild |
 | `check` | `gosec -fmt=json ...` | Security scan |
 | `update` | `goupdate` with pinned downgrades | Dependency update with known-bad version pins |
-| `tool` | installs gotestsum, golint, goanalyze, gobuild, golangci-lint, gocover-cobertura | Dev tooling bootstrap |
+| `tool` | installs gotestsum, golint, goanalyze, gofix, gobuild, golangci-lint, gocover-cobertura | Dev tooling bootstrap |
 | `install` | gobuild --copy-to-bin | Build all binaries and install to ~/bin |
 | `coverage` | go test -coverprofile + gocover-cobertura | Coverage report in Cobertura XML |
 

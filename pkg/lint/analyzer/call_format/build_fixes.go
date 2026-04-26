@@ -1,6 +1,7 @@
 package call_format
 
 import (
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"go/ast"
 	"go/token"
 )
@@ -12,7 +13,7 @@ func BuildFixes(
 	source []byte,
 ) []Fix {
 	indent := callIndent(fileSet, call, source)
-	argIndent := indent + "\t"
+	argIndent := join.Empty(indent, "\t")
 	openLine := fileSet.Position(call.Lparen).Line
 	closeLine := fileSet.Position(call.Rparen).Line
 

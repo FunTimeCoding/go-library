@@ -24,12 +24,7 @@ func addTool(
 		mcp.NewTool(
 			constant.ReadTab,
 			mcp.WithDescription(
-				"Read the text content of a Firefox tab. "+
-					"Extracts readable article text by default (strips navigation, "+
-					"ads, footers). Falls back to raw innerText if readability "+
-					"extraction fails. Pass raw=true to skip readability and get "+
-					"innerText directly — better for dashboards, web apps, and "+
-					"non-article pages.",
+				"Read the text content of a Firefox tab. Extracts readable article text by default (strips navigation, ads, footers). Falls back to raw innerText if readability extraction fails. Pass raw=true to skip readability and get innerText directly — better for dashboards, web apps, and non-article pages.",
 			),
 			mcp.WithNumber(
 				"tab_id",
@@ -101,8 +96,7 @@ func addTool(
 		mcp.NewTool(
 			constant.GroupTabs,
 			mcp.WithDescription(
-				"Group Firefox tabs together. Creates a new group or adds "+
-					"to an existing group. Optionally set title and color.",
+				"Group Firefox tabs together. Creates a new group or adds to an existing group. Optionally set title and color.",
 			),
 			mcp.WithObject(
 				"tab_ids",

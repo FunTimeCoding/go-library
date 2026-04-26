@@ -1,6 +1,9 @@
 package naming
 
-import "go/types"
+import (
+	"go/token"
+	"go/types"
+)
 
 func resolveFix(
 	name string,
@@ -11,6 +14,10 @@ func resolveFix(
 	scope := o.Parent()
 	fix := chooseFix(name, applicable)
 	replacement := replaceSegment(name, segment, fix)
+
+	if token.IsKeyword(replacement) {
+		return ""
+	}
 
 	if scope == nil || scope.Lookup(replacement) == nil {
 		return fix

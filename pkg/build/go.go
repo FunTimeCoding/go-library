@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/build/option"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	library "github.com/funtimecoding/go-library/pkg/strings"
 	stringJoin "github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
@@ -60,7 +61,7 @@ func Go(o *option.Build) {
 	r.Panic = false
 
 	if !p.Native {
-		r.Environment(constant.NativeEnabled, constant.False)
+		r.Environment(constant.NativeEnabled, library.BooleanFalse)
 	}
 
 	r.Environment(constant.System, p.OperatingSystem)

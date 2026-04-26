@@ -4,6 +4,7 @@ import (
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/custom_field_value"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/constant"
 	"sort"
 	"strconv"
@@ -23,26 +24,26 @@ func JiraCreateMeta(
 
 	for key := range t.Fields {
 		f := &CreateMetaField{Key: key}
-		name, e := t.Fields.String(key + "/name")
+		name, e := t.Fields.String(join.Empty(key, "/name"))
 
 		if e == nil {
 			f.Name = name
 		}
 
-		required, g := t.Fields.Bool(key + "/required")
+		required, g := t.Fields.Bool(join.Empty(key, "/required"))
 
 		if g == nil {
 			f.Required = required
 		}
 
-		schema, h := t.Fields.String(key + "/schema/type")
+		schema, h := t.Fields.String(join.Empty(key, "/schema/type"))
 
 		if h == nil {
 			f.Schema = schema
 		}
 
 		allowed, i := t.Fields.Array(
-			key + "/allowedValues",
+			join.Empty(key, "/allowedValues"),
 		)
 
 		if i == nil {

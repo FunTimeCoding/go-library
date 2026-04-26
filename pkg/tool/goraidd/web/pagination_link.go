@@ -9,11 +9,11 @@ func paginationLink(
 	link := fmt.Sprintf("/?offset=%d", offset)
 
 	if startValue != "" {
-		link += fmt.Sprintf("&start=%s", startValue)
+		link = fmt.Sprintf("%s&start=%s", link, startValue)
 	}
 
 	if endValue != "" {
-		link += fmt.Sprintf("&end=%s", endValue)
+		link = fmt.Sprintf("%s&end=%s", link, endValue)
 	}
 
 	return link

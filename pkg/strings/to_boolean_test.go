@@ -6,6 +6,6 @@ import (
 )
 
 func TestToBoolean(t *testing.T) {
-	assert.True(t, ToBoolean("1"))
-	assert.False(t, ToBoolean("0"))
+	assert.True(t, ToBoolean(BooleanTrue))
+	assert.False(t, ToBoolean(BooleanFalse))
 }

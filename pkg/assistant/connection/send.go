@@ -14,7 +14,7 @@ func (c *Connection) send(
 	}
 
 	c.lastIdentifier++
-	o.setIdentifier(c.lastIdentifier)
+	o.SetIdentifier(c.lastIdentifier)
 
 	if s != nil {
 		c.subscribers[c.lastIdentifier] = s

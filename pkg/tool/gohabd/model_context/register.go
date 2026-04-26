@@ -11,8 +11,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.GetTasks,
 			mcp.WithDescription(
-				"List Habitica tasks. Optionally filter"+
-					" by type: habits, dailys, todos, rewards.",
+				"List Habitica tasks. Optionally filter by type: habits, dailys, todos, rewards.",
 			),
 			mcp.WithString(
 				constant.TaskType,
@@ -46,9 +45,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.ScoreTask,
 			mcp.WithDescription(
-				"Score a Habitica task. For habits use"+
-					" direction up or down. For dailies"+
-					" and todos use up to complete.",
+				"Score a Habitica task. For habits use direction up or down. For dailies and todos use up to complete.",
 			),
 			mcp.WithString(
 				parameter.Identifier,
@@ -73,8 +70,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.GetStats,
 			mcp.WithDescription(
-				"Get Habitica user stats: HP, MP, XP,"+
-					" gold, level, and class.",
+				"Get Habitica user stats: HP, MP, XP, gold, level, and class.",
 			),
 		),
 		s.getStats,

@@ -2,6 +2,7 @@ package system
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"net"
 	"strings"
 )
@@ -33,7 +34,10 @@ func FindHostnames(host string) ([]string, error) {
 		result = names
 
 		for i := range result {
-			result[i] = strings.TrimSuffix(result[i], ".")
+			result[i] = strings.TrimSuffix(
+				result[i],
+				constant.CurrentDirectory,
+			)
 		}
 	} else {
 		result = []string{host}

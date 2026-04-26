@@ -15,9 +15,7 @@ func addTool(
 		mcp.NewTool(
 			constant.ListViews,
 			mcp.WithDescription(
-				"List all open views across Sublime Text windows. "+
-					"View IDs are session-stable (persist across plugin reloads). "+
-					"Unsaved scratch buffers survive Sublime restarts.",
+				"List all open views across Sublime Text windows. View IDs are session-stable (persist across plugin reloads). Unsaved scratch buffers survive Sublime restarts.",
 			),
 		),
 		mcp.NewTypedToolHandler(t.ListViews),

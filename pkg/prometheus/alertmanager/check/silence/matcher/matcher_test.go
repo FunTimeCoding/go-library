@@ -2,6 +2,7 @@ package matcher
 
 import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/silence"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"testing"
@@ -397,8 +398,8 @@ func TestMatchesWithMultipleMatchers(t *testing.T) {
 					false,
 				),
 				newMatcher(
-					"severity",
-					"critical",
+					constant.SeverityLabel,
+					constant.CriticalSeverity,
 					true,
 					false,
 				),
@@ -420,8 +421,8 @@ func TestMatchesWithMultipleMatchers(t *testing.T) {
 					false,
 				),
 				newMatcher(
-					"severity",
-					"warning",
+					constant.SeverityLabel,
+					constant.WarningSeverity,
 					true,
 					false,
 				),
@@ -574,8 +575,8 @@ func TestMatchesWithMultipleAlerts(t *testing.T) {
 	s := newSilence(
 		&start,
 		&end,
-		"severity",
-		"critical",
+		constant.SeverityLabel,
+		constant.CriticalSeverity,
 		&equal,
 		&regex,
 	)

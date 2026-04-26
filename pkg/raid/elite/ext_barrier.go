@@ -1,5 +1,5 @@
 package elite
 
 type ExtBarrier struct {
-	OutgoingBarrier []BarrierData `json:"outgoingBarrier"`
+	OutgoingBarrier []Barrier `json:"outgoingBarrier"`
 }

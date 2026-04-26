@@ -1,6 +1,9 @@
 package report
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/text/report/line"
+)
 
 func (s *Section) Float(
 	name string,
@@ -15,10 +18,8 @@ func (s *Section) Float(
 		result = fmt.Sprintf("%s: %.1f %s", name, f, unit)
 	}
 
-	s.appendRenderable(
-		&line{
-			value:  result,
-			indent: s.indent + 1,
-		},
-	)
+	l := line.New()
+	l.Value = result
+	l.Indent = s.indent + 1
+	s.appendRenderable(l)
 }

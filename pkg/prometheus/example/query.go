@@ -13,7 +13,7 @@ func Query() {
 	c := prometheus.NewEnvironment()
 	t := time.Now()
 
-	for _, k := range maps.StringKeys(c.QueryIntegers("up", t)) {
+	for _, k := range maps.StringKeys(c.QueryIntegers(constant.Up, t)) {
 		fmt.Printf("Up: %s\n", k)
 	}
 

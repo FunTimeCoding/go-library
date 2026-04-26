@@ -2,10 +2,10 @@ package route
 
 import (
 	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/server"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
 )
 
-func toResponse(entries []store.Entry) []generated.EntryResponse {
+func toResponse(entries []entry.Entry) []generated.EntryResponse {
 	result := make([]generated.EntryResponse, len(entries))
 
 	for i, e := range entries {

@@ -11,7 +11,7 @@ func TestFindByName(t *testing.T) {
 	assert.Any(
 		t,
 		&Address{Name: "192.168.0.1/24"},
-		FindByName(addresses, "192.168.0.1/24"),
+		FindByName(addresses, fixtureAddress),
 	)
 	// Not found
 	var expected *Address

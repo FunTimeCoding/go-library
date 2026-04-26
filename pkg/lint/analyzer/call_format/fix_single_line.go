@@ -1,6 +1,9 @@
 package call_format
 
-import "go/ast"
+import (
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"go/ast"
+)
 
 func fixSingleLine(
 	call *ast.CallExpr,
@@ -13,7 +16,7 @@ func fixSingleLine(
 		Fix{
 			Position: call.Lparen + 1,
 			End:      call.Args[0].Pos(),
-			NewText:  "\n" + argIndent,
+			NewText:  join.Empty("\n", argIndent),
 		},
 	)
 
@@ -23,7 +26,7 @@ func fixSingleLine(
 			Fix{
 				Position: call.Args[i-1].End(),
 				End:      call.Args[i].Pos(),
-				NewText:  ",\n" + argIndent,
+				NewText:  join.Empty(",\n", argIndent),
 			},
 		)
 	}
@@ -33,7 +36,7 @@ func fixSingleLine(
 		Fix{
 			Position: call.Args[len(call.Args)-1].End(),
 			End:      call.Rparen,
-			NewText:  ",\n" + indent,
+			NewText:  join.Empty(",\n", indent),
 		},
 	)
 

@@ -1,7 +1,14 @@
 # Lint pipeline
 
 golint is text/string-based. goanalyze uses the Go analysis package (AST, type-checking,
-scope). New rules that need scope or type information belong in goanalyze.
+scope). New rules that need scope or type information belong in goanalyze. Rules that
+were previously text-based in golint migrate to goanalyze when AST precision matters
+(e.g. forbidden_import moved to avoid false positives on string literals).
+
+gofix is the fixer companion to goanalyze — it rewrites code (naming, call formatting).
+goanalyze is report-only (multichecker) with one gated analyzer: `variable_naming`
+requires `--rename` flag (not yet default until the codebase is clean). Both are
+separate binaries; `task lint` calls gofix first, then goanalyze.
 
 ## goanalyze analyzers
 
@@ -13,10 +20,12 @@ Registered in `multichecker.Main`:
 - `call_format` — flags multi-arg calls where arguments share a line
 - `defer_close` — flags `defer x.Close()` where x implements `io.Closer`
 - `file_identity` — one identity per file, filename matches identity in snake_case
+- `string_constant` — flags string literals where a matching constant exists nearby
 - `type_receiver` — flags packages with more than one type that has method receivers
-- `variable_naming` — deterministic type-based letter assignment for local variables
+- `forbidden_import` — flags banned package imports (`flag`, testify)
+- `variable_naming` — deterministic type-based letter assignment for local variables (gated behind `--rename`)
 
-Fix paths: `--fix` (naming renames + call formatting), `--rename` (variable naming)
+Fix paths (gofix): `gofix` (naming renames + call formatting), `gofix --rename` (variable naming)
 
 ## Variable naming precedence
 
@@ -47,7 +56,7 @@ All types fall back to `a-z` exhaustive when preferred letters are taken.
 Currently eligible: single-letter wrong vars and error variables of any name length.
 Not yet eligible: multi-char descriptive names, `ok`/`okay` booleans, receivers.
 
-## Remaining work — goanalyze
+## Remaining work — gofix
 
 ### Variable naming
 
@@ -59,6 +68,11 @@ Not yet eligible: multi-char descriptive names, `ok`/`okay` booleans, receivers.
 
 Prevent renames that shadow imported package names. When `--fix` renames an exported
 identifier, verify the new name doesn't collide with other exports in the same package.
+
+~~Keyword guard: `token.IsKeyword` check in `resolve_fix.go` — done.~~
+
+~~Unloaded reference fix: `fixFileReferences` now parses with `go/parser` and skips
+`*ast.SelectorExpr` targets — done.~~
 
 ### Struct attribute naming
 
@@ -81,22 +95,18 @@ One map entry per ban, automatic cross-package fix via `--fix`. Candidates:
 - **string_concatenation**: `a + b` → `fmt.Sprintf(...)` (needs expression-to-source)
 - **struct_literal**: `&pkg.X{}` → `pkg.NewX()` (needs constructor existence check)
 
-### String-literal constant finder
-
-New analyzer: scan non-test code for string literals that match a constant
-in a nearby constant package but use the literal directly. First phase: flag.
-Second phase: propose new constants for repeated literals.
-
 ## Remaining work — golint
+
+~~- forbidden import check — migrated to goanalyze `forbidden_import` analyzer~~
 
 - stdlib call replacement: `os.Create` etc. → go-library wrappers — call site easy,
   import rewrite harder
 
 ### Auto-fix messaging
 
-When goanalyze renames variables via `--fix` or `--rename`, the output should
-make it obvious the change was applied automatically — like golint's `(auto-fixed)`
-suffix. Currently models reading the output think the renames are suggestions.
+When gofix renames variables, the output should make it obvious the change was
+applied automatically — like golint's `(auto-fixed)` suffix. Currently models
+reading the output think the renames are suggestions.
 
 ### Function signature formatting
 

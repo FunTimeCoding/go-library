@@ -2,13 +2,13 @@ package web
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
 	g "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx"
 	h "maragu.dev/gomponents/html"
 )
 
-func detailRow(e *store.Entry) g.Node {
+func detailRow(e *entry.Entry) g.Node {
 	target := fmt.Sprintf("#detail-%d", e.ID)
 
 	return h.Tr(

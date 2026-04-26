@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
 	"github.com/mark3labs/mcp-go/mcp"
 	"time"
 )
@@ -26,7 +26,7 @@ func (s *Server) add(
 		return response.Fail("user is required: %v", g)
 	}
 
-	e := store.NewEntry()
+	e := entry.New()
 	e.Action = action
 	e.User = user
 

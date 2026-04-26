@@ -27,10 +27,10 @@ func PlayerStats() {
 		}
 
 		path := filepath.Join(directory, entry.Name())
-		data, readError := os.ReadFile(path)
+		b, readError := os.ReadFile(path)
 		errors.PanicOnError(readError)
 		var fight elite.Fight
-		errors.PanicOnError(json.Unmarshal(data, &fight))
+		errors.PanicOnError(json.Unmarshal(b, &fight))
 
 		if !elite_parser.IsValidFight(&fight) {
 			skipped++

@@ -26,7 +26,7 @@ func (t *Tool) DownloadFile(
 		return response.Fail("file_id is required")
 	}
 
-	info, _, f := t.client.Nested().GetFileInfo(
+	i, _, f := t.client.Nested().GetFileInfo(
 		t.client.Context(),
 		a.FileIdentifier,
 	)
@@ -35,7 +35,7 @@ func (t *Tool) DownloadFile(
 		return response.Fail("get file info failed: %v", f)
 	}
 
-	data, _, g := t.client.Nested().GetFile(
+	b, _, g := t.client.Nested().GetFile(
 		t.client.Context(),
 		a.FileIdentifier,
 	)
@@ -47,10 +47,10 @@ func (t *Tool) DownloadFile(
 	path := a.Path
 
 	if path == "" {
-		path = filepath.Join(os.TempDir(), info.Name)
+		path = filepath.Join(os.TempDir(), i.Name)
 	}
 
-	h := os.WriteFile(path, data, 0644)
+	h := os.WriteFile(path, b, 0644)
 
 	if h != nil {
 		return response.Fail("write failed: %v", h)
@@ -58,10 +58,10 @@ func (t *Tool) DownloadFile(
 
 	return response.SuccessAny(
 		map[string]any{
-			"file_id":   info.Id,
-			"name":      info.Name,
-			"mime_type": info.MimeType,
-			"size":      info.Size,
+			"file_id":   i.Id,
+			"name":      i.Name,
+			"mime_type": i.MimeType,
+			"size":      i.Size,
 			"path":      path,
 		},
 	)

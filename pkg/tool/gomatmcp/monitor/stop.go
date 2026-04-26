@@ -10,7 +10,7 @@ func (m *Monitor) Stop() {
 		return
 	}
 
-	m.scheduler.stop()
+	m.scheduler.Stop()
 	m.running = false
 	log.Println("monitor stopped")
 }

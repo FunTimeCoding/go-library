@@ -1,17 +1,16 @@
 package route
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/system/run"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"log/slog"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
@@ -48,24 +47,22 @@ func (h *Router) PostGenerate(
 		h.parserPath,
 		"TW5_parse_top_stats_detailed.py",
 	)
-	parseCommand := exec.Command(
-		"python",
-		parserScript,
-		workdir,
-		"-d",
-		dateArgument,
-	)
-	var parseOutput bytes.Buffer
-	parseCommand.Dir = h.parserPath
-	parseCommand.Stdout = &parseOutput
-	parseCommand.Stderr = &parseOutput
+	parser := run.New().NoPanic()
+	parser.Directory = h.parserPath
+	parser.Start("python", parserScript, workdir, "-d", dateArgument)
 
-	if parseError := parseCommand.Run(); parseError != nil {
-		slog.Error("parser failed", "output", parseOutput.String())
-		errors.PanicOnError(parseError)
+	if parser.Error != nil {
+		slog.Error(
+			"parser failed",
+			"output",
+			parser.OutputString,
+			"stderr",
+			parser.ErrorString,
+		)
+		errors.PanicOnError(parser.Error)
 	}
 
-	slog.Info("parser completed", "output", parseOutput.String())
+	slog.Info("parser completed", "output", parser.OutputString)
 	tidCount := 0
 	entries, f := os.ReadDir(workdir)
 	errors.PanicOnError(f)
@@ -80,9 +77,9 @@ func (h *Router) PostGenerate(
 		h.parserPath,
 		"tiddler_import.py",
 	)
-
-	// Copy the template to work dir so Playwright can save alongside it
-	importCommand := exec.Command(
+	t := run.New().NoPanic()
+	t.Directory = h.parserPath
+	t.Start(
 		"python",
 		tiddlerScript,
 		"--html",
@@ -92,21 +89,19 @@ func (h *Router) PostGenerate(
 		"--download",
 		workdir,
 	)
-	var tiddlerOutput bytes.Buffer
-	importCommand.Dir = h.parserPath
-	importCommand.Stdout = &tiddlerOutput
-	importCommand.Stderr = &tiddlerOutput
 
-	if tiddlerError := importCommand.Run(); tiddlerError != nil {
+	if t.Error != nil {
 		slog.Error(
 			"tiddler generator failed",
 			"output",
-			tiddlerOutput.String(),
+			t.OutputString,
+			"stderr",
+			t.ErrorString,
 		)
-		errors.PanicOnError(tiddlerError)
+		errors.PanicOnError(t.Error)
 	}
 
-	slog.Info("tiddler generator completed", "output", tiddlerOutput.String())
+	slog.Info("tiddler generator completed", "output", t.OutputString)
 	reportName := fmt.Sprintf(
 		"ONYX Log %s.html",
 		date.Format("2006-01-02"),
@@ -141,9 +136,6 @@ func (h *Router) PostGenerate(
 	system.Move(reportSource, reportPath)
 	web.EncodeNotation(
 		w,
-		generated.GenerateResponse{
-			Path:     reportPath,
-			TidCount: tidCount,
-		},
+		generated.GenerateResponse{Path: reportPath, TidCount: tidCount},
 	)
 }

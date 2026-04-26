@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/constant"
 	g "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx"
 	h "maragu.dev/gomponents/html"
@@ -16,13 +17,13 @@ func (s *Server) recent(
 	start := now.Add(-1 * time.Hour)
 	end := now
 
-	if v := r.URL.Query().Get("start"); v != "" {
+	if v := r.URL.Query().Get(constant.Start); v != "" {
 		if t, e := time.Parse("2006-01-02T15:04", v); e == nil {
 			start = t
 		}
 	}
 
-	if v := r.URL.Query().Get("end"); v != "" {
+	if v := r.URL.Query().Get(constant.End); v != "" {
 		if t, e := time.Parse("2006-01-02T15:04", v); e == nil {
 			end = t
 		}
@@ -53,7 +54,7 @@ func (s *Server) recent(
 						g.Text("Start"),
 						h.Input(
 							h.Type("datetime-local"),
-							h.Name("start"),
+							h.Name(constant.Start),
 							h.Value(start.Format("2006-01-02T15:04")),
 						),
 					),
@@ -61,7 +62,7 @@ func (s *Server) recent(
 						g.Text("End"),
 						h.Input(
 							h.Type("datetime-local"),
-							h.Name("end"),
+							h.Name(constant.End),
 							h.Value(end.Format("2006-01-02T15:04")),
 						),
 					),

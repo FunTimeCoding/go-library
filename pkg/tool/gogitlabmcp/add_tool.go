@@ -107,8 +107,7 @@ func addTool(
 			mcp.WithString(
 				"status",
 				mcp.Description(
-					"Filter by status "+
-						"(running, pending, success, failed, canceled)",
+					"Filter by status (running, pending, success, failed, canceled)",
 				),
 			),
 		),

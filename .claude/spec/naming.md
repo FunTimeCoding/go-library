@@ -1,7 +1,7 @@
 # Naming Conventions
 
-Enforced by the `goanalyze` naming analyzer (`pkg/lint/analyzer/naming/`). Banned segments cause
-a lint error; this spec documents the resolution pattern for each.
+Enforced by the `goanalyze` naming analyzer (`pkg/lint/analyzer/naming/`). Auto-fixed by `gofix`.
+Banned segments cause a lint error; this spec documents the resolution pattern for each.
 
 ## Banned segments and replacements
 
@@ -97,8 +97,7 @@ These are established conventions across the codebase:
 | `*goquery.Document` | `d` |
 | `*gzip.Writer` | `z` |
 | `*tar.Writer` | `t` |
-| `error` (first in scope) | `e` |
-| `error` (second in scope) | `f` |
+| `error` | see `conventions.md` Error Handling for full `e`/`f`/`g` escalation |
 | serialized markup (`[]byte` of yaml/xml/html) | `m` |
 | serialized notation (`[]byte` of json) | `j` |
 

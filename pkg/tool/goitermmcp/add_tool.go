@@ -15,9 +15,7 @@ func addTool(
 		mcp.NewTool(
 			constant.ListSessions,
 			mcp.WithDescription(
-				"List all iTerm2 windows, tabs, and sessions with process context. "+
-					"Returns job_name and command_line for each session, "+
-					"which reveals SSH connections and running programs.",
+				"List all iTerm2 windows, tabs, and sessions with process context. Returns job_name and command_line for each session, which reveals SSH connections and running programs.",
 			),
 		),
 		mcp.NewTypedToolHandler(t.ListSessions),
@@ -26,9 +24,7 @@ func addTool(
 		mcp.NewTool(
 			constant.ReadScreen,
 			mcp.WithDescription(
-				"Read the visible screen contents of an iTerm2 session. "+
-					"Returns what is currently displayed, including TUI output. "+
-					"Safe for any session type.",
+				"Read the visible screen contents of an iTerm2 session. Returns what is currently displayed, including TUI output. Safe for any session type.",
 			),
 			mcp.WithString(
 				"session_id",
@@ -42,9 +38,7 @@ func addTool(
 		mcp.NewTool(
 			constant.ReadHistory,
 			mcp.WithDescription(
-				"Read scrollback history of an iTerm2 session. "+
-					"Returns recent lines including those scrolled off screen. "+
-					"Useful for shell sessions, meaningless for TUIs.",
+				"Read scrollback history of an iTerm2 session. Returns recent lines including those scrolled off screen. Useful for shell sessions, meaningless for TUIs.",
 			),
 			mcp.WithString(
 				"session_id",
@@ -62,11 +56,7 @@ func addTool(
 		mcp.NewTool(
 			constant.SendText,
 			mcp.WithDescription(
-				"Send text to an iTerm2 session as if typed. "+
-					"Set send_enter to also press enter after the text. "+
-					"Exercise caution: check what session is running "+
-					"(job_name, command_line) before sending to avoid "+
-					"unintended commands on production servers.",
+				"Send text to an iTerm2 session as if typed. Set send_enter to also press enter after the text. Exercise caution: check what session is running (job_name, command_line) before sending to avoid unintended commands on production servers.",
 			),
 			mcp.WithString(
 				"session_id",
@@ -91,13 +81,7 @@ func addTool(
 		mcp.NewTool(
 			constant.SendKey,
 			mcp.WithDescription(
-				"Send a sequence of named keys to an iTerm2 session "+
-					"with a configurable interval between each. "+
-					"Valid keys: enter, tab, escape, ctrl+c, ctrl+d, ctrl+z, "+
-					"ctrl+l, ctrl+a, ctrl+e, ctrl+r, ctrl+w, ctrl+u, "+
-					"up, down, left, right, backspace, delete. "+
-					"Exercise caution with enter — it executes whatever "+
-					"text is on the command line.",
+				"Send a sequence of named keys to an iTerm2 session with a configurable interval between each. Valid keys: enter, tab, escape, ctrl+c, ctrl+d, ctrl+z, ctrl+l, ctrl+a, ctrl+e, ctrl+r, ctrl+w, ctrl+u, up, down, left, right, backspace, delete. Exercise caution with enter — it executes whatever text is on the command line.",
 			),
 			mcp.WithString(
 				"session_id",
@@ -108,8 +92,7 @@ func addTool(
 				"keys",
 				mcp.Required(),
 				mcp.Description(
-					"Array of key names to send in sequence "+
-						"(e.g. [\"ctrl+c\", \"up\", \"enter\"])",
+					"Array of key names to send in sequence (e.g. [\"ctrl+c\", \"up\", \"enter\"])",
 				),
 				mcp.WithStringItems(),
 			),

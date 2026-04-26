@@ -74,7 +74,7 @@ func TestSumByLabelReplace(t *testing.T) {
 		`sum by (owner) (label_replace(up{instance="Alfa"}, "owner", "$1", "namespace", "([^-]*)-.*"))`,
 		SumByLabelReplace(
 			Filter(constant.Up, filter.New().Instance(strings.Alfa)),
-			"namespace",
+			constant.NamespaceLabel,
 			"owner",
 			"([^-]*)-.*",
 		),

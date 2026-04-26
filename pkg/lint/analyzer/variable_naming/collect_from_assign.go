@@ -7,7 +7,7 @@ import (
 )
 
 func collectFromAssign(
-	info *types.Info,
+	y *types.Info,
 	s *ast.AssignStmt,
 	result *[]typedVariable,
 ) {
@@ -22,7 +22,7 @@ func collectFromAssign(
 			continue
 		}
 
-		o := info.ObjectOf(ident)
+		o := y.ObjectOf(ident)
 
 		if o == nil {
 			continue

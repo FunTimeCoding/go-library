@@ -36,9 +36,7 @@ func (s *Server) register() {
 			mcp.WithBoolean(
 				constant.CustomFields,
 				mcp.Description(
-					"Include custom field values relevant"+
-						" to the issue's project and type."+
-						" Requires an additional API call.",
+					"Include custom field values relevant to the issue's project and type. Requires an additional API call.",
 				),
 			),
 			mcp.WithBoolean(
@@ -187,13 +185,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraGetCreateMeta,
 			mcp.WithDescription(
-				"Get required and available fields for creating"+
-					" a Jira issue. Returns field names, IDs,"+
-					" whether each field is required, its schema"+
-					" type, and allowed values where applicable."+
-					" Call this before jira_create_issue to"+
-					" discover what the target project and issue"+
-					" type expect.",
+				"Get required and available fields for creating a Jira issue. Returns field names, IDs, whether each field is required, its schema type, and allowed values where applicable. Call this before jira_create_issue to discover what the target project and issue type expect.",
 			),
 			mcp.WithString(
 				constant.Project,
@@ -210,11 +202,7 @@ func (s *Server) register() {
 			mcp.WithString(
 				constant.ExpandFields,
 				mcp.Description(
-					"Comma-separated field names or keys"+
-						" to show full allowed values for."+
-						" By default, fields with more than 5"+
-						" allowed values are trimmed to the 5"+
-						" most recent.",
+					"Comma-separated field names or keys to show full allowed values for. By default, fields with more than 5 allowed values are trimmed to the 5 most recent.",
 				),
 			),
 		),
@@ -224,10 +212,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraCreateIssue,
 			mcp.WithDescription(
-				"Create a new Jira issue. Use"+
-					" jira_get_create_meta first to discover"+
-					" required fields and allowed values for"+
-					" the target project and issue type.",
+				"Create a new Jira issue. Use jira_get_create_meta first to discover required fields and allowed values for the target project and issue type.",
 			),
 			mcp.WithString(
 				constant.Project,
@@ -253,25 +238,19 @@ func (s *Server) register() {
 			mcp.WithString(
 				constant.Assignee,
 				mcp.Description(
-					"Assignee display name or email."+
-						" Resolved to account ID automatically."+
-						" Fails if no match or multiple matches.",
+					"Assignee display name or email. Resolved to account ID automatically. Fails if no match or multiple matches.",
 				),
 			),
 			mcp.WithString(
 				constant.Labels,
 				mcp.Description(
-					"JSON array of label strings"+
-						" (e.g. [\"ZKM\",\"Infrastructure\"])",
+					"JSON array of label strings (e.g. [\"ZKM\",\"Infrastructure\"])",
 				),
 			),
 			mcp.WithString(
 				constant.AdditionalFields,
 				mcp.Description(
-					"JSON object mapping field names to"+
-						" values for custom or optional fields."+
-						" Use jira_get_create_meta to discover"+
-						" available field names and allowed values.",
+					"JSON object mapping field names to values for custom or optional fields. Use jira_get_create_meta to discover available field names and allowed values.",
 				),
 			),
 		),
@@ -281,11 +260,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraUpdateIssue,
 			mcp.WithDescription(
-				"Update an existing Jira issue. Only"+
-					" provided fields are changed. Empty"+
-					" strings are ignored, not applied."+
-					" Returns the updated issue with a"+
-					" before/after diff of changed fields.",
+				"Update an existing Jira issue. Only provided fields are changed. Empty strings are ignored, not applied. Returns the updated issue with a before/after diff of changed fields.",
 			),
 			mcp.WithString(
 				parameter.Key,
@@ -303,40 +278,31 @@ func (s *Server) register() {
 			mcp.WithString(
 				constant.Assignee,
 				mcp.Description(
-					"Assignee display name or email."+
-						" Resolved to account ID automatically."+
-						" Pass \"none\" to unassign.",
+					"Assignee display name or email. Resolved to account ID automatically. Pass \"none\" to unassign.",
 				),
 			),
 			mcp.WithString(
 				constant.Reporter,
 				mcp.Description(
-					"Reporter display name or email."+
-						" Resolved to account ID automatically.",
+					"Reporter display name or email. Resolved to account ID automatically.",
 				),
 			),
 			mcp.WithString(
 				constant.Labels,
 				mcp.Description(
-					"JSON array of label strings."+
-						" Replaces all existing labels.",
+					"JSON array of label strings. Replaces all existing labels.",
 				),
 			),
 			mcp.WithString(
 				constant.AdditionalFields,
 				mcp.Description(
-					"JSON object mapping field names to"+
-						" values for custom or optional fields."+
-						" Use jira_get_create_meta to discover"+
-						" available field names and allowed values.",
+					"JSON object mapping field names to values for custom or optional fields. Use jira_get_create_meta to discover available field names and allowed values.",
 				),
 			),
 			mcp.WithBoolean(
 				constant.NoDiff,
 				mcp.Description(
-					"Skip the before/after diff in the"+
-						" response. Useful for large description"+
-						" changes.",
+					"Skip the before/after diff in the response. Useful for large description changes.",
 				),
 			),
 		),
@@ -392,9 +358,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraSearchUsers,
 			mcp.WithDescription(
-				"Search Jira users by display name or"+
-					" email. Returns account IDs needed"+
-					" for assigning issues.",
+				"Search Jira users by display name or email. Returns account IDs needed for assigning issues.",
 			),
 			mcp.WithString(
 				parameter.Query,
@@ -410,8 +374,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraGetLinkTypes,
 			mcp.WithDescription(
-				"List available issue link types with"+
-					" their inward and outward labels.",
+				"List available issue link types with their inward and outward labels.",
 			),
 		),
 		s.getLinkTypes,
@@ -420,9 +383,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraLinkIssues,
 			mcp.WithDescription(
-				"Link two Jira issues. Use"+
-					" jira_get_link_types to discover"+
-					" available link type names.",
+				"Link two Jira issues. Use jira_get_link_types to discover available link type names.",
 			),
 			mcp.WithString(
 				parameter.Key,
@@ -437,9 +398,7 @@ func (s *Server) register() {
 			mcp.WithString(
 				constant.LinkType,
 				mcp.Description(
-					"Link type name (default: Relates)."+
-						" Use jira_get_link_types to see"+
-						" available names.",
+					"Link type name (default: Relates). Use jira_get_link_types to see available names.",
 				),
 			),
 		),
@@ -449,8 +408,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraDeleteLink,
 			mcp.WithDescription(
-				"Delete a link between two Jira issues."+
-					" Use jira_get_issue to find link IDs.",
+				"Delete a link between two Jira issues. Use jira_get_issue to find link IDs.",
 			),
 			mcp.WithString(
 				parameter.Identifier,
@@ -464,9 +422,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraUpdateComment,
 			mcp.WithDescription(
-				"Update an existing comment on a Jira"+
-					" issue. Use jira_get_issue with"+
-					" include_comments to find comment IDs.",
+				"Update an existing comment on a Jira issue. Use jira_get_issue with include_comments to find comment IDs.",
 			),
 			mcp.WithString(
 				parameter.Key,
@@ -490,9 +446,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraDeleteComment,
 			mcp.WithDescription(
-				"Delete a comment from a Jira issue."+
-					" Use jira_get_issue with"+
-					" include_comments to find comment IDs.",
+				"Delete a comment from a Jira issue. Use jira_get_issue with include_comments to find comment IDs.",
 			),
 			mcp.WithString(
 				parameter.Key,
@@ -511,9 +465,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraGetChecklist,
 			mcp.WithDescription(
-				"Get the Smart Checklist items on a"+
-					" Jira issue. Returns indexed items"+
-					" with checked/unchecked status.",
+				"Get the Smart Checklist items on a Jira issue. Returns indexed items with checked/unchecked status.",
 			),
 			mcp.WithString(
 				parameter.Key,
@@ -527,8 +479,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraAddChecklistItem,
 			mcp.WithDescription(
-				"Add an item to a Jira issue's Smart"+
-					" Checklist. Added as unchecked.",
+				"Add an item to a Jira issue's Smart Checklist. Added as unchecked.",
 			),
 			mcp.WithString(
 				parameter.Key,
@@ -547,8 +498,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraToggleChecklistItem,
 			mcp.WithDescription(
-				"Toggle a Smart Checklist item between"+
-					" checked and unchecked.",
+				"Toggle a Smart Checklist item between checked and unchecked.",
 			),
 			mcp.WithString(
 				parameter.Key,
@@ -591,8 +541,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.JiraDeleteChecklistItem,
 			mcp.WithDescription(
-				"Delete an item from a Jira issue's"+
-					" Smart Checklist.",
+				"Delete an item from a Jira issue's Smart Checklist.",
 			),
 			mcp.WithString(
 				parameter.Key,

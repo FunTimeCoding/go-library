@@ -1,5 +1,5 @@
 package elite
 
 type ExtHealing struct {
-	OutgoingHealing []HealingData `json:"outgoingHealing"`
+	OutgoingHealing []Healing `json:"outgoingHealing"`
 }

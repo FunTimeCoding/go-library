@@ -2,6 +2,7 @@ package token_check
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
@@ -13,9 +14,9 @@ func rawSearch(
 ) {
 	rawGet(
 		locator.New(host).Path("rest/api/2/search/jql").Set(
-			"jql",
+			constant.QueryKey,
 			fmt.Sprintf("project = %s ORDER BY updated DESC", project),
-		).Set("maxResults", "1").String(),
+		).Set(constant.MaximumResultsKey, "1").String(),
 		user,
 		token,
 	)

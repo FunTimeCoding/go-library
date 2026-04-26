@@ -2,13 +2,13 @@ package web
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
 	g "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx"
 	h "maragu.dev/gomponents/html"
 )
 
-func entriesTable(entries []store.Entry) g.Node {
+func entriesTable(entries []entry.Entry) g.Node {
 	if len(entries) == 0 {
 		return h.P(h.Em(g.Text("No entries found.")))
 	}

@@ -1,10 +1,13 @@
 package argument
 
-import "github.com/funtimecoding/go-library/pkg/generative/mark/request"
+import (
+	"github.com/funtimecoding/go-library/pkg/generative/mark/request/boolean"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/request/integer"
+)
 
 type EditView struct {
-	ViewIdentifier request.Integer `json:"view_id"`
+	ViewIdentifier integer.Integer `json:"view_id"`
 	OldString      string          `json:"old_string"`
 	NewString      string          `json:"new_string"`
-	ReplaceAll     request.Boolean `json:"replace_all"`
+	ReplaceAll     boolean.Boolean `json:"replace_all"`
 }

@@ -2,13 +2,14 @@ package web
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
 	g "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx"
 	h "maragu.dev/gomponents/html"
 )
 
-func editForm(e *store.Entry) g.Node {
+func editForm(e *entry.Entry) g.Node {
 	target := fmt.Sprintf("#detail-%d", e.ID)
 
 	return h.Tr(
@@ -27,7 +28,7 @@ func editForm(e *store.Entry) g.Node {
 						g.Text("Action"),
 						h.Input(
 							h.Type("text"),
-							h.Name("action"),
+							h.Name(constant.Action),
 							h.Value(e.Action),
 							h.Required(),
 						),
@@ -36,7 +37,7 @@ func editForm(e *store.Entry) g.Node {
 						g.Text("User"),
 						h.Input(
 							h.Type("text"),
-							h.Name("user"),
+							h.Name(constant.User),
 							h.Value(e.User),
 							h.Required(),
 						),
@@ -45,7 +46,7 @@ func editForm(e *store.Entry) g.Node {
 						g.Text("Timestamp"),
 						h.Input(
 							h.Type("datetime-local"),
-							h.Name("timestamp"),
+							h.Name(constant.Timestamp),
 							h.Value(
 								e.Timestamp.Format("2006-01-02T15:04"),
 							),
@@ -58,7 +59,7 @@ func editForm(e *store.Entry) g.Node {
 						g.Text("System"),
 						h.Input(
 							h.Type("text"),
-							h.Name("system"),
+							h.Name(constant.System),
 							h.Value(e.System),
 						),
 					),
@@ -66,7 +67,7 @@ func editForm(e *store.Entry) g.Node {
 						g.Text("Service"),
 						h.Input(
 							h.Type("text"),
-							h.Name("service"),
+							h.Name(constant.Service),
 							h.Value(e.Service),
 						),
 					),
@@ -74,7 +75,7 @@ func editForm(e *store.Entry) g.Node {
 				h.Label(
 					g.Text("Description"),
 					h.Textarea(
-						h.Name("description"),
+						h.Name(constant.Description),
 						h.Rows("4"),
 						g.Text(e.Description),
 					),

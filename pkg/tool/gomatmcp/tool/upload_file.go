@@ -33,7 +33,7 @@ func (t *Tool) UploadFile(
 		)
 	}
 
-	data, f := os.ReadFile(a.Path)
+	b, f := os.ReadFile(a.Path)
 
 	if f != nil {
 		return response.Fail("read file failed: %v", f)
@@ -49,7 +49,7 @@ func (t *Tool) UploadFile(
 
 	upload, _, g := t.client.Nested().UploadFile(
 		t.client.Context(),
-		data,
+		b,
 		ch.Id,
 		filepath.Base(a.Path),
 	)

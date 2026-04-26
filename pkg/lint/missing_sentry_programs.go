@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 	"path/filepath"
@@ -42,7 +43,7 @@ func missingSentryPrograms(
 			continue
 		}
 
-		if !strings.HasSuffix(p, ".go") {
+		if !strings.HasSuffix(p, constant.GoExtension) {
 			continue
 		}
 

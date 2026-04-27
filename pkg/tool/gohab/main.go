@@ -32,6 +32,7 @@ func Main(
 	root.AddCommand(scoreCommand(c))
 	root.AddCommand(tagsCommand(c))
 	root.AddCommand(statsCommand(c))
+	root.AddCommand(cronCommand(c))
 
 	if f := root.Execute(); f != nil {
 		errors.Printf("%v", f)

@@ -75,4 +75,13 @@ func (s *Server) register() {
 		),
 		s.getStats,
 	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.Cron,
+			mcp.WithDescription(
+				"Check and run the daily rollover if needed. Applies damage for incomplete dailies and resets daily tasks. Call this before any other Habitica tool to ensure the day state is current. Returns stat changes if rollover ran.",
+			),
+		),
+		s.cron,
+	)
 }

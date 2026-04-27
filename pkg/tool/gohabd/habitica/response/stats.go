@@ -1,4 +1,4 @@
-package habitica
+package response
 
 type Stats struct {
 	HP    float64 `json:"hp"`

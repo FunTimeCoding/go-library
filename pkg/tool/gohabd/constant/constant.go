@@ -6,6 +6,7 @@ const (
 	ScoreTask  = "score_task"
 	GetTags    = "get_tags"
 	GetStats   = "get_stats"
+	Cron       = "cron"
 )
 
 const (

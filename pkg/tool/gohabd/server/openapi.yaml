@@ -86,6 +86,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Stats"
+  /api/cron:
+    post:
+      operationId: runCron
+      responses:
+        "200":
+          description: Cron result with optional stat diff.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronResult"
 components:
   schemas:
     Task:
@@ -176,3 +186,15 @@ components:
           type: integer
         class:
           type: string
+    CronResult:
+      type: object
+      required: [rolled_over, last_cron]
+      properties:
+        rolled_over:
+          type: boolean
+        last_cron:
+          type: string
+        before:
+          $ref: "#/components/schemas/Stats"
+        after:
+          $ref: "#/components/schemas/Stats"

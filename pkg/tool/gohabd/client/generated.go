@@ -104,6 +104,14 @@ type CreateTaskRequest struct {
 // CreateTaskRequestType Task type.
 type CreateTaskRequestType string
 
+// CronResult defines model for CronResult.
+type CronResult struct {
+	After      *Stats `json:"after,omitempty"`
+	Before     *Stats `json:"before,omitempty"`
+	LastCron   string `json:"last_cron"`
+	RolledOver bool   `json:"rolled_over"`
+}
+
 // ScoreResult defines model for ScoreResult.
 type ScoreResult struct {
 	Gp    float32 `json:"gp"`
@@ -230,6 +238,9 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// RunCron request
+	RunCron(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetStats request
 	GetStats(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -246,6 +257,18 @@ type ClientInterface interface {
 
 	// ScoreTask request
 	ScoreTask(ctx context.Context, identifier string, direction ScoreTaskParamsDirection, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) RunCron(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRunCronRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) GetStats(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -318,6 +341,33 @@ func (c *Client) ScoreTask(ctx context.Context, identifier string, direction Sco
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewRunCronRequest generates requests for RunCron
+func NewRunCronRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cron")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }
 
 // NewGetStatsRequest generates requests for GetStats
@@ -547,6 +597,9 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// RunCronWithResponse request
+	RunCronWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RunCronResponse, error)
+
 	// GetStatsWithResponse request
 	GetStatsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetStatsResponse, error)
 
@@ -563,6 +616,28 @@ type ClientWithResponsesInterface interface {
 
 	// ScoreTaskWithResponse request
 	ScoreTaskWithResponse(ctx context.Context, identifier string, direction ScoreTaskParamsDirection, reqEditors ...RequestEditorFn) (*ScoreTaskResponse, error)
+}
+
+type RunCronResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CronResult
+}
+
+// Status returns HTTPResponse.Status
+func (r RunCronResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RunCronResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type GetStatsResponse struct {
@@ -675,6 +750,15 @@ func (r ScoreTaskResponse) StatusCode() int {
 	return 0
 }
 
+// RunCronWithResponse request returning *RunCronResponse
+func (c *ClientWithResponses) RunCronWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RunCronResponse, error) {
+	rsp, err := c.RunCron(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRunCronResponse(rsp)
+}
+
 // GetStatsWithResponse request returning *GetStatsResponse
 func (c *ClientWithResponses) GetStatsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetStatsResponse, error) {
 	rsp, err := c.GetStats(ctx, reqEditors...)
@@ -726,6 +810,32 @@ func (c *ClientWithResponses) ScoreTaskWithResponse(ctx context.Context, identif
 		return nil, err
 	}
 	return ParseScoreTaskResponse(rsp)
+}
+
+// ParseRunCronResponse parses an HTTP response from a RunCronWithResponse call
+func ParseRunCronResponse(rsp *http.Response) (*RunCronResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RunCronResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CronResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseGetStatsResponse parses an HTTP response from a GetStatsWithResponse call

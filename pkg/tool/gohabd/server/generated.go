@@ -107,6 +107,14 @@ type CreateTaskRequest struct {
 // CreateTaskRequestType Task type.
 type CreateTaskRequestType string
 
+// CronResult defines model for CronResult.
+type CronResult struct {
+	After      *Stats `json:"after,omitempty"`
+	Before     *Stats `json:"before,omitempty"`
+	LastCron   string `json:"last_cron"`
+	RolledOver bool   `json:"rolled_over"`
+}
+
 // ScoreResult defines model for ScoreResult.
 type ScoreResult struct {
 	Gp    float32 `json:"gp"`
@@ -163,6 +171,9 @@ type CreateTaskJSONRequestBody = CreateTaskRequest
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
+	// (POST /api/cron)
+	RunCron(w http.ResponseWriter, r *http.Request)
+
 	// (GET /api/stats)
 	GetStats(w http.ResponseWriter, r *http.Request)
 
@@ -187,6 +198,20 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
+
+// RunCron operation middleware
+func (siw *ServerInterfaceWrapper) RunCron(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.RunCron(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
 
 // GetStats operation middleware
 func (siw *ServerInterfaceWrapper) GetStats(w http.ResponseWriter, r *http.Request) {
@@ -411,6 +436,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
+	m.HandleFunc("POST "+options.BaseURL+"/api/cron", wrapper.RunCron)
 	m.HandleFunc("GET "+options.BaseURL+"/api/stats", wrapper.GetStats)
 	m.HandleFunc("GET "+options.BaseURL+"/api/tags", wrapper.GetTags)
 	m.HandleFunc("GET "+options.BaseURL+"/api/tasks", wrapper.GetTasks)
@@ -423,20 +449,21 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/8xWT3ObPhD9Kox+vyNjnLYnbm0608mhlzQ9ZXKQYQ2KQVK0SxKPh+/eWWEMGDlOJ2mn",
-	"N9Bqpffe/tNOZKa2RoMmFOlOYFZCLf3nZQnZplJIVwQ1L1hnLDhS4M3sVwFBzj+0tSBSsTKmAqlFGwuV",
-	"gya1VuBGdiSndMFmgmcKGNpYOHholONjb8eH7F3i0b13ce9uVveQEZ976UAS3EjcXMNDA0hz4NpQ95ED",
-	"Zk5ZUkaLVLBP5G0LEZ8GHHAiRRWEnfxC2GlrvQ/opmaqpVwpppdLVW35LJMbwWo8STemekIpb92jDOny",
-	"IzMOrgGbKqBIYUeh0E29Asc+ZXi5gkeoRhalCYrOVIc9nkPLRwRKK7y/3x0zpP6mIB2SXb4e5WQlEYP5",
-	"9m9TjPfIQ1RvZDEneqa6tKzhN6vLu4Tvx01A6b45eDQEtV/938FapOK/ZGgqyb6jJNN2cigOIZ2TW/5/",
-	"W0M5VPXMguRAbsLRJFnghMGJEh5QnmhcQ63PDI+yauB8doR6nfeYB4VdlV4bfyg3H5GKwpRylYtYPILD",
-	"rs9cLJaLJSMwFrS0SqTio1+KhZVUer6JtCrBvpoK8Nw40JKb1VUuUvENqCs3xovWaOyE/rBcdnNAE2jv",
-	"J62tVOY9k3tkDP1AOZcc3QWe2LRX/kRwkce3YHMbd4j7uJ0CfMP2N+J9VVZzdc6yZE7jc1VFjPmIBG7O",
-	"sOANHC0nayBwKNLbk9MkWquKwPFQUWx4aMBt+8pO+wkx8JtMHuxHD+5nDx6GD4amz93fERc3r1HX6xTV",
-	"krJS6SKictDC77YGAwIPTwXRVSIgfTH59t2Sev4WaadFT66BdibkxbsB6PSb69UByyNOwAUL/KmL3nTX",
-	"d4XIcvZ4o7WCKg+kcLIbelebIL80kl2uHGR8UuuHRzAC/lGyD8D5HL/6ekhtbl9DZk8651Tdcb7PhuHx",
-	"LR5OdAB+4raD/cXL+uJqeMjn5kn/iSJ6saOOHnyBFOi4Om+PnhSVUWNznxSjZtu2vwIAAP//8Mz81B8M",
-	"AAA=",
+	"H4sIAAAAAAAC/8xWwY7bNhD9FYHtUbA2bU+6tSlQ7KGXzfYUBAEtjSTGFMnljHZjGPr3YijLkiwq3iJJ",
+	"kZut4QzfGz4+zkkUtnXWgCEU+Ulg0UArw8+3DRQHrZDuCVr+4Lx14ElBCHOeBoKS/9DRgcjF3loN0og+",
+	"FaoEQ6pS4GdxJK9MzWGCzxQJ9Knw8NQpz2Xfz4ucU9LZvh/SMd3uP0FBXPetB0nwKPHwAE8dIK2BG0vD",
+	"jxKw8MqRskbkgnOSENuJdBtwJIkUaYgnhQ/xpKMLOWC6lqk2cq+YXimVPnItW1rB3XiRfk51o1MhekYZ",
+	"74s1D4CdjjREVjSc0s8eKpGLn7JJE9lZENk7koRcaQ+V9fDq5VoifSw8E4/IwFutofxonxcyucjoiuR8",
+	"9bxyjPC7wnrYYly72W6ma/fgOaeJf9bwDHoWUYagHkJtPONz7PMVmcaJkB9Wpwxp3ClKJ/RzfQm1RIx2",
+	"9semmJ6Rx6g+ynpN9IadGNnCf7STkBLfHw+RTo9uGNAQtHjrCiz98+IGQnovj/z/6xz0YmOrCJIHeYif",
+	"JskaFww2PGtCueHUk7mtAs9Sd3BbHTFzDxnrQ+FUZSobirLbilzUtpH7UqTiGTwOxvpmd7e7YwTWgZFO",
+	"iVz8Gj6lwklqAt9MOpWNfuTscJ580JLd+b4UuXjoDNtlcF901uDQ51/u7oZ3zxCYkCad06oIidknHEoO",
+	"p39TG5MdB3LLB4KjiQ/h5EVRk9gQkTpBkpSUqqp2nNenAx0czaGGCJ2/gAb3+I58zna/pvIPgg+ocYF4",
+	"lOEW4EeOfyXeV11SNpuV6Nc0ftc6YcxXJPBwgwUvYPF52QKBR5G/35wGkkppAs9DgeLAUwf+OBpVPr7w",
+	"E7/F5IDj6IDn2QEvwwPGpocP/09z8fCa7oY+Ja2kolGmTqiZehFWx6/pNOqJwVgA6Q9bHr/hJb2eJful",
+	"h5HvoF818s03AzD0L+YPDKxMWIA7bvBvw+ktV/2tELmdI96kUqDLiISz02TFfYY8OGWnUnkouFK/bZRh",
+	"xjofwG2N3/95kTa78aTsxUOw7O5c76u3/XqXACe5AN/Y7RL/4mbj5ep4Zinti/kel+iLjjqbXyMSGLjO",
+	"34jOlUEUM7Pt+38DAAD///hrm1jfDQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

@@ -1,13 +1,7 @@
 package habitica
 
-import "net/http"
+import "github.com/funtimecoding/go-library/pkg/tool/gohabd/habitica/response"
 
-func (c *Client) UserStats() Stats {
-	var user struct {
-		Stats Stats `json:"stats"`
-	}
-	r := c.do(http.MethodGet, "/user", nil)
-	c.decode(r, &user)
-
-	return user.Stats
+func (c *Client) UserStats() response.Stats {
+	return c.user().Stats
 }

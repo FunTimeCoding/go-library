@@ -13,12 +13,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/string_constant"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/type_receiver"
-	"github.com/funtimecoding/go-library/pkg/lint/analyzer/variable_naming"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/multichecker"
-	"os"
-	"slices"
 )
 
 func Main(
@@ -32,14 +28,7 @@ func Main(
 		defer func() { r.RecoverFlush(recover()) }()
 	}
 
-	rename := slices.Contains(os.Args, "--rename")
-	os.Args = slices.DeleteFunc(
-		os.Args,
-		func(s string) bool {
-			return s == "--rename"
-		},
-	)
-	analyzers := []*analysis.Analyzer{
+	multichecker.Main(
 		naming.Analyzer,
 		forbidden_call.Analyzer,
 		forbidden_import.Analyzer,
@@ -50,11 +39,5 @@ func Main(
 		defer_close.Analyzer,
 		file_identity.Analyzer,
 		type_receiver.Analyzer,
-	}
-
-	if rename {
-		analyzers = append(analyzers, variable_naming.Analyzer)
-	}
-
-	multichecker.Main(analyzers...)
+	)
 }

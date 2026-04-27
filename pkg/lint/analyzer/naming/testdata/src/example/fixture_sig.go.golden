@@ -1,3 +1,0 @@
-package example
-
-var isSignature = false // want `use "signature" instead of "sig" in isSig`

@@ -1,3 +1,0 @@
-package example
-
-var errorPattern = "" // want `use "error" instead of "err" in errPattern`

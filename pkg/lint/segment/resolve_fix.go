@@ -5,10 +5,9 @@ import (
 	"go/types"
 )
 
-// ResolveFix picks a replacement for the matched segment, walking only
-// parent scopes for collision detection. Used by the analyzer where the
-// types.Info may not have visibility into all child scopes (e.g. test
-// files loaded in a separate pass).
+// ResolveFix picks a replacement, walking own + child + parent scopes for
+// collision detection. The keyword guard prevents replacements that would
+// produce a Go reserved word.
 func ResolveFix(
 	name string,
 	segment string,
@@ -23,7 +22,7 @@ func ResolveFix(
 		return ""
 	}
 
-	if scope == nil || scope.Lookup(replacement) == nil {
+	if scope == nil || !ScopeContains(scope, replacement) {
 		return fix
 	}
 
@@ -31,17 +30,34 @@ func ResolveFix(
 		return ""
 	}
 
-	multiCharacter := FirstMultiCharacter(applicable)
+	for _, a := range applicable {
+		if len(a) == 1 && a != fix {
+			candidate := ReplaceSegment(name, segment, a)
 
-	if multiCharacter == "" {
-		return ""
+			if !ScopeContains(scope, candidate) {
+				return a
+			}
+		}
 	}
 
-	for _, r := range multiCharacter {
-		letter := string(r)
+	multiCharacter := FirstMultiCharacter(applicable)
+
+	if multiCharacter != "" {
+		for _, r := range multiCharacter {
+			letter := string(r)
+			candidate := ReplaceSegment(name, segment, letter)
+
+			if !ScopeContains(scope, candidate) {
+				return letter
+			}
+		}
+	}
+
+	for c := byte('a'); c <= byte('z'); c++ {
+		letter := string(c)
 		candidate := ReplaceSegment(name, segment, letter)
 
-		if scope.Lookup(candidate) == nil {
+		if !ScopeContains(scope, candidate) {
 			return letter
 		}
 	}

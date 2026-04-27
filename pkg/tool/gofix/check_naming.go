@@ -18,7 +18,7 @@ func checkNaming(
 		return nil
 	}
 
-	fix := segment.ResolveFixDeep(ident.Name, r.Segment, r.Applicable, o)
+	fix := segment.ResolveFix(ident.Name, r.Segment, r.Applicable, o)
 
 	return &violation{
 		ident:   ident,

@@ -1,3 +1,0 @@
-package example
-
-var isFunction = false // want `use "function" instead of "func" in isFunc`

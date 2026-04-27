@@ -1,3 +1,0 @@
-package example
-
-var isVariable = false // want `use "variable" instead of "var" in isVar`

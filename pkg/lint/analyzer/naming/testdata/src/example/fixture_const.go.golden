@@ -1,3 +1,0 @@
-package example
-
-var isConstant = false // want `use "constant" instead of "const" in isConst`

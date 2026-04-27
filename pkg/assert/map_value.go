@@ -12,9 +12,9 @@ func MapValue(
 	key string,
 ) {
 	t.Helper()
-	actual, ok := m[key]
+	actual, okay := m[key]
 
-	if !ok {
+	if !okay {
 		t.Errorf("key %q: not found in map", key)
 
 		return

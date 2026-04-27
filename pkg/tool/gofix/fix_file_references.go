@@ -39,9 +39,9 @@ func fixFileReferences(
 	ast.Inspect(
 		file,
 		func(n ast.Node) bool {
-			i, ok := n.(*ast.Ident)
+			i, okay := n.(*ast.Ident)
 
-			if !ok {
+			if !okay {
 				return true
 			}
 

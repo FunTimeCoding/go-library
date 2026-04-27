@@ -15,15 +15,15 @@ func ownedType(
 	sel *ast.SelectorExpr,
 	module string,
 ) *types.TypeName {
-	o, ok := p.TypesInfo.Uses[sel.Sel]
+	o, okay := p.TypesInfo.Uses[sel.Sel]
 
-	if !ok {
+	if !okay {
 		return nil
 	}
 
-	typeName, ok := o.(*types.TypeName)
+	typeName, okay := o.(*types.TypeName)
 
-	if !ok {
+	if !okay {
 		return nil
 	}
 

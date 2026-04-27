@@ -6,7 +6,11 @@ import (
 )
 
 type typedVariable struct {
-	ident      *ast.Ident
-	typ        types.Type
-	precedence int
+	ident           *ast.Ident
+	typ             types.Type
+	precedence      int
+	scopedNames     map[string]bool
+	descendantNames map[string]bool
+	kind            variableKind
+	exempt          bool
 }

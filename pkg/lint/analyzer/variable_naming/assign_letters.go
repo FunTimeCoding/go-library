@@ -14,16 +14,65 @@ func assignLetters(variables []typedVariable) map[*ast.Ident]string {
 		taken[v.ident.Name] = true
 	}
 
-	sort.Slice(
+	sort.SliceStable(
 		singleLetterVars,
 		func(i, j int) bool {
-			return singleLetterVars[i].precedence < singleLetterVars[j].precedence
+			pi := scopePriority(singleLetterVars[i].kind)
+			pj := scopePriority(singleLetterVars[j].kind)
+
+			if pi != pj {
+				return pi < pj
+			}
+
+			if singleLetterVars[i].precedence != singleLetterVars[j].precedence {
+				return singleLetterVars[i].precedence < singleLetterVars[j].precedence
+			}
+
+			return singleLetterVars[i].ident.Pos() < singleLetterVars[j].ident.Pos()
 		},
 	)
 	taken = make(map[string]bool)
+	localNames := map[string]bool{}
 
 	for _, v := range singleLetterVars {
-		letter := pickLetter(v.typ, taken)
+		if v.kind == kindLocal {
+			localNames[v.ident.Name] = true
+		}
+	}
+
+	for _, v := range singleLetterVars {
+		perVariableTaken := make(
+			map[string]bool,
+			len(taken)+len(v.scopedNames)+len(v.descendantNames),
+		)
+
+		for k := range taken {
+			perVariableTaken[k] = true
+		}
+
+		if v.kind == kindLocal {
+			for k := range v.scopedNames {
+				perVariableTaken[k] = true
+			}
+
+			for k := range v.descendantNames {
+				if k == v.ident.Name {
+					continue
+				}
+
+				perVariableTaken[k] = true
+			}
+		} else {
+			for k := range v.scopedNames {
+				if localNames[k] {
+					continue
+				}
+
+				perVariableTaken[k] = true
+			}
+		}
+
+		letter := pickLetter(v.typ, perVariableTaken)
 
 		if letter == "" {
 			continue

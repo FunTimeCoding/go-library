@@ -11,9 +11,9 @@ func checkNew(
 	call *ast.CallExpr,
 	module string,
 ) {
-	fun, ok := call.Fun.(*ast.Ident)
+	fun, okay := call.Fun.(*ast.Ident)
 
-	if !ok || fun.Name != "new" {
+	if !okay || fun.Name != "new" {
 		return
 	}
 
@@ -21,9 +21,9 @@ func checkNew(
 		return
 	}
 
-	sel, ok := call.Args[0].(*ast.SelectorExpr)
+	sel, okay := call.Args[0].(*ast.SelectorExpr)
 
-	if !ok {
+	if !okay {
 		return
 	}
 

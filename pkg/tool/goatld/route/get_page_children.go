@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (h *Router) GetPageChildren(
+func (r *Router) GetPageChildren(
 	w http.ResponseWriter,
 	_ *http.Request,
 	identifier string,
@@ -14,7 +14,7 @@ func (h *Router) GetPageChildren(
 	web.EncodeNotation(
 		w,
 		convert.ConfluencePagesFromPages(
-			h.confluence.ChildPagesByIdentifier(identifier),
+			r.confluence.ChildPagesByIdentifier(identifier),
 		),
 	)
 }

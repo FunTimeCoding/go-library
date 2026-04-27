@@ -4,10 +4,10 @@ import (
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/custom_field_value"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/constant"
 	"sort"
-	"strconv"
 )
 
 func JiraCreateMeta(
@@ -48,9 +48,9 @@ func JiraCreateMeta(
 
 		if i == nil {
 			for _, a := range allowed {
-				m, ok := a.(map[string]any)
+				m, okay := a.(map[string]any)
 
-				if !ok {
+				if !okay {
 					continue
 				}
 
@@ -69,7 +69,7 @@ func JiraCreateMeta(
 							Value:      v.Value,
 						},
 					)
-				} else if n, ok := m["name"].(string); ok {
+				} else if n, okay := m["name"].(string); okay {
 					f.AllowedValues = append(
 						f.AllowedValues,
 						CreateMetaAllowed{
@@ -86,19 +86,8 @@ func JiraCreateMeta(
 			sort.Slice(
 				f.AllowedValues,
 				func(a, b int) bool {
-					x, xFail := strconv.Atoi(
-						f.AllowedValues[a].Identifier,
-					)
-					y, yFail := strconv.Atoi(
-						f.AllowedValues[b].Identifier,
-					)
-
-					if xFail != nil || yFail != nil {
-						return f.AllowedValues[a].Identifier >
-							f.AllowedValues[b].Identifier
-					}
-
-					return x > y
+					return strings.ToIntegerStrict(f.AllowedValues[a].Identifier) >
+						strings.ToIntegerStrict(f.AllowedValues[b].Identifier)
 				},
 			)
 			f.AllowedValues = f.AllowedValues[:constant.AllowedValueLimit]

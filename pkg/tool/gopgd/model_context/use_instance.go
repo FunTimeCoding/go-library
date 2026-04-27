@@ -17,7 +17,7 @@ func (s *Server) useInstance(
 		return response.Fail("instance is required")
 	}
 
-	if _, ok := s.store.Instance(a.Instance); !ok {
+	if _, okay := s.store.Instance(a.Instance); !okay {
 		return response.Fail("unknown instance: %s", a.Instance)
 	}
 

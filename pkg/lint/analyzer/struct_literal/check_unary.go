@@ -11,15 +11,15 @@ func checkUnary(
 	expr *ast.UnaryExpr,
 	module string,
 ) {
-	lit, ok := expr.X.(*ast.CompositeLit)
+	lit, okay := expr.X.(*ast.CompositeLit)
 
-	if !ok {
+	if !okay {
 		return
 	}
 
-	sel, ok := lit.Type.(*ast.SelectorExpr)
+	sel, okay := lit.Type.(*ast.SelectorExpr)
 
-	if !ok {
+	if !okay {
 		return
 	}
 

@@ -16,6 +16,8 @@ func lettersForType(t types.Type) []string {
 		return []string{"r"}
 	case precedenceWriter:
 		return []string{"w"}
+	case precedenceContext:
+		return []string{"x"}
 	case precedenceFile:
 		return lettersFromWord("file")
 	case precedenceGzipWriter:
@@ -23,19 +25,19 @@ func lettersForType(t types.Type) []string {
 	case precedenceTarWriter:
 		return []string{"t"}
 	case precedenceString:
-		return []string{"s"}
+		return lettersFromWord("string")
 	case precedenceInt:
 		return []string{"i"}
 	case precedenceFloat:
-		return []string{"n"}
+		return lettersFromWord("float")
 	case precedenceBool:
 		return []string{"b"}
 	case precedenceByte:
-		return []string{"b"}
+		return lettersFromWord("byte")
 	case precedenceByteSlice:
-		return []string{"b"}
+		return lettersFromWord("byte")
 	case precedenceMap:
-		return []string{"m"}
+		return lettersFromWord("map")
 	case precedenceChannel:
 		return []string{"c"}
 	case precedenceStructSlice:
@@ -43,7 +45,13 @@ func lettersForType(t types.Type) []string {
 	case precedencePrimitiveSlice:
 		return lettersForPrimitiveSlice(t)
 	case precedenceStruct:
-		return lettersFromTypeName(t)
+		letters := lettersFromTypeName(t)
+
+		if letters == nil {
+			return lettersFromWord("struct")
+		}
+
+		return letters
 	case precedenceInterface:
 		return lettersFromTypeName(t)
 	}

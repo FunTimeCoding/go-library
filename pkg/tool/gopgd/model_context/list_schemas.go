@@ -12,9 +12,9 @@ func (s *Server) listSchemas(
 	_ mcp.CallToolRequest,
 	_ argument.ListSchemas,
 ) (*mcp.CallToolResult, error) {
-	instance, ok := s.activeInstance(x)
+	instance, okay := s.activeInstance(x)
 
-	if !ok {
+	if !okay {
 		return response.Fail(
 			"no instance selected — use use_instance first",
 		)

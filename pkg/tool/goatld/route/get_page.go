@@ -6,13 +6,13 @@ import (
 	"net/http"
 )
 
-func (h *Router) GetPage(
+func (r *Router) GetPage(
 	w http.ResponseWriter,
 	_ *http.Request,
 	identifier string,
 ) {
 	web.EncodeNotation(
 		w,
-		convert.ConfluencePageDetail(h.confluence.Page(identifier)),
+		convert.ConfluencePageDetail(r.confluence.Page(identifier)),
 	)
 }

@@ -9,13 +9,13 @@ import (
 	"net/http"
 )
 
-func (h *Router) UpdatePage(
+func (r *Router) UpdatePage(
 	w http.ResponseWriter,
-	q *http.Request,
+	e *http.Request,
 	identifier string,
 ) {
 	var body server.UpdatePageJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
+	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&body))
 	message := ""
 
 	if body.Message != nil {
@@ -25,7 +25,7 @@ func (h *Router) UpdatePage(
 	web.EncodeNotation(
 		w,
 		convert.ConfluencePageDetail(
-			h.confluence.UpdatePage(
+			r.confluence.UpdatePage(
 				identifier,
 				body.Title,
 				body.Body,

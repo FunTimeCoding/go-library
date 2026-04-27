@@ -20,13 +20,13 @@ func run(p *analysis.Pass) (any, error) {
 		ast.Inspect(
 			file,
 			func(n ast.Node) bool {
-				fn, ok := n.(*ast.FuncDecl)
+				f, okay := n.(*ast.FuncDecl)
 
-				if !ok || fn.Body == nil {
+				if !okay || f.Body == nil {
 					return true
 				}
 
-				checkFunction(p, fn)
+				checkFunction(p, f)
 
 				return true
 			},

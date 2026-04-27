@@ -34,8 +34,8 @@ func (s *Store) RunBackground(stop <-chan struct{}) {
 			return
 		case <-cleanupTicker.C:
 			s.cleanup()
-		case event, ok := <-watcher.Events:
-			if !ok {
+		case event, okay := <-watcher.Events:
+			if !okay {
 				return
 			}
 
@@ -51,8 +51,8 @@ func (s *Store) RunBackground(stop <-chan struct{}) {
 			if strings.HasSuffix(event.Name, constant.DetailedWvWKillSuffix) {
 				s.enrichFile(event.Name)
 			}
-		case watchError, ok := <-watcher.Errors:
-			if !ok {
+		case watchError, okay := <-watcher.Errors:
+			if !okay {
 				return
 			}
 

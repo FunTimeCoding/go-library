@@ -10,13 +10,13 @@ func (s *Store) Pool(instance string) (*pgxpool.Pool, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if p, ok := s.pools[instance]; ok {
+	if p, okay := s.pools[instance]; okay {
 		return p, nil
 	}
 
-	i, ok := s.Instance(instance)
+	i, okay := s.Instance(instance)
 
-	if !ok {
+	if !okay {
 		return nil, fmt.Errorf("unknown instance: %s", instance)
 	}
 

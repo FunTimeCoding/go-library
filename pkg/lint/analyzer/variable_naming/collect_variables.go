@@ -18,6 +18,8 @@ func collectVariables(
 				collectFromAssign(y, node, &result)
 			case *ast.RangeStmt:
 				collectFromRange(y, node, &result)
+			case *ast.DeclStmt:
+				collectFromVariableDeclaration(y, node, &result)
 			}
 
 			return true

@@ -1,6 +1,7 @@
 package naming
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint/segment"
 	"go/types"
 	"golang.org/x/tools/go/analysis"
 )
@@ -8,7 +9,7 @@ import (
 func buildEdits(
 	p *analysis.Pass,
 	o types.Object,
-	segment string,
+	s string,
 	fix string,
 ) []analysis.TextEdit {
 	references := findReferences(p, o)
@@ -20,7 +21,7 @@ func buildEdits(
 			analysis.TextEdit{
 				Pos:     reference.Pos(),
 				End:     reference.End(),
-				NewText: []byte(replaceSegment(reference.Name, segment, fix)),
+				NewText: []byte(segment.ReplaceSegment(reference.Name, s, fix)),
 			},
 		)
 	}

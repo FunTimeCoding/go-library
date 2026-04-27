@@ -6,22 +6,22 @@ import (
 	"net/http"
 )
 
-func (h *Router) GetTransitions(
+func (r *Router) GetTransitions(
 	w http.ResponseWriter,
 	_ *http.Request,
 	key string,
 ) {
-	transitions := h.jira.Transitions(key)
+	transitions := r.jira.Transitions(key)
 	result := make([]*server.JiraTransition, 0, len(transitions))
 
 	for _, t := range transitions {
-		r := &server.JiraTransition{Identifier: t.ID, Name: t.Name}
+		a := &server.JiraTransition{Identifier: t.ID, Name: t.Name}
 
 		if t.To.Name != "" {
-			r.ToStatus = &t.To.Name
+			a.ToStatus = &t.To.Name
 		}
 
-		result = append(result, r)
+		result = append(result, a)
 	}
 
 	web.EncodeNotation(w, result)

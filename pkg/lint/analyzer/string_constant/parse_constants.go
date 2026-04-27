@@ -25,16 +25,16 @@ func parseConstants(
 	}
 
 	for _, d := range file.Decls {
-		g, ok := d.(*ast.GenDecl)
+		g, okay := d.(*ast.GenDecl)
 
-		if !ok || g.Tok != token.CONST {
+		if !okay || g.Tok != token.CONST {
 			continue
 		}
 
 		for _, s := range g.Specs {
-			v, ok := s.(*ast.ValueSpec)
+			v, okay := s.(*ast.ValueSpec)
 
-			if !ok {
+			if !okay {
 				continue
 			}
 
@@ -43,9 +43,9 @@ func parseConstants(
 					continue
 				}
 
-				l, ok := v.Values[i].(*ast.BasicLit)
+				l, okay := v.Values[i].(*ast.BasicLit)
 
-				if !ok || l.Kind != token.STRING {
+				if !okay || l.Kind != token.STRING {
 					continue
 				}
 

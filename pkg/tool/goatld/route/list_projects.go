@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-func (h *Router) ListProjects(
+func (r *Router) ListProjects(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, convert.JiraProjects(h.jira.Projects()))
+	web.EncodeNotation(w, convert.JiraProjects(r.jira.Projects()))
 }

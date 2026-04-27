@@ -20,9 +20,9 @@ func run(p *analysis.Pass) (any, error) {
 		ast.Inspect(
 			file,
 			func(n ast.Node) bool {
-				d, ok := n.(*ast.DeferStmt)
+				d, okay := n.(*ast.DeferStmt)
 
-				if !ok {
+				if !okay {
 					return true
 				}
 

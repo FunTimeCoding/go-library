@@ -3,6 +3,7 @@ package gofix
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/lint/segment"
 	"go/ast"
 	"os"
 	"path/filepath"
@@ -29,7 +30,7 @@ func fixUnloadedReferences(
 			renames,
 			exportedRename{
 				oldName: v.ident.Name,
-				newName: replaceSegment(v.ident.Name, v.segment, v.fix),
+				newName: segment.ReplaceSegment(v.ident.Name, v.segment, v.fix),
 			},
 		)
 	}

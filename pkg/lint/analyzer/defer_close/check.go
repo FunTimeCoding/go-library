@@ -10,9 +10,9 @@ func check(
 	p *analysis.Pass,
 	d *ast.DeferStmt,
 ) {
-	call, ok := d.Call.Fun.(*ast.SelectorExpr)
+	call, okay := d.Call.Fun.(*ast.SelectorExpr)
 
-	if !ok || call.Sel.Name != "Close" {
+	if !okay || call.Sel.Name != "Close" {
 		return
 	}
 

@@ -2,6 +2,7 @@ package gofix
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/segment"
 	"golang.org/x/tools/go/packages"
 )
 
@@ -21,7 +22,7 @@ func buildAllEdits(
 			continue
 		}
 
-		replacement := replaceSegment(v.ident.Name, v.segment, v.fix)
+		replacement := segment.ReplaceSegment(v.ident.Name, v.segment, v.fix)
 		references := findAllReferences(all, v.object)
 		fmt.Printf(
 			"Renamed: %s → %s (%d references)\n",
@@ -31,7 +32,7 @@ func buildAllEdits(
 		)
 
 		for _, r := range references {
-			newName := replaceSegment(r.ident.Name, v.segment, v.fix)
+			newName := segment.ReplaceSegment(r.ident.Name, v.segment, v.fix)
 			result = append(
 				result,
 				edit{

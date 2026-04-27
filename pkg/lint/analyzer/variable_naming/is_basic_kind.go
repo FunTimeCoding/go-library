@@ -6,9 +6,9 @@ func isBasicKind(
 	t types.Type,
 	kind types.BasicKind,
 ) bool {
-	b, ok := t.(*types.Basic)
+	b, okay := t.(*types.Basic)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 

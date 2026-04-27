@@ -11,15 +11,15 @@ func isAssertCall(
 	p *analysis.Pass,
 	call *ast.CallExpr,
 ) bool {
-	s, ok := call.Fun.(*ast.SelectorExpr)
+	s, okay := call.Fun.(*ast.SelectorExpr)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 
-	i, ok := s.X.(*ast.Ident)
+	i, okay := s.X.(*ast.Ident)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 
@@ -29,9 +29,9 @@ func isAssertCall(
 		return false
 	}
 
-	n, ok := o.(*types.PkgName)
+	n, okay := o.(*types.PkgName)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 

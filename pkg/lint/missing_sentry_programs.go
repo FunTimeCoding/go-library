@@ -33,7 +33,7 @@ func missingSentryPrograms(
 			continue
 		}
 
-		if _, ok := programs[name]; !ok {
+		if _, okay := programs[name]; !okay {
 			programs[name] = false
 		}
 	}
@@ -56,7 +56,7 @@ func missingSentryPrograms(
 			if len(parts) >= 3 {
 				name := parts[2]
 
-				if _, ok := programs[name]; ok {
+				if _, okay := programs[name]; okay {
 					programs[name] = true
 				}
 			}

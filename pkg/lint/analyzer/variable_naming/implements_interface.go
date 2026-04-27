@@ -14,9 +14,9 @@ func implementsInterface(
 	}
 
 	_ = packagePath
-	signature, ok := method.Type().(*types.Signature)
+	signature, okay := method.Type().(*types.Signature)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 

@@ -6,10 +6,10 @@ import (
 	"net/http"
 )
 
-func (h *Router) GetIssue(
+func (r *Router) GetIssue(
 	w http.ResponseWriter,
 	_ *http.Request,
 	key string,
 ) {
-	web.EncodeNotation(w, convert.JiraIssue(h.jira.Issue(key)))
+	web.EncodeNotation(w, convert.JiraIssue(r.jira.Issue(key)))
 }

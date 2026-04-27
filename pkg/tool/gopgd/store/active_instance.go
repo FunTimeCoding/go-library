@@ -1,9 +1,9 @@
 package store
 
 func (s *Store) ActiveInstance(sessionID string) (string, bool) {
-	v, ok := s.sessions.Load(sessionID)
+	v, okay := s.sessions.Load(sessionID)
 
-	if !ok {
+	if !okay {
 		return "", false
 	}
 

@@ -12,9 +12,9 @@ func (s *Server) tableSizes(
 	_ mcp.CallToolRequest,
 	a argument.TableSizes,
 ) (*mcp.CallToolResult, error) {
-	instance, ok := s.activeInstance(x)
+	instance, okay := s.activeInstance(x)
 
-	if !ok {
+	if !okay {
 		return response.Fail(
 			"no instance selected — use use_instance first",
 		)

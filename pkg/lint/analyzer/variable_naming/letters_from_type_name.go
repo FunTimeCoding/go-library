@@ -7,9 +7,9 @@ import (
 
 func lettersFromTypeName(t types.Type) []string {
 	t = deref(t)
-	named, ok := t.(*types.Named)
+	named, okay := t.(*types.Named)
 
-	if !ok {
+	if !okay {
 		return nil
 	}
 

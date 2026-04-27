@@ -3,9 +3,9 @@ package variable_naming
 import "go/types"
 
 func isByteSlice(t types.Type) bool {
-	s, ok := t.(*types.Slice)
+	s, okay := t.(*types.Slice)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 

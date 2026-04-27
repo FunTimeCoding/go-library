@@ -23,19 +23,19 @@ func checkCall(
 		return
 	}
 
-	fn, isFunction := o.(*types.Func)
+	f, isFunction := o.(*types.Func)
 
 	if !isFunction {
 		return
 	}
 
-	a := fn.Pkg()
+	a := f.Pkg()
 
 	if a == nil || a.Path() != "os/exec" {
 		return
 	}
 
-	if !banned[fn.Name()] {
+	if !banned[f.Name()] {
 		return
 	}
 
@@ -46,6 +46,6 @@ func checkCall(
 	p.Reportf(
 		call.Pos(),
 		"use pkg/system/run instead of exec.%s",
-		fn.Name(),
+		f.Name(),
 	)
 }

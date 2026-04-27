@@ -15,10 +15,10 @@ func (c *Client) readLoop(connection *websocket.Conn) {
 		}
 
 		c.mutex.Lock()
-		channel, ok := c.pending[r.Identifier]
+		channel, okay := c.pending[r.Identifier]
 		c.mutex.Unlock()
 
-		if ok {
+		if okay {
 			channel <- r
 		}
 	}

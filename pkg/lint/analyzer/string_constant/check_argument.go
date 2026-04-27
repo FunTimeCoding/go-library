@@ -12,9 +12,9 @@ func checkArgument(
 	e ast.Expr,
 	constants map[string]knownConstant,
 ) {
-	l, ok := e.(*ast.BasicLit)
+	l, okay := e.(*ast.BasicLit)
 
-	if !ok || l.Kind != token.STRING {
+	if !okay || l.Kind != token.STRING {
 		return
 	}
 

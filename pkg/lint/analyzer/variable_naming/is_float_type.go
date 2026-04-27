@@ -3,9 +3,9 @@ package variable_naming
 import "go/types"
 
 func isFloatType(t types.Type) bool {
-	b, ok := t.(*types.Basic)
+	b, okay := t.(*types.Basic)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 

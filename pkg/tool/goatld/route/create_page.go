@@ -9,22 +9,22 @@ import (
 	"net/http"
 )
 
-func (h *Router) CreatePage(
+func (r *Router) CreatePage(
 	w http.ResponseWriter,
-	q *http.Request,
+	e *http.Request,
 ) {
-	var b server.CreatePageJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&b))
+	var s server.CreatePageJSONRequestBody
+	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&s))
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(
 		w,
 		convert.ConfluencePageDetail(
-			h.confluence.CreatePage(
-				b.SpaceIdentifier,
-				b.ParentIdentifier,
-				b.Title,
-				b.Body,
+			r.confluence.CreatePage(
+				s.SpaceIdentifier,
+				s.ParentIdentifier,
+				s.Title,
+				s.Body,
 			),
 		),
 	)

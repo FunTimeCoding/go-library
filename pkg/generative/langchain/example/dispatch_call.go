@@ -23,15 +23,15 @@ func dispatchCall(c *Call) (llms.MessageContent, bool) {
 	// we could make this more dynamic by parsing the function schema
 	switch c.Tool {
 	case "getCurrentWeather":
-		l, ok := c.Input["location"].(string)
+		l, okay := c.Input["location"].(string)
 
-		if !ok {
+		if !okay {
 			log.Fatal("invalid input")
 		}
 
-		unit, ok := c.Input["unit"].(string)
+		unit, okay := c.Input["unit"].(string)
 
-		if !ok {
+		if !okay {
 			log.Fatal("invalid input")
 		}
 
@@ -39,9 +39,9 @@ func dispatchCall(c *Call) (llms.MessageContent, bool) {
 
 		return llms.TextParts(llms.ChatMessageTypeHuman, weather), true
 	case "finalResponse":
-		resp, ok := c.Input["response"].(string)
+		resp, okay := c.Input["response"].(string)
 
-		if !ok {
+		if !okay {
 			log.Fatal("invalid input")
 		}
 

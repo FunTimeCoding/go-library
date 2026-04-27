@@ -17,9 +17,9 @@ func checkBinary(
 		return
 	}
 
-	b, ok := t.Underlying().(*types.Basic)
+	b, okay := t.Underlying().(*types.Basic)
 
-	if !ok || b.Kind() != types.String {
+	if !okay || b.Kind() != types.String {
 		return
 	}
 

@@ -9,9 +9,9 @@ func implementsCloser(t types.Type) bool {
 		return false
 	}
 
-	signature, ok := closeMethod.Type().(*types.Signature)
+	signature, okay := closeMethod.Type().(*types.Signature)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 

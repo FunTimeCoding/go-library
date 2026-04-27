@@ -20,19 +20,19 @@ func Hooks(
 			m mcp.MCPMethod,
 			a any,
 		) {
-			if q, ok := a.(*mcp.InitializeRequest); ok {
+			if q, okay := a.(*mcp.InitializeRequest); okay {
 				l.Infof("%s\n", q.Method)
 
 				return
 			}
 
-			if q, ok := a.(*mcp.ListToolsRequest); ok {
+			if q, okay := a.(*mcp.ListToolsRequest); okay {
 				l.Infof("%s\n", q.Method)
 
 				return
 			}
 
-			if q, ok := a.(*mcp.CallToolRequest); ok {
+			if q, okay := a.(*mcp.CallToolRequest); okay {
 				l.Infof(
 					"%s %s %+v\n",
 					q.Method,
@@ -43,14 +43,14 @@ func Hooks(
 				return
 			}
 
-			if q, ok := a.(*mcp.PaginatedRequest); ok {
+			if q, okay := a.(*mcp.PaginatedRequest); okay {
 				l.Infof("PaginatedRequest: %s\n", q.Method)
 				LogParameter(l, &q.Request)
 
 				return
 			}
 
-			if q, ok := a.(*mcp.Request); ok {
+			if q, okay := a.(*mcp.Request); okay {
 				l.Infof("Request: %s\n", q.Method)
 				LogParameter(l, q)
 
@@ -91,7 +91,7 @@ func Hooks(
 				identifier any,
 				a any,
 			) error {
-				if q, ok := a.(*mcp.ListToolsRequest); ok {
+				if q, okay := a.(*mcp.ListToolsRequest); okay {
 					if false {
 						l.Infof(
 							"ListToolsRequest: %+v %+v\n",

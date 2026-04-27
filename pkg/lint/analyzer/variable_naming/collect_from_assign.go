@@ -15,10 +15,16 @@ func collectFromAssign(
 		return
 	}
 
-	for _, lhs := range s.Lhs {
-		ident, ok := lhs.(*ast.Ident)
+	commaOkay := len(s.Lhs) == 2 && len(s.Rhs) == 1 && isCommaOkayRHS(y, s.Rhs[0])
 
-		if !ok || ident.Name == "_" {
+	for i, lhs := range s.Lhs {
+		ident, okay := lhs.(*ast.Ident)
+
+		if !okay || ident.Name == "_" {
+			continue
+		}
+
+		if commaOkay && i == 1 {
 			continue
 		}
 
@@ -31,9 +37,10 @@ func collectFromAssign(
 		*result = append(
 			*result,
 			typedVariable{
-				ident:      ident,
-				typ:        o.Type(),
-				precedence: typePrecedence(o.Type()),
+				ident:       ident,
+				typ:         o.Type(),
+				precedence:  typePrecedence(o.Type()),
+				scopedNames: collectScopedNames(o),
 			},
 		)
 	}

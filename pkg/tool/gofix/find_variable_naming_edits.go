@@ -27,13 +27,13 @@ func findVariableNamingEdits(all []*packages.Package) []edit {
 			ast.Inspect(
 				file,
 				func(n ast.Node) bool {
-					fn, ok := n.(*ast.FuncDecl)
+					f, okay := n.(*ast.FuncDecl)
 
-					if !ok || fn.Body == nil {
+					if !okay || f.Body == nil {
 						return true
 					}
 
-					renames := variable_naming.ComputeRenames(p, fn)
+					renames := variable_naming.ComputeRenames(p, f)
 
 					for _, rename := range renames {
 						if seen[rename.Object.Pos()] {

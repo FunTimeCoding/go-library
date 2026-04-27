@@ -22,9 +22,9 @@ func run(p *analysis.Pass) (any, error) {
 		ast.Inspect(
 			file,
 			func(n ast.Node) bool {
-				f, ok := n.(*ast.FuncDecl)
+				f, okay := n.(*ast.FuncDecl)
 
-				if !ok || f.Recv == nil {
+				if !okay || f.Recv == nil {
 					return true
 				}
 
@@ -61,9 +61,9 @@ func run(p *analysis.Pass) (any, error) {
 					return false
 				}
 
-				s, ok := n.(*ast.TypeSpec)
+				s, okay := n.(*ast.TypeSpec)
 
-				if !ok {
+				if !okay {
 					return true
 				}
 

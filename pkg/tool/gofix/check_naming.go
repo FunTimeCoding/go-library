@@ -1,6 +1,7 @@
 package gofix
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint/segment"
 	"go/ast"
 	"go/types"
 )
@@ -10,46 +11,19 @@ func checkNaming(
 	o types.Object,
 ) *violation {
 	v, isVariable := o.(*types.Var)
-	allowSingleLetter := isVariable && !v.IsField()
+	isField := isVariable && v.IsField()
+	r := segment.Check(ident.Name, isVariable, isField)
 
-	for _, segment := range segments(ident.Name) {
-		if noSuggestion[segment] {
-			return nil
-		}
-
-		s, hasSuggestion := suggestions[segment]
-
-		if !hasSuggestion {
-			continue
-		}
-
-		var applicable []string
-
-		if allowSingleLetter {
-			applicable = append(applicable, s.letters...)
-		}
-
-		applicable = append(applicable, s.words...)
-
-		if len(applicable) == 0 {
-			return nil
-		}
-
-		for _, alternative := range applicable {
-			if containsSegment(ident.Name, alternative) {
-				return nil
-			}
-		}
-
-		fix := resolveFix(ident.Name, segment, applicable, o)
-
-		return &violation{
-			ident:   ident,
-			object:  o,
-			segment: segment,
-			fix:     fix,
-		}
+	if r == nil || r.Banned {
+		return nil
 	}
 
-	return nil
+	fix := segment.ResolveFixDeep(ident.Name, r.Segment, r.Applicable, o)
+
+	return &violation{
+		ident:   ident,
+		object:  o,
+		segment: r.Segment,
+		fix:     fix,
+	}
 }

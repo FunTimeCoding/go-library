@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-func (h *Router) TransitionIssue(
+func (r *Router) TransitionIssue(
 	w http.ResponseWriter,
-	q *http.Request,
+	e *http.Request,
 	key string,
 ) {
-	var r server.TransitionRequest
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&r))
-	h.jira.Transition(key, r.TransitionIdentifier)
+	var q server.TransitionRequest
+	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
+	r.jira.Transition(key, q.TransitionIdentifier)
 	w.WriteHeader(http.StatusNoContent)
 }

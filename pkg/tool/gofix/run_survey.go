@@ -1,6 +1,7 @@
 package gofix
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint/segment"
 	"go/token"
 	"path/filepath"
 	"strings"
@@ -34,15 +35,15 @@ func runSurvey(patterns []string) {
 				continue
 			}
 
-			for _, segment := range segments(ident.Name) {
-				if whitelist[segment] {
+			for _, s := range segment.Segments(ident.Name) {
+				if whitelist[s] {
 					continue
 				}
 
-				counts[segment]++
+				counts[s]++
 
-				if len(examples[segment]) < 3 {
-					examples[segment] = append(examples[segment], ident.Name)
+				if len(examples[s]) < 3 {
+					examples[s] = append(examples[s], ident.Name)
 				}
 			}
 		}

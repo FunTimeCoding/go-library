@@ -23,6 +23,10 @@ func typePrecedence(t types.Type) int {
 		return precedenceWriter
 	}
 
+	if isNamedType(t, "context", "Context") {
+		return precedenceContext
+	}
+
 	if isNamedType(t, "os", "File") {
 		return precedenceFile
 	}
@@ -61,21 +65,27 @@ func typePrecedence(t types.Type) int {
 		return precedenceByte
 	}
 
-	if _, ok := underlying.(*types.Map); ok {
+	if _, okay := underlying.(*types.Map); okay {
 		return precedenceMap
 	}
 
-	if _, ok := underlying.(*types.Chan); ok {
+	if _, okay := underlying.(*types.Chan); okay {
 		return precedenceChannel
 	}
 
-	if s, ok := underlying.(*types.Slice); ok {
-		if _, ok := s.Elem().Underlying().(*types.Struct); ok {
+	if s, okay := underlying.(*types.Slice); okay {
+		e := s.Elem()
+
+		if p, okay := e.(*types.Pointer); okay {
+			e = p.Elem()
+		}
+
+		if _, okay := e.Underlying().(*types.Struct); okay {
 			return precedenceStructSlice
 		}
 
-		if named, ok := s.Elem().(*types.Named); ok {
-			if _, ok := named.Underlying().(*types.Struct); ok {
+		if named, okay := e.(*types.Named); okay {
+			if _, okay := named.Underlying().(*types.Struct); okay {
 				return precedenceStructSlice
 			}
 		}
@@ -83,11 +93,11 @@ func typePrecedence(t types.Type) int {
 		return precedencePrimitiveSlice
 	}
 
-	if _, ok := underlying.(*types.Struct); ok {
+	if _, okay := underlying.(*types.Struct); okay {
 		return precedenceStruct
 	}
 
-	if _, ok := underlying.(*types.Interface); ok {
+	if _, okay := underlying.(*types.Interface); okay {
 		return precedenceInterface
 	}
 

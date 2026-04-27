@@ -15,9 +15,9 @@ func collectFromRange(
 			continue
 		}
 
-		ident, ok := expr.(*ast.Ident)
+		ident, okay := expr.(*ast.Ident)
 
-		if !ok || ident.Name == "_" {
+		if !okay || ident.Name == "_" {
 			continue
 		}
 
@@ -30,9 +30,10 @@ func collectFromRange(
 		*result = append(
 			*result,
 			typedVariable{
-				ident:      ident,
-				typ:        o.Type(),
-				precedence: typePrecedence(o.Type()),
+				ident:       ident,
+				typ:         o.Type(),
+				precedence:  typePrecedence(o.Type()),
+				scopedNames: collectScopedNames(o),
 			},
 		)
 	}

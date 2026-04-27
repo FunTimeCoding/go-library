@@ -24,7 +24,7 @@ func Alternate() {
 	)
 
 	if e != nil {
-		if n, ok := errors.AsType[*anthropic.APIError](e); ok {
+		if n, okay := errors.AsType[*anthropic.APIError](e); okay {
 			fmt.Printf(
 				"Messages error, type: %s, message: %s",
 				n.Type,

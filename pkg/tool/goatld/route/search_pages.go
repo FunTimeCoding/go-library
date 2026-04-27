@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-func (h *Router) SearchPages(
+func (r *Router) SearchPages(
 	w http.ResponseWriter,
 	_ *http.Request,
 	p server.SearchPagesParams,
 ) {
 	web.EncodeNotation(
 		w,
-		convert.ConfluencePages(h.confluence.Search(p.Query)),
+		convert.ConfluencePages(r.confluence.Search(p.Query)),
 	)
 }

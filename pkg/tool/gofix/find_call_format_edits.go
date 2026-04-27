@@ -33,9 +33,9 @@ func findCallFormatEdits(all []*packages.Package) []edit {
 				continue
 			}
 
-			source, ok := sourceCache[name]
+			source, okay := sourceCache[name]
 
-			if !ok {
+			if !okay {
 				var e error
 				source, e = os.ReadFile(name)
 
@@ -49,9 +49,9 @@ func findCallFormatEdits(all []*packages.Package) []edit {
 			ast.Inspect(
 				file,
 				func(n ast.Node) bool {
-					call, ok := n.(*ast.CallExpr)
+					call, okay := n.(*ast.CallExpr)
 
-					if !ok {
+					if !okay {
 						return true
 					}
 

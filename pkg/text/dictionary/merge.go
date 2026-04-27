@@ -20,7 +20,7 @@ func Merge(
 
 	for _, source := range sources {
 		for _, sc := range Read(source) {
-			if i, ok := index[sc.Name]; ok {
+			if i, okay := index[sc.Name]; okay {
 				existing := wordSet(categories[i].Words)
 
 				for _, w := range sc.Words {

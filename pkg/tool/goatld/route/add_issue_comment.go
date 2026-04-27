@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-func (h *Router) AddIssueComment(
+func (r *Router) AddIssueComment(
 	w http.ResponseWriter,
-	q *http.Request,
+	e *http.Request,
 	key string,
 ) {
-	var r server.CommentRequest
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&r))
-	h.jira.Comment(key, r.Body)
+	var q server.CommentRequest
+	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
+	r.jira.Comment(key, q.Body)
 	w.WriteHeader(http.StatusNoContent)
 }

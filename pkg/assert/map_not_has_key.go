@@ -9,7 +9,7 @@ func MapNotHasKey(
 ) {
 	t.Helper()
 
-	if _, ok := m[key]; ok {
+	if _, okay := m[key]; okay {
 		t.Errorf("expected key %q NOT in map, but found", key)
 	}
 }

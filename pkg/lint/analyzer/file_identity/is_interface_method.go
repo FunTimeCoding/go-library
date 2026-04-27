@@ -9,9 +9,9 @@ func isInterfaceMethod(
 	p *analysis.Pass,
 	f *types.Func,
 ) bool {
-	s, ok := f.Type().(*types.Signature)
+	s, okay := f.Type().(*types.Signature)
 
-	if !ok || s.Recv() == nil {
+	if !okay || s.Recv() == nil {
 		return false
 	}
 
@@ -21,9 +21,9 @@ func isInterfaceMethod(
 		r = i.Elem()
 	}
 
-	named, ok := r.(*types.Named)
+	named, okay := r.(*types.Named)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 
@@ -33,15 +33,15 @@ func isInterfaceMethod(
 		scope := m.Scope()
 
 		for _, name := range scope.Names() {
-			typeName, ok := scope.Lookup(name).(*types.TypeName)
+			typeName, okay := scope.Lookup(name).(*types.TypeName)
 
-			if !ok {
+			if !okay {
 				continue
 			}
 
-			face, ok := typeName.Type().Underlying().(*types.Interface)
+			face, okay := typeName.Type().Underlying().(*types.Interface)
 
-			if !ok {
+			if !okay {
 				continue
 			}
 

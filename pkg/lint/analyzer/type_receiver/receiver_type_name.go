@@ -7,15 +7,15 @@ func receiverTypeName(e ast.Expr) string {
 	case *ast.Ident:
 		return t.Name
 	case *ast.StarExpr:
-		if i, ok := t.X.(*ast.Ident); ok {
+		if i, okay := t.X.(*ast.Ident); okay {
 			return i.Name
 		}
 	case *ast.IndexExpr:
-		if i, ok := t.X.(*ast.Ident); ok {
+		if i, okay := t.X.(*ast.Ident); okay {
 			return i.Name
 		}
 	case *ast.IndexListExpr:
-		if i, ok := t.X.(*ast.Ident); ok {
+		if i, okay := t.X.(*ast.Ident); okay {
 			return i.Name
 		}
 	}

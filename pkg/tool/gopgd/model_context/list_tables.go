@@ -12,9 +12,9 @@ func (s *Server) listTables(
 	_ mcp.CallToolRequest,
 	a argument.ListTables,
 ) (*mcp.CallToolResult, error) {
-	instance, ok := s.activeInstance(x)
+	instance, okay := s.activeInstance(x)
 
-	if !ok {
+	if !okay {
 		return response.Fail(
 			"no instance selected — use use_instance first",
 		)

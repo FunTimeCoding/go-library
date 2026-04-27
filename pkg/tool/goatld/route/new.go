@@ -6,8 +6,8 @@ import (
 )
 
 func New(
-	j *jira.Client,
+	l *jira.Client,
 	c *confluence.Client,
 ) *Router {
-	return &Router{jira: j, confluence: c}
+	return &Router{jira: l, confluence: c}
 }

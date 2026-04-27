@@ -7,11 +7,11 @@ import (
 
 func (m *Monitor) processChannel(name string) error {
 	m.mutex.RLock()
-	c, ok := m.channelCache[name]
+	c, okay := m.channelCache[name]
 	lastMilli := m.lastCheckMillisecond[name]
 	m.mutex.RUnlock()
 
-	if !ok {
+	if !okay {
 		return fmt.Errorf("not found in cache")
 	}
 

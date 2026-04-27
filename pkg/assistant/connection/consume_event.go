@@ -4,10 +4,10 @@ import "github.com/funtimecoding/go-library/pkg/assistant/message"
 
 func (c *Connection) consumeEvent(m *message.Message) {
 	c.RLock()
-	f, ok := c.subscribers[m.Identifier]
+	f, okay := c.subscribers[m.Identifier]
 	c.RUnlock()
 
-	if !ok {
+	if !okay {
 		return
 	}
 

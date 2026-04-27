@@ -10,7 +10,7 @@ import (
 type Scheduler struct {
 	cron     *cron.Cron
 	schedule string
-	taskFn   func() error
+	taskFunction   func() error
 	entryID  cron.EntryID
 	mu       sync.Mutex
 	running  bool
@@ -27,7 +27,7 @@ func (s *Scheduler) Start() error {
 	id, e := s.cron.AddFunc(
 		s.schedule,
 		func() {
-			if f := s.taskFn(); f != nil {
+			if f := s.taskFunction(); f != nil {
 				log.Printf("scheduled task error: %v", f)
 			}
 		},

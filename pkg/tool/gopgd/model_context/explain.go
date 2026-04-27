@@ -13,9 +13,9 @@ func (s *Server) explain(
 	_ mcp.CallToolRequest,
 	a argument.Explain,
 ) (*mcp.CallToolResult, error) {
-	instance, ok := s.activeInstance(x)
+	instance, okay := s.activeInstance(x)
 
-	if !ok {
+	if !okay {
 		return response.Fail(
 			"no instance selected — use use_instance first",
 		)

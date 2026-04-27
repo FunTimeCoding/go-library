@@ -20,7 +20,7 @@ func (p *Poller) Poll() {
 
 			k := key{name, r.Name, r.Branch}
 
-			if existing, ok := latest[k]; !ok || r.Identifier > existing.Identifier {
+			if existing, okay := latest[k]; !okay || r.Identifier > existing.Identifier {
 				latest[k] = r
 			}
 		}

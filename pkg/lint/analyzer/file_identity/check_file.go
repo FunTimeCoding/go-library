@@ -17,16 +17,16 @@ func checkFile(
 	var identities []identity
 
 	for _, d := range file.Decls {
-		g, ok := d.(*ast.GenDecl)
+		g, okay := d.(*ast.GenDecl)
 
-		if !ok {
+		if !okay {
 			continue
 		}
 
 		for _, s := range g.Specs {
-			t, ok := s.(*ast.TypeSpec)
+			t, okay := s.(*ast.TypeSpec)
 
-			if !ok {
+			if !okay {
 				continue
 			}
 
@@ -39,9 +39,9 @@ func checkFile(
 	}
 
 	for _, d := range file.Decls {
-		f, ok := d.(*ast.FuncDecl)
+		f, okay := d.(*ast.FuncDecl)
 
-		if !ok {
+		if !okay {
 			continue
 		}
 
@@ -86,7 +86,7 @@ func checkFile(
 	if sole.method != nil {
 		o := p.TypesInfo.ObjectOf(sole.method.Name)
 
-		if f, ok := o.(*goTypes.Func); ok && isInterfaceMethod(p, f) {
+		if f, okay := o.(*goTypes.Func); okay && isInterfaceMethod(p, f) {
 			return
 		}
 	}

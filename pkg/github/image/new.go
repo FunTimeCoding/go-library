@@ -4,9 +4,9 @@ import "github.com/google/go-github/v85/github"
 
 func New(v *github.PackageVersion) *Image {
 	var tags []string
-	meta, ok := v.GetMetadata()
+	meta, okay := v.GetMetadata()
 
-	if ok && meta.Container != nil {
+	if okay && meta.Container != nil {
 		tags = meta.Container.Tags
 	}
 

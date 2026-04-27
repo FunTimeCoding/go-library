@@ -13,9 +13,9 @@ func checkFile(
 	ast.Inspect(
 		file,
 		func(n ast.Node) bool {
-			call, ok := n.(*ast.CallExpr)
+			call, okay := n.(*ast.CallExpr)
 
-			if !ok {
+			if !okay {
 				return true
 			}
 

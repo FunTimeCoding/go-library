@@ -13,8 +13,8 @@ func TestMissingTestDirectories(t *testing.T) {
 	}
 	result := missingTestDirectories(paths, nil)
 	assert.Integer(t, 1, len(result))
-	_, ok := result["pkg/foo"]
-	assert.Boolean(t, true, ok)
+	_, okay := result["pkg/foo"]
+	assert.Boolean(t, true, okay)
 }
 
 func TestMissingTestDirectoriesNone(t *testing.T) {
@@ -35,8 +35,8 @@ func TestMissingTestDirectoriesGenerated(t *testing.T) {
 	}
 	result := missingTestDirectories(paths, generatedPaths)
 	assert.Integer(t, 2, len(result))
-	_, ok := result["pkg/foo"]
-	assert.Boolean(t, true, ok)
-	_, ok = result["pkg/baz"]
-	assert.Boolean(t, true, ok)
+	_, okay := result["pkg/foo"]
+	assert.Boolean(t, true, okay)
+	_, okay = result["pkg/baz"]
+	assert.Boolean(t, true, okay)
 }

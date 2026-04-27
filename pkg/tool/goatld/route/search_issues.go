@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (h *Router) SearchIssues(
+func (r *Router) SearchIssues(
 	w http.ResponseWriter,
 	_ *http.Request,
 	p server.SearchIssuesParams,
@@ -16,10 +16,10 @@ func (h *Router) SearchIssues(
 
 	if p.Limit != nil {
 		issues = convert.JiraIssues(
-			h.jira.SearchLimit(*p.Limit, p.Query),
+			r.jira.SearchLimit(*p.Limit, p.Query),
 		)
 	} else {
-		issues = convert.JiraIssues(h.jira.Search(p.Query))
+		issues = convert.JiraIssues(r.jira.Search(p.Query))
 	}
 
 	web.EncodeNotation(w, issues)

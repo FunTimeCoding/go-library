@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-func (h *Router) ListSpaces(
+func (r *Router) ListSpaces(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, convert.ConfluenceSpaces(h.confluence.Spaces()))
+	web.EncodeNotation(w, convert.ConfluenceSpaces(r.confluence.Spaces()))
 }

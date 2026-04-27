@@ -8,9 +8,9 @@ func isNamedType(
 	name string,
 ) bool {
 	t = deref(t)
-	named, ok := t.(*types.Named)
+	named, okay := t.(*types.Named)
 
-	if !ok {
+	if !okay {
 		return false
 	}
 

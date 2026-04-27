@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-func (h *Router) AddPageComment(
+func (r *Router) AddPageComment(
 	w http.ResponseWriter,
-	q *http.Request,
+	e *http.Request,
 	identifier string,
 ) {
-	var r server.CommentRequest
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&r))
-	h.confluence.AddComment(identifier, r.Body)
+	var q server.CommentRequest
+	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
+	r.confluence.AddComment(identifier, q.Body)
 	w.WriteHeader(http.StatusNoContent)
 }

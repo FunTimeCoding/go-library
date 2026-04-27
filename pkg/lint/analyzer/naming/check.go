@@ -2,6 +2,7 @@ package naming
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/segment"
 	"go/ast"
 	"go/types"
 	"golang.org/x/tools/go/analysis"
@@ -16,88 +17,55 @@ func check(
 		return
 	}
 
-	_, isVariable := o.(*types.Var)
+	v, isVariable := o.(*types.Var)
+	isField := isVariable && v.IsField()
+	r := segment.Check(ident.Name, isVariable, isField)
 
-	for _, segment := range segments(ident.Name) {
-		if noSuggestion[segment] {
-			p.Report(
-				analysis.Diagnostic{
-					Pos: ident.Pos(),
-					End: ident.End(),
-					Message: fmt.Sprintf(
-						"avoid %q in name, use a more specific term",
-						segment,
-					),
-				},
-			)
+	if r == nil {
+		return
+	}
 
-			return
-		}
-
-		alternatives, hasSuggestion := suggestions[segment]
-
-		if !hasSuggestion {
-			continue
-		}
-
-		var applicable []string
-
-		for _, alternative := range alternatives {
-			if len(alternative) > 1 || isVariable {
-				applicable = append(applicable, alternative)
-			}
-		}
-
-		if len(applicable) == 0 {
-			p.Report(
-				analysis.Diagnostic{
-					Pos: ident.Pos(),
-					End: ident.End(),
-					Message: fmt.Sprintf(
-						"avoid %q in name, use a more specific term",
-						segment,
-					),
-				},
-			)
-
-			return
-		}
-
-		for _, alternative := range applicable {
-			if containsSegment(ident.Name, alternative) {
-				return
-			}
-		}
-
-		diagnostic := analysis.Diagnostic{
-			Pos:     ident.Pos(),
-			End:     ident.End(),
-			Message: formatMessage(applicable, segment, ident.Name),
-		}
-
-		if o != nil && !ident.IsExported() {
-			fix := resolveFix(ident.Name, segment, applicable, o)
-
-			if fix != "" {
-				replacement := replaceSegment(ident.Name, segment, fix)
-				edits := buildEdits(p, o, segment, fix)
-
-				if len(edits) > 0 {
-					diagnostic.SuggestedFixes = []analysis.SuggestedFix{
-						{
-							Message: fmt.Sprintf(
-								"rename to %s",
-								replacement,
-							),
-							TextEdits: edits,
-						},
-					}
-				}
-			}
-		}
-
-		p.Report(diagnostic)
+	if r.Banned {
+		p.Report(
+			analysis.Diagnostic{
+				Pos: ident.Pos(),
+				End: ident.End(),
+				Message: fmt.Sprintf(
+					"avoid %q in name, use a more specific term",
+					r.Segment,
+				),
+			},
+		)
 
 		return
 	}
+
+	diagnostic := analysis.Diagnostic{
+		Pos:     ident.Pos(),
+		End:     ident.End(),
+		Message: segment.FormatMessage(r.Applicable, r.Segment, ident.Name),
+	}
+
+	if o != nil && !ident.IsExported() {
+		fix := segment.ResolveFix(ident.Name, r.Segment, r.Applicable, o)
+
+		if fix != "" {
+			replacement := segment.ReplaceSegment(ident.Name, r.Segment, fix)
+			edits := buildEdits(p, o, r.Segment, fix)
+
+			if len(edits) > 0 {
+				diagnostic.SuggestedFixes = []analysis.SuggestedFix{
+					{
+						Message: fmt.Sprintf(
+							"rename to %s",
+							replacement,
+						),
+						TextEdits: edits,
+					},
+				}
+			}
+		}
+	}
+
+	p.Report(diagnostic)
 }

@@ -23,15 +23,22 @@ func validate(o *option.Sed) {
 		panic("branch required")
 	}
 
-	if o.Path == "" {
-		panic("path required")
-	}
-
 	if o.Message == "" {
 		panic("message required")
 	}
 
-	if len(o.Replaces) == 0 {
+	hasPath := o.Path != ""
+	hasActions := len(o.RawActions) > 0
+
+	if hasPath && hasActions {
+		panic("cannot mix --path with --action")
+	}
+
+	if !hasPath && !hasActions {
+		panic("either --path with --replace or --action is required")
+	}
+
+	if hasPath && len(o.Replaces) == 0 {
 		panic("at least one replace required")
 	}
 }

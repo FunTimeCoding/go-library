@@ -39,6 +39,13 @@ func Main(
 		nil,
 		"One or more prefix replaces (Example: 'image: app:=v1.2.3')",
 	)
+	var actions []string
+	pflag.StringSliceVar(
+		&actions,
+		argument.Action,
+		nil,
+		"One or more file:prefix=value actions for multi-file commits",
+	)
 	monitor.ParseBind(version, gitHash, buildDate)
 	common.ValidateArguments()
 	o := option.New()
@@ -49,6 +56,7 @@ func Main(
 	o.Branch = viper.GetString(argument.Branch)
 	o.Path = viper.GetString(argument.Path)
 	o.Replaces = sed.Parse(replaces)
+	o.RawActions = actions
 	o.Message = argument.RequiredPositional(0, "MESSAGE")
 	sed.Run(o)
 }

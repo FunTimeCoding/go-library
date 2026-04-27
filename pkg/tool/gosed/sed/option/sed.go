@@ -9,4 +9,5 @@ type Sed struct {
 	Path       string
 	Message    string
 	Replaces   map[string]string
+	RawActions []string
 }

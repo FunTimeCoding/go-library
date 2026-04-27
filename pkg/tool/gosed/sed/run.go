@@ -12,6 +12,13 @@ func Run(o *option.Sed) {
 	validate(o)
 	c := gitlab.New(o.Host, o.Token)
 	p := common.FindProjectOrExit(c, o.Owner, o.Repository)
+
+	if len(o.RawActions) > 0 {
+		runActions(c, p.Identifier, o)
+
+		return
+	}
+
 	f := c.File(p.Identifier, o.Branch, o.Path)
 
 	if f == nil {

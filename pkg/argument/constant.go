@@ -1,6 +1,7 @@
 package argument
 
 const (
+	Action         = "action"
 	All            = "all"
 	Arm            = "arm"
 	Body           = "body"

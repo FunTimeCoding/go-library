@@ -17,7 +17,7 @@ require (
 	github.com/apenella/go-ansible/v2 v2.4.1
 	github.com/bndr/gojenkins v1.2.0
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/chromedp/cdproto v0.0.0-20260405000525-47a8ff65b46a
+	github.com/chromedp/cdproto v0.0.0-20260427013145-5737772c319b
 	github.com/chromedp/chromedp v0.15.1
 	github.com/coder/websocket v1.8.14
 	github.com/coreos/go-oidc/v3 v3.18.0
@@ -32,9 +32,9 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0
 	github.com/gage-technologies/mistral-go v1.1.0
 	github.com/gdamore/tcell/v2 v2.13.9
-	github.com/getkin/kin-openapi v0.136.0
+	github.com/getkin/kin-openapi v0.137.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.46.0
+	github.com/getsentry/sentry-go v0.46.1
 	github.com/go-git/go-billy/v5 v5.8.0
 	github.com/go-git/go-git/v5 v5.18.0
 	github.com/go-openapi/runtime v0.29.4
@@ -63,8 +63,8 @@ require (
 	github.com/nsf/termbox-go v1.1.1
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/olekukonko/tablewriter v1.1.4
-	github.com/ollama/ollama v0.21.2
-	github.com/openai/openai-go/v3 v3.32.0
+	github.com/ollama/ollama v0.22.0
+	github.com/openai/openai-go/v3 v3.33.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -88,7 +88,7 @@ require (
 	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
-	gitlab.com/gitlab-org/api/client-go/v2 v2.20.1
+	gitlab.com/gitlab-org/api/client-go/v2 v2.21.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.50.0
 	golang.org/x/mod v0.35.0

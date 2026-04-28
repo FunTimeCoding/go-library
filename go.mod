@@ -32,7 +32,7 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0
 	github.com/gage-technologies/mistral-go v1.1.0
 	github.com/gdamore/tcell/v2 v2.13.9
-	github.com/getkin/kin-openapi v0.136.0
+	github.com/getkin/kin-openapi v0.137.0
 	github.com/getlantern/systray v1.2.2
 	github.com/getsentry/sentry-go v0.46.0
 	github.com/go-git/go-billy/v5 v5.8.0

@@ -13,13 +13,18 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/route"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
+	alertWeb "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
+	"github.com/funtimecoding/go-library/pkg/web"
 	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/getsentry/sentry-go"
 	"net/http"
 	"time"
 )
 
-func Run(o *option.Log) {
+func Run(
+	o *option.Log,
+	h *sentry.Hub,
+) {
 	g := logger.New(context.Background())
 	e := metric.New(0, false, nil)
 	s := store.New(o.DatabasePath)
@@ -32,18 +37,18 @@ func Run(o *option.Log) {
 		30*24*time.Hour,
 		e.Registry(),
 	)
-	l := lifecycle.New(
+	lifecycle.New(
+		g,
 		lifecycle.WithWorker(e),
 		lifecycle.WithWorker(p),
-		lifecycle.WithServer(
+		lifecycle.WithServerMiddleware(
 			webConstant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(route.New(s, p), m)
 				generative.New(model_context.New(s, p).Nested()).Setup(m)
-				web.New(s, p).Mount(m)
+				alertWeb.New(s, p).Mount(m)
 			},
+			web.RecoveryMiddleware(h),
 		),
-	)
-	g.Structured("starting")
-	l.RunUntilSignal()
+	).RunUntilSignal()
 }

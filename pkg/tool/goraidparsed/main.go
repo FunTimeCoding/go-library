@@ -1,11 +1,12 @@
 package goraidparsed
 
 import (
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/option"
+	"github.com/getsentry/sentry-go"
 )
 
 func Main(
@@ -13,10 +14,13 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+	var h *sentry.Hub
+
+	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
 		r := reporter.New("goraidparsed", c, "", version)
 		r.Start()
 		defer func() { r.RecoverFlush(recover()) }()
+		h = r.Hub()
 	}
 
 	monitor.ParseBind(version, gitHash, buildDate)
@@ -24,5 +28,5 @@ func Main(
 	o.ParserPath = "/opt/parser"
 	o.TemplatePath = "/opt/template/TW5_Top_Stat_Parse.html"
 	o.OutputPath = "/srv/gw2-report"
-	Run(o)
+	Run(o, h)
 }

@@ -3,12 +3,13 @@ package route
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/server"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"log/slog"
+	"github.com/getsentry/sentry-go"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -28,18 +29,16 @@ func (h *Router) PostGenerate(
 		date = *body.Date
 	}
 
-	slog.Info("generate request", "files", body.Files)
+	h.logger.Structured("generate_request", "files", body.Files)
 	workdir, e := os.MkdirTemp("", "goraidparsed-")
 	errors.PanicOnError(e)
-	slog.Info("workdir created", "path", workdir)
 	defer func() { errors.PanicOnError(os.RemoveAll(workdir)) }()
 
 	for _, file := range body.Files {
-		_, statError := os.Stat(file)
-		exists := statError == nil
-		slog.Info("symlink target", "path", file, "exists", exists)
-		target := filepath.Join(workdir, filepath.Base(file))
-		errors.PanicOnError(os.Symlink(file, target))
+		system.Stat(file)
+		errors.PanicOnError(
+			os.Symlink(file, filepath.Join(workdir, filepath.Base(file))),
+		)
 	}
 
 	dateArgument := date.Format("2006-01-02T15:04:05")
@@ -52,20 +51,26 @@ func (h *Router) PostGenerate(
 	parser.Start("python", parserScript, workdir, "-d", dateArgument)
 
 	if parser.Error != nil {
-		slog.Error(
-			"parser failed",
-			"output",
-			parser.OutputString,
-			"stderr",
-			parser.ErrorString,
-		)
+		if h.hub != nil {
+			h.hub.WithScope(
+				func(s *sentry.Scope) {
+					s.SetContext(
+						"parser",
+						map[string]any{
+							"output": parser.OutputString,
+							"stderr": parser.ErrorString,
+						},
+					)
+					h.hub.CaptureException(parser.Error)
+				},
+			)
+		}
+
 		errors.PanicOnError(parser.Error)
 	}
 
-	slog.Info("parser completed", "output", parser.OutputString)
 	tidCount := 0
-	entries, f := os.ReadDir(workdir)
-	errors.PanicOnError(f)
+	entries := system.ReadDirectory(workdir)
 
 	for _, entry := range entries {
 		if strings.HasSuffix(entry.Name(), ".tid") {
@@ -91,17 +96,24 @@ func (h *Router) PostGenerate(
 	)
 
 	if t.Error != nil {
-		slog.Error(
-			"tiddler generator failed",
-			"output",
-			t.OutputString,
-			"stderr",
-			t.ErrorString,
-		)
+		if h.hub != nil {
+			h.hub.WithScope(
+				func(s *sentry.Scope) {
+					s.SetContext(
+						"tiddler_generator",
+						map[string]any{
+							"output": t.OutputString,
+							"stderr": t.ErrorString,
+						},
+					)
+					h.hub.CaptureException(t.Error)
+				},
+			)
+		}
+
 		errors.PanicOnError(t.Error)
 	}
 
-	slog.Info("tiddler generator completed", "output", t.OutputString)
 	reportName := fmt.Sprintf(
 		"ONYX Log %s.html",
 		date.Format("2006-01-02"),
@@ -109,7 +121,7 @@ func (h *Router) PostGenerate(
 	var reportSource string
 
 	for _, entry := range entries {
-		if strings.HasSuffix(entry.Name(), ".html") &&
+		if strings.HasSuffix(entry.Name(), constant.HypertextExtension) &&
 			entry.Name() != filepath.Base(h.templatePath) {
 			reportSource = filepath.Join(workdir, entry.Name())
 
@@ -119,11 +131,10 @@ func (h *Router) PostGenerate(
 
 	// Re-scan after tiddler generation for the output HTML
 	if reportSource == "" {
-		updated, g := os.ReadDir(workdir)
-		errors.PanicOnError(g)
+		updated := system.ReadDirectory(workdir)
 
 		for _, entry := range updated {
-			if strings.HasSuffix(entry.Name(), ".html") &&
+			if strings.HasSuffix(entry.Name(), constant.HypertextExtension) &&
 				entry.Name() != filepath.Base(h.templatePath) {
 				reportSource = filepath.Join(workdir, entry.Name())
 

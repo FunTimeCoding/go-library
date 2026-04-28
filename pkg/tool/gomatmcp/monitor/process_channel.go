@@ -1,18 +1,15 @@
 package monitor
 
-import (
-	"fmt"
-	"log"
-)
+import "github.com/funtimecoding/go-library/pkg/errors/panics"
 
-func (m *Monitor) processChannel(name string) error {
+func (m *Monitor) processChannel(name string) {
 	m.mutex.RLock()
 	c, okay := m.channelCache[name]
 	lastMilli := m.lastCheckMillisecond[name]
 	m.mutex.RUnlock()
 
 	if !okay {
-		return fmt.Errorf("not found in cache")
+		panics.Print("name not found in channel cache: %s", name)
 	}
 
 	posts := m.client.RecentPosts(c, lastMilli)
@@ -22,17 +19,21 @@ func (m *Monitor) processChannel(name string) error {
 	relevant := findRelevantPosts(posts, m.configuration.Topics)
 
 	if len(relevant) == 0 {
-		return nil
+		return
 	}
 
 	message := buildNotification(relevant, name, m.username)
 
 	if message == "" {
-		return nil
+		return
 	}
 
 	m.client.PostSimple(m.notifyChannel, message)
-	log.Printf("notified: %d posts from %s", len(relevant), name)
-
-	return nil
+	m.logger.Structured(
+		"channel_notify",
+		"channel",
+		name,
+		"count",
+		len(relevant),
+	)
 }

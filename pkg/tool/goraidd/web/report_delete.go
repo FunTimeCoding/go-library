@@ -1,9 +1,8 @@
 package web
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"net/http"
-	"os"
 	"path/filepath"
 )
 
@@ -11,7 +10,8 @@ func (s *Server) reportDelete(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	name := r.PathValue("fileName")
-	errors.PanicOnError(os.Remove(filepath.Join(s.outputPath, name)))
+	system.RemoveFile(
+		filepath.Join(s.outputPath, r.PathValue("fileName")),
+	)
 	http.Redirect(w, r, "/reports", http.StatusSeeOther)
 }

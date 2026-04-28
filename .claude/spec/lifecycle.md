@@ -20,6 +20,7 @@ pkg/lifecycle/
   run.go                              - Run() starts all components in order
   run_until_signal.go                 - RunUntilSignal() runs, blocks, stops
   stop.go                             - Stop() stops all in reverse order
+  with_logger.go                      - WithLogger option (structured startup line)
   with_server.go                      - WithServer option (no timeout — streaming/MCP)
   with_server_middleware.go           - WithServerMiddleware option (no timeout)
   with_protected_server.go            - WithProtectedServer option (10s — plain REST)
@@ -63,8 +64,13 @@ lifecycle.WithServer(address, func(m *http.ServeMux) {
 
 lifecycle.WithServerMiddleware(address, func(m *http.ServeMux) {
     // register routes on m
-}, middlewareFunc)
+}, web.RecoveryMiddleware(hub))
 ```
+
+The middleware parameter is typically `web.RecoveryMiddleware(hub)` —
+the shared recovery middleware that catches panics, reports them to
+Sentry, and returns 500. See `error-handling.md` for recovery layer
+design.
 
 ## WithProtectedServer / WithProtectedServerMiddleware
 
@@ -101,23 +107,36 @@ Stop happens in reverse: the server shuts down before the worker stops.
 - **Sentry** - lives in `Main()`, not `Run()`. See `entrypoint.md`. The `recover()` defer in `Main()` catches panics from `Run()`.
 - **App-specific setup** - database connections, client construction, configuration parsing. All happen before `lifecycle.New()`.
 
+## WithLogger
+
+Emits a structured `lifecycle_start` log line after all components
+have started. Pass the logger created in `Run()`.
+
+```go
+lifecycle.WithLogger(logger.New(context.Background()))
+```
+
 ## Usage Pattern
 
 ```go
-func Run(o *option.Config) {
-    // 1. Construct components
-    e := metric.New(0, o.Verbose, nil)
-
-    // 2. Build lifecycle in desired start order, run until signal
+func Run(o *option.Config, h *sentry.Hub) {
+    l := logger.New(context.Background())
     lifecycle.New(
-        lifecycle.WithVerbose(o.Verbose),
-        lifecycle.WithWorker(e),
-        lifecycle.WithWorker(ticker.New(5*time.Minute, func() { ... })),
-        lifecycle.WithServer(web.AddressPort(o.Port), func(m *http.ServeMux) {
-            m.HandleFunc("/health", health)
-        }),
+        lifecycle.WithLogger(l),
+        lifecycle.WithWorker(poller.New(l, h)),
+        lifecycle.WithServerMiddleware(
+            web.AddressPort(o.Port),
+            func(m *http.ServeMux) {
+                m.HandleFunc("/health", health)
+            },
+            web.RecoveryMiddleware(h),
+        ),
     ).RunUntilSignal()
 }
+```
+
+See `three-pillars.md` for the full wiring pattern including Main()
+hub extraction.
 ```
 
 ## Adapting Existing Types

@@ -1,14 +1,15 @@
 package goitermmcp
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/option"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/getsentry/sentry-go"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -16,13 +17,18 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+	var h *sentry.Hub
+
+	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
 		r := reporter.New("goitermmcp", c, "", version)
 		r.Start()
 		defer func() { r.RecoverFlush(recover()) }()
+		h = r.Hub()
 	}
 
-	pflag.Int(argument.Port, 8080, "Listen port")
+	pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
 	monitor.ParseBind(version, gitHash, buildDate)
-	Run(fmt.Sprintf(":%d", viper.GetInt(argument.Port)))
+	o := option.New()
+	o.Port = argument.RequiredInteger(argument.Port)
+	Run(o, h)
 }

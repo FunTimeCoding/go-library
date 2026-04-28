@@ -58,18 +58,31 @@ func Main(
 
 Every program sets up sentry at the top of `Main()`, before any other work. This captures unhandled panics via `SENTRY_LOCATOR` environment variable.
 
+Services that need the hub for workers or recovery middleware extract it
+and pass it to `Run()` as a separate parameter:
+
 ```go
+var h *sentry.Hub
+
 if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
     r := reporter.New("go<tool>", c, "", version)
     r.Start()
     defer func() { r.RecoverFlush(recover()) }()
+    h = r.Hub()
 }
+
+// ... flag parsing, option construction
+Run(o, h)
 ```
 
 - Sentry is the first thing in `Main()` so the defer runs last (captures panics from all later code)
 - `environment.Optional` returns empty string when the variable is unset - no error, no Sentry
 - `reporter.RecoverFlush(recover())` captures the panic value, reports it, and flushes before exit
 - Uses the `version` parameter directly - no need to pass it through option structs
+- The hub is passed as a separate `Run()` parameter, not on the option struct (option structs hold configuration, not constructed dependencies)
+
+See `three-pillars.md` for the full wiring pattern including logger and
+recovery middleware.
 
 ### `os.Exit` and sentry
 

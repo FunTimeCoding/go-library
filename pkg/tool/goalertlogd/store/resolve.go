@@ -1,8 +1,7 @@
 package store
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/notation"
 	"go.etcd.io/bbolt"
 	"time"
 )
@@ -18,11 +17,9 @@ func (s *Store) Resolve(key string) {
 			}
 
 			var r Record
-			errors.PanicOnError(json.Unmarshal(v, &r))
+			notation.DecodeBytesStrict(v, &r, false)
 			r.End = new(time.Now())
-			updated, e := json.Marshal(r)
-			errors.PanicOnError(e)
-			s.client.PutBytes(b, key, updated)
+			s.client.PutBytes(b, key, notation.Marshal(r))
 
 			return nil
 		},

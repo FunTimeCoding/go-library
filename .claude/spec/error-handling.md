@@ -61,10 +61,45 @@ if e := w.store.UpdateStatus(job.ID, "processing"); e != nil {
 }
 ```
 
+### Multi-context exception: return error for caller to decide
+
+When a function is called from both HTTP handlers (which PanicOnError) and MCP
+handlers (which translate to tool results), it returns `error`. Each caller
+handles it according to its context.
+
+```go
+// Shared domain function — returns error
+func ProcessRecord(path string) (*Result, error) {
+    // ... filesystem or network operations that can fail
+}
+
+// HTTP caller — panics, caught by recovery middleware
+result, e := store.ProcessRecord(path)
+errors.PanicOnError(e)
+
+// MCP caller — translates to tool result, captures to Sentry
+result, e := store.ProcessRecord(path)
+
+if e != nil {
+    if hub != nil {
+        hub.CaptureException(e)
+    }
+
+    return response.Fail("failed to process record")
+}
+```
+
+This is distinct from the flow control exception — the error doesn't change
+what happens next (both callers abort on error). The difference is how the
+error is surfaced.
+
 ### MCP exception: translate to tool result
 
 MCP handlers have no recovery middleware. Panics would crash the handler without
 producing a response. All errors must be translated to tool results.
+
+Do not add per-handler recover defers to MCP tools — the mcp-go framework
+handles recovery internally.
 
 Two tiers:
 
@@ -125,6 +160,95 @@ func (s *Store) UpdateStatus(id string, status string) error {
 
 Methods called from both web and MCP return `error`. The web caller wraps with
 `PanicOnError`; the MCP caller handles explicitly.
+
+## Worker Recovery Pattern
+
+Workers that loop (pollers, watchers, schedulers) wrap per-iteration work
+in a `withRecovery` method. This catches panics from a single iteration,
+reports to Sentry, and lets the loop continue.
+
+```go
+func (w *Worker) withRecovery(f func()) {
+    defer func() {
+        if v := recover(); v != nil {
+            if w.hub != nil {
+                w.hub.Recover(v)
+            }
+
+            w.logger.Plain("worker recovered from panic: %v", v)
+        }
+    }()
+    f()
+}
+```
+
+Usage in a loop:
+
+```go
+for {
+    select {
+    case <-ticker.C:
+        w.withRecovery(w.poll)
+    case <-w.done:
+        return
+    }
+}
+```
+
+The `withRecovery` method lives on each worker struct that holds hub +
+logger. See `three-pillars.md` for where this fits in the overall
+recovery layer design.
+
+## HTTP Recovery Middleware
+
+`pkg/web/RecoveryMiddleware` is the shared HTTP recovery layer. It wraps
+the mux, catches panics from any handler, reports via `hub.Recover(v)`,
+and returns 500. Wired into lifecycle via `WithServerMiddleware` or
+`WithProtectedServerMiddleware`. See `lifecycle.md`.
+
+## External Process Failure
+
+When shelling out to an external process (Python scripts, yt-dlp,
+ffmpeg) via `run.New().NoPanic()`, enrich Sentry with the process
+output before panicking:
+
+```go
+if r.Error != nil {
+    if hub != nil {
+        hub.WithScope(func(s *sentry.Scope) {
+            s.SetContext("process", map[string]any{
+                "output": r.OutputString,
+                "stderr": r.ErrorString,
+            })
+            hub.CaptureException(r.Error)
+        })
+    }
+
+    errors.PanicOnError(r.Error)
+}
+```
+
+The `SetContext` call attaches stdout and stderr as structured data on
+the Sentry event — they're available in the Sentry UI without being
+stuffed into the panic message.
+
+## Self-Healing File Operations
+
+In batch operations (cleanup loops, file processing), file remove failures
+are captured to Sentry without panicking. The file stays on disk and
+gets cleaned up on the next run.
+
+```go
+if e := os.Remove(path); e != nil {
+    if hub != nil {
+        hub.CaptureException(e)
+    }
+}
+```
+
+This is the exception to the PanicOnError default — the failure is
+transient, self-healing, and not worth killing the batch over. But it
+should still be visible in Sentry.
 
 ## Deviations
 

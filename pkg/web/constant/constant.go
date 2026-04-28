@@ -3,8 +3,9 @@ package constant
 import "net/http"
 
 const (
-	Success      = "success"
-	Unauthorized = "unauthorized"
+	Success       = "success"
+	Unauthorized  = "unauthorized"
+	InternalError = "internal error"
 
 	RequestStart = "request_start"
 

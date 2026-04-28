@@ -2,48 +2,38 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/gw2/constant"
-	"log/slog"
-	"os"
-	"path/filepath"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"strings"
 	"time"
 )
 
 func (s *Store) enrichExisting() {
-	entries, e := os.ReadDir(s.eliteInsightsPath)
-
-	if e != nil {
-		slog.Warn("cannot read elite insights dir", "error", e)
-
-		return
-	}
-
 	cutoff := time.Now().AddDate(0, 0, -enrichCutoffDays)
 
-	for _, entry := range entries {
-		name := entry.Name()
+	for _, t := range system.ReadDirectory(s.eliteInsightsPath) {
+		n := t.Name()
 
-		if !strings.HasSuffix(name, constant.DetailedWvWKillSuffix) {
+		if !strings.HasSuffix(n, constant.DetailedWvWKillSuffix) {
 			continue
 		}
 
-		if len(name) < fileDatePrefixLength {
+		if len(n) < fileDatePrefixLength {
 			continue
 		}
 
-		fileDate, parseError := time.Parse(
+		date, dateFail := time.Parse(
 			fileDateLayout,
-			name[:fileDatePrefixLength],
+			n[:fileDatePrefixLength],
 		)
 
-		if parseError != nil {
+		if dateFail != nil {
 			continue
 		}
 
-		if fileDate.Before(cutoff) {
+		if date.Before(cutoff) {
 			continue
 		}
 
-		s.enrichFile(filepath.Join(s.eliteInsightsPath, name))
+		s.enrichFile(s.eliteInsightsPath, n)
 	}
 }

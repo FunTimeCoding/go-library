@@ -2,7 +2,10 @@ package variable_naming
 
 import "go/ast"
 
-func enclosingBlock(f *ast.FuncDecl, ident *ast.Ident) *ast.BlockStmt {
+func enclosingBlock(
+	f *ast.FuncDecl,
+	ident *ast.Ident,
+) *ast.BlockStmt {
 	var ancestors []ast.Node
 	var found *ast.BlockStmt
 	ast.Inspect(

@@ -2,9 +2,9 @@ package habitica
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"io"
@@ -19,9 +19,7 @@ func (c *Client) do(
 	var reader io.Reader
 
 	if body != nil {
-		b, e := json.Marshal(body)
-		errors.PanicOnError(e)
-		reader = bytes.NewReader(b)
+		reader = bytes.NewReader(notation.Marshal(body))
 	}
 
 	r, e := http.NewRequest(method, join.Empty(c.baseURL, path), reader)

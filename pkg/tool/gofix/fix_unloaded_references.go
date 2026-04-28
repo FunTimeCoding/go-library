@@ -30,7 +30,11 @@ func fixUnloadedReferences(
 			renames,
 			exportedRename{
 				oldName: v.ident.Name,
-				newName: segment.ReplaceSegment(v.ident.Name, v.segment, v.fix),
+				newName: segment.ReplaceSegment(
+					v.ident.Name,
+					v.segment,
+					v.fix,
+				),
 			},
 		)
 	}

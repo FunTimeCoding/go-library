@@ -1,60 +1,33 @@
 package store
 
 import (
-	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gw2/constant"
+	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/raid/elite"
 	"github.com/funtimecoding/go-library/pkg/raid/elite_parser"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"log/slog"
-	"os"
-	"path/filepath"
+	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/time"
 	"strings"
-	"time"
 )
 
-func (s *Store) enrichFile(path string) {
-	name := filepath.Base(path)
-
+func (s *Store) enrichFile(
+	base string,
+	name string,
+) {
 	if !strings.HasSuffix(name, constant.DetailedWvWKillSuffix) {
 		return
 	}
 
-	b, e := os.ReadFile(path)
-
-	if e != nil {
-		slog.Error("enrich read failed", "path", path, "error", e)
-
-		return
-	}
-
+	b := system.ReadBytes(base, name)
 	var fight elite.Fight
-
-	if f := json.Unmarshal(b, &fight); f != nil {
-		slog.Error("enrich parse failed", "path", path, "error", f)
-
-		return
-	}
-
-	timestamp, g := time.Parse(
+	notation.DecodeBytesStrict(b, &fight, false)
+	timestamp := time.Parse(
 		"2006-01-02 15:04:05 -07:00",
 		fight.TimeStartStd,
 	)
-
-	if g != nil {
-		slog.Error(
-			"enrich timestamp parse failed",
-			"value",
-			fight.TimeStartStd,
-			"error",
-			g,
-		)
-
-		return
-	}
-
 	alliedTeamID := 0
 
 	if len(fight.Players) > 0 {
@@ -73,9 +46,7 @@ func (s *Store) enrichFile(path string) {
 		enemyTeams[target.TeamID]++
 	}
 
-	enemyTeamsJSON, marshalError := json.Marshal(enemyTeams)
-	errors.PanicOnError(marshalError)
-	enemyTeamsString := string(enemyTeamsJSON)
+	enemyTeamsString := string(notation.Marshal(enemyTeams))
 	zevtcBase := strings.TrimSuffix(name, constant.DetailedWvWKillSuffix)
 	var fightRow raid.Fight
 	lookup := s.mapper.
@@ -83,8 +54,6 @@ func (s *Store) enrichFile(path string) {
 		First(&fightRow)
 
 	if lookup.Error != nil {
-		slog.Warn("enrich: no matching fight row", "zevtc", zevtcBase)
-
 		return
 	}
 
@@ -92,7 +61,7 @@ func (s *Store) enrichFile(path string) {
 		return
 	}
 
-	slog.Info("enriching fight", "file", name, "zevtc", zevtcBase)
+	s.logger.Structured("enriching_fight", "file", name, "zevtc", zevtcBase)
 	s.mapper.Model(&fightRow).Updates(
 		map[string]any{
 			"timestamp":      timestamp,
@@ -149,8 +118,8 @@ func (s *Store) enrichFile(path string) {
 		errors.PanicOnError(s.mapper.Create(row).Error)
 	}
 
-	slog.Info(
-		"enriched player stats",
+	s.logger.Structured(
+		"enriched_player_stats",
 		"file",
 		name,
 		"players",

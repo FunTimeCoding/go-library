@@ -6,7 +6,10 @@ import (
 	"go/types"
 )
 
-func isCommaOkayRHS(y *types.Info, expr ast.Expr) bool {
+func isCommaOkayRHS(
+	y *types.Info,
+	expr ast.Expr,
+) bool {
 	switch e := expr.(type) {
 	case *ast.TypeAssertExpr:
 		return true

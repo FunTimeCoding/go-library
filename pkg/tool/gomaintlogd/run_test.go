@@ -1,10 +1,12 @@
 package gomaintlogd
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/route"
@@ -22,6 +24,7 @@ func setup(t *testing.T) (*store.Store, int, *lifecycle.Lifecycle) {
 	s := store.NewLite(filepath.Join(t.TempDir(), "test.db"))
 	port, n := system.ClaimPort()
 	l := lifecycle.New(
+		logger.New(context.Background()),
 		lifecycle.WithListener(
 			n,
 			func(m *http.ServeMux) {

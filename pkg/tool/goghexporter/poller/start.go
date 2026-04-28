@@ -6,12 +6,12 @@ func (p *Poller) Start() {
 	go func() {
 		t := time.NewTicker(p.interval)
 		defer t.Stop()
-		p.Poll()
+		p.recovery.Run(p.Poll)
 
 		for {
 			select {
 			case <-t.C:
-				p.Poll()
+				p.recovery.Run(p.Poll)
 			case <-p.stop:
 				return
 			}

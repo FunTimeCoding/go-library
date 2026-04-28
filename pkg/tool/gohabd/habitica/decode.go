@@ -2,7 +2,8 @@ package habitica
 
 import (
 	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"net/http"
 )
 
@@ -13,8 +14,10 @@ func (c *Client) decode(
 	var envelope struct {
 		Payload json.RawMessage `json:"data"`
 	}
-	e := json.NewDecoder(r.Body).Decode(&envelope)
-	errors.PanicOnError(e)
-	f := json.Unmarshal(envelope.Payload, result)
-	errors.PanicOnError(f)
+	notation.DecodeBytesStrict(
+		system.ReadAll(r.Body),
+		&envelope,
+		false,
+	)
+	notation.DecodeBytesStrict(envelope.Payload, result, false)
 }

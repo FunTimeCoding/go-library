@@ -1,7 +1,10 @@
 package poller
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
 	"github.com/funtimecoding/go-library/pkg/github"
+	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/getsentry/sentry-go"
 	"github.com/prometheus/client_golang/prometheus"
 	"time"
 )
@@ -11,6 +14,8 @@ func New(
 	owner string,
 	interval time.Duration,
 	r *prometheus.Registry,
+	l *logger.Logger,
+	h *sentry.Hub,
 ) *Poller {
 	g := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
@@ -26,6 +31,7 @@ func New(
 		owner:    owner,
 		interval: interval,
 		gauge:    g,
+		recovery: recovery.New(l, h),
 		stop:     make(chan struct{}),
 	}
 }

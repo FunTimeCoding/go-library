@@ -50,6 +50,7 @@ func TestRunLifecycle(t *testing.T) {
 	p.Poll()
 	port, n := system.ClaimPort()
 	l := lifecycle.New(
+		logger.New(context.Background()),
 		lifecycle.WithWorker(p),
 		lifecycle.WithListener(
 			n,
@@ -149,6 +150,7 @@ func TestGeneratedClient(t *testing.T) {
 	p.Poll()
 	port, n := system.ClaimPort()
 	l := lifecycle.New(
+		logger.New(context.Background()),
 		lifecycle.WithWorker(p),
 		lifecycle.WithListener(
 			n,

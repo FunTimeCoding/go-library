@@ -6,6 +6,7 @@ const (
 	Callback     = "/callback"
 	Dialog       = "/dialog"
 	Favicon      = "/favicon.ico"
+	Health       = "/health"
 	Login        = "/login"
 	Logout       = "/logout"
 	Metrics      = "/metrics"

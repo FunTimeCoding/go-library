@@ -6,7 +6,10 @@ import (
 	"go/types"
 )
 
-func collectOkayForms(y *types.Info, f *ast.FuncDecl) []okayForm {
+func collectOkayForms(
+	y *types.Info,
+	f *ast.FuncDecl,
+) []okayForm {
 	var result []okayForm
 
 	if f.Body == nil {

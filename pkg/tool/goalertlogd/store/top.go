@@ -1,9 +1,8 @@
 package store
 
 import (
-	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/bolt"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/notation"
 	"go.etcd.io/bbolt"
 	"sort"
 	"time"
@@ -30,7 +29,7 @@ func (s *Store) Top(
 					v []byte,
 				) {
 					var r Record
-					errors.PanicOnError(json.Unmarshal(v, &r))
+					notation.DecodeBytesStrict(v, &r, false)
 
 					if r.Start.Before(start) || !r.Start.Before(end) {
 						return

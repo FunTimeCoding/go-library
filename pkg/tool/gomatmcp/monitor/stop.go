@@ -1,7 +1,5 @@
 package monitor
 
-import "log"
-
 func (m *Monitor) Stop() {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
@@ -12,5 +10,4 @@ func (m *Monitor) Stop() {
 
 	m.scheduler.Stop()
 	m.running = false
-	log.Println("monitor stopped")
 }

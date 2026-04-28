@@ -1,9 +1,11 @@
 package goraidparsed
 
 import (
+	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/route"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/server"
@@ -14,11 +16,12 @@ import (
 func TestRunLifecycle(t *testing.T) {
 	port, n := system.ClaimPort()
 	l := lifecycle.New(
+		logger.New(context.Background()),
 		lifecycle.WithListener(
 			n,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
-					route.New("", "", t.TempDir()),
+					route.New("", "", t.TempDir(), nil, nil),
 					m,
 				)
 			},

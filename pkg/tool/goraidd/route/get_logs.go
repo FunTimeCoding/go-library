@@ -3,6 +3,7 @@ package route
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/raid"
+	"github.com/funtimecoding/go-library/pkg/time"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -58,7 +59,7 @@ func (h *Router) GetLogs(
 			result,
 			generated.LogResponse{
 				FileName:    f.Filename,
-				Time:        f.Timestamp.Format("2006-01-02 15:04:05"),
+				Time:        f.Timestamp.Format(time.DateSecond),
 				Duration:    fmt.Sprintf("%dms", f.DurationMS),
 				MapId:       f.MapID,
 				PlayerCount: f.AlliedCount,

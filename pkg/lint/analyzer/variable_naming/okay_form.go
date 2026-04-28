@@ -7,7 +7,7 @@ import (
 )
 
 type okayForm struct {
-	ident *ast.Ident
-	scope *types.Scope
-	position   token.Pos
+	ident    *ast.Ident
+	scope    *types.Scope
+	position token.Pos
 }

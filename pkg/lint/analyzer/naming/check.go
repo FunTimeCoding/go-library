@@ -42,9 +42,13 @@ func check(
 
 	p.Report(
 		analysis.Diagnostic{
-			Pos:     ident.Pos(),
-			End:     ident.End(),
-			Message: segment.FormatMessage(r.Applicable, r.Segment, ident.Name),
+			Pos: ident.Pos(),
+			End: ident.End(),
+			Message: segment.FormatMessage(
+				r.Applicable,
+				r.Segment,
+				ident.Name,
+			),
 		},
 	)
 }

@@ -5,7 +5,10 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-func checkOkay(p *analysis.Pass, u *ast.FuncDecl) {
+func checkOkay(
+	p *analysis.Pass,
+	u *ast.FuncDecl,
+) {
 	forms := collectOkayForms(p.TypesInfo, u)
 
 	if len(forms) == 0 {

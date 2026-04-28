@@ -15,7 +15,10 @@ func collectFromAssign(
 		return
 	}
 
-	commaOkay := len(s.Lhs) == 2 && len(s.Rhs) == 1 && isCommaOkayRHS(y, s.Rhs[0])
+	commaOkay := len(s.Lhs) == 2 && len(s.Rhs) == 1 && isCommaOkayRHS(
+		y,
+		s.Rhs[0],
+	)
 
 	for i, lhs := range s.Lhs {
 		ident, okay := lhs.(*ast.Ident)

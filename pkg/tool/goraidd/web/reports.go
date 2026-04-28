@@ -1,7 +1,8 @@
 package web
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/system"
 	g "maragu.dev/gomponents"
 	h "maragu.dev/gomponents/html"
 	"net/http"
@@ -13,13 +14,14 @@ func (s *Server) reports(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	entries, e := os.ReadDir(s.outputPath)
-	errors.PanicOnError(e)
 	var reports []os.DirEntry
 
-	for _, entry := range entries {
-		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".html") {
-			reports = append(reports, entry)
+	for _, n := range system.ReadDirectory(s.outputPath) {
+		if !n.IsDir() && strings.HasSuffix(
+			n.Name(),
+			constant.HypertextExtension,
+		) {
+			reports = append(reports, n)
 		}
 	}
 

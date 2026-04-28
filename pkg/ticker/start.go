@@ -11,7 +11,7 @@ func (t *Ticker) Start() {
 			case <-t.done:
 				return
 			case <-t.ticker.C:
-				t.function()
+				t.recovery.Run(t.function)
 			}
 		}
 	}()

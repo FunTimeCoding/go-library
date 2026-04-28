@@ -17,10 +17,7 @@ func (t *Tool) Monitoring(
 			e = nil
 		}
 	}()
-
-	if f := t.monitor.RunNow(); f != nil {
-		return response.Fail("monitoring failed: %v", f)
-	}
+	t.monitor.RunNow()
 
 	return response.SuccessAny(
 		map[string]any{

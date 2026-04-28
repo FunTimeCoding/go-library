@@ -1,27 +1,17 @@
 package store
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"log/slog"
-	"os"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"path/filepath"
 	"time"
 )
 
 func (s *Store) cleanup() {
 	cutoff := time.Now().AddDate(0, 0, -14)
-	entries, e := os.ReadDir(s.eliteInsightsPath)
-
-	if e != nil {
-		slog.Warn("cleanup: cannot read elite insights dir", "error", e)
-
-		return
-	}
-
 	deleted := 0
 
-	for _, entry := range entries {
-		i, e := entry.Info()
+	for _, n := range system.ReadDirectory(s.eliteInsightsPath) {
+		i, e := n.Info()
 
 		if e != nil {
 			continue
@@ -31,15 +21,11 @@ func (s *Store) cleanup() {
 			continue
 		}
 
-		errors.PanicOnError(
-			os.Remove(
-				filepath.Join(s.eliteInsightsPath, entry.Name()),
-			),
-		)
+		system.RemoveFile(filepath.Join(s.eliteInsightsPath, n.Name()))
 		deleted++
 	}
 
 	if deleted > 0 {
-		slog.Info("cleanup completed", "deleted", deleted)
+		s.logger.Structured("cleanup_completed", "deleted", deleted)
 	}
 }

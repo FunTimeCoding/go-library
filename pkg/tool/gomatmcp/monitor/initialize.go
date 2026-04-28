@@ -1,9 +1,6 @@
 package monitor
 
-import "log"
-
-func (m *Monitor) initialize() error {
-	// Resolve username for notifications
+func (m *Monitor) initialize() {
 	if m.configuration.Username != "" {
 		m.username = m.configuration.Username
 	} else {
@@ -11,24 +8,19 @@ func (m *Monitor) initialize() error {
 		m.username = me.Username
 	}
 
-	log.Printf("monitor username: %s", m.username)
-
-	// Resolve notification channel
 	if m.configuration.NotificationChannel != "" {
 		m.notifyChannel = m.client.TeamChannel(
 			m.configuration.NotificationChannel,
 		)
 	} else {
-		// Fall back to DM with self
-		me := m.client.Me()
 		m.notifyChannel = m.client.TeamChannel("town-square")
-		log.Printf(
-			"no notification channel configured, using town-square (me: %s)",
-			me.Username,
-		)
 	}
 
-	log.Printf("notify channel: %s", m.notifyChannel.Name)
-
-	return nil
+	m.logger.Structured(
+		"monitor_initialize",
+		"username",
+		m.username,
+		"notify_channel",
+		m.notifyChannel.Name,
+	)
 }

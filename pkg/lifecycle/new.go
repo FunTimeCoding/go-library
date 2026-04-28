@@ -1,7 +1,12 @@
 package lifecycle
 
-func New(v ...Option) *Lifecycle {
-	result := &Lifecycle{}
+import "github.com/funtimecoding/go-library/pkg/log/logger"
+
+func New(
+	l *logger.Logger,
+	v ...Option,
+) *Lifecycle {
+	result := &Lifecycle{logger: l}
 
 	for _, f := range v {
 		f(result)

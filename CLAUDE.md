@@ -17,7 +17,9 @@ Design and coding specs live in `.claude/spec/`:
 - `taskfile.md` - task runner, git hooks, CI pipeline
 - `locator.md` - fluent URL builder (`pkg/web/locator`)
 - `openapi.md` - OpenAPI codegen pattern (server/, client/, route/ structure)
-- `error-handling.md` - error handling strategies: default panic, MCP translation, flow control exception, store method rule
+- `error-handling.md` - error handling strategies: default panic, MCP translation, flow control exception, worker recovery, external process enrichment, self-healing removes
+- `three-pillars.md` - unified service wiring: logger + sentry hub + recovery middleware
+- `stdlib-wrappers.md` - PanicOnError wrappers for filesystem, JSON, and time stdlib calls
 - `example.md` - example code conventions (pkg/<domain>/example/, cmd/example/)
 - `fixture.md` - test fixture patterns (fixture/ at repo root, helpers, constants)
 - `model-context.md` - MCP tool exposure pattern (model_context/ subpackage, HTTP transport)

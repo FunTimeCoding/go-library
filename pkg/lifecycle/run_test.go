@@ -1,11 +1,14 @@
 package lifecycle
 
 import (
+	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/lifecycle/mock_worker"
+	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/web/location"
 	"net/http"
 	"testing"
 )
@@ -13,6 +16,7 @@ import (
 func TestRunWorkerStartOrder(t *testing.T) {
 	var log []string
 	l := New(
+		logger.New(context.Background()),
 		WithWorker(mock_worker.New("a", &log)),
 		WithWorker(mock_worker.New("b", &log)),
 		WithWorker(mock_worker.New("c", &log)),
@@ -27,6 +31,7 @@ func TestRunWorkerStartOrder(t *testing.T) {
 func TestStopWorkerReverseOrder(t *testing.T) {
 	var log []string
 	l := New(
+		logger.New(context.Background()),
 		WithWorker(mock_worker.New("a", &log)),
 		WithWorker(mock_worker.New("b", &log)),
 		WithWorker(mock_worker.New("c", &log)),
@@ -41,23 +46,24 @@ func TestStopWorkerReverseOrder(t *testing.T) {
 }
 
 func TestRunEmpty(t *testing.T) {
-	l := New()
+	l := New(logger.New(context.Background()))
 	l.Run()
 }
 
 func TestStopEmpty(t *testing.T) {
-	l := New()
+	l := New(logger.New(context.Background()))
 	l.Stop()
 }
 
 func TestRunServerResponds(t *testing.T) {
 	p, n := system.ClaimPort()
 	l := New(
+		logger.New(context.Background()),
 		WithListener(
 			n,
 			func(m *http.ServeMux) {
 				m.HandleFunc(
-					"/health",
+					location.Health,
 					func(
 						w http.ResponseWriter,
 						_ *http.Request,
@@ -81,11 +87,12 @@ func TestRunServerResponds(t *testing.T) {
 func TestStopServerShutsDown(t *testing.T) {
 	p, n := system.ClaimPort()
 	l := New(
+		logger.New(context.Background()),
 		WithListener(
 			n,
 			func(m *http.ServeMux) {
 				m.HandleFunc(
-					"/health",
+					location.Health,
 					func(
 						w http.ResponseWriter,
 						_ *http.Request,
@@ -105,11 +112,12 @@ func TestStopServerShutsDown(t *testing.T) {
 func TestRunServerMiddleware(t *testing.T) {
 	p := system.FindUnusedPort(19300)
 	l := New(
+		logger.New(context.Background()),
 		WithServerMiddleware(
 			fmt.Sprintf(":%d", p),
 			func(m *http.ServeMux) {
 				m.HandleFunc(
-					"/health",
+					location.Health,
 					func(
 						w http.ResponseWriter,
 						_ *http.Request,
@@ -145,13 +153,14 @@ func TestRunMixedOrder(t *testing.T) {
 	var log []string
 	p, n := system.ClaimPort()
 	l := New(
+		logger.New(context.Background()),
 		WithWorker(mock_worker.New("a", &log)),
 		WithListener(
 			n,
 			func(m *http.ServeMux) {
 				log = append(log, "start:server")
 				m.HandleFunc(
-					"/health",
+					location.Health,
 					func(
 						w http.ResponseWriter,
 						_ *http.Request,

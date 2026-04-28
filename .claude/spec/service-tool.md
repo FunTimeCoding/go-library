@@ -58,27 +58,33 @@ Run(o)
 
 ## Run Function
 
-`Run(o)` constructs components and wires lifecycle:
+`Run(o, h)` constructs components and wires lifecycle. It receives the
+sentry hub from `Main()` as a separate parameter — not on the option
+struct. See `three-pillars.md` for the full wiring rationale.
 
 ```go
-func Run(o *option.Log) {
+func Run(o *option.Log, h *sentry.Hub) {
+    l := logger.New(context.Background())
     s := store.New(o.DatabasePath)
     defer s.Close()
     lifecycle.New(
-        lifecycle.WithWorker(
-            poller.New(client, s, 1*time.Minute),
-        ),
-        lifecycle.WithServer(
+        lifecycle.WithLogger(l),
+        lifecycle.WithWorker(poller.New(client, s, l, h, 1*time.Minute)),
+        lifecycle.WithServerMiddleware(
             web.AddressPort(o.Port),
             func(m *http.ServeMux) {
                 m.HandleFunc("/api/alerts", route.Alerts(s))
             },
+            web.RecoveryMiddleware(h),
         ),
     ).RunUntilSignal()
 }
 ```
 
 Key conventions:
+- Logger constructed first, threaded to workers and lifecycle
+- Hub threaded to workers (for `withRecovery`) and recovery middleware
+- Use `WithServerMiddleware` (streaming/MCP) or `WithProtectedServerMiddleware` (plain REST) with `web.RecoveryMiddleware(h)`
 - Server address uses `web.AddressPort(o.Port)` to format the port as `":8080"`
 - Routes registered in the `func(*http.ServeMux)` callback
 - `RunUntilSignal()` handles run, signal block, and reverse-order stop

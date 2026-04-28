@@ -8,8 +8,8 @@ import (
 	"os"
 )
 
-func reportsTable(reports []os.DirEntry) g.Node {
-	if len(reports) == 0 {
+func reportsTable(v []os.DirEntry) g.Node {
+	if len(v) == 0 {
 		return h.P(h.Em(g.Text("No reports generated yet.")))
 	}
 
@@ -23,9 +23,9 @@ func reportsTable(reports []os.DirEntry) g.Node {
 		),
 		h.TBody(
 			g.Map(
-				reports,
-				func(entry os.DirEntry) g.Node {
-					i, e := entry.Info()
+				v,
+				func(d os.DirEntry) g.Node {
+					i, e := d.Info()
 					errors.PanicOnError(e)
 
 					return h.Tr(
@@ -34,10 +34,10 @@ func reportsTable(reports []os.DirEntry) g.Node {
 								h.Href(
 									fmt.Sprintf(
 										"/reports/%s",
-										entry.Name(),
+										d.Name(),
 									),
 								),
-								g.Text(entry.Name()),
+								g.Text(d.Name()),
 							),
 						),
 						h.Td(
@@ -50,7 +50,7 @@ func reportsTable(reports []os.DirEntry) g.Node {
 								h.Action(
 									fmt.Sprintf(
 										"/reports/%s/delete",
-										entry.Name(),
+										d.Name(),
 									),
 								),
 								h.Button(

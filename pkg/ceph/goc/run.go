@@ -69,6 +69,6 @@ func Run(
 		fmt.Printf("newArgument: %s\n", newArgument)
 	}
 
-	environment.SetDarwin(ConfigurationEnvironment, newConfiguration)
-	environment.SetDarwin(ArgumentEnvironment, newArgument)
+	environment.SetTerminal(ConfigurationEnvironment, newConfiguration)
+	environment.SetTerminal(ArgumentEnvironment, newArgument)
 }

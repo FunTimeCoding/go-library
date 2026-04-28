@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/run"
 )
 
-func SetDarwin(
+func SetTerminal(
 	k string,
 	v string,
 ) {

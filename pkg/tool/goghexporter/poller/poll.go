@@ -10,10 +10,10 @@ func (p *Poller) Poll() {
 	}
 	latest := make(map[key]*run.Run)
 
-	for _, repo := range p.client.Repositories(p.owner) {
+	for _, repo := range p.client.MustRepositories(p.owner) {
 		name := repo.GetName()
 
-		for _, r := range p.client.LatestRuns(p.owner, name) {
+		for _, r := range p.client.MustLatestRuns(p.owner, name) {
 			if r.Status != run.Completed {
 				continue
 			}

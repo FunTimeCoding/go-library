@@ -11,14 +11,14 @@ func (c *Client) PostsBefore(
 	h *model.Channel,
 	t time.Time,
 	keep int,
-) []*post.Post {
+) ([]*post.Post, error) {
 	const maximumDelete = 1000
 	var result []*post.Post
 	position := 0
 	pageNumber := 0
 
 	for len(result) < maximumDelete {
-		page, r, e := c.client.GetPostsForChannel(
+		page, _, e := c.client.GetPostsForChannel(
 			c.context,
 			h.Id,
 			pageNumber,
@@ -27,14 +27,21 @@ func (c *Client) PostsBefore(
 			false,
 			false,
 		)
-		panicOnError(r, e)
+
+		if e != nil {
+			return nil, e
+		}
 
 		if len(page.Order) == 0 {
 			break
 		}
 
 		wrapped := post.NewSlice(post.FromList(page, false))
-		c.Enrich(wrapped)
+		f := c.Enrich(wrapped)
+
+		if f != nil {
+			return nil, f
+		}
 
 		for _, v := range wrapped {
 			collect := position >= keep || v.Create.Before(t)
@@ -43,7 +50,7 @@ func (c *Client) PostsBefore(
 				result = append(result, v)
 
 				if len(result) >= maximumDelete {
-					return result
+					return result, nil
 				}
 			}
 
@@ -53,5 +60,5 @@ func (c *Client) PostsBefore(
 		pageNumber++
 	}
 
-	return result
+	return result, nil
 }

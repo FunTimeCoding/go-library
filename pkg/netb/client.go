@@ -2,7 +2,7 @@ package netb
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/client"
 )
 
 type Client struct {

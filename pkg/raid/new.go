@@ -3,7 +3,7 @@ package raid
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goraidd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/generated/client"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 

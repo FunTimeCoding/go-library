@@ -2,9 +2,8 @@ package github
 
 import "github.com/google/go-github/v85/github"
 
-func (c *Client) Organizations(user string) []*github.Organization {
-	result, r, e := c.client.Organizations.List(c.context, user, nil)
-	panicOnError(r, e)
+func (c *Client) Organizations(user string) ([]*github.Organization, error) {
+	result, _, e := c.client.Organizations.List(c.context, user, nil)
 
-	return result
+	return result, e
 }

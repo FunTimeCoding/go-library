@@ -5,14 +5,13 @@ import (
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-func (c *Client) Tags(project int64) []*gitlab.Tag {
-	result, r, e := c.client.Tags.ListTags(
+func (c *Client) Tags(project int64) ([]*gitlab.Tag, error) {
+	result, _, e := c.client.Tags.ListTags(
 		project,
 		&gitlab.ListTagsOptions{
 			ListOptions: gitlab.ListOptions{PerPage: constant.PerPage1000},
 		},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

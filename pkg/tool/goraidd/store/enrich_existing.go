@@ -10,7 +10,7 @@ import (
 func (s *Store) enrichExisting() {
 	cutoff := time.Now().AddDate(0, 0, -enrichCutoffDays)
 
-	for _, t := range system.ReadDirectory(s.eliteInsightsPath) {
+	for _, t := range system.ReadDirectory(s.elitePath) {
 		n := t.Name()
 
 		if !strings.HasSuffix(n, constant.DetailedWvWKillSuffix) {
@@ -34,6 +34,6 @@ func (s *Store) enrichExisting() {
 			continue
 		}
 
-		s.enrichFile(s.eliteInsightsPath, n)
+		s.enrichFile(s.elitePath, n)
 	}
 }

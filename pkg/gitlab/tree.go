@@ -2,7 +2,7 @@ package gitlab
 
 import "gitlab.com/gitlab-org/api/client-go/v2"
 
-func (c *Client) Tree(project int64) []*gitlab.TreeNode {
+func (c *Client) Tree(project int64) ([]*gitlab.TreeNode, error) {
 	result, r, e := c.client.Repositories.ListTree(
 		project,
 		&gitlab.ListTreeOptions{},
@@ -10,10 +10,8 @@ func (c *Client) Tree(project int64) []*gitlab.TreeNode {
 
 	if r != nil && r.StatusCode == 404 {
 		// Do not panic
-		return []*gitlab.TreeNode{}
+		return []*gitlab.TreeNode{}, nil
 	}
 
-	panicOnError(r, e)
-
-	return result
+	return result, e
 }

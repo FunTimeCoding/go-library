@@ -10,7 +10,7 @@ import (
 func showIssue(shortID string) {
 	c := sentry.NewEnvironment()
 	org := environment.Required(constant.OrganizationEnvironment)
-	i := c.IssueByShortIdentifier(org, shortID)
+	i := c.MustIssueByShortIdentifier(org, shortID)
 
 	if i == nil {
 		fmt.Printf("Issue not found: %s\n", shortID)
@@ -45,7 +45,7 @@ func showIssue(shortID string) {
 		fmt.Printf("Culprit:  %s\n", r.Culprit)
 	}
 
-	e := c.LatestEvent(org, r.ID)
+	e := c.MustLatestEvent(org, r.ID)
 	fmt.Println()
 	fmt.Printf("Latest Event: %s\n", e.EventID)
 

@@ -1,15 +1,20 @@
 package proxmox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/proxmox/constant"
+	"fmt"
 	"github.com/luthermonson/go-proxmox"
 )
 
-func (c *Client) Role(name string) *proxmox.Permission {
-	errors.PanicOnEmpty(name, constant.Name)
-	result, e := c.client.Role(c.context, name)
-	errors.PanicOnError(e)
+func (c *Client) Role(name string) (*proxmox.Permission, error) {
+	if name == "" {
+		return nil, fmt.Errorf("role name is required")
+	}
 
-	return &result
+	result, e := c.client.Role(c.context, name)
+
+	if e != nil {
+		return nil, e
+	}
+
+	return &result, nil
 }

@@ -9,7 +9,7 @@ import (
 func (c *Client) RegistryRepositories(
 	project int64,
 	panicOnForbidden bool,
-) []*gitlab.RegistryRepository {
+) ([]*gitlab.RegistryRepository, error) {
 	var result []*gitlab.RegistryRepository
 	var number int64
 
@@ -28,10 +28,13 @@ func (c *Client) RegistryRepositories(
 			// Given correct token scope, this might be due to the GitLab server being configured wrong: https://forum.gitlab.com/t/cant-login-to-registry-due-to-denied-access-forbidden/63965/6
 			errors.Warning("registry repositories 403")
 
-			return result
+			return result, nil
 		}
 
-		panicOnError(r, e)
+		if e != nil {
+			return nil, e
+		}
+
 		result = append(result, page...)
 
 		if int64(len(page)) < constant.PerPage100 {
@@ -41,5 +44,5 @@ func (c *Client) RegistryRepositories(
 		number++
 	}
 
-	return result
+	return result, nil
 }

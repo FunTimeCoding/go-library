@@ -14,11 +14,11 @@ func Support() {
 		mattermost.WithToken(environment.Required("MATTERMOST_TOKEN_USER2")),
 	)
 	h := user1.DefaultChannel()
-	t := user1.PostSimple(
+	t := user1.MustPostSimple(
 		h,
 		"I have a problem with my server, its not responding anymore",
 	)
-	user2.Reply(h, t, "Can you try to restart it?")
+	user2.MustReply(h, t, "Can you try to restart it?")
 	// TODO: wipe channel before
 	// TODO: multiple different problems with successful answers
 	// TODO: import all messages into Chroma

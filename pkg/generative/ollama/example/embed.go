@@ -9,7 +9,7 @@ import (
 func Embed() {
 	o := ollama.NewEnvironment()
 
-	for _, e := range o.Embedding(
+	for _, e := range o.MustEmbedding(
 		constant.Llama31,
 		"What are embeddings?",
 	) {

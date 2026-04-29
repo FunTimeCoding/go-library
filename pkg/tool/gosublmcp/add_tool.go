@@ -2,14 +2,14 @@ package gosublmcp
 
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/tool"
+	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/model_context"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func addTool(
 	s *server.MCPServer,
-	t *tool.Tool,
+	t *model_context.Server,
 ) {
 	s.AddTool(
 		mcp.NewTool(

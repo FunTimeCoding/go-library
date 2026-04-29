@@ -6,5 +6,5 @@ import (
 )
 
 func SuccessAny(v any) (*mcp.CallToolResult, error) {
-	return mcp.NewToolResultText(notation.MarshalIndent(v)), nil
+	return Success(notation.MarshalIndent(v))
 }

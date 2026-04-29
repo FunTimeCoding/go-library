@@ -3,7 +3,6 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 )
 
@@ -12,12 +11,12 @@ func (c *Client) UpdateIssue(
 	identifier string,
 	status string,
 	assignedTo string,
-) *response.Issue {
+) (*response.Issue, error) {
 	type body struct {
 		Status     string `json:"status,omitempty"`
 		AssignedTo string `json:"assignedTo,omitempty"`
 	}
-	b := c.basic.PutBytes(
+	b, e := c.basic.Put(
 		fmt.Sprintf(
 			"organizations/%s/issues/%s",
 			organization,
@@ -25,8 +24,17 @@ func (c *Client) UpdateIssue(
 		),
 		body{Status: status, AssignedTo: assignedTo},
 	)
-	var result response.Issue
-	errors.PanicOnError(json.Unmarshal(b, &result))
 
-	return &result
+	if e != nil {
+		return nil, e
+	}
+
+	var result response.Issue
+	f := json.Unmarshal(b, &result)
+
+	if f != nil {
+		return nil, f
+	}
+
+	return &result, nil
 }

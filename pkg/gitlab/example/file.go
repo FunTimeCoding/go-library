@@ -19,7 +19,7 @@ func File() {
 	branch := viper.GetString(argument.Branch)
 	file := viper.GetString(argument.File)
 	g := gitlab.NewEnvironment()
-	p := g.ProjectByName(owner, repository)
-	f := g.File(p.Identifier, branch, file)
+	p := g.MustProjectByName(owner, repository)
+	f := g.MustFile(p.Identifier, branch, file)
 	fmt.Printf("File: %+v\n", f)
 }

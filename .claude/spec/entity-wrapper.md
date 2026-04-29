@@ -289,13 +289,13 @@ func (c *Client) Posts(tag string, limit int) []*post.Post {
 
 JSON shapes that serve a specific layer live in a subpackage named after that layer. One file per type, named after the type. The package name removes redundancy from type names (`response.Search` not `response.SearchResponse`).
 
-### `response/` — JSON shapes for serialization
+### `response/` - JSON shapes for serialization
 
 Covers both inbound (deserialization from external APIs) and outbound (serialization to callers). Scoped to where the types are consumed:
 
 - Types used across multiple layers → `pkg/<name>/response/`
 - Types used only by MCP toolset → `toolset/response/`
-- Types used only by route handlers → `route/response/`
+- Types used only by REST handlers → `server/response/`
 
 ```
 pkg/<name>/
@@ -312,13 +312,13 @@ pkg/<name>/
     └── new.go
 ```
 
-This eliminates the `Data` suffix problem — `response.Link` vs `link.Link` provides disambiguation without a naming hack.
+This eliminates the `Data` suffix problem - `response.Link` vs `link.Link` provides disambiguation without a naming hack.
 
-### `argument/` — MCP tool parameter structs
+### `argument/` - MCP tool parameter structs
 
 JSON shapes for MCP tool input parameters. One file per argument type, scoped under the tool package.
 
-### `result/` — store return types
+### `result/` - store return types
 
 Exported types that a store returns to callers, separate from the store's internal types and methods. Used when the store has many return types that would otherwise collide with method names (e.g. `result.Status` vs `store.Status()` method).
 

@@ -20,7 +20,7 @@ func Check(o *option.Job) {
 		return
 	}
 
-	owner := c.User().Name
+	owner := c.MustUser().Name
 
 	if o.Verbose {
 		fmt.Printf("Owner: %s\n", owner)

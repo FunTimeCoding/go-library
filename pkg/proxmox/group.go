@@ -1,15 +1,14 @@
 package proxmox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/proxmox/constant"
+	"fmt"
 	"github.com/luthermonson/go-proxmox"
 )
 
-func (c *Client) Group(name string) *proxmox.Group {
-	errors.PanicOnEmpty(name, constant.Name)
-	result, e := c.client.Group(c.context, name)
-	errors.PanicOnError(e)
+func (c *Client) Group(name string) (*proxmox.Group, error) {
+	if name == "" {
+		return nil, fmt.Errorf("group name is required")
+	}
 
-	return result
+	return c.client.Group(c.context, name)
 }

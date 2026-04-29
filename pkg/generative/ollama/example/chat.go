@@ -18,7 +18,7 @@ func Chat() {
 	fmt.Println("Messages 1:")
 	r.Print()
 	fmt.Println()
-	a1 := o.Chat(r)
+	a1 := o.MustChat(r)
 	fmt.Printf("Response 1: %+v\n", a1.Format(f))
 	fmt.Println()
 	r.Message(a1.Message)
@@ -26,6 +26,6 @@ func Chat() {
 	fmt.Println("Messages 2:")
 	r.Print()
 	fmt.Println()
-	a2 := o.Chat(r)
+	a2 := o.MustChat(r)
 	fmt.Printf("Response 2: %+v\n", a2.Format(f))
 }

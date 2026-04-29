@@ -8,13 +8,14 @@ import (
 	"slices"
 )
 
-func (c *Client) Runners(all bool) []*runner.Runner {
+func (c *Client) Runners(all bool) ([]*runner.Runner, error) {
 	var result []*gitlab.Runner
 	var number int64
 
 	for {
 		var page []*gitlab.Runner
 		var response *gitlab.Response
+		var e error
 		options := &gitlab.ListRunnersOptions{
 			ListOptions: gitlab.ListOptions{
 				PerPage: constant.PerPage100,
@@ -23,9 +24,13 @@ func (c *Client) Runners(all bool) []*runner.Runner {
 		}
 
 		if all {
-			page, response = c.allRunners(options)
+			page, response, e = c.allRunners(options)
 		} else {
-			page, response = c.ownerRunners(options)
+			page, response, e = c.ownerRunners(options)
+		}
+
+		if e != nil {
+			return nil, e
 		}
 
 		if false {
@@ -57,5 +62,5 @@ func (c *Client) Runners(all bool) []*runner.Runner {
 		number++
 	}
 
-	return c.enrichRunners(runner.NewSlice(runner.Deduplicate(result)))
+	return c.enrichRunners(runner.NewSlice(runner.Deduplicate(result))), nil
 }

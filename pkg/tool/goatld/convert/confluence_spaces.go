@@ -2,7 +2,7 @@ package convert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/space"
-	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/generated/server"
 )
 
 func ConfluenceSpaces(v []*space.Space) []*server.ConfluenceSpace {

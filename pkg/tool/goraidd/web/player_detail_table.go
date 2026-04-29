@@ -26,7 +26,7 @@ func playerDetailTable(rows []store.PlayerRaidRow) g.Node {
 					),
 					g.Text(first.RaidName),
 				),
-				g.Textf(" — %d fights", first.RaidFights),
+				g.Textf(" - %d fights", first.RaidFights),
 			),
 			playerRaidTable(group),
 		)

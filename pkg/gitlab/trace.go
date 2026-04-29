@@ -5,9 +5,12 @@ import "github.com/funtimecoding/go-library/pkg/system"
 func (c *Client) Trace(
 	project int64,
 	job int64,
-) string {
-	result, r, e := c.client.Jobs.GetTraceFile(project, job)
-	panicOnError(r, e)
+) (string, error) {
+	result, _, e := c.client.Jobs.GetTraceFile(project, job)
 
-	return string(system.ReadAll(result))
+	if e != nil {
+		return "", e
+	}
+
+	return string(system.ReadAll(result)), nil
 }

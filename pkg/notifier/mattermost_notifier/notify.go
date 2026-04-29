@@ -13,5 +13,5 @@ func (n *Notifier) Notify(
 		f = fmt.Sprintf(f, a...)
 	}
 
-	n.mattermost.PostSimple(n.channel, key_value.Space(n.prefix, f))
+	n.mattermost.MustPostSimple(n.channel, key_value.Space(n.prefix, f))
 }

@@ -9,12 +9,12 @@ import (
 func (c *Client) RunnerJobs(
 	runner int64,
 	stopAfter int,
-) []*job.Job {
+) ([]*job.Job, error) {
 	var result []*gitlab.Job
 	var number int64
 
 	for {
-		page, r, e := c.client.Runners.ListRunnerJobs(
+		page, _, e := c.client.Runners.ListRunnerJobs(
 			runner,
 			&gitlab.ListRunnerJobsOptions{
 				ListOptions: gitlab.ListOptions{
@@ -25,7 +25,11 @@ func (c *Client) RunnerJobs(
 				Sort:    new(constant.Descending),
 			},
 		)
-		panicOnError(r, e)
+
+		if e != nil {
+			return nil, e
+		}
+
 		result = append(result, page...)
 
 		if int64(len(page)) < constant.PerPage100 {
@@ -43,5 +47,5 @@ func (c *Client) RunnerJobs(
 		number++
 	}
 
-	return c.enrichJobs(job.NewSlice(result))
+	return c.enrichJobs(job.NewSlice(result)), nil
 }

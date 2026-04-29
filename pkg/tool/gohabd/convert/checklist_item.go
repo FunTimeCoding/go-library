@@ -1,8 +1,8 @@
 package convert
 
 import (
-	"github.com/funtimecoding/go-library/pkg/tool/gohabd/habitica"
-	"github.com/funtimecoding/go-library/pkg/tool/gohabd/server"
+	"github.com/funtimecoding/go-library/pkg/habitica"
+	"github.com/funtimecoding/go-library/pkg/tool/gohabd/generated/server"
 )
 
 func ChecklistItem(i habitica.ChecklistItem) server.ChecklistItem {

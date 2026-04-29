@@ -1,19 +1,19 @@
 package ollama
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/ollama/ollama/api"
-)
+import "github.com/ollama/ollama/api"
 
 func (c *Client) Embed(
 	model string,
 	v []string,
-) [][]float32 {
+) ([][]float32, error) {
 	result, e := c.client.Embed(
 		c.context,
 		&api.EmbedRequest{Model: model, Input: v},
 	)
-	errors.PanicOnError(e)
 
-	return result.Embeddings
+	if e != nil {
+		return nil, e
+	}
+
+	return result.Embeddings, nil
 }

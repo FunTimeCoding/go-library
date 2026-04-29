@@ -1,11 +1,10 @@
 package habitica
 
-import (
-	"context"
-	"github.com/funtimecoding/go-library/pkg/tool/gohabd/client"
-)
+import "net/http"
 
 type Client struct {
-	context context.Context
-	client  *client.Client
+	baseURL string
+	userID  string
+	token   string
+	http    *http.Client
 }

@@ -13,11 +13,11 @@ func Registry(
 	c *gitlab.Client,
 	p *project.Project,
 ) {
-	for _, r := range c.RegistryRepositories(
+	for _, r := range c.MustRegistryRepositories(
 		p.Identifier,
 		false,
 	) {
-		images := c.Images(p.Identifier, r.ID)
+		images := c.MustImages(p.Identifier, r.ID)
 
 		if len(images) == 0 {
 			continue
@@ -26,7 +26,7 @@ func Registry(
 		if strings.HasSuffix(r.Name, "/cache") {
 			for _, i := range images {
 				fmt.Printf("Image: %s\n", i.Name)
-				c.DeleteImage(p.Identifier, r.ID, i.Name)
+				c.MustDeleteImage(p.Identifier, r.ID, i.Name)
 			}
 
 			continue
@@ -45,7 +45,7 @@ func Registry(
 			}
 
 			fmt.Printf("Image: %s\n", i.Name)
-			c.DeleteImage(p.Identifier, r.ID, i.Name)
+			c.MustDeleteImage(p.Identifier, r.ID, i.Name)
 		}
 	}
 }

@@ -33,7 +33,7 @@ func Lab(
 		o.GitLabHost,
 		environment.Required(constant.TokenEnvironment),
 	)
-	p := c.ProjectByName(namespace, repository)
+	p := c.MustProjectByName(namespace, repository)
 
 	if o.Verbose {
 		fmt.Printf(

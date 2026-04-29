@@ -5,9 +5,12 @@ import (
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-func (c *Client) SearchProject(query string) []*project.Project {
-	result, r, e := c.client.Search.Projects(query, &gitlab.SearchOptions{})
-	panicOnError(r, e)
+func (c *Client) SearchProject(query string) ([]*project.Project, error) {
+	result, _, e := c.client.Search.Projects(query, &gitlab.SearchOptions{})
 
-	return project.NewSlice(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return project.NewSlice(result), nil
 }

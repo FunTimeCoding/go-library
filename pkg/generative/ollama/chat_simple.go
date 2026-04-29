@@ -6,5 +6,5 @@ import (
 )
 
 func (c *Client) ChatSimple(p string) *chat_response.Response {
-	return c.Chat(chat_request.New().User(p))
+	return c.MustChat(chat_request.New().User(p))
 }

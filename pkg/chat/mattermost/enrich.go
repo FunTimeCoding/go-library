@@ -2,12 +2,20 @@ package mattermost
 
 import "github.com/funtimecoding/go-library/pkg/chat/mattermost/post"
 
-func (c *Client) Enrich(v []*post.Post) {
+func (c *Client) Enrich(v []*post.Post) error {
 	for _, p := range v {
 		if p.User != nil {
 			continue
 		}
 
-		p.Enrich(c.User(p.UserIdentifier))
+		u, e := c.User(p.UserIdentifier)
+
+		if e != nil {
+			return e
+		}
+
+		p.Enrich(u)
 	}
+
+	return nil
 }

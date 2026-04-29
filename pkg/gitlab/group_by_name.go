@@ -2,18 +2,19 @@ package gitlab
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-func (c *Client) GroupByName(s string) *gitlab.Group {
-	result, r, e := c.client.Groups.SearchGroup(s)
-	panicOnError(r, e)
-	fmt.Printf("Groups: %+v\n", result)
+func (c *Client) GroupByName(s string) (*gitlab.Group, error) {
+	result, _, e := c.client.Groups.SearchGroup(s)
 
-	if l := len(result); l != 1 {
-		unexpected.Integer(l)
+	if e != nil {
+		return nil, e
 	}
 
-	return result[0]
+	if len(result) != 1 {
+		return nil, fmt.Errorf("expected 1 group, got %d", len(result))
+	}
+
+	return result[0], nil
 }

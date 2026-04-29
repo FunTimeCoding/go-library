@@ -10,6 +10,6 @@ func (c *Client) PostsBeforeMilli(
 	h *model.Channel,
 	beforeMilli int64,
 	keep int,
-) []*post.Post {
+) ([]*post.Post, error) {
 	return c.PostsBefore(h, time.UnixMilli(beforeMilli), keep)
 }

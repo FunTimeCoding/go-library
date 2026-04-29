@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/habitica"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/gohabd/client"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -22,7 +22,7 @@ func Main(
 		defer func() { r.RecoverFlush(recover()) }()
 	}
 
-	c := habitica.NewEnvironment()
+	c := client.NewEnvironment()
 	root := &cobra.Command{
 		Use:     "gohab",
 		Version: fmt.Sprintf("%s (%s %s)", version, gitHash, buildDate),

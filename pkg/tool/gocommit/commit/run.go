@@ -12,7 +12,7 @@ func Run(o *option.Commit) {
 	validate(o)
 	c := gitlab.New(o.Host, o.Token)
 	p := common.FindProjectOrExit(c, o.Owner, o.Repository)
-	c.Commit(
+	c.MustCommit(
 		p.Identifier,
 		o.Branch,
 		o.Message,
@@ -21,6 +21,6 @@ func Run(o *option.Commit) {
 			system.ReadFileUnsafe(o.Template),
 			o.Replace,
 		),
-		c.FileExists(p, o.Branch, o.Path),
+		c.MustFileExists(p, o.Branch, o.Path),
 	)
 }

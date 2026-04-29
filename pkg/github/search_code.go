@@ -8,13 +8,16 @@ import (
 func (c *Client) SearchCode(
 	query string,
 	a ...any,
-) []*code.Code {
+) ([]*code.Code, error) {
 	if len(a) > 0 {
 		query = fmt.Sprintf(query, a...)
 	}
 
-	result, r, e := c.client.Search.Code(c.context, query, nil)
-	panicOnError(r, e)
+	result, _, e := c.client.Search.Code(c.context, query, nil)
 
-	return code.NewSlice(result.CodeResults)
+	if e != nil {
+		return nil, e
+	}
+
+	return code.NewSlice(result.CodeResults), nil
 }

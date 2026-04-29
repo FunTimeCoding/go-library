@@ -7,7 +7,7 @@ func New(
 	channel string,
 	prefix string,
 ) *Notifier {
-	h := m.TeamChannel(channel)
+	h := m.MustTeamChannel(channel)
 
 	return &Notifier{mattermost: m, channel: h, prefix: prefix}
 }

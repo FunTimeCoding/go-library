@@ -6,7 +6,7 @@ import (
 )
 
 func Project() {
-	for _, p := range sentry.NewEnvironment().Projects() {
+	for _, p := range sentry.NewEnvironment().MustProjects() {
 		fmt.Printf("%+v\n", p)
 	}
 }

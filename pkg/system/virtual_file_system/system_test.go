@@ -5,10 +5,6 @@ import (
 	"testing"
 )
 
-func TestNew(t *testing.T) {
-	assert.NotNil(t, New())
-}
-
 func TestWriteRead(t *testing.T) {
 	v := New()
 	v.Write("a/b.yaml", "content")

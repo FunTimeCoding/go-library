@@ -9,7 +9,7 @@ import (
 func (c *Client) Packages(
 	project int64,
 	panicOnForbidden bool,
-) []*gitlab.Package {
+) ([]*gitlab.Package, error) {
 	result, r, e := c.client.Packages.ListProjectPackages(
 		project,
 		&gitlab.ListProjectPackagesOptions{
@@ -21,10 +21,8 @@ func (c *Client) Packages(
 		// Given correct token scope, this might be due to the GitLab server being configured wrong: https://forum.gitlab.com/t/cant-login-to-registry-due-to-denied-access-forbidden/63965/6
 		errors.Warning("packages 403")
 
-		return result
+		return result, nil
 	}
 
-	panicOnError(r, e)
-
-	return result
+	return result, e
 }

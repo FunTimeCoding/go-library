@@ -11,18 +11,18 @@ func Image(
 	namespace string,
 	repository string,
 ) {
-	for _, p := range c.Packages(namespace) {
+	for _, p := range c.MustPackages(namespace) {
 		if p.Repository != repository {
 			continue
 		}
 
-		for _, v := range c.PackageVersions(p.Name) {
+		for _, v := range c.MustPackageVersions(p.Name) {
 			if image.HasLatest(v) {
 				continue
 			}
 
 			fmt.Printf("Delete image: %s@%s\n", p.Name, v.Digest)
-			c.DeletePackageVersion(p.Name, v.Identifier)
+			c.MustDeletePackageVersion(p.Name, v.Identifier)
 		}
 	}
 }

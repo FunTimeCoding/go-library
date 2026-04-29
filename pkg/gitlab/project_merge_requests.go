@@ -9,7 +9,7 @@ import (
 func (c *Client) ProjectMergeRequests(
 	project int64,
 	all bool,
-) []*merge_request.Request {
+) ([]*merge_request.Request, error) {
 	var result []*gitlab.BasicMergeRequest
 	var number int64
 
@@ -26,11 +26,15 @@ func (c *Client) ProjectMergeRequests(
 			o.State = new("all")
 		}
 
-		page, r, e := c.client.MergeRequests.ListProjectMergeRequests(
+		page, _, e := c.client.MergeRequests.ListProjectMergeRequests(
 			project,
 			o,
 		)
-		panicOnError(r, e)
+
+		if e != nil {
+			return nil, e
+		}
+
 		result = append(result, page...)
 
 		if int64(len(page)) < constant.PerPage100 {
@@ -40,5 +44,5 @@ func (c *Client) ProjectMergeRequests(
 		number++
 	}
 
-	return merge_request.NewSlice(result)
+	return merge_request.NewSlice(result), nil
 }

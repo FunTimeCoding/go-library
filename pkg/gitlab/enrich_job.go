@@ -7,7 +7,7 @@ func (c *Client) enrichJob(j *job.Job) *job.Job {
 		panic("project cannot be 0")
 	}
 
-	j.Project = c.Project(j.Raw.Project.ID)
+	j.Project = c.MustProject(j.Raw.Project.ID)
 	c.enrichJobCommon(j)
 
 	return j

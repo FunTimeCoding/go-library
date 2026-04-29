@@ -8,15 +8,14 @@ import (
 func (c *Client) Channels(
 	t *model.Team,
 	u *model.User,
-) []*model.Channel {
-	result, r, e := c.client.GetChannelsForTeamForUser(
+) ([]*model.Channel, error) {
+	result, _, e := c.client.GetChannelsForTeamForUser(
 		c.context,
 		t.Id,
 		u.Id,
 		false,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

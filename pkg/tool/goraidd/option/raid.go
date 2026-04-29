@@ -1,8 +1,8 @@
 package option
 
 type Raid struct {
-	PostgresLocator   string
-	LogCachePath      string
-	EliteInsightsPath string
-	OutputPath        string
+	PostgresLocator string
+	LogCachePath    string
+	ElitePath       string
+	OutputPath      string
 }

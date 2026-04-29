@@ -7,13 +7,13 @@ import (
 
 func PullRequest() {
 	g := github.NewEnvironment()
-	u := g.User()
-	repositories := g.Repositories(u.Name)
+	u := g.MustUser()
+	repositories := g.MustRepositories(u.Name)
 
 	for _, r := range repositories {
 		fmt.Printf("Repository: %s\n", *r.Name)
 
-		for _, p := range g.PullRequests(u.Name, *r.Name) {
+		for _, p := range g.MustPullRequests(u.Name, *r.Name) {
 			fmt.Printf("  PR: %s\n", *p.Title)
 			fmt.Printf("  %s\n", *p.HTMLURL)
 		}
@@ -23,7 +23,7 @@ func PullRequest() {
 		for _, r := range repositories {
 			fmt.Printf("Repository: %s\n", *r.Name)
 
-			for _, i := range g.ProjectIssues(u.Name, *r.Name) {
+			for _, i := range g.MustProjectIssues(u.Name, *r.Name) {
 				fmt.Printf("  Issue: %s\n", *i.Title)
 				fmt.Printf("  %s\n", *i.HTMLURL)
 			}

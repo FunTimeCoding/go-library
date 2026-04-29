@@ -6,9 +6,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/raid_parser"
 	"github.com/funtimecoding/go-library/pkg/relational"
+	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/option"
-	"github.com/funtimecoding/go-library/pkg/tool/goraidd/route"
-	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/store"
 	raidWeb "github.com/funtimecoding/go-library/pkg/tool/goraidd/web"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -25,7 +25,7 @@ func Run(
 	s := store.New(
 		relational.New(o.PostgresLocator).Mapper(),
 		o.LogCachePath,
-		o.EliteInsightsPath,
+		o.ElitePath,
 		l,
 		h,
 	)
@@ -37,9 +37,9 @@ func Run(
 			func(m *http.ServeMux) {
 				p := raid_parser.New("localhost:8081", true)
 				generated.HandlerFromMux(
-					route.New(
+					server.New(
 						s,
-						o.EliteInsightsPath,
+						o.ElitePath,
 						o.OutputPath,
 						p,
 					),
@@ -47,7 +47,7 @@ func Run(
 				)
 				raidWeb.New(
 					s,
-					o.EliteInsightsPath,
+					o.ElitePath,
 					o.OutputPath,
 					p,
 				).Mount(m)

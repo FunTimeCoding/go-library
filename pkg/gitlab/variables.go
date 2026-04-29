@@ -2,7 +2,7 @@ package gitlab
 
 import "gitlab.com/gitlab-org/api/client-go/v2"
 
-func (c *Client) Variables(project int64) []*gitlab.ProjectVariable {
+func (c *Client) Variables(project int64) ([]*gitlab.ProjectVariable, error) {
 	result, r, e := c.client.ProjectVariables.ListVariables(
 		project,
 		&gitlab.ListProjectVariablesOptions{},
@@ -10,10 +10,8 @@ func (c *Client) Variables(project int64) []*gitlab.ProjectVariable {
 
 	if r != nil && r.StatusCode == 403 {
 		// Do not panic
-		return result
+		return result, nil
 	}
 
-	panicOnError(r, e)
-
-	return result
+	return result, e
 }

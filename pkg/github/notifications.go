@@ -2,12 +2,11 @@ package github
 
 import "github.com/google/go-github/v85/github"
 
-func (c *Client) Notifications() []*github.Notification {
-	result, r, e := c.client.Activity.ListNotifications(
+func (c *Client) Notifications() ([]*github.Notification, error) {
+	result, _, e := c.client.Activity.ListNotifications(
 		c.context,
 		&github.NotificationListOptions{},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

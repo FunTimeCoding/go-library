@@ -4,16 +4,16 @@ func (m *Monitor) initialize() {
 	if m.configuration.Username != "" {
 		m.username = m.configuration.Username
 	} else {
-		me := m.client.Me()
+		me := m.client.MustMe()
 		m.username = me.Username
 	}
 
 	if m.configuration.NotificationChannel != "" {
-		m.notifyChannel = m.client.TeamChannel(
+		m.notifyChannel = m.client.MustTeamChannel(
 			m.configuration.NotificationChannel,
 		)
 	} else {
-		m.notifyChannel = m.client.TeamChannel("town-square")
+		m.notifyChannel = m.client.MustTeamChannel("town-square")
 	}
 
 	m.logger.Structured(

@@ -2,12 +2,11 @@ package gitlab
 
 import "gitlab.com/gitlab-org/api/client-go/v2"
 
-func (c *Client) AdminMode(on bool) *gitlab.Settings {
+func (c *Client) AdminMode(on bool) (*gitlab.Settings, error) {
 	// AdminMode is persisted
-	result, r, e := c.client.Settings.UpdateSettings(
+	result, _, e := c.client.Settings.UpdateSettings(
 		&gitlab.UpdateSettingsOptions{AdminMode: new(on)},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

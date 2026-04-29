@@ -5,8 +5,8 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-func (c *Client) Posts(h *model.Channel) *model.PostList {
-	result, r, e := c.client.GetPostsForChannel(
+func (c *Client) Posts(h *model.Channel) (*model.PostList, error) {
+	result, _, e := c.client.GetPostsForChannel(
 		c.context,
 		h.Id,
 		0,
@@ -15,7 +15,6 @@ func (c *Client) Posts(h *model.Channel) *model.PostList {
 		true,
 		false,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

@@ -8,7 +8,7 @@ import (
 func Team() {
 	m := mattermost.NewEnvironment()
 
-	for _, t := range m.Teams(m.Me().Id) {
+	for _, t := range m.MustTeams(m.MustMe().Id) {
 		fmt.Printf("Team: %s %s\n", t.Id, t.Name)
 	}
 }

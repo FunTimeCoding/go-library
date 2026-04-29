@@ -10,10 +10,10 @@ func (c *Client) WipePrefixKeepLatest(
 	h *model.Channel,
 	prefix string,
 ) {
-	me := c.Me()
+	me := c.MustMe()
 	var candidates []*model.Post
 
-	for _, p := range c.Posts(h).Posts {
+	for _, p := range c.MustPosts(h).Posts {
 		if strings.HasPrefix(p.Message, prefix) {
 			if p.UserId != me.Id {
 				continue
@@ -28,7 +28,7 @@ func (c *Client) WipePrefixKeepLatest(
 	if count := len(candidates); len(candidates) > 1 {
 		for i, p := range candidates {
 			if i < count-1 {
-				c.DeletePost(p)
+				c.MustDeletePost(p)
 			}
 		}
 	}

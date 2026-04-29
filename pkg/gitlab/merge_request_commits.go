@@ -8,13 +8,16 @@ import (
 func (c *Client) MergeRequestCommits(
 	project int64,
 	request int64,
-) []*commit.Commit {
-	result, r, e := c.client.MergeRequests.GetMergeRequestCommits(
+) ([]*commit.Commit, error) {
+	result, _, e := c.client.MergeRequests.GetMergeRequestCommits(
 		project,
 		request,
 		&gitlab.GetMergeRequestCommitsOptions{},
 	)
-	panicOnError(r, e)
 
-	return commit.NewSlice(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return commit.NewSlice(result), nil
 }

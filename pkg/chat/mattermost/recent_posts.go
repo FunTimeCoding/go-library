@@ -9,14 +9,18 @@ import (
 func (c *Client) RecentPosts(
 	h *model.Channel,
 	sinceMilli int64,
-) []*post.Post {
-	list, response, e := c.client.GetPostsSince(
+) ([]*post.Post, error) {
+	list, _, e := c.client.GetPostsSince(
 		c.context,
 		h.Id,
 		sinceMilli,
 		true,
 	)
-	panicOnError(response, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	t := time.UnixMilli(sinceMilli)
 	var posts []*model.Post
 
@@ -33,7 +37,11 @@ func (c *Client) RecentPosts(
 	}
 
 	result := post.NewSlice(posts)
-	c.Enrich(result)
+	f := c.Enrich(result)
 
-	return result
+	if f != nil {
+		return nil, f
+	}
+
+	return result, nil
 }

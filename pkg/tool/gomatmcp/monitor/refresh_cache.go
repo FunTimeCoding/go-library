@@ -1,7 +1,7 @@
 package monitor
 
 func (m *Monitor) refreshCache() {
-	all := m.client.AllChannels()
+	all := m.client.MustAllChannels()
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 

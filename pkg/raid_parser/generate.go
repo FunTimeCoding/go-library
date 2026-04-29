@@ -2,7 +2,7 @@ package raid_parser
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/client"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"time"
 )

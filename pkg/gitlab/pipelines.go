@@ -5,14 +5,13 @@ import (
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-func (c *Client) Pipelines(project int64) []*gitlab.PipelineInfo {
-	result, r, e := c.client.Pipelines.ListProjectPipelines(
+func (c *Client) Pipelines(project int64) ([]*gitlab.PipelineInfo, error) {
+	result, _, e := c.client.Pipelines.ListProjectPipelines(
 		project,
 		&gitlab.ListProjectPipelinesOptions{
 			ListOptions: gitlab.ListOptions{PerPage: constant.PerPage1000},
 		},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

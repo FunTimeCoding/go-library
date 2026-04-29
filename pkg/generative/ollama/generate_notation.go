@@ -6,5 +6,5 @@ import (
 )
 
 func (c *Client) GenerateNotation(p string) *generate_response.Response {
-	return c.Generate(generate_request.New().Prompt(p).Notation())
+	return c.MustGenerate(generate_request.New().Prompt(p).Notation())
 }

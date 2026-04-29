@@ -11,7 +11,7 @@ func Run(
 	namespace string,
 	repository string,
 ) {
-	runs := c.ProjectRuns(namespace, repository)
+	runs := c.MustProjectRuns(namespace, repository)
 
 	if false {
 		latestRun := run.Latest(runs)
@@ -24,6 +24,6 @@ func Run(
 		}
 
 		fmt.Printf("Delete run: %d\n", r.Identifier)
-		c.DeleteRun(namespace, repository, r.Identifier)
+		c.MustDeleteRun(namespace, repository, r.Identifier)
 	}
 }

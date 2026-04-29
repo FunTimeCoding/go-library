@@ -13,5 +13,5 @@ func fightDuration(f raid.Fight) string {
 		)
 	}
 
-	return "—"
+	return "-"
 }

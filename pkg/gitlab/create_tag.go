@@ -7,8 +7,8 @@ func (c *Client) CreateTag(
 	name string,
 	reference string,
 	message string,
-) *gitlab.Tag {
-	result, r, e := c.client.Tags.CreateTag(
+) (*gitlab.Tag, error) {
+	result, _, e := c.client.Tags.CreateTag(
 		project,
 		&gitlab.CreateTagOptions{
 			TagName: new(name),
@@ -16,7 +16,6 @@ func (c *Client) CreateTag(
 			Message: new(message),
 		},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

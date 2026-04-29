@@ -7,9 +7,9 @@ import (
 	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/option"
-	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/tool"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/getsentry/sentry-go"
 	"github.com/mark3labs/mcp-go/server"
@@ -41,7 +41,7 @@ func Run(
 						"Mattermost MCP",
 						constant.DefaultVersion,
 					)
-					addTool(s, tool.New(c, m), m != nil)
+					addTool(s, model_context.New(c, m, h), m != nil)
 					generative.New(s).Setup(u)
 				},
 			),

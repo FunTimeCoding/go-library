@@ -7,8 +7,8 @@ func (c *Client) CommitActions(
 	branch string,
 	message string,
 	v []*gitlab.CommitActionOptions,
-) *gitlab.Commit {
-	result, r, e := c.client.Commits.CreateCommit(
+) (*gitlab.Commit, error) {
+	result, _, e := c.client.Commits.CreateCommit(
 		project,
 		&gitlab.CreateCommitOptions{
 			Branch:        &branch,
@@ -16,7 +16,6 @@ func (c *Client) CommitActions(
 			Actions:       v,
 		},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

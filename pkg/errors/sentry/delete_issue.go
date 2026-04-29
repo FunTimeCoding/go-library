@@ -5,8 +5,8 @@ import "fmt"
 func (c *Client) DeleteIssue(
 	organization string,
 	identifier string,
-) {
-	c.basic.DeleteBytes(
+) error {
+	return c.basic.Delete(
 		fmt.Sprintf(
 			"organizations/%s/issues/%s",
 			organization,

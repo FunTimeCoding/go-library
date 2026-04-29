@@ -1,24 +1,28 @@
 package gitlab
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"gitlab.com/gitlab-org/api/client-go/v2"
-	"log"
 )
 
 func (c *Client) ProjectByName(
 	namespace string,
 	name string,
-) *project.Project {
-	result, r, e := c.client.Projects.ListProjects(
+) (*project.Project, error) {
+	result, _, e := c.client.Projects.ListProjects(
 		&gitlab.ListProjectsOptions{Search: &name},
 	)
-	panicOnError(r, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	count := len(result)
 	var p *gitlab.Project
 
 	if count == 0 {
-		return nil
+		return nil, nil
 	} else if count == 1 {
 		p = result[0]
 	} else if count > 1 {
@@ -32,13 +36,18 @@ func (c *Client) ProjectByName(
 		}
 
 		if p == nil {
-			log.Panicf("unexpected: %d %+v", count, result)
+			return nil, fmt.Errorf(
+				"ambiguous project: %d results for %s/%s",
+				count,
+				namespace,
+				name,
+			)
 		}
 	}
 
 	if p != nil && p.Namespace.Path == namespace {
-		return project.New(p)
+		return project.New(p), nil
 	}
 
-	return nil
+	return nil, nil
 }

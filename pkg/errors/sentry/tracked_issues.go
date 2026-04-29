@@ -5,20 +5,28 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/issue"
 )
 
-func (c *Client) TrackedIssues() []*issue.Issue {
+func (c *Client) TrackedIssues() ([]*issue.Issue, error) {
 	var result []*issue.Issue
 
 	if c.organization == "" {
-		return result
+		return result, nil
 	}
 
 	for _, p := range c.projects {
-		proj := c.Project(c.organization, p)
-		result = append(
-			result,
-			c.Issues(c.organization, proj.ID, constant.PeriodFortnight)...,
-		)
+		proj, e := c.Project(c.organization, p)
+
+		if e != nil {
+			return nil, e
+		}
+
+		issues, f := c.Issues(c.organization, proj.ID, constant.PeriodFortnight)
+
+		if f != nil {
+			return nil, f
+		}
+
+		result = append(result, issues...)
 	}
 
-	return result
+	return result, nil
 }

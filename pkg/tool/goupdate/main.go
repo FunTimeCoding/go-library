@@ -89,7 +89,7 @@ func Main(
 			if v := release.LatestCompatible(
 				github.New(
 					token,
-				).Releases(
+				).MustReleases(
 					githubConstant.DelveNamespace,
 					githubConstant.DelveRepository,
 				),

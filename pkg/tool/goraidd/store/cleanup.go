@@ -10,7 +10,7 @@ func (s *Store) cleanup() {
 	cutoff := time.Now().AddDate(0, 0, -14)
 	deleted := 0
 
-	for _, n := range system.ReadDirectory(s.eliteInsightsPath) {
+	for _, n := range system.ReadDirectory(s.elitePath) {
 		i, e := n.Info()
 
 		if e != nil {
@@ -21,7 +21,7 @@ func (s *Store) cleanup() {
 			continue
 		}
 
-		system.RemoveFile(filepath.Join(s.eliteInsightsPath, n.Name()))
+		system.RemoveFile(filepath.Join(s.elitePath, n.Name()))
 		deleted++
 	}
 

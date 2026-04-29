@@ -3,7 +3,6 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"strconv"
 )
@@ -12,7 +11,7 @@ func (c *Client) Releases(
 	organization string,
 	query string,
 	limit int,
-) []response.Release {
+) ([]response.Release, error) {
 	q := map[string]string{}
 
 	if query != "" {
@@ -23,16 +22,21 @@ func (c *Client) Releases(
 		q["limit"] = strconv.Itoa(limit)
 	}
 
-	var result []response.Release
-	errors.PanicOnError(
-		json.Unmarshal(
-			c.basic.GetBytes(
-				fmt.Sprintf("organizations/%s/releases", organization),
-				q,
-			),
-			&result,
-		),
+	b, e := c.basic.Get(
+		fmt.Sprintf("organizations/%s/releases", organization),
+		q,
 	)
 
-	return result
+	if e != nil {
+		return nil, e
+	}
+
+	var result []response.Release
+	f := json.Unmarshal(b, &result)
+
+	if f != nil {
+		return nil, f
+	}
+
+	return result, nil
 }

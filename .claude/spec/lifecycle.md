@@ -21,9 +21,9 @@ pkg/lifecycle/
   run_until_signal.go                 - RunUntilSignal() runs, blocks, stops
   stop.go                             - Stop() stops all in reverse order
   with_logger.go                      - WithLogger option (structured startup line)
-  with_server.go                      - WithServer option (no timeout — streaming/MCP)
+  with_server.go                      - WithServer option (no timeout - streaming/MCP)
   with_server_middleware.go           - WithServerMiddleware option (no timeout)
-  with_protected_server.go            - WithProtectedServer option (10s — plain REST)
+  with_protected_server.go            - WithProtectedServer option (10s - plain REST)
   with_protected_server_middleware.go - WithProtectedServerMiddleware option (10s + middleware)
   with_verbose.go                     - WithVerbose option
   with_worker.go                      - WithWorker option
@@ -55,7 +55,7 @@ Implemented by: `metric.Server`, `ticker.Ticker`, `reporter.Reporter`, and any s
 
 ## WithServer / WithServerMiddleware
 
-For streaming servers (MCP, SSE) — no read/write timeout. The lifecycle owns the `*http.ServeMux` and `*http.Server`; the setup callback only registers routes.
+For streaming servers (MCP, SSE) - no read/write timeout. The lifecycle owns the `*http.ServeMux` and `*http.Server`; the setup callback only registers routes.
 
 ```go
 lifecycle.WithServer(address, func(m *http.ServeMux) {
@@ -67,14 +67,14 @@ lifecycle.WithServerMiddleware(address, func(m *http.ServeMux) {
 }, web.RecoveryMiddleware(hub))
 ```
 
-The middleware parameter is typically `web.RecoveryMiddleware(hub)` —
+The middleware parameter is typically `web.RecoveryMiddleware(hub)` -
 the shared recovery middleware that catches panics, reports them to
 Sentry, and returns 500. See `error-handling.md` for recovery layer
 design.
 
 ## WithProtectedServer / WithProtectedServerMiddleware
 
-For plain request/response REST servers — applies a 10s read/write timeout (slowloris protection). Use these whenever the server does not serve streaming or long-lived connections.
+For plain request/response REST servers - applies a 10s read/write timeout (slowloris protection). Use these whenever the server does not serve streaming or long-lived connections.
 
 ```go
 lifecycle.WithProtectedServer(address, func(m *http.ServeMux) {
@@ -86,7 +86,7 @@ lifecycle.WithProtectedServerMiddleware(address, func(m *http.ServeMux) {
 }, tokenMiddleware)
 ```
 
-Mixed servers (REST routes + MCP on the same mux) must use `WithServer` — the streaming endpoint governs the timeout choice.
+Mixed servers (REST routes + MCP on the same mux) must use `WithServer` - the streaming endpoint governs the timeout choice.
 
 ## Registration Order Matters
 

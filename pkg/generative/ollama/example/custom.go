@@ -16,8 +16,8 @@ func Custom() {
 	}
 
 	o := ollama.NewEnvironment(ollama.WithSecure(true))
-	fmt.Printf("Version: %s\n", o.Version())
-	r := o.Generate(
+	fmt.Printf("Version: %s\n", o.MustVersion())
+	r := o.MustGenerate(
 		generate_request.New().Prompt(
 			"One short sentence: What is a car?",
 		).Model(model),

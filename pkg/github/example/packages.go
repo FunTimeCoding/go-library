@@ -10,10 +10,10 @@ func Packages() {
 	c := github.NewEnvironment()
 	f := constant.Format
 
-	for _, p := range c.Packages(constant.LibraryNamespace) {
+	for _, p := range c.MustPackages(constant.LibraryNamespace) {
 		fmt.Printf("Package: %s\n", p.Format(f))
 
-		for _, v := range c.PackageVersions(p.Name) {
+		for _, v := range c.MustPackageVersions(p.Name) {
 			fmt.Printf("  Image: %s\n", v.Format(f))
 		}
 	}

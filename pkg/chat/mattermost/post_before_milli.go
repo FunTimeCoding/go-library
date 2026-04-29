@@ -9,6 +9,6 @@ import (
 func (c *Client) PostBeforeMilli(
 	h *model.Channel,
 	beforeMilli int64,
-) *post.Post {
+) (*post.Post, error) {
 	return c.PostBefore(h, time.UnixMilli(beforeMilli))
 }

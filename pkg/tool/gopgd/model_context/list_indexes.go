@@ -16,7 +16,7 @@ func (s *Server) listIndexes(
 
 	if !okay {
 		return response.Fail(
-			"no instance selected — use use_instance first",
+			"no instance selected - use use_instance first",
 		)
 	}
 

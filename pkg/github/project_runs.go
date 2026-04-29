@@ -8,7 +8,7 @@ import (
 func (c *Client) ProjectRuns(
 	owner string,
 	name string,
-) []*run.Run {
+) ([]*run.Run, error) {
 	var result []*run.Run
 	o := &github.ListWorkflowRunsOptions{
 		ListOptions: github.ListOptions{
@@ -23,7 +23,11 @@ func (c *Client) ProjectRuns(
 			name,
 			o,
 		)
-		panicOnError(r, e)
+
+		if e != nil {
+			return nil, e
+		}
+
 		result = append(result, run.NewSlice(page.WorkflowRuns)...)
 
 		if r.NextPage == 0 {
@@ -37,5 +41,5 @@ func (c *Client) ProjectRuns(
 		s.Validate()
 	}
 
-	return result
+	return result, nil
 }

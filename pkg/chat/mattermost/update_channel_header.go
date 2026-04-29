@@ -11,7 +11,7 @@ func (c *Client) UpdateChannelHeader(
 	prefix string,
 	text string,
 	separator string,
-) *model.Channel {
+) (*model.Channel, error) {
 	var header []string
 	found := false
 
@@ -30,8 +30,7 @@ func (c *Client) UpdateChannelHeader(
 	}
 
 	h.Header = strings.Join(header, separator)
-	result, r, e := c.client.UpdateChannel(c.context, h)
-	panicOnError(r, e)
+	result, _, e := c.client.UpdateChannel(c.context, h)
 
-	return result
+	return result, e
 }

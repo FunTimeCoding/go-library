@@ -6,6 +6,12 @@ func (c *Client) FileExists(
 	p *project.Project,
 	branch string,
 	file string,
-) bool {
-	return c.File(p.Identifier, branch, file) != nil
+) (bool, error) {
+	result, e := c.File(p.Identifier, branch, file)
+
+	if e != nil {
+		return false, e
+	}
+
+	return result != nil, nil
 }

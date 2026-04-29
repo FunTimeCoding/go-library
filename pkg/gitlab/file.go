@@ -6,7 +6,7 @@ func (c *Client) File(
 	project int64,
 	branch string,
 	name string,
-) *gitlab.File {
+) (*gitlab.File, error) {
 	result, r, e := c.client.RepositoryFiles.GetFile(
 		project,
 		name,
@@ -15,10 +15,8 @@ func (c *Client) File(
 
 	if r != nil && r.StatusCode == 404 {
 		// Do not panic
-		return nil
+		return nil, nil
 	}
 
-	panicOnError(r, e)
-
-	return result
+	return result, e
 }

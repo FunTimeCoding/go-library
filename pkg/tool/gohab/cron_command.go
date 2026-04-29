@@ -2,11 +2,11 @@ package gohab
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/habitica"
+	"github.com/funtimecoding/go-library/pkg/tool/gohabd/client"
 	"github.com/spf13/cobra"
 )
 
-func cronCommand(c *habitica.Client) *cobra.Command {
+func cronCommand(c *client.Client) *cobra.Command {
 	return &cobra.Command{
 		Use:   "cron",
 		Short: "Check and run daily rollover if needed",

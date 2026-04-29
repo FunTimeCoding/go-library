@@ -8,7 +8,7 @@ func perSecond(
 	decimals int,
 ) string {
 	if seconds <= 0 {
-		return "—"
+		return "-"
 	}
 
 	format := fmt.Sprintf("%%.%df", decimals)

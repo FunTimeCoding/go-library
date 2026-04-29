@@ -10,8 +10,8 @@ import (
 func Issue() {
 	g := gitlab.NewEnvironment()
 
-	for _, i := range g.Issues() {
-		p := g.Project(i.Project)
+	for _, i := range g.MustIssues() {
+		p := g.MustProject(i.Project)
 		fmt.Printf("Project: %s\n", p.Format(constant.Format))
 		fmt.Printf("  Issue: %s\n", i.Format(constant.Format))
 		fmt.Printf("  %s\n", i.Raw.WebURL)

@@ -7,6 +7,6 @@ import (
 
 func Whoami() {
 	c := sentry.NewEnvironment()
-	u := c.Whoami()
+	u := c.MustWhoami()
 	fmt.Printf("User: %+v\n", u)
 }

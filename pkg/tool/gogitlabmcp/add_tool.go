@@ -2,14 +2,14 @@ package gogitlabmcp
 
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/tool"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/model_context"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func addTool(
 	s *server.MCPServer,
-	t *tool.Tool,
+	t *model_context.Server,
 ) {
 	s.AddTool(
 		mcp.NewTool(

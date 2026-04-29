@@ -5,14 +5,20 @@ import "github.com/mattermost/mattermost/server/public/model"
 func (c *Client) PostHasReaction(
 	p *model.Post,
 	reaction string,
-) bool {
+) (bool, error) {
 	if p.HasReactions {
-		for _, r := range c.Reactions(p) {
+		reactions, e := c.Reactions(p)
+
+		if e != nil {
+			return false, e
+		}
+
+		for _, r := range reactions {
 			if r.EmojiName == reaction {
-				return true
+				return true, nil
 			}
 		}
 	}
 
-	return false
+	return false, nil
 }

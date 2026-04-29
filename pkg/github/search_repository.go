@@ -8,13 +8,16 @@ import (
 func (c *Client) SearchRepository(
 	query string,
 	a ...any,
-) []*repository.Repository {
+) ([]*repository.Repository, error) {
 	if len(a) > 0 {
 		query = fmt.Sprintf(query, a...)
 	}
 
-	result, r, e := c.client.Search.Repositories(c.context, query, nil)
-	panicOnError(r, e)
+	result, _, e := c.client.Search.Repositories(c.context, query, nil)
 
-	return repository.NewSlice(result.Repositories)
+	if e != nil {
+		return nil, e
+	}
+
+	return repository.NewSlice(result.Repositories), nil
 }

@@ -2,18 +2,27 @@ package gitlab
 
 import "gitlab.com/gitlab-org/api/client-go/v2"
 
-func (c *Client) SearchBlob(query string) []*gitlab.Blob {
+func (c *Client) SearchBlob(query string) ([]*gitlab.Blob, error) {
 	var result []*gitlab.Blob
+	projects, e := c.Projects()
 
-	for _, p := range c.Projects() {
-		page, r, e := c.client.Search.BlobsByProject(
+	if e != nil {
+		return nil, e
+	}
+
+	for _, p := range projects {
+		page, _, f := c.client.Search.BlobsByProject(
 			p.Identifier,
 			query,
 			&gitlab.SearchOptions{},
 		)
-		panicOnError(r, e)
+
+		if f != nil {
+			return nil, f
+		}
+
 		result = append(result, page...)
 	}
 
-	return result
+	return result, nil
 }

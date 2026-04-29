@@ -2,14 +2,14 @@ package gofirefoxmcp
 
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/tool"
+	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/model_context"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func addTool(
 	s *server.MCPServer,
-	t *tool.Tool,
+	t *model_context.Server,
 ) {
 	s.AddTool(
 		mcp.NewTool(
@@ -24,7 +24,7 @@ func addTool(
 		mcp.NewTool(
 			constant.ReadTab,
 			mcp.WithDescription(
-				"Read the text content of a Firefox tab. Extracts readable article text by default (strips navigation, ads, footers). Falls back to raw innerText if readability extraction fails. Pass raw=true to skip readability and get innerText directly — better for dashboards, web apps, and non-article pages.",
+				"Read the text content of a Firefox tab. Extracts readable article text by default (strips navigation, ads, footers). Falls back to raw innerText if readability extraction fails. Pass raw=true to skip readability and get innerText directly - better for dashboards, web apps, and non-article pages.",
 			),
 			mcp.WithNumber(
 				"tab_id",

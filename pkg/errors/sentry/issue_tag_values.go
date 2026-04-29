@@ -3,7 +3,6 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"strconv"
 )
@@ -13,28 +12,33 @@ func (c *Client) IssueTagValues(
 	identifier string,
 	tag string,
 	limit int,
-) []response.TagValue {
+) ([]response.TagValue, error) {
 	q := map[string]string{}
 
 	if limit > 0 {
 		q["limit"] = strconv.Itoa(limit)
 	}
 
-	var result []response.TagValue
-	errors.PanicOnError(
-		json.Unmarshal(
-			c.basic.GetBytes(
-				fmt.Sprintf(
-					"organizations/%s/issues/%s/tags/%s/values",
-					organization,
-					identifier,
-					tag,
-				),
-				q,
-			),
-			&result,
+	b, e := c.basic.Get(
+		fmt.Sprintf(
+			"organizations/%s/issues/%s/tags/%s/values",
+			organization,
+			identifier,
+			tag,
 		),
+		q,
 	)
 
-	return result
+	if e != nil {
+		return nil, e
+	}
+
+	var result []response.TagValue
+	f := json.Unmarshal(b, &result)
+
+	if f != nil {
+		return nil, f
+	}
+
+	return result, nil
 }

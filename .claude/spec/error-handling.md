@@ -39,7 +39,7 @@ may be unset in development.
 
 ### Default: `PanicOnError`
 
-Use everywhere covered by a recovery layer — web handlers, workers, REST route
+Use everywhere covered by a recovery layer - web handlers, workers, REST route
 handlers. Do not return the error to the caller. Do not write `if e != nil`.
 
 ```go
@@ -48,7 +48,7 @@ errors.PanicOnError(s.store.Save(record))
 
 ### Flow control exception: return `error`
 
-Use when the error outcome changes what happens next — not just "something went wrong"
+Use when the error outcome changes what happens next - not just "something went wrong"
 but "this specific failure path has distinct handling." The canonical example is a
 job worker marking status transitions: a failed status update means the job must be
 skipped, which requires the caller to act differently.
@@ -68,28 +68,24 @@ handlers (which translate to tool results), it returns `error`. Each caller
 handles it according to its context.
 
 ```go
-// Shared domain function — returns error
+// Shared domain function - returns error
 func ProcessRecord(path string) (*Result, error) {
     // ... filesystem or network operations that can fail
 }
 
-// HTTP caller — panics, caught by recovery middleware
+// HTTP caller - panics, caught by recovery middleware
 result, e := store.ProcessRecord(path)
 errors.PanicOnError(e)
 
-// MCP caller — translates to tool result, captures to Sentry
+// MCP caller - captures to Sentry, returns structured error
 result, e := store.ProcessRecord(path)
 
 if e != nil {
-    if hub != nil {
-        hub.CaptureException(e)
-    }
-
-    return response.Fail("failed to process record")
+    return s.captureFail(e, "process record failed")
 }
 ```
 
-This is distinct from the flow control exception — the error doesn't change
+This is distinct from the flow control exception - the error doesn't change
 what happens next (both callers abort on error). The difference is how the
 error is surfaced.
 
@@ -98,13 +94,13 @@ error is surfaced.
 MCP handlers have no recovery middleware. Panics would crash the handler without
 producing a response. All errors must be translated to tool results.
 
-Do not add per-handler recover defers to MCP tools — the mcp-go framework
+Do not add per-handler recover defers to MCP tools - the mcp-go framework
 handles recovery internally.
 
 Two tiers:
 
-**Tier 1 — Input validation** (bad params from the model): use `response.Fail`. No
-Sentry — these are model mistakes, not infrastructure failures.
+**Tier 1 - Input validation** (bad params from the model): use `response.Fail`. No
+Sentry - these are model mistakes, not infrastructure failures.
 
 ```go
 id, f := r.RequireString(parameter.Identifier)
@@ -117,24 +113,43 @@ if f != nil {
 `response.Fail` wraps `mcp.NewToolResultError` with `fmt.Sprintf` and returns the
 standard `(*mcp.CallToolResult, error)` tuple. Use it for all input validation.
 
-**Tier 2 — Infrastructure failure** (store, DB, external call): return a generic tool
-error AND capture to Sentry. The message to the model should be phrased for easy
-understanding — do not leak raw Go error strings. The error detail goes to Sentry
-for retroactive analysis.
+**Tier 2 - Infrastructure failure** (store, DB, external call): capture
+to Sentry and return a structured error with the Sentry event ID. Use
+`captureFail` - a private method on the Server/Tool struct that wraps
+`response.CaptureFail`.
 
 ```go
-if e := s.store.UpdateRecord(id); e != nil {
-    if s.hub != nil {
-        s.hub.CaptureException(e)
-    }
+result, e := s.store.UpdateRecord(id)
 
-    return response.Fail("failed to update record")
+if e != nil {
+    return s.captureFail(e, "update record failed")
 }
 ```
 
-The hub must be threaded into the MCP server and nil-guarded (same pattern as web
-and workers). Tier 2 stays manual (hub capture + response) because it requires
-Sentry access that `response.Fail` intentionally does not have.
+`captureFail` lives in its own file (`capture_fail.go`):
+```go
+func (s *Server) captureFail(
+    e error,
+    message string,
+) (*mcp.CallToolResult, error) {
+    return response.CaptureFail(s.hub, e, message)
+}
+```
+
+`response.CaptureFail` captures the exception to Sentry and returns
+structured JSON with `error` and `event_identifier` fields via
+`response.FailAny`. The event ID lets the model look up the
+stacktrace via Sentry MCP tools and diagnose the problem in the same
+conversation.
+
+The hub must be threaded into the MCP server (same pattern as web and
+workers). The hub is nil-safe - `CaptureFail` handles nil hubs
+gracefully.
+
+Design principle: any `error` value from a function call in an MCP
+handler is worth capturing to Sentry. Even local file I/O errors.
+`response.Fail` is only for validation where the handler constructs
+the error message itself (e.g. "service is required").
 
 ## Store Method Rule
 
@@ -229,7 +244,7 @@ if r.Error != nil {
 ```
 
 The `SetContext` call attaches stdout and stderr as structured data on
-the Sentry event — they're available in the Sentry UI without being
+the Sentry event - they're available in the Sentry UI without being
 stuffed into the panic message.
 
 ## Self-Healing File Operations
@@ -246,7 +261,7 @@ if e := os.Remove(path); e != nil {
 }
 ```
 
-This is the exception to the PanicOnError default — the failure is
+This is the exception to the PanicOnError default - the failure is
 transient, self-healing, and not worth killing the batch over. But it
 should still be visible in Sentry.
 

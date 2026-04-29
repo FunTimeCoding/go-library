@@ -3,7 +3,6 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/issue"
 	"strings"
@@ -12,27 +11,32 @@ import (
 func (c *Client) IssueByShortIdentifier(
 	organization string,
 	identifier string,
-) *issue.Issue {
-	var result []response.Issue
-	errors.PanicOnError(
-		json.Unmarshal(
-			c.basic.GetBytes(
-				fmt.Sprintf(
-					"projects/%s/%s/issues",
-					organization,
-					strings.ToLower(
-						strings.SplitN(identifier, "-", 2)[0],
-					),
-				),
-				map[string]string{"shortIdLookup": "1", "query": identifier},
+) (*issue.Issue, error) {
+	b, e := c.basic.Get(
+		fmt.Sprintf(
+			"projects/%s/%s/issues",
+			organization,
+			strings.ToLower(
+				strings.SplitN(identifier, "-", 2)[0],
 			),
-			&result,
 		),
+		map[string]string{"shortIdLookup": "1", "query": identifier},
 	)
 
-	if len(result) == 0 {
-		return nil
+	if e != nil {
+		return nil, e
 	}
 
-	return issue.New(&result[0])
+	var result []response.Issue
+	f := json.Unmarshal(b, &result)
+
+	if f != nil {
+		return nil, f
+	}
+
+	if len(result) == 0 {
+		return nil, nil
+	}
+
+	return issue.New(&result[0]), nil
 }

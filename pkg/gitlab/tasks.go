@@ -6,15 +6,18 @@ import (
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-func (c *Client) Tasks() []*task.Task {
-	result, r, e := c.client.Todos.ListTodos(
+func (c *Client) Tasks() ([]*task.Task, error) {
+	result, _, e := c.client.Todos.ListTodos(
 		&gitlab.ListTodosOptions{
 			State:       new(constant.PendingState),
 			ListOptions: constant.DefaultListOptions,
 		},
 		nil,
 	)
-	panicOnError(r, e)
 
-	return task.NewSlice(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return task.NewSlice(result), nil
 }

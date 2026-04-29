@@ -5,14 +5,13 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-func (c *Client) AllChannels() []*model.ChannelWithTeamData {
-	result, r, e := c.client.GetAllChannels(
+func (c *Client) AllChannels() ([]*model.ChannelWithTeamData, error) {
+	result, _, e := c.client.GetAllChannels(
 		c.context,
 		0,
 		constant.PerPage,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

@@ -2,7 +2,7 @@
 
 ## Error Handling
 
-- **Prefer `PanicOnError` over returning errors** — see `error-handling.md` for the full strategy and the exceptions (MCP handlers, flow control)
+- **Prefer `PanicOnError` over returning errors** - see `error-handling.md` for the full strategy and the exceptions (MCP handlers, flow control)
 - **Prefer `PanicClose` over checking close errors**
 - Use `LogClose` only in loops/uncertain contexts (e.g., validation)
 - **Error variable naming:**
@@ -19,7 +19,7 @@
 - No progress logs (`t.Log("doing X...")`)
 - No success logs (`t.Logf("✓ X succeeded")`)
 - Only `t.Fatalf()` for must-succeed setup, `t.Errorf()` for validation failures
-- **Assert package** - use `pkg/assert` for all test assertions. Argument order is `(t, expected, actual)` — expected first, actual second. Type-specific functions: `assert.String`, `assert.Integer`, `assert.Float`, `assert.True`, `assert.NotNil`, `assert.StringContains`, etc. Never use testify.
+- **Assert package** - use `pkg/assert` for all test assertions. Argument order is `(t, expected, actual)` - expected first, actual second. Type-specific functions: `assert.String`, `assert.Integer`, `assert.Float`, `assert.True`, `assert.NotNil`, `assert.StringContains`, etc. Never use testify.
 - Extract helper functions, make them panic instead of returning errors
 
 ## Code Style
@@ -33,7 +33,7 @@
   - `h` for headers, `i` for FileInfo in loops
   - `z` for gzip writers, `t` for tar writers, `f` for files
   - `path` over `outputPath`, `name` over `fileName`
-  - Single letters for obvious types in local variables and struct receivers (the type already documents the receiver). Function parameters prefer descriptive names — callers read the signature without seeing the body.
+  - Single letters for obvious types in local variables and struct receivers (the type already documents the receiver). Function parameters prefer descriptive names - callers read the signature without seeing the body.
   - Avoid `-ing` and plural forms in names
   - Prefer shorter words: "fail" over "error", "path" over "filePath"
 - **String concatenation** - use `join.Empty(a, b)` (`pkg/strings/join`) for pure string-string joins. Use `fmt.Sprintf` only when there's actual formatting (numbers, padding, mixed types). For long prose strings (descriptions, help text), use a single long line rather than multiline `"foo" + "bar"` literal concatenation.
@@ -88,11 +88,11 @@
 ## Structure
 
 - **One-file-per-function** - each function or method lives in its own file. File name is the snake_case form of the function name: `addFileToTar()` → `add_file_to_tar.go`, `httpFail()` → `http_fail.go`.
-- **One-type-per-file** - struct definitions go in a file named after the struct (snake_case): `type Store struct` → `store.go`. One struct with receivers per package — see `package-design.md` for the full rule and extraction pattern.
+- **One-type-per-file** - struct definitions go in a file named after the struct (snake_case): `type Store struct` → `store.go`. One struct with receivers per package - see `package-design.md` for the full rule and extraction pattern.
 
 ### Constants
 
-- **Constants in `constant.go`** - exported constants get their own `constant.go` file in the package. Prefer a single flat `constant.go` per package. When an iota enum is defined with a named type, both the type and the const values belong in the same constant package — separating them creates circular imports.
+- **Constants in `constant.go`** - exported constants get their own `constant.go` file in the package. Prefer a single flat `constant.go` per package. When an iota enum is defined with a named type, both the type and the const values belong in the same constant package - separating them creates circular imports.
 - **Reuse existing constants** - use `web/constant.Listen`, `argument.Name`, `parameter.Query`, `parameter.Limit`, etc. Never hardcode strings that already have a constant in the codebase. MCP parameter names shared across tools live in `generative/model_context/parameter/`.
 - **Constant value naming** - abbreviations and acronyms are avoided in constant values, not just names. `Link = "link"` not `Link = "url"`. The value should be the honest, full-word form.
 - **Semantic constant splitting** - when the same string serves different layers (DB column, HTML form field, domain key), use separate constants even if the values are identical today. Example: `NameFieldKey = "name"` (field system), `NameColumn = "name"` (GORM), `NameParameter = "name"` (web routes/forms). They could diverge independently.
@@ -102,7 +102,7 @@
 - Tests use `assert.*` helpers to reduce nesting
 - **`new_environment.go`** - when a package reads from environment variables, the environment constructor lives in `new_environment.go` and calls `New()` after reading the required vars. Pattern: `func NewEnvironment() *Client { return New(environment.Required(constant.HostEnvironment), environment.Required(constant.TokenEnvironment)) }`. The base `New()` always takes explicit params; `NewEnvironment()` is the env-reading wrapper.
 - **`example/` subpackage** - every client package should have an `example/` when there's a real usage scenario to demonstrate. Don't create empty or contrived examples just to fill the slot. Entry point lives in `cmd/example/<name>/main.go`. Inactive examples are kept in `if false {}` blocks rather than deleted.
-- **Constructors** - `New()` in `new.go`, zero-arg or with params. One per package. Zero-arg `New()` is appropriate when call sites use different field combinations (callers set fields after construction). `Stub()` in `stub.go` is only for GORM model references (`AutoMigrate`, `Model`, `Delete`) — never for real construction.
+- **Constructors** - `New()` in `new.go`, zero-arg or with params. One per package. Zero-arg `New()` is appropriate when call sites use different field combinations (callers set fields after construction). `Stub()` in `stub.go` is only for GORM model references (`AutoMigrate`, `Model`, `Delete`) - never for real construction.
 - **Local tool installation** - use `gobuild --copy-to-bin <name>` to build and install tools locally. Never use `go install`. Procfiles use `go run`.
 - Fail fast with stacktraces (Sentry integration)
 - Helpers return only success values, panic on errors

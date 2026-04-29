@@ -11,7 +11,7 @@ func Package(
 	c *gitlab.Client,
 	p *project.Project,
 ) {
-	projectPackages := c.Packages(p.Identifier, false)
+	projectPackages := c.MustPackages(p.Identifier, false)
 
 	if len(projectPackages) > 0 {
 		latest := packages.Latest(projectPackages)
@@ -31,7 +31,7 @@ func Package(
 			}
 
 			fmt.Printf("Package: %s %s\n", a.Name, a.Version)
-			c.DeletePackage(p.Identifier, a.ID)
+			c.MustDeletePackage(p.Identifier, a.ID)
 		}
 	}
 }

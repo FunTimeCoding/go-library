@@ -2,14 +2,14 @@ package gomatmcp
 
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/tool"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/model_context"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func addTool(
 	s *server.MCPServer,
-	t *tool.Tool,
+	t *model_context.Server,
 	withMonitor bool,
 ) {
 	s.AddTool(

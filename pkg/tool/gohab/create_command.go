@@ -2,11 +2,11 @@ package gohab
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/habitica"
+	"github.com/funtimecoding/go-library/pkg/tool/gohabd/client"
 	"github.com/spf13/cobra"
 )
 
-func createCommand(c *habitica.Client) *cobra.Command {
+func createCommand(c *client.Client) *cobra.Command {
 	var taskType string
 	var text string
 	var notes string

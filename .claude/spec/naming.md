@@ -17,7 +17,7 @@ Banned segments cause a lint error; this spec documents the resolution pattern f
 | `data` | local byte slice parameters (exported funcs) | domain-specific: `payload`, `archive`, etc. |
 | `info` | local `os.FileInfo`/`fs.FileInfo` in walk/loop | `i` |
 | `info` | type name suffix (e.g. `FooInfo`) | strip suffix or replace with descriptive noun (`Meta`) |
-| `handler` | struct type implementing routes | `Router` (see openapi.md) |
+| `handler` | struct type implementing routes | `Server` (see generated-api.md) |
 | `handler` | function parameter | `serve` |
 | `handler` | function name suffix | drop suffix: `logRequestHandler` → `logRequest` |
 | `config` | type name | `Configuration` |
@@ -68,11 +68,11 @@ most specific English term for that domain artifact:
 
 ## HTTP handler conventions
 
-See `openapi.md` for the full Router pattern. Summary:
+See `generated-api.md` for the full Server pattern. Summary:
 
-- The struct implementing `ServerInterface` is named `Router`, never `Handler`
-- Receiver on `*Router` methods: `r`
-- `*http.Request` parameter: `q` (avoids collision with receiver `r`)
+- The struct implementing `ServerInterface` is named `Server`, never `Handler` or `Router`
+- Receiver on `*Server` methods: `s`
+- `*http.Request` parameter: `q` (avoids collision with receiver)
 - Function parameter that accepts a handler func: `serve`, not `handler`
 - Handler methods/functions are named after the resource they serve, without a `handle` prefix: `handleAlerts` → `alerts`, `handleDashboard` → `dashboard`, `handleAddSubmit` → `addSubmit`
 
@@ -80,9 +80,9 @@ See `openapi.md` for the full Router pattern. Summary:
 
 Functions returning `g.Node` (gomponents HTML builders) are named after the component they produce, not the action of building it:
 
-- `alertsTable()` — renders the alerts table
-- `addForm()` — renders the add entry form
-- `navigationLink()` — renders a navigation link
+- `alertsTable()` - renders the alerts table
+- `addForm()` - renders the add entry form
+- `navigationLink()` - renders a navigation link
 
 File name follows the function name: `alerts_table.go`, `add_form.go`, `nav_link.go`.
 

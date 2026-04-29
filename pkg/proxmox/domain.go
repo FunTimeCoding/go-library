@@ -1,15 +1,14 @@
 package proxmox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/proxmox/constant"
+	"fmt"
 	"github.com/luthermonson/go-proxmox"
 )
 
-func (c *Client) Domain(name string) *proxmox.Domain {
-	errors.PanicOnEmpty(name, constant.Name)
-	result, e := c.client.Domain(c.context, name)
-	errors.PanicOnError(e)
+func (c *Client) Domain(name string) (*proxmox.Domain, error) {
+	if name == "" {
+		return nil, fmt.Errorf("domain name is required")
+	}
 
-	return result
+	return c.client.Domain(c.context, name)
 }

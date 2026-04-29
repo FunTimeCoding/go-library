@@ -15,7 +15,7 @@ func RunnerWay(
 	f *option.Format,
 ) {
 	fmt.Printf("Runner: %s\n", r.Format(f))
-	jobs := g.RunnerJobs(r.Identifier, 1000)
+	jobs := g.MustRunnerJobs(r.Identifier, 1000)
 	fmt.Printf("Job count: %d\n", len(jobs))
 	f2 := f.Copy().Extended()
 
@@ -31,7 +31,7 @@ func RunnerWay(
 
 			if console.AskConfirmation("Retry job?") {
 				// TODO: Untested
-				g.RetryJob(j)
+				g.MustRetryJob(j)
 			}
 		}
 	}

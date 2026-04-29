@@ -7,8 +7,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/option"
-	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/tool"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/getsentry/sentry-go"
 	"github.com/mark3labs/mcp-go/server"
@@ -22,7 +22,7 @@ func Run(
 	l := logger.New(context.Background())
 	c := firefox.NewEnvironment()
 	s := server.NewMCPServer(constant.Name, constant.Version)
-	t := tool.New(c)
+	t := model_context.New(c, h)
 	addTool(s, t)
 	v := generative.New(s)
 	lifecycle.New(

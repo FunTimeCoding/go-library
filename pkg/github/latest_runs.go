@@ -5,8 +5,8 @@ import (
 	"github.com/google/go-github/v85/github"
 )
 
-func (c *Client) LatestRuns(owner, repo string) []*run.Run {
-	page, r, e := c.client.Actions.ListRepositoryWorkflowRuns(
+func (c *Client) LatestRuns(owner, repo string) ([]*run.Run, error) {
+	page, _, e := c.client.Actions.ListRepositoryWorkflowRuns(
 		c.context,
 		owner,
 		repo,
@@ -14,7 +14,10 @@ func (c *Client) LatestRuns(owner, repo string) []*run.Run {
 			ListOptions: github.ListOptions{PerPage: 100},
 		},
 	)
-	panicOnError(r, e)
 
-	return run.NewSlice(page.WorkflowRuns)
+	if e != nil {
+		return nil, e
+	}
+
+	return run.NewSlice(page.WorkflowRuns), nil
 }

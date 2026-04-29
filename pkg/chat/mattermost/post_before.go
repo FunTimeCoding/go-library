@@ -10,11 +10,11 @@ import (
 func (c *Client) PostBefore(
 	h *model.Channel,
 	t time.Time,
-) *post.Post {
+) (*post.Post, error) {
 	pageNumber := 0
 
 	for {
-		page, r, e := c.client.GetPostsForChannel(
+		page, _, e := c.client.GetPostsForChannel(
 			c.context,
 			h.Id,
 			pageNumber,
@@ -23,18 +23,25 @@ func (c *Client) PostBefore(
 			true,
 			false,
 		)
-		panicOnError(r, e)
+
+		if e != nil {
+			return nil, e
+		}
 
 		if len(page.Order) == 0 {
-			return nil
+			return nil, nil
 		}
 
 		wrapped := post.NewSlice(post.FromList(page, false))
-		c.Enrich(wrapped)
+		f := c.Enrich(wrapped)
+
+		if f != nil {
+			return nil, f
+		}
 
 		for _, v := range wrapped {
 			if v.Create.Before(t) {
-				return v
+				return v, nil
 			}
 		}
 

@@ -8,9 +8,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
+	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/model_context"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/route"
-	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/web"
 	"io"
@@ -28,7 +28,7 @@ func setup(t *testing.T) (*store.Store, int, *lifecycle.Lifecycle) {
 		lifecycle.WithListener(
 			n,
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(route.New(s), m)
+				generated.HandlerFromMux(server.New(s), m)
 				generative.New(model_context.New(s).Nested()).Setup(m)
 				web.New(s).Mount(m)
 			},

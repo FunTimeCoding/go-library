@@ -5,14 +5,18 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-func (c *Client) Me() *model.User {
+func (c *Client) Me() (*model.User, error) {
 	if c.meCache != nil {
-		return c.meCache
+		return c.meCache, nil
 	}
 
-	result, r, e := c.client.GetMe(c.context, constant.EmptyEntityTag)
-	panicOnError(r, e)
+	result, _, e := c.client.GetMe(c.context, constant.EmptyEntityTag)
+
+	if e != nil {
+		return nil, e
+	}
+
 	c.meCache = result
 
-	return c.meCache
+	return c.meCache, nil
 }

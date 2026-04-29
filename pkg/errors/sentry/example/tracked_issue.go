@@ -10,7 +10,7 @@ func TrackedIssue() {
 	c := sentry.NewEnvironment()
 	f := option.Color.Copy()
 
-	for _, i := range c.TrackedIssues() {
+	for _, i := range c.MustTrackedIssues() {
 		fmt.Printf("Issue: %s\n", i.Format(f))
 	}
 }

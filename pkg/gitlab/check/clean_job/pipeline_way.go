@@ -12,10 +12,10 @@ func PipelineWay(
 	p *project.Project,
 	f *option.Format,
 ) {
-	for _, i := range g.Pipelines(p.Identifier) {
+	for _, i := range g.MustPipelines(p.Identifier) {
 		fmt.Printf("Pipeline: %+v\n", i.ID)
 
-		for _, j := range g.PipelineJobs(p.Identifier, i.ID) {
+		for _, j := range g.MustPipelineJobs(p.Identifier, i.ID) {
 			fmt.Printf("  Job: %s\n", j.Format(f))
 		}
 	}

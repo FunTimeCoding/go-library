@@ -9,7 +9,7 @@ func (c *Client) Commit(
 	path string,
 	content string,
 	update bool,
-) *gitlab.Commit {
+) (*gitlab.Commit, error) {
 	var action gitlab.FileActionValue
 
 	if update {
@@ -18,7 +18,7 @@ func (c *Client) Commit(
 		action = gitlab.FileCreate
 	}
 
-	result, r, e := c.client.Commits.CreateCommit(
+	result, _, e := c.client.Commits.CreateCommit(
 		project,
 		&gitlab.CreateCommitOptions{
 			Branch:        &branch,
@@ -32,7 +32,6 @@ func (c *Client) Commit(
 			},
 		},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

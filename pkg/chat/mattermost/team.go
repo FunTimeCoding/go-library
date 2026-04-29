@@ -5,13 +5,12 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-func (c *Client) Team(name string) *model.Team {
-	result, r, e := c.client.GetTeamByName(
+func (c *Client) Team(name string) (*model.Team, error) {
+	result, _, e := c.client.GetTeamByName(
 		c.context,
 		name,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

@@ -3,7 +3,6 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/helper"
@@ -14,7 +13,7 @@ func (c *Client) Issues(
 	organization string,
 	projectIdentifier string,
 	period string,
-) []*issue.Issue {
+) ([]*issue.Issue, error) {
 	helper.ValidateContains(constant.Periods, period)
 	query := map[string]string{
 		"project": projectIdentifier,
@@ -25,16 +24,21 @@ func (c *Client) Issues(
 		query["statsPeriod"] = period
 	}
 
-	var result []response.Issue
-	errors.PanicOnError(
-		json.Unmarshal(
-			c.basic.GetBytes(
-				fmt.Sprintf("organizations/%s/issues", organization),
-				query,
-			),
-			&result,
-		),
+	b, e := c.basic.Get(
+		fmt.Sprintf("organizations/%s/issues", organization),
+		query,
 	)
 
-	return issue.NewSlice(result)
+	if e != nil {
+		return nil, e
+	}
+
+	var result []response.Issue
+	f := json.Unmarshal(b, &result)
+
+	if f != nil {
+		return nil, f
+	}
+
+	return issue.NewSlice(result), nil
 }

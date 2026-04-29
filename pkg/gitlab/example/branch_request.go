@@ -16,7 +16,7 @@ func BranchRequest() {
 	g := gitlab.NewEnvironment()
 	f := constant.Format
 	fmt.Println(
-		g.BranchRequest(
+		g.MustBranchRequest(
 			viper.GetInt64(argument.Project),
 			viper.GetString(argument.Branch),
 		).Format(f),

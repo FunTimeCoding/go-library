@@ -2,11 +2,11 @@ package gohab
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/habitica"
+	"github.com/funtimecoding/go-library/pkg/tool/gohabd/client"
 	"github.com/spf13/cobra"
 )
 
-func scoreCommand(c *habitica.Client) *cobra.Command {
+func scoreCommand(c *client.Client) *cobra.Command {
 	var direction string
 	command := &cobra.Command{
 		Use:   "score [identifier]",

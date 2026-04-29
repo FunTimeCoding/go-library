@@ -11,18 +11,18 @@ func Issue() {
 	c := sentry.NewEnvironment()
 	f := option.Color.Copy()
 
-	for _, i := range c.IssuesSimple(true) {
+	for _, i := range c.MustIssuesSimple(true) {
 		fmt.Printf("Issue: %s\n", i.Format(f))
 	}
 
 	if false {
-		for _, o := range c.Organizations() {
+		for _, o := range c.MustOrganizations() {
 			fmt.Printf("Organization: %s\n", o.Name)
 
-			for _, p := range c.OrganizationProjects(o.Slug) {
+			for _, p := range c.MustOrganizationProjects(o.Slug) {
 				fmt.Printf("Project: %s\n", p.Name)
 
-				for _, i := range c.Issues(
+				for _, i := range c.MustIssues(
 					o.Slug,
 					p.ID,
 					constant.PeriodFortnight,

@@ -13,7 +13,7 @@ func Tag(
 	namespace string,
 	repository string,
 ) {
-	tags := c.Tags(namespace, repository)
+	tags := c.MustTags(namespace, repository)
 	latestTag := tag.Latest(tags)
 
 	if latestTag == nil {
@@ -33,7 +33,7 @@ func Tag(
 		}
 
 		fmt.Printf("Delete tag: %s\n", *t.Name)
-		c.DeleteTag(namespace, repository, *t.Name)
+		c.MustDeleteTag(namespace, repository, *t.Name)
 	}
 
 	git.Fetch()

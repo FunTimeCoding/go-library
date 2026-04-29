@@ -16,13 +16,13 @@ func (s *Store) run() {
 	errors.PanicOnError(e)
 	defer func() { errors.PanicOnError(w.Close()) }()
 	errors.PanicOnError(w.Add(s.logCachePath))
-	errors.PanicOnError(w.Add(s.eliteInsightsPath))
+	errors.PanicOnError(w.Add(s.elitePath))
 	s.logger.Structured(
 		"watcher_start",
 		"log_cache",
 		s.logCachePath,
 		"elite_insights",
-		s.eliteInsightsPath,
+		s.elitePath,
 	)
 	cleanup := time.NewTicker(24 * time.Hour)
 	defer cleanup.Stop()

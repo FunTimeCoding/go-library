@@ -6,7 +6,7 @@ import (
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/funtimecoding/go-library/pkg/tool/gopgd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/generated/client"
 	"github.com/spf13/cobra"
 	"os"
 )

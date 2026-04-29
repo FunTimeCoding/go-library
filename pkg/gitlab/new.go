@@ -37,7 +37,7 @@ func New(
 	client, e := gitlab.NewClient(token, p...)
 	errors.PanicOnError(e)
 	result.client = client
-	result.user = result.CurrentUser()
+	result.user = result.MustCurrentUser()
 
 	return result
 }

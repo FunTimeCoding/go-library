@@ -5,13 +5,12 @@ import "gitlab.com/gitlab-org/api/client-go/v2"
 func (c *Client) ReadCommit(
 	project int64,
 	sha string,
-) *gitlab.Commit {
-	result, r, e := c.client.Commits.GetCommit(
+) (*gitlab.Commit, error) {
+	result, _, e := c.client.Commits.GetCommit(
 		project,
 		sha,
 		&gitlab.GetCommitOptions{},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

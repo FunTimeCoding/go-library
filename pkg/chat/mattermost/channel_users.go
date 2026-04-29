@@ -5,19 +5,22 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-func (c *Client) ChannelUsers(h *model.Channel) []*model.User {
+func (c *Client) ChannelUsers(h *model.Channel) ([]*model.User, error) {
 	var result []*model.User
 	var page int
 
 	for {
-		users, r, e := c.client.GetUsersInChannel(
+		users, _, e := c.client.GetUsersInChannel(
 			c.context,
 			h.Id,
 			page,
 			constant.PerPage,
 			constant.EmptyEntityTag,
 		)
-		panicOnError(r, e)
+
+		if e != nil {
+			return nil, e
+		}
 
 		if len(users) == 0 {
 			break
@@ -27,5 +30,5 @@ func (c *Client) ChannelUsers(h *model.Channel) []*model.User {
 		page++
 	}
 
-	return result
+	return result, nil
 }

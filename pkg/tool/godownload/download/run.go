@@ -19,7 +19,7 @@ func Run(o *option.Download) {
 	g := gitlab.New(o.Host, o.Token)
 	project := common.FindProjectOrExit(g, o.Owner, o.Repository)
 	filtered := packages.FilterByName(
-		g.Packages(project.Identifier, false),
+		g.MustPackages(project.Identifier, false),
 		o.Package,
 	)
 	var p *library.Package
@@ -44,7 +44,7 @@ func Run(o *option.Download) {
 	}
 
 	f := packages.SystemMatchingFile(
-		g.PackageFiles(project.Identifier, p.ID),
+		g.MustPackageFiles(project.Identifier, p.ID),
 	)
 
 	if f == nil {

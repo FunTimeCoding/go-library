@@ -1,6 +1,6 @@
 package example
 
-// Local struct — bare &LocalStruct{} must be allowed (same package, no selector).
+// Local struct - bare &LocalStruct{} must be allowed (same package, no selector).
 type LocalStruct struct {
 	Value int
 }

@@ -2,7 +2,7 @@ package raid
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/tool/goraidd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/generated/client"
 )
 
 type Client struct {

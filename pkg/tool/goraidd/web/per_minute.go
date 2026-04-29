@@ -7,7 +7,7 @@ func perMinute(
 	minutes float64,
 ) string {
 	if minutes <= 0 {
-		return "—"
+		return "-"
 	}
 
 	return fmt.Sprintf("%.2f", float64(total)/minutes)

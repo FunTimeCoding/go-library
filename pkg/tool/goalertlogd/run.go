@@ -7,11 +7,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
+	generated "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/poller"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/route"
-	generated "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	alertWeb "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -44,7 +44,7 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			webConstant.ListenAddress,
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(route.New(s, p), m)
+				generated.HandlerFromMux(server.New(s, p), m)
 				generative.New(model_context.New(s, p).Nested()).Setup(m)
 				alertWeb.New(s, p).Mount(m)
 			},

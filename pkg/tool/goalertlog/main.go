@@ -2,11 +2,11 @@ package goalertlog
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/alert_log"
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/client"
 )
 
 func Main(
@@ -21,6 +21,6 @@ func Main(
 	}
 
 	monitor.ParseBind(version, gitHash, buildDate)
-	l := alert_log.NewEnvironment()
+	l := client.NewEnvironment()
 	fmt.Printf("Alerts: %s\n", l.Alerts())
 }

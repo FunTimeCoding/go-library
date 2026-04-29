@@ -8,10 +8,10 @@ import (
 func Organization() {
 	c := sentry.NewEnvironment()
 
-	for _, o := range c.Organizations() {
+	for _, o := range c.MustOrganizations() {
 		fmt.Printf("Organization: %+v\n", o)
 
-		for _, t := range c.Teams(o.Slug) {
+		for _, t := range c.MustTeams(o.Slug) {
 			fmt.Printf("Team: %+v\n", t)
 		}
 	}

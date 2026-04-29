@@ -11,9 +11,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/mock_client"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/client"
+	generated "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/poller"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/route"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
@@ -55,7 +55,7 @@ func TestRunLifecycle(t *testing.T) {
 		lifecycle.WithListener(
 			n,
 			func(m *http.ServeMux) {
-				server.HandlerFromMux(route.New(s, p), m)
+				generated.HandlerFromMux(server.New(s, p), m)
 				web.New(s, p).Mount(m)
 			},
 		),
@@ -92,25 +92,25 @@ func TestRunLifecycle(t *testing.T) {
 		fmt.Sprintf("%s/api/v1/alerts", base),
 		http.StatusBadRequest,
 	)
-	status := getJSON[server.StatusResponse](
+	status := getJSON[generated.StatusResponse](
 		t,
 		fmt.Sprintf("%s/api/v1/status", base),
 	)
 	assert.Integer(t, 2, status.TotalRecords)
 	assert.True(t, status.LastPoll != nil)
-	alerts := getJSON[[]server.AlertsResponse](
+	alerts := getJSON[[]generated.AlertsResponse](
 		t,
 		fmt.Sprintf("%s/api/v1/alerts?name=HighMemory", base),
 	)
 	assert.Count(t, 1, alerts)
 	assert.String(t, "fp1", alerts[0].Fingerprint)
-	assert.String(t, string(server.Firing), string(alerts[0].Status))
-	recent := getJSON[[]server.AlertsResponse](
+	assert.String(t, string(generated.Firing), string(alerts[0].Status))
+	recent := getJSON[[]generated.AlertsResponse](
 		t,
 		fmt.Sprintf("%s/api/v1/alerts/recent", base),
 	)
 	assert.Count(t, 2, recent)
-	top := getJSON[[]server.TopAlertsResponse](
+	top := getJSON[[]generated.TopAlertsResponse](
 		t,
 		fmt.Sprintf("%s/api/v1/alerts/top", base),
 	)
@@ -118,14 +118,14 @@ func TestRunLifecycle(t *testing.T) {
 	assert.Integer(t, 1, top[0].Count)
 	c.Remove("fp1")
 	p.Poll()
-	alerts = getJSON[[]server.AlertsResponse](
+	alerts = getJSON[[]generated.AlertsResponse](
 		t,
 		fmt.Sprintf("%s/api/v1/alerts?name=HighMemory", base),
 	)
 	assert.Count(t, 1, alerts)
-	assert.String(t, string(server.Resolved), string(alerts[0].Status))
+	assert.String(t, string(generated.Resolved), string(alerts[0].Status))
 	assert.True(t, alerts[0].End != nil)
-	status = getJSON[server.StatusResponse](
+	status = getJSON[generated.StatusResponse](
 		t,
 		fmt.Sprintf("%s/api/v1/status", base),
 	)
@@ -155,7 +155,7 @@ func TestGeneratedClient(t *testing.T) {
 		lifecycle.WithListener(
 			n,
 			func(m *http.ServeMux) {
-				server.HandlerFromMux(route.New(s, p), m)
+				generated.HandlerFromMux(server.New(s, p), m)
 			},
 		),
 	)

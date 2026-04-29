@@ -13,11 +13,11 @@ func Before() {
 	argument.ParseBind()
 	channel := argument.RequiredPositional(0, "CHANNEL")
 	m := mattermost.NewEnvironment(mattermost.WithVerbose(false))
-	c := m.TeamChannel(channel)
+	c := m.MustTeamChannel(channel)
 	f := constant.Format
 	fmt.Printf("Channel: %s\n", c.Name)
 	t := time.Now().Add(-30 * 24 * time.Hour)
-	reference := m.PostBefore(c, t)
+	reference := m.MustPostBefore(c, t)
 
 	if reference == nil {
 		fmt.Printf("No post before %s\n", t.Format(library.DateMinute))
@@ -31,7 +31,7 @@ func Before() {
 		time.UnixMilli(reference.Raw.CreateAt).Format(library.DateMinute),
 	)
 	keep := 500
-	posts := m.PostsBefore(c, t, keep)
+	posts := m.MustPostsBefore(c, t, keep)
 	fmt.Printf(
 		"Posts before %s or exceeding %d posts (%d found)\n",
 		t.Format(library.DateMinute),
@@ -44,7 +44,7 @@ func Before() {
 		fmt.Printf("  Time: %s\n", p.Create.Format(library.DateMinute))
 
 		if false {
-			m.DeletePost(p.Raw)
+			m.MustDeletePost(p.Raw)
 		}
 	}
 }

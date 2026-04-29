@@ -12,7 +12,7 @@ import (
 func New(
 	m *gorm.DB,
 	logCachePath string,
-	eliteInsightsPath string,
+	elitePath string,
 	l *logger.Logger,
 	h *sentry.Hub,
 ) *Store {
@@ -20,12 +20,12 @@ func New(
 	errors.PanicOnError(m.AutoMigrate(raid.NewFight()))
 	errors.PanicOnError(m.AutoMigrate(raid.NewPlayerFightStat()))
 	s := &Store{
-		mapper:            m,
-		logger:            l,
-		recovery:          recovery.New(l, h),
-		logCachePath:      logCachePath,
-		eliteInsightsPath: eliteInsightsPath,
-		stop:              make(chan struct{}),
+		mapper:       m,
+		logger:       l,
+		recovery:     recovery.New(l, h),
+		logCachePath: logCachePath,
+		elitePath:    elitePath,
+		stop:         make(chan struct{}),
 	}
 	s.syncLogCache()
 

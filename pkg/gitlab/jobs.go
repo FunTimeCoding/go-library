@@ -17,10 +17,10 @@ func (c *Client) Jobs() []*job.Job {
 			fmt.Printf("Project: %s\n", p.Raw.NameWithNamespace)
 		}
 
-		for i, j := range c.ProjectJobs(p) {
+		for i, j := range c.MustProjectJobs(p) {
 			if i > 0 {
 				if cleanup {
-					c.DeletePipeline(p.Identifier, j.Raw.Pipeline.ID)
+					c.MustDeletePipeline(p.Identifier, j.Raw.Pipeline.ID)
 				}
 
 				continue

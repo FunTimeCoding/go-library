@@ -2,14 +2,14 @@ package goitermmcp
 
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/tool"
+	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/model_context"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func addTool(
 	s *server.MCPServer,
-	t *tool.Tool,
+	t *model_context.Server,
 ) {
 	s.AddTool(
 		mcp.NewTool(
@@ -81,7 +81,7 @@ func addTool(
 		mcp.NewTool(
 			constant.SendKey,
 			mcp.WithDescription(
-				"Send a sequence of named keys to an iTerm2 session with a configurable interval between each. Valid keys: enter, tab, escape, ctrl+c, ctrl+d, ctrl+z, ctrl+l, ctrl+a, ctrl+e, ctrl+r, ctrl+w, ctrl+u, up, down, left, right, backspace, delete. Exercise caution with enter — it executes whatever text is on the command line.",
+				"Send a sequence of named keys to an iTerm2 session with a configurable interval between each. Valid keys: enter, tab, escape, ctrl+c, ctrl+d, ctrl+z, ctrl+l, ctrl+a, ctrl+e, ctrl+r, ctrl+w, ctrl+u, up, down, left, right, backspace, delete. Exercise caution with enter - it executes whatever text is on the command line.",
 			),
 			mcp.WithString(
 				"session_id",

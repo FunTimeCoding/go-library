@@ -34,7 +34,7 @@ func runActions(
 	update := upstream.FileUpdate
 
 	for _, path := range order {
-		f := c.File(project, o.Branch, path)
+		f := c.MustFile(project, o.Branch, path)
 
 		if f == nil {
 			log.Panicf("file does not exist: %s", path)
@@ -58,5 +58,5 @@ func runActions(
 		)
 	}
 
-	c.CommitActions(project, o.Branch, o.Message, commitActions)
+	c.MustCommitActions(project, o.Branch, o.Message, commitActions)
 }

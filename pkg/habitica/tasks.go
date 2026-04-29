@@ -1,21 +1,16 @@
 package habitica
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gohabd/client"
-	"github.com/funtimecoding/go-library/pkg/web"
-)
+import "github.com/funtimecoding/go-library/pkg/strings/join"
 
-func (c *Client) Tasks(taskType string) string {
-	var p *client.GetTasksParams
+func (c *Client) Tasks(taskType string) []Task {
+	path := "/tasks/user"
 
 	if taskType != "" {
-		t := client.GetTasksParamsType(taskType)
-		p = &client.GetTasksParams{Type: &t}
+		path = join.Empty(path, "?type=", taskType)
 	}
 
-	result, e := c.client.GetTasks(c.context, p)
-	errors.PanicOnError(e)
+	var result []Task
+	c.get(path, &result)
 
-	return web.ReadString(result)
+	return result
 }

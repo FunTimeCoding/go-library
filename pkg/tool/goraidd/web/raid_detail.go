@@ -21,7 +21,7 @@ func (s *Server) raidDetail(
 		layout(
 			"Raid",
 			"/raids",
-			h.H1(g.Textf("Raid — %d fights", len(fights))),
+			h.H1(g.Textf("Raid - %d fights", len(fights))),
 			raidDetailTable(players),
 		),
 	)

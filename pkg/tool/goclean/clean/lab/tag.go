@@ -12,7 +12,7 @@ func Tag(
 	c *gitlab.Client,
 	p *project.Project,
 ) {
-	tags := c.Tags(p.Identifier)
+	tags := c.MustTags(p.Identifier)
 
 	if len(tags) == 0 {
 		return
@@ -26,7 +26,7 @@ func Tag(
 		}
 
 		fmt.Printf("Delete tag: %s\n", t.Name)
-		c.DeleteTag(p.Identifier, t.Name)
+		c.MustDeleteTag(p.Identifier, t.Name)
 	}
 
 	git.Fetch()

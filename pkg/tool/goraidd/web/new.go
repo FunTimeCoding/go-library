@@ -7,14 +7,14 @@ import (
 
 func New(
 	s *store.Store,
-	eliteInsightsPath string,
+	elitePath string,
 	outputPath string,
 	p *raid_parser.Client,
 ) *Server {
 	return &Server{
-		store:             s,
-		eliteInsightsPath: eliteInsightsPath,
-		outputPath:        outputPath,
-		parser:            p,
+		store:      s,
+		elitePath:  elitePath,
+		outputPath: outputPath,
+		parser:     p,
 	}
 }

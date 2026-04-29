@@ -32,10 +32,10 @@ func New(o ...Option) *Client {
 	result.client.SetOAuthToken(result.token)
 
 	if result.teamName != "" {
-		result.team = result.Team(result.teamName)
+		result.team = result.MustTeam(result.teamName)
 
 		if result.channelName != "" {
-			result.channel = result.ChannelByName(
+			result.channel = result.MustChannelByName(
 				result.team,
 				result.channelName,
 			)

@@ -23,7 +23,7 @@ func (s *Server) generate(
 		notationName := join.Empty(timestamp, constant.DetailedWvWKillSuffix)
 		files = append(
 			files,
-			filepath.Join(s.eliteInsightsPath, notationName),
+			filepath.Join(s.elitePath, notationName),
 		)
 	}
 

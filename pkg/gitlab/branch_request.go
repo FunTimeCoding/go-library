@@ -8,7 +8,7 @@ import (
 func (c *Client) BranchRequest(
 	project int64,
 	branch string,
-) *merge_request.Request {
+) (*merge_request.Request, error) {
 	result, r, e := c.client.MergeRequests.ListProjectMergeRequests(
 		project,
 		&gitlab.ListProjectMergeRequestsOptions{
@@ -19,15 +19,17 @@ func (c *Client) BranchRequest(
 
 	if r != nil && r.StatusCode == 404 {
 		// Project not found, do not panic
-		return nil
+		return nil, nil
 	}
 
-	panicOnError(r, e)
+	if e != nil {
+		return nil, e
+	}
 
 	if len(result) == 0 {
 		// Branch not found, do not panic
-		return nil
+		return nil, nil
 	}
 
-	return merge_request.New(result[0])
+	return merge_request.New(result[0]), nil
 }

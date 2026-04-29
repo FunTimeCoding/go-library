@@ -14,5 +14,4 @@ func TestResponse(t *testing.T) {
 	assert.Nil(t, g)
 	_, h := SuccessAny("")
 	assert.Nil(t, h)
-	assert.NotNil(t, MustFail(""))
 }

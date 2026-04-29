@@ -1,10 +1,13 @@
 package gitlab
 
-import "github.com/funtimecoding/go-library/pkg/gitlab/job"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/gitlab/job"
+)
 
-func (c *Client) RetryJob(j *job.Job) *job.Job {
+func (c *Client) RetryJob(j *job.Job) (*job.Job, error) {
 	if j.Project == nil {
-		panic("job has no project")
+		return nil, fmt.Errorf("job has no project")
 	}
 
 	return c.Retry(j.Project.Identifier, j.Identifier)

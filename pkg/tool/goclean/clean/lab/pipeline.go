@@ -16,7 +16,7 @@ func Pipeline(
 	c *gitlab.Client,
 	p *project.Project,
 ) {
-	branches := c.Branches(p.Identifier)
+	branches := c.MustBranches(p.Identifier)
 	mainBranch := branch.MainBranch(branches)
 	mainHash := mainBranch.Raw.Commit.ID
 
@@ -35,7 +35,7 @@ func Pipeline(
 		fmt.Printf("Main hash: %s\n", mainHash)
 	}
 
-	pipelines := c.Pipelines(p.Identifier)
+	pipelines := c.MustPipelines(p.Identifier)
 
 	if len(pipelines) == 0 {
 		return
@@ -87,6 +87,6 @@ func Pipeline(
 			fmt.Printf("Pipeline: %s\n", i.Ref)
 		}
 
-		c.DeletePipeline(p.Identifier, i.ID)
+		c.MustDeletePipeline(p.Identifier, i.ID)
 	}
 }

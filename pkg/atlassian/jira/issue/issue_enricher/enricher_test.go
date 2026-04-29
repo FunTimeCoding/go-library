@@ -7,7 +7,6 @@ import (
 )
 
 func TestEnricher(t *testing.T) {
-	assert.NotNil(t, New())
 	assert.NotNil(
 		t,
 		New(

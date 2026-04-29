@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/client"
 	"net/http"
 	"testing"
 )

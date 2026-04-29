@@ -16,12 +16,12 @@ func (c *Client) ProjectsWithFile(
 		path = strings.ToLower(path)
 	}
 
-	for _, p := range c.Projects() {
+	for _, p := range c.MustProjects() {
 		if c.verbose {
 			fmt.Printf("Project: %s\n", p.Raw.NameWithNamespace)
 		}
 
-		for _, n := range c.Tree(p.Identifier) {
+		for _, n := range c.MustTree(p.Identifier) {
 			if path == n.Path ||
 				(caseInsensitive && path == strings.ToLower(n.Path)) {
 				result = append(result, p)

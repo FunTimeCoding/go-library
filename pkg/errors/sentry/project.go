@@ -3,28 +3,32 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 )
 
 func (c *Client) Project(
 	organization string,
 	projectSlug string,
-) *response.Project {
-	var result response.Project
-	errors.PanicOnError(
-		json.Unmarshal(
-			c.basic.GetBytes(
-				fmt.Sprintf(
-					"projects/%s/%s",
-					organization,
-					projectSlug,
-				),
-				nil,
-			),
-			&result,
+) (*response.Project, error) {
+	b, e := c.basic.Get(
+		fmt.Sprintf(
+			"projects/%s/%s",
+			organization,
+			projectSlug,
 		),
+		nil,
 	)
 
-	return &result
+	if e != nil {
+		return nil, e
+	}
+
+	var result response.Project
+	f := json.Unmarshal(b, &result)
+
+	if f != nil {
+		return nil, f
+	}
+
+	return &result, nil
 }

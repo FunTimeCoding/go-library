@@ -3,9 +3,9 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/habitica"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabd/convert"
-	"github.com/funtimecoding/go-library/pkg/tool/gohabd/habitica"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 

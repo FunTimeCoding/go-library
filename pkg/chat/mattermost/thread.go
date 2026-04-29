@@ -6,18 +6,22 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-func (c *Client) Thread(p *model.Post) []*post.Post {
+func (c *Client) Thread(p *model.Post) ([]*post.Post, error) {
 	if p.ReplyCount == 0 {
-		return []*post.Post{}
+		return []*post.Post{}, nil
 	}
 
-	list, r, e := c.client.GetPostThread(
+	list, _, e := c.client.GetPostThread(
 		c.context,
 		p.Id,
 		constant.EmptyEntityTag,
 		false,
 	)
-	panicOnError(r, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	var posts []*model.Post
 
 	for i, o := range post.FromList(list, true) {
@@ -29,7 +33,11 @@ func (c *Client) Thread(p *model.Post) []*post.Post {
 	}
 
 	result := post.NewSlice(posts)
-	c.Enrich(result)
+	f := c.Enrich(result)
 
-	return result
+	if f != nil {
+		return nil, f
+	}
+
+	return result, nil
 }

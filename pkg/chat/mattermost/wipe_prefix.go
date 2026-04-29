@@ -9,15 +9,15 @@ func (c *Client) WipePrefix(
 	h *model.Channel,
 	prefix string,
 ) {
-	me := c.Me()
+	me := c.MustMe()
 
-	for _, post := range c.Posts(h).Posts {
+	for _, post := range c.MustPosts(h).Posts {
 		if strings.HasPrefix(post.Message, prefix) {
 			if post.UserId != me.Id {
 				continue
 			}
 
-			c.DeletePost(post)
+			c.MustDeletePost(post)
 		}
 	}
 }

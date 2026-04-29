@@ -9,9 +9,9 @@ func Search() {
 	c := github.NewEnvironment()
 
 	if false {
-		for _, r := range c.SearchRepository(
+		for _, r := range c.MustSearchRepository(
 			"user:%s",
-			c.User().Name,
+			c.MustUser().Name,
 		) {
 			fmt.Printf("Repository: %s\n", r.Name)
 		}

@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/convert"
-	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/generated/server"
 	"github.com/mark3labs/mcp-go/mcp"
 	"strings"
 )

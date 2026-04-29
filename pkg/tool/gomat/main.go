@@ -36,7 +36,7 @@ func Main(
 	)
 	var relevant []*thread.Thread
 
-	for _, p := range c.RecentPosts(c.DefaultChannel(), t.UnixMilli()) {
+	for _, p := range c.MustRecentPosts(c.DefaultChannel(), t.UnixMilli()) {
 		h := c.LoadThread(p)
 
 		if h.Resolved {

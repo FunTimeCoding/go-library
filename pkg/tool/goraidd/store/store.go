@@ -7,10 +7,10 @@ import (
 )
 
 type Store struct {
-	mapper            *gorm.DB
-	logger            *logger.Logger
-	recovery          *recovery.Recovery
-	logCachePath      string
-	eliteInsightsPath string
-	stop              chan struct{}
+	mapper       *gorm.DB
+	logger       *logger.Logger
+	recovery     *recovery.Recovery
+	logCachePath string
+	elitePath    string
+	stop         chan struct{}
 }

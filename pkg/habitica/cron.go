@@ -1,13 +1,21 @@
 package habitica
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/web"
-)
+func (c *Client) Cron() CronResult {
+	before := c.user()
 
-func (c *Client) Cron() string {
-	result, e := c.client.RunCron(c.context)
-	errors.PanicOnError(e)
+	if !before.NeedsCron {
+		return CronResult{
+			LastCron: before.LastCron,
+		}
+	}
 
-	return web.ReadString(result)
+	c.postDiscard("/cron")
+	after := c.user()
+
+	return CronResult{
+		RolledOver: true,
+		LastCron:   after.LastCron,
+		Before:     &before.Stats,
+		After:      &after.Stats,
+	}
 }

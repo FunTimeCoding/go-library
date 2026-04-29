@@ -12,7 +12,7 @@ func FindProjectOrExit(
 	owner string,
 	repository string,
 ) *project.Project {
-	p := c.ProjectByName(owner, repository)
+	p := c.MustProjectByName(owner, repository)
 
 	if p == nil {
 		fmt.Printf("repository not found: %s/%s\n", owner, repository)

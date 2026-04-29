@@ -6,7 +6,7 @@ func (c *Client) ProjectsIssues() []*issue.Issue {
 	var result []*issue.Issue
 
 	for _, identifier := range c.projects {
-		for _, e := range c.ProjectIssues(identifier) {
+		for _, e := range c.MustProjectIssues(identifier) {
 			if e.Done() {
 				continue
 			}

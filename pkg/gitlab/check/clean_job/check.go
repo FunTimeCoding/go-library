@@ -26,7 +26,7 @@ func Check() {
 			argument.Match,
 		)
 
-		for _, r := range g.Runners(true) {
+		for _, r := range g.MustRunners(true) {
 			fmt.Println(r.Format(f))
 		}
 
@@ -43,7 +43,7 @@ func Check() {
 	RunnerWay(g, r, f)
 
 	if false {
-		p := g.ProjectByName(
+		p := g.MustProjectByName(
 			argument.Required(argument.Namespace),
 			argument.Required(argument.Project),
 		)

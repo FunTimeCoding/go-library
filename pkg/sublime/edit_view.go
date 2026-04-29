@@ -36,7 +36,7 @@ func (c *Client) EditView(
 		return view.View{}, fmt.Errorf("edit view: %w", f)
 	}
 
-	q.Header.Set("Content-Type", constant.Object)
+	q.Header.Set(constant.ContentType, constant.Object)
 	r, g := c.client.Do(q)
 
 	if g != nil {

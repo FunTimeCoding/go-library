@@ -7,14 +7,14 @@ import (
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-func (c *Client) GroupProjects(identifier ...int64) []*project.Project {
+func (c *Client) GroupProjects(identifier ...int64) ([]*project.Project, error) {
 	var result []*gitlab.Project
 
 	for _, i := range identifier {
 		var number int64
 
 		for {
-			page, r, e := c.client.Groups.ListGroupProjects(
+			page, _, e := c.client.Groups.ListGroupProjects(
 				i,
 				&gitlab.ListGroupProjectsOptions{
 					ListOptions: gitlab.ListOptions{
@@ -24,7 +24,11 @@ func (c *Client) GroupProjects(identifier ...int64) []*project.Project {
 					Archived: ptr.Bool(false),
 				},
 			)
-			panicOnError(r, e)
+
+			if e != nil {
+				return nil, e
+			}
+
 			result = append(result, page...)
 
 			if int64(len(page)) < constant.PerPage100 {
@@ -35,5 +39,5 @@ func (c *Client) GroupProjects(identifier ...int64) []*project.Project {
 		}
 	}
 
-	return project.NewSlice(result)
+	return project.NewSlice(result), nil
 }

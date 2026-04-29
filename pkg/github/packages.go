@@ -6,15 +6,18 @@ import (
 	"github.com/google/go-github/v85/github"
 )
 
-func (c *Client) Packages(user string) []*container.Container {
-	result, r, e := c.client.Users.ListPackages(
+func (c *Client) Packages(user string) ([]*container.Container, error) {
+	result, _, e := c.client.Users.ListPackages(
 		c.context,
 		user,
 		&github.PackageListOptions{
 			PackageType: new(constant.ContainerPackageType),
 		},
 	)
-	panicOnError(r, e)
 
-	return container.NewSlice(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return container.NewSlice(result), nil
 }

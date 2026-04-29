@@ -15,7 +15,7 @@ and graceful degradation.
 ## Wiring Order
 
 `Main()` creates the reporter and extracts the hub. `Run()` receives
-the hub as a parameter (not on the option struct — option structs hold
+the hub as a parameter (not on the option struct - option structs hold
 configuration, not constructed dependencies). `Run()` creates the
 logger and wires everything into lifecycle.
 
@@ -68,7 +68,7 @@ Three layers, from outermost to innermost:
    work in a recovery defer. Panics are reported to Sentry and the
    worker continues. See `error-handling.md`.
 
-MCP handlers do not need per-handler recover defers — the mcp-go
+MCP handlers do not need per-handler recover defers - the mcp-go
 framework handles recovery internally.
 
 ## Server Type Selection
@@ -78,7 +78,7 @@ framework handles recovery internally.
 | `WithServerMiddleware` | Streaming, MCP, long-running requests |
 | `WithProtectedServerMiddleware` | Plain REST (adds 10s read/write timeout) |
 
-Mixed servers (REST + MCP on same mux) use `WithServerMiddleware` —
+Mixed servers (REST + MCP on same mux) use `WithServerMiddleware` -
 the streaming endpoint governs the timeout choice.
 
 Both variants accept a middleware parameter for `web.RecoveryMiddleware`.
@@ -89,5 +89,5 @@ Both variants accept a middleware parameter for `web.RecoveryMiddleware`.
 |-----------|--------|-----|-----|
 | Lifecycle workers | Yes (constructor param) | Yes (for withRecovery) | Workers need both for recovery logging |
 | HTTP route handlers | Via recovery middleware | Via recovery middleware | Middleware catches panics |
-| MCP tool handlers | Not directly | Via tool struct (deferred) | Tier 2 errors use hub.CaptureException |
+| MCP tool handlers | Not directly | Via Server struct + captureFail | Tier 2 errors use captureFail → response.CaptureFail |
 | Startup one-shot tasks | Yes (from Run) | Yes (for withRecovery if looping) | Same recovery pattern as workers |

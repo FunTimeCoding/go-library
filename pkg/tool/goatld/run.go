@@ -7,10 +7,10 @@ import (
 	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	generated "github.com/funtimecoding/go-library/pkg/tool/goatld/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/option"
-	"github.com/funtimecoding/go-library/pkg/tool/goatld/route"
-	generated "github.com/funtimecoding/go-library/pkg/tool/goatld/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/getsentry/sentry-go"
 	"net/http"
@@ -27,7 +27,7 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(route.New(j, c), m)
+				generated.HandlerFromMux(server.New(j, c), m)
 				generative.New(
 					model_context.New(j, c).Nested(),
 				).Setup(m)

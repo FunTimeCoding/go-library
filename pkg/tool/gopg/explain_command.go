@@ -3,7 +3,7 @@ package gopg
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gopgd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/generated/client"
 	"github.com/spf13/cobra"
 )
 

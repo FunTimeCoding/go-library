@@ -7,7 +7,7 @@ import (
 )
 
 func Project() {
-	for _, p := range gitlab.NewEnvironment().Projects() {
+	for _, p := range gitlab.NewEnvironment().MustProjects() {
 		fmt.Printf("Project: %s\n", p.Format(constant.Format))
 	}
 }

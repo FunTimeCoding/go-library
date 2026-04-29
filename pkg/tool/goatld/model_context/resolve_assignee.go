@@ -54,7 +54,7 @@ func (s *Server) resolveAssignee(
 	}
 
 	r, f := response.Fail(
-		"multiple users match '%s': %v — be more specific or use an account ID",
+		"multiple users match '%s': %v - be more specific or use an account ID",
 		name,
 		names,
 	)

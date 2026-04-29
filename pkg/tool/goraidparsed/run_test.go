@@ -7,8 +7,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/route"
-	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/server"
+	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/server"
 	"net/http"
 	"testing"
 )
@@ -21,7 +21,7 @@ func TestRunLifecycle(t *testing.T) {
 			n,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
-					route.New("", "", t.TempDir(), nil, nil),
+					server.New("", "", t.TempDir(), nil, nil),
 					m,
 				)
 			},

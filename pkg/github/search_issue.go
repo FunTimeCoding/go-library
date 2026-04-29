@@ -8,13 +8,16 @@ import (
 func (c *Client) SearchIssue(
 	query string,
 	a ...any,
-) []*issue.Issue {
+) ([]*issue.Issue, error) {
 	if len(a) > 0 {
 		query = fmt.Sprintf(query, a...)
 	}
 
-	result, r, e := c.client.Search.Issues(c.context, query, nil)
-	panicOnError(r, e)
+	result, _, e := c.client.Search.Issues(c.context, query, nil)
 
-	return issue.NewSlice(result.Issues)
+	if e != nil {
+		return nil, e
+	}
+
+	return issue.NewSlice(result.Issues), nil
 }

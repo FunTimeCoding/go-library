@@ -1,23 +1,19 @@
 package gitlab
 
-import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/gitlab/project"
-)
+import "github.com/funtimecoding/go-library/pkg/gitlab/project"
 
-func (c *Client) Project(identifier int64) *project.Project {
+func (c *Client) Project(identifier int64) (*project.Project, error) {
 	if p, okay := c.projectCache[identifier]; okay {
-		return p
+		return p, nil
 	}
 
-	result, r, e := c.client.Projects.GetProject(identifier, nil)
+	result, _, e := c.client.Projects.GetProject(identifier, nil)
 
 	if e != nil {
-		fmt.Printf("Project fail: %v\n", identifier)
+		return nil, e
 	}
 
-	panicOnError(r, e)
 	c.projectCache[identifier] = project.New(result)
 
-	return c.projectCache[identifier]
+	return c.projectCache[identifier], nil
 }

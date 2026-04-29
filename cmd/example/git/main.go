@@ -9,9 +9,10 @@ import (
 )
 
 func main() {
-	gitlab.Registry()
+	github.LatestTags()
 
 	if false {
+		gitlab.Registry()
 		git.BuildInformation()
 		clean_job.Check()
 		gitlab.BranchRequest()

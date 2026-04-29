@@ -7,53 +7,53 @@ import (
 
 func Read() {
 	p := proxmox.NewEnvironment()
-	fmt.Printf("Version: %+v\n", p.Version())
-	fmt.Printf("Cluster: %+v\n", p.Cluster())
+	fmt.Printf("Version: %+v\n", p.MustVersion())
+	fmt.Printf("Cluster: %+v\n", p.MustCluster())
 
-	for _, n := range p.Nodes() {
+	for _, n := range p.MustNodes() {
 		fmt.Printf("Node list: %+v\n", n)
-		o := p.Node(n.Node)
+		o := p.MustNode(n.Node)
 		fmt.Printf("Node: %+v\n", o)
 
-		for _, m := range p.Machines(o) {
+		for _, m := range p.MustMachines(o) {
 			fmt.Printf("  Machine list: %+v\n", m)
 			fmt.Printf(
 				"  Machine: %+v\n",
-				p.Machine(o, int(m.VMID)),
+				p.MustMachine(o, int(m.VMID)),
 			)
 		}
 
-		for _, c := range p.Containers(o) {
+		for _, c := range p.MustContainers(o) {
 			fmt.Printf("  Container list: %+v\n", c)
 			fmt.Printf(
 				"  Container: %+v\n",
-				p.Container(o, int(c.VMID)),
+				p.MustContainer(o, int(c.VMID)),
 			)
 		}
 	}
 
-	for _, d := range p.Domains() {
+	for _, d := range p.MustDomains() {
 		fmt.Printf("Domain list: %+v\n", d)
-		fmt.Printf("Domain: %+v\n", p.Domain(d.Realm))
+		fmt.Printf("Domain: %+v\n", p.MustDomain(d.Realm))
 	}
 
-	for _, g := range p.Groups() {
+	for _, g := range p.MustGroups() {
 		fmt.Printf("Group list: %+v\n", g)
-		fmt.Printf("Group: %+v\n", p.Group(g.GroupID))
+		fmt.Printf("Group: %+v\n", p.MustGroup(g.GroupID))
 	}
 
-	for _, o := range p.Pools() {
+	for _, o := range p.MustPools() {
 		fmt.Printf("Pool list: %+v\n", o)
-		fmt.Printf("Pool: %+v\n", p.Pool(o.PoolID))
+		fmt.Printf("Pool: %+v\n", p.MustPool(o.PoolID))
 	}
 
-	for _, r := range p.Roles() {
+	for _, r := range p.MustRoles() {
 		fmt.Printf("Role list: %+v\n", r)
-		fmt.Printf("Role: %+v\n", p.Role(r.RoleID))
+		fmt.Printf("Role: %+v\n", p.MustRole(r.RoleID))
 	}
 
-	for _, u := range p.Users() {
+	for _, u := range p.MustUsers() {
 		fmt.Printf("User list: %+v\n", u)
-		fmt.Printf("User: %+v\n", p.User(u.UserID))
+		fmt.Printf("User: %+v\n", p.MustUser(u.UserID))
 	}
 }

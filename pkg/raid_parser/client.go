@@ -2,7 +2,7 @@ package raid_parser
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/client"
 )
 
 type Client struct {

@@ -8,14 +8,13 @@ import (
 func (c *Client) ChannelByName(
 	t *model.Team,
 	name string,
-) *model.Channel {
-	result, r, e := c.client.GetChannelByName(
+) (*model.Channel, error) {
+	result, _, e := c.client.GetChannelByName(
 		c.context,
 		name,
 		t.Id,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

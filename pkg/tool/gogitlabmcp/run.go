@@ -7,8 +7,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/option"
-	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/tool"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/getsentry/sentry-go"
 	"github.com/mark3labs/mcp-go/server"
@@ -20,7 +20,7 @@ func Run(
 	h *sentry.Hub,
 ) {
 	s := server.NewMCPServer(constant.Name, constant.Version)
-	addTool(s, tool.New(gitlab.NewEnvironment().Nested()))
+	addTool(s, model_context.New(gitlab.NewEnvironment().Nested(), h))
 	lifecycle.New(
 		logger.New(context.Background()),
 		lifecycle.WithServerMiddleware(

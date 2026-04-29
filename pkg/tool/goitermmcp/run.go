@@ -7,8 +7,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/option"
-	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/tool"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/getsentry/sentry-go"
 	"github.com/mark3labs/mcp-go/server"
@@ -25,7 +25,7 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				s := server.NewMCPServer(constant.Name, constant.Version)
-				addTool(s, tool.New(iterm.NewEnvironment()))
+				addTool(s, model_context.New(iterm.NewEnvironment(), h))
 				generative.New(s).Setup(m)
 			},
 			web.RecoveryMiddleware(h),

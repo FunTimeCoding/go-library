@@ -9,11 +9,11 @@ import (
 func Search() {
 	g := gitlab.NewEnvironment()
 	// Free version search is limited
-	for _, p := range g.SearchProject("") {
+	for _, p := range g.MustSearchProject("") {
 		fmt.Printf("Project: %s\n", p.Raw.NameWithNamespace)
 	}
 
-	for _, b := range g.SearchBlob(
+	for _, b := range g.MustSearchBlob(
 		fmt.Sprintf("filename:%s", project.GitLabFile),
 	) {
 		fmt.Printf("Blob: %+v\n", b)

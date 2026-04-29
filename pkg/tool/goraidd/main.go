@@ -28,7 +28,7 @@ func Main(
 	o := option.New()
 	o.PostgresLocator = environment.Required(postgres.LocatorEnvironment)
 	o.LogCachePath = "/srv/arcdps-config"
-	o.EliteInsightsPath = "/srv/elite-insights"
+	o.ElitePath = "/srv/elite-insights"
 	o.OutputPath = "/srv/gw2-report"
 	Run(o, h)
 }

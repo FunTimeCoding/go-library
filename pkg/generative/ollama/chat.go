@@ -1,14 +1,13 @@
 package ollama
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/chat_request"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/chat_response"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama/constant"
 	"github.com/ollama/ollama/api"
 )
 
-func (c *Client) Chat(v *chat_request.Request) *chat_response.Response {
+func (c *Client) Chat(v *chat_request.Request) (*chat_response.Response, error) {
 	r := v.Get()
 
 	if r.Model == "" {
@@ -17,17 +16,19 @@ func (c *Client) Chat(v *chat_request.Request) *chat_response.Response {
 
 	r.Stream = new(false)
 	var result *api.ChatResponse
-	errors.PanicOnError(
-		c.client.Chat(
-			c.context,
-			r,
-			func(r api.ChatResponse) error {
-				result = &r
+	e := c.client.Chat(
+		c.context,
+		r,
+		func(r api.ChatResponse) error {
+			result = &r
 
-				return nil
-			},
-		),
+			return nil
+		},
 	)
 
-	return chat_response.New(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return chat_response.New(result), nil
 }

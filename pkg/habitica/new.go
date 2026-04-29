@@ -1,15 +1,25 @@
 package habitica
 
 import (
-	"context"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gohabd/client"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
+	"net/http"
 )
 
-func New(host string) *Client {
-	c, e := client.NewClient(locator.New(host).String())
-	errors.PanicOnError(e)
+func New(
+	host string,
+	userID string,
+	token string,
+) *Client {
+	errors.FatalOnEmpty(host, "host")
+	errors.FatalOnEmpty(userID, "user")
+	errors.FatalOnEmpty(token, "token")
 
-	return &Client{context: context.Background(), client: c}
+	return &Client{
+		baseURL: join.Empty(locator.New(host).String(), apiBase),
+		userID:  userID,
+		token:   token,
+		http:    &http.Client{},
+	}
 }

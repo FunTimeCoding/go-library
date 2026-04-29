@@ -11,6 +11,5 @@ func main() {
 		example.TrackedIssue()
 		example.Organization()
 		example.Project()
-		example.Star()
 	}
 }

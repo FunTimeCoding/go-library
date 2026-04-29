@@ -12,7 +12,7 @@ import (
 func CloneAll() {
 	g := gitlab.NewEnvironment()
 	base := join.Absolute(system.Home(), "gitlab-backup")
-	projects := g.Projects()
+	projects := g.MustProjects()
 	count := len(projects)
 	var i int
 

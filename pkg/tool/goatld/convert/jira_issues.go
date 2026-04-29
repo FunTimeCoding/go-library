@@ -2,7 +2,7 @@ package convert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
-	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/generated/server"
 )
 
 func JiraIssues(v []*issue.Issue) []*server.JiraIssue {

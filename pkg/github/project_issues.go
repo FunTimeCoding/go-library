@@ -5,14 +5,13 @@ import "github.com/google/go-github/v85/github"
 func (c *Client) ProjectIssues(
 	owner string,
 	name string,
-) []*github.Issue {
-	result, r, e := c.client.Issues.ListByRepo(
+) ([]*github.Issue, error) {
+	result, _, e := c.client.Issues.ListByRepo(
 		c.context,
 		owner,
 		name,
 		nil,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

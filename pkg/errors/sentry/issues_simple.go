@@ -10,20 +10,31 @@ import (
 	"slices"
 )
 
-func (c *Client) IssuesSimple(verbose bool) []*issue.Issue {
+func (c *Client) IssuesSimple(verbose bool) ([]*issue.Issue, error) {
 	if o := environment.Optional(constant.OrganizationEnvironment); o != "" {
 		var projects []response.Project
 
 		if p := environment.Optional(constant.ProjectEnvironment); p != "" {
 			names := split.Comma(p)
+			all, e := c.OrganizationProjects(o)
 
-			for _, j := range c.OrganizationProjects(o) {
+			if e != nil {
+				return nil, e
+			}
+
+			for _, j := range all {
 				if slices.Contains(names, j.Name) {
 					projects = append(projects, j)
 				}
 			}
 		} else {
-			projects = append(projects, c.OrganizationProjects(o)...)
+			all, e := c.OrganizationProjects(o)
+
+			if e != nil {
+				return nil, e
+			}
+
+			projects = append(projects, all...)
 		}
 
 		var result []*issue.Issue
@@ -33,13 +44,16 @@ func (c *Client) IssuesSimple(verbose bool) []*issue.Issue {
 				fmt.Printf("Project: %s\n", p.Name)
 			}
 
-			result = append(
-				result,
-				c.Issues(o, p.ID, constant.PeriodFortnight)...,
-			)
+			issues, e := c.Issues(o, p.ID, constant.PeriodFortnight)
+
+			if e != nil {
+				return nil, e
+			}
+
+			result = append(result, issues...)
 		}
 
-		return result
+		return result, nil
 	}
 
 	return c.AllIssues()

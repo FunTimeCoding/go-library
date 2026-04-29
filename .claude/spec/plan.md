@@ -42,7 +42,7 @@ full design document.
 - **Don't delete plans with remaining items.** If a plan has deferred
   work, migration steps, or items waiting on deployment, it stays until
   those are resolved. Discuss with the user what to do with deferred
-  items — whether they stay in the plan, move to a design doc as
+  items - whether they stay in the plan, move to a design doc as
   remaining work, or get extracted to their own seed.
 
 ## Completion

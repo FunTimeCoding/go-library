@@ -8,12 +8,16 @@ direction, and the criteria for introducing them.
 
 | Package | Role | Imports from |
 |---------|------|-------------|
-| `types/` | Pure domain types — validation schemas, metadata, enums. No persistence, no external service deps. | stdlib, shared libs |
-| `constant/` | Domain constants, enum values, instances, registries. Purely declarative — data definitions only, no logic. Promoted from `constant.go` when it outgrows a single file. | `types/`, shared libs |
-| `model/` | Persistence-aware entities — gorm-tagged structs, JSON field parsing, DB convenience methods. | `types/`, shared libs, ORM |
-| `store/` | Data access — CRUD operations on model types. | `model/`, ORM |
-| `toolset/` | MCP tool method implementations. Each method is a handler. | `store/`, `constant/`, `response/` |
-| `route/` | HTTP API handlers. Flat; one file per endpoint. | `store/`, `constant/`, `types/`, `server/` |
+| `types/` | Pure domain types - validation schemas, metadata, enums. No persistence, no external service deps. | stdlib, shared libs |
+| `constant/` | Domain constants, enum values, instances, registries. Purely declarative - data definitions only, no logic. Promoted from `constant.go` when it outgrows a single file. | `types/`, shared libs |
+| `model/` | Persistence-aware entities - gorm-tagged structs, JSON field parsing, DB convenience methods. | `types/`, shared libs, ORM |
+| `store/` | Data access - CRUD operations on model types. | `model/`, ORM |
+| `generated/client/` | oapi-codegen output - typed REST client. Machine output, don't edit. | stdlib |
+| `generated/server/` | oapi-codegen output - `ServerInterface`, `HandlerFromMux`, types. Machine output, don't edit. | stdlib |
+| `client/` | Domain wrapper for the generated REST client. Used by the CLI. | `generated/client/` |
+| `server/` | REST implementation. Implements the generated `ServerInterface`. | `generated/server/`, `store/`, `convert/` |
+| `model_context/` | MCP tool implementations. Each method is a handler. | `store/`, `constant/`, `convert/`, `response/` |
+| `convert/` | Type filtering shared by `model_context/` and `server/`. | `types/`, `generated/server/` |
 | `web/` | HTML rendering (gomponents). Flat; file-prefix grouping. | `store/`, `constant/`, `model/` |
 | `integration_test/` | Cross-package tests using only the public API. External test package. | all exported packages |
 
@@ -26,15 +30,16 @@ types/
   ↑
 constant/   model/
   ↑           ↑
-  +---+     store/
-  |   |       ↑
-  |   +-------+-------+----------+
-  |           |       |          |
-route/    toolset/   web/   integration_test/
+  +---+     store/        generated/client/   generated/server/
+  |   |       ↑                ↑                    ↑
+  |   +-------+-------+-------+----------+----------+
+  |           |       |       |          |
+server/  model_context/  web/  client/  integration_test/
 ```
 
-`route/`, `toolset/`, and `web/` are leaf packages — they import from lower
-layers but nothing imports from them (except tests and the run wiring).
+`server/`, `model_context/`, `web/`, and `client/` are leaf packages -
+they import from lower layers but nothing imports from them (except
+tests and the run wiring).
 
 Cycle avoidance: if two packages need each other's types, the shared types
 belong in `types/` (or an interface in `face/`).
@@ -46,7 +51,7 @@ belong in `types/` (or an interface in `face/`).
 Promote when the file exceeds ~100 lines, or when constants reference types
 from a dedicated types package. Inside `constant/`:
 
-- `constant.go` — simple string/int constants, iota enums
+- `constant.go` - simple string/int constants, iota enums
 - One file per domain concept: `field.go`, `list.go`, `species.go`
 - Instance variables (constructed values like template instances, species
   definitions) get `<concept>_<name>.go` files
@@ -56,7 +61,7 @@ from a dedicated types package. Inside `constant/`:
 ### No package → `types/`
 
 Introduce when domain types with methods appear that are not persistence
-entities. `types/` is a subtree — each type gets its own sub-package per the
+entities. `types/` is a subtree - each type gets its own sub-package per the
 one-struct rule:
 
 ```
@@ -93,7 +98,7 @@ has a proper home:
 - Thin wrappers (e.g. `Encode()` around a stdlib call) → inline at call site
 
 If multiple sibling packages share a function, that usually means it operates
-on domain data and belongs in a registry or a domain-adjacent package — not a
+on domain data and belongs in a registry or a domain-adjacent package - not a
 catch-all bucket.
 
 ### When to extract a registry
@@ -133,7 +138,7 @@ A package with 20–60 files that share a single struct or a common import
 context is fine flat. File-name prefixes provide grouping:
 
 ```
-route/
+server/
 ├── get_character.go
 ├── post_character.go
 ├── delete_character.go
@@ -168,13 +173,13 @@ vs `Naga` (template).
 
 A service tool typically evolves in this order:
 
-1. **Base tree** — `option/`, `store/`, `route/` (or `web/`), `run.go`
-2. **MCP layer** — `model_context/` or `toolset/` + tool registration in root
-3. **Constants outgrow** — promote `constant.go` → `constant/`
-4. **Types emerge** — extract `types/<concept>/` for non-persistence domain types
-5. **Model splits** — extract `model/<entity>/` when multiple entities appear
-6. **Query logic extracts** — operations on constant data move to a registry struct
-7. **Tests consolidate** — collect cross-package tests in `integration_test/`
+1. **Base tree** - `option/`, `store/`, `server/` (or `web/`), `run.go`
+2. **MCP layer** - `model_context/` + tool registration
+3. **Constants outgrow** - promote `constant.go` → `constant/`
+4. **Types emerge** - extract `types/<concept>/` for non-persistence domain types
+5. **Model splits** - extract `model/<entity>/` when multiple entities appear
+6. **Query logic extracts** - operations on constant data move to a registry struct
+7. **Tests consolidate** - collect cross-package tests in `integration_test/`
 
 Not every service reaches every stage. Promote only when the criteria above
 are met.

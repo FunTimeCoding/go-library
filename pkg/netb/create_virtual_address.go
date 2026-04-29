@@ -2,7 +2,7 @@ package netb
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/client"
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 

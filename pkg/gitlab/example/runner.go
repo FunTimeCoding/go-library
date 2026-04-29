@@ -10,8 +10,8 @@ func Runner() {
 	g := gitlab.NewEnvironment()
 	f := option.ExtendedColor.Copy().Raw()
 
-	for _, r := range g.Runners(true) {
-		r = g.Runner(r.Identifier)
+	for _, r := range g.MustRunners(true) {
+		r = g.MustRunner(r.Identifier)
 		fmt.Println(r.Format(f))
 	}
 }

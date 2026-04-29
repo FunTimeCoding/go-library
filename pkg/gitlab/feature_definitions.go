@@ -1,10 +1,9 @@
 package gitlab
 
-import gitlab "gitlab.com/gitlab-org/api/client-go/v2"
+import "gitlab.com/gitlab-org/api/client-go/v2"
 
-func (c *Client) FeatureDefinitions() []*gitlab.FeatureDefinition {
-	result, r, e := c.client.Features.ListFeatureDefinitions()
-	panicOnError(r, e)
+func (c *Client) FeatureDefinitions() ([]*gitlab.FeatureDefinition, error) {
+	result, _, e := c.client.Features.ListFeatureDefinitions()
 
-	return result
+	return result, e
 }

@@ -6,13 +6,12 @@ func (c *Client) ArtifactFile(
 	project int64,
 	job int64,
 	path string,
-) *bytes.Reader {
-	result, r, e := c.client.Jobs.DownloadSingleArtifactsFile(
+) (*bytes.Reader, error) {
+	result, _, e := c.client.Jobs.DownloadSingleArtifactsFile(
 		project,
 		job,
 		path,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

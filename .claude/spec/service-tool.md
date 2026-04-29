@@ -31,11 +31,11 @@ pkg/tool/go<tool>/
 │   ├── stop.go                     # Stop()
 │   ├── poll.go                     # Poll() - single cycle logic
 │   └── poller_test.go              # assert.NotNil(t, New(...))
-└── route/                          # HTTP route functions
-    ├── <route>.go                  # Route function returning http.HandlerFunc
+└── server/                         # REST implementation (or manual routes)
+    ├── <operation>.go              # Route function returning http.HandlerFunc
     ├── response.go                 # Response struct (if needed)
-    ├── constant.go                 # Route-specific constants
-    └── route_test.go               # Stub test
+    ├── constant.go                 # Server-specific constants
+    └── server_test.go              # Stub test
 ```
 
 ## Entry Point
@@ -59,7 +59,7 @@ Run(o)
 ## Run Function
 
 `Run(o, h)` constructs components and wires lifecycle. It receives the
-sentry hub from `Main()` as a separate parameter — not on the option
+sentry hub from `Main()` as a separate parameter - not on the option
 struct. See `three-pillars.md` for the full wiring rationale.
 
 ```go
@@ -73,7 +73,7 @@ func Run(o *option.Log, h *sentry.Hub) {
         lifecycle.WithServerMiddleware(
             web.AddressPort(o.Port),
             func(m *http.ServeMux) {
-                m.HandleFunc("/api/alerts", route.Alerts(s))
+                m.HandleFunc("/api/alerts", server.Alerts(s))
             },
             web.RecoveryMiddleware(h),
         ),
@@ -91,11 +91,13 @@ Key conventions:
 - Store closed via `defer` before lifecycle starts
 - Avoid declaring intermediate variables for lifecycle or generative server when only used once
 
-## Route Functions
+## Server Functions
 
-This pattern is for manually registered routes. When routes are defined by an OpenAPI spec, use the Router struct pattern instead - see `openapi.md`.
+When routes are defined by an OpenAPI spec, use the Server struct
+pattern - see `generated-api.md`.
 
-Route functions live in the `route/` package. Each is a function returning `http.HandlerFunc`:
+For manually registered routes without a spec, route functions live in
+the `server/` package. Each is a function returning `http.HandlerFunc`:
 
 ```go
 func Alerts(s *store.Store) http.HandlerFunc {
@@ -109,15 +111,15 @@ func Alerts(s *store.Store) http.HandlerFunc {
 }
 ```
 
-- `web.EncodeNotation(w, result)` — sets Content-Type JSON header and encodes result as JSON (the common case)
-- `web.Encode(w, result)` — encodes result as JSON without setting headers (use when headers are set separately, e.g. with a non-200 status code)
-- `web.ObjectHeader(w)` — sets Content-Type JSON header only (use with `web.Encode` when you need a custom status code between header and body)
+- `web.EncodeNotation(w, result)` - sets Content-Type JSON header and encodes result as JSON (the common case)
+- `web.Encode(w, result)` - encodes result as JSON without setting headers (use when headers are set separately, e.g. with a non-200 status code)
+- `web.ObjectHeader(w)` - sets Content-Type JSON header only (use with `web.Encode` when you need a custom status code between header and body)
 - Use `argument.*` constants for query parameter names
 - Response structs in `response.go`, constants in `constant.go`
 
 ## HTML Web Package
 
-When a service tool serves an HTML UI (using gomponents), routes are grouped under a `web/` package rather than `route/`. Use this pattern instead of `route/` when handlers need shared state and render HTML rather than JSON.
+When a service tool serves an HTML UI (using gomponents), routes are grouped under a `web/` package rather than `server/`. Use this pattern instead of `server/` when handlers need shared state and render HTML rather than JSON.
 
 ```
 pkg/tool/go<tool>d/web/
@@ -129,8 +131,8 @@ pkg/tool/go<tool>d/web/
 ├── render_fragment.go  # renderFragment(w, fragment g.Node)
 ├── <route>.go          # handler method named after route: alerts(), dashboard()
 ├── <component>.go      # HTML builder named after component: alerts_table.go
-├── layout.go           # layout() — full page shell
-├── navigation_link.go  # navigationLink() — navigation component
+├── layout.go           # layout() - full page shell
+├── navigation_link.go  # navigationLink() - navigation component
 └── constant/
     └── constant.go     # inlineCSS and other web-layer constants
 ```
@@ -158,40 +160,46 @@ Long-running services come in pairs:
 
 The CLI tool is a thin wrapper around the domain client library (see below). After the standard entrypoint setup (see `entrypoint.md`), it calls a single method on the domain client.
 
-## Domain Client Library
+## External API Client
 
-The REST client is exposed via a domain library at `pkg/<domain>/`, analogous to how `pkg/alert_log/` wraps the goalertlogd client. This keeps consumer code independent of the generated client types.
-
-**`pkg/<domain>/` is client-only.** All server-side concerns (store, domain types, `model_context/`) belong in `pkg/tool/go<tool>d/`, not in the shared library.
+When a daemon proxies a third-party service (Habitica, Mattermost,
+Jellyfin, Sentry, etc.), the client library for that service
+lives at `pkg/<domain>/`. This is the external API client - it talks
+directly to the upstream service, not to our daemon.
 
 ```
 pkg/<domain>/
-├── client.go                       # Client struct (wraps generated client)
-├── new.go                          # New(host string) *Client
-├── new_environment.go              # NewEnvironment() - reads HOST env var
-├── <operation>.go                  # One file per operation (entries.go, alerts.go)
+├── client.go                       # Client struct (raw HTTP or SDK wrapper)
+├── new.go                          # New(host, token string) *Client
+├── new_environment.go              # NewEnvironment() - reads env vars
+├── <operation>.go                  # One file per operation
 └── constant/
-    └── constant.go                 # HostEnvironment = "<DOMAIN>_HOST"
+    └── constant.go                 # HostEnvironment, TokenEnvironment
 ```
 
-`New` takes explicit params for the connection. `New(host string)` is the common case; add parameters when the service requires them (e.g., `New(host string, port int)`). Wraps the generated client with `locator.New(host).String()`:
-```go
-func New(host string) *Client {
-    c, e := client.NewClientWithResponses(locator.New(host).String())
-    errors.PanicOnError(e)
-    return &Client{context: context.Background(), client: c}
-}
-```
+The daemon imports this client library. MCP-only services (without
+REST) import it directly into their `model_context/` handlers. Daemons
+with REST import it into both `model_context/` and `server/`.
 
-Operations call the plain (non-`WithResponse`) client method and return the raw string via `web.ReadString`:
-```go
-func (c *Client) Entries() string {
-    result, e := c.client.GetEntries(c.context, &client.GetEntriesParams{})
-    errors.PanicOnError(e)
-    return web.ReadString(result)
-}
-```
+**`pkg/<domain>/` is client-only.** All server-side concerns (store,
+domain types, `model_context/`) belong in `pkg/tool/go<tool>d/`, not
+in the shared library.
+
+## Internal REST Client
+
+When a daemon exposes a REST API (via OpenAPI codegen), the CLI needs
+a clean interface to call it. This wrapper lives inside the daemon's
+tree at `<toold>/client/`, not at `pkg/<domain>/`. See
+`generated-api.md` for the full pattern.
+
+The distinction:
+- `pkg/<domain>/` - external API client, talks to a third-party service
+- `<toold>/client/` - internal REST client, talks to our own daemon
 
 ## MCP Integration
 
-When a daemon also exposes MCP tools, add a `model_context/` subpackage and mount it on the same mux as the REST API. See `model-context.md`.
+When a daemon also exposes MCP tools, add a `model_context/` subpackage
+and mount it on the same mux as the REST API. See `model-context.md`.
+
+`model_context/` is the standard package name - not `tool/` or
+`toolset/`.

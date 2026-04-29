@@ -8,14 +8,13 @@ import (
 func (c *Client) Users(
 	page int,
 	perPage int,
-) []*model.User {
-	result, r, e := c.client.GetUsers(
+) ([]*model.User, error) {
+	result, _, e := c.client.GetUsers(
 		c.context,
 		page,
 		perPage,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

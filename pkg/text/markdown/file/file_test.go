@@ -7,14 +7,9 @@ import (
 	"testing"
 )
 
-func TestFile(t *testing.T) {
-	assert.NotNil(t, New(nil))
-}
-
 func TestParse(t *testing.T) {
 	s := "## Example\n\nList of files in the current directory:\n```sh\nls -alh\n```\n"
-	source := []byte(s)
-	f := New(&source)
+	f := New(new([]byte(s)))
 	assert.Strings(
 		t,
 		[]string{

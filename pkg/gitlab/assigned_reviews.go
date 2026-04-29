@@ -6,8 +6,8 @@ import (
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-func (c *Client) AssignedReviews(all bool) []*merge_request.Request {
-	requests, r, e := c.client.MergeRequests.ListMergeRequests(
+func (c *Client) AssignedReviews(all bool) ([]*merge_request.Request, error) {
+	requests, _, e := c.client.MergeRequests.ListMergeRequests(
 		&gitlab.ListMergeRequestsOptions{
 			ReviewerID:  gitlab.ReviewerID(c.user.ID),
 			State:       new(constant.OpenedState),
@@ -15,12 +15,16 @@ func (c *Client) AssignedReviews(all bool) []*merge_request.Request {
 		},
 		nil,
 	)
-	panicOnError(r, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	result := merge_request.NewSlice(requests)
 
 	if all {
-		return result
+		return result, nil
 	}
 
-	return merge_request.FilterDone(result)
+	return merge_request.FilterDone(result), nil
 }

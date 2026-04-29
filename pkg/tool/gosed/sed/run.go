@@ -19,13 +19,13 @@ func Run(o *option.Sed) {
 		return
 	}
 
-	f := c.File(p.Identifier, o.Branch, o.Path)
+	f := c.MustFile(p.Identifier, o.Branch, o.Path)
 
 	if f == nil {
 		log.Panicf("file does not exist: %s", o.Path)
 	}
 
-	c.Commit(
+	c.MustCommit(
 		p.Identifier,
 		o.Branch,
 		o.Message,

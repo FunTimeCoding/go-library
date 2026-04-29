@@ -6,8 +6,8 @@ import (
 )
 
 type Server struct {
-	store             *store.Store
-	eliteInsightsPath string
-	outputPath        string
-	parser            *raid_parser.Client
+	store      *store.Store
+	elitePath  string
+	outputPath string
+	parser     *raid_parser.Client
 }

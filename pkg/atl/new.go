@@ -3,7 +3,7 @@ package atl
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goatld/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goatld/generated/client"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 

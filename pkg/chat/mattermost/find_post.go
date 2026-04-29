@@ -5,13 +5,12 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
-func (c *Client) FindPost(identifier string) *model.Post {
-	result, r, e := c.client.GetPost(
+func (c *Client) FindPost(identifier string) (*model.Post, error) {
+	result, _, e := c.client.GetPost(
 		c.context,
 		identifier,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

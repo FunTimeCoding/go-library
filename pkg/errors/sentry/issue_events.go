@@ -3,7 +3,6 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"strconv"
 )
@@ -14,7 +13,7 @@ func (c *Client) IssueEvents(
 	query string,
 	limit int,
 	cursor string,
-) []response.Event {
+) ([]response.Event, error) {
 	q := map[string]string{"full": "1"}
 
 	if query != "" {
@@ -29,20 +28,25 @@ func (c *Client) IssueEvents(
 		q["cursor"] = cursor
 	}
 
-	var result []response.Event
-	errors.PanicOnError(
-		json.Unmarshal(
-			c.basic.GetBytes(
-				fmt.Sprintf(
-					"organizations/%s/issues/%s/events",
-					organization,
-					identifier,
-				),
-				q,
-			),
-			&result,
+	b, e := c.basic.Get(
+		fmt.Sprintf(
+			"organizations/%s/issues/%s/events",
+			organization,
+			identifier,
 		),
+		q,
 	)
 
-	return result
+	if e != nil {
+		return nil, e
+	}
+
+	var result []response.Event
+	f := json.Unmarshal(b, &result)
+
+	if f != nil {
+		return nil, f
+	}
+
+	return result, nil
 }

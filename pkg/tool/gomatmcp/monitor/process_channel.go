@@ -12,7 +12,7 @@ func (m *Monitor) processChannel(name string) {
 		panics.Print("name not found in channel cache: %s", name)
 	}
 
-	posts := m.client.RecentPosts(c, lastMilli)
+	posts := m.client.MustRecentPosts(c, lastMilli)
 	m.mutex.Lock()
 	m.lastCheckMillisecond[name] = nowMilli()
 	m.mutex.Unlock()
@@ -28,7 +28,7 @@ func (m *Monitor) processChannel(name string) {
 		return
 	}
 
-	m.client.PostSimple(m.notifyChannel, message)
+	m.client.MustPostSimple(m.notifyChannel, message)
 	m.logger.Structured(
 		"channel_notify",
 		"channel",

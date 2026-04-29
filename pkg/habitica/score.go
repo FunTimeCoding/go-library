@@ -1,21 +1,17 @@
 package habitica
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gohabd/client"
-	"github.com/funtimecoding/go-library/pkg/web"
-)
+import "github.com/funtimecoding/go-library/pkg/strings/join"
 
 func (c *Client) Score(
-	identifier string,
+	taskID string,
 	direction string,
-) string {
-	result, e := c.client.ScoreTask(
-		c.context,
-		identifier,
-		client.ScoreTaskParamsDirection(direction),
-	)
-	errors.PanicOnError(e)
+) ScoreResult {
+	if direction == "" {
+		direction = "up"
+	}
 
-	return web.ReadString(result)
+	var result ScoreResult
+	c.post(join.Empty("/tasks/", taskID, "/score/", direction), nil, &result)
+
+	return result
 }

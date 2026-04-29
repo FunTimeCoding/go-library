@@ -40,7 +40,7 @@ func Query() {
 	c := gitlab.NewEnvironment()
 	runner := &RunnerResult{}
 	// Not sure how to get all runners, but this works, and IDs can be loaded the other API way
-	c.Query(
+	c.MustQuery(
 		`query {
   runner(id: "gid://gitlab/Ci::Runner/1") {
     id description status runnerType

@@ -2,9 +2,12 @@ package github
 
 import "github.com/funtimecoding/go-library/pkg/github/user"
 
-func (c *Client) User() *user.User {
-	result, r, e := c.client.Users.Get(c.context, "")
-	panicOnError(r, e)
+func (c *Client) User() (*user.User, error) {
+	result, _, e := c.client.Users.Get(c.context, "")
 
-	return user.New(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return user.New(result), nil
 }

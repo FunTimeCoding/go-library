@@ -11,7 +11,7 @@ func (c *Client) BranchRequest(
 	owner string,
 	repository string,
 	branch string,
-) *pull_request.Request {
+) (*pull_request.Request, error) {
 	result, r, e := c.client.PullRequests.List(
 		c.context,
 		owner,
@@ -25,15 +25,17 @@ func (c *Client) BranchRequest(
 
 	if r != nil && r.StatusCode == 404 {
 		// Repository not found, do not panic
-		return nil
+		return nil, nil
 	}
 
-	panicOnError(r, e)
+	if e != nil {
+		return nil, e
+	}
 
 	if len(result) == 0 {
 		// Branch not found, do not panic
-		return nil
+		return nil, nil
 	}
 
-	return pull_request.New(result[0])
+	return pull_request.New(result[0]), nil
 }

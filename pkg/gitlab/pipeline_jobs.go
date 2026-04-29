@@ -8,13 +8,16 @@ import (
 func (c *Client) PipelineJobs(
 	project int64,
 	pipeline int64,
-) []*job.Job {
-	result, r, e := c.client.Jobs.ListPipelineJobs(
+) ([]*job.Job, error) {
+	result, _, e := c.client.Jobs.ListPipelineJobs(
 		project,
 		pipeline,
 		&gitlab.ListJobsOptions{IncludeRetried: new(true)},
 	)
-	panicOnError(r, e)
 
-	return c.enrichJobs(job.NewSlice(result))
+	if e != nil {
+		return nil, e
+	}
+
+	return c.enrichJobs(job.NewSlice(result)), nil
 }

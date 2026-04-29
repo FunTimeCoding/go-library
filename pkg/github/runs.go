@@ -14,17 +14,17 @@ func (c *Client) Runs(
 	var result []*run.Run
 	cleanup := forge.AutoCleanup()
 	f := constant.Format
-	owner := c.User().Name
+	owner := c.MustUser().Name
 
 	for _, a := range c.ActionRepository() {
 		if verbose {
 			fmt.Printf("Repository: %s/%s\n", owner, a.Name)
 		}
 
-		for i, r := range c.ProjectRuns(owner, a.Name) {
+		for i, r := range c.MustProjectRuns(owner, a.Name) {
 			if i > 0 {
 				if cleanup {
-					c.DeleteRun(owner, a.Name, r.Identifier)
+					c.MustDeleteRun(owner, a.Name, r.Identifier)
 				}
 
 				continue
@@ -35,7 +35,7 @@ func (c *Client) Runs(
 			}
 
 			if loadJobs {
-				r.Jobs = c.Jobs(owner, a.Name, r.Identifier)
+				r.Jobs = c.MustJobs(owner, a.Name, r.Identifier)
 			}
 
 			r.Validate()

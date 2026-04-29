@@ -9,14 +9,17 @@ func (c *Client) ArtifactsFile(
 	project int64,
 	reference string,
 	job string,
-) string {
+) (string, error) {
 	// This only works for successful jobs
-	reader, r, e := c.client.Jobs.DownloadArtifactsFile(
+	reader, _, e := c.client.Jobs.DownloadArtifactsFile(
 		project,
 		reference,
 		&gitlab.DownloadArtifactsFileOptions{Job: &job},
 	)
-	panicOnError(r, e)
 
-	return string(system.ReadAll(reader))
+	if e != nil {
+		return "", e
+	}
+
+	return string(system.ReadAll(reader)), nil
 }

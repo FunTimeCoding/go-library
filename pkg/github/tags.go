@@ -5,14 +5,13 @@ import "github.com/google/go-github/v85/github"
 func (c *Client) Tags(
 	owner string,
 	repository string,
-) []*github.RepositoryTag {
-	result, r, e := c.client.Repositories.ListTags(
+) ([]*github.RepositoryTag, error) {
+	result, _, e := c.client.Repositories.ListTags(
 		c.context,
 		owner,
 		repository,
 		&github.ListOptions{PerPage: 1000},
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

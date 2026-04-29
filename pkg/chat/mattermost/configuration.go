@@ -2,12 +2,11 @@ package mattermost
 
 import "github.com/funtimecoding/go-library/pkg/chat/mattermost/constant"
 
-func (c *Client) Configuration() map[string]string {
-	result, r, e := c.client.GetClientConfig(
+func (c *Client) Configuration() (map[string]string, error) {
+	result, _, e := c.client.GetClientConfig(
 		c.context,
 		constant.EmptyEntityTag,
 	)
-	panicOnError(r, e)
 
-	return result
+	return result, e
 }

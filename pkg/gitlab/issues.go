@@ -6,13 +6,16 @@ import (
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
 
-func (c *Client) Issues() []*issue.Issue {
-	result, r, e := c.client.Issues.ListIssues(
+func (c *Client) Issues() ([]*issue.Issue, error) {
+	result, _, e := c.client.Issues.ListIssues(
 		&gitlab.ListIssuesOptions{
 			ListOptions: constant.DefaultListOptions,
 		},
 	)
-	panicOnError(r, e)
 
-	return issue.NewSlice(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return issue.NewSlice(result), nil
 }

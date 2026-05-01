@@ -1,7 +1,6 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/cluster"
 	"github.com/funtimecoding/go-library/pkg/netbox/virtual_machine"
 	upstream "github.com/netbox-community/go-netbox/v4"
@@ -10,7 +9,7 @@ import (
 func (c *Client) CreateVirtualMachine(
 	name string,
 	cl *cluster.Cluster,
-) *virtual_machine.Machine {
+) (*virtual_machine.Machine, error) {
 	q := upstream.NewWritableVirtualMachineWithConfigContextRequest(name)
 	q.SetCluster(
 		upstream.BriefClusterRequestAsDeviceWithConfigContextRequestCluster(
@@ -18,10 +17,13 @@ func (c *Client) CreateVirtualMachine(
 		),
 	)
 	q.SetStatus(upstream.PATCHEDWRITABLEVIRTUALMACHINEWITHCONFIGCONTEXTREQUESTSTATUS_ACTIVE)
-	result, r, e := c.client.VirtualizationAPI.VirtualizationVirtualMachinesCreate(
+	result, _, e := c.client.VirtualizationAPI.VirtualizationVirtualMachinesCreate(
 		c.context,
 	).WritableVirtualMachineWithConfigContextRequest(*q).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return virtual_machine.New(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return virtual_machine.New(result), nil
 }

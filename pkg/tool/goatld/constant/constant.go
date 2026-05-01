@@ -1,5 +1,6 @@
 package constant
 
+const Name = "Atlassian"
 const (
 	JiraSearch              = "jira_search"
 	JiraGetIssue            = "jira_get_issue"

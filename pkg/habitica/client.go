@@ -3,8 +3,8 @@ package habitica
 import "net/http"
 
 type Client struct {
-	baseURL string
-	userID  string
-	token   string
-	http    *http.Client
+	base           string
+	userIdentifier string
+	token          string
+	client         *http.Client
 }

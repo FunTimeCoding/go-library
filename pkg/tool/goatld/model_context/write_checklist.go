@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -16,7 +17,13 @@ func (s *Server) writeChecklist(
 	key string,
 	items []convert.ChecklistItem,
 ) (*mcp.CallToolResult, error) {
-	field := s.jira.FieldMap().ByName(constant.ChecklistField)
+	m, e := s.jira.FieldMap()
+
+	if e != nil {
+		return s.captureFail(e, "Jira API unreachable")
+	}
+
+	field := m.ByName(constant.ChecklistField)
 
 	if field == nil {
 		return response.Fail("checklist field not found")
@@ -25,17 +32,19 @@ func (s *Server) writeChecklist(
 	raw := issue.Raw(key)
 	raw.Fields.Unknowns = make(tcontainer.MarshalMap)
 	raw.Fields.Unknowns.Set(field.Key, formatChecklist(items))
-	_, resp, e := s.jira.Nested().Issue.UpdateWithContext(c, raw)
+	_, resp, f := s.jira.Nested().Issue.UpdateWithContext(c, raw)
 
-	if e != nil {
+	if f != nil {
 		if resp != nil && resp.Body != nil {
-			return response.Fail(
+			return s.captureFail(
+				f,
+				fmt.Sprintf(
 				"checklist update failed: %s",
 				string(system.ReadAll(resp.Body)),
-			)
+			))
 		}
 
-		return response.Fail("checklist update failed: %v", e)
+		return s.captureFail(f, "checklist not updated")
 	}
 
 	return nil, nil

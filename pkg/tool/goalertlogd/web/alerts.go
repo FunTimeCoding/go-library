@@ -18,7 +18,7 @@ func (s *Server) alerts(
 		return
 	}
 
-	records := s.store.ByName(name)
+	records := s.store.MustByName(name)
 	renderPage(
 		w,
 		layout(

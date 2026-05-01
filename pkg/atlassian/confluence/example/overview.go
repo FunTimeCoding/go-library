@@ -11,13 +11,13 @@ func Overview() {
 	f := constant.Format
 	fmt.Println("Space")
 
-	for _, s := range c.Spaces() {
+	for _, s := range c.MustSpaces() {
 		fmt.Println(s.Format(f))
 	}
 
 	fmt.Println("Page")
 
-	for _, a := range c.PagesBySpaceName(c.DefaultSpace()) {
+	for _, a := range c.MustPagesBySpaceName(c.DefaultSpace()) {
 		fmt.Println(a.Format(f))
 	}
 }

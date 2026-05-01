@@ -37,7 +37,11 @@ func (s *Server) getRecentAlerts(
 		end = t
 	}
 
-	records := s.store.ByTimeRange(start, end)
+	records, f := s.store.ByTimeRange(start, end)
+
+	if f != nil {
+		return s.captureFail(f, "get recent alerts failed")
+	}
 
 	return response.Success(
 		"Found %d alerts:\n%s",

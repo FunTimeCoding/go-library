@@ -18,7 +18,11 @@ func (s *Server) getAlerts(
 		return response.Fail("name is required: %v", f)
 	}
 
-	records := s.store.ByName(name)
+	records, g := s.store.ByName(name)
+
+	if g != nil {
+		return s.captureFail(g, "get alerts failed")
+	}
 
 	return response.Success(
 		"Found %d alerts:\n%s",

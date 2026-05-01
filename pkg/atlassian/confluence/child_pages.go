@@ -10,31 +10,43 @@ import (
 func (c *Client) ChildPages(
 	space string,
 	name string,
-) []*page.Page {
-	parent := c.PageBySpaceAndName(space, name)
-	var result []*page.Page
+) ([]*page.Page, error) {
+	parent, e := c.PageBySpaceAndName(space, name)
+
+	if e != nil {
+		return nil, e
+	}
 
 	if parent == nil {
-		return result
+		return nil, nil
+	}
+
+	body, f := c.basic.GetV2(
+		c.basic.Base().Copy().Path(
+			"%s/%s%s",
+			constant.Page,
+			parent.Identifier,
+			constant.Children,
+		).String(),
+	)
+
+	if f != nil {
+		return nil, f
 	}
 
 	var children *response.Pages
-	notation.DecodeStrict(
-		c.basic.GetV2(
-			c.basic.Base().Copy().Path(
-				"%s/%s%s",
-				constant.Page,
-				parent.Identifier,
-				constant.Children,
-			).String(),
-		),
-		&children,
-		false,
-	)
+	notation.DecodeStrict(body, &children, false)
+	var result []*page.Page
 
 	for _, p := range children.Results {
-		result = append(result, c.Page(p.Id))
+		v, g := c.Page(p.Id)
+
+		if g != nil {
+			return nil, g
+		}
+
+		result = append(result, v)
 	}
 
-	return result
+	return result, nil
 }

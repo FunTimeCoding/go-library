@@ -6,8 +6,12 @@ import (
 	"github.com/netbox-community/go-netbox/v4"
 )
 
-func (c *Client) UnsetSerial(device string) *device.Device {
-	d := c.DeviceByNameStrict(device)
+func (c *Client) UnsetSerial(device string) (*device.Device, error) {
+	d, e := c.DeviceByNameStrict(device)
+
+	if e != nil {
+		return nil, e
+	}
 
 	if c.verbose {
 		fmt.Printf("set serial device: %+v\n", d)

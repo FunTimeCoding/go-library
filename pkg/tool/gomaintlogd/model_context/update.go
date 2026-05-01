@@ -22,7 +22,7 @@ func (s *Server) update(
 	e, f := s.store.Get(uint(id))
 
 	if f != nil {
-		return response.Fail("failed to get entry: %v", f)
+		return s.captureFail(f, constant.DatabaseUnreachable)
 	}
 
 	if v := r.GetString(constant.Action, ""); v != "" {
@@ -59,7 +59,7 @@ func (s *Server) update(
 	}
 
 	if g := s.store.Update(e); g != nil {
-		return response.Fail("failed to update entry: %v", g)
+		return s.captureFail(g, constant.DatabaseUnreachable)
 	}
 
 	return response.Success(

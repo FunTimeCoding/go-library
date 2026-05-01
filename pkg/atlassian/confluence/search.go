@@ -12,21 +12,23 @@ import (
 func (c *Client) Search(
 	query string,
 	a ...any,
-) []*search_result.Result {
+) ([]*search_result.Result, error) {
 	if len(a) > 0 {
 		query = fmt.Sprintf(query, a...)
 	}
 
-	var result *response.Search
-	notation.DecodeStrict(
-		c.basic.Get(
-			locator.New(c.host).Base(constant.OldBase).Path(
-				constant.Search,
-			).Set(constant.Query, query).String(),
-		),
-		&result,
-		false,
+	body, e := c.basic.Get(
+		locator.New(c.host).Base(constant.OldBase).Path(
+			constant.Search,
+		).Set(constant.Query, query).String(),
 	)
 
-	return search_result.NewSlice(result.Results)
+	if e != nil {
+		return nil, e
+	}
+
+	var result *response.Search
+	notation.DecodeStrict(body, &result, false)
+
+	return search_result.NewSlice(result.Results), nil
 }

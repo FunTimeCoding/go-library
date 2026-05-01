@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -24,7 +25,7 @@ func (s *Server) GroupTabs(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "group tabs")
+		return s.captureFail(e, constant.NotResponding)
 	}
 
 	return response.Success("grouped into group %d", groupIdentifier)

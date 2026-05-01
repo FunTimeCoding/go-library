@@ -1,16 +1,18 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/rack_role"
 )
 
-func (c *Client) RackRoles() []*rack_role.Role {
-	result, r, e := c.client.DcimAPI.DcimRackRolesList(
+func (c *Client) RackRoles() ([]*rack_role.Role, error) {
+	result, _, e := c.client.DcimAPI.DcimRackRolesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return rack_role.NewSlice(result.Results)
+	if e != nil {
+		return nil, e
+	}
+
+	return rack_role.NewSlice(result.Results), nil
 }

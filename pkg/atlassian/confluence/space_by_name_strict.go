@@ -5,12 +5,16 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/space"
 )
 
-func (c *Client) SpaceByNameStrict(name string) *space.Space {
-	result := c.SpaceByName(name)
+func (c *Client) SpaceByNameStrict(name string) (*space.Space, error) {
+	result, e := c.SpaceByName(name)
 
-	if result == nil {
-		panic(fmt.Sprintf("space not found: %s", name))
+	if e != nil {
+		return nil, e
 	}
 
-	return result
+	if result == nil {
+		return nil, fmt.Errorf("space not found: %s", name)
+	}
+
+	return result, nil
 }

@@ -10,5 +10,5 @@ func (s *Server) GetStats(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, convert.Stats(s.habitica.UserStats()))
+	web.EncodeNotation(w, convert.Stats(s.habitica.MustUserStats()))
 }

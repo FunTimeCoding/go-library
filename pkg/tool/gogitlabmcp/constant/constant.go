@@ -38,4 +38,6 @@ const (
 	DeleteProjectVariable = "delete_project_variable"
 
 	CreateBranch = "create_branch"
+
+	Unreachable = "GitLab API unreachable"
 )

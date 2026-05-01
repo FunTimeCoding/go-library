@@ -20,8 +20,11 @@ func (s *Server) scoreTask(
 	}
 
 	direction := r.GetString(constant.Direction, "up")
+	result, g := s.habitica.Score(identifier, direction)
 
-	return response.SuccessAny(
-		convert.ScoreResult(s.habitica.Score(identifier, direction)),
-	)
+	if g != nil {
+		return s.captureFail(g, constant.Unreachable)
+	}
+
+	return response.SuccessAny(convert.ScoreResult(result))
 }

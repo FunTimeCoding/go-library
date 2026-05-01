@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -14,9 +15,9 @@ func (s *Server) ListDevices(
 	var devices []server.Device
 
 	if v.Query != nil && *v.Query != "" {
-		devices = toDevices(s.client.DevicesByMatch(*v.Query))
+		devices = convert.Devices(s.client.MustDevicesByMatch(*v.Query))
 	} else {
-		devices = toDevices(s.client.Devices())
+		devices = convert.Devices(s.client.MustDevices())
 	}
 
 	web.EncodeNotation(w, devices)

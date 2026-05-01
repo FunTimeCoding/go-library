@@ -1,7 +1,6 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/network"
 	"github.com/funtimecoding/go-library/pkg/netbox/physical_address"
@@ -11,7 +10,7 @@ import (
 func (c *Client) AssignPhysicalToInterface(
 	p *physical_address.Address,
 	i *network.Interface,
-) *physical_address.Address {
+) (*physical_address.Address, error) {
 	q := netbox.NewMACAddressRequest(p.Name)
 
 	if i == nil {
@@ -22,11 +21,14 @@ func (c *Client) AssignPhysicalToInterface(
 		q.SetAssignedObjectId(int64(i.Identifier))
 	}
 
-	result, r, e := c.client.DcimAPI.DcimMacAddressesUpdate(
+	result, _, e := c.client.DcimAPI.DcimMacAddressesUpdate(
 		c.context,
 		p.Identifier,
 	).MACAddressRequest(*q).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return physical_address.New(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return physical_address.New(result), nil
 }

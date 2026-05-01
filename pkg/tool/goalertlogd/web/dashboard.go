@@ -34,7 +34,7 @@ func (s *Server) dashboard(
 				h.Class("summary-cards"),
 				h.Article(
 					h.Header(g.Text("Total Records")),
-					h.P(g.Textf("%d", s.store.Count())),
+					h.P(g.Textf("%d", s.store.MustCount())),
 				),
 				h.Article(
 					h.Header(g.Text("Currently Firing")),

@@ -1,10 +1,13 @@
 package constant
 
+const Name = "Maintenance Log"
 const (
 	AddEntry    = "add_entry"
 	ListEntries = "list_entries"
 	UpdateEntry = "update_entry"
 	DeleteEntry = "delete_entry"
+
+	DatabaseUnreachable = "database unreachable"
 )
 
 const (

@@ -1,0 +1,13 @@
+package netbox
+
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"net"
+)
+
+func (c *Client) MustFindUnusedAddress(sub *net.IPNet) net.IP {
+	result, e := c.FindUnusedAddress(sub)
+	errors.PanicOnError(e)
+
+	return result
+}

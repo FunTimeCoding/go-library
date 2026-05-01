@@ -1,13 +1,7 @@
 package jira
 
-import (
-	"github.com/andygrunwald/go-jira"
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/andygrunwald/go-jira"
 
-func (c *Client) IssueTypeFields(t *jira.MetaIssueType) map[string]string {
-	result, e := t.GetAllFields()
-	errors.PanicOnError(e)
-
-	return result
+func (c *Client) IssueTypeFields(t *jira.MetaIssueType) (map[string]string, error) {
+	return t.GetAllFields()
 }

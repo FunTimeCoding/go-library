@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -10,5 +11,5 @@ func (s *Server) ListAddresses(
 	_ *http.Request,
 	name string,
 ) {
-	web.EncodeNotation(w, toAddresses(s.client.DeviceAddresses(name)))
+	web.EncodeNotation(w, convert.Addresses(s.client.MustDeviceAddresses(name)))
 }

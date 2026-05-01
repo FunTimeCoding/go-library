@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 	"sort"
@@ -23,14 +24,14 @@ func (s *Server) MyChannels(
 	me, e := s.client.Me()
 
 	if e != nil {
-		return s.captureFail(e, "get current user failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	team := s.client.DefaultTeam()
 	channels, e := s.client.Channels(team, me)
 
 	if e != nil {
-		return s.captureFail(e, "get channels failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	sort.Slice(

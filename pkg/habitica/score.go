@@ -1,17 +1,23 @@
 package habitica
 
-import "github.com/funtimecoding/go-library/pkg/strings/join"
+import (
+	"github.com/funtimecoding/go-library/pkg/habitica/response"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+)
 
 func (c *Client) Score(
 	taskID string,
 	direction string,
-) ScoreResult {
+) (response.ScoreResult, error) {
 	if direction == "" {
 		direction = "up"
 	}
 
-	var result ScoreResult
-	c.post(join.Empty("/tasks/", taskID, "/score/", direction), nil, &result)
+	var result response.ScoreResult
 
-	return result
+	return result, c.post(
+		join.Empty("/tasks/", taskID, "/score/", direction),
+		nil,
+		&result,
+	)
 }

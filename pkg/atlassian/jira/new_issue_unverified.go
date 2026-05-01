@@ -10,13 +10,19 @@ func (c *Client) NewIssueUnverified(
 	issueType string,
 	summary string,
 	description string,
-) *jira.Issue {
+) (*jira.Issue, error) {
+	user, e := c.User()
+
+	if e != nil {
+		return nil, e
+	}
+
 	result := issue.RawStub()
-	result.Fields.Reporter = c.User()
+	result.Fields.Reporter = user
 	result.Fields.Project = jira.Project{Key: projectKey}
 	result.Fields.Type = jira.IssueType{Name: issueType}
 	result.Fields.Summary = summary
 	result.Fields.Description = description
 
-	return result
+	return result, nil
 }

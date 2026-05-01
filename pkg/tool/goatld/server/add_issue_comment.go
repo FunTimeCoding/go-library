@@ -14,6 +14,6 @@ func (s *Server) AddIssueComment(
 ) {
 	var q server.CommentRequest
 	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
-	s.jira.Comment(key, q.Body)
+	s.jira.MustComment(key, q.Body)
 	w.WriteHeader(http.StatusNoContent)
 }

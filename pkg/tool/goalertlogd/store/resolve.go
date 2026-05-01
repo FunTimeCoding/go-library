@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-func (s *Store) Resolve(key string) {
-	s.client.Update(
+func (s *Store) Resolve(key string) error {
+	return s.client.Update(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)
 			v := b.Get([]byte(key))
@@ -19,9 +19,8 @@ func (s *Store) Resolve(key string) {
 			var r Record
 			notation.DecodeBytesStrict(v, &r, false)
 			r.End = new(time.Now())
-			s.client.PutBytes(b, key, notation.Marshal(r))
 
-			return nil
+			return s.client.PutBytes(b, key, notation.Marshal(r))
 		},
 	)
 }

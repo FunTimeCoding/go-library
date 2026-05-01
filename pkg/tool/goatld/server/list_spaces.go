@@ -10,5 +10,5 @@ func (s *Server) ListSpaces(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, convert.ConfluenceSpaces(s.confluence.Spaces()))
+	web.EncodeNotation(w, convert.ConfluenceSpaces(s.confluence.MustSpaces()))
 }

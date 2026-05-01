@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -35,7 +36,7 @@ func (s *Server) ReplyToThread(
 	p, e := s.client.Reply(ch, parent, a.Message)
 
 	if e != nil {
-		return s.captureFail(e, "reply failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	return response.SuccessAny(

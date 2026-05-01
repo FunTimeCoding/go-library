@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/constant"
 	g "maragu.dev/gomponents"
 	h "maragu.dev/gomponents/html"
 )
@@ -31,7 +32,7 @@ func layout(
 				h.Nav(
 					h.Class("container"),
 					h.Ul(
-						h.Li(h.Strong(g.Text("Alert Log"))),
+						h.Li(h.Strong(g.Text(constant.Name))),
 					),
 					h.Ul(
 						navigationLink("/", "Dashboard", currentPath),

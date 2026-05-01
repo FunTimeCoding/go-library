@@ -25,7 +25,12 @@ func (s *Server) addChecklistItem(
 		return response.Fail("text is required: %v", g)
 	}
 
-	items := s.readChecklist(key)
+	items, h := s.readChecklist(key)
+
+	if h != nil {
+		return s.captureFail(h, "checklist not readable")
+	}
+
 	items = append(
 		items,
 		convert.ChecklistItem{

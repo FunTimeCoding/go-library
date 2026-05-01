@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
@@ -30,7 +31,7 @@ func (s *Server) GetFileContents(
 	v, _, e := s.client.RepositoryFiles.GetFile(a.Project, a.Path, o)
 
 	if e != nil {
-		return s.captureFail(e, "get file contents")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	return response.SuccessAny(v)

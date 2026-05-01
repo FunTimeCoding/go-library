@@ -5,16 +5,20 @@ import (
 	"github.com/funtimecoding/go-library/pkg/integers"
 )
 
-func (c *Client) BoardSprints(identifier int) []*jira.Sprint {
-	response, r, e := c.client.Board.GetAllSprints(
+func (c *Client) BoardSprints(identifier int) ([]*jira.Sprint, error) {
+	v, _, e := c.client.Board.GetAllSprints(
 		integers.ToString(identifier),
 	)
-	panicOnError(r, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	var result []*jira.Sprint
 
-	for _, s := range response {
+	for _, s := range v {
 		result = append(result, &s)
 	}
 
-	return result
+	return result, nil
 }

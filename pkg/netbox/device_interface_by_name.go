@@ -8,12 +8,18 @@ import (
 func (c *Client) DeviceInterfaceByName(
 	d *device.Device,
 	name string,
-) *network.Interface {
-	for _, i := range c.DeviceInterfaces(d.Identifier) {
+) (*network.Interface, error) {
+	result, e := c.DeviceInterfaces(d.Identifier)
+
+	if e != nil {
+		return nil, e
+	}
+
+	for _, i := range result {
 		if i.Name == name {
-			return i
+			return i, nil
 		}
 	}
 
-	return nil
+	return nil, nil
 }

@@ -16,7 +16,7 @@ func (s *Server) ScoreTask(
 	web.EncodeNotation(
 		w,
 		convert.ScoreResult(
-			s.habitica.Score(identifier, string(direction)),
+			s.habitica.MustScore(identifier, string(direction)),
 		),
 	)
 }

@@ -10,9 +10,9 @@ func Open(
 	c *jira.Client,
 	project string,
 ) []*issue.Issue {
-	return c.SearchFull(
+	return c.MustSearchFull(
 		"project = '%s' AND status NOT IN (%s) ORDER BY key DESC",
 		project,
-		join.Comma(Quote(c.IssueOption().ClosedStatus)),
+		join.Comma(Quote(c.MustIssueOption().ClosedStatus)),
 	)
 }

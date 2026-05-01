@@ -14,26 +14,42 @@ func (c *Client) CreateInterfacePhysical(
 	name string,
 	t netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
-) *network.Interface {
-	p := c.PhysicalAddress(h)
+) (*network.Interface, error) {
+	p, e := c.PhysicalAddress(h)
+
+	if e != nil {
+		return nil, e
+	}
 
 	if p == nil {
-		p = c.CreatePhysical(h, "")
+		p, e = c.CreatePhysical(h, "")
+
+		if e != nil {
+			return nil, e
+		}
 	}
 
 	v := netbox.NewBriefDeviceRequest()
 	v.SetName(d.Name)
-	// skip setting as primary, needs to be assigned first; then assign
-	c.AssignPhysicalToInterface(
-		p,
-		c.createInterfaceWriteable(
-			netbox.NewWritableInterfaceRequest(
-				netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(v),
-				name,
-				t,
-			),
+	// MAC must be assigned before it can be set as primary
+	i, f := c.createInterfaceWriteable(
+		netbox.NewWritableInterfaceRequest(
+			netbox.BriefDeviceRequestAsBriefInterfaceRequestDevice(v),
+			name,
+			t,
 		),
 	)
+
+	if f != nil {
+		return nil, f
+	}
+
+	_, g := c.AssignPhysicalToInterface(p, i)
+
+	if g != nil {
+		return nil, g
+	}
+
 	// set as primary
 	return c.UpdateInterface(d, name, t, h)
 }

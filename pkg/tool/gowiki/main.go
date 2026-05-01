@@ -39,21 +39,21 @@ func Main(
 	if viper.GetBool(argument.Watched) || viper.GetBool(argument.Favorites) {
 		fmt.Println("Watch")
 
-		for _, p := range c.Watched() {
+		for _, p := range c.MustWatched() {
 			fmt.Println(p.Format(f))
 			p.PrintConsole()
 		}
 
 		fmt.Println("Favorite")
 
-		for _, p := range c.Favorites() {
+		for _, p := range c.MustFavorites() {
 			fmt.Println(p.Format(f))
 		}
 
 		return
 	}
 
-	for _, p := range c.Pages() {
+	for _, p := range c.MustPages() {
 		fmt.Println(p.Format(f))
 		p.PrintConsole()
 	}

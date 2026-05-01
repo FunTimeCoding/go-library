@@ -38,7 +38,7 @@ func TestPollSavesNewAlert(t *testing.T) {
 	)
 	p := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
-	records := s.ByName("HighMemory")
+	records := s.MustByName("HighMemory")
 	assert.Count(t, 1, records)
 	assert.String(t, "abc123", records[0].Fingerprint)
 	assert.String(t, "critical", records[0].Severity)
@@ -63,7 +63,7 @@ func TestPollResolvesRemovedAlert(t *testing.T) {
 	p.Poll()
 	c.Remove("abc123")
 	p.Poll()
-	records := s.ByName("HighMemory")
+	records := s.MustByName("HighMemory")
 	assert.Count(t, 1, records)
 	assert.True(t, records[0].End != nil)
 }
@@ -86,7 +86,7 @@ func TestPollIgnoresDuplicateFiring(t *testing.T) {
 	p.Poll()
 	p.Poll()
 	p.Poll()
-	assert.Count(t, 1, s.ByName("HighMemory"))
+	assert.Count(t, 1, s.MustByName("HighMemory"))
 }
 
 func TestRecoverStaleAdoptsFireing(t *testing.T) {
@@ -107,10 +107,10 @@ func TestRecoverStaleAdoptsFireing(t *testing.T) {
 	old.Poll()
 	fresh := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	fresh.RecoverStale()
-	assert.Count(t, 1, s.Unresolved())
+	assert.Count(t, 1, s.MustUnresolved())
 	fresh.Poll()
-	assert.Count(t, 1, s.ByName("HighMemory"))
-	assert.True(t, s.ByName("HighMemory")[0].End == nil)
+	assert.Count(t, 1, s.MustByName("HighMemory"))
+	assert.True(t, s.MustByName("HighMemory")[0].End == nil)
 }
 
 func TestRecoverStaleResolvesGone(t *testing.T) {
@@ -132,8 +132,8 @@ func TestRecoverStaleResolvesGone(t *testing.T) {
 	c.Remove("abc123")
 	fresh := New(c, s, testLogger, 1*time.Minute, 30*24*time.Hour, nil)
 	fresh.RecoverStale()
-	assert.Count(t, 0, s.Unresolved())
-	records := s.ByName("HighMemory")
+	assert.Count(t, 0, s.MustUnresolved())
+	records := s.MustByName("HighMemory")
 	assert.Count(t, 1, records)
 	assert.True(t, records[0].End != nil)
 }
@@ -156,7 +156,7 @@ func TestPollPrunesOldRecords(t *testing.T) {
 	p.Poll()
 	c.Remove("abc123")
 	p.Poll()
-	assert.Count(t, 0, s.ByName("HighMemory"))
+	assert.Count(t, 0, s.MustByName("HighMemory"))
 }
 
 func TestPollTracksLastPollTime(t *testing.T) {

@@ -10,5 +10,11 @@ func (s *Server) listSpaces(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	return response.SuccessAny(s.confluence.Spaces())
+	result, e := s.confluence.Spaces()
+
+	if e != nil {
+		return s.captureFail(e, "Confluence API unreachable")
+	}
+
+	return response.SuccessAny(result)
 }

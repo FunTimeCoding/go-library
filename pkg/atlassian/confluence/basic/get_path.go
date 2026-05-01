@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
-func (c *Client) GetPath(path string) string {
+func (c *Client) GetPath(path string) (string, error) {
 	return c.Get(
 		locator.New(c.host).Base(constant.OldBase).Path(path).String(),
 	)

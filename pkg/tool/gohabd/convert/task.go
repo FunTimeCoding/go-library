@@ -1,11 +1,11 @@
 package convert
 
 import (
-	"github.com/funtimecoding/go-library/pkg/habitica"
+	"github.com/funtimecoding/go-library/pkg/habitica/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabd/generated/server"
 )
 
-func Task(t habitica.Task) server.Task {
+func Task(t response.Task) server.Task {
 	result := server.Task{
 		Identifier: t.ID,
 		Text:       t.Text,

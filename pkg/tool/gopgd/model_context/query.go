@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -27,7 +28,12 @@ func (s *Server) query(
 	v, e := s.store.Query(x, instance, a.SQL)
 
 	if e != nil {
-		return response.Fail("query: %v", e)
+		return s.captureFail(
+			e,
+			fmt.Sprintf(
+			"database error on %s: query not executed",
+			instance,
+		))
 	}
 
 	return response.SuccessAny(v)

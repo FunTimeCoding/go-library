@@ -14,7 +14,7 @@ func (s *Server) CreateSite(
 ) {
 	var body generated.CreateNameRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	i := s.client.CreateSite(body.Name)
+	i := s.client.MustCreateSite(body.Name)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

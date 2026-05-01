@@ -2,7 +2,6 @@ package goalertlogd
 
 import (
 	"context"
-	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/metric"
@@ -45,7 +44,7 @@ func Run(
 			webConstant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s, p), m)
-				generative.New(model_context.New(s, p).Nested()).Setup(m)
+				model_context.New(s, p, h).Mount(m)
 				alertWeb.New(s, p).Mount(m)
 			},
 			web.RecoveryMiddleware(h),

@@ -8,16 +8,21 @@ import (
 
 func (s *Server) readChecklist(
 	key string,
-) []convert.ChecklistItem {
-	i := s.jira.Issue(key)
+) ([]convert.ChecklistItem, error) {
+	i, e := s.jira.Issue(key)
+
+	if e != nil {
+		return nil, e
+	}
+
 	value := i.CustomValue(constant.ChecklistField)
 
 	if value == "" ||
 		value == issue.NilValue ||
 		value == issue.UnknownField ||
 		value == issue.UnknownValue {
-		return nil
+		return nil, nil
 	}
 
-	return ParseChecklist(value)
+	return ParseChecklist(value), nil
 }

@@ -13,9 +13,9 @@ func (c *Client) readDatabase() {
 		return
 	}
 
-	c.database.View(
+	c.database.MustView(
 		func(t *bbolt.Tx) error {
-			bolt.For(
+			bolt.MustFor(
 				c.database.Bucket(t, constant.ChannelBucket),
 				func(
 					k string,
@@ -26,7 +26,7 @@ func (c *Client) readDatabase() {
 					c.channels = append(c.channels, a)
 				},
 			)
-			bolt.For(
+			bolt.MustFor(
 				c.database.Bucket(t, constant.UserBucket),
 				func(
 					k string,

@@ -1,9 +1,6 @@
 package bolt
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"go.etcd.io/bbolt"
-)
+import "go.etcd.io/bbolt"
 
 func For(
 	b *bbolt.Bucket,
@@ -11,17 +8,15 @@ func For(
 		k string,
 		v []byte,
 	),
-) {
-	errors.PanicOnError(
-		b.ForEach(
-			func(
-				k []byte,
-				v []byte,
-			) error {
-				f(string(k), v)
+) error {
+	return b.ForEach(
+		func(
+			k []byte,
+			v []byte,
+		) error {
+			f(string(k), v)
 
-				return nil
-			},
-		),
+			return nil
+		},
 	)
 }

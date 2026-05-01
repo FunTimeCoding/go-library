@@ -14,7 +14,7 @@ func searchAndy(
 ) {
 	if true {
 		fmt.Println("Search")
-		issues := j.Search(
+		issues := j.MustSearch(
 			"project = %s AND status != %s",
 			p,
 			constant.Closed,
@@ -28,7 +28,7 @@ func searchAndy(
 
 	if true {
 		fmt.Println("SearchLimit")
-		issues := j.SearchLimit(
+		issues := j.MustSearchLimit(
 			5,
 			"project = %s AND status != %s",
 			p,

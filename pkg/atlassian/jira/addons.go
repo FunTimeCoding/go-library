@@ -5,8 +5,15 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 )
 
-func (c *Client) Addons() {
-	status, response := c.basic.GetPath(constant.Addon)
+func (c *Client) Addons() error {
+	status, body, e := c.basic.GetPath(constant.Addon)
+
+	if e != nil {
+		return e
+	}
+
 	// 403 {"message":"Client must be authenticated as a system administrator to access this resource.","status-code":403}
-	fmt.Printf("Addon: %d %s\n", status, response)
+	fmt.Printf("Addon: %d %s\n", status, body)
+
+	return nil
 }

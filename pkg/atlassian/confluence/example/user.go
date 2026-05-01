@@ -7,20 +7,5 @@ import (
 )
 
 func User() {
-	c := confluence.NewEnvironment()
-	f := constant.Format
-
-	if true {
-		fmt.Println(c.User().Format(f))
-	}
-
-	if false {
-		fmt.Println("UserVirtomize")
-		fmt.Println(c.UserVirtomize())
-	}
-
-	if false {
-		fmt.Println("UserKaos")
-		fmt.Println(c.UserKaos())
-	}
+	fmt.Println(confluence.NewEnvironment().MustUser().Format(constant.Format))
 }

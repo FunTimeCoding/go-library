@@ -36,7 +36,11 @@ func (s *Server) createPage(
 		return response.Fail("body is required: %v", h)
 	}
 
-	return response.SuccessAny(
-		s.confluence.CreatePage(space, parent, title, body),
-	)
+	result, i := s.confluence.CreatePage(space, parent, title, body)
+
+	if i != nil {
+		return s.captureFail(i, "page not created")
+	}
+
+	return response.SuccessAny(result)
 }

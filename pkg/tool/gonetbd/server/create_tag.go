@@ -14,7 +14,7 @@ func (s *Server) CreateTag(
 ) {
 	var body generated.CreateNameRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	t := s.client.CreateTag(body.Name)
+	t := s.client.MustCreateTag(body.Name)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

@@ -9,26 +9,15 @@ import (
 func Watch() {
 	c := confluence.NewEnvironment()
 	f := constant.Dense
+	fmt.Println("Watch")
 
-	if true {
-		fmt.Println("Watch")
-
-		for _, p := range c.Watched() {
-			fmt.Println(p.Format(f))
-		}
-
-		fmt.Println("Favorite")
-
-		for _, p := range c.Favorites() {
-			fmt.Println(p.Format(f))
-		}
+	for _, p := range c.MustWatched() {
+		fmt.Println(p.Format(f))
 	}
 
-	if false {
-		fmt.Println("FavoritesKaos")
+	fmt.Println("Favorite")
 
-		for _, o := range c.FavoritesKaos() {
-			fmt.Println(o.Format(f))
-		}
+	for _, p := range c.MustFavorites() {
+		fmt.Println(p.Format(f))
 	}
 }

@@ -11,7 +11,7 @@ import (
 func (c *Client) SearchV3(
 	query string,
 	a ...any,
-) []*response.Issue {
+) ([]*response.Issue, error) {
 	// https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search
 	if len(a) > 0 {
 		query = fmt.Sprintf(query, a...)
@@ -23,7 +23,12 @@ func (c *Client) SearchV3(
 		var token = ""
 
 		for {
-			page := c.searchV3Page(constant.BasicSearchLimit, token, query)
+			page, e := c.searchV3Page(constant.BasicSearchLimit, token, query)
+
+			if e != nil {
+				return nil, e
+			}
+
 			result = append(result, page.Issues...)
 
 			if page.IsLast {
@@ -36,7 +41,7 @@ func (c *Client) SearchV3(
 
 	if false {
 		// Response: 500 {"message":"Cannot invoke \"java.util.List.size()\" because \"reconcileIssues\" is null","status-code":500,"stack-trace":""}
-		status, r := c.basic.PostPath(
+		status, r, e := c.basic.PostPath(
 			"/rest/api/3/search/jql",
 			notation.Encode(
 				request.Search{
@@ -46,9 +51,14 @@ func (c *Client) SearchV3(
 				false,
 			),
 		)
+
+		if e != nil {
+			return nil, e
+		}
+
 		fmt.Printf("Response: %d %s\n", status, r)
 	}
 
 	// Do not enrich, otherwise watchedIssueKeys will be recursive.
-	return result
+	return result, nil
 }

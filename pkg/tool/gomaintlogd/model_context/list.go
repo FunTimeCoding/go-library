@@ -62,7 +62,7 @@ func (s *Server) list(
 	entries, e := s.store.List(filter)
 
 	if e != nil {
-		return response.Fail("failed to list entries: %v", e)
+		return s.captureFail(e, constant.DatabaseUnreachable)
 	}
 
 	return response.Success(

@@ -8,7 +8,7 @@ import (
 func (c *Client) AddComment(
 	pageIdentifier string,
 	body string,
-) {
+) error {
 	payload := commentPayload{
 		Type: "comment",
 		Container: commentContainer{
@@ -22,5 +22,7 @@ func (c *Client) AddComment(
 			},
 		},
 	}
-	c.basic.PostOldPath("/content", notation.Encode(payload, false))
+	_, e := c.basic.PostOldPath("/content", notation.Encode(payload, false))
+
+	return e
 }

@@ -1,11 +1,14 @@
 package habitica
 
-import "github.com/funtimecoding/go-library/pkg/system/environment"
+import (
+	"github.com/funtimecoding/go-library/pkg/habitica/constant"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
+)
 
 func NewEnvironment() *Client {
 	return New(
-		environment.Required(HostEnvironment),
-		environment.Required(UserEnvironment),
-		environment.Required(TokenEnvironment),
+		environment.Required(constant.HostEnvironment),
+		environment.Required(constant.UserEnvironment),
+		environment.Required(constant.TokenEnvironment),
 	)
 }

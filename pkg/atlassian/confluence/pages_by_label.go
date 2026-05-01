@@ -7,20 +7,22 @@ import (
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
-func (c *Client) PagesByLabel(labelIdentifier string) []*page.Page {
-	var result *response.Pages
-	notation.DecodeStrict(
-		c.basic.GetV2(
-			c.basic.Base().Copy().Path(
-				"%s/%s%s",
-				constant.Label,
-				labelIdentifier,
-				constant.Page,
-			).Set(constant.BodyFormat, constant.StorageFormat).String(),
-		),
-		&result,
-		false,
+func (c *Client) PagesByLabel(labelIdentifier string) ([]*page.Page, error) {
+	body, e := c.basic.GetV2(
+		c.basic.Base().Copy().Path(
+			"%s/%s%s",
+			constant.Label,
+			labelIdentifier,
+			constant.Page,
+		).Set(constant.BodyFormat, constant.StorageFormat).String(),
 	)
 
-	return page.NewSlice(result.Results, c.host)
+	if e != nil {
+		return nil, e
+	}
+
+	var result *response.Pages
+	notation.DecodeStrict(body, &result, false)
+
+	return page.NewSlice(result.Results, c.host), nil
 }

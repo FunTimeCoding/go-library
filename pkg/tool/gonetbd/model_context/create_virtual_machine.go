@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -24,7 +25,17 @@ func (s *Server) createVirtualMachine(
 		return response.Fail("cluster is required: %v", g)
 	}
 
-	cl := s.client.ClusterByName(clusterName)
+	cl, h := s.client.ClusterByName(clusterName)
 
-	return response.SuccessAny(s.client.CreateVirtualMachine(name, cl))
+	if h != nil {
+		return s.captureFail(h, "cluster not found")
+	}
+
+	result, i := s.client.CreateVirtualMachine(name, cl)
+
+	if i != nil {
+		return s.captureFail(i, "virtual machine not created")
+	}
+
+	return response.SuccessAny(convert.VirtualMachine(result))
 }

@@ -5,14 +5,20 @@ import (
 	"slices"
 )
 
-func (c *Client) tagsNestedRequest(v []string) []netbox.NestedTagRequest {
+func (c *Client) tagsNestedRequest(v []string) ([]netbox.NestedTagRequest, error) {
+	tags, e := c.Tags()
+
+	if e != nil {
+		return nil, e
+	}
+
 	var result []netbox.NestedTagRequest
 
-	for _, t := range c.Tags() {
+	for _, t := range tags {
 		if slices.Contains(v, t.Name) {
 			result = append(result, *t.Nested)
 		}
 	}
 
-	return result
+	return result, nil
 }

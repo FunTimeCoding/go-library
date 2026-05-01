@@ -20,7 +20,7 @@ func TokenCheck() {
 	rawSearch(host, user, token, k)
 	fmt.Println()
 	fmt.Println("TokenCheck: SearchLimit(1)")
-	issues := common.Jira().SearchLimit(
+	issues := common.Jira().MustSearchLimit(
 		1,
 		"project = %s ORDER BY updated DESC",
 		k,

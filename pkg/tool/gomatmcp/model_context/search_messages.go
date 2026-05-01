@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/post"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -26,14 +27,14 @@ func (s *Server) SearchMessages(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "search failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	posts := post.NewSlice(post.FromList(list, true))
 	g := s.client.Enrich(posts)
 
 	if g != nil {
-		return s.captureFail(g, "enrich posts failed")
+		return s.captureFail(g, constant.Unreachable)
 	}
 
 	type row struct {

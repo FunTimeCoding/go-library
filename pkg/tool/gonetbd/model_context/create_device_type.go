@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -23,7 +24,17 @@ func (s *Server) createDeviceType(
 		return response.Fail("manufacturer is required: %v", g)
 	}
 
-	m := s.client.ManufacturerByName(manufacturer)
+	m, h := s.client.ManufacturerByName(manufacturer)
 
-	return response.SuccessAny(s.client.CreateDeviceType(model, m))
+	if h != nil {
+		return s.captureFail(h, "manufacturer not found")
+	}
+
+	result, i := s.client.CreateDeviceType(model, m)
+
+	if i != nil {
+		return s.captureFail(i, "device type not created")
+	}
+
+	return response.SuccessAny(convert.DeviceType(result))
 }

@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -40,7 +41,13 @@ func (s *Server) createIssue(
 	fieldsRaw := r.GetString(constant.AdditionalFields, "")
 	raw := issue.RawStub()
 	raw.Fields.Unknowns = make(tcontainer.MarshalMap)
-	raw.Fields.Reporter = s.jira.User()
+	reporter, i := s.jira.User()
+
+	if i != nil {
+		return s.captureFail(i, "Jira API unreachable")
+	}
+
+	raw.Fields.Reporter = reporter
 	raw.Fields.Project.Key = project
 	raw.Fields.Type.Name = issueType
 	raw.Fields.Summary = summary
@@ -75,7 +82,11 @@ func (s *Server) createIssue(
 			)
 		}
 
-		fieldMap := s.jira.FieldMap()
+		fieldMap, j := s.jira.FieldMap()
+
+		if j != nil {
+			return s.captureFail(j, "Jira API unreachable")
+		}
 
 		for name, value := range fields {
 			field := fieldMap.ByName(name)
@@ -91,20 +102,22 @@ func (s *Server) createIssue(
 		}
 	}
 
-	result, resp, i := s.jira.Nested().Issue.CreateWithContext(
+	result, resp, k := s.jira.Nested().Issue.CreateWithContext(
 		c,
 		raw,
 	)
 
-	if i != nil {
+	if k != nil {
 		if resp != nil && resp.Body != nil {
-			return response.Fail(
+			return s.captureFail(
+				k,
+				fmt.Sprintf(
 				"create failed: %s",
 				string(system.ReadAll(resp.Body)),
-			)
+			))
 		}
 
-		return response.Fail("create failed: %v", i)
+		return s.captureFail(k, "issue not created")
 	}
 
 	if assigneeName != "" {
@@ -114,30 +127,37 @@ func (s *Server) createIssue(
 			return fail, j
 		}
 
-		assignResp, k := s.jira.Nested().Issue.UpdateAssigneeWithContext(
+		assignResp, l := s.jira.Nested().Issue.UpdateAssigneeWithContext(
 			c,
 			result.Key,
 			user,
 		)
 
-		if k != nil {
+		if l != nil {
 			if assignResp != nil && assignResp.Body != nil {
-				return response.Fail(
+				return s.captureFail(
+					l,
+					fmt.Sprintf(
 					"created %s but assign failed: %s",
 					result.Key,
 					string(system.ReadAll(assignResp.Body)),
-				)
+				))
 			}
 
-			return response.Fail(
-				"created %s but assign failed: %v",
+			return s.captureFail(
+				l,
+				fmt.Sprintf(
+				"created %s but assign failed",
 				result.Key,
-				k,
-			)
+			))
 		}
 	}
 
-	return response.SuccessAny(
-		convert.JiraIssue(s.jira.Issue(result.Key)),
-	)
+	created, m := s.jira.Issue(result.Key)
+
+	if m != nil {
+		return s.captureFail(m, "issue created but retrieval failed")
+	}
+
+	return response.SuccessAny(convert.JiraIssue(created))
 }

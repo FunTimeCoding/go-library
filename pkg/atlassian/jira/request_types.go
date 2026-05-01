@@ -1,14 +1,11 @@
 package jira
 
-import (
-	"github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
 
 func (c *Client) RequestTypes(
 	desk int,
 	group int,
-) *models.ProjectRequestTypePageScheme {
+) (*models.ProjectRequestTypePageScheme, error) {
 	result, _, e := c.service.Request.Type.Gets(
 		c.context,
 		desk,
@@ -16,7 +13,6 @@ func (c *Client) RequestTypes(
 		0,
 		50,
 	)
-	errors.PanicOnError(e)
 
-	return result
+	return result, e
 }

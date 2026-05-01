@@ -27,7 +27,6 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/dimchansky/utfbom v1.1.1
 	github.com/docker/go-units v0.5.0
-	github.com/essentialkaos/go-confluence/v6 v6.0.4
 	github.com/fatih/color v1.19.0
 	github.com/fsnotify/fsnotify v1.9.0
 	github.com/gage-technologies/mistral-go v1.1.0
@@ -85,7 +84,6 @@ require (
 	github.com/tmc/langchaingo v0.1.14
 	github.com/tobischo/gokeepasslib/v3 v3.6.2
 	github.com/trivago/tgo v1.0.7
-	github.com/virtomize/confluence-go-api v1.5.1
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
 	gitlab.com/gitlab-org/api/client-go/v2 v2.21.0
@@ -126,7 +124,6 @@ require (
 	github.com/amikos-tech/chroma-go-local v0.3.4 // indirect
 	github.com/amikos-tech/pure-onnx v0.0.1 // indirect
 	github.com/amikos-tech/pure-tokenizers v0.1.5 // indirect
-	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/apenella/go-common-utils/data v0.0.0-20220913191136-86daaa87e7df // indirect
@@ -320,8 +317,6 @@ require (
 	github.com/tmaxmax/go-sse v0.11.0 // indirect
 	github.com/tobischo/argon2 v0.1.0 // indirect
 	github.com/ulikunitz/xz v0.5.15 // indirect
-	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.61.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/wiggin77/merror v1.0.5 // indirect

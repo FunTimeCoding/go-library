@@ -10,11 +10,11 @@ func readUser(
 	n *netbox.Client,
 	f *option.Format,
 ) {
-	for _, g := range n.UserGroups() {
+	for _, g := range n.MustUserGroups() {
 		fmt.Printf("UserGroup: %s\n", g.Format(f))
 	}
 
-	for _, g := range n.Users() {
+	for _, g := range n.MustUsers() {
 		fmt.Printf("User: %s\n", g.Format(f))
 	}
 }

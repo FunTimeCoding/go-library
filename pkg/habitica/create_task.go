@@ -1,8 +1,12 @@
 package habitica
 
-func (c *Client) CreateTask(body CreateTaskBody) Task {
-	var result Task
-	c.post("/tasks/user", body, &result)
+import (
+	"github.com/funtimecoding/go-library/pkg/habitica/request"
+	"github.com/funtimecoding/go-library/pkg/habitica/response"
+)
 
-	return result
+func (c *Client) CreateTask(body request.CreateTaskBody) (response.Task, error) {
+	var result response.Task
+
+	return result, c.post("/tasks/user", body, &result)
 }

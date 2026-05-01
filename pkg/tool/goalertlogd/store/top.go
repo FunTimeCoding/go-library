@@ -12,9 +12,9 @@ func (s *Store) Top(
 	n int,
 	start time.Time,
 	end time.Time,
-) []TopRecord {
+) ([]TopRecord, error) {
 	entries := make(map[string]*topEntry)
-	s.client.View(
+	e := s.client.View(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)
 
@@ -22,7 +22,7 @@ func (s *Store) Top(
 				return nil
 			}
 
-			bolt.For(
+			return bolt.For(
 				b,
 				func(
 					_ string,
@@ -53,10 +53,13 @@ func (s *Store) Top(
 					}
 				},
 			)
-
-			return nil
 		},
 	)
+
+	if e != nil {
+		return nil, e
+	}
+
 	result := make([]TopRecord, 0, len(entries))
 
 	for _, e := range entries {
@@ -89,5 +92,5 @@ func (s *Store) Top(
 		result = result[:n]
 	}
 
-	return result
+	return result, nil
 }

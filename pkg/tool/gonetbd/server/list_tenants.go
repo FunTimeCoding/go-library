@@ -10,7 +10,7 @@ func (s *Server) ListTenants(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	tenants := s.client.Tenants()
+	tenants := s.client.MustTenants()
 	result := make([]server.Tenant, 0, len(tenants))
 
 	for _, t := range tenants {

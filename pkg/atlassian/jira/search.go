@@ -5,15 +5,20 @@ import (
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
-	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
 func (c *Client) Search(
 	query string,
 	a ...any,
-) []*issue.Issue {
+) ([]*issue.Issue, error) {
 	if len(a) > 0 {
 		query = fmt.Sprintf(query, a...)
+	}
+
+	o, f := c.IssueOption()
+
+	if f != nil {
+		return nil, f
 	}
 
 	var result []*issue.Issue
@@ -29,14 +34,18 @@ func (c *Client) Search(
 				Expand:        constant.ChangelogExpand,
 			},
 		)
-		errors.PanicOnError(e)
+
+		if e != nil {
+			return nil, e
+		}
+
 		token = r.NextPageToken
-		result = append(result, issue.NewSlice(page, c.IssueOption())...)
+		result = append(result, issue.NewSlice(page, o)...)
 
 		if r.IsLast {
 			break
 		}
 	}
 
-	return c.enrichMany(result)
+	return c.enrichMany(result), nil
 }

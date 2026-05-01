@@ -1,13 +1,20 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/site"
 )
 
-func (c *Client) SiteByName(n string) *site.Site {
-	result := c.SitesByName(n)
-	unexpected.Count(1, len(result))
+func (c *Client) SiteByName(n string) (*site.Site, error) {
+	result, e := c.SitesByName(n)
 
-	return result[0]
+	if e != nil {
+		return nil, e
+	}
+
+	if len(result) != 1 {
+		return nil, fmt.Errorf("expected 1 site named %s, got %d", n, len(result))
+	}
+
+	return result[0], nil
 }

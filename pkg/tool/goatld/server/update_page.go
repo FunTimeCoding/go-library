@@ -25,7 +25,7 @@ func (s *Server) UpdatePage(
 	web.EncodeNotation(
 		w,
 		convert.ConfluencePageDetail(
-			s.confluence.UpdatePage(
+			s.confluence.MustUpdatePage(
 				identifier,
 				body.Title,
 				body.Body,

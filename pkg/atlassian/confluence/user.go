@@ -7,13 +7,15 @@ import (
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
-func (c *Client) User() *user.User {
-	var result *response.User
-	notation.DecodeStrict(
-		c.basic.GetPath(constant.User),
-		&result,
-		false,
-	)
+func (c *Client) User() (*user.User, error) {
+	r, e := c.basic.GetPath(constant.User)
 
-	return user.New(result)
+	if e != nil {
+		return nil, e
+	}
+
+	var result *response.User
+	notation.DecodeStrict(r, &result, false)
+
+	return user.New(result), nil
 }

@@ -1,18 +1,22 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/tag"
 )
 
-func (c *Client) TagByName(n string) *tag.Tag {
-	for _, t := range c.Tags() {
+func (c *Client) TagByName(n string) (*tag.Tag, error) {
+	result, e := c.Tags()
+
+	if e != nil {
+		return nil, e
+	}
+
+	for _, t := range result {
 		if t.Name == n {
-			return t
+			return t, nil
 		}
 	}
 
-	errors.NotFound(n)
-
-	return nil
+	return nil, fmt.Errorf("tag not found: %s", n)
 }

@@ -17,5 +17,11 @@ func (s *Server) getPage(
 		return response.Fail("identifier is required: %v", f)
 	}
 
-	return response.SuccessAny(s.confluence.Page(identifier))
+	result, g := s.confluence.Page(identifier)
+
+	if g != nil {
+		return s.captureFail(g, "page not found")
+	}
+
+	return response.SuccessAny(result)
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 )
@@ -42,7 +43,7 @@ func (s *Server) PostMessage(
 	p, e := s.client.PostSimple(ch, a.Message)
 
 	if e != nil {
-		return s.captureFail(e, "post message failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	return response.SuccessAny(

@@ -14,7 +14,7 @@ func searchOwnFull(
 ) {
 	if true {
 		fmt.Println("SearchFull")
-		issues := j.SearchFull(
+		issues := j.MustSearchFull(
 			"project = %s AND status != %s",
 			p,
 			constant.Closed,
@@ -28,7 +28,7 @@ func searchOwnFull(
 
 	if true {
 		fmt.Println("SearchLimitFull")
-		issues := j.SearchLimitFull(
+		issues := j.MustSearchLimitFull(
 			5,
 			"project = %s AND status != %s",
 			p,

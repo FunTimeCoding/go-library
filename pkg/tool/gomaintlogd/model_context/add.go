@@ -56,7 +56,7 @@ func (s *Server) add(
 	}
 
 	if h := s.store.Add(e); h != nil {
-		return response.Fail("failed to add entry: %v", h)
+		return s.captureFail(h, constant.DatabaseUnreachable)
 	}
 
 	return response.Success(

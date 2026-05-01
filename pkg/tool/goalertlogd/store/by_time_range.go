@@ -11,9 +11,9 @@ import (
 func (s *Store) ByTimeRange(
 	start time.Time,
 	end time.Time,
-) []Record {
+) ([]Record, error) {
 	var result []Record
-	s.client.View(
+	e := s.client.View(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)
 
@@ -21,7 +21,7 @@ func (s *Store) ByTimeRange(
 				return nil
 			}
 
-			bolt.For(
+			return bolt.For(
 				b,
 				func(
 					_ string,
@@ -35,10 +35,13 @@ func (s *Store) ByTimeRange(
 					}
 				},
 			)
-
-			return nil
 		},
 	)
+
+	if e != nil {
+		return nil, e
+	}
+
 	sort.Slice(
 		result,
 		func(i, j int) bool {
@@ -46,5 +49,5 @@ func (s *Store) ByTimeRange(
 		},
 	)
 
-	return result
+	return result, nil
 }

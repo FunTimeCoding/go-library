@@ -2,12 +2,17 @@ package jira
 
 import "github.com/andygrunwald/go-jira"
 
-func (c *Client) allComments(key string) []*jira.Comment {
+func (c *Client) allComments(key string) ([]*jira.Comment, error) {
 	var result []*jira.Comment
 	startAt := 0
 
 	for {
-		p := c.commentPage(key, startAt)
+		p, e := c.commentPage(key, startAt)
+
+		if e != nil {
+			return nil, e
+		}
+
 		result = append(result, p.Comments...)
 
 		if startAt+p.MaxResults >= p.Total {
@@ -17,5 +22,5 @@ func (c *Client) allComments(key string) []*jira.Comment {
 		startAt += p.MaxResults
 	}
 
-	return result
+	return result, nil
 }

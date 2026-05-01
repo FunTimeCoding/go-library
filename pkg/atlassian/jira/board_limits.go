@@ -1,22 +1,32 @@
 package jira
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/board_limit"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
-	"log"
 )
 
-func (c *Client) BoardLimits(identifier int) []*board_limit.Limit {
-	var result []*board_limit.Limit
-	b := c.Board(identifier)
-	o := c.BoardConfiguration(identifier)
+func (c *Client) BoardLimits(identifier int) ([]*board_limit.Limit, error) {
+	b, e := c.Board(identifier)
+
+	if e != nil {
+		return nil, e
+	}
+
+	o, f := c.BoardConfiguration(identifier)
+
+	if f != nil {
+		return nil, f
+	}
 
 	if o.ColumnConfig.ConstraintType != constant.IssueCountType {
-		log.Panicf(
+		return nil, fmt.Errorf(
 			"unexpected constraint type: %s",
 			o.ColumnConfig.ConstraintType,
 		)
 	}
+
+	var result []*board_limit.Limit
 
 	for _, column := range o.ColumnConfig.Columns {
 		if column.Min == 0 && column.Max == 0 {
@@ -29,5 +39,5 @@ func (c *Client) BoardLimits(identifier int) []*board_limit.Limit {
 		)
 	}
 
-	return result
+	return result, nil
 }

@@ -14,8 +14,8 @@ func (s *Server) CreateDeviceType(
 ) {
 	var body generated.CreateDeviceTypeRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	m := s.client.ManufacturerByName(body.Manufacturer)
-	t := s.client.CreateDeviceType(body.Model, m)
+	m := s.client.MustManufacturerByName(body.Manufacturer)
+	t := s.client.MustCreateDeviceType(body.Model, m)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

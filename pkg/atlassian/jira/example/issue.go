@@ -19,11 +19,11 @@ func Issue() {
 	var i *jira.Issue
 
 	if true {
-		i = j.NewIssue(p, issueType, summary, description)
+		i = j.MustNewIssue(p, issueType, summary, description)
 	}
 
 	if false {
-		i = j.NewIssueUnverified(p, issueType, summary, description)
+		i = j.MustNewIssueUnverified(p, issueType, summary, description)
 	}
 
 	fmt.Println("Prepared:")
@@ -31,6 +31,6 @@ func Issue() {
 
 	if false {
 		fmt.Println("Created:")
-		fmt.Println(j.CreateNative(i).Format(f))
+		fmt.Println(j.MustCreateNative(i).Format(f))
 	}
 }

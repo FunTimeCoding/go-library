@@ -11,9 +11,14 @@ func (s *Server) getLinkTypes(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	_, body := s.jira.Basic().GetPath(
+	_, body, e := s.jira.Basic().GetPath(
 		"rest/api/2/issueLinkType",
 	)
+
+	if e != nil {
+		return s.captureFail(e, "Jira API unreachable")
+	}
+
 	var parsed linkTypeResponse
 	notation.DecodeStrict(body, &parsed, true)
 

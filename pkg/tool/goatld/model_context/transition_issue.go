@@ -24,7 +24,9 @@ func (s *Server) transitionIssue(
 		return response.Fail("transition_identifier is required: %v", g)
 	}
 
-	s.jira.Transition(key, transition)
+	if h := s.jira.Transition(key, transition); h != nil {
+		return s.captureFail(h, "transition not applied")
+	}
 
 	return response.Success("transition applied")
 }

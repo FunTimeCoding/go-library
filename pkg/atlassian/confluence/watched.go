@@ -5,14 +5,26 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 )
 
-func (c *Client) Watched() []*page.Page {
+func (c *Client) Watched() ([]*page.Page, error) {
+	results, e := c.Search("watcher=currentUser()")
+
+	if e != nil {
+		return nil, e
+	}
+
 	var result []*page.Page
 
-	for _, r := range c.Search("watcher=currentUser()") {
+	for _, r := range results {
 		if r.Raw.Type == constant.PageType {
-			result = append(result, c.Page(r.Raw.Id))
+			p, f := c.Page(r.Raw.Id)
+
+			if f != nil {
+				return nil, f
+			}
+
+			result = append(result, p)
 		}
 	}
 
-	return result
+	return result, nil
 }

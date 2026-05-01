@@ -15,22 +15,36 @@ func (c *Client) Import(
 	parent string,
 	base string,
 	name string,
-) *page.Page {
+) (*page.Page, error) {
 	f := page_file.Decode(system.ReadFile(base, name))
-	var result *response.Page
-	notation.DecodeStrict(
-		c.basic.PostV2Path(
-			constant.Page,
-			page_post.New(
-				c.SpaceByName(space).Identifier,
-				c.PageBySpaceAndName(space, parent).Identifier,
-				f.Name,
-				page.ToMarkup(f.Body),
-			).Encode(),
-		),
-		&result,
-		false,
+	s, e := c.SpaceByName(space)
+
+	if e != nil {
+		return nil, e
+	}
+
+	p, g := c.PageBySpaceAndName(space, parent)
+
+	if g != nil {
+		return nil, g
+	}
+
+	body, h := c.basic.PostV2Path(
+		constant.Page,
+		page_post.New(
+			s.Identifier,
+			p.Identifier,
+			f.Name,
+			page.ToMarkup(f.Body),
+		).Encode(),
 	)
 
-	return page.New(result, c.host)
+	if h != nil {
+		return nil, h
+	}
+
+	var result *response.Page
+	notation.DecodeStrict(body, &result, false)
+
+	return page.New(result, c.host), nil
 }

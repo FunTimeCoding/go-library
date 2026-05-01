@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -19,7 +20,7 @@ func (s *Server) SetTabTitle(
 	e := s.client.SetTabTitle(a.TabIdentifier, a.Title)
 
 	if e != nil {
-		return s.captureFail(e, "set tab title")
+		return s.captureFail(e, constant.NotResponding)
 	}
 
 	return response.Success("set title: %s", a.Title)

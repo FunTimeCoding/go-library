@@ -1,10 +1,10 @@
 package jira
 
 import (
+	"fmt"
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/custom_field_value"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"log"
 	"slices"
 )
 
@@ -14,11 +14,15 @@ func (c *Client) SetFieldMulti(
 	i *jira.Issue,
 	fieldName string,
 	valueNames []string,
-) {
-	valid := c.CustomFieldValues(projectKey, issueType, fieldName)
+) error {
+	valid, e := c.CustomFieldValues(projectKey, issueType, fieldName)
+
+	if e != nil {
+		return e
+	}
 
 	if len(valid) == 0 {
-		log.Panicf(
+		return fmt.Errorf(
 			"project %s type %s field %s has no values",
 			projectKey,
 			issueType,
@@ -41,7 +45,7 @@ func (c *Client) SetFieldMulti(
 	}
 
 	if len(notFound) > 0 {
-		log.Panicf(
+		return fmt.Errorf(
 			"field %s value(s) not found: %s, valid: %s",
 			fieldName,
 			join.Comma(notFound),
@@ -57,5 +61,5 @@ func (c *Client) SetFieldMulti(
 		}
 	}
 
-	c.SetField(i, fieldName, result)
+	return c.SetField(i, fieldName, result)
 }

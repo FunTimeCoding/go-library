@@ -24,7 +24,12 @@ func (s *Server) deleteChecklistItem(
 		return response.Fail("index is required: %v", g)
 	}
 
-	items := s.readChecklist(key)
+	items, h := s.readChecklist(key)
+
+	if h != nil {
+		return s.captureFail(h, "checklist not readable")
+	}
+
 	i := int(index)
 
 	if i < 1 || i > len(items) {

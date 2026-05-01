@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -24,7 +25,17 @@ func (s *Server) createVirtualInterface(
 		return response.Fail("name is required: %v", g)
 	}
 
-	vm := s.client.VirtualMachineByName(vmName)
+	vm, h := s.client.VirtualMachineByName(vmName)
 
-	return response.SuccessAny(s.client.CreateVirtualInterface(vm, name))
+	if h != nil {
+		return s.captureFail(h, "virtual machine not found")
+	}
+
+	result, i := s.client.CreateVirtualInterface(vm, name)
+
+	if i != nil {
+		return s.captureFail(i, "virtual interface not created")
+	}
+
+	return response.SuccessAny(convert.VirtualInterface(result))
 }

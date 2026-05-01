@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/post"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 	"time"
@@ -59,19 +60,19 @@ func (s *Server) GetChannelHistory(
 		posts, g = s.client.RecentPosts(ch, since.UnixMilli())
 
 		if g != nil {
-			return s.captureFail(g, "get recent posts failed")
+			return s.captureFail(g, constant.Unreachable)
 		}
 	} else {
 		posts, g = s.client.PostsBefore(ch, time.Now(), limit)
 
 		if g != nil {
-			return s.captureFail(g, "get posts failed")
+			return s.captureFail(g, constant.Unreachable)
 		}
 
 		h := s.client.Enrich(posts)
 
 		if h != nil {
-			return s.captureFail(h, "enrich posts failed")
+			return s.captureFail(h, constant.Unreachable)
 		}
 	}
 

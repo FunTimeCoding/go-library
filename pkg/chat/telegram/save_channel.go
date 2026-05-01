@@ -21,13 +21,13 @@ func (c *Client) saveChannel(
 		}
 	}
 
-	c.database.Update(
+	c.database.MustUpdate(
 		func(t *bbolt.Tx) error {
 			h := channel.New()
 			h.Name = name
 			h.Identifier = identifier
 			fmt.Printf("New channel: %+v\n", h)
-			c.database.PutBytes(
+			c.database.MustPutBytes(
 				c.database.Bucket(t, constant.ChannelBucket),
 				h.Name,
 				h.Encode(),

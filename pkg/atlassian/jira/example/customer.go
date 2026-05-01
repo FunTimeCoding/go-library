@@ -9,20 +9,20 @@ import (
 
 func Customer() {
 	j := common.Jira()
-	fmt.Printf("Information: %+v\n", j.CustomerInformation())
+	fmt.Printf("Information: %+v\n", j.MustCustomerInformation())
 
 	if false {
-		for _, i := range j.CustomerIssues(true) {
+		for _, i := range j.MustCustomerIssues(true) {
 			fmt.Println(i.Format(option.Color))
 		}
 	}
 
 	if false {
-		desks := j.Desks()
+		desks := j.MustDesks()
 
 		for _, e := range desks.Values {
 			fmt.Printf("Desk: %+v\n", e)
-			types := j.RequestTypes(strings.ToIntegerStrict(e.ID), 0)
+			types := j.MustRequestTypes(strings.ToIntegerStrict(e.ID), 0)
 
 			for _, t := range types.Values {
 				fmt.Printf("  Type: %+v\n", t)
@@ -31,7 +31,7 @@ func Customer() {
 	}
 
 	if false {
-		i := j.CreateCustomerIssue(
+		i := j.MustCreateCustomerIssue(
 			1,
 			4,
 			"Test software request",

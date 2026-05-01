@@ -1,16 +1,18 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/console_port"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 )
 
-func (c *Client) ConsolePorts() []*console_port.Port {
-	result, r, e := c.client.DcimAPI.DcimConsolePortsList(
+func (c *Client) ConsolePorts() ([]*console_port.Port, error) {
+	result, _, e := c.client.DcimAPI.DcimConsolePortsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return console_port.NewSlice(result.Results)
+	if e != nil {
+		return nil, e
+	}
+
+	return console_port.NewSlice(result.Results), nil
 }

@@ -1,21 +1,24 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/site"
 )
 
-func (c *Client) Sites() []*site.Site {
+func (c *Client) Sites() ([]*site.Site, error) {
 	if len(c.cache.Sites) != 0 {
-		return c.cache.Sites
+		return c.cache.Sites, nil
 	}
 
-	result, r, e := c.client.DcimAPI.DcimSitesList(
+	result, _, e := c.client.DcimAPI.DcimSitesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnWebError(r, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	c.cache.Sites = site.NewSlice(result.Results)
 
-	return c.cache.Sites
+	return c.cache.Sites, nil
 }

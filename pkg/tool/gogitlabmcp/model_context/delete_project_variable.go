@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -27,7 +28,7 @@ func (s *Server) DeleteProjectVariable(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "delete project variable")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	return mcp.NewToolResultText("deleted"), nil

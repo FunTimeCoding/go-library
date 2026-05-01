@@ -5,9 +5,18 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 )
 
-func (c *Client) Issue(key string) *issue.Issue {
-	result, r, e := c.client.Issue.Get(key, &jira.GetQueryOptions{})
-	panicOnError(r, e)
+func (c *Client) Issue(key string) (*issue.Issue, error) {
+	o, e := c.IssueOption()
 
-	return issue.New(result, c.IssueOption())
+	if e != nil {
+		return nil, e
+	}
+
+	result, _, f := c.client.Issue.Get(key, &jira.GetQueryOptions{})
+
+	if f != nil {
+		return nil, f
+	}
+
+	return issue.New(result, o), nil
 }

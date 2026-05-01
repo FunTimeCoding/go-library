@@ -12,6 +12,6 @@ func CustomValue() {
 	f := environment.Required(constant.TestFieldEnvironment)
 	fmt.Printf(
 		"Field value: %s\n",
-		common.Jira().SetVerbose(true).Issue(i).CustomValue(f),
+		common.Jira().SetVerbose(true).MustIssue(i).CustomValue(f),
 	)
 }

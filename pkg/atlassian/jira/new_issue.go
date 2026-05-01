@@ -3,7 +3,6 @@ package jira
 import (
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
-	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
 func (c *Client) NewIssue(
@@ -11,9 +10,14 @@ func (c *Client) NewIssue(
 	issueType string,
 	summary string,
 	description string,
-) *jira.Issue {
-	p := c.MetaProject(projectKey)
-	result, e := jira.InitIssueWithMetaAndFields(
+) (*jira.Issue, error) {
+	p, e := c.MetaProject(projectKey)
+
+	if e != nil {
+		return nil, e
+	}
+
+	return jira.InitIssueWithMetaAndFields(
 		p,
 		p.GetIssueTypeWithName(issueType),
 		map[string]string{
@@ -23,7 +27,4 @@ func (c *Client) NewIssue(
 			constant.DescriptionName: description,
 		},
 	)
-	errors.PanicOnError(e)
-
-	return result
 }

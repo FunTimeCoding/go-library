@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -31,13 +32,13 @@ func (s *Server) SendDirectMessage(
 			return response.Fail("user not found: %s", a.Username)
 		}
 
-		return s.captureFail(e, "user lookup failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	p, e := s.client.DirectMessage(user, a.Message)
 
 	if e != nil {
-		return s.captureFail(e, "send message failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	return response.SuccessAny(

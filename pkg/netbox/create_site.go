@@ -1,21 +1,24 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/site"
 	upstream "github.com/netbox-community/go-netbox/v4"
 )
 
-func (c *Client) CreateSite(name string) *site.Site {
+func (c *Client) CreateSite(name string) (*site.Site, error) {
 	q := upstream.NewWritableSiteRequest(
 		name,
 		slug(name),
 	)
-	result, r, e := c.client.DcimAPI.DcimSitesCreate(
+	result, _, e := c.client.DcimAPI.DcimSitesCreate(
 		c.context,
 	).WritableSiteRequest(*q).Execute()
-	errors.PanicOnWebError(r, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	c.cache.Sites = nil
 
-	return site.New(result)
+	return site.New(result), nil
 }

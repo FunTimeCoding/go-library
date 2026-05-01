@@ -14,6 +14,6 @@ func (s *Server) TransitionIssue(
 ) {
 	var q server.TransitionRequest
 	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
-	s.jira.Transition(key, q.TransitionIdentifier)
+	s.jira.MustTransition(key, q.TransitionIdentifier)
 	w.WriteHeader(http.StatusNoContent)
 }

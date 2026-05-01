@@ -1,20 +1,21 @@
 package netbox
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/netbox/manufacturer"
-)
+import "github.com/funtimecoding/go-library/pkg/netbox/manufacturer"
 
-func (c *Client) Manufacturers() []*manufacturer.Manufacturer {
+func (c *Client) Manufacturers() ([]*manufacturer.Manufacturer, error) {
 	if len(c.cache.Manufacturers) != 0 {
-		return c.cache.Manufacturers
+		return c.cache.Manufacturers, nil
 	}
 
-	result, r, e := c.client.DcimAPI.DcimManufacturersList(
+	result, _, e := c.client.DcimAPI.DcimManufacturersList(
 		c.context,
 	).Execute()
-	errors.PanicOnWebError(r, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	c.cache.Manufacturers = manufacturer.NewSlice(result.Results)
 
-	return c.cache.Manufacturers
+	return c.cache.Manufacturers, nil
 }

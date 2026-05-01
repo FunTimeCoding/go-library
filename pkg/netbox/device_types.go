@@ -1,21 +1,24 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/device_type"
 )
 
-func (c *Client) DeviceTypes() []*device_type.Type {
+func (c *Client) DeviceTypes() ([]*device_type.Type, error) {
 	if len(c.cache.DeviceTypes) != 0 {
-		return c.cache.DeviceTypes
+		return c.cache.DeviceTypes, nil
 	}
 
-	result, r, e := c.client.DcimAPI.DcimDeviceTypesList(
+	result, _, e := c.client.DcimAPI.DcimDeviceTypesList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnWebError(r, e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	c.cache.DeviceTypes = device_type.NewSlice(result.Results)
 
-	return c.cache.DeviceTypes
+	return c.cache.DeviceTypes, nil
 }

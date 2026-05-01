@@ -12,7 +12,7 @@ func (s *Server) RemoveVirtualTag(
 	name string,
 	tag string,
 ) {
-	vm := s.client.RemoveVirtualTag(name, tag)
+	vm := s.client.MustRemoveVirtualTag(name, tag)
 	entry := server.VirtualMachine{Identifier: vm.Identifier, Name: vm.Name}
 
 	if len(vm.Tags) > 0 {

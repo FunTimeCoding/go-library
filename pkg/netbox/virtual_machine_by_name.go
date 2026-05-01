@@ -1,18 +1,22 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/virtual_machine"
 )
 
-func (c *Client) VirtualMachineByName(n string) *virtual_machine.Machine {
-	for _, m := range c.VirtualMachines() {
+func (c *Client) VirtualMachineByName(n string) (*virtual_machine.Machine, error) {
+	result, e := c.VirtualMachines()
+
+	if e != nil {
+		return nil, e
+	}
+
+	for _, m := range result {
 		if m.Name == n {
-			return m
+			return m, nil
 		}
 	}
 
-	errors.NotFound(n)
-
-	return nil
+	return nil, fmt.Errorf("virtual machine not found: %s", n)
 }

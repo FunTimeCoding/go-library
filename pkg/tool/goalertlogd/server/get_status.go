@@ -11,7 +11,7 @@ func (s *Server) GetStatus(
 	_ *http.Request,
 ) {
 	result := server.StatusResponse{
-		TotalRecords: s.store.Count(),
+		TotalRecords: s.store.MustCount(),
 	}
 	lastPoll := s.poller.LastPoll()
 

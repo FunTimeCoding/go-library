@@ -1,16 +1,18 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/power_feed"
 )
 
-func (c *Client) PowerFeeds() []*power_feed.Feed {
-	result, r, e := c.client.DcimAPI.DcimPowerFeedsList(
+func (c *Client) PowerFeeds() ([]*power_feed.Feed, error) {
+	result, _, e := c.client.DcimAPI.DcimPowerFeedsList(
 		c.context,
 	).Limit(constant.PageLimit).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return power_feed.NewSlice(result.Results)
+	if e != nil {
+		return nil, e
+	}
+
+	return power_feed.NewSlice(result.Results), nil
 }

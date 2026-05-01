@@ -5,6 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 )
 
-func (c *Client) EpicIssues(name string) []*issue.Issue {
+func (c *Client) EpicIssues(name string) ([]*issue.Issue, error) {
 	return c.SearchFull("%s = %s", constant.ParentEpic, name)
 }

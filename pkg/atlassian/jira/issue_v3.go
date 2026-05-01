@@ -6,8 +6,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web/parameter"
 )
 
-func (c *Client) IssueV3(key string) {
-	status, response := c.basic.Get(
+func (c *Client) IssueV3(key string) error {
+	status, body, e := c.basic.Get(
 		c.basic.Base().Copy().Base(
 			constant.Base,
 		).Path("%s/%s", constant.Issue, key).Set(
@@ -15,5 +15,12 @@ func (c *Client) IssueV3(key string) {
 			constant.AllFields,
 		).String(),
 	)
-	fmt.Printf("Response: %d %s", status, response)
+
+	if e != nil {
+		return e
+	}
+
+	fmt.Printf("Response: %d %s", status, body)
+
+	return nil
 }

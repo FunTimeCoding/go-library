@@ -13,7 +13,7 @@ func Changelog() {
 	j := common.Jira()
 	fmt.Println("Search (with changelog)...")
 	start := time.Now()
-	issues := j.Search(
+	issues := j.MustSearch(
 		"project = %s AND status NOT IN (Backlog, Closed) ORDER BY updated ASC",
 		k,
 	)

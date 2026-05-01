@@ -5,6 +5,6 @@ import "github.com/funtimecoding/go-library/pkg/web/locator"
 func (c *Client) PostPath(
 	path string,
 	body string,
-) (int, string) {
+) (int, string, error) {
 	return c.Post(locator.New(c.host).Path(path).String(), body)
 }

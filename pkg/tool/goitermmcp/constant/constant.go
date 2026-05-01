@@ -12,4 +12,6 @@ const (
 	SetTabTitle  = "set_tab_title"
 	SetTabColor  = "set_tab_color"
 	CreateTab    = "create_tab"
+
+	NotResponding = "iTerm not responding"
 )

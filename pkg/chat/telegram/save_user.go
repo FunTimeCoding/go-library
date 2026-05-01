@@ -21,13 +21,13 @@ func (c *Client) saveUser(
 		}
 	}
 
-	c.database.Update(
+	c.database.MustUpdate(
 		func(t *bbolt.Tx) error {
 			u := user.New()
 			u.Name = name
 			u.Identifier = identifier
 			fmt.Printf("New user: %+v\n", u)
-			c.database.PutBytes(
+			c.database.MustPutBytes(
 				c.database.Bucket(t, constant.UserBucket),
 				u.Name,
 				u.Encode(),

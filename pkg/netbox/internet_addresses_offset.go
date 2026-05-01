@@ -1,16 +1,18 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/netbox-community/go-netbox/v4"
 )
 
-func (c *Client) internetAddressesOffset(offset int32) []netbox.IPAddress {
-	result, r, e := c.client.IpamAPI.IpamIpAddressesList(
+func (c *Client) internetAddressesOffset(offset int32) ([]netbox.IPAddress, error) {
+	result, _, e := c.client.IpamAPI.IpamIpAddressesList(
 		c.context,
 	).Limit(constant.PageLimit).Offset(offset).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return result.Results
+	if e != nil {
+		return nil, e
+	}
+
+	return result.Results, nil
 }

@@ -1,5 +1,6 @@
 package constant
 
+const Name = "NetBox"
 const (
 	NetboxListDevices            = "netbox_list_devices"
 	NetboxGetDevice              = "netbox_get_device"
@@ -47,3 +48,5 @@ const (
 	Type           = "type"
 	VirtualMachine = "virtual_machine"
 )
+
+const Unreachable = "NetBox API unreachable"

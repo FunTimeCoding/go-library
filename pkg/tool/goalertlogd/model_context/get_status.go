@@ -10,7 +10,12 @@ func (s *Server) getStatus(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	totalRecords := s.store.Count()
+	totalRecords, e := s.store.Count()
+
+	if e != nil {
+		return s.captureFail(e, "get status failed")
+	}
+
 	lastPoll := s.poller.LastPoll()
 
 	if lastPoll.IsZero() {

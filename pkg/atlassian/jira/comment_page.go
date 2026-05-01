@@ -10,9 +10,9 @@ import (
 func (c *Client) commentPage(
 	key string,
 	startAt int,
-) *response.Comments {
+) (*response.Comments, error) {
 	var result response.Comments
-	_, r := c.basic.Get(
+	_, r, e := c.basic.Get(
 		c.basic.Base().Copy().Base("/rest/api/2").Path(
 			fmt.Sprintf("%s/%s/comment", constant.Issue, key),
 		).SetInteger(
@@ -23,7 +23,12 @@ func (c *Client) commentPage(
 			startAt,
 		).String(),
 	)
+
+	if e != nil {
+		return nil, e
+	}
+
 	notation.DecodeStrict(r, &result, true)
 
-	return &result
+	return &result, nil
 }

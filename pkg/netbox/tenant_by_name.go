@@ -1,18 +1,22 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/tenant"
 )
 
-func (c *Client) TenantByName(n string) *tenant.Tenant {
-	for _, t := range c.Tenants() {
+func (c *Client) TenantByName(n string) (*tenant.Tenant, error) {
+	result, e := c.Tenants()
+
+	if e != nil {
+		return nil, e
+	}
+
+	for _, t := range result {
 		if t.Name == n {
-			return t
+			return t, nil
 		}
 	}
 
-	errors.NotFound(n)
-
-	return nil
+	return nil, fmt.Errorf("tenant not found: %s", n)
 }

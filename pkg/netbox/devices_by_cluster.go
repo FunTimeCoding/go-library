@@ -1,22 +1,32 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
-	"log"
 )
 
-func (c *Client) DevicesByCluster(s string) []*device.Device {
-	clusters := c.ClustersByName(s)
+func (c *Client) DevicesByCluster(s string) ([]*device.Device, error) {
+	clusters, e := c.ClustersByName(s)
 
-	if len(clusters) != 1 {
-		log.Panicf("unexpected: %d", len(clusters))
+	if e != nil {
+		return nil, e
 	}
 
-	result, r, e := c.client.DcimAPI.DcimDevicesList(
+	if len(clusters) != 1 {
+		return nil, fmt.Errorf(
+			"expected 1 cluster for %s, got %d",
+			s,
+			len(clusters),
+		)
+	}
+
+	result, _, f := c.client.DcimAPI.DcimDevicesList(
 		c.context,
 	).ClusterId([]*int32{&clusters[0].Identifier}).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return device.NewSlice(result.Results)
+	if f != nil {
+		return nil, f
+	}
+
+	return device.NewSlice(result.Results), nil
 }

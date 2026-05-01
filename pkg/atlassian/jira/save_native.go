@@ -5,9 +5,18 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 )
 
-func (c *Client) SaveNative(i *jira.Issue) *issue.Issue {
-	result, r, e := c.client.Issue.UpdateWithContext(c.context, i)
-	panicOnError(r, e)
+func (c *Client) SaveNative(i *jira.Issue) (*issue.Issue, error) {
+	o, e := c.IssueOption()
 
-	return c.enrichOne(issue.New(result, c.IssueOption()))
+	if e != nil {
+		return nil, e
+	}
+
+	result, _, f := c.client.Issue.UpdateWithContext(c.context, i)
+
+	if f != nil {
+		return nil, f
+	}
+
+	return c.enrichOne(issue.New(result, o)), nil
 }

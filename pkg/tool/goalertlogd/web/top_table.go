@@ -10,7 +10,7 @@ import (
 
 func (s *Server) topTable() g.Node {
 	now := time.Now()
-	records := s.store.Top(25, now.Add(-7*24*time.Hour), now)
+	records := s.store.MustTop(25, now.Add(-7*24*time.Hour), now)
 
 	if len(records) == 0 {
 		return h.P(h.Em(g.Text("No alerts in the last 7 days.")))

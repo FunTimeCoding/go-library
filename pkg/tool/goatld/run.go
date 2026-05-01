@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira"
-	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goatld/generated/server"
@@ -28,9 +27,7 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(j, c), m)
-				generative.New(
-					model_context.New(j, c).Nested(),
-				).Setup(m)
+				model_context.New(j, c, h).Mount(m)
 			},
 			web.RecoveryMiddleware(h),
 		),

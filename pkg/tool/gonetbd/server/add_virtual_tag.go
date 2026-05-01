@@ -12,7 +12,7 @@ func (s *Server) AddVirtualTag(
 	name string,
 	tag string,
 ) {
-	vm := s.client.AddVirtualTag(name, tag)
+	vm := s.client.MustAddVirtualTag(name, tag)
 	entry := server.VirtualMachine{Identifier: vm.Identifier, Name: vm.Name}
 
 	if len(vm.Tags) > 0 {

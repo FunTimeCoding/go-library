@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -15,7 +16,7 @@ func (s *Server) SaveView(
 	e := s.client.SaveView(int(a.ViewIdentifier), a.FilePath)
 
 	if e != nil {
-		return s.captureFail(e, "save view")
+		return s.captureFail(e, constant.NotResponding)
 	}
 
 	return response.Success("saved")

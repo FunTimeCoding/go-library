@@ -10,15 +10,27 @@ func (c *Client) CustomFieldValues(
 	key string,
 	issueType string,
 	fieldName string,
-) []custom_field_value.Value {
-	f := c.FieldMap().ByName(fieldName)
+) ([]custom_field_value.Value, error) {
+	m, e := c.FieldMap()
 
-	if f == nil {
-		return nil
+	if e != nil {
+		return nil, e
 	}
 
-	for _, m := range c.CreateMeta(key).Projects {
-		for _, t := range m.IssueTypes {
+	f := m.ByName(fieldName)
+
+	if f == nil {
+		return nil, nil
+	}
+
+	meta, g := c.CreateMeta(key)
+
+	if g != nil {
+		return nil, g
+	}
+
+	for _, p := range meta.Projects {
+		for _, t := range p.IssueTypes {
 			if t.Name != issueType {
 				continue
 			}
@@ -33,9 +45,9 @@ func (c *Client) CustomFieldValues(
 				true,
 			)
 
-			return result
+			return result, nil
 		}
 	}
 
-	return nil
+	return nil, nil
 }

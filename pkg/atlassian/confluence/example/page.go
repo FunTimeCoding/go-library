@@ -11,10 +11,10 @@ func Page() {
 	p := c.DefaultPage()
 
 	if false {
-		if a := c.PageBySpaceAndName(s, strings.Charlie); a != nil {
-			c.Delete(a.Identifier)
+		if a := c.MustPageBySpaceAndName(s, strings.Charlie); a != nil {
+			c.MustDelete(a.Identifier)
 		}
 
-		c.Import(s, p, "fixture/wiki/example/", "Charlie.json")
+		c.MustImport(s, p, "fixture/wiki/example/", "Charlie.json")
 	}
 }

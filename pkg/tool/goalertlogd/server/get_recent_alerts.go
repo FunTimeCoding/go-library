@@ -24,5 +24,5 @@ func (s *Server) GetRecentAlerts(
 		end = *v.End
 	}
 
-	web.EncodeNotation(w, toResponse(s.store.ByTimeRange(start, end)))
+	web.EncodeNotation(w, toResponse(s.store.MustByTimeRange(start, end)))
 }

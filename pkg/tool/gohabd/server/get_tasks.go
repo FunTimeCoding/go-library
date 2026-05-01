@@ -18,5 +18,5 @@ func (s *Server) GetTasks(
 		taskType = string(*p.Type)
 	}
 
-	web.EncodeNotation(w, convert.Tasks(s.habitica.Tasks(taskType)))
+	web.EncodeNotation(w, convert.Tasks(s.habitica.MustTasks(taskType)))
 }

@@ -11,5 +11,5 @@ func (s *Server) GetAlerts(
 	_ *http.Request,
 	v server.GetAlertsParams,
 ) {
-	web.EncodeNotation(w, toResponse(s.store.ByName(v.Name)))
+	web.EncodeNotation(w, toResponse(s.store.MustByName(v.Name)))
 }

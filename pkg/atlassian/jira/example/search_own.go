@@ -12,7 +12,7 @@ func searchOwn(
 ) {
 	if true {
 		fmt.Println("SearchV3")
-		issues := j.SearchV3(
+		issues := j.MustSearchV3(
 			"project = %s AND status != %s",
 			p,
 			constant.Closed,
@@ -26,7 +26,7 @@ func searchOwn(
 
 	if true {
 		fmt.Println("SearchLimitV3")
-		issues := j.SearchLimitV3(
+		issues := j.MustSearchLimitV3(
 			5,
 			"project = %s AND status != %s",
 			p,

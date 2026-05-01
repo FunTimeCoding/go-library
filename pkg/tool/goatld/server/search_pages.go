@@ -14,6 +14,6 @@ func (s *Server) SearchPages(
 ) {
 	web.EncodeNotation(
 		w,
-		convert.ConfluencePages(s.confluence.Search(p.Query)),
+		convert.ConfluencePages(s.confluence.MustSearch(p.Query)),
 	)
 }

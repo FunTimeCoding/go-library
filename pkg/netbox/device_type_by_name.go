@@ -1,18 +1,22 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/device_type"
 )
 
-func (c *Client) DeviceTypeByName(n string) *device_type.Type {
-	for _, t := range c.DeviceTypes() {
+func (c *Client) DeviceTypeByName(n string) (*device_type.Type, error) {
+	result, e := c.DeviceTypes()
+
+	if e != nil {
+		return nil, e
+	}
+
+	for _, t := range result {
 		if t.Model == n {
-			return t
+			return t, nil
 		}
 	}
 
-	errors.NotFound(n)
-
-	return nil
+	return nil, fmt.Errorf("device type not found: %s", n)
 }

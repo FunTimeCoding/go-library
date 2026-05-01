@@ -17,5 +17,11 @@ func (s *Server) getTransitions(
 		return response.Fail("key is required: %v", f)
 	}
 
-	return response.SuccessAny(s.jira.Transitions(key))
+	result, g := s.jira.Transitions(key)
+
+	if g != nil {
+		return s.captureFail(g, "Jira API unreachable")
+	}
+
+	return response.SuccessAny(result)
 }

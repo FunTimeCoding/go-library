@@ -29,7 +29,7 @@ func (s *Server) GetTopAlerts(
 		end = *v.End
 	}
 
-	records := s.store.Top(n, start, end)
+	records := s.store.MustTop(n, start, end)
 	result := make([]server.TopAlertsResponse, 0, len(records))
 
 	for _, r := range records {

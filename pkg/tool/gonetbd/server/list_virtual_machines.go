@@ -10,7 +10,7 @@ func (s *Server) ListVirtualMachines(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	machines := s.client.VirtualMachines()
+	machines := s.client.MustVirtualMachines()
 	result := make([]server.VirtualMachine, 0, len(machines))
 
 	for _, m := range machines {

@@ -1,7 +1,6 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/virtual_machine"
 	upstream "github.com/netbox-community/go-netbox/v4"
 )
@@ -9,18 +8,37 @@ import (
 func (c *Client) AddVirtualTag(
 	name string,
 	tag string,
-) *virtual_machine.Machine {
-	c.TagByName(tag)
-	vm := c.VirtualMachineByName(name)
+) (*virtual_machine.Machine, error) {
+	_, e := c.TagByName(tag)
+
+	if e != nil {
+		return nil, e
+	}
+
+	vm, f := c.VirtualMachineByName(name)
+
+	if f != nil {
+		return nil, f
+	}
+
 	vm.AddTag(tag)
 	q := upstream.NewPatchedWritableVirtualMachineWithConfigContextRequest()
 	q.SetName(vm.Name)
-	q.SetTags(c.tagsNestedRequest(vm.Tags))
-	result, r, e := c.client.VirtualizationAPI.VirtualizationVirtualMachinesPartialUpdate(
+	tags, g := c.tagsNestedRequest(vm.Tags)
+
+	if g != nil {
+		return nil, g
+	}
+
+	q.SetTags(tags)
+	result, _, h := c.client.VirtualizationAPI.VirtualizationVirtualMachinesPartialUpdate(
 		c.context,
 		vm.Identifier,
 	).PatchedWritableVirtualMachineWithConfigContextRequest(*q).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return virtual_machine.New(result)
+	if h != nil {
+		return nil, h
+	}
+
+	return virtual_machine.New(result), nil
 }

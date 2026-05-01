@@ -15,8 +15,8 @@ func (s *Server) CreateVirtualInterface(
 ) {
 	var body generated.CreateVirtualInterfaceRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	vm := s.client.VirtualMachineByName(name)
-	i := s.client.CreateVirtualInterface(vm, body.Name)
+	vm := s.client.MustVirtualMachineByName(name)
+	i := s.client.MustCreateVirtualInterface(vm, body.Name)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

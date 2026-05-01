@@ -34,7 +34,12 @@ func (s *Server) explain(
 	v, e := s.store.Query(x, instance, fmt.Sprintf("%s %s", prefix, a.SQL))
 
 	if e != nil {
-		return response.Fail("explain: %v", e)
+		return s.captureFail(
+			e,
+			fmt.Sprintf(
+			"database error on %s: explain not executed",
+			instance,
+		))
 	}
 
 	return response.SuccessAny(v)

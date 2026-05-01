@@ -26,7 +26,12 @@ func (s *Server) searchProjects(
 		constant.IncludeDescriptions,
 		false,
 	)
-	projects := s.jira.Projects()
+	projects, h := s.jira.Projects()
+
+	if h != nil {
+		return s.captureFail(h, "Jira API unreachable")
+	}
+
 	var result []*server.JiraProject
 
 	for _, p := range *projects {
@@ -47,10 +52,13 @@ func (s *Server) searchProjects(
 		}
 
 		if includeDescriptions {
-			result = append(
-				result,
-				convert.JiraProject(s.jira.Project(p.Key)),
-			)
+			detail, i := s.jira.Project(p.Key)
+
+			if i != nil {
+				return s.captureFail(i, "project not found")
+			}
+
+			result = append(result, convert.JiraProject(detail))
 		} else {
 			o := &server.JiraProject{Key: p.Key, Name: p.Name}
 

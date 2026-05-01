@@ -2,14 +2,17 @@ package jira
 
 import "github.com/andygrunwald/go-jira"
 
-func (c *Client) Boards() []*jira.Board {
+func (c *Client) Boards() ([]*jira.Board, error) {
 	var result []*jira.Board
-	response, r, e := c.client.Board.GetAllBoards(nil)
-	panicOnError(r, e)
+	v, _, e := c.client.Board.GetAllBoards(nil)
 
-	for _, v := range response.Values {
-		result = append(result, &v)
+	if e != nil {
+		return nil, e
 	}
 
-	return result
+	for _, b := range v.Values {
+		result = append(result, &b)
+	}
+
+	return result, nil
 }

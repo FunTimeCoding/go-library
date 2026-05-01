@@ -16,8 +16,8 @@ func (s *Server) CreateInterface(
 ) {
 	var body generated.CreateInterfaceRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	d := s.client.DeviceByNameStrict(name)
-	i := s.client.CreateInterface(
+	d := s.client.MustDeviceByNameStrict(name)
+	i := s.client.MustCreateInterface(
 		d,
 		body.Name,
 		upstream.InterfaceTypeValue(body.Type),

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
@@ -32,7 +33,7 @@ func (s *Server) CreateMergeRequestNote(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "create merge request note")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	return response.SuccessAny(v)

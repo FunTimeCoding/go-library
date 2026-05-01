@@ -10,5 +10,5 @@ func (s *Server) RunCron(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, convert.CronResult(s.habitica.Cron()))
+	web.EncodeNotation(w, convert.CronResult(s.habitica.MustCron()))
 }

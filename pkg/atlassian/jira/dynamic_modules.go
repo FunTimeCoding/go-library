@@ -5,8 +5,15 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 )
 
-func (c *Client) DynamicModules() {
-	status, response := c.basic.GetPath(constant.Dynamic)
+func (c *Client) DynamicModules() error {
+	status, body, e := c.basic.GetPath(constant.Dynamic)
+
+	if e != nil {
+		return e
+	}
+
 	// 401 {"message":"The request is not from a Connect app."}
-	fmt.Printf("DynamicModule: %d %s\n", status, response)
+	fmt.Printf("DynamicModule: %d %s\n", status, body)
+
+	return nil
 }

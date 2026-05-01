@@ -5,11 +5,12 @@ import "github.com/andygrunwald/go-jira"
 func (c *Client) Comment(
 	key string,
 	body string,
-) {
-	_, r, e := c.client.Issue.AddCommentWithContext(
+) error {
+	_, _, e := c.client.Issue.AddCommentWithContext(
 		c.context,
 		key,
 		&jira.Comment{Body: body},
 	)
-	panicOnError(r, e)
+
+	return e
 }

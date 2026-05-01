@@ -2,7 +2,6 @@ package gonetbd
 
 import (
 	"context"
-	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
@@ -24,9 +23,7 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(o.Client), m)
-				generative.New(
-					model_context.New(o.Client).Nested(),
-				).Setup(m)
+				model_context.New(o.Client, h).Mount(m)
 			},
 			web.RecoveryMiddleware(h),
 		),

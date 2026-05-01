@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -30,8 +31,23 @@ func (s *Server) createCluster(
 		return response.Fail("site is required: %v", h)
 	}
 
-	t := s.client.ClusterTypeByName(typeName)
-	site := s.client.SiteByName(siteName)
+	t, i := s.client.ClusterTypeByName(typeName)
 
-	return response.SuccessAny(s.client.CreateCluster(name, t, site))
+	if i != nil {
+		return s.captureFail(i, "cluster type not found")
+	}
+
+	site, j := s.client.SiteByName(siteName)
+
+	if j != nil {
+		return s.captureFail(j, "site not found")
+	}
+
+	result, k := s.client.CreateCluster(name, t, site)
+
+	if k != nil {
+		return s.captureFail(k, "cluster not created")
+	}
+
+	return response.SuccessAny(convert.Cluster(result))
 }

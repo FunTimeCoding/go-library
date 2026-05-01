@@ -7,7 +7,7 @@ import (
 )
 
 func Watch() {
-	for _, i := range common.Jira().WatchedIssues() {
+	for _, i := range common.Jira().MustWatchedIssues() {
 		fmt.Println(i.Format(option.Color))
 	}
 }

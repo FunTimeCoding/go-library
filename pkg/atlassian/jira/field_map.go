@@ -2,12 +2,18 @@ package jira
 
 import "github.com/funtimecoding/go-library/pkg/atlassian/jira/field_map"
 
-func (c *Client) FieldMap() *field_map.Map {
+func (c *Client) FieldMap() (*field_map.Map, error) {
 	if c.fieldMap != nil {
-		return c.fieldMap
+		return c.fieldMap, nil
 	}
 
-	c.fieldMap = field_map.New(c.Fields())
+	fields, e := c.Fields()
 
-	return c.fieldMap
+	if e != nil {
+		return nil, e
+	}
+
+	c.fieldMap = field_map.New(fields)
+
+	return c.fieldMap, nil
 }

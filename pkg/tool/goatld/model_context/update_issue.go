@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
@@ -39,7 +40,12 @@ func (s *Server) updateIssue(
 		fieldsRaw == "" {
 		return response.Fail("no fields to update")
 	}
-	before := s.jira.Issue(key)
+	before, g := s.jira.Issue(key)
+
+	if g != nil {
+		return s.captureFail(g, "issue not found")
+	}
+
 	raw := issue.Raw(key)
 	raw.Fields.Unknowns = make(tcontainer.MarshalMap)
 
@@ -92,7 +98,11 @@ func (s *Server) updateIssue(
 			)
 		}
 
-		fieldMap := s.jira.FieldMap()
+		fieldMap, h := s.jira.FieldMap()
+
+		if h != nil {
+			return s.captureFail(h, "Jira API unreachable")
+		}
 
 		for name, value := range fields {
 			field := fieldMap.ByName(name)
@@ -115,20 +125,22 @@ func (s *Server) updateIssue(
 		fieldsRaw != ""
 
 	if hasFieldChanges {
-		_, resp, g := s.jira.Nested().Issue.UpdateWithContext(
+		_, resp, i := s.jira.Nested().Issue.UpdateWithContext(
 			c,
 			raw,
 		)
 
-		if g != nil {
+		if i != nil {
 			if resp != nil && resp.Body != nil {
-				return response.Fail(
+				return s.captureFail(
+					i,
+					fmt.Sprintf(
 					"update failed: %s",
 					string(system.ReadAll(resp.Body)),
-				)
+				))
 			}
 
-			return response.Fail("update failed: %v", g)
+			return s.captureFail(i, "issue not updated")
 		}
 	}
 
@@ -139,25 +151,31 @@ func (s *Server) updateIssue(
 			return fail, g
 		}
 
-		resp, h := s.jira.Nested().Issue.UpdateAssigneeWithContext(
+		resp, j := s.jira.Nested().Issue.UpdateAssigneeWithContext(
 			c,
 			key,
 			user,
 		)
 
-		if h != nil {
+		if j != nil {
 			if resp != nil && resp.Body != nil {
-				return response.Fail(
+				return s.captureFail(
+					j,
+					fmt.Sprintf(
 					"assign failed: %s",
 					string(system.ReadAll(resp.Body)),
-				)
+				))
 			}
 
-			return response.Fail("assign failed: %v", h)
+			return s.captureFail(j, "assignment not applied")
 		}
 	}
 
-	after := s.jira.Issue(key)
+	after, k := s.jira.Issue(key)
+
+	if k != nil {
+		return s.captureFail(k, "issue updated but retrieval failed")
+	}
 
 	return response.SuccessAny(
 		convert.JiraIssueDiff(before, after, noDiff, customFieldNames),

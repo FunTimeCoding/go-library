@@ -2,19 +2,27 @@ package basic
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
-	"github.com/funtimecoding/go-library/pkg/web"
 	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
+	"io"
+	"net/http"
+	"strings"
 )
 
 func (c *Client) PostOldPath(
 	p string,
 	body string,
-) string {
-	r := web.NewPost(
+) (string, error) {
+	r, e := http.NewRequest(
+		http.MethodPost,
 		locator.New(c.host).Base(constant.OldBase).Path(p).String(),
-		body,
+		strings.NewReader(body),
 	)
+
+	if e != nil {
+		return "", e
+	}
+
 	r.SetBasicAuth(c.user, c.token)
 	r.Header[webConstant.Accept] = []string{
 		webConstant.Object,
@@ -22,6 +30,21 @@ func (c *Client) PostOldPath(
 	r.Header[webConstant.ContentType] = []string{
 		webConstant.Object,
 	}
+	result, f := http.DefaultClient.Do(r)
 
-	return web.ReadString(web.Send(web.Client(), r))
+	if f != nil {
+		return "", f
+	}
+
+	b, g := io.ReadAll(result.Body)
+
+	if h := result.Body.Close(); h != nil {
+		return "", h
+	}
+
+	if g != nil {
+		return "", g
+	}
+
+	return string(b), nil
 }

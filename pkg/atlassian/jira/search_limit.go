@@ -10,17 +10,27 @@ func (c *Client) SearchLimit(
 	limit int,
 	query string,
 	a ...any,
-) []*issue.Issue {
+) ([]*issue.Issue, error) {
 	if len(a) > 0 {
 		query = fmt.Sprintf(query, a...)
 	}
 
-	page, r, e := c.client.Issue.SearchV2JQL(
+	page, _, e := c.client.Issue.SearchV2JQL(
 		query,
 		&jira.SearchOptionsV2{Fields: []string{"*all"}, MaxResults: limit},
 	)
-	panicOnError(r, e)
-	result := issue.NewSlice(page, c.IssueOption())
 
-	return c.enrichMany(result)
+	if e != nil {
+		return nil, e
+	}
+
+	o, f := c.IssueOption()
+
+	if f != nil {
+		return nil, f
+	}
+
+	result := issue.NewSlice(page, o)
+
+	return c.enrichMany(result), nil
 }

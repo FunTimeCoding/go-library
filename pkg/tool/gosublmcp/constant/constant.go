@@ -11,4 +11,6 @@ const (
 	SaveView   = "save_view"
 	CloseView  = "close_view"
 	OpenFile   = "open_file"
+
+	NotResponding = "Sublime Text not responding"
 )

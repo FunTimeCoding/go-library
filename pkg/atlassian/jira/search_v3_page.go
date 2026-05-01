@@ -12,9 +12,9 @@ func (c *Client) searchV3Page(
 	maximumResults int,
 	nextPageToken string,
 	query string,
-) *response.Search {
+) (*response.Search, error) {
 	var result response.Search
-	status, r := c.basic.Get(
+	status, r, e := c.basic.Get(
 		c.basic.Base().Copy().Base(constant.Base).Path(constant.Search).Set(
 			parameter.Fields,
 			constant.AllFields,
@@ -26,11 +26,16 @@ func (c *Client) searchV3Page(
 			constant.ChangelogExpand,
 		).String(),
 	)
+
+	if e != nil {
+		return nil, e
+	}
+
 	notation.DecodeStrict(r, &result, true)
 
 	if false {
 		fmt.Printf("Response: %d %s\n", status, r)
 	}
 
-	return &result
+	return &result, nil
 }

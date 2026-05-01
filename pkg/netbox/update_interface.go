@@ -1,7 +1,6 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/integers64"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
@@ -17,14 +16,27 @@ func (c *Client) UpdateInterface(
 	name string,
 	t netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
-) *network.Interface {
-	p := c.PhysicalAddress(h)
+) (*network.Interface, error) {
+	p, e := c.PhysicalAddress(h)
 
-	if p == nil {
-		p = c.CreatePhysical(h, "")
+	if e != nil {
+		return nil, e
 	}
 
-	i := c.DeviceInterfaceByNameStrict(d, name)
+	if p == nil {
+		p, e = c.CreatePhysical(h, "")
+
+		if e != nil {
+			return nil, e
+		}
+	}
+
+	i, f := c.DeviceInterfaceByNameStrict(d, name)
+
+	if f != nil {
+		return nil, f
+	}
+
 	var assigned bool
 
 	if p.ObjectType == constant.InterfaceAddress {
@@ -34,7 +46,11 @@ func (c *Client) UpdateInterface(
 	}
 
 	if !assigned {
-		c.AssignPhysicalToInterface(p, i)
+		_, g := c.AssignPhysicalToInterface(p, i)
+
+		if g != nil {
+			return nil, g
+		}
 	}
 
 	v := netbox.NewBriefDeviceRequest()
@@ -49,11 +65,20 @@ func (c *Client) UpdateInterface(
 			netbox.NewBriefMACAddressRequest(h.String()),
 		),
 	)
-	result, r, e := c.client.DcimAPI.DcimInterfacesUpdate(
-		c.context,
-		c.DeviceInterfaceByNameStrict(d, name).Identifier,
-	).WritableInterfaceRequest(*q).Execute()
-	errors.PanicOnWebError(r, e)
+	j, h2 := c.DeviceInterfaceByNameStrict(d, name)
 
-	return network.New(result)
+	if h2 != nil {
+		return nil, h2
+	}
+
+	result, _, k := c.client.DcimAPI.DcimInterfacesUpdate(
+		c.context,
+		j.Identifier,
+	).WritableInterfaceRequest(*q).Execute()
+
+	if k != nil {
+		return nil, k
+	}
+
+	return network.New(result), nil
 }

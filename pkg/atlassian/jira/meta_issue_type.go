@@ -1,19 +1,19 @@
 package jira
 
 import (
+	"fmt"
 	"github.com/andygrunwald/go-jira"
-	"log"
 )
 
 func (c *Client) MetaIssueType(
 	p *jira.MetaProject,
 	issueType string,
-) *jira.MetaIssueType {
+) (*jira.MetaIssueType, error) {
 	result := p.GetIssueTypeWithName(issueType)
 
 	if result == nil {
-		log.Panicf("issue type not found: %s", issueType)
+		return nil, fmt.Errorf("issue type not found: %s", issueType)
 	}
 
-	return result
+	return result, nil
 }

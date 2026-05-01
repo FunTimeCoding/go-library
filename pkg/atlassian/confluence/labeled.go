@@ -5,19 +5,31 @@ import (
 	"slices"
 )
 
-func (c *Client) Labeled() []*page.Page {
+func (c *Client) Labeled() ([]*page.Page, error) {
+	labels, e := c.Labels()
+
+	if e != nil {
+		return nil, e
+	}
+
 	var result []*page.Page
 	var identifiers []string
 
-	for _, l := range c.Labels() {
+	for _, l := range labels {
 		if slices.Contains(c.labels, l.Name) {
 			identifiers = append(identifiers, l.Id)
 		}
 	}
 
 	for _, identifier := range identifiers {
-		result = append(result, c.PagesByLabel(identifier)...)
+		pages, f := c.PagesByLabel(identifier)
+
+		if f != nil {
+			return nil, f
+		}
+
+		result = append(result, pages...)
 	}
 
-	return result
+	return result, nil
 }

@@ -10,31 +10,37 @@ import (
 func (c *Client) PageBySpaceAndName(
 	spaceName string,
 	name string,
-) *page.Page {
-	s := c.SpaceByName(spaceName)
+) (*page.Page, error) {
+	s, e := c.SpaceByName(spaceName)
+
+	if e != nil {
+		return nil, e
+	}
 
 	if s == nil {
-		return nil
+		return nil, nil
+	}
+
+	body, f := c.basic.GetV2(
+		c.basic.Base().Copy().Path(constant.Page).Set(
+			constant.BodyFormat,
+			constant.StorageFormat,
+		).Set(
+			constant.SpaceIdentifier,
+			s.Identifier,
+		).Set(constant.Title, name).String(),
+	)
+
+	if f != nil {
+		return nil, f
 	}
 
 	var result *response.Pages
-	notation.DecodeStrict(
-		c.basic.GetV2(
-			c.basic.Base().Copy().Path(constant.Page).Set(
-				constant.BodyFormat,
-				constant.StorageFormat,
-			).Set(
-				constant.SpaceIdentifier,
-				s.Identifier,
-			).Set(constant.Title, name).String(),
-		),
-		&result,
-		false,
-	)
+	notation.DecodeStrict(body, &result, false)
 
 	if len(result.Results) == 1 {
-		return page.New(result.Results[0], c.host)
+		return page.New(result.Results[0], c.host), nil
 	}
 
-	return nil
+	return nil, nil
 }

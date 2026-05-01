@@ -24,7 +24,11 @@ func (s *Server) searchIssues(
 		return response.Fail("limit is required: %v", g)
 	}
 
-	return response.SuccessAny(
-		convert.JiraIssues(s.jira.SearchLimit(int(limit), query)),
-	)
+	result, h := s.jira.SearchLimit(int(limit), query)
+
+	if h != nil {
+		return s.captureFail(h, "Jira API unreachable")
+	}
+
+	return response.SuccessAny(convert.JiraIssues(result))
 }

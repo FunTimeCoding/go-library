@@ -3,7 +3,6 @@ package jira
 import (
 	"github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/customer"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/integers"
 )
 
@@ -12,7 +11,7 @@ func (c *Client) CreateCustomerIssue(
 	requestType int,
 	summary string,
 	description string,
-) *models.CustomerRequestScheme {
+) (*models.CustomerRequestScheme, error) {
 	result, _, e := c.service.Request.Create(
 		c.context,
 		&models.CreateCustomerRequestPayloadScheme{
@@ -24,7 +23,6 @@ func (c *Client) CreateCustomerIssue(
 			},
 		},
 	)
-	errors.PanicOnError(e)
 
-	return result
+	return result, e
 }

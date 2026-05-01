@@ -7,11 +7,11 @@ import (
 
 func New(path string) *Store {
 	c := bolt.New(path)
-	c.Update(
+	c.MustUpdate(
 		func(t *bbolt.Tx) error {
-			c.CreateBucket(t, Bucket)
+			_, e := c.CreateBucket(t, Bucket)
 
-			return nil
+			return e
 		},
 	)
 

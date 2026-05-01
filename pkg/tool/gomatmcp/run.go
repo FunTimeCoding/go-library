@@ -3,8 +3,6 @@ package gomatmcp
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost"
-	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
-	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/model_context"
@@ -12,7 +10,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/option"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/getsentry/sentry-go"
-	"github.com/mark3labs/mcp-go/server"
 	"net/http"
 )
 
@@ -34,16 +31,12 @@ func Run(
 		l,
 		append(
 			p,
-			lifecycle.WithServer(
+			lifecycle.WithServerMiddleware(
 				web.AddressPort(o.Port),
 				func(u *http.ServeMux) {
-					s := server.NewMCPServer(
-						"Mattermost MCP",
-						constant.DefaultVersion,
-					)
-					addTool(s, model_context.New(c, m, h), m != nil)
-					generative.New(s).Setup(u)
+					model_context.New(c, m, h).Mount(u)
 				},
+				web.RecoveryMiddleware(h),
 			),
 		)...,
 	).RunUntilSignal()

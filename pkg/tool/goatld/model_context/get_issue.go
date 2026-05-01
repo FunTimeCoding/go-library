@@ -21,13 +21,23 @@ func (s *Server) getIssue(
 		return response.Fail("key is required: %v", f)
 	}
 
-	i := s.jira.Issue(key)
+	i, g := s.jira.Issue(key)
+
+	if g != nil {
+		return s.captureFail(g, "issue not found")
+	}
+
 	includeCustom := r.GetBool(constant.CustomFields, false)
 	includeComments := r.GetBool(constant.Comments, false)
 	var t *jira.MetaIssueType
 
 	if includeCustom {
-		p := s.jira.MetaProject(i.Raw.Fields.Project.Key)
+		p, h := s.jira.MetaProject(i.Raw.Fields.Project.Key)
+
+		if h != nil {
+			return s.captureFail(h, "project metadata not found")
+		}
+
 		t = p.GetIssueTypeWithName(i.Type)
 	}
 

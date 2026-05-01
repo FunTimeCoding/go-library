@@ -30,8 +30,11 @@ func (s *Server) updatePage(
 	}
 
 	message := r.GetString(parameter.Message, "")
+	result, i := s.confluence.UpdatePage(identifier, title, body, message)
 
-	return response.SuccessAny(
-		s.confluence.UpdatePage(identifier, title, body, message),
-	)
+	if i != nil {
+		return s.captureFail(i, "page not updated")
+	}
+
+	return response.SuccessAny(result)
 }

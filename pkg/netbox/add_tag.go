@@ -8,12 +8,11 @@ import (
 func (c *Client) AddTag(
 	deviceName string,
 	tag string,
-) *device.Device {
-	t := c.TagByName(tag)
+) (*device.Device, error) {
+	t, e := c.TagByName(tag)
 
-	if t == nil {
-		// Does not happen because TagByName panics if not found
-		return nil
+	if e != nil {
+		return nil, e
 	}
 
 	if c.verbose {
@@ -24,7 +23,11 @@ func (c *Client) AddTag(
 		)
 	}
 
-	d := c.DeviceByNameStrict(deviceName)
+	d, f := c.DeviceByNameStrict(deviceName)
+
+	if f != nil {
+		return nil, f
+	}
 
 	if c.verbose {
 		fmt.Printf("add tag device: %+v\n", d)
@@ -33,7 +36,13 @@ func (c *Client) AddTag(
 
 	d.AddTag(t.Name)
 	w := devicePatch(d)
-	w.SetTags(c.tagsNestedRequest(d.Tags))
+	tags, g := c.tagsNestedRequest(d.Tags)
+
+	if g != nil {
+		return nil, g
+	}
+
+	w.SetTags(tags)
 
 	return c.updateDevice(d, w)
 }

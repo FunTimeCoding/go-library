@@ -14,23 +14,30 @@ func (c *Client) UpdatePage(
 	title string,
 	markdown string,
 	message string,
-) *page.Page {
-	current := c.Page(identifier)
-	var result *response.Page
-	notation.DecodeStrict(
-		c.basic.PutV2Path(
-			fmt.Sprintf("%s/%s", constant.Page, identifier),
-			page_put.New(
-				identifier,
-				title,
-				page.ToStorage(markdown),
-				current.Raw.Version.Number+1,
-				message,
-			).Encode(),
-		),
-		&result,
-		false,
+) (*page.Page, error) {
+	current, e := c.Page(identifier)
+
+	if e != nil {
+		return nil, e
+	}
+
+	body, f := c.basic.PutV2Path(
+		fmt.Sprintf("%s/%s", constant.Page, identifier),
+		page_put.New(
+			identifier,
+			title,
+			page.ToStorage(markdown),
+			current.Raw.Version.Number+1,
+			message,
+		).Encode(),
 	)
 
-	return page.New(result, c.host)
+	if f != nil {
+		return nil, f
+	}
+
+	var result *response.Page
+	notation.DecodeStrict(body, &result, false)
+
+	return page.New(result, c.host), nil
 }

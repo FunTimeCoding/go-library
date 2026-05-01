@@ -10,7 +10,7 @@ import (
 func Physical() {
 	n := netbox.NewEnvironment()
 
-	for _, p := range n.PhysicalAddressesByHardware(
+	for _, p := range n.MustPhysicalAddressesByHardware(
 		network.PhysicalAddress(constant.PhysicalTest0),
 	) {
 		fmt.Printf("Read physical address: %+v\n", p)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -19,7 +20,7 @@ func (s *Server) OpenFile(
 	v, e := s.client.OpenFile(a.FilePath)
 
 	if e != nil {
-		return s.captureFail(e, "open file")
+		return s.captureFail(e, constant.NotResponding)
 	}
 
 	return response.SuccessAny(v)

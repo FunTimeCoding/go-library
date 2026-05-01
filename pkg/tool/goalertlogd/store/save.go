@@ -6,19 +6,17 @@ import (
 	"go.etcd.io/bbolt"
 )
 
-func (s *Store) Save(r Record) string {
+func (s *Store) Save(r Record) (string, error) {
 	key := fmt.Sprintf("%s|%d", r.Fingerprint, r.Start.UnixNano())
-	s.client.Update(
+	e := s.client.Update(
 		func(t *bbolt.Tx) error {
-			s.client.PutBytes(
+			return s.client.PutBytes(
 				s.client.Bucket(t, Bucket),
 				key,
 				notation.Marshal(r),
 			)
-
-			return nil
 		},
 	)
 
-	return key
+	return key, e
 }

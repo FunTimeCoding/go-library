@@ -41,7 +41,8 @@ func New(
 	}
 
 	// Verify token. Search V2 returns 200 even if token is invalid.
-	result.User()
+	_, e := result.User()
+	errors.PanicOnError(e)
 
 	return result
 }

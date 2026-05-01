@@ -1,16 +1,22 @@
 package jira
 
 import (
+	"fmt"
 	"github.com/andygrunwald/go-jira"
-	"log"
 )
 
-func (c *Client) MetaProject(key string) *jira.MetaProject {
-	result := c.CreateMeta(key).GetProjectWithKey(key)
+func (c *Client) MetaProject(key string) (*jira.MetaProject, error) {
+	meta, e := c.CreateMeta(key)
 
-	if result == nil {
-		log.Panicf("project not found: %s", key)
+	if e != nil {
+		return nil, e
 	}
 
-	return result
+	result := meta.GetProjectWithKey(key)
+
+	if result == nil {
+		return nil, fmt.Errorf("project not found: %s", key)
+	}
+
+	return result, nil
 }

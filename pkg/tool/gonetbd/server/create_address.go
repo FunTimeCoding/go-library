@@ -15,9 +15,9 @@ func (s *Server) CreateAddress(
 ) {
 	var body generated.CreateAddressRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	d := s.client.DeviceByNameStrict(name)
-	i := s.client.DeviceInterfaceByNameStrict(d, body.Interface)
-	a := s.client.CreateAddress(i.Identifier, body.Address)
+	d := s.client.MustDeviceByNameStrict(name)
+	i := s.client.MustDeviceInterfaceByNameStrict(d, body.Interface)
+	a := s.client.MustCreateAddress(i.Identifier, body.Address)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

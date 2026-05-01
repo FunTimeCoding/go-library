@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -29,7 +30,7 @@ func (s *Server) AddReaction(
 	e = s.client.React(p, a.EmojiName)
 
 	if e != nil {
-		return s.captureFail(e, "add reaction failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	return response.SuccessAny(

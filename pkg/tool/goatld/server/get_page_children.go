@@ -14,7 +14,7 @@ func (s *Server) GetPageChildren(
 	web.EncodeNotation(
 		w,
 		convert.ConfluencePagesFromPages(
-			s.confluence.ChildPagesByIdentifier(identifier),
+			s.confluence.MustChildPagesByIdentifier(identifier),
 		),
 	)
 }

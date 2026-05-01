@@ -2,9 +2,8 @@ package jira
 
 import "github.com/andygrunwald/go-jira"
 
-func (c *Client) User() *jira.User {
-	result, r, e := c.client.User.GetSelf()
-	panicOnError(r, e)
+func (c *Client) User() (*jira.User, error) {
+	result, _, e := c.client.User.GetSelf()
 
-	return result
+	return result, e
 }

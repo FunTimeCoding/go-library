@@ -1,13 +1,20 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/rack"
 )
 
-func (c *Client) RackByName(n string) *rack.Rack {
-	result := c.RacksByName(n)
-	unexpected.Count(1, len(result))
+func (c *Client) RackByName(n string) (*rack.Rack, error) {
+	result, e := c.RacksByName(n)
 
-	return result[0]
+	if e != nil {
+		return nil, e
+	}
+
+	if len(result) != 1 {
+		return nil, fmt.Errorf("expected 1 rack named %s, got %d", n, len(result))
+	}
+
+	return result[0], nil
 }

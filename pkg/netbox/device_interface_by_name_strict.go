@@ -1,26 +1,30 @@
 package netbox
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 	"github.com/funtimecoding/go-library/pkg/netbox/network"
-	"log"
 )
 
 func (c *Client) DeviceInterfaceByNameStrict(
 	d *device.Device,
 	name string,
-) *network.Interface {
-	for _, i := range c.DeviceInterfaces(d.Identifier) {
+) (*network.Interface, error) {
+	result, e := c.DeviceInterfaces(d.Identifier)
+
+	if e != nil {
+		return nil, e
+	}
+
+	for _, i := range result {
 		if i.Name == name {
-			return i
+			return i, nil
 		}
 	}
 
-	log.Panicf(
+	return nil, fmt.Errorf(
 		"interface %s not found for device %s",
 		name,
 		d.Name,
 	)
-
-	return network.Stub()
 }

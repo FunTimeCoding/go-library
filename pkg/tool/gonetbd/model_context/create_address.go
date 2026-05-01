@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -29,8 +30,23 @@ func (s *Server) createAddress(
 		return response.Fail("address is required: %v", h)
 	}
 
-	d := s.client.DeviceByNameStrict(device)
-	i := s.client.DeviceInterfaceByNameStrict(d, interfaceName)
+	d, i := s.client.DeviceByNameStrict(device)
 
-	return response.SuccessAny(s.client.CreateAddress(i.Identifier, address))
+	if i != nil {
+		return s.captureFail(i, "device not found")
+	}
+
+	iface, j := s.client.DeviceInterfaceByNameStrict(d, interfaceName)
+
+	if j != nil {
+		return s.captureFail(j, "interface not found on device")
+	}
+
+	result, k := s.client.CreateAddress(iface.Identifier, address)
+
+	if k != nil {
+		return s.captureFail(k, "address not assigned")
+	}
+
+	return response.SuccessAny(convert.Address(result))
 }

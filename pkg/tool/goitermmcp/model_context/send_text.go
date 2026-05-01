@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/goitermmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -19,7 +20,7 @@ func (s *Server) SendText(
 	e := s.client.SendText(a.SessionIdentifier, a.Text)
 
 	if e != nil {
-		return s.captureFail(e, "send text")
+		return s.captureFail(e, constant.NotResponding)
 	}
 
 	if a.SendEnter {

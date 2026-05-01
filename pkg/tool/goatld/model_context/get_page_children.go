@@ -17,7 +17,11 @@ func (s *Server) getPageChildren(
 		return response.Fail("identifier is required: %v", f)
 	}
 
-	return response.SuccessAny(
-		s.confluence.ChildPagesByIdentifier(identifier),
-	)
+	result, g := s.confluence.ChildPagesByIdentifier(identifier)
+
+	if g != nil {
+		return s.captureFail(g, "Confluence API unreachable")
+	}
+
+	return response.SuccessAny(result)
 }

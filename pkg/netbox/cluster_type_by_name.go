@@ -1,18 +1,22 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/cluster_type"
 )
 
-func (c *Client) ClusterTypeByName(n string) *cluster_type.Type {
-	for _, t := range c.ClusterTypes() {
+func (c *Client) ClusterTypeByName(n string) (*cluster_type.Type, error) {
+	result, e := c.ClusterTypes()
+
+	if e != nil {
+		return nil, e
+	}
+
+	for _, t := range result {
 		if t.Name == n {
-			return t
+			return t, nil
 		}
 	}
 
-	errors.NotFound(n)
-
-	return nil
+	return nil, fmt.Errorf("cluster type not found: %s", n)
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"io"
 )
@@ -24,13 +25,13 @@ func (s *Server) GetPipelineJobOutput(
 	r, _, e := s.client.Jobs.GetTraceFile(a.Project, a.Job)
 
 	if e != nil {
-		return s.captureFail(e, "get pipeline job output")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	b, e := io.ReadAll(r)
 
 	if e != nil {
-		return s.captureFail(e, "read job output")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	return mcp.NewToolResultText(string(b)), nil

@@ -1,21 +1,28 @@
 package basic
 
 import (
-	"bytes"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
-	"github.com/funtimecoding/go-library/pkg/web"
 	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
+	"io"
+	"net/http"
+	"strings"
 )
 
 func (c *Client) PutV2Path(
 	p string,
 	body string,
-) string {
-	r := web.NewPutBytes(
+) (string, error) {
+	r, e := http.NewRequest(
+		http.MethodPut,
 		locator.New(c.host).Base(constant.Base).Path(p).String(),
-		bytes.NewBuffer([]byte(body)),
+		strings.NewReader(body),
 	)
+
+	if e != nil {
+		return "", e
+	}
+
 	r.SetBasicAuth(c.user, c.token)
 	r.Header[webConstant.Accept] = []string{
 		webConstant.Object,
@@ -23,6 +30,21 @@ func (c *Client) PutV2Path(
 	r.Header[webConstant.ContentType] = []string{
 		webConstant.Object,
 	}
+	result, f := http.DefaultClient.Do(r)
 
-	return web.ReadString(web.Send(web.Client(), r))
+	if f != nil {
+		return "", f
+	}
+
+	b, g := io.ReadAll(result.Body)
+
+	if h := result.Body.Close(); h != nil {
+		return "", h
+	}
+
+	if g != nil {
+		return "", g
+	}
+
+	return string(b), nil
 }

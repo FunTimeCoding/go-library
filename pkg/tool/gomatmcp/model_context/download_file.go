@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"os"
 	"path/filepath"
@@ -24,7 +25,7 @@ func (s *Server) DownloadFile(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "get file info failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	b, _, e := s.client.Nested().GetFile(
@@ -33,7 +34,7 @@ func (s *Server) DownloadFile(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "download failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	path := a.Path
@@ -45,7 +46,7 @@ func (s *Server) DownloadFile(
 	e = os.WriteFile(path, b, 0644)
 
 	if e != nil {
-		return s.captureFail(e, "write failed")
+		return s.captureFail(e, "file write failed")
 	}
 
 	return response.SuccessAny(

@@ -5,9 +5,9 @@ import (
 	"go.etcd.io/bbolt"
 )
 
-func (s *Store) Count() int {
+func (s *Store) Count() (int, error) {
 	var result int
-	s.client.View(
+	e := s.client.View(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)
 
@@ -15,7 +15,7 @@ func (s *Store) Count() int {
 				return nil
 			}
 
-			bolt.For(
+			return bolt.For(
 				b,
 				func(
 					_ string,
@@ -24,10 +24,8 @@ func (s *Store) Count() int {
 					result++
 				},
 			)
-
-			return nil
 		},
 	)
 
-	return result
+	return result, e
 }

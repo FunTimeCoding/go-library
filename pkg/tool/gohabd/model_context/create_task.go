@@ -3,7 +3,7 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/habitica"
+	"github.com/funtimecoding/go-library/pkg/habitica/request"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -25,13 +25,16 @@ func (s *Server) createTask(
 		return response.Fail("text is required: %v", g)
 	}
 
-	body := habitica.CreateTaskBody{
+	body := request.CreateTaskBody{
 		Type:  taskType,
 		Text:  text,
 		Notes: r.GetString(constant.Notes, ""),
 	}
+	result, h := s.habitica.CreateTask(body)
 
-	return response.SuccessAny(
-		convert.Task(s.habitica.CreateTask(body)),
-	)
+	if h != nil {
+		return s.captureFail(h, constant.Unreachable)
+	}
+
+	return response.SuccessAny(convert.Task(result))
 }

@@ -2,6 +2,6 @@ package jira
 
 import "github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 
-func (c *Client) WatchedIssues() []*issue.Issue {
+func (c *Client) WatchedIssues() ([]*issue.Issue, error) {
 	return c.SearchFull("issue in watchedIssues() ORDER BY key ASC")
 }

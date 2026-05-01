@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/tenant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -15,9 +16,9 @@ func (s *Server) CreateDevice(
 ) {
 	var body generated.CreateDeviceRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	role := s.client.DeviceRoleByName(body.Role)
-	deviceType := s.client.DeviceTypeByName(body.Type)
-	site := s.client.SiteByName(body.Site)
+	role := s.client.MustDeviceRoleByName(body.Role)
+	deviceType := s.client.MustDeviceTypeByName(body.Type)
+	site := s.client.MustSiteByName(body.Site)
 	var tags []string
 
 	if body.Tags != nil {
@@ -27,11 +28,11 @@ func (s *Server) CreateDevice(
 	var ten *tenant.Tenant
 
 	if body.Tenant != nil && *body.Tenant != "" {
-		ten = s.client.TenantByName(*body.Tenant)
+		ten = s.client.MustTenantByName(*body.Tenant)
 	}
 
-	d := s.client.CreateDevice(body.Name, role, tags, deviceType, site, ten)
+	d := s.client.MustCreateDevice(body.Name, role, tags, deviceType, site, ten)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, toDevice(d))
+	web.Encode(w, convert.Device(d))
 }

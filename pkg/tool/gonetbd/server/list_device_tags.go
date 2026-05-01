@@ -10,5 +10,5 @@ func (s *Server) ListDeviceTags(
 	_ *http.Request,
 	name string,
 ) {
-	web.EncodeNotation(w, s.client.DeviceTagNames(name))
+	web.EncodeNotation(w, s.client.MustDeviceTagNames(name))
 }

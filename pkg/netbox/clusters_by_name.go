@@ -1,15 +1,15 @@
 package netbox
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/netbox/cluster"
-)
+import "github.com/funtimecoding/go-library/pkg/netbox/cluster"
 
-func (c *Client) ClustersByName(s string) []*cluster.Cluster {
-	result, r, e := c.client.VirtualizationAPI.VirtualizationClustersList(
+func (c *Client) ClustersByName(s string) ([]*cluster.Cluster, error) {
+	result, _, e := c.client.VirtualizationAPI.VirtualizationClustersList(
 		c.context,
 	).NameIc([]string{s}).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return cluster.NewSlice(result.Results)
+	if e != nil {
+		return nil, e
+	}
+
+	return cluster.NewSlice(result.Results), nil
 }

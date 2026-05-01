@@ -2,7 +2,6 @@ package gomaintlogd
 
 import (
 	"context"
-	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
@@ -29,7 +28,7 @@ func Run(
 			constant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s), m)
-				generative.New(model_context.New(s).Nested()).Setup(m)
+				model_context.New(s, h).Mount(m)
 				maintenanceWeb.New(s).Mount(m)
 			},
 			web.RecoveryMiddleware(h),

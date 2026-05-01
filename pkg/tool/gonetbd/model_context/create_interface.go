@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 	upstream "github.com/netbox-community/go-netbox/v4"
 )
@@ -31,13 +32,21 @@ func (s *Server) createInterface(
 		return response.Fail("type is required: %v", h)
 	}
 
-	d := s.client.DeviceByNameStrict(device)
+	d, i := s.client.DeviceByNameStrict(device)
 
-	return response.SuccessAny(
-		s.client.CreateInterface(
-			d,
-			name,
-			upstream.InterfaceTypeValue(interfaceType),
-		),
+	if i != nil {
+		return s.captureFail(i, "device not found")
+	}
+
+	result, j := s.client.CreateInterface(
+		d,
+		name,
+		upstream.InterfaceTypeValue(interfaceType),
 	)
+
+	if j != nil {
+		return s.captureFail(j, "interface not created")
+	}
+
+	return response.SuccessAny(convert.Interface(result))
 }

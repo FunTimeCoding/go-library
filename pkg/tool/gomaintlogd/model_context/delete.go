@@ -18,7 +18,7 @@ func (s *Server) delete(
 	}
 
 	if e := s.store.Delete(uint(id)); e != nil {
-		return response.Fail("failed to delete entry: %v", e)
+		return s.captureFail(e, constant.DatabaseUnreachable)
 	}
 
 	return response.Success("Entry %d deleted successfully", int(id))

@@ -10,7 +10,7 @@ func Export() {
 	c := confluence.NewEnvironment()
 	f := constant.Dense
 
-	for _, p := range c.ChildPages(c.DefaultSpace(), c.DefaultPage()) {
+	for _, p := range c.MustChildPages(c.DefaultSpace(), c.DefaultPage()) {
 		fmt.Println(p.Format(f))
 		c.Export(
 			p,

@@ -10,23 +10,13 @@ func Label() {
 	c := confluence.NewEnvironment()
 	f := constant.Dense
 
-	if true {
-		for _, l := range c.Labels() {
-			fmt.Printf("Label: %+v\n", l)
-		}
-
-		c.SetLabels([]string{"favourite"})
-
-		for _, o := range c.Labeled() {
-			fmt.Println(o.Format(f))
-		}
+	for _, l := range c.MustLabels() {
+		fmt.Printf("Label: %+v\n", l)
 	}
 
-	if false {
-		fmt.Println("LabeledKaos")
+	c.SetLabels([]string{"favourite"})
 
-		for _, o := range c.LabeledKaos() {
-			fmt.Println(o.Format(f))
-		}
+	for _, o := range c.MustLabeled() {
+		fmt.Println(o.Format(f))
 	}
 }

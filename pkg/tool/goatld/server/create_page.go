@@ -20,7 +20,7 @@ func (s *Server) CreatePage(
 	web.Encode(
 		w,
 		convert.ConfluencePageDetail(
-			s.confluence.CreatePage(
+			s.confluence.MustCreatePage(
 				c.SpaceIdentifier,
 				c.ParentIdentifier,
 				c.Title,

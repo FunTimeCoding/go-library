@@ -1,13 +1,9 @@
 package jira
 
-import (
-	"github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
-	"github.com/funtimecoding/go-library/pkg/errors"
-)
+import "github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
 
-func (c *Client) CustomerInformation() *models.InfoScheme {
+func (c *Client) CustomerInformation() (*models.InfoScheme, error) {
 	result, _, e := c.service.Info.Get(c.context)
-	errors.PanicOnError(e)
 
-	return result
+	return result, e
 }

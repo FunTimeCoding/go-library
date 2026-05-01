@@ -1,15 +1,14 @@
 package store
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"go.etcd.io/bbolt"
 	"time"
 )
 
-func (s *Store) Prune(cutoff time.Time) int {
+func (s *Store) Prune(cutoff time.Time) (int, error) {
 	var result int
-	s.client.Update(
+	e := s.client.Update(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)
 
@@ -30,7 +29,9 @@ func (s *Store) Prune(cutoff time.Time) int {
 			}
 
 			for _, k := range keys {
-				errors.PanicOnError(b.Delete(k))
+				if f := b.Delete(k); f != nil {
+					return f
+				}
 			}
 
 			result = len(keys)
@@ -39,5 +40,5 @@ func (s *Store) Prune(cutoff time.Time) int {
 		},
 	)
 
-	return result
+	return result, e
 }

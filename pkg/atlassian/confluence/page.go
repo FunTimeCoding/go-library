@@ -7,19 +7,21 @@ import (
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
-func (c *Client) Page(identifier string) *page.Page {
-	var result *response.Page
-	notation.DecodeStrict(
-		c.basic.GetV2(
-			c.basic.Base().Copy().Path(
-				"%s/%s",
-				constant.Page,
-				identifier,
-			).Set(constant.BodyFormat, constant.StorageFormat).String(),
-		),
-		&result,
-		false,
+func (c *Client) Page(identifier string) (*page.Page, error) {
+	body, e := c.basic.GetV2(
+		c.basic.Base().Copy().Path(
+			"%s/%s",
+			constant.Page,
+			identifier,
+		).Set(constant.BodyFormat, constant.StorageFormat).String(),
 	)
 
-	return page.New(result, c.host)
+	if e != nil {
+		return nil, e
+	}
+
+	var result *response.Page
+	notation.DecodeStrict(body, &result, false)
+
+	return page.New(result, c.host), nil
 }

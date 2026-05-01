@@ -5,6 +5,12 @@ import "github.com/funtimecoding/go-library/pkg/netbox/device"
 func (c *Client) DeleteInterfaceByName(
 	d *device.Device,
 	name string,
-) {
-	c.DeleteInterface(c.DeviceInterfaceByNameStrict(d, name).Identifier)
+) error {
+	i, e := c.DeviceInterfaceByNameStrict(d, name)
+
+	if e != nil {
+		return e
+	}
+
+	return c.DeleteInterface(i.Identifier)
 }

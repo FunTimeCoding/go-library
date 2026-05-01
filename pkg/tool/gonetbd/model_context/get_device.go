@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -17,5 +18,11 @@ func (s *Server) getDevice(
 		return response.Fail("name is required: %v", f)
 	}
 
-	return response.SuccessAny(s.client.DeviceByNameStrict(name))
+	result, g := s.client.DeviceByNameStrict(name)
+
+	if g != nil {
+		return s.captureFail(g, "device not found")
+	}
+
+	return response.SuccessAny(convert.Device(result))
 }

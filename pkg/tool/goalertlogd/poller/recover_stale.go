@@ -25,7 +25,7 @@ func (p *Poller) RecoverStale() {
 		}
 	}
 
-	unresolved := p.store.Unresolved()
+	unresolved := p.store.MustUnresolved()
 
 	for _, u := range unresolved {
 		if current[u.Fingerprint] {
@@ -40,7 +40,7 @@ func (p *Poller) RecoverStale() {
 			continue
 		}
 
-		p.store.Resolve(u.Key)
+		p.store.MustResolve(u.Key)
 		resolved++
 	}
 

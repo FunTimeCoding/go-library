@@ -1,11 +1,11 @@
 package convert
 
 import (
-	"github.com/funtimecoding/go-library/pkg/habitica"
+	"github.com/funtimecoding/go-library/pkg/habitica/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabd/generated/server"
 )
 
-func ScoreResult(r habitica.ScoreResult) server.ScoreResult {
+func ScoreResult(r response.ScoreResult) server.ScoreResult {
 	return server.ScoreResult{
 		Hp:    float32(r.HP),
 		Mp:    float32(r.MP),

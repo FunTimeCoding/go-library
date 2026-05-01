@@ -1,5 +1,6 @@
 package constant
 
+const Name = "Mattermost"
 const (
 	MyChannels        = "my_channels"
 	MyThreads         = "my_threads"
@@ -18,4 +19,6 @@ const (
 	GetUsers          = "get_users"
 	GetUserProfile    = "get_user_profile"
 	RunMonitoring     = "run_monitoring"
+
+	Unreachable = "Mattermost API unreachable"
 )

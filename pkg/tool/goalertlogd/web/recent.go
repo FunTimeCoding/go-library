@@ -29,7 +29,7 @@ func (s *Server) recent(
 		}
 	}
 
-	table := recentTable(s.store.ByTimeRange(start, end))
+	table := recentTable(s.store.MustByTimeRange(start, end))
 
 	if s.isHTMX(r) {
 		renderFragment(w, table)

@@ -11,7 +11,7 @@ func (s *Server) GetTransitions(
 	_ *http.Request,
 	key string,
 ) {
-	transitions := s.jira.Transitions(key)
+	transitions := s.jira.MustTransitions(key)
 	result := make([]*server.JiraTransition, 0, len(transitions))
 
 	for _, t := range transitions {

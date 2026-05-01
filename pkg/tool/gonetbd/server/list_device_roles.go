@@ -10,7 +10,7 @@ func (s *Server) ListDeviceRoles(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	roles := s.client.DeviceRoles()
+	roles := s.client.MustDeviceRoles()
 	result := make([]server.DeviceRole, 0, len(roles))
 
 	for _, r := range roles {

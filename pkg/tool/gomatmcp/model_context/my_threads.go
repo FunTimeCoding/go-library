@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 )
@@ -22,7 +23,7 @@ func (s *Server) MyThreads(
 	me, e := s.client.Me()
 
 	if e != nil {
-		return s.captureFail(e, "get current user failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	team := s.client.DefaultTeam()
@@ -52,7 +53,7 @@ func (s *Server) MyThreads(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "get threads failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	type participant struct {

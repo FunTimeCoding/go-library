@@ -11,5 +11,5 @@ func (s *Server) GetIssue(
 	_ *http.Request,
 	key string,
 ) {
-	web.EncodeNotation(w, convert.JiraIssue(s.jira.Issue(key)))
+	web.EncodeNotation(w, convert.JiraIssue(s.jira.MustIssue(key)))
 }

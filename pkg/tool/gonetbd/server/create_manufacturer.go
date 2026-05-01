@@ -14,7 +14,7 @@ func (s *Server) CreateManufacturer(
 ) {
 	var body generated.CreateNameRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	m := s.client.CreateManufacturer(body.Name)
+	m := s.client.MustCreateManufacturer(body.Name)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

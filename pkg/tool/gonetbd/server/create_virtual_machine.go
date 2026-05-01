@@ -14,8 +14,8 @@ func (s *Server) CreateVirtualMachine(
 ) {
 	var body generated.CreateVirtualMachineRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	cl := s.client.ClusterByName(body.Cluster)
-	vm := s.client.CreateVirtualMachine(body.Name, cl)
+	cl := s.client.MustClusterByName(body.Cluster)
+	vm := s.client.MustCreateVirtualMachine(body.Name, cl)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

@@ -1,7 +1,6 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 	"github.com/funtimecoding/go-library/pkg/netbox/device_role"
 	"github.com/funtimecoding/go-library/pkg/netbox/device_type"
@@ -17,7 +16,7 @@ func (c *Client) CreateDevice(
 	y *device_type.Type,
 	s *site.Site,
 	n *tenant.Tenant,
-) *device.Device {
+) (*device.Device, error) {
 	q := netbox.NewWritableDeviceWithConfigContextRequest(
 		netbox.BriefDeviceTypeRequestAsDeviceBayTemplateRequestDeviceType(
 			netbox.NewBriefDeviceTypeRequest(
@@ -50,14 +49,23 @@ func (c *Client) CreateDevice(
 	q.SetName(name)
 
 	if len(tags) > 0 {
-		q.SetTags(c.tagsNestedRequest(tags))
+		nested, e := c.tagsNestedRequest(tags)
+
+		if e != nil {
+			return nil, e
+		}
+
+		q.SetTags(nested)
 	}
 
 	q.SetStatus(device.ActiveStatus)
-	result, r, e := c.client.DcimAPI.DcimDevicesCreate(
+	result, _, e := c.client.DcimAPI.DcimDevicesCreate(
 		c.context,
 	).WritableDeviceWithConfigContextRequest(*q).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return device.New(result)
+	if e != nil {
+		return nil, e
+	}
+
+	return device.New(result), nil
 }

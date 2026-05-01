@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/netbox/tenant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -37,16 +38,40 @@ func (s *Server) createDevice(
 		return response.Fail("site is required: %v", i)
 	}
 
-	role := s.client.DeviceRoleByName(roleName)
-	deviceType := s.client.DeviceTypeByName(typeName)
-	site := s.client.SiteByName(siteName)
+	role, j := s.client.DeviceRoleByName(roleName)
+
+	if j != nil {
+		return s.captureFail(j, "device role not found")
+	}
+
+	deviceType, k := s.client.DeviceTypeByName(typeName)
+
+	if k != nil {
+		return s.captureFail(k, "device type not found")
+	}
+
+	site, l := s.client.SiteByName(siteName)
+
+	if l != nil {
+		return s.captureFail(l, "site not found")
+	}
+
 	var ten *tenant.Tenant
 
 	if t := r.GetString(constant.Tenant, ""); t != "" {
-		ten = s.client.TenantByName(t)
+		var n error
+		ten, n = s.client.TenantByName(t)
+
+		if n != nil {
+			return s.captureFail(n, "tenant not found")
+		}
 	}
 
-	return response.SuccessAny(
-		s.client.CreateDevice(name, role, nil, deviceType, site, ten),
-	)
+	result, m := s.client.CreateDevice(name, role, nil, deviceType, site, ten)
+
+	if m != nil {
+		return s.captureFail(m, "device not created")
+	}
+
+	return response.SuccessAny(convert.Device(result))
 }

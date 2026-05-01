@@ -5,14 +5,26 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 )
 
-func (c *Client) Favorites() []*page.Page {
+func (c *Client) Favorites() ([]*page.Page, error) {
+	results, e := c.Search("favorite=currentUser()")
+
+	if e != nil {
+		return nil, e
+	}
+
 	var result []*page.Page
 
-	for _, r := range c.Search("favorite=currentUser()") {
+	for _, r := range results {
 		if r.Raw.Type == constant.PageType {
-			result = append(result, c.Page(r.Raw.Id))
+			p, f := c.Page(r.Raw.Id)
+
+			if f != nil {
+				return nil, f
+			}
+
+			result = append(result, p)
 		}
 	}
 
-	return result
+	return result, nil
 }

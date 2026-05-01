@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -29,13 +30,23 @@ func (s *Server) createVirtualAddress(
 		return response.Fail("address is required: %v", h)
 	}
 
-	vm := s.client.VirtualMachineByName(vmName)
-	i := s.client.VirtualMachineInterfaceByName(vm, interfaceName)
+	vm, i := s.client.VirtualMachineByName(vmName)
 
-	return response.SuccessAny(
-		s.client.CreateVirtualAddress(
-			i.GetId(),
-			address,
-		),
-	)
+	if i != nil {
+		return s.captureFail(i, "virtual machine not found")
+	}
+
+	iface, j := s.client.VirtualMachineInterfaceByName(vm, interfaceName)
+
+	if j != nil {
+		return s.captureFail(j, "interface not found on virtual machine")
+	}
+
+	result, k := s.client.CreateVirtualAddress(iface.GetId(), address)
+
+	if k != nil {
+		return s.captureFail(k, "address not assigned")
+	}
+
+	return response.SuccessAny(convert.Address(result))
 }

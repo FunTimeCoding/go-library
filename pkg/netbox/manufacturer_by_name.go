@@ -1,18 +1,22 @@
 package netbox
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/manufacturer"
 )
 
-func (c *Client) ManufacturerByName(n string) *manufacturer.Manufacturer {
-	for _, m := range c.Manufacturers() {
+func (c *Client) ManufacturerByName(n string) (*manufacturer.Manufacturer, error) {
+	result, e := c.Manufacturers()
+
+	if e != nil {
+		return nil, e
+	}
+
+	for _, m := range result {
 		if m.Name == n {
-			return m
+			return m, nil
 		}
 	}
 
-	errors.NotFound(n)
-
-	return nil
+	return nil, fmt.Errorf("manufacturer not found: %s", n)
 }

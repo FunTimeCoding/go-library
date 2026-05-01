@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gomatmcp/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
 	"os"
@@ -28,7 +29,7 @@ func (s *Server) UploadFile(
 	b, e := os.ReadFile(a.Path)
 
 	if e != nil {
-		return s.captureFail(e, "read file failed")
+		return s.captureFail(e, "file read failed")
 	}
 
 	var ch *model.Channel
@@ -55,7 +56,7 @@ func (s *Server) UploadFile(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "upload failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	if len(upload.FileInfos) == 0 {
@@ -78,7 +79,7 @@ func (s *Server) UploadFile(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "post with file failed")
+		return s.captureFail(e, constant.Unreachable)
 	}
 
 	channelName := s.channelDisplayName(ch)

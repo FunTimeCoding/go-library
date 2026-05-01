@@ -38,7 +38,11 @@ func (s *Server) getTopAlerts(
 		end = t
 	}
 
-	records := s.store.Top(n, start, end)
+	records, f := s.store.Top(n, start, end)
+
+	if f != nil {
+		return s.captureFail(f, "get top alerts failed")
+	}
 
 	return response.Success(
 		"Top %d alerts:\n%s",

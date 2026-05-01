@@ -2,7 +2,6 @@ package gohabd
 
 import (
 	"context"
-	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/habitica"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
@@ -26,7 +25,7 @@ func Run(
 			func(m *http.ServeMux) {
 				c := habitica.NewEnvironment()
 				generated.HandlerFromMux(server.New(c), m)
-				generative.New(model_context.New(c).Nested()).Setup(m)
+				model_context.New(c, h).Mount(m)
 			},
 			web.RecoveryMiddleware(h),
 		),

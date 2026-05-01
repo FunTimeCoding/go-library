@@ -13,6 +13,6 @@ func (s *Server) GetPage(
 ) {
 	web.EncodeNotation(
 		w,
-		convert.ConfluencePageDetail(s.confluence.Page(identifier)),
+		convert.ConfluencePageDetail(s.confluence.MustPage(identifier)),
 	)
 }

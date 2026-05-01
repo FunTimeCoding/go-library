@@ -2,6 +2,7 @@ package habitica
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/habitica/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"net/http"
@@ -17,9 +18,9 @@ func New(
 	errors.FatalOnEmpty(token, "token")
 
 	return &Client{
-		baseURL: join.Empty(locator.New(host).String(), apiBase),
-		userID:  userID,
-		token:   token,
-		http:    &http.Client{},
+		base:           join.Empty(locator.New(host).String(), constant.Base),
+		userIdentifier: userID,
+		token:          token,
+		client:         &http.Client{},
 	}
 }

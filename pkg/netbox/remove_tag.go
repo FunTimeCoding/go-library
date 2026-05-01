@@ -8,8 +8,12 @@ import (
 func (c *Client) RemoveTag(
 	deviceName string,
 	tag string,
-) *device.Device {
-	d := c.DeviceByNameStrict(deviceName)
+) (*device.Device, error) {
+	d, e := c.DeviceByNameStrict(deviceName)
+
+	if e != nil {
+		return nil, e
+	}
 
 	if c.verbose {
 		fmt.Printf("remove tag device: %+v\n", d)
@@ -18,7 +22,13 @@ func (c *Client) RemoveTag(
 
 	d.RemoveTag(tag)
 	w := devicePatch(d)
-	w.SetTags(c.tagsNestedRequest(d.Tags))
+	tags, f := c.tagsNestedRequest(d.Tags)
+
+	if f != nil {
+		return nil, f
+	}
+
+	w.SetTags(tags)
 
 	return c.updateDevice(d, w)
 }

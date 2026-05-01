@@ -8,10 +8,10 @@ import (
 
 func (c *Client) setDatabase(b *bolt.Client) *Client {
 	c.database = b
-	c.database.Update(
+	c.database.MustUpdate(
 		func(t *bbolt.Tx) error {
-			c.database.CreateBucket(t, constant.UserBucket)
-			c.database.CreateBucket(t, constant.ChannelBucket)
+			c.database.MustCreateBucket(t, constant.UserBucket)
+			c.database.MustCreateBucket(t, constant.ChannelBucket)
 
 			return nil
 		},

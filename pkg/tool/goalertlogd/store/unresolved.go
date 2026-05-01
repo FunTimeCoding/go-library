@@ -7,9 +7,9 @@ import (
 	"sort"
 )
 
-func (s *Store) Unresolved() []UnresolvedRecord {
+func (s *Store) Unresolved() ([]UnresolvedRecord, error) {
 	var result []UnresolvedRecord
-	s.client.View(
+	e := s.client.View(
 		func(t *bbolt.Tx) error {
 			b := s.client.Bucket(t, Bucket)
 
@@ -17,7 +17,7 @@ func (s *Store) Unresolved() []UnresolvedRecord {
 				return nil
 			}
 
-			bolt.For(
+			return bolt.For(
 				b,
 				func(
 					k string,
@@ -37,10 +37,13 @@ func (s *Store) Unresolved() []UnresolvedRecord {
 					}
 				},
 			)
-
-			return nil
 		},
 	)
+
+	if e != nil {
+		return nil, e
+	}
+
 	sort.Slice(
 		result,
 		func(i, j int) bool {
@@ -48,5 +51,5 @@ func (s *Store) Unresolved() []UnresolvedRecord {
 		},
 	)
 
-	return result
+	return result, nil
 }

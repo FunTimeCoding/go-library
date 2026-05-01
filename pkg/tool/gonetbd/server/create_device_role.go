@@ -14,7 +14,7 @@ func (s *Server) CreateDeviceRole(
 ) {
 	var body generated.CreateNameRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	r := s.client.CreateDeviceRole(body.Name)
+	r := s.client.MustCreateDeviceRole(body.Name)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

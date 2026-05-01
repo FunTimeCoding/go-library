@@ -5,10 +5,13 @@ import (
 	"net/http"
 )
 
-func (c *Client) user() response.User {
+func (c *Client) user() (response.User, error) {
 	var result response.User
-	r := c.do(http.MethodGet, "/user", nil)
-	c.decode(r, &result)
+	r, e := c.do(http.MethodGet, "/user", nil)
 
-	return result
+	if e != nil {
+		return result, e
+	}
+
+	return result, c.decode(r, &result)
 }

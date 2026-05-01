@@ -13,21 +13,23 @@ func (c *Client) CreatePage(
 	parentIdentifier string,
 	title string,
 	markdown string,
-) *page.Page {
-	var result *response.Page
-	notation.DecodeStrict(
-		c.basic.PostV2Path(
-			constant.Page,
-			page_post.New(
-				spaceIdentifier,
-				parentIdentifier,
-				title,
-				page.ToStorage(markdown),
-			).Encode(),
-		),
-		&result,
-		false,
+) (*page.Page, error) {
+	body, e := c.basic.PostV2Path(
+		constant.Page,
+		page_post.New(
+			spaceIdentifier,
+			parentIdentifier,
+			title,
+			page.ToStorage(markdown),
+		).Encode(),
 	)
 
-	return page.New(result, c.host)
+	if e != nil {
+		return nil, e
+	}
+
+	var result *response.Page
+	notation.DecodeStrict(body, &result, false)
+
+	return page.New(result, c.host), nil
 }

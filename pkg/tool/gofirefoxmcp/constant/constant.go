@@ -15,4 +15,6 @@ const (
 	UpdateGroup  = "update_group"
 
 	BridgePortFlag = "bridge-port"
+
+	NotResponding = "Firefox not responding"
 )

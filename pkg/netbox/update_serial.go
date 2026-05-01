@@ -8,8 +8,12 @@ import (
 func (c *Client) UpdateSerial(
 	device string,
 	serial string,
-) *device.Device {
-	d := c.DeviceByNameStrict(device)
+) (*device.Device, error) {
+	d, e := c.DeviceByNameStrict(device)
+
+	if e != nil {
+		return nil, e
+	}
 
 	if c.verbose {
 		fmt.Printf("set serial device: %+v\n", d)

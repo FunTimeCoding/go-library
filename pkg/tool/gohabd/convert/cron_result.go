@@ -1,11 +1,11 @@
 package convert
 
 import (
-	"github.com/funtimecoding/go-library/pkg/habitica"
+	"github.com/funtimecoding/go-library/pkg/habitica/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabd/generated/server"
 )
 
-func CronResult(r habitica.CronResult) server.CronResult {
+func CronResult(r response.CronResult) server.CronResult {
 	result := server.CronResult{
 		RolledOver: r.RolledOver,
 		LastCron:   r.LastCron,

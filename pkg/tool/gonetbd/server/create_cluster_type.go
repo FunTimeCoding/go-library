@@ -14,7 +14,7 @@ func (s *Server) CreateClusterType(
 ) {
 	var body generated.CreateNameRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	t := s.client.CreateClusterType(body.Name)
+	t := s.client.MustCreateClusterType(body.Name)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

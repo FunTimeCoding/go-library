@@ -16,10 +16,10 @@ func (s *Server) SearchIssues(
 
 	if p.Limit != nil {
 		issues = convert.JiraIssues(
-			s.jira.SearchLimit(*p.Limit, p.Query),
+			s.jira.MustSearchLimit(*p.Limit, p.Query),
 		)
 	} else {
-		issues = convert.JiraIssues(s.jira.Search(p.Query))
+		issues = convert.JiraIssues(s.jira.MustSearch(p.Query))
 	}
 
 	web.EncodeNotation(w, issues)

@@ -1,5 +1,6 @@
 package constant
 
+const Name = "Habitica"
 const (
 	GetTasks   = "get_tasks"
 	CreateTask = "create_task"
@@ -7,6 +8,8 @@ const (
 	GetTags    = "get_tags"
 	GetStats   = "get_stats"
 	Cron       = "cron"
+
+	Unreachable = "Habitica API unreachable"
 )
 
 const (

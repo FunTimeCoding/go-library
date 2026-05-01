@@ -5,18 +5,21 @@ import (
 	basic "github.com/funtimecoding/go-library/pkg/atlassian/jira/basic/issue/issues"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/customer"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"slices"
 )
 
-func (c *Client) CustomerIssues(all bool) []*customer.Issue {
+func (c *Client) CustomerIssues(all bool) ([]*customer.Issue, error) {
 	issues, r, e := c.service.Request.Gets(
 		c.context,
 		&models.ServiceRequestOptionScheme{},
 		0,
 		10,
 	)
-	errors.PanicOnError(e)
+
+	if e != nil {
+		return nil, e
+	}
+
 	list := basic.FromResponseScheme(r)
 	var result []*customer.Issue
 
@@ -37,5 +40,5 @@ func (c *Client) CustomerIssues(all bool) []*customer.Issue {
 		}
 	}
 
-	return result
+	return result, nil
 }

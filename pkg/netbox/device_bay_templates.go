@@ -1,15 +1,15 @@
 package netbox
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/netbox/device_bay_template"
-)
+import "github.com/funtimecoding/go-library/pkg/netbox/device_bay_template"
 
-func (c *Client) DeviceBayTemplates() []*device_bay_template.Template {
-	result, r, e := c.client.DcimAPI.DcimDeviceBayTemplatesList(
+func (c *Client) DeviceBayTemplates() ([]*device_bay_template.Template, error) {
+	result, _, e := c.client.DcimAPI.DcimDeviceBayTemplatesList(
 		c.context,
 	).Execute()
-	errors.PanicOnWebError(r, e)
 
-	return device_bay_template.NewSlice(result.Results)
+	if e != nil {
+		return nil, e
+	}
+
+	return device_bay_template.NewSlice(result.Results), nil
 }

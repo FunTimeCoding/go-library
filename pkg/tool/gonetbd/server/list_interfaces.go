@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -10,9 +11,9 @@ func (s *Server) ListInterfaces(
 	_ *http.Request,
 	name string,
 ) {
-	d := s.client.DeviceByNameStrict(name)
+	d := s.client.MustDeviceByNameStrict(name)
 	web.EncodeNotation(
 		w,
-		toInterfaces(s.client.DeviceInterfaces(d.Identifier)),
+		convert.Interfaces(s.client.MustDeviceInterfaces(d.Identifier)),
 	)
 }

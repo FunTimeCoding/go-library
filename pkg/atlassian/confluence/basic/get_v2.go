@@ -2,21 +2,44 @@ package basic
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/web"
+	"io"
+	"net/http"
 )
 
-func (c *Client) GetV2(l string) string {
-	r := web.NewGet(l)
-	r.SetBasicAuth(c.user, c.token)
-	response := web.Send(web.Client(), r)
-	result := web.ReadString(response)
+func (c *Client) GetV2(l string) (string, error) {
+	r, e := http.NewRequest(http.MethodGet, l, nil)
 
-	if response.StatusCode >= 400 {
-		fmt.Printf("Locator: %s\n", l)
-		fmt.Printf("Status: %d\n", response.StatusCode)
-		web.PrintHeader(response.Header)
-		fmt.Printf("Body: %s\n", result)
+	if e != nil {
+		return "", e
 	}
 
-	return result
+	r.SetBasicAuth(c.user, c.token)
+	result, f := http.DefaultClient.Do(r)
+
+	if f != nil {
+		return "", f
+	}
+
+	b, g := io.ReadAll(result.Body)
+
+	if h := result.Body.Close(); h != nil {
+		return "", h
+	}
+
+	if g != nil {
+		return "", g
+	}
+
+	body := string(b)
+
+	if result.StatusCode >= 400 {
+		return "", fmt.Errorf(
+			"confluence GET %s: %d %s",
+			l,
+			result.StatusCode,
+			body,
+		)
+	}
+
+	return body, nil
 }

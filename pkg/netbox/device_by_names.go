@@ -12,7 +12,11 @@ func (c *Client) DeviceByNames(
 	var result *device.Device
 
 	for _, name := range n {
-		devices := c.DevicesByName(name)
+		devices, e := c.DevicesByName(name)
+
+		if e != nil {
+			return nil, e
+		}
 
 		if len(devices) == 0 {
 			continue

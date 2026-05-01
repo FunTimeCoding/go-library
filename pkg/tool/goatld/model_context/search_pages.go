@@ -17,5 +17,11 @@ func (s *Server) searchPages(
 		return response.Fail("query is required: %v", f)
 	}
 
-	return response.SuccessAny(s.confluence.Search(query))
+	result, g := s.confluence.Search(query)
+
+	if g != nil {
+		return s.captureFail(g, "Confluence API unreachable")
+	}
+
+	return response.SuccessAny(result)
 }

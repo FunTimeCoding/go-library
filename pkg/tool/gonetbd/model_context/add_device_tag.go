@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -23,5 +24,11 @@ func (s *Server) addDeviceTag(
 		return response.Fail("tag is required: %v", g)
 	}
 
-	return response.SuccessAny(s.client.AddTag(device, tag))
+	result, h := s.client.AddTag(device, tag)
+
+	if h != nil {
+		return s.captureFail(h, "tag not added to device")
+	}
+
+	return response.SuccessAny(convert.Device(result))
 }

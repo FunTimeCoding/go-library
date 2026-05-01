@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -29,7 +30,13 @@ func (s *Server) listTables(
 	v, e := s.store.ListTables(x, instance, schema)
 
 	if e != nil {
-		return response.Fail("list tables: %v", e)
+		return s.captureFail(
+			e,
+			fmt.Sprintf(
+			"database error on %s: tables in %s not listed",
+			instance,
+			schema,
+		))
 	}
 
 	return response.SuccessAny(v)

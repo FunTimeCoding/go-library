@@ -59,7 +59,7 @@ func (p *Poller) Poll() {
 			Labels:      labels,
 			Start:       time.Now(),
 		}
-		p.firing[a.Fingerprint] = p.store.Save(r)
+		p.firing[a.Fingerprint] = p.store.MustSave(r)
 
 		if p.metrics != nil {
 			p.metrics.alertsTotal.Inc()
@@ -71,16 +71,16 @@ func (p *Poller) Poll() {
 			continue
 		}
 
-		p.store.Resolve(key)
+		p.store.MustResolve(key)
 		delete(p.firing, fingerprint)
 	}
 
-	if pruned := p.store.Prune(time.Now().Add(-p.retention)); pruned > 0 {
+	if pruned := p.store.MustPrune(time.Now().Add(-p.retention)); pruned > 0 {
 		p.logger.Structured("pruned records", "count", pruned)
 	}
 
 	if p.metrics != nil {
 		p.metrics.alertsFiring.Set(float64(len(p.firing)))
-		p.metrics.recordsTotal.Set(float64(p.store.Count()))
+		p.metrics.recordsTotal.Set(float64(p.store.MustCount()))
 	}
 }

@@ -6,13 +6,15 @@ import (
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
-func (c *Client) Labels() []*response.LabelResult {
-	var r *response.Labels
-	notation.DecodeStrict(
-		c.basic.GetV2Path(constant.Label),
-		&r,
-		false,
-	)
+func (c *Client) Labels() ([]*response.LabelResult, error) {
+	body, e := c.basic.GetV2Path(constant.Label)
 
-	return r.Results
+	if e != nil {
+		return nil, e
+	}
+
+	var r *response.Labels
+	notation.DecodeStrict(body, &r, false)
+
+	return r.Results, nil
 }

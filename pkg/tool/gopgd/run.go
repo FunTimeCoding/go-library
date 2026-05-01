@@ -2,7 +2,6 @@ package gopgd
 
 import (
 	"context"
-	generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gopgd/generated/server"
@@ -26,7 +25,7 @@ func Run(
 			func(m *http.ServeMux) {
 				s := store.New(o.Inventory)
 				generated.HandlerFromMux(server.New(s), m)
-				generative.New(model_context.New(s).Nested()).Setup(m)
+				model_context.New(s, h).Mount(m)
 			},
 			web.RecoveryMiddleware(h),
 		),

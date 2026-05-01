@@ -14,6 +14,6 @@ func (s *Server) AddPageComment(
 ) {
 	var q server.CommentRequest
 	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
-	s.confluence.AddComment(identifier, q.Body)
+	s.confluence.MustAddComment(identifier, q.Body)
 	w.WriteHeader(http.StatusNoContent)
 }

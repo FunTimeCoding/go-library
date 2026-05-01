@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 )
 
-func (c *Client) FillComments(v []*issue.Issue) {
+func (c *Client) FillComments(v []*issue.Issue) error {
 	filled := 0
 
 	for _, i := range v {
@@ -18,7 +18,12 @@ func (c *Client) FillComments(v []*issue.Issue) {
 			continue
 		}
 
-		all := c.allComments(i.Key)
+		all, e := c.allComments(i.Key)
+
+		if e != nil {
+			return e
+		}
+
 		i.Raw.Fields.Comments.Comments = all
 		filled++
 	}
@@ -29,4 +34,6 @@ func (c *Client) FillComments(v []*issue.Issue) {
 			filled,
 		)
 	}
+
+	return nil
 }

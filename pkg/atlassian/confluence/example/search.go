@@ -11,44 +11,20 @@ func Search() {
 	f := constant.Dense
 
 	if true {
-		for _, r := range c.Search("space=%s", c.DefaultSpace()) {
+		for _, r := range c.MustSearch("space=%s", c.DefaultSpace()) {
 			fmt.Println(r.Format(f))
 		}
 	}
 
 	if false {
 		// Working syntax examples
-		c.Search("favorite=currentUser()")
-		c.Search(`label IN ("ExampleLabel")`)
-		c.Search("creator IN (currentUser())")
-		c.Search("creator=currentUser()")
-		c.Search("creator=currentUser()")
-		c.Search("space=EXAMPLE")
-		c.Search("space=EXAMPLE")
-		c.Search("watcher=currentUser()")
-	}
-
-	if false {
-		fmt.Println("SearchKaos")
-
-		for _, o := range c.SearchKaos("favorite=currentUser()") {
-			fmt.Println(o.Format(f))
-		}
-	}
-
-	if false {
-		fmt.Println("SearchVirtomize")
-
-		for _, o := range c.SearchVirtomize("favorite=currentUser()") {
-			fmt.Println(o.Format(f))
-		}
-	}
-
-	if false {
-		fmt.Println("SearchTreminio")
-
-		for _, o := range c.SearchTreminio("favorite=currentUser()") {
-			fmt.Println(o.Title)
-		}
+		c.MustSearch("favorite=currentUser()")
+		c.MustSearch(`label IN ("ExampleLabel")`)
+		c.MustSearch("creator IN (currentUser())")
+		c.MustSearch("creator=currentUser()")
+		c.MustSearch("creator=currentUser()")
+		c.MustSearch("space=EXAMPLE")
+		c.MustSearch("space=EXAMPLE")
+		c.MustSearch("watcher=currentUser()")
 	}
 }

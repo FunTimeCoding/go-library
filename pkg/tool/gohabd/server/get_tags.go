@@ -10,5 +10,5 @@ func (s *Server) GetTags(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, convert.Tags(s.habitica.Tags()))
+	web.EncodeNotation(w, convert.Tags(s.habitica.MustTags()))
 }

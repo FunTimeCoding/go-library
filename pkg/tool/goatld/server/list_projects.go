@@ -10,5 +10,5 @@ func (s *Server) ListProjects(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, convert.JiraProjects(s.jira.Projects()))
+	web.EncodeNotation(w, convert.JiraProjects(s.jira.MustProjects()))
 }

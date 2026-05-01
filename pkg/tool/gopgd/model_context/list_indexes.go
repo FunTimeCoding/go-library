@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -33,7 +34,14 @@ func (s *Server) listIndexes(
 	v, e := s.store.ListIndexes(x, instance, schema, a.Table)
 
 	if e != nil {
-		return response.Fail("list indexes: %v", e)
+		return s.captureFail(
+			e,
+			fmt.Sprintf(
+			"database error on %s: indexes for %s.%s not listed",
+			instance,
+			schema,
+			a.Table,
+		))
 	}
 
 	return response.SuccessAny(v)

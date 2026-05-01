@@ -8,7 +8,10 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-func New(c *habitica.Client, h *sentry.Hub) *Server {
+func New(
+	c *habitica.Client,
+	h *sentry.Hub,
+) *Server {
 	result := &Server{
 		server: server.NewMCPServer(
 			constant.Name,

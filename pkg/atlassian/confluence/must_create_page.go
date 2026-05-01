@@ -11,7 +11,12 @@ func (c *Client) MustCreatePage(
 	title string,
 	markdown string,
 ) *page.Page {
-	result, e := c.CreatePage(spaceIdentifier, parentIdentifier, title, markdown)
+	result, e := c.CreatePage(
+		spaceIdentifier,
+		parentIdentifier,
+		title,
+		markdown,
+	)
 	errors.PanicOnError(e)
 
 	return result

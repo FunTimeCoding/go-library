@@ -9,6 +9,7 @@ func SortDescending(tags []string) {
 	sort.Slice(
 		tags,
 		func(i, j int) bool {
-		return semver.Compare(tags[i], tags[j]) > 0
-	})
+			return semver.Compare(tags[i], tags[j]) > 0
+		},
+	)
 }

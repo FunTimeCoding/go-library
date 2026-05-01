@@ -33,10 +33,11 @@ func (s *Server) listTables(
 		return s.captureFail(
 			e,
 			fmt.Sprintf(
-			"database error on %s: tables in %s not listed",
-			instance,
-			schema,
-		))
+				"database error on %s: tables in %s not listed",
+				instance,
+				schema,
+			),
+		)
 	}
 
 	return response.SuccessAny(v)

@@ -37,11 +37,12 @@ func (s *Server) listIndexes(
 		return s.captureFail(
 			e,
 			fmt.Sprintf(
-			"database error on %s: indexes for %s.%s not listed",
-			instance,
-			schema,
-			a.Table,
-		))
+				"database error on %s: indexes for %s.%s not listed",
+				instance,
+				schema,
+				a.Table,
+			),
+		)
 	}
 
 	return response.SuccessAny(v)

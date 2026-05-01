@@ -112,9 +112,10 @@ func (s *Server) createIssue(
 			return s.captureFail(
 				k,
 				fmt.Sprintf(
-				"create failed: %s",
-				string(system.ReadAll(resp.Body)),
-			))
+					"create failed: %s",
+					string(system.ReadAll(resp.Body)),
+				),
+			)
 		}
 
 		return s.captureFail(k, "issue not created")
@@ -138,18 +139,20 @@ func (s *Server) createIssue(
 				return s.captureFail(
 					l,
 					fmt.Sprintf(
-					"created %s but assign failed: %s",
-					result.Key,
-					string(system.ReadAll(assignResp.Body)),
-				))
+						"created %s but assign failed: %s",
+						result.Key,
+						string(system.ReadAll(assignResp.Body)),
+					),
+				)
 			}
 
 			return s.captureFail(
 				l,
 				fmt.Sprintf(
-				"created %s but assign failed",
-				result.Key,
-			))
+					"created %s but assign failed",
+					result.Key,
+				),
+			)
 		}
 	}
 

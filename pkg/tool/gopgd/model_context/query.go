@@ -31,9 +31,10 @@ func (s *Server) query(
 		return s.captureFail(
 			e,
 			fmt.Sprintf(
-			"database error on %s: query not executed",
-			instance,
-		))
+				"database error on %s: query not executed",
+				instance,
+			),
+		)
 	}
 
 	return response.SuccessAny(v)

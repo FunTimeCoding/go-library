@@ -7,7 +7,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/netbox/site"
 )
 
-func (c *Client) MustCreateCluster(name string, t *cluster_type.Type, s *site.Site) *cluster.Cluster {
+func (c *Client) MustCreateCluster(
+	name string,
+	t *cluster_type.Type,
+	s *site.Site,
+) *cluster.Cluster {
 	result, e := c.CreateCluster(name, t, s)
 	errors.PanicOnError(e)
 

@@ -8,7 +8,12 @@ import (
 	"net"
 )
 
-func (c *Client) MustUpdateInterface(d *device.Device, name string, t netbox.InterfaceTypeValue, h net.HardwareAddr) *network.Interface {
+func (c *Client) MustUpdateInterface(
+	d *device.Device,
+	name string,
+	t netbox.InterfaceTypeValue,
+	h net.HardwareAddr,
+) *network.Interface {
 	result, e := c.UpdateInterface(d, name, t, h)
 	errors.PanicOnError(e)
 

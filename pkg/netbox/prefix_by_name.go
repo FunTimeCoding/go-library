@@ -21,7 +21,11 @@ func (c *Client) PrefixByName(n string) (*prefix.Prefix, error) {
 	}
 
 	if len(result) != 1 {
-		return nil, fmt.Errorf("expected 1 prefix named %s, got %d", n, len(result))
+		return nil, fmt.Errorf(
+			"expected 1 prefix named %s, got %d",
+			n,
+			len(result),
+		)
 	}
 
 	return result[0], nil

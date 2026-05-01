@@ -6,7 +6,12 @@ import (
 	"net"
 )
 
-func (c *Client) MustCreateInternet(objectType string, objectIdentifier int64, i net.IP, m net.IPMask) *netbox.IPAddress {
+func (c *Client) MustCreateInternet(
+	objectType string,
+	objectIdentifier int64,
+	i net.IP,
+	m net.IPMask,
+) *netbox.IPAddress {
 	result, e := c.CreateInternet(objectType, objectIdentifier, i, m)
 	errors.PanicOnError(e)
 

@@ -11,7 +11,12 @@ func (c *Client) MustCreateCustomerIssue(
 	summary string,
 	description string,
 ) *models.CustomerRequestScheme {
-	result, e := c.CreateCustomerIssue(desk, requestType, summary, description)
+	result, e := c.CreateCustomerIssue(
+		desk,
+		requestType,
+		summary,
+		description,
+	)
 	errors.PanicOnError(e)
 
 	return result

@@ -135,9 +135,10 @@ func (s *Server) updateIssue(
 				return s.captureFail(
 					i,
 					fmt.Sprintf(
-					"update failed: %s",
-					string(system.ReadAll(resp.Body)),
-				))
+						"update failed: %s",
+						string(system.ReadAll(resp.Body)),
+					),
+				)
 			}
 
 			return s.captureFail(i, "issue not updated")
@@ -162,9 +163,10 @@ func (s *Server) updateIssue(
 				return s.captureFail(
 					j,
 					fmt.Sprintf(
-					"assign failed: %s",
-					string(system.ReadAll(resp.Body)),
-				))
+						"assign failed: %s",
+						string(system.ReadAll(resp.Body)),
+					),
+				)
 			}
 
 			return s.captureFail(j, "assignment not applied")

@@ -13,7 +13,11 @@ func (c *Client) SiteByName(n string) (*site.Site, error) {
 	}
 
 	if len(result) != 1 {
-		return nil, fmt.Errorf("expected 1 site named %s, got %d", n, len(result))
+		return nil, fmt.Errorf(
+			"expected 1 site named %s, got %d",
+			n,
+			len(result),
+		)
 	}
 
 	return result[0], nil

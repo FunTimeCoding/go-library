@@ -37,9 +37,10 @@ func (s *Server) explain(
 		return s.captureFail(
 			e,
 			fmt.Sprintf(
-			"database error on %s: explain not executed",
-			instance,
-		))
+				"database error on %s: explain not executed",
+				instance,
+			),
+		)
 	}
 
 	return response.SuccessAny(v)

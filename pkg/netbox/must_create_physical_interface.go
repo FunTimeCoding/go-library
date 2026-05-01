@@ -7,7 +7,11 @@ import (
 	"net"
 )
 
-func (c *Client) MustCreatePhysicalInterface(a net.HardwareAddr, description string, i *network.Interface) *physical_address.Address {
+func (c *Client) MustCreatePhysicalInterface(
+	a net.HardwareAddr,
+	description string,
+	i *network.Interface,
+) *physical_address.Address {
 	result, e := c.CreatePhysicalInterface(a, description, i)
 	errors.PanicOnError(e)
 

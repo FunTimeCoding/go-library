@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/netbox/virtual_machine"
 )
 
-func (c *Client) MustCreateVirtualMachine(name string, cl *cluster.Cluster) *virtual_machine.Machine {
+func (c *Client) MustCreateVirtualMachine(
+	name string,
+	cl *cluster.Cluster,
+) *virtual_machine.Machine {
 	result, e := c.CreateVirtualMachine(name, cl)
 	errors.PanicOnError(e)
 

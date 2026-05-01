@@ -11,7 +11,12 @@ func (c *Client) MustNewIssueUnverified(
 	summary string,
 	description string,
 ) *jira.Issue {
-	result, e := c.NewIssueUnverified(projectKey, issueType, summary, description)
+	result, e := c.NewIssueUnverified(
+		projectKey,
+		issueType,
+		summary,
+		description,
+	)
 	errors.PanicOnError(e)
 
 	return result

@@ -33,10 +33,11 @@ func (s *Server) tableSizes(
 		return s.captureFail(
 			e,
 			fmt.Sprintf(
-			"database error on %s: table sizes in %s not retrieved",
-			instance,
-			schema,
-		))
+				"database error on %s: table sizes in %s not retrieved",
+				instance,
+				schema,
+			),
+		)
 	}
 
 	return response.SuccessAny(v)

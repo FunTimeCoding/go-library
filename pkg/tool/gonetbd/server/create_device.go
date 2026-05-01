@@ -31,7 +31,14 @@ func (s *Server) CreateDevice(
 		ten = s.client.MustTenantByName(*body.Tenant)
 	}
 
-	d := s.client.MustCreateDevice(body.Name, role, tags, deviceType, site, ten)
+	d := s.client.MustCreateDevice(
+		body.Name,
+		role,
+		tags,
+		deviceType,
+		site,
+		ten,
+	)
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(w, convert.Device(d))

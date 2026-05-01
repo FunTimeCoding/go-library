@@ -37,11 +37,12 @@ func (s *Server) describeTable(
 		return s.captureFail(
 			e,
 			fmt.Sprintf(
-			"database error on %s: table %s.%s not described",
-			instance,
-			schema,
-			a.Table,
-		))
+				"database error on %s: table %s.%s not described",
+				instance,
+				schema,
+				a.Table,
+			),
+		)
 	}
 
 	return response.SuccessAny(v)

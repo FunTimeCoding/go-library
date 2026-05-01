@@ -8,7 +8,12 @@ import (
 	"net"
 )
 
-func (c *Client) MustCreateInterfacePhysical(d *device.Device, name string, t netbox.InterfaceTypeValue, h net.HardwareAddr) *network.Interface {
+func (c *Client) MustCreateInterfacePhysical(
+	d *device.Device,
+	name string,
+	t netbox.InterfaceTypeValue,
+	h net.HardwareAddr,
+) *network.Interface {
 	result, e := c.CreateInterfacePhysical(d, name, t, h)
 	errors.PanicOnError(e)
 

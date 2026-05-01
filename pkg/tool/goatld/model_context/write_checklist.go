@@ -39,9 +39,10 @@ func (s *Server) writeChecklist(
 			return s.captureFail(
 				f,
 				fmt.Sprintf(
-				"checklist update failed: %s",
-				string(system.ReadAll(resp.Body)),
-			))
+					"checklist update failed: %s",
+					string(system.ReadAll(resp.Body)),
+				),
+			)
 		}
 
 		return s.captureFail(f, "checklist not updated")

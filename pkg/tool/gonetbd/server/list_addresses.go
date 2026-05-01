@@ -11,5 +11,8 @@ func (s *Server) ListAddresses(
 	_ *http.Request,
 	name string,
 ) {
-	web.EncodeNotation(w, convert.Addresses(s.client.MustDeviceAddresses(name)))
+	web.EncodeNotation(
+		w,
+		convert.Addresses(s.client.MustDeviceAddresses(name)),
+	)
 }

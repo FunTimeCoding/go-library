@@ -6,7 +6,10 @@ import (
 	upstream "github.com/netbox-community/go-netbox/v4"
 )
 
-func (c *Client) MustVirtualMachineInterfaceByName(vm *virtual_machine.Machine, name string) *upstream.VMInterface {
+func (c *Client) MustVirtualMachineInterfaceByName(
+	vm *virtual_machine.Machine,
+	name string,
+) *upstream.VMInterface {
 	result, e := c.VirtualMachineInterfaceByName(vm, name)
 	errors.PanicOnError(e)
 

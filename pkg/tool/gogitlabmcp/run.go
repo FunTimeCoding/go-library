@@ -21,7 +21,10 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				model_context.New(gitlab.NewEnvironment().Nested(), h).Mount(m)
+				model_context.New(
+					gitlab.NewEnvironment().Nested(),
+					h,
+				).Mount(m)
 			},
 			web.RecoveryMiddleware(h),
 		),

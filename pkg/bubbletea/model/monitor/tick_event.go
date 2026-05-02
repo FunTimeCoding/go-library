@@ -10,7 +10,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	"github.com/funtimecoding/go-library/pkg/time"
 )
 
 func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
@@ -49,7 +49,7 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 		top.String(
 			fmt.Sprintf(
 				"last fetch: %s",
-				m.lastFetch.Format(timeLibrary.DateMinute),
+				m.lastFetch.Format(time.DateMinute),
 			),
 		)
 	}
@@ -59,7 +59,7 @@ func (m *Model) tickEvent(g tick.Message) (*Model, tea.Cmd) {
 	bottom.String(m.hostname)
 
 	if false {
-		bottom.String(g.Time.Format(timeLibrary.DateSecond))
+		bottom.String(g.Time.Format(time.DateSecond))
 	}
 
 	if false {

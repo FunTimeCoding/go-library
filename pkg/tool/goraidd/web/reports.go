@@ -3,8 +3,8 @@ package web
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 	"os"
 	"strings"
@@ -36,7 +36,7 @@ func (s *Server) reports(
 		layout(
 			"Reports",
 			"/reports",
-			h.H1(g.Text("Generated Reports")),
+			html.H1(gomponents.Text("Generated Reports")),
 			reportsTable(reports),
 		),
 	)

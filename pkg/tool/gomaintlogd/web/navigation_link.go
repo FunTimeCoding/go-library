@@ -1,19 +1,19 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
-func navigationLink(link, label, currentPath string) g.Node {
-	attrs := []g.Node{
-		g.Attr("href", link),
-		g.Text(label),
+func navigationLink(link, label, currentPath string) gomponents.Node {
+	attrs := []gomponents.Node{
+		gomponents.Attr("href", link),
+		gomponents.Text(label),
 	}
 
 	if currentPath == link {
-		attrs = append(attrs, g.Attr("aria-current", "page"))
+		attrs = append(attrs, gomponents.Attr("aria-current", "page"))
 	}
 
-	return h.Li(h.A(attrs...))
+	return html.Li(html.A(attrs...))
 }

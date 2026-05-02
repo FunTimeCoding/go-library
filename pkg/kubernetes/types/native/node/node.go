@@ -1,9 +1,9 @@
 package node
 
-import core "k8s.io/api/core/v1"
+import "k8s.io/api/core/v1"
 
 type Node struct {
 	Cluster string
 	Name    string
-	Raw     *core.Node
+	Raw     *v1.Node
 }

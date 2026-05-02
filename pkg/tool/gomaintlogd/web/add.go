@@ -1,8 +1,8 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 )
 
@@ -15,8 +15,8 @@ func (s *Server) add(
 		layout(
 			"Add Entry",
 			"/add",
-			h.H1(g.Text("Add Entry")),
-			h.Div(h.ID("result")),
+			html.H1(gomponents.Text("Add Entry")),
+			html.Div(html.ID("result")),
 			addForm(),
 		),
 	)

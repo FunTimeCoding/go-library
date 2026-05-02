@@ -3,8 +3,8 @@ package web
 import (
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 	"time"
 )
@@ -70,22 +70,22 @@ func (s *Server) logs(
 			layout(
 				"Logs",
 				"/",
-				h.H1(g.Textf("Combat Logs (%d)", total)),
+				html.H1(gomponents.Textf("Combat Logs (%d)", total)),
 				dateFilter(startValue, endValue),
-				h.Form(
-					h.Class("generate-form"),
-					h.Method("post"),
+				html.Form(
+					html.Class("generate-form"),
+					html.Method("post"),
 					logsTable(fights, 0, total, startValue, endValue, true),
-					h.Button(
-						h.Type("submit"),
-						h.FormAction("/generate"),
-						g.Text("Generate Report"),
+					html.Button(
+						html.Type("submit"),
+						html.FormAction("/generate"),
+						gomponents.Text("Generate Report"),
 					),
-					h.Button(
-						h.Type("submit"),
-						h.FormAction("/raids/create"),
-						h.Class("secondary"),
-						g.Text("Create Raid"),
+					html.Button(
+						html.Type("submit"),
+						html.FormAction("/raids/create"),
+						html.Class("secondary"),
+						gomponents.Text("Create Raid"),
 					),
 				),
 			),
@@ -122,22 +122,22 @@ func (s *Server) logs(
 		layout(
 			"Logs",
 			"/",
-			h.H1(g.Textf("Combat Logs (%d)", total)),
+			html.H1(gomponents.Textf("Combat Logs (%d)", total)),
 			dateFilter(startValue, endValue),
-			h.Form(
-				h.Class("generate-form"),
-				h.Method("post"),
+			html.Form(
+				html.Class("generate-form"),
+				html.Method("post"),
 				logsTable(page, offset, total, startValue, endValue, false),
-				h.Button(
-					h.Type("submit"),
-					h.FormAction("/generate"),
-					g.Text("Generate Report"),
+				html.Button(
+					html.Type("submit"),
+					html.FormAction("/generate"),
+					gomponents.Text("Generate Report"),
 				),
-				h.Button(
-					h.Type("submit"),
-					h.FormAction("/raids/create"),
-					h.Class("secondary"),
-					g.Text("Create Raid"),
+				html.Button(
+					html.Type("submit"),
+					html.FormAction("/raids/create"),
+					html.Class("secondary"),
+					gomponents.Text("Create Raid"),
 				),
 			),
 		),

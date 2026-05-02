@@ -3,16 +3,16 @@ package netbox
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/device_type"
 	"github.com/funtimecoding/go-library/pkg/netbox/manufacturer"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateDeviceType(
 	model string,
 	m *manufacturer.Manufacturer,
 ) (*device_type.Type, error) {
-	q := upstream.NewWritableDeviceTypeRequest(
-		upstream.BriefManufacturerRequestAsBriefDeviceTypeRequestManufacturer(
-			upstream.NewBriefManufacturerRequest(m.Name, m.Raw.Slug),
+	q := netbox.NewWritableDeviceTypeRequest(
+		netbox.BriefManufacturerRequestAsBriefDeviceTypeRequestManufacturer(
+			netbox.NewBriefManufacturerRequest(m.Name, m.Raw.Slug),
 		),
 		model,
 		slug(model),

@@ -3,7 +3,7 @@ package server
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -12,7 +12,7 @@ func (s *Server) CreateCluster(
 	w http.ResponseWriter,
 	q *http.Request,
 ) {
-	var body generated.CreateClusterRequest
+	var body server.CreateClusterRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
 	t := s.client.MustClusterTypeByName(body.Type)
 	i := s.client.MustSiteByName(body.Site)
@@ -21,7 +21,7 @@ func (s *Server) CreateCluster(
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(
 		w,
-		generated.Cluster{
+		server.Cluster{
 			Identifier: cl.Identifier,
 			Name:       cl.Name,
 			Type:       &t.Name,

@@ -1,8 +1,8 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 )
 
@@ -16,7 +16,7 @@ func (s *Server) raids(
 		layout(
 			"Raids",
 			"/raids",
-			h.H1(g.Textf("Raids (%d)", len(rows))),
+			html.H1(gomponents.Textf("Raids (%d)", len(rows))),
 			raidsTable(rows),
 		),
 	)

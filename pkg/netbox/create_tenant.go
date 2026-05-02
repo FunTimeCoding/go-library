@@ -2,11 +2,11 @@ package netbox
 
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/tenant"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateTenant(name string) (*tenant.Tenant, error) {
-	q := upstream.NewTenantRequest(
+	q := netbox.NewTenantRequest(
 		name,
 		slug(name),
 	)

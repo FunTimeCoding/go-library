@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client/operation/list"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/filter"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/types/native/event"
-	core "k8s.io/api/core/v1"
+	"k8s.io/api/core/v1"
 )
 
 func (c *Client) Events(
@@ -22,7 +22,7 @@ func (c *Client) Events(
 					list.Event(
 						l.client,
 						l.context,
-						core.NamespaceAll,
+						v1.NamespaceAll,
 						limit,
 						fieldSelector,
 					),

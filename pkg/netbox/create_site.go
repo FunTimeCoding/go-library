@@ -2,11 +2,11 @@ package netbox
 
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/site"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateSite(name string) (*site.Site, error) {
-	q := upstream.NewWritableSiteRequest(
+	q := netbox.NewWritableSiteRequest(
 		name,
 		slug(name),
 	)

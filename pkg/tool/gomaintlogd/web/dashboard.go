@@ -1,9 +1,9 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	hx "maragu.dev/gomponents-htmx"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents-htmx"
+	"maragu.dev/gomponents/html"
 	"net/http"
 )
 
@@ -22,20 +22,20 @@ func (s *Server) dashboard(
 		layout(
 			"Dashboard",
 			"/",
-			h.H1(g.Text("Dashboard")),
-			h.Div(
-				h.Class("summary-cards"),
-				h.Article(
-					h.Header(g.Text("Total Entries")),
-					h.P(g.Textf("%d", s.store.Count())),
+			html.H1(gomponents.Text("Dashboard")),
+			html.Div(
+				html.Class("summary-cards"),
+				html.Article(
+					html.Header(gomponents.Text("Total Entries")),
+					html.P(gomponents.Textf("%d", s.store.Count())),
 				),
 			),
-			h.H2(g.Text("Recent Entries")),
-			h.Div(
-				h.ID("recent-table"),
-				hx.Get("/"),
-				hx.Trigger("every 60s"),
-				hx.Swap("innerHTML"),
+			html.H2(gomponents.Text("Recent Entries")),
+			html.Div(
+				html.ID("recent-table"),
+				htmx.Get("/"),
+				htmx.Trigger("every 60s"),
+				htmx.Swap("innerHTML"),
 				s.recentTable(),
 			),
 		),

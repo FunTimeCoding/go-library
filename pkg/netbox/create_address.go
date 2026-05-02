@@ -3,14 +3,14 @@ package netbox
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/internet_address"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateAddress(
 	interfaceIdentifier int32,
 	address string,
 ) (*internet_address.Address, error) {
-	q := upstream.NewWritableIPAddressRequest(address)
+	q := netbox.NewWritableIPAddressRequest(address)
 	q.SetAssignedObjectType(constant.InterfaceAddress)
 	q.SetAssignedObjectId(int64(interfaceIdentifier))
 	result, _, e := c.client.IpamAPI.IpamIpAddressesCreate(

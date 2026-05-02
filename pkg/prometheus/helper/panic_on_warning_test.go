@@ -1,10 +1,10 @@
 package helper
 
 import (
-	prometheus "github.com/prometheus/client_golang/api/prometheus/v1"
+	"github.com/prometheus/client_golang/api/prometheus/v1"
 	"testing"
 )
 
 func TestPanicOnWarning(t *testing.T) {
-	PanicOnWarning(prometheus.Warnings{})
+	PanicOnWarning(v1.Warnings{})
 }

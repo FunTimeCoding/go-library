@@ -2,8 +2,8 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 	"strconv"
 )
@@ -21,7 +21,7 @@ func (s *Server) raidDetail(
 		layout(
 			"Raid",
 			"/raids",
-			h.H1(g.Textf("Raid - %d fights", len(fights))),
+			html.H1(gomponents.Textf("Raid - %d fights", len(fights))),
 			raidDetailTable(players),
 		),
 	)

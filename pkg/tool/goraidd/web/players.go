@@ -1,8 +1,8 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 	"time"
 )
@@ -18,7 +18,7 @@ func (s *Server) players(
 		layout(
 			"Players",
 			"/players",
-			h.H1(g.Textf("Player Attendance (%d)", len(rows))),
+			html.H1(gomponents.Textf("Player Attendance (%d)", len(rows))),
 			playersTable(rows),
 		),
 	)

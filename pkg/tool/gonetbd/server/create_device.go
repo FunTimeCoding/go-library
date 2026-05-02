@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/tenant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
-	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -14,7 +14,7 @@ func (s *Server) CreateDevice(
 	w http.ResponseWriter,
 	q *http.Request,
 ) {
-	var body generated.CreateDeviceRequest
+	var body server.CreateDeviceRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
 	role := s.client.MustDeviceRoleByName(body.Role)
 	deviceType := s.client.MustDeviceTypeByName(body.Type)

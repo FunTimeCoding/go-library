@@ -2,16 +2,16 @@ package netbox
 
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/virtual_machine"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateVirtualInterface(
 	vm *virtual_machine.Machine,
 	name string,
-) (*upstream.VMInterface, error) {
-	q := upstream.NewWritableVMInterfaceRequest(
-		upstream.BriefVirtualMachineRequestAsPatchedVirtualDiskRequestVirtualMachine(
-			upstream.NewBriefVirtualMachineRequest(vm.Name),
+) (*netbox.VMInterface, error) {
+	q := netbox.NewWritableVMInterfaceRequest(
+		netbox.BriefVirtualMachineRequestAsPatchedVirtualDiskRequestVirtualMachine(
+			netbox.NewBriefVirtualMachineRequest(vm.Name),
 		),
 		name,
 	)

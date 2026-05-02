@@ -3,54 +3,54 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
-func recentTable(records []store.Record) g.Node {
+func recentTable(records []store.Record) gomponents.Node {
 	if len(records) == 0 {
-		return h.P(h.Em(g.Text("No alerts in this time range.")))
+		return html.P(html.Em(gomponents.Text("No alerts in this time range.")))
 	}
 
-	return h.Table(
-		h.THead(
-			h.Tr(
-				h.Th(g.Text("Name")),
-				h.Th(g.Text("Severity")),
-				h.Th(g.Text("Summary")),
-				h.Th(g.Text("Start")),
-				h.Th(g.Text("End")),
-				h.Th(g.Text("Status")),
+	return html.Table(
+		html.THead(
+			html.Tr(
+				html.Th(gomponents.Text("Name")),
+				html.Th(gomponents.Text("Severity")),
+				html.Th(gomponents.Text("Summary")),
+				html.Th(gomponents.Text("Start")),
+				html.Th(gomponents.Text("End")),
+				html.Th(gomponents.Text("Status")),
 			),
 		),
-		h.TBody(
-			g.Map(
+		html.TBody(
+			gomponents.Map(
 				records,
-				func(r store.Record) g.Node {
+				func(r store.Record) gomponents.Node {
 					status := "firing"
 
 					if r.End != nil {
 						status = "resolved"
 					}
 
-					return h.Tr(
-						h.Td(
-							h.A(
-								h.Class("alert-link"),
-								h.Href(
+					return html.Tr(
+						html.Td(
+							html.A(
+								html.Class("alert-link"),
+								html.Href(
 									fmt.Sprintf(
 										"/alerts?name=%s",
 										r.Name,
 									),
 								),
-								g.Text(r.Name),
+								gomponents.Text(r.Name),
 							),
 						),
-						h.Td(severityBadge(r.Severity)),
-						h.Td(g.Text(truncate(r.Summary, 80))),
-						h.Td(g.Text(formatTime(r.Start))),
-						h.Td(g.Text(formatTimePointer(r.End))),
-						h.Td(statusBadge(status)),
+						html.Td(severityBadge(r.Severity)),
+						html.Td(gomponents.Text(truncate(r.Summary, 80))),
+						html.Td(gomponents.Text(formatTime(r.Start))),
+						html.Td(gomponents.Text(formatTimePointer(r.End))),
+						html.Td(statusBadge(status)),
 					)
 				},
 			),

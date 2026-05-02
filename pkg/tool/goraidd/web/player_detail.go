@@ -1,8 +1,8 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ func (s *Server) playerDetail(
 		layout(
 			account,
 			"/players",
-			h.H1(g.Text(account)),
+			html.H1(gomponents.Text(account)),
 			playerDetailTable(rows),
 		),
 	)

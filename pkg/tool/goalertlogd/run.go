@@ -15,7 +15,7 @@ import (
 	alertWeb "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/worker"
 	"github.com/funtimecoding/go-library/pkg/web"
-	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 	"time"
 )
@@ -41,7 +41,7 @@ func Run(
 		lifecycle.WithWorker(m),
 		lifecycle.WithWorker(w),
 		lifecycle.WithServerMiddleware(
-			webConstant.ListenAddress,
+			constant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s, w), m)
 				model_context.New(s, w, r).Mount(m)

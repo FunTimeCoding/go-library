@@ -3,42 +3,42 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/store"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
-func raidsTable(rows []store.RaidRow) g.Node {
+func raidsTable(rows []store.RaidRow) gomponents.Node {
 	if len(rows) == 0 {
-		return h.P(h.Em(g.Text("No raids created yet.")))
+		return html.P(html.Em(gomponents.Text("No raids created yet.")))
 	}
 
-	return h.Table(
-		h.THead(
-			h.Tr(
-				h.Th(g.Text("Name")),
-				h.Th(g.Text("Date")),
-				h.Th(g.Text("Fights")),
-				h.Th(g.Text("Players")),
+	return html.Table(
+		html.THead(
+			html.Tr(
+				html.Th(gomponents.Text("Name")),
+				html.Th(gomponents.Text("Date")),
+				html.Th(gomponents.Text("Fights")),
+				html.Th(gomponents.Text("Players")),
 			),
 		),
-		h.TBody(
-			g.Map(
+		html.TBody(
+			gomponents.Map(
 				rows,
-				func(r store.RaidRow) g.Node {
-					return h.Tr(
-						h.Td(
-							h.A(
-								h.Href(
+				func(r store.RaidRow) gomponents.Node {
+					return html.Tr(
+						html.Td(
+							html.A(
+								html.Href(
 									fmt.Sprintf("/raids/%d", r.ID),
 								),
-								g.Text(r.Name),
+								gomponents.Text(r.Name),
 							),
 						),
-						h.Td(
-							g.Text(r.Date.Format("2006-01-02")),
+						html.Td(
+							gomponents.Text(r.Date.Format("2006-01-02")),
 						),
-						h.Td(g.Textf("%d", r.Fights)),
-						h.Td(g.Textf("%d", r.Players)),
+						html.Td(gomponents.Textf("%d", r.Fights)),
+						html.Td(gomponents.Textf("%d", r.Players)),
 					)
 				},
 			),

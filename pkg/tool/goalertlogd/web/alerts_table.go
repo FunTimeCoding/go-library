@@ -2,43 +2,43 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
-func alertsTable(records []store.Record) g.Node {
+func alertsTable(records []store.Record) gomponents.Node {
 	if len(records) == 0 {
-		return h.P(h.Em(g.Text("No occurrences found.")))
+		return html.P(html.Em(gomponents.Text("No occurrences found.")))
 	}
 
-	return h.Table(
-		h.THead(
-			h.Tr(
-				h.Th(g.Text("Fingerprint")),
-				h.Th(g.Text("Severity")),
-				h.Th(g.Text("Summary")),
-				h.Th(g.Text("Start")),
-				h.Th(g.Text("End")),
-				h.Th(g.Text("Status")),
+	return html.Table(
+		html.THead(
+			html.Tr(
+				html.Th(gomponents.Text("Fingerprint")),
+				html.Th(gomponents.Text("Severity")),
+				html.Th(gomponents.Text("Summary")),
+				html.Th(gomponents.Text("Start")),
+				html.Th(gomponents.Text("End")),
+				html.Th(gomponents.Text("Status")),
 			),
 		),
-		h.TBody(
-			g.Map(
+		html.TBody(
+			gomponents.Map(
 				records,
-				func(r store.Record) g.Node {
+				func(r store.Record) gomponents.Node {
 					status := "firing"
 
 					if r.End != nil {
 						status = "resolved"
 					}
 
-					return h.Tr(
-						h.Td(g.Text(r.Fingerprint)),
-						h.Td(severityBadge(r.Severity)),
-						h.Td(g.Text(truncate(r.Summary, 80))),
-						h.Td(g.Text(formatTime(r.Start))),
-						h.Td(g.Text(formatTimePointer(r.End))),
-						h.Td(statusBadge(status)),
+					return html.Tr(
+						html.Td(gomponents.Text(r.Fingerprint)),
+						html.Td(severityBadge(r.Severity)),
+						html.Td(gomponents.Text(truncate(r.Summary, 80))),
+						html.Td(gomponents.Text(formatTime(r.Start))),
+						html.Td(gomponents.Text(formatTimePointer(r.End))),
+						html.Td(statusBadge(status)),
 					)
 				},
 			),

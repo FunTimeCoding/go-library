@@ -1,9 +1,9 @@
 package cron_job
 
-import batch "k8s.io/api/batch/v1"
+import "k8s.io/api/batch/v1"
 
 func NewSlice(
-	v []batch.CronJob,
+	v []v1.CronJob,
 	cluster string,
 ) []*Job {
 	var result []*Job

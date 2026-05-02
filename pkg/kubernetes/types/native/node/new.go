@@ -1,9 +1,9 @@
 package node
 
-import core "k8s.io/api/core/v1"
+import "k8s.io/api/core/v1"
 
 func New(
-	v *core.Node,
+	v *v1.Node,
 	cluster string,
 ) *Node {
 	return &Node{Cluster: cluster, Name: v.Name, Raw: v}

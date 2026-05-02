@@ -4,8 +4,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 )
 
@@ -23,10 +23,10 @@ func (s *Server) addSubmit(
 	errors.PanicOnError(s.store.Add(e))
 	renderFragment(
 		w,
-		h.Div(
-			h.Div(
-				h.Class("success"),
-				g.Textf(
+		html.Div(
+			html.Div(
+				html.Class("success"),
+				gomponents.Textf(
 					"Entry added: %s by %s",
 					e.Action,
 					e.User,

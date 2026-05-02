@@ -4,9 +4,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
-	g "maragu.dev/gomponents"
-	hx "maragu.dev/gomponents-htmx"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents-htmx"
+	"maragu.dev/gomponents/html"
 	"net/http"
 	"time"
 )
@@ -56,64 +56,64 @@ func (s *Server) entries(
 		layout(
 			"Entries",
 			"/entries",
-			h.H1(g.Text("Entries")),
-			h.Form(
-				h.Class("filter-form"),
-				hx.Get("/entries"),
-				hx.Target("#entries-table"),
-				hx.Swap("innerHTML"),
-				h.Div(
-					h.Class("grid"),
-					h.Label(
-						g.Text("System"),
-						h.Input(
-							h.Type("text"),
-							h.Name(constant.System),
-							h.Value(f.System),
-							h.Placeholder("e.g. worker1"),
+			html.H1(gomponents.Text("Entries")),
+			html.Form(
+				html.Class("filter-form"),
+				htmx.Get("/entries"),
+				htmx.Target("#entries-table"),
+				htmx.Swap("innerHTML"),
+				html.Div(
+					html.Class("grid"),
+					html.Label(
+						gomponents.Text("System"),
+						html.Input(
+							html.Type("text"),
+							html.Name(constant.System),
+							html.Value(f.System),
+							html.Placeholder("e.g. worker1"),
 						),
 					),
-					h.Label(
-						g.Text("Service"),
-						h.Input(
-							h.Type("text"),
-							h.Name(constant.Service),
-							h.Value(f.Service),
-							h.Placeholder("e.g. nginx"),
+					html.Label(
+						gomponents.Text("Service"),
+						html.Input(
+							html.Type("text"),
+							html.Name(constant.Service),
+							html.Value(f.Service),
+							html.Placeholder("e.g. nginx"),
 						),
 					),
-					h.Label(
-						g.Text("User"),
-						h.Input(
-							h.Type("text"),
-							h.Name(constant.User),
-							h.Value(f.User),
+					html.Label(
+						gomponents.Text("User"),
+						html.Input(
+							html.Type("text"),
+							html.Name(constant.User),
+							html.Value(f.User),
 						),
 					),
 				),
-				h.Div(
-					h.Class("grid"),
-					h.Label(
-						g.Text("Since"),
-						h.Input(
-							h.Type("datetime-local"),
-							h.Name(constant.Since),
+				html.Div(
+					html.Class("grid"),
+					html.Label(
+						gomponents.Text("Since"),
+						html.Input(
+							html.Type("datetime-local"),
+							html.Name(constant.Since),
 						),
 					),
-					h.Label(
-						g.Text("Until"),
-						h.Input(
-							h.Type("datetime-local"),
-							h.Name(constant.Until),
+					html.Label(
+						gomponents.Text("Until"),
+						html.Input(
+							html.Type("datetime-local"),
+							html.Name(constant.Until),
 						),
 					),
-					h.Label(
-						g.Raw("&nbsp;"),
-						h.Button(h.Type("submit"), g.Text("Filter")),
+					html.Label(
+						gomponents.Raw("&nbsp;"),
+						html.Button(html.Type("submit"), gomponents.Text("Filter")),
 					),
 				),
 			),
-			h.Div(h.ID("entries-table"), table),
+			html.Div(html.ID("entries-table"), table),
 		),
 	)
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/message"
-	telemetry "github.com/funtimecoding/go-library/pkg/web/telemetry/constant"
+	"github.com/funtimecoding/go-library/pkg/web/telemetry/constant"
 	"sort"
 	"time"
 )
@@ -40,7 +40,7 @@ func collect(
 	var result []*message.Message
 
 	for _, v := range r {
-		if route != "" && v.Value(telemetry.Route) == "" {
+		if route != "" && v.Value(constant.Route) == "" {
 			continue
 		}
 

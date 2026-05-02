@@ -7,7 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/run"
-	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 	"os"
@@ -20,7 +20,7 @@ func (s *Server) PostGenerate(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	var body generated.PostGenerateJSONRequestBody
+	var body server.PostGenerateJSONRequestBody
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
 	date := time.Now()
 
@@ -132,6 +132,6 @@ func (s *Server) PostGenerate(
 	system.Move(reportSource, reportPath)
 	web.EncodeNotation(
 		w,
-		generated.GenerateResponse{Path: reportPath, TidCount: tidCount},
+		server.GenerateResponse{Path: reportPath, TidCount: tidCount},
 	)
 }

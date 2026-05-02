@@ -2,7 +2,7 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
-	lintConstant "github.com/funtimecoding/go-library/pkg/lint/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/constant"
 	stringLibrary "github.com/funtimecoding/go-library/pkg/strings"
 	"strings"
 	"testing"
@@ -21,8 +21,8 @@ func TestStrayConstantFlagged(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.StrayConstantKey,
-				Text:     lintConstant.StrayConstantText,
+				Key:      constant.StrayConstantKey,
+				Text:     constant.StrayConstantText,
 				Path:     "Alfa",
 				Line:     3,
 				LineText: "const Foo = 1",
@@ -46,8 +46,8 @@ func TestStrayConstantBlockFlagged(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.StrayConstantKey,
-				Text:     lintConstant.StrayConstantText,
+				Key:      constant.StrayConstantKey,
+				Text:     constant.StrayConstantText,
 				Path:     "Bravo",
 				Line:     3,
 				LineText: "const (",

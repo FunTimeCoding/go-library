@@ -3,20 +3,20 @@ package netbox
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/cluster"
 	"github.com/funtimecoding/go-library/pkg/netbox/virtual_machine"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateVirtualMachine(
 	name string,
 	cl *cluster.Cluster,
 ) (*virtual_machine.Machine, error) {
-	q := upstream.NewWritableVirtualMachineWithConfigContextRequest(name)
+	q := netbox.NewWritableVirtualMachineWithConfigContextRequest(name)
 	q.SetCluster(
-		upstream.BriefClusterRequestAsDeviceWithConfigContextRequestCluster(
-			upstream.NewBriefClusterRequest(cl.Name),
+		netbox.BriefClusterRequestAsDeviceWithConfigContextRequestCluster(
+			netbox.NewBriefClusterRequest(cl.Name),
 		),
 	)
-	q.SetStatus(upstream.PATCHEDWRITABLEVIRTUALMACHINEWITHCONFIGCONTEXTREQUESTSTATUS_ACTIVE)
+	q.SetStatus(netbox.PATCHEDWRITABLEVIRTUALMACHINEWITHCONFIGCONTEXTREQUESTSTATUS_ACTIVE)
 	result, _, e := c.client.VirtualizationAPI.VirtualizationVirtualMachinesCreate(
 		c.context,
 	).WritableVirtualMachineWithConfigContextRequest(*q).Execute()

@@ -1,9 +1,9 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	hx "maragu.dev/gomponents-htmx"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents-htmx"
+	"maragu.dev/gomponents/html"
 	"net/http"
 )
 
@@ -29,28 +29,28 @@ func (s *Server) dashboard(
 		layout(
 			"Dashboard",
 			"/",
-			h.H1(g.Text("Dashboard")),
-			h.Div(
-				h.Class("summary-cards"),
-				h.Article(
-					h.Header(g.Text("Total Records")),
-					h.P(g.Textf("%d", s.store.MustCount())),
+			html.H1(gomponents.Text("Dashboard")),
+			html.Div(
+				html.Class("summary-cards"),
+				html.Article(
+					html.Header(gomponents.Text("Total Records")),
+					html.P(gomponents.Textf("%d", s.store.MustCount())),
 				),
-				h.Article(
-					h.Header(g.Text("Currently Firing")),
-					h.P(g.Textf("%d", s.worker.FiringCount())),
+				html.Article(
+					html.Header(gomponents.Text("Currently Firing")),
+					html.P(gomponents.Textf("%d", s.worker.FiringCount())),
 				),
-				h.Article(
-					h.Header(g.Text("Last Poll")),
-					h.P(g.Text(lastPollText)),
+				html.Article(
+					html.Header(gomponents.Text("Last Poll")),
+					html.P(gomponents.Text(lastPollText)),
 				),
 			),
-			h.H2(g.Text("Top 25 Noisy Alerts (Last 7 Days)")),
-			h.Div(
-				h.ID("top-table"),
-				hx.Get("/"),
-				hx.Trigger("every 60s"),
-				hx.Swap("innerHTML"),
+			html.H2(gomponents.Text("Top 25 Noisy Alerts (Last 7 Days)")),
+			html.Div(
+				html.ID("top-table"),
+				htmx.Get("/"),
+				htmx.Trigger("every 60s"),
+				htmx.Swap("innerHTML"),
 				s.topTable(),
 			),
 		),

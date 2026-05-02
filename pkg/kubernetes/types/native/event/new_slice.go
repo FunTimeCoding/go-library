@@ -1,9 +1,9 @@
 package event
 
-import event "k8s.io/api/events/v1"
+import "k8s.io/api/events/v1"
 
 func NewSlice(
-	v []event.Event,
+	v []v1.Event,
 	cluster string,
 ) []*Event {
 	var result []*Event

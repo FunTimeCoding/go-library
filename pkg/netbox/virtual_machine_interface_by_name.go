@@ -3,13 +3,13 @@ package netbox
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/virtual_machine"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) VirtualMachineInterfaceByName(
 	vm *virtual_machine.Machine,
 	name string,
-) (*upstream.VMInterface, error) {
+) (*netbox.VMInterface, error) {
 	result, _, e := c.client.VirtualizationAPI.VirtualizationInterfacesList(
 		c.context,
 	).VirtualMachineId([]int32{vm.Identifier}).Execute()

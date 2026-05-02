@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 )
 
@@ -12,20 +12,20 @@ func crossOriginMiddleware(next http.Handler) http.Handler {
 			w http.ResponseWriter,
 			r *http.Request,
 		) {
-			w.Header().Set(web.AccessOrigin, web.OriginAll)
+			w.Header().Set(constant.AccessOrigin, constant.OriginAll)
 			w.Header().Set(
-				web.AccessHeader,
+				constant.AccessHeader,
 				join.CommaSpace(
 					[]string{
-						web.ContentType,
-						web.Authorization,
-						web.SessionIdentifier,
-						web.ProtocolVersion,
+						constant.ContentType,
+						constant.Authorization,
+						constant.SessionIdentifier,
+						constant.ProtocolVersion,
 					},
 				),
 			)
 			w.Header().Set(
-				web.AccessMethod,
+				constant.AccessMethod,
 				join.CommaSpace(
 					[]string{
 						http.MethodGet,
@@ -36,9 +36,9 @@ func crossOriginMiddleware(next http.Handler) http.Handler {
 				),
 			)
 			w.Header().Set(
-				web.AccessExpose,
+				constant.AccessExpose,
 				join.CommaSpace(
-					[]string{web.SessionIdentifier, web.ProtocolVersion},
+					[]string{constant.SessionIdentifier, constant.ProtocolVersion},
 				),
 			)
 

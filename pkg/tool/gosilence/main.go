@@ -2,7 +2,7 @@ package gosilence
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence"
@@ -17,7 +17,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
 		r := reporter.New("gosilence", c, "", version)
 		r.Start()
 		defer func() { r.RecoverFlush(recover()) }()

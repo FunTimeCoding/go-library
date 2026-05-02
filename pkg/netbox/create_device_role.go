@@ -2,11 +2,11 @@ package netbox
 
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/device_role"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateDeviceRole(name string) (*device_role.Role, error) {
-	q := upstream.NewWritableDeviceRoleRequest(
+	q := netbox.NewWritableDeviceRoleRequest(
 		name,
 		slug(name),
 	)

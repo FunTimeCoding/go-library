@@ -2,7 +2,7 @@ package prometheus
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	prometheus "github.com/prometheus/client_golang/api/prometheus/v1"
+	"github.com/prometheus/client_golang/api/prometheus/v1"
 	"time"
 )
 
@@ -10,7 +10,7 @@ func (c *Client) QueryExemplar(
 	q string,
 	start time.Time,
 	end time.Time,
-) []prometheus.ExemplarQueryResult {
+) []v1.ExemplarQueryResult {
 	results, e := c.client.QueryExemplars(c.context, q, start, end)
 	errors.PanicOnError(e)
 

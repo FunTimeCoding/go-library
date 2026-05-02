@@ -3,7 +3,7 @@ package file_identity
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"go/ast"
-	goTypes "go/types"
+	"go/types"
 	"golang.org/x/tools/go/analysis"
 	"strings"
 )
@@ -13,7 +13,7 @@ func checkFile(
 	file *ast.File,
 	name string,
 ) {
-	types := map[string]bool{}
+	typeMap := map[string]bool{}
 	var identities []identity
 
 	for _, d := range file.Decls {
@@ -24,13 +24,13 @@ func checkFile(
 		}
 
 		for _, s := range g.Specs {
-			t, okay := s.(*ast.TypeSpec)
+			t, okay1 := s.(*ast.TypeSpec)
 
-			if !okay {
+			if !okay1 {
 				continue
 			}
 
-			types[t.Name.Name] = true
+			typeMap[t.Name.Name] = true
 			identities = append(
 				identities,
 				identity{name: t.Name.Name, position: t.Pos()},
@@ -56,7 +56,7 @@ func checkFile(
 
 		receiverName := receiverTypeName(f.Recv.List[0].Type)
 
-		if types[receiverName] {
+		if typeMap[receiverName] {
 			continue
 		}
 
@@ -86,7 +86,7 @@ func checkFile(
 	if sole.method != nil {
 		o := p.TypesInfo.ObjectOf(sole.method.Name)
 
-		if f, okay := o.(*goTypes.Func); okay && isInterfaceMethod(p, f) {
+		if f, okay := o.(*types.Func); okay && isInterfaceMethod(p, f) {
 			return
 		}
 	}

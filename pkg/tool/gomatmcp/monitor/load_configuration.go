@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	library "github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"os"
 )
@@ -20,7 +20,7 @@ func LoadConfiguration() *Configuration {
 		Topics: parseList(
 			environment.Required("MONITORING_TOPICS"),
 		),
-		MessageLimit: library.ToIntegerStrict(
+		MessageLimit: strings.ToIntegerStrict(
 			environment.Required("MONITORING_MESSAGE_LIMIT"),
 		),
 		NotificationChannel: os.Getenv("MONITORING_NOTIFICATION_CHANNEL"),

@@ -2,11 +2,11 @@ package event
 
 import (
 	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
-	event "k8s.io/api/events/v1"
+	"k8s.io/api/events/v1"
 )
 
 func New(
-	v *event.Event,
+	v *v1.Event,
 	cluster string,
 ) *Event {
 	return &Event{

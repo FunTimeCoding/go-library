@@ -3,7 +3,7 @@ package server
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -13,7 +13,7 @@ func (s *Server) CreateVirtualAddress(
 	q *http.Request,
 	name string,
 ) {
-	var body generated.CreateAddressRequest
+	var body server.CreateAddressRequest
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
 	vm := s.client.MustVirtualMachineByName(name)
 	i := s.client.MustVirtualMachineInterfaceByName(vm, body.Interface)
@@ -22,7 +22,7 @@ func (s *Server) CreateVirtualAddress(
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(
 		w,
-		generated.Address{
+		server.Address{
 			Identifier: a.Identifier, Address: a.Address.String(),
 		},
 	)

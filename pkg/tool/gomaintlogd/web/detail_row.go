@@ -3,66 +3,66 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
-	g "maragu.dev/gomponents"
-	hx "maragu.dev/gomponents-htmx"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents-htmx"
+	"maragu.dev/gomponents/html"
 )
 
-func detailRow(e *entry.Entry) g.Node {
+func detailRow(e *entry.Entry) gomponents.Node {
 	target := fmt.Sprintf("#detail-%d", e.ID)
 
-	return h.Tr(
-		h.ID(fmt.Sprintf("detail-%d", e.ID)),
-		h.Class("detail-row"),
-		h.Td(
-			g.Attr("colspan", "6"),
-			h.Div(
-				h.Class("detail-content"),
-				h.Div(
-					h.Class("grid"),
-					h.Div(
-						h.Strong(g.Text("Timestamp: ")),
-						g.Text(formatTime(e.Timestamp)),
+	return html.Tr(
+		html.ID(fmt.Sprintf("detail-%d", e.ID)),
+		html.Class("detail-row"),
+		html.Td(
+			gomponents.Attr("colspan", "6"),
+			html.Div(
+				html.Class("detail-content"),
+				html.Div(
+					html.Class("grid"),
+					html.Div(
+						html.Strong(gomponents.Text("Timestamp: ")),
+						gomponents.Text(formatTime(e.Timestamp)),
 					),
-					h.Div(
-						h.Strong(g.Text("Action: ")),
-						g.Text(e.Action),
+					html.Div(
+						html.Strong(gomponents.Text("Action: ")),
+						gomponents.Text(e.Action),
 					),
-					h.Div(
-						h.Strong(g.Text("User: ")),
-						g.Text(e.User),
+					html.Div(
+						html.Strong(gomponents.Text("User: ")),
+						gomponents.Text(e.User),
 					),
 				),
-				h.Div(
-					h.Class("grid"),
-					h.Div(
-						h.Strong(g.Text("System: ")),
-						g.Text(e.System),
+				html.Div(
+					html.Class("grid"),
+					html.Div(
+						html.Strong(gomponents.Text("System: ")),
+						gomponents.Text(e.System),
 					),
-					h.Div(
-						h.Strong(g.Text("Service: ")),
-						g.Text(e.Service),
+					html.Div(
+						html.Strong(gomponents.Text("Service: ")),
+						gomponents.Text(e.Service),
 					),
-					h.Div(),
+					html.Div(),
 				),
-				h.Div(
-					h.Strong(g.Text("Description:")),
-					h.Pre(g.Text(e.Description)),
+				html.Div(
+					html.Strong(gomponents.Text("Description:")),
+					html.Pre(gomponents.Text(e.Description)),
 				),
-				h.Div(
-					h.Class("detail-actions"),
-					h.Button(
-						h.Class("outline"),
-						hx.Get(fmt.Sprintf("/entry/edit?id=%d", e.ID)),
-						hx.Target(target),
-						hx.Swap("outerHTML"),
-						g.Text("Edit"),
+				html.Div(
+					html.Class("detail-actions"),
+					html.Button(
+						html.Class("outline"),
+						htmx.Get(fmt.Sprintf("/entry/edit?id=%d", e.ID)),
+						htmx.Target(target),
+						htmx.Swap("outerHTML"),
+						gomponents.Text("Edit"),
 					),
-					h.Button(
-						h.Class("outline contrast"),
-						hx.Post(fmt.Sprintf("/entry/delete?id=%d", e.ID)),
-						hx.Confirm("Delete this entry?"),
-						g.Attr(
+					html.Button(
+						html.Class("outline contrast"),
+						htmx.Post(fmt.Sprintf("/entry/delete?id=%d", e.ID)),
+						htmx.Confirm("Delete this entry?"),
+						gomponents.Attr(
 							"hx-on::after-request",
 							fmt.Sprintf(
 								"document.getElementById('row-%d')?.remove();document.getElementById('detail-%d')?.remove()",
@@ -70,19 +70,19 @@ func detailRow(e *entry.Entry) g.Node {
 								e.ID,
 							),
 						),
-						g.Text("Delete"),
+						gomponents.Text("Delete"),
 					),
-					h.Button(
-						h.Type("button"),
-						h.Class("outline secondary"),
-						g.Attr(
+					html.Button(
+						html.Type("button"),
+						html.Class("outline secondary"),
+						gomponents.Attr(
 							"onclick",
 							fmt.Sprintf(
 								"var r=document.getElementById('detail-%d');r.style.display='none';r.innerHTML='';r.className=''",
 								e.ID,
 							),
 						),
-						g.Text("Close"),
+						gomponents.Text("Close"),
 					),
 				),
 			),

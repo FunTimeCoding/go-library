@@ -1,9 +1,9 @@
 package pod
 
-import core "k8s.io/api/core/v1"
+import "k8s.io/api/core/v1"
 
 func NewSlice(
-	v []core.Pod,
+	v []v1.Pod,
 	cluster string,
 ) []*Pod {
 	var result []*Pod

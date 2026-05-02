@@ -2,9 +2,9 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/constant"
-	g "maragu.dev/gomponents"
-	hx "maragu.dev/gomponents-htmx"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents-htmx"
+	"maragu.dev/gomponents/html"
 	"net/http"
 	"time"
 )
@@ -42,37 +42,37 @@ func (s *Server) recent(
 		layout(
 			"Recent",
 			"/recent",
-			h.H1(g.Text("Recent Alerts")),
-			h.Form(
-				h.Class("filter-form"),
-				hx.Get("/recent"),
-				hx.Target("#recent-table"),
-				hx.Swap("innerHTML"),
-				h.Div(
-					h.Class("grid"),
-					h.Label(
-						g.Text("Start"),
-						h.Input(
-							h.Type("datetime-local"),
-							h.Name(constant.Start),
-							h.Value(start.Format("2006-01-02T15:04")),
+			html.H1(gomponents.Text("Recent Alerts")),
+			html.Form(
+				html.Class("filter-form"),
+				htmx.Get("/recent"),
+				htmx.Target("#recent-table"),
+				htmx.Swap("innerHTML"),
+				html.Div(
+					html.Class("grid"),
+					html.Label(
+						gomponents.Text("Start"),
+						html.Input(
+							html.Type("datetime-local"),
+							html.Name(constant.Start),
+							html.Value(start.Format("2006-01-02T15:04")),
 						),
 					),
-					h.Label(
-						g.Text("End"),
-						h.Input(
-							h.Type("datetime-local"),
-							h.Name(constant.End),
-							h.Value(end.Format("2006-01-02T15:04")),
+					html.Label(
+						gomponents.Text("End"),
+						html.Input(
+							html.Type("datetime-local"),
+							html.Name(constant.End),
+							html.Value(end.Format("2006-01-02T15:04")),
 						),
 					),
-					h.Label(
-						g.Raw("&nbsp;"),
-						h.Button(h.Type("submit"), g.Text("Filter")),
+					html.Label(
+						gomponents.Raw("&nbsp;"),
+						html.Button(html.Type("submit"), gomponents.Text("Filter")),
 					),
 				),
 			),
-			h.Div(h.ID("recent-table"), table),
+			html.Div(html.ID("recent-table"), table),
 		),
 	)
 }

@@ -2,62 +2,62 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
-	g "maragu.dev/gomponents"
-	hx "maragu.dev/gomponents-htmx"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents-htmx"
+	"maragu.dev/gomponents/html"
 )
 
-func addForm() g.Node {
-	return h.Form(
-		hx.Post("/add"),
-		hx.Target("#add-form"),
-		hx.Swap("outerHTML"),
-		h.ID("add-form"),
-		h.Label(
-			g.Text("Action (required)"),
-			h.Input(
-				h.Type("text"),
-				h.Name(constant.Action),
-				h.Required(),
-				h.Placeholder("e.g. restarted web server"),
+func addForm() gomponents.Node {
+	return html.Form(
+		htmx.Post("/add"),
+		htmx.Target("#add-form"),
+		htmx.Swap("outerHTML"),
+		html.ID("add-form"),
+		html.Label(
+			gomponents.Text("Action (required)"),
+			html.Input(
+				html.Type("text"),
+				html.Name(constant.Action),
+				html.Required(),
+				html.Placeholder("e.g. restarted web server"),
 			),
 		),
-		h.Label(
-			g.Text("User (required)"),
-			h.Input(
-				h.Type("text"),
-				h.Name(constant.User),
-				h.Required(),
-				h.Placeholder("e.g. jdoe"),
+		html.Label(
+			gomponents.Text("User (required)"),
+			html.Input(
+				html.Type("text"),
+				html.Name(constant.User),
+				html.Required(),
+				html.Placeholder("e.g. jdoe"),
 			),
 		),
-		h.Div(
-			h.Class("grid"),
-			h.Label(
-				g.Text("System"),
-				h.Input(
-					h.Type("text"),
-					h.Name(constant.System),
-					h.Placeholder("e.g. worker1"),
+		html.Div(
+			html.Class("grid"),
+			html.Label(
+				gomponents.Text("System"),
+				html.Input(
+					html.Type("text"),
+					html.Name(constant.System),
+					html.Placeholder("e.g. worker1"),
 				),
 			),
-			h.Label(
-				g.Text("Service"),
-				h.Input(
-					h.Type("text"),
-					h.Name(constant.Service),
-					h.Placeholder("e.g. nginx"),
+			html.Label(
+				gomponents.Text("Service"),
+				html.Input(
+					html.Type("text"),
+					html.Name(constant.Service),
+					html.Placeholder("e.g. nginx"),
 				),
 			),
 		),
-		h.Label(
-			g.Text("Description"),
-			h.Textarea(
-				h.Name(constant.Description),
-				h.Placeholder("Optional details..."),
-				h.Rows("3"),
+		html.Label(
+			gomponents.Text("Description"),
+			html.Textarea(
+				html.Name(constant.Description),
+				html.Placeholder("Optional details..."),
+				html.Rows("3"),
 			),
 		),
-		h.Button(h.Type("submit"), g.Text("Add Entry")),
+		html.Button(html.Type("submit"), gomponents.Text("Add Entry")),
 	)
 }

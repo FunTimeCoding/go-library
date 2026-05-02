@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/netbox/cluster"
 	"github.com/funtimecoding/go-library/pkg/netbox/cluster_type"
 	"github.com/funtimecoding/go-library/pkg/netbox/site"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateCluster(
@@ -12,15 +12,15 @@ func (c *Client) CreateCluster(
 	t *cluster_type.Type,
 	s *site.Site,
 ) (*cluster.Cluster, error) {
-	q := upstream.NewWritableClusterRequest(
+	q := netbox.NewWritableClusterRequest(
 		name,
-		upstream.BriefClusterTypeRequestAsClusterRequestType(
-			upstream.NewBriefClusterTypeRequest(t.Name, t.Raw.Slug),
+		netbox.BriefClusterTypeRequestAsClusterRequestType(
+			netbox.NewBriefClusterTypeRequest(t.Name, t.Raw.Slug),
 		),
 	)
 	q.SetScopeType("dcim.site")
 	q.SetScopeId(s.Identifier)
-	q.SetStatus(upstream.CLUSTERSTATUSVALUE_ACTIVE)
+	q.SetStatus(netbox.CLUSTERSTATUSVALUE_ACTIVE)
 	result, _, e := c.client.VirtualizationAPI.VirtualizationClustersCreate(
 		c.context,
 	).WritableClusterRequest(*q).Execute()

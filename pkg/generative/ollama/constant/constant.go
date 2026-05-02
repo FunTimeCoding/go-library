@@ -1,12 +1,12 @@
 package constant
 
-import web "github.com/funtimecoding/go-library/pkg/web/constant"
+import "github.com/funtimecoding/go-library/pkg/web/constant"
 
 const (
 	HostEnvironment string = "OLLAMA_HOST"
 	PortEnvironment string = "OLLAMA_PORT"
 
-	Host     = web.Localhost
+	Host     = constant.Localhost
 	Port int = 11434
 
 	Llama31   = "llama3.1"    // 8b

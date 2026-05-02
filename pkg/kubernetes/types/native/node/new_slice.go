@@ -1,9 +1,9 @@
 package node
 
-import core "k8s.io/api/core/v1"
+import "k8s.io/api/core/v1"
 
 func NewSlice(
-	v []core.Node,
+	v []v1.Node,
 	cluster string,
 ) []*Node {
 	var result []*Node

@@ -3,7 +3,7 @@ package gonetb
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/netb"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
@@ -16,7 +16,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
 		r := reporter.New("gonetb", c, "", version)
 		r.Start()
 		defer func() { r.RecoverFlush(recover()) }()

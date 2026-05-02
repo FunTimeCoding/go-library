@@ -3,7 +3,7 @@ package issue
 import (
 	"github.com/andygrunwald/go-jira"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/option"
-	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
+	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"strings"
 	"time"
 )
@@ -13,7 +13,7 @@ func New(
 	o *option.Issue,
 ) *Issue {
 	result := Stub()
-	result.MonitorIdentifier = item.GoJira.StringIdentifier(
+	result.MonitorIdentifier = constant.GoJira.StringIdentifier(
 		v.Key,
 	)
 	result.Key = v.Key

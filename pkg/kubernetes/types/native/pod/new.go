@@ -1,9 +1,9 @@
 package pod
 
-import core "k8s.io/api/core/v1"
+import "k8s.io/api/core/v1"
 
 func New(
-	v *core.Pod,
+	v *v1.Pod,
 	cluster string,
 ) *Pod {
 	return &Pod{Cluster: cluster, Name: v.Name, Raw: v}

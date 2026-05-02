@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client/executor"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"io"
-	core "k8s.io/api/core/v1"
+	"k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/remotecommand"
 )
@@ -24,7 +24,7 @@ func (c *Client) Execute(
 		constant.ExecuteSubResource,
 	)
 	r.VersionedParams(
-		&core.PodExecOptions{
+		&v1.PodExecOptions{
 			Command:   command,
 			Container: container,
 			Stdout:    true,

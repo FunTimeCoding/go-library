@@ -2,14 +2,14 @@ package jira
 
 import (
 	"github.com/ctreminiom/go-atlassian/v2/pkg/infra/models"
-	basic "github.com/funtimecoding/go-library/pkg/atlassian/jira/basic/issue/issues"
+	"github.com/funtimecoding/go-library/pkg/atlassian/jira/basic/issue/issues"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue/customer"
 	"slices"
 )
 
 func (c *Client) CustomerIssues(all bool) ([]*customer.Issue, error) {
-	issues, r, e := c.service.Request.Gets(
+	v, r, e := c.service.Request.Gets(
 		c.context,
 		&models.ServiceRequestOptionScheme{},
 		0,
@@ -20,10 +20,10 @@ func (c *Client) CustomerIssues(all bool) ([]*customer.Issue, error) {
 		return nil, e
 	}
 
-	list := basic.FromResponseScheme(r)
+	list := issues.FromResponseScheme(r)
 	var result []*customer.Issue
 
-	for _, i := range customer.NewSlice(issues.Values) {
+	for _, i := range customer.NewSlice(v.Values) {
 		b := list.Key(i.Key)
 
 		if b == nil {

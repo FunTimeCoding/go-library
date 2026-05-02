@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/filter"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/types/native/pod"
-	core "k8s.io/api/core/v1"
+	"k8s.io/api/core/v1"
 )
 
 func (c *Client) Pods(f *filter.Filter) []*pod.Pod {
@@ -19,7 +19,7 @@ func (c *Client) Pods(f *filter.Filter) []*pod.Pod {
 					list.Pod(
 						l.client,
 						l.context,
-						core.NamespaceAll,
+						v1.NamespaceAll,
 						constant.NodeAll,
 					),
 					l.cluster,

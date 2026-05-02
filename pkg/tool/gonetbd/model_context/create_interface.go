@@ -7,7 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (s *Server) createInterface(
@@ -41,7 +41,7 @@ func (s *Server) createInterface(
 	result, j := s.client.CreateInterface(
 		d,
 		name,
-		upstream.InterfaceTypeValue(interfaceType),
+		netbox.InterfaceTypeValue(interfaceType),
 	)
 
 	if j != nil {

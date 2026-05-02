@@ -3,7 +3,7 @@ package client
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	kubernetes "k8s.io/apimachinery/pkg/api/errors"
-	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func (c *Client) DeleteJob(
@@ -13,8 +13,8 @@ func (c *Client) DeleteJob(
 	e := c.client.BatchV1().Jobs(namespace).Delete(
 		c.context,
 		name,
-		meta.DeleteOptions{
-			PropagationPolicy: new(meta.DeletePropagationForeground),
+		v1.DeleteOptions{
+			PropagationPolicy: new(v1.DeletePropagationForeground),
 		},
 	)
 

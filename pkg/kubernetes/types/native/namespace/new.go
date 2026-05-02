@@ -1,9 +1,9 @@
 package namespace
 
-import core "k8s.io/api/core/v1"
+import "k8s.io/api/core/v1"
 
 func New(
-	v *core.Namespace,
+	v *v1.Namespace,
 	cluster string,
 ) *Namespace {
 	return &Namespace{Cluster: cluster, Name: v.Name, Raw: v}

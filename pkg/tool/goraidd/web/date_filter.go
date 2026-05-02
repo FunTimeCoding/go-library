@@ -2,36 +2,36 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
-func dateFilter(startValue, endValue string) g.Node {
-	return h.Form(
-		h.Class("filter-form"),
-		h.Method(constant.Get),
-		h.Action("/"),
-		h.Div(
-			h.Class("grid"),
-			h.Label(
-				g.Text("From"),
-				h.Input(
-					h.Type("datetime-local"),
-					h.Name("start"),
-					h.Value(startValue),
+func dateFilter(startValue, endValue string) gomponents.Node {
+	return html.Form(
+		html.Class("filter-form"),
+		html.Method(constant.Get),
+		html.Action("/"),
+		html.Div(
+			html.Class("grid"),
+			html.Label(
+				gomponents.Text("From"),
+				html.Input(
+					html.Type("datetime-local"),
+					html.Name("start"),
+					html.Value(startValue),
 				),
 			),
-			h.Label(
-				g.Text("To"),
-				h.Input(
-					h.Type("datetime-local"),
-					h.Name("end"),
-					h.Value(endValue),
+			html.Label(
+				gomponents.Text("To"),
+				html.Input(
+					html.Type("datetime-local"),
+					html.Name("end"),
+					html.Value(endValue),
 				),
 			),
-			h.Button(
-				h.Type("submit"),
-				g.Text("Filter"),
+			html.Button(
+				html.Type("submit"),
+				gomponents.Text("Filter"),
 			),
 		),
 	)

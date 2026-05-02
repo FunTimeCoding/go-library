@@ -2,7 +2,7 @@ package gofile
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/check/file"
@@ -16,7 +16,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
+	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
 		r := reporter.New("gofile", c, "", version)
 		r.Start()
 		defer func() { r.RecoverFlush(recover()) }()

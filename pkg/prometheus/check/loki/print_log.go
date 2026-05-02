@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/message"
-	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
+	"github.com/funtimecoding/go-library/pkg/time"
 )
 
 func printLog(
@@ -14,7 +14,7 @@ func printLog(
 ) {
 	for _, m := range v {
 		s := status.New(f).String(
-			m.Time.Format(timeLibrary.DateMinute),
+			m.Time.Format(time.DateMinute),
 		).String(
 			formatContent(m, f),
 		).String(

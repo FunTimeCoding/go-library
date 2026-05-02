@@ -5,7 +5,7 @@ import (
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	check "github.com/funtimecoding/go-library/pkg/prometheus/check/loki"
+	"github.com/funtimecoding/go-library/pkg/prometheus/check/loki"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/loki/option"
 	lokiConstant "github.com/funtimecoding/go-library/pkg/prometheus/loki/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
@@ -52,5 +52,5 @@ func Main(
 	o.Limit = viper.GetInt(argument.Limit)
 	o.Namespaces = environment.Slice(lokiConstant.NamespaceEnvironment)
 	o.Exclude = environment.Slice(lokiConstant.ExcludeEnvironment)
-	check.Check(o)
+	loki.Check(o)
 }

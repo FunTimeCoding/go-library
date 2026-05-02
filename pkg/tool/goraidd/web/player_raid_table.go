@@ -3,31 +3,31 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/store"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"strings"
 )
 
-func playerRaidTable(rows []store.PlayerRaidRow) g.Node {
-	return h.Table(
-		h.THead(
-			h.Tr(
-				h.Th(g.Text("Profession")),
-				h.Th(g.Text("Fights")),
-				h.Th(g.Text("Dmg/s")),
-				h.Th(g.Text("Heal/s")),
-				h.Th(g.Text("Clean/s")),
-				h.Th(g.Text("Strip/s")),
-				h.Th(g.Text("Barrier/s")),
-				h.Th(g.Text("Downs/s")),
-				h.Th(g.Text("Death/m")),
-				h.Th(g.Text("Tag Dist")),
+func playerRaidTable(rows []store.PlayerRaidRow) gomponents.Node {
+	return html.Table(
+		html.THead(
+			html.Tr(
+				html.Th(gomponents.Text("Profession")),
+				html.Th(gomponents.Text("Fights")),
+				html.Th(gomponents.Text("Dmg/s")),
+				html.Th(gomponents.Text("Heal/s")),
+				html.Th(gomponents.Text("Clean/s")),
+				html.Th(gomponents.Text("Strip/s")),
+				html.Th(gomponents.Text("Barrier/s")),
+				html.Th(gomponents.Text("Downs/s")),
+				html.Th(gomponents.Text("Death/m")),
+				html.Th(gomponents.Text("Tag Dist")),
 			),
 		),
-		h.TBody(
-			g.Map(
+		html.TBody(
+			gomponents.Map(
 				rows,
-				func(r store.PlayerRaidRow) g.Node {
+				func(r store.PlayerRaidRow) gomponents.Node {
 					seconds := float64(r.ActiveTimeMS) / 1000
 					minutes := seconds / 60
 					icon := fmt.Sprintf(
@@ -35,20 +35,20 @@ func playerRaidTable(rows []store.PlayerRaidRow) g.Node {
 						strings.ToLower(r.Profession),
 					)
 
-					return h.Tr(
-						h.Td(
-							h.Img(
-								h.Src(icon),
-								h.Width("20"),
-								h.Height("20"),
+					return html.Tr(
+						html.Td(
+							html.Img(
+								html.Src(icon),
+								html.Width("20"),
+								html.Height("20"),
 							),
-							g.Textf(" %s", r.Profession),
+							gomponents.Textf(" %s", r.Profession),
 						),
-						h.Td(g.Textf("%d", r.Fights)),
-						h.Td(g.Text(perSecond(r.Damage, seconds, 1))),
-						h.Td(g.Text(perSecond(r.Healing, seconds, 1))),
-						h.Td(
-							g.Text(
+						html.Td(gomponents.Textf("%d", r.Fights)),
+						html.Td(gomponents.Text(perSecond(r.Damage, seconds, 1))),
+						html.Td(gomponents.Text(perSecond(r.Healing, seconds, 1))),
+						html.Td(
+							gomponents.Text(
 								perSecond(
 									r.ConditionCleanses,
 									seconds,
@@ -56,13 +56,13 @@ func playerRaidTable(rows []store.PlayerRaidRow) g.Node {
 								),
 							),
 						),
-						h.Td(
-							g.Text(perSecond(r.BoonStrips, seconds, 2)),
+						html.Td(
+							gomponents.Text(perSecond(r.BoonStrips, seconds, 2)),
 						),
-						h.Td(g.Text(perSecond(r.Barrier, seconds, 1))),
-						h.Td(g.Text(perSecond(r.Downs, seconds, 1))),
-						h.Td(g.Text(perMinute(r.DeadCount, minutes))),
-						h.Td(g.Textf("%.0f", r.DistToCom)),
+						html.Td(gomponents.Text(perSecond(r.Barrier, seconds, 1))),
+						html.Td(gomponents.Text(perSecond(r.Downs, seconds, 1))),
+						html.Td(gomponents.Text(perMinute(r.DeadCount, minutes))),
+						html.Td(gomponents.Textf("%.0f", r.DistToCom)),
 					)
 				},
 			),

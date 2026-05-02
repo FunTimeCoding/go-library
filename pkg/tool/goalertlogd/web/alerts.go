@@ -1,8 +1,8 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"net/http"
 )
 
@@ -24,8 +24,8 @@ func (s *Server) alerts(
 		layout(
 			name,
 			"",
-			h.H1(g.Textf("Alert: %s", name)),
-			h.P(g.Textf("%d occurrences", len(records))),
+			html.H1(gomponents.Textf("Alert: %s", name)),
+			html.P(gomponents.Textf("%d occurrences", len(records))),
 			alertsTable(records),
 		),
 	)

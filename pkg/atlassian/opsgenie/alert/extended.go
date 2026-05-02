@@ -2,7 +2,7 @@ package alert
 
 import (
 	"github.com/docker/go-units"
-	opsgenieConstant "github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
+	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/constant"
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
@@ -71,7 +71,7 @@ func (a *Alert) extended(
 				if t := a.TeamMap.ByIdentifier(r.Id); t != nil {
 					name = a.TeamMap.KeyByName(t.Name)
 
-					if name == opsgenieConstant.NoKey {
+					if name == constant.NoKey {
 						name = UnknownTeam
 					}
 				} else {
@@ -89,7 +89,7 @@ func (a *Alert) extended(
 				if u := a.UserMap.ByIdentifier(r.Id); u != nil {
 					name = a.shortenUser(u.Name)
 
-					if name == opsgenieConstant.NoKey {
+					if name == constant.NoKey {
 						name = UnknownUser
 					}
 				} else {

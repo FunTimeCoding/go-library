@@ -4,14 +4,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/types/custom/certificate_request"
-	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 func (c *Client) CertificateRequests() []certificate_request.CertificateRequest {
 	list, e := c.dynamic.Resource(constant.CertificateRequestGVR).List(
 		c.context,
-		meta.ListOptions{},
+		v1.ListOptions{},
 	)
 	errors.PanicOnError(e)
 	var result []certificate_request.CertificateRequest

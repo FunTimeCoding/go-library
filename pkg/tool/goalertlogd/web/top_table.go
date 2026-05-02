@@ -3,50 +3,50 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"time"
 )
 
-func (s *Server) topTable() g.Node {
+func (s *Server) topTable() gomponents.Node {
 	now := time.Now()
 	records := s.store.MustTop(25, now.Add(-7*24*time.Hour), now)
 
 	if len(records) == 0 {
-		return h.P(h.Em(g.Text("No alerts in the last 7 days.")))
+		return html.P(html.Em(gomponents.Text("No alerts in the last 7 days.")))
 	}
 
-	return h.Table(
-		h.THead(
-			h.Tr(
-				h.Th(g.Text("Name")),
-				h.Th(g.Text("Count")),
-				h.Th(g.Text("Avg Duration")),
-				h.Th(g.Text("Firing")),
-				h.Th(g.Text("Severity")),
+	return html.Table(
+		html.THead(
+			html.Tr(
+				html.Th(gomponents.Text("Name")),
+				html.Th(gomponents.Text("Count")),
+				html.Th(gomponents.Text("Avg Duration")),
+				html.Th(gomponents.Text("Firing")),
+				html.Th(gomponents.Text("Severity")),
 			),
 		),
-		h.TBody(
-			g.Map(
+		html.TBody(
+			gomponents.Map(
 				records,
-				func(r store.TopRecord) g.Node {
-					return h.Tr(
-						h.Td(
-							h.A(
-								h.Class("alert-link"),
-								h.Href(
+				func(r store.TopRecord) gomponents.Node {
+					return html.Tr(
+						html.Td(
+							html.A(
+								html.Class("alert-link"),
+								html.Href(
 									fmt.Sprintf(
 										"/alerts?name=%s",
 										r.Name,
 									),
 								),
-								g.Text(r.Name),
+								gomponents.Text(r.Name),
 							),
 						),
-						h.Td(g.Textf("%d", r.Count)),
-						h.Td(g.Text(formatDuration(r.AverageDuration))),
-						h.Td(g.Textf("%d", r.CurrentlyFiring)),
-						h.Td(severityBadge(r.Severity)),
+						html.Td(gomponents.Textf("%d", r.Count)),
+						html.Td(gomponents.Text(formatDuration(r.AverageDuration))),
+						html.Td(gomponents.Textf("%d", r.CurrentlyFiring)),
+						html.Td(severityBadge(r.Severity)),
 					)
 				},
 			),

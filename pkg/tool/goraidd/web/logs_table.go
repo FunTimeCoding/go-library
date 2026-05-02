@@ -3,8 +3,8 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/raid"
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
 func logsTable(
@@ -12,12 +12,12 @@ func logsTable(
 	offset, total int,
 	startValue, endValue string,
 	filtered bool,
-) g.Node {
+) gomponents.Node {
 	if len(fights) == 0 {
-		return h.P(h.Em(g.Text("No logs found.")))
+		return html.P(html.Em(gomponents.Text("No logs found.")))
 	}
 
-	var nodes []g.Node
+	var nodes []gomponents.Node
 
 	if !filtered {
 		nodes = append(
@@ -28,42 +28,42 @@ func logsTable(
 
 	nodes = append(
 		nodes,
-		h.Table(
-			h.THead(
-				h.Tr(
-					h.Th(),
-					h.Th(g.Text("Time")),
-					h.Th(g.Text("Duration")),
-					h.Th(g.Text("Map")),
-					h.Th(g.Text("Players")),
-					h.Th(g.Text("Enemies")),
+		html.Table(
+			html.THead(
+				html.Tr(
+					html.Th(),
+					html.Th(gomponents.Text("Time")),
+					html.Th(gomponents.Text("Duration")),
+					html.Th(gomponents.Text("Map")),
+					html.Th(gomponents.Text("Players")),
+					html.Th(gomponents.Text("Enemies")),
 				),
 			),
-			h.TBody(
-				g.Map(
+			html.TBody(
+				gomponents.Map(
 					fights,
-					func(f raid.Fight) g.Node {
-						return h.Tr(
-							h.Td(
-								h.Input(
-									h.Type("checkbox"),
-									h.Name("fileNames"),
-									h.Value(f.Filename),
+					func(f raid.Fight) gomponents.Node {
+						return html.Tr(
+							html.Td(
+								html.Input(
+									html.Type("checkbox"),
+									html.Name("fileNames"),
+									html.Value(f.Filename),
 								),
 							),
-							h.Td(
-								g.Text(
+							html.Td(
+								gomponents.Text(
 									f.Timestamp.Format("2006-01-02 15:04"),
 								),
 							),
-							h.Td(g.Text(fightDuration(f))),
-							h.Td(g.Text(fightMap(f))),
-							h.Td(
-								g.Text(
+							html.Td(gomponents.Text(fightDuration(f))),
+							html.Td(gomponents.Text(fightMap(f))),
+							html.Td(
+								gomponents.Text(
 									fmt.Sprintf("%d", f.AlliedCount),
 								),
 							),
-							h.Td(g.Text(fightEnemies(f))),
+							html.Td(gomponents.Text(fightEnemies(f))),
 						)
 					},
 				),
@@ -78,5 +78,5 @@ func logsTable(
 		)
 	}
 
-	return g.Group(nodes)
+	return gomponents.Group(nodes)
 }

@@ -3,53 +3,53 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
-	g "maragu.dev/gomponents"
-	hx "maragu.dev/gomponents-htmx"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents-htmx"
+	"maragu.dev/gomponents/html"
 )
 
-func entriesTable(entries []entry.Entry) g.Node {
+func entriesTable(entries []entry.Entry) gomponents.Node {
 	if len(entries) == 0 {
-		return h.P(h.Em(g.Text("No entries found.")))
+		return html.P(html.Em(gomponents.Text("No entries found.")))
 	}
 
-	var rows []g.Node
+	var rows []gomponents.Node
 
 	for _, e := range entries {
 		target := fmt.Sprintf("detail-%d", e.ID)
 		rows = append(
 			rows,
-			h.Tr(
-				h.ID(fmt.Sprintf("row-%d", e.ID)),
-				h.Class("clickable-row"),
-				hx.Get(fmt.Sprintf("/entry/detail?id=%d", e.ID)),
-				hx.Target(fmt.Sprintf("#%s", target)),
-				hx.Swap("outerHTML"),
-				h.Td(g.Text(formatTime(e.Timestamp))),
-				h.Td(g.Text(e.Action)),
-				h.Td(g.Text(e.User)),
-				h.Td(g.Text(e.System)),
-				h.Td(g.Text(e.Service)),
-				h.Td(g.Text(truncate(e.Description, 80))),
+			html.Tr(
+				html.ID(fmt.Sprintf("row-%d", e.ID)),
+				html.Class("clickable-row"),
+				htmx.Get(fmt.Sprintf("/entry/detail?id=%d", e.ID)),
+				htmx.Target(fmt.Sprintf("#%s", target)),
+				htmx.Swap("outerHTML"),
+				html.Td(gomponents.Text(formatTime(e.Timestamp))),
+				html.Td(gomponents.Text(e.Action)),
+				html.Td(gomponents.Text(e.User)),
+				html.Td(gomponents.Text(e.System)),
+				html.Td(gomponents.Text(e.Service)),
+				html.Td(gomponents.Text(truncate(e.Description, 80))),
 			),
-			h.Tr(
-				h.ID(target),
-				h.Style("display:none"),
+			html.Tr(
+				html.ID(target),
+				html.Style("display:none"),
 			),
 		)
 	}
 
-	return h.Table(
-		h.THead(
-			h.Tr(
-				h.Th(g.Text("Timestamp")),
-				h.Th(g.Text("Action")),
-				h.Th(g.Text("User")),
-				h.Th(g.Text("System")),
-				h.Th(g.Text("Service")),
-				h.Th(g.Text("Description")),
+	return html.Table(
+		html.THead(
+			html.Tr(
+				html.Th(gomponents.Text("Timestamp")),
+				html.Th(gomponents.Text("Action")),
+				html.Th(gomponents.Text("User")),
+				html.Th(gomponents.Text("System")),
+				html.Th(gomponents.Text("Service")),
+				html.Th(gomponents.Text("Description")),
 			),
 		),
-		h.TBody(g.Group(rows)),
+		html.TBody(gomponents.Group(rows)),
 	)
 }

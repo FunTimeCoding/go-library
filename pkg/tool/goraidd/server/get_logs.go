@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/time"
-	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -12,7 +12,7 @@ import (
 func (s *Server) GetLogs(
 	w http.ResponseWriter,
 	_ *http.Request,
-	params generated.GetLogsParams,
+	params server.GetLogsParams,
 ) {
 	all := s.store.Fights()
 	var fights []raid.Fight
@@ -52,12 +52,12 @@ func (s *Server) GetLogs(
 	}
 
 	page := fights[offset:end]
-	var result []generated.LogResponse
+	var result []server.LogResponse
 
 	for _, f := range page {
 		result = append(
 			result,
-			generated.LogResponse{
+			server.LogResponse{
 				FileName:    f.Filename,
 				Time:        f.Timestamp.Format(time.DateSecond),
 				Duration:    fmt.Sprintf("%dms", f.DurationMS),
@@ -70,7 +70,7 @@ func (s *Server) GetLogs(
 
 	web.EncodeNotation(
 		w,
-		generated.LogsResponse{
+		server.LogsResponse{
 			Total: total,
 			Logs:  result,
 		},

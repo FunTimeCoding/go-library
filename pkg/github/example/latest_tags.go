@@ -3,14 +3,14 @@ package example
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/github"
-	githubConstant "github.com/funtimecoding/go-library/pkg/github/constant"
+	"github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/semver"
 )
 
 func LatestTags() {
 	c := github.NewEnvironment()
 
-	for _, p := range c.MustPackages(githubConstant.LibraryNamespace) {
+	for _, p := range c.MustPackages(constant.LibraryNamespace) {
 		var tags []string
 
 		for _, v := range c.MustPackageVersions(p.Name) {

@@ -7,7 +7,7 @@ import (
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
-	checkVersion "github.com/funtimecoding/go-library/pkg/go_mod/check/version"
+	"github.com/funtimecoding/go-library/pkg/go_mod/check/version"
 	"github.com/funtimecoding/go-library/pkg/go_mod/check/version/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
@@ -20,12 +20,17 @@ import (
 )
 
 func Main(
-	version string,
+	programVersion string,
 	gitHash string,
 	buildDate string,
 ) {
 	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-		r := reporter.New("goversion", c, "", version)
+		r := reporter.New(
+			"goversion",
+			c,
+			"",
+			programVersion,
+		)
 		r.Start()
 		defer func() { r.RecoverFlush(recover()) }()
 	}
@@ -41,7 +46,7 @@ func Main(
 			item.GoVersion.Plural,
 		),
 	)
-	monitor.ParseBind(version, gitHash, buildDate)
+	monitor.ParseBind(programVersion, gitHash, buildDate)
 	o := option.New()
 	o.Notation = viper.GetBool(argument.Notation)
 	o.All = viper.GetBool(argument.All)
@@ -54,7 +59,7 @@ func Main(
 	)
 	o.Depth = viper.GetInt(argument.Depth)
 
-	if s := environment.Optional(checkVersion.SkipEnvironment); s != "" {
+	if s := environment.Optional(version.SkipEnvironment); s != "" {
 		o.Skip = split.Comma(s)
 	}
 
@@ -71,5 +76,5 @@ func Main(
 	}
 
 	o.RuntimeVersion = v.String()
-	checkVersion.Check(o)
+	version.Check(o)
 }

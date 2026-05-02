@@ -1,7 +1,7 @@
 package server
 
 import (
-	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -12,6 +12,6 @@ func (s *Server) GetStatus(
 ) {
 	web.EncodeNotation(
 		w,
-		generated.StatusResponse{Status: "ok"},
+		server.StatusResponse{Status: "ok"},
 	)
 }

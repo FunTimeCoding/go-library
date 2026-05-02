@@ -2,7 +2,7 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
-	lintConstant "github.com/funtimecoding/go-library/pkg/lint/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/constant"
 	library "github.com/funtimecoding/go-library/pkg/strings"
 	"strings"
 	"testing"
@@ -21,8 +21,8 @@ func TestSpacingBlankBeforeControl(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBeforeControlKey,
-				Text:     lintConstant.MissingBlankBeforeControlText,
+				Key:      constant.MissingBlankBeforeControlKey,
+				Text:     constant.MissingBlankBeforeControlText,
 				Path:     "Alfa",
 				Line:     5,
 				LineText: "\tif x > 0 {",
@@ -47,8 +47,8 @@ func TestSpacingBlankBeforeReturn(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBeforeExitKey,
-				Text:     lintConstant.MissingBlankBeforeExitText,
+				Key:      constant.MissingBlankBeforeExitKey,
+				Text:     constant.MissingBlankBeforeExitText,
 				Path:     "Bravo",
 				Line:     5,
 				LineText: "\treturn x",
@@ -73,8 +73,8 @@ func TestSpacingBlankAfterControl(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankAfterControlKey,
-				Text:     lintConstant.MissingBlankAfterControlText,
+				Key:      constant.MissingBlankAfterControlKey,
+				Text:     constant.MissingBlankAfterControlText,
 				Path:     "Charlie",
 				Line:     9,
 				LineText: "\tfmt.Println(\"b\")",
@@ -167,16 +167,16 @@ func TestSpacingExtraneousBlanks(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.ExtraneousBlankLineKey,
-				Text:     lintConstant.ExtraneousBlankLineText,
+				Key:      constant.ExtraneousBlankLineKey,
+				Text:     constant.ExtraneousBlankLineText,
 				Path:     "Delta",
 				Line:     6,
 				LineText: "",
 				Fixed:    true,
 			},
 			{
-				Key:      lintConstant.BlankInsideFunctionKey,
-				Text:     lintConstant.BlankInsideFunctionText,
+				Key:      constant.BlankInsideFunctionKey,
+				Text:     constant.BlankInsideFunctionText,
 				Path:     "Delta",
 				Line:     5,
 				LineText: "",
@@ -337,8 +337,8 @@ func TestSpacingBlankBetweenAssignments(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.BlankInsideFunctionKey,
-				Text:     lintConstant.BlankInsideFunctionText,
+				Key:      constant.BlankInsideFunctionKey,
+				Text:     constant.BlankInsideFunctionText,
 				Path:     "Quebec",
 				Line:     5,
 				LineText: "",
@@ -363,8 +363,8 @@ func TestSpacingBlankAtStartOfFunction(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.BlankInsideFunctionKey,
-				Text:     lintConstant.BlankInsideFunctionText,
+				Key:      constant.BlankInsideFunctionKey,
+				Text:     constant.BlankInsideFunctionText,
 				Path:     "Romeo",
 				Line:     4,
 				LineText: "",
@@ -389,8 +389,8 @@ func TestSpacingBlankAtEndOfFunction(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.BlankInsideFunctionKey,
-				Text:     lintConstant.BlankInsideFunctionText,
+				Key:      constant.BlankInsideFunctionKey,
+				Text:     constant.BlankInsideFunctionText,
 				Path:     "Sierra",
 				Line:     5,
 				LineText: "",
@@ -415,8 +415,8 @@ func TestSpacingBlankBeforeReturnFirstInBlock(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.BlankInsideFunctionKey,
-				Text:     lintConstant.BlankInsideFunctionText,
+				Key:      constant.BlankInsideFunctionKey,
+				Text:     constant.BlankInsideFunctionText,
 				Path:     "Tango",
 				Line:     4,
 				LineText: "",
@@ -441,8 +441,8 @@ func TestSpacingBlankBetweenAssignmentsInNestedBlock(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.BlankInsideFunctionKey,
-				Text:     lintConstant.BlankInsideFunctionText,
+				Key:      constant.BlankInsideFunctionKey,
+				Text:     constant.BlankInsideFunctionText,
 				Path:     "Uniform",
 				Line:     6,
 				LineText: "",
@@ -501,8 +501,8 @@ func TestSpacingBlankInFunctionLiteral(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.BlankInsideFunctionKey,
-				Text:     lintConstant.BlankInsideFunctionText,
+				Key:      constant.BlankInsideFunctionKey,
+				Text:     constant.BlankInsideFunctionText,
 				Path:     "Xray",
 				Line:     6,
 				LineText: "",
@@ -612,8 +612,8 @@ func TestSpacingMissingBlankBetweenFunctions(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBeforeDeclarationKey,
-				Text:     lintConstant.MissingBlankBeforeDeclarationText,
+				Key:      constant.MissingBlankBeforeDeclarationKey,
+				Text:     constant.MissingBlankBeforeDeclarationText,
 				Path:     "decl",
 				Line:     4,
 				LineText: "func Second() {}",
@@ -655,16 +655,16 @@ func TestSpacingSpuriousBlankBetweenTopLevelVarsRemoved(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.ExtraneousTopLevelBlankKey,
-				Text:     lintConstant.ExtraneousTopLevelBlankText,
+				Key:      constant.ExtraneousTopLevelBlankKey,
+				Text:     constant.ExtraneousTopLevelBlankText,
 				Path:     "topvar2",
 				Line:     4,
 				LineText: "",
 				Fixed:    true,
 			},
 			{
-				Key:      lintConstant.ExtraneousTopLevelBlankKey,
-				Text:     lintConstant.ExtraneousTopLevelBlankText,
+				Key:      constant.ExtraneousTopLevelBlankKey,
+				Text:     constant.ExtraneousTopLevelBlankText,
 				Path:     "topvar2",
 				Line:     6,
 				LineText: "",
@@ -729,8 +729,8 @@ func TestSpacingBlankAfterCommentRemoved(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.BlankInsideFunctionKey,
-				Text:     lintConstant.BlankInsideFunctionText,
+				Key:      constant.BlankInsideFunctionKey,
+				Text:     constant.BlankInsideFunctionText,
 				Path:     "aftercomment",
 				Line:     5,
 				LineText: "",
@@ -782,8 +782,8 @@ func TestSpacingMissingBlankBetweenTopLevelConstantAndVariableInserted(t *testin
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBetweenVariableConstantKey,
-				Text:     lintConstant.MissingBlankBetweenVariableConstantText,
+				Key:      constant.MissingBlankBetweenVariableConstantKey,
+				Text:     constant.MissingBlankBetweenVariableConstantText,
 				Path:     "constvarinsert",
 				Line:     4,
 				LineText: "var B = 2",
@@ -806,8 +806,8 @@ func TestSpacingMissingBlankBetweenTopLevelVariableAndConstantInserted(t *testin
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.MissingBlankBetweenVariableConstantKey,
-				Text:     lintConstant.MissingBlankBetweenVariableConstantText,
+				Key:      constant.MissingBlankBetweenVariableConstantKey,
+				Text:     constant.MissingBlankBetweenVariableConstantText,
 				Path:     "varconstinsert",
 				Line:     4,
 				LineText: "const B = 2",
@@ -832,8 +832,8 @@ func TestSpacingDoubleBlankAfterClosingBrace(t *testing.T) {
 		true,
 		[]*concern.Concern{
 			{
-				Key:      lintConstant.ExtraneousBlankLineKey,
-				Text:     lintConstant.ExtraneousBlankLineText,
+				Key:      constant.ExtraneousBlankLineKey,
+				Text:     constant.ExtraneousBlankLineText,
 				Path:     "India",
 				Line:     8,
 				LineText: "",

@@ -2,7 +2,7 @@ package netbox
 
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/virtual_machine"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) RemoveVirtualTag(
@@ -16,7 +16,7 @@ func (c *Client) RemoveVirtualTag(
 	}
 
 	vm.RemoveTag(tag)
-	q := upstream.NewPatchedWritableVirtualMachineWithConfigContextRequest()
+	q := netbox.NewPatchedWritableVirtualMachineWithConfigContextRequest()
 	q.SetName(vm.Name)
 	tags, f := c.tagsNestedRequest(vm.Tags)
 

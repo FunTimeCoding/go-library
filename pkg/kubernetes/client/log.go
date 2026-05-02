@@ -3,7 +3,7 @@ package client
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
-	core "k8s.io/api/core/v1"
+	"k8s.io/api/core/v1"
 )
 
 func (c *Client) Log(
@@ -13,7 +13,7 @@ func (c *Client) Log(
 ) string {
 	r := c.client.CoreV1().Pods(namespace).GetLogs(
 		pod,
-		&core.PodLogOptions{
+		&v1.PodLogOptions{
 			Follow:    false,
 			Previous:  false,
 			Container: container,

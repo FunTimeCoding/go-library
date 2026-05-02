@@ -1,7 +1,7 @@
 package gomonitord
 
 import (
-	errorLibrary "github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
@@ -28,7 +28,7 @@ func Main(
 	if false {
 		// Start server: go run cmd/gomonitord/main.go localhost:3002
 		// Connect: websocat ws://127.0.0.1:3002 --protocol echo
-		errorLibrary.PanicOnError(coder.Run())
+		errors.PanicOnError(coder.Run())
 	}
 
 	if false {

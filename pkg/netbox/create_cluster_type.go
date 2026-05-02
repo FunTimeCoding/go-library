@@ -2,11 +2,11 @@ package netbox
 
 import (
 	"github.com/funtimecoding/go-library/pkg/netbox/cluster_type"
-	upstream "github.com/netbox-community/go-netbox/v4"
+	"github.com/netbox-community/go-netbox/v4"
 )
 
 func (c *Client) CreateClusterType(name string) (*cluster_type.Type, error) {
-	q := upstream.NewClusterTypeRequest(
+	q := netbox.NewClusterTypeRequest(
 		name,
 		slug(name),
 	)

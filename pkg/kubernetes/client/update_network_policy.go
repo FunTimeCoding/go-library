@@ -2,9 +2,9 @@ package client
 
 import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client/operation/update_operation"
-	networking "k8s.io/api/networking/v1"
+	"k8s.io/api/networking/v1"
 )
 
-func (c *Client) UpdateNetworkPolicy(np *networking.NetworkPolicy) {
+func (c *Client) UpdateNetworkPolicy(np *v1.NetworkPolicy) {
 	update_operation.NetworkPolicy(c.client, c.context, np)
 }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client/operation"
-	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -18,7 +18,7 @@ func Event(
 		operation.Event(c, namespace).Delete(
 			x,
 			name,
-			meta.DeleteOptions{},
+			v1.DeleteOptions{},
 		),
 	)
 }

@@ -1,15 +1,15 @@
 package web
 
 import (
-	g "maragu.dev/gomponents"
-	h "maragu.dev/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
 func paginationControls(
 	offset, total int,
 	startValue, endValue string,
-) g.Node {
-	var nodes []g.Node
+) gomponents.Node {
+	var nodes []gomponents.Node
 
 	if offset > 0 {
 		previous := offset - pageSize
@@ -20,16 +20,16 @@ func paginationControls(
 
 		nodes = append(
 			nodes,
-			h.A(
-				h.Href(paginationLink(previous, startValue, endValue)),
-				g.Text("Previous"),
+			html.A(
+				html.Href(paginationLink(previous, startValue, endValue)),
+				gomponents.Text("Previous"),
 			),
 		)
 	}
 
 	nodes = append(
 		nodes,
-		g.Textf(
+		gomponents.Textf(
 			" %d–%d of %d ",
 			offset+1,
 			min(offset+pageSize, total),
@@ -40,12 +40,12 @@ func paginationControls(
 	if offset+pageSize < total {
 		nodes = append(
 			nodes,
-			h.A(
-				h.Href(paginationLink(offset+pageSize, startValue, endValue)),
-				g.Text("Next"),
+			html.A(
+				html.Href(paginationLink(offset+pageSize, startValue, endValue)),
+				gomponents.Text("Next"),
 			),
 		)
 	}
 
-	return h.P(h.Class("pagination"), g.Group(nodes))
+	return html.P(html.Class("pagination"), gomponents.Group(nodes))
 }

@@ -1,7 +1,7 @@
 package example
 
 import (
-	hook "github.com/akkuman/logrus-loki-hook"
+	"github.com/akkuman/logrus-loki-hook"
 	"github.com/funtimecoding/go-library/pkg/prometheus/loki/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/web/locator"

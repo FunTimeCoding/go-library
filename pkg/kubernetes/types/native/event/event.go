@@ -1,7 +1,7 @@
 package event
 
 import (
-	event "k8s.io/api/events/v1"
+	"k8s.io/api/events/v1"
 	"time"
 )
 
@@ -15,5 +15,5 @@ type Event struct {
 	Reason            string
 	Note              string
 	Create            *time.Time
-	Raw               *event.Event
+	Raw               *v1.Event
 }

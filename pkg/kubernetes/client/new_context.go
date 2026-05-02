@@ -6,7 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client/client_configuration"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client/metrics"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client/operation"
-	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func NewContext(cluster string) (*Client, error) {
@@ -30,7 +30,7 @@ func NewContext(cluster string) (*Client, error) {
 	result.dynamic = d
 	_, nodesFail := operation.Node(result.client).List(
 		result.context,
-		meta.ListOptions{},
+		v1.ListOptions{},
 	)
 
 	if nodesFail != nil {

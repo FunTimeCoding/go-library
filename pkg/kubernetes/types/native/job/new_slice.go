@@ -1,9 +1,9 @@
 package job
 
-import batch "k8s.io/api/batch/v1"
+import "k8s.io/api/batch/v1"
 
 func NewSlice(
-	v []batch.Job,
+	v []v1.Job,
 	cluster string,
 ) []*Job {
 	var result []*Job

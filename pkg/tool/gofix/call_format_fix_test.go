@@ -167,5 +167,6 @@ func writeCallFormatTestModule(t *testing.T) string {
 }
 
 func runCallFormatFixInDirectory(directory string) {
-	runCallFormatFixWithDirectory([]string{"./..."}, directory)
+	var r results
+	runCallFormatFixWithDirectory([]string{"./..."}, directory, &r)
 }

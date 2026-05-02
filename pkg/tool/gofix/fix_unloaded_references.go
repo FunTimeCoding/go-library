@@ -14,6 +14,7 @@ func fixUnloadedReferences(
 	violations []violation,
 	loadedFiles map[string]bool,
 	directory string,
+	r *results,
 ) {
 	var renames []exportedRename
 
@@ -73,7 +74,7 @@ func fixUnloadedReferences(
 					return nil
 				}
 
-				fixFileReferences(path, renames)
+				fixFileReferences(path, renames, r)
 
 				return nil
 			},

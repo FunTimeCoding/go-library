@@ -6,6 +6,7 @@ func runVariableNamingFixWithDirectory(
 	patterns []string,
 	directory string,
 	diff bool,
+	r *results,
 ) {
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}
@@ -13,7 +14,7 @@ func runVariableNamingFixWithDirectory(
 
 	fileSet := token.NewFileSet()
 	all := load(fileSet, directory, patterns)
-	edits := findVariableNamingEdits(all)
+	edits := findVariableNamingEdits(fileSet, all, r)
 
 	if len(edits) == 0 {
 		return

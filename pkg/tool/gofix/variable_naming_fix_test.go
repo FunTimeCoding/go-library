@@ -8,7 +8,8 @@ import (
 
 func TestVariableNamingFix(t *testing.T) {
 	directory := writeVariableNamingTestModule(t)
-	runVariableNamingFixWithDirectory([]string{"./..."}, directory, false)
+	var r results
+	runVariableNamingFixWithDirectory([]string{"./..."}, directory, false, &r)
 	t.Run(
 		"WrongSingleLetter",
 		func(t *testing.T) {

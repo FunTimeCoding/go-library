@@ -11,13 +11,14 @@ import (
 
 func TestFix(t *testing.T) {
 	directory := writeTestModule(t)
+	var r results
 	fileSet := token.NewFileSet()
 	all := load(fileSet, directory, []string{"./..."})
 	violations := findViolations(all)
-	edits := buildAllEdits(all, violations)
+	edits := buildAllEdits(fileSet, all, violations, &r)
 	applyEdits(fileSet, edits, directory, false)
 	loadedFiles := buildLoadedFiles(all)
-	fixUnloadedReferences(violations, loadedFiles, directory)
+	fixUnloadedReferences(violations, loadedFiles, directory, &r)
 	t.Run(
 		"CrossPackageRename",
 		func(t *testing.T) {

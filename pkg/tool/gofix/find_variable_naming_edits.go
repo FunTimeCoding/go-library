@@ -10,7 +10,11 @@ import (
 	"path/filepath"
 )
 
-func findVariableNamingEdits(all []*packages.Package) []edit {
+func findVariableNamingEdits(
+	fileSet *token.FileSet,
+	all []*packages.Package,
+	r *results,
+) []edit {
 	var result []edit
 	seen := make(map[token.Pos]bool)
 
@@ -41,22 +45,26 @@ func findVariableNamingEdits(all []*packages.Package) []edit {
 						}
 
 						seen[rename.Object.Pos()] = true
-						fmt.Printf(
-							"Renamed: %s → %s\n",
-							rename.Object.Name(),
-							rename.NewName,
+						path := fileSet.File(rename.Object.Pos()).Name()
+						r.add(
+							path,
+							fmt.Sprintf(
+								"renamed %s → %s",
+								rename.Object.Name(),
+								rename.NewName,
+							),
 						)
 						references := findAllReferences(
 							all,
 							rename.Object,
 						)
 
-						for _, r := range references {
+						for _, ref := range references {
 							result = append(
 								result,
 								edit{
-									position: r.ident.Pos(),
-									end:      r.ident.End(),
+									position: ref.ident.Pos(),
+									end:      ref.ident.End(),
 									newText:  rename.NewName,
 								},
 							)

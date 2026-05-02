@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"os"
 )
 
 func Main(
@@ -25,13 +26,19 @@ func Main(
 		return
 	}
 
-	if f.rename {
-		runVariableNamingFix(f.patterns, false)
+	var r results
 
-		return
+	if f.rename {
+		runVariableNamingFix(f.patterns, f.diff, &r)
+	} else {
+		runFix(f.patterns, f.diff, &r)
+		runCallFormatFix(f.patterns, f.diff, &r)
+		runImportAliasFix(f.patterns, f.diff, &r)
 	}
 
-	runFix(f.patterns, f.diff)
-	runCallFormatFix(f.patterns, f.diff)
-	runImportAliasFix(f.patterns, f.diff)
+	hasBlocked := printResults(r.entries, f.summary)
+
+	if hasBlocked {
+		os.Exit(1)
+	}
 }

@@ -9,7 +9,8 @@ import (
 
 func TestImportAliasFix(t *testing.T) {
 	directory := writeImportAliasTestModule(t)
-	runImportAliasFixWithDirectory([]string{"./..."}, directory, false)
+	var r results
+	runImportAliasFixWithDirectory([]string{"./..."}, directory, false, &r)
 	t.Run(
 		"SuperfluousAlias",
 		func(t *testing.T) {

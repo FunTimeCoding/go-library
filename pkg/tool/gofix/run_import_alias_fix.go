@@ -3,6 +3,7 @@ package gofix
 func runImportAliasFix(
 	patterns []string,
 	diff bool,
+	r *results,
 ) {
-	runImportAliasFixWithDirectory(patterns, "", diff)
+	runImportAliasFixWithDirectory(patterns, "", diff, r)
 }

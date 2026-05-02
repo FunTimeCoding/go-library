@@ -12,6 +12,7 @@ import (
 func fixFileReferences(
 	path string,
 	renames []exportedRename,
+	r *results,
 ) {
 	content, e := os.ReadFile(path)
 
@@ -28,8 +29,8 @@ func fixFileReferences(
 
 	renameMap := make(map[string]string)
 
-	for _, r := range renames {
-		renameMap[r.oldName] = r.newName
+	for _, rename := range renames {
+		renameMap[rename.oldName] = rename.newName
 	}
 
 	selectorPositions := collectSelectorPositions(file)
@@ -62,11 +63,9 @@ func fixFileReferences(
 				append([]byte(newName), modified[end:]...)...,
 			)
 			offset += len(newName) - len(i.Name)
-			fmt.Printf(
-				"Renamed: %s → %s (unloaded: %s)\n",
-				i.Name,
-				newName,
+			r.add(
 				path,
+				fmt.Sprintf("renamed %s → %s (unloaded)", i.Name, newName),
 			)
 
 			return true

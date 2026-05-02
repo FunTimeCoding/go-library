@@ -1,13 +1,17 @@
 package gofix
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"go/token"
 	"golang.org/x/tools/go/packages"
 	"strings"
 )
 
-func findImportAliasEdits(all []*packages.Package) []edit {
+func findImportAliasEdits(
+	fileSet *token.FileSet,
+	all []*packages.Package,
+	r *results,
+) []edit {
 	var result []edit
 	seen := make(map[token.Pos]bool)
 
@@ -41,8 +45,13 @@ func findImportAliasEdits(all []*packages.Package) []edit {
 				}
 
 				declaredName := imported.Name()
+				filePath := fileSet.File(spec.Pos()).Name()
 
 				if alias == declaredName {
+					r.add(
+						filePath,
+						fmt.Sprintf("de-aliased %s (redundant)", alias),
+					)
 					result = append(
 						result,
 						buildImportAliasEdits(
@@ -62,17 +71,23 @@ func findImportAliasEdits(all []*packages.Package) []edit {
 				}
 
 				if hasLocalCollision(p, file, declaredName) {
-					errors.Printf(
-						"%s: cannot de-alias %s %q (local collision with %q)\n",
-						p.Fset.Position(spec.Pos()),
-						alias,
-						path,
-						declaredName,
+					r.addBlocked(
+						filePath,
+						fmt.Sprintf(
+							"cannot de-alias %s → %s (local collision with %q)",
+							alias,
+							declaredName,
+							declaredName,
+						),
 					)
 
 					continue
 				}
 
+				r.add(
+					filePath,
+					fmt.Sprintf("de-aliased %s → %s", alias, declaredName),
+				)
 				result = append(
 					result,
 					buildImportAliasEdits(

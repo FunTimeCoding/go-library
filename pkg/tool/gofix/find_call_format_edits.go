@@ -1,6 +1,7 @@
 package gofix
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/call_format"
 	"go/ast"
@@ -10,7 +11,10 @@ import (
 	"path/filepath"
 )
 
-func findCallFormatEdits(all []*packages.Package) []edit {
+func findCallFormatEdits(
+	all []*packages.Package,
+	r *results,
+) []edit {
 	var result []edit
 	sourceCache := make(map[string][]byte)
 	seen := make(map[token.Pos]bool)
@@ -30,6 +34,14 @@ func findCallFormatEdits(all []*packages.Package) []edit {
 			name := p.Fset.File(file.Pos()).Name()
 
 			if generated[name] {
+				continue
+			}
+
+			if ast.IsGenerated(file) {
+				continue
+			}
+
+			if !filepath.IsAbs(name) || !fileExists(name) {
 				continue
 			}
 
@@ -64,6 +76,11 @@ func findCallFormatEdits(all []*packages.Package) []edit {
 					}
 
 					seen[call.Lparen] = true
+					line := p.Fset.Position(call.Lparen).Line
+					r.add(
+						name,
+						fmt.Sprintf("formatted call (line %d)", line),
+					)
 					fixes := call_format.BuildFixes(
 						p.Fset,
 						call,

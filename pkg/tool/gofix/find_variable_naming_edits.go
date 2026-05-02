@@ -46,7 +46,7 @@ func findVariableNamingEdits(
 
 						seen[rename.Object.Pos()] = true
 						path := fileSet.File(rename.Object.Pos()).Name()
-						r.add(
+						r.Add(
 							path,
 							fmt.Sprintf(
 								"renamed %s → %s",
@@ -59,12 +59,12 @@ func findVariableNamingEdits(
 							rename.Object,
 						)
 
-						for _, ref := range references {
+						for _, e := range references {
 							result = append(
 								result,
 								edit{
-									position: ref.ident.Pos(),
-									end:      ref.ident.End(),
+									position: e.ident.Pos(),
+									end:      e.ident.End(),
 									newText:  rename.NewName,
 								},
 							)

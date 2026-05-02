@@ -77,7 +77,7 @@ func findCallFormatEdits(
 
 					seen[call.Lparen] = true
 					line := p.Fset.Position(call.Lparen).Line
-					r.add(
+					r.Add(
 						name,
 						fmt.Sprintf("formatted call (line %d)", line),
 					)

@@ -26,7 +26,7 @@ func Main(
 		return
 	}
 
-	var r results
+	r := newResults()
 
 	if f.rename {
 		runVariableNamingFix(f.patterns, f.diff, &r)
@@ -36,7 +36,7 @@ func Main(
 		runImportAliasFix(f.patterns, f.diff, &r)
 	}
 
-	hasBlocked := printResults(r.entries, f.summary)
+	hasBlocked := printResults(r.Entries, f.summary)
 
 	if hasBlocked {
 		os.Exit(1)

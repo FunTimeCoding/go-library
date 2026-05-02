@@ -3,13 +3,14 @@ package gofix
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"path/filepath"
 	"testing"
 )
 
 func TestImportAliasFix(t *testing.T) {
 	directory := writeImportAliasTestModule(t)
-	var r results
+	r := output.NewResultsWithDirectory(directory)
 	runImportAliasFixWithDirectory([]string{"./..."}, directory, false, &r)
 	t.Run(
 		"SuperfluousAlias",
@@ -134,6 +135,45 @@ func TestImportAliasFix(t *testing.T) {
 						"struct_field.go",
 					),
 				),
+			)
+		},
+	)
+	t.Run(
+		"ResultEntries",
+		func(t *testing.T) {
+			applied := filterApplied(r.Entries)
+			blocked := filterBlocked(r.Entries)
+			assert.Integer(t, 4, len(applied))
+			assertResult(
+				t,
+				applied,
+				"superfluous.go",
+				"de-aliased helper (redundant)",
+			)
+			assertResult(
+				t,
+				applied,
+				"unnecessary_rename.go",
+				"de-aliased h → helper",
+			)
+			assertResult(
+				t,
+				applied,
+				"different_name.go",
+				"de-aliased u → util",
+			)
+			assertResult(
+				t,
+				applied,
+				"struct_field.go",
+				"de-aliased h → helper",
+			)
+			assert.Integer(t, 1, len(blocked))
+			assertResult(
+				t,
+				blocked,
+				"collision.go",
+				"cannot de-alias h → helper (local collision with \"helper\")",
 			)
 		},
 	)

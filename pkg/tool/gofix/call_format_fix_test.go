@@ -2,13 +2,15 @@ package gofix
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"path/filepath"
 	"testing"
 )
 
 func TestCallFormatFix(t *testing.T) {
 	directory := writeCallFormatTestModule(t)
-	runCallFormatFixInDirectory(directory)
+	r := output.NewResultsWithDirectory(directory)
+	runCallFormatFixWithDirectory([]string{"./..."}, directory, &r)
 	t.Run(
 		"LongSingleLine",
 		func(t *testing.T) {
@@ -109,6 +111,24 @@ func TestCallFormatFix(t *testing.T) {
 			)
 		},
 	)
+	t.Run(
+		"ResultEntries",
+		func(t *testing.T) {
+			applied := filterApplied(r.Entries)
+			assert.Integer(t, 6, len(applied))
+			assertResult(t, applied, "long_single_line.go", "formatted call (line 4)")
+			assertResult(t, applied, "shared_line.go", "formatted call (line 8)")
+			assertResult(
+				t,
+				applied,
+				"first_arg_on_paren_line.go",
+				"formatted call (line 4)",
+			)
+			assertResult(t, applied, "nested_indent.go", "formatted call (line 6)")
+			assertResult(t, applied, "deep_method.go", "formatted call (line 14)")
+			assertResult(t, applied, "multiple_violations.go", "formatted call (line 4)")
+		},
+	)
 }
 
 func writeCallFormatTestModule(t *testing.T) string {
@@ -164,9 +184,4 @@ func writeCallFormatTestModule(t *testing.T) string {
 	)
 
 	return directory
-}
-
-func runCallFormatFixInDirectory(directory string) {
-	var r results
-	runCallFormatFixWithDirectory([]string{"./..."}, directory, &r)
 }

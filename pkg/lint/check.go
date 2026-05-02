@@ -2,8 +2,8 @@ package lint
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 )
 
@@ -13,6 +13,7 @@ func Check(
 	fix bool,
 	verbose bool,
 	stubTest bool,
+	r *output.Results,
 ) *virtual_file_system.System {
 	fixes := virtual_file_system.New()
 	paths := goFiles(v, skip, verbose)
@@ -31,6 +32,7 @@ func Check(
 		},
 		fix,
 		verbose,
+		r,
 	)
 
 	if stubTest {
@@ -38,7 +40,10 @@ func Check(
 	}
 
 	for _, name := range missingSentryPrograms(v) {
-		fmt.Printf("%s: cmd/%s\n", constant.MissingSentryText, name)
+		r.AddBlocked(
+			fmt.Sprintf("cmd/%s", name),
+			"missing sentry reporter",
+		)
 	}
 
 	runCheckers(
@@ -48,6 +53,7 @@ func Check(
 		[]Checker{Markup},
 		fix,
 		verbose,
+		r,
 	)
 
 	return fixes

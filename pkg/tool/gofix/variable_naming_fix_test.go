@@ -2,13 +2,14 @@ package gofix
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"path/filepath"
 	"testing"
 )
 
 func TestVariableNamingFix(t *testing.T) {
 	directory := writeVariableNamingTestModule(t)
-	var r results
+	r := output.NewResultsWithDirectory(directory)
 	runVariableNamingFixWithDirectory([]string{"./..."}, directory, false, &r)
 	t.Run(
 		"WrongSingleLetter",
@@ -63,6 +64,16 @@ func TestVariableNamingFix(t *testing.T) {
 					filepath.Join(directory, "correct.go"),
 				),
 			)
+		},
+	)
+	t.Run(
+		"ResultEntries",
+		func(t *testing.T) {
+			applied := filterApplied(r.Entries)
+			assertResult(t, applied, "wrong_single.go", "renamed x → e")
+			assertResult(t, applied, "error_renamed.go", "renamed err → e")
+			assertResult(t, applied, "error_chain_renamed.go", "renamed err → e")
+			assertResult(t, applied, "error_chain_renamed.go", "renamed err2 → f")
 		},
 	)
 }

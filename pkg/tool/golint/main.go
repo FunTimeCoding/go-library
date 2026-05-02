@@ -27,6 +27,11 @@ func Main(
 		false,
 		"Fix concerns that can be fixed",
 	)
+	pflag.Bool(
+		argument.Summary,
+		false,
+		"Print one line per modified file instead of per-edit detail",
+	)
 	pflag.String(
 		argument.Skip,
 		"",
@@ -38,5 +43,6 @@ func Main(
 		viper.GetString(argument.Skip),
 		viper.GetBool(argument.Verbose),
 		viper.GetBool(argument.Fix),
+		viper.GetBool(argument.Summary),
 	)
 }

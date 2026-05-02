@@ -48,7 +48,7 @@ func findImportAliasEdits(
 				filePath := fileSet.File(spec.Pos()).Name()
 
 				if alias == declaredName {
-					r.add(
+					r.Add(
 						filePath,
 						fmt.Sprintf("de-aliased %s (redundant)", alias),
 					)
@@ -71,7 +71,7 @@ func findImportAliasEdits(
 				}
 
 				if hasLocalCollision(p, file, declaredName) {
-					r.addBlocked(
+					r.AddBlocked(
 						filePath,
 						fmt.Sprintf(
 							"cannot de-alias %s → %s (local collision with %q)",
@@ -84,7 +84,7 @@ func findImportAliasEdits(
 					continue
 				}
 
-				r.add(
+				r.Add(
 					filePath,
 					fmt.Sprintf("de-aliased %s → %s", alias, declaredName),
 				)

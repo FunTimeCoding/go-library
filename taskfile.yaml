@@ -5,10 +5,10 @@ tasks:
   pre-push: {cmds: [{task: lint}, {task: test}], silent: true}
   lint:
     cmds:
-    - golint --fix
+    - golint --fix --summary
     - golangci-lint config verify
     - golangci-lint run
-    - gofix ./...
+    - gofix --summary ./...
     - goanalyze ./...
     silent: true
   test: {cmds: ['gotestsum --format dots'], silent: true}

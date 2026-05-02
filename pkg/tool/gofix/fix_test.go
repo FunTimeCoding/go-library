@@ -3,6 +3,7 @@ package gofix
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/token"
 	"os"
 	"path/filepath"
@@ -11,7 +12,7 @@ import (
 
 func TestFix(t *testing.T) {
 	directory := writeTestModule(t)
-	var r results
+	r := output.NewResultsWithDirectory(directory)
 	fileSet := token.NewFileSet()
 	all := load(fileSet, directory, []string{"./..."})
 	violations := findViolations(all)
@@ -267,6 +268,42 @@ func TestFix(t *testing.T) {
 						"tagged.go",
 					),
 				),
+			)
+		},
+	)
+	t.Run(
+		"ResultEntries",
+		func(t *testing.T) {
+			applied := filterApplied(r.Entries)
+			assertResult(
+				t,
+				applied,
+				"pkg/types/directory_path.go",
+				"renamed DirPath → DirectoryPath (2 references)",
+			)
+			assertResult(
+				t,
+				applied,
+				"pkg/types/directory_name.go",
+				"renamed dirName → directoryName (2 references)",
+			)
+			assertResult(
+				t,
+				applied,
+				"pkg/types/stray_const.go",
+				"renamed StrayConst → StrayConstant (2 references)",
+			)
+			assertResult(
+				t,
+				applied,
+				"pkg/sentinel/sentinel.go",
+				"renamed ErrQuit → ErrorQuit (2 references)",
+			)
+			assertResult(
+				t,
+				applied,
+				"pkg/tagged/tagged.go",
+				"renamed ErrQuit → ErrorQuit (unloaded)",
 			)
 		},
 	)

@@ -63,7 +63,7 @@ func fixFileReferences(
 				append([]byte(newName), modified[end:]...)...,
 			)
 			offset += len(newName) - len(i.Name)
-			r.add(
+			r.Add(
 				path,
 				fmt.Sprintf("renamed %s → %s (unloaded)", i.Name, newName),
 			)

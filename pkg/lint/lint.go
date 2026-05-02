@@ -3,18 +3,21 @@ package lint
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
-	lint "github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
+	"os"
 )
 
 func Lint(
 	skipString string,
 	verbose bool,
 	fix bool,
+	summary bool,
 ) {
 	skip := option.New(skipString, verbose)
+	r := output.NewResults()
 
 	for _, p := range system.EmptyDirectories(
 		constant.CurrentDirectory,
@@ -28,10 +31,11 @@ func Lint(
 			continue
 		}
 
-		fmt.Printf("Empty directory: %s\n", p)
-
 		if fix {
 			system.Remove(p)
+			r.Add(p, "removed empty directory")
+		} else {
+			r.AddBlocked(p, "empty directory")
 		}
 	}
 
@@ -55,10 +59,11 @@ func Lint(
 			continue
 		}
 
-		fmt.Printf("Empty file: %s\n", p)
-
 		if fix {
 			system.Remove(p)
+			r.Add(p, "removed empty file")
+		} else {
+			r.AddBlocked(p, "empty file")
 		}
 	}
 
@@ -76,20 +81,22 @@ func Lint(
 		if isExecutable(v.Read(p)) {
 			if fix {
 				system.Remove(p)
-				fmt.Printf(
-					"%s (deleted): %s\n",
-					lint.StrayBinaryText,
-					p,
-				)
+				r.Add(p, "removed stray binary")
 			} else {
-				fmt.Printf("%s: %s\n", lint.StrayBinaryText, p)
+				r.AddBlocked(p, "stray binary")
 			}
 		}
 	}
 
-	fixes := Check(v, skip, fix, verbose, false)
+	fixes := Check(v, skip, fix, verbose, false, &r)
 
 	if fix {
 		fixes.Flush(constant.CurrentDirectory)
+	}
+
+	hasBlocked := output.PrintResults(r.Entries, summary)
+
+	if hasBlocked {
+		os.Exit(1)
 	}
 }

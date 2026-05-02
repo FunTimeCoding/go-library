@@ -19,7 +19,7 @@ func buildAllEdits(
 		path := fileSet.File(v.ident.Pos()).Name()
 
 		if v.fix == "" {
-			r.addBlocked(
+			r.AddBlocked(
 				path,
 				fmt.Sprintf("cannot rename %s (collision)", v.ident.Name),
 			)
@@ -29,7 +29,7 @@ func buildAllEdits(
 
 		replacement := segment.ReplaceSegment(v.ident.Name, v.segment, v.fix)
 		references := findAllReferences(all, v.object)
-		r.add(
+		r.Add(
 			path,
 			fmt.Sprintf(
 				"renamed %s → %s (%d references)",
@@ -39,13 +39,13 @@ func buildAllEdits(
 			),
 		)
 
-		for _, ref := range references {
-			newName := segment.ReplaceSegment(ref.ident.Name, v.segment, v.fix)
+		for _, e := range references {
+			newName := segment.ReplaceSegment(e.ident.Name, v.segment, v.fix)
 			result = append(
 				result,
 				edit{
-					position: ref.ident.Pos(),
-					end:      ref.ident.End(),
+					position: e.ident.Pos(),
+					end:      e.ident.End(),
 					newText:  newName,
 				},
 			)

@@ -2,6 +2,7 @@ package lint
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
 	"strings"
 )
@@ -13,6 +14,7 @@ func runCheckers(
 	checkers []Checker,
 	fix bool,
 	verbose bool,
+	r *output.Results,
 ) {
 	for _, p := range paths {
 		if verbose {
@@ -23,20 +25,18 @@ func runCheckers(
 		content := original
 
 		for _, check := range checkers {
-			r := check(p, strings.NewReader(content))
+			result := check(p, strings.NewReader(content))
 
-			for _, c := range r.Concerns {
+			for _, c := range result.Concerns {
 				if c.Fixed && fix {
-					fmt.Printf("%s: %s (auto-fixed)\n", c.Text, c.Path)
-				} else if c.Fixed {
-					fmt.Printf("%s: %s (auto-fixable)\n", c.Text, c.Path)
-				} else {
-					fmt.Printf("%s: %s\n", c.Text, c.Path)
+					r.Add(p, concernMessage(c))
+				} else if !c.Fixed {
+					r.AddBlocked(p, c.Text)
 				}
 			}
 
-			if r.Fixed != "" && r.Fixed != r.Original {
-				content = r.Fixed
+			if result.Fixed != "" && result.Fixed != result.Original {
+				content = result.Fixed
 			}
 		}
 

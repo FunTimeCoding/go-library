@@ -13,10 +13,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/client"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/poller"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/worker"
 	"io"
 	"net/http"
 	"path/filepath"
@@ -46,7 +46,7 @@ func TestRunLifecycle(t *testing.T) {
 		),
 	)
 	g := logger.New(context.Background())
-	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
+	p := worker.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
 	port, n := system.ClaimPort()
 	l := lifecycle.New(
@@ -146,7 +146,7 @@ func TestGeneratedClient(t *testing.T) {
 		),
 	)
 	g := logger.New(context.Background())
-	p := poller.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
+	p := worker.New(c, s, g, 1*time.Minute, 30*24*time.Hour, nil)
 	p.Poll()
 	port, n := system.ClaimPort()
 	l := lifecycle.New(

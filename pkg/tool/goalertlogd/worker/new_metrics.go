@@ -1,4 +1,4 @@
-package poller
+package worker
 
 import "github.com/prometheus/client_golang/prometheus"
 

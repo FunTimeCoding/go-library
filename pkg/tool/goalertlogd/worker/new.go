@@ -1,4 +1,4 @@
-package poller
+package worker
 
 import (
 	"github.com/funtimecoding/go-library/pkg/log/logger"
@@ -14,8 +14,8 @@ func New(
 	interval time.Duration,
 	retention time.Duration,
 	r *prometheus.Registry,
-) *Poller {
-	p := &Poller{
+) *Worker {
+	p := &Worker{
 		client:    a,
 		store:     s,
 		logger:    l,

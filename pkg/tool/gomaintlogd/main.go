@@ -8,7 +8,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
-	"github.com/getsentry/sentry-go"
 )
 
 func Main(
@@ -16,18 +15,17 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	var h *sentry.Hub
-
-	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
-		r := reporter.New("gomaintlog", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-		h = r.Hub()
-	}
-
+	r := reporter.New(
+		"gomaintlog",
+		environment.Optional(constant.LocatorEnvironment),
+		"",
+		version,
+	)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()
 	o.PostgresLocator = environment.Optional(postgres.LocatorEnvironment)
 	o.SQLitePath = environment.Optional(store.PathEnvironment)
-	Run(o, h)
+	Run(o, r)
 }

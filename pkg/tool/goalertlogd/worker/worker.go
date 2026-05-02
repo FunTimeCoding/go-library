@@ -1,4 +1,4 @@
-package poller
+package worker
 
 import (
 	"github.com/funtimecoding/go-library/pkg/log/logger"
@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type Poller struct {
+type Worker struct {
 	client    AlertSource
 	store     *store.Store
 	logger    *logger.Logger

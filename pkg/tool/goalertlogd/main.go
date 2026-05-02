@@ -7,7 +7,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/option"
-	"github.com/getsentry/sentry-go"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -17,15 +16,14 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	var h *sentry.Hub
-
-	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
-		r := reporter.New("goalertlog", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-		h = r.Hub()
-	}
-
+	r := reporter.New(
+		"goalertlog",
+		environment.Optional(constant.LocatorEnvironment),
+		"",
+		version,
+	)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	pflag.String(
 		argument.Path,
 		"tmp/goalertlog.db",
@@ -34,5 +32,5 @@ func Main(
 	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()
 	o.DatabasePath = viper.GetString(argument.Path)
-	Run(o, h)
+	Run(o, r)
 }

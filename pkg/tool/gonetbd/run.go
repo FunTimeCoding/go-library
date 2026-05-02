@@ -2,6 +2,7 @@ package gonetbd
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetbd/generated/server"
@@ -9,13 +10,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/server"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/getsentry/sentry-go"
 	"net/http"
 )
 
 func Run(
 	o *option.Netbox,
-	h *sentry.Hub,
+	r face.Reporter,
 ) {
 	lifecycle.New(
 		logger.New(context.Background()),
@@ -23,9 +23,9 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(o.Client), m)
-				model_context.New(o.Client, h).Mount(m)
+				model_context.New(o.Client, r).Mount(m)
 			},
-			web.RecoveryMiddleware(h),
+			web.RecoveryMiddleware(r),
 		),
 	).RunUntilSignal()
 }

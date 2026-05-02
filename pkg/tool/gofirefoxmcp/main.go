@@ -9,7 +9,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/option"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/getsentry/sentry-go"
 	"github.com/spf13/pflag"
 )
 
@@ -18,13 +17,19 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	var h *sentry.Hub
+	r := reporter.New(
+		"gofirefoxmcp",
+		environment.Optional(sentryConstant.LocatorEnvironment),
+		"",
+		version,
+	)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 
 	if c := environment.Optional(sentryConstant.LocatorEnvironment); c != "" {
 		r := reporter.New("gofirefoxmcp", c, "", version)
 		r.Start()
 		defer func() { r.RecoverFlush(recover()) }()
-		h = r.Hub()
 	}
 
 	pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
@@ -37,5 +42,5 @@ func Main(
 	o := option.New()
 	o.Port = argument.RequiredInteger(argument.Port)
 	o.BridgePort = argument.RequiredInteger(constant.BridgePortFlag)
-	Run(o, h)
+	Run(o, r)
 }

@@ -1,4 +1,4 @@
-package poller
+package worker
 
 import (
 	"fmt"
@@ -8,30 +8,30 @@ import (
 	"time"
 )
 
-func (p *Poller) Poll() {
+func (w *Worker) Poll() {
 	start := time.Now()
-	p.lastPoll.Store(start)
+	w.lastPoll.Store(start)
 
-	if p.metrics != nil {
-		p.metrics.lastPollTime.SetToCurrentTime()
+	if w.metrics != nil {
+		w.metrics.lastPollTime.SetToCurrentTime()
 	}
 
 	defer func() {
 		if v := recover(); v != nil {
-			p.logger.Structured(
+			w.logger.Structured(
 				"poll failed",
 				"error",
 				fmt.Sprint(v),
 			)
 		}
 
-		if p.metrics != nil {
-			p.metrics.pollDuration.Observe(
+		if w.metrics != nil {
+			w.metrics.pollDuration.Observe(
 				time.Since(start).Seconds(),
 			)
 		}
 	}()
-	alerts, _ := p.client.Alerts(advanced_option.New())
+	alerts, _ := w.client.Alerts(advanced_option.New())
 	current := make(map[string]bool)
 
 	for _, a := range alerts {
@@ -41,7 +41,7 @@ func (p *Poller) Poll() {
 
 		current[a.Fingerprint] = true
 
-		if _, exists := p.firing[a.Fingerprint]; exists {
+		if _, exists := w.firing[a.Fingerprint]; exists {
 			continue
 		}
 
@@ -59,28 +59,28 @@ func (p *Poller) Poll() {
 			Labels:      labels,
 			Start:       time.Now(),
 		}
-		p.firing[a.Fingerprint] = p.store.MustSave(r)
+		w.firing[a.Fingerprint] = w.store.MustSave(r)
 
-		if p.metrics != nil {
-			p.metrics.alertsTotal.Inc()
+		if w.metrics != nil {
+			w.metrics.alertsTotal.Inc()
 		}
 	}
 
-	for fingerprint, key := range p.firing {
+	for fingerprint, key := range w.firing {
 		if current[fingerprint] {
 			continue
 		}
 
-		p.store.MustResolve(key)
-		delete(p.firing, fingerprint)
+		w.store.MustResolve(key)
+		delete(w.firing, fingerprint)
 	}
 
-	if pruned := p.store.MustPrune(time.Now().Add(-p.retention)); pruned > 0 {
-		p.logger.Structured("pruned records", "count", pruned)
+	if pruned := w.store.MustPrune(time.Now().Add(-w.retention)); pruned > 0 {
+		w.logger.Structured("pruned records", "count", pruned)
 	}
 
-	if p.metrics != nil {
-		p.metrics.alertsFiring.Set(float64(len(p.firing)))
-		p.metrics.recordsTotal.Set(float64(p.store.MustCount()))
+	if w.metrics != nil {
+		w.metrics.alertsFiring.Set(float64(len(w.firing)))
+		w.metrics.recordsTotal.Set(float64(w.store.MustCount()))
 	}
 }

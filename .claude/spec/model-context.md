@@ -16,12 +16,11 @@ pkg/tool/go<tool>d/
 │   └── <type>.go              # One file per converter function
 ├── model_context/
 │   ├── server.go              # Server struct (holds MCPServer + dependencies)
-│   ├── new.go                 # New(deps, h *sentry.Hub) *Server
-│   ├── nested.go              # Nested() *server.MCPServer - for mounting
+│   ├── new.go                 # New(deps, r face.Reporter) *Server
+│   ├── mount.go               # Mount(m *http.ServeMux) - HTTP transport setup
 │   ├── register.go            # register() - wires all tools to the MCPServer
 │   ├── capture_fail.go        # captureFail(e error, message string)
-│   ├── <tool_name>.go         # One file per tool function (get_alerts.go, etc.)
-│   └── model_context_test.go  # Stub test
+│   └── <tool_name>.go         # One file per tool function (get_alerts.go, etc.)
 └── server/
 ```
 
@@ -68,25 +67,25 @@ Reusable parameter names shared across multiple MCP tools (`query`, `limit`, `ke
 `server.go`:
 ```go
 type Server struct {
-    server *server.MCPServer
-    store  *store.Store
-    hub    *sentry.Hub
-    poller *poller.Poller  // omit if no poller
+    server   *server.MCPServer
+    store    *store.Store    // omit if no store
+    reporter face.Reporter
+    worker   *worker.Worker  // omit if no worker
 }
 ```
 
 `new.go` - create the MCPServer, register tools, return:
 ```go
-func New(s *store.Store, h *sentry.Hub, p *poller.Poller) *Server {
+func New(s *store.Store, r face.Reporter, w *worker.Worker) *Server {
     result := &Server{
         server: server.NewMCPServer(
             "<service-name>",
             constant.DefaultVersion,
             server.WithToolCapabilities(true),
         ),
-        store:  s,
-        hub:    h,
-        poller: p,
+        store:    s,
+        reporter: r,
+        worker:   w,
     }
     result.register()
 
@@ -94,10 +93,10 @@ func New(s *store.Store, h *sentry.Hub, p *poller.Poller) *Server {
 }
 ```
 
-`nested.go` - exposes the inner MCPServer for the HTTP transport layer:
+`mount.go` - wires the MCP server onto the HTTP mux:
 ```go
-func (s *Server) Nested() *server.MCPServer {
-    return s.server
+func (s *Server) Mount(m *http.ServeMux) {
+    generative.New(s.server).Setup(m)
 }
 ```
 
@@ -153,7 +152,7 @@ func (s *Server) captureFail(
     e error,
     message string,
 ) (*mcp.CallToolResult, error) {
-    return response.CaptureFail(s.hub, e, message)
+    return response.CaptureFail(s.reporter, e, message)
 }
 ```
 
@@ -174,7 +173,6 @@ MCP routes (`/mcp`, `/sse`, `/message`) don't conflict:
 
 ```go
 import (
-    generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
     "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/model_context"
     generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/generated/server"
     "github.com/funtimecoding/go-library/pkg/web"
@@ -184,20 +182,17 @@ lifecycle.WithServerMiddleware(
     web.AddressPort(o.Port),
     func(m *http.ServeMux) {
         generated.HandlerFromMux(server.New(s, p), m)
-        generative.New(model_context.New(s, h, p).Nested()).Setup(m)
+        model_context.New(s, r, p).Mount(m)
     },
-    web.RecoveryMiddleware(h),
+    web.RecoveryMiddleware(r),
 )
 ```
 
-- `generative` is the standard alias for `pkg/generative/model_context/server` (the HTTP transport infrastructure)
 - `generated` is the standard alias for the oapi-codegen package (`pkg/tool/go<tool>d/generated/server`)
 - The local `model_context` and `server` packages are imported without alias
-- `generative.New(...)` is called directly inside the closure, not assigned to a variable outside it
 
 ## What Not To Do
 
 - Don't create a separate lifecycle server for MCP - one port, one mux
 - Don't name it `mcp/` - use `model_context/` (no acronyms in package names)
 - Don't name it `tool/` or `toolset/` - use `model_context/`
-- Don't put HTTP transport concerns in `model_context/` - that belongs in `generative.New(...).Setup(m)`

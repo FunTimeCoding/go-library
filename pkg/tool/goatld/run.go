@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira"
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goatld/generated/server"
@@ -11,13 +12,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goatld/server"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/getsentry/sentry-go"
 	"net/http"
 )
 
 func Run(
 	o *option.Atlassian,
-	h *sentry.Hub,
+	r face.Reporter,
 ) {
 	j := jira.NewEnvironment()
 	c := confluence.NewEnvironment()
@@ -27,9 +27,9 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(j, c), m)
-				model_context.New(j, c, h).Mount(m)
+				model_context.New(j, c, r).Mount(m)
 			},
-			web.RecoveryMiddleware(h),
+			web.RecoveryMiddleware(r),
 		),
 	).RunUntilSignal()
 }

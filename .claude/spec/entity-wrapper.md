@@ -216,11 +216,14 @@ import (
     "github.com/funtimecoding/go-library/pkg/gitlab/project"
 )
 
-func (c *Client) ProjectJobs(p *project.Project) []*job.Job {
-    result, r, e := c.client.Jobs.ListProjectJobs(p.Identifier, nil)
-    panicOnError(r, e)
+func (c *Client) ProjectJobs(p *project.Project) ([]*job.Job, error) {
+    result, _, e := c.client.Jobs.ListProjectJobs(p.Identifier, nil)
 
-    return c.enrichProjectJobs(job.NewSlice(result), p)
+    if e != nil {
+        return nil, e
+    }
+
+    return c.enrichProjectJobs(job.NewSlice(result), p), nil
 }
 ```
 
@@ -289,18 +292,23 @@ func (c *Client) Posts(tag string, limit int) []*post.Post {
 
 JSON shapes that serve a specific layer live in a subpackage named after that layer. One file per type, named after the type. The package name removes redundancy from type names (`response.Search` not `response.SearchResponse`).
 
-### `response/` - JSON shapes for serialization
+### `convert/` and `response/` - output type filtering
 
-Covers both inbound (deserialization from external APIs) and outbound (serialization to callers). Scoped to where the types are consumed:
+Types that shape what callers see. Scoped to where they're consumed:
 
-- Types used across multiple layers → `pkg/<name>/response/`
-- Types used only by MCP toolset → `toolset/response/`
+- Types shared by both REST and MCP → `convert/` (top-level sibling
+  of `server/` and `model_context/`)
+- Types used only by MCP tools → `model_context/response/`
 - Types used only by REST handlers → `server/response/`
+
+`convert/` is the primary location — see `model-context.md`. Layer-specific
+`response/` subpackages exist when a layer has output shapes not shared
+with the other.
 
 ```
 pkg/<name>/
 ├── response/
-│   ├── link.go             # type Link struct (raw JSON)
+│   ├── link.go             # type Link struct (raw JSON from external API)
 │   ├── link_response.go    # type LinkResponse struct (paginated wrapper)
 │   ├── tag.go              # type Tag struct
 │   └── tag_response.go     # type TagResponse struct
@@ -316,7 +324,9 @@ This eliminates the `Data` suffix problem - `response.Link` vs `link.Link` provi
 
 ### `argument/` - MCP tool parameter structs
 
-JSON shapes for MCP tool input parameters. One file per argument type, scoped under the tool package.
+JSON shapes for MCP tool input parameters. One file per argument type.
+Lives inside `model_context/argument/` — scoped to the layer that
+consumes it.
 
 ### `result/` - store return types
 

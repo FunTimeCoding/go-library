@@ -1,6 +1,6 @@
 # Entrypoint Spec
 
-Shared conventions for all `cmd/` programs - linker variables, `Main()`, sentry integration.
+Shared conventions for all `cmd/` programs - linker variables, `Main()`, reporter integration.
 
 ## Linker Variables
 
@@ -28,7 +28,7 @@ These are injected by `gobuild` at compile time - see `build.md`.
 
 `Main()` is the first real function in every program. It always:
 
-1. Sets up sentry (see below)
+1. Creates the reporter (see below)
 2. Registers flags and calls `monitor.ParseBind`
 3. Delegates to the tool-specific logic (`Check()`, `Run()`, etc.)
 
@@ -38,52 +38,49 @@ func Main(
     gitHash string,
     buildDate string,
 ) {
-    if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-        r := reporter.New("go<tool>", c, "", version)
-        r.Start()
-        defer func() { r.RecoverFlush(recover()) }()
-    }
+    r := reporter.New("go<tool>", environment.Optional(sentry.LocatorEnvironment), "", version)
+    r.Start()
+    defer func() { r.RecoverFlush(recover()) }()
 
     pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
     monitor.ParseBind(version, gitHash, buildDate)
     o := option.New()
     o.Port = argument.RequiredInteger(argument.Port)
-    Run(o)
+    Run(o, r)
 }
 ```
 
 `monitor.ParseBind` adds `--version` flag, calls `argument.ParseBind()`, and exits on `--version`. Argument registration order: domain-specific `pflag` calls first, then `monitor.ParseBind()`. After parsing, populate the option struct using `argument.RequiredInteger` (or `argument.RequiredString`, `environment.Required`, etc.).
 
-## Sentry Integration
+## Reporter Integration
 
-Every program sets up sentry at the top of `Main()`, before any other work. This captures unhandled panics via `SENTRY_LOCATOR` environment variable.
-
-Services that need the hub for workers or recovery middleware extract it
-and pass it to `Run()` as a separate parameter:
+Every program creates a reporter at the top of `Main()`, before any other
+work. The reporter captures unhandled panics and provides error reporting
+to all downstream components.
 
 ```go
-var h *sentry.Hub
-
-if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-    r := reporter.New("go<tool>", c, "", version)
-    r.Start()
-    defer func() { r.RecoverFlush(recover()) }()
-    h = r.Hub()
-}
+r := reporter.New("go<tool>", environment.Optional(sentry.LocatorEnvironment), "", version)
+r.Start()
+defer func() { r.RecoverFlush(recover()) }()
 
 // ... flag parsing, option construction
-Run(o, h)
+Run(o, r)
 ```
 
-- Sentry is the first thing in `Main()` so the defer runs last (captures panics from all later code)
-- `environment.Optional` returns empty string when the variable is unset - no error, no Sentry
-- `reporter.RecoverFlush(recover())` captures the panic value, reports it, and flushes before exit
-- Uses the `version` parameter directly - no need to pass it through option structs
-- The hub is passed as a separate `Run()` parameter, not on the option struct (option structs hold configuration, not constructed dependencies)
+- Reporter is always created - empty locator produces noop behavior
+  internally (no branching, no nil checks)
+- Reporter is the first thing in `Main()` so the defer runs last
+- `RecoverFlush` captures the panic, flushes to Sentry if configured,
+  prints the panic value, and exits
+- The reporter is passed as a separate `Run()` parameter, not on the
+  option struct (option structs hold configuration, not constructed
+  dependencies)
+- `Run()` accepts `face.Reporter` (the interface), not the concrete
+  `*reporter.Reporter`
 
 See `three-pillars.md` for the full wiring pattern including logger and
 recovery middleware.
 
-### `os.Exit` and sentry
+### `os.Exit` and reporter
 
-Some tools call `os.Exit(1)` for expected failure conditions (no results, validation failures, upload errors). This intentionally bypasses the sentry defer - these are not crashes and should not be reported as errors. Sentry covers unexpected panics only.
+Some tools call `os.Exit(1)` for expected failure conditions (no results, validation failures, upload errors). This intentionally bypasses the reporter defer - these are not crashes and should not be reported as errors. The reporter covers unexpected panics only.

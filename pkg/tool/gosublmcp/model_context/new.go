@@ -1,24 +1,24 @@
 package model_context
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	modelContext "github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	"github.com/funtimecoding/go-library/pkg/sublime"
 	"github.com/funtimecoding/go-library/pkg/tool/gosublmcp/constant"
-	"github.com/getsentry/sentry-go"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
 	c *sublime.Client,
-	h *sentry.Hub,
+	r face.Reporter,
 ) *Server {
 	result := &Server{
 		server: server.NewMCPServer(
 			constant.Name,
 			modelContext.DefaultVersion,
 		),
-		client: c,
-		hub:    h,
+		client:   c,
+		reporter: r,
 	}
 	result.register()
 

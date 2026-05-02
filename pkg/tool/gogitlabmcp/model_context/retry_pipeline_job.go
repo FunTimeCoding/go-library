@@ -3,8 +3,8 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/argument"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabmcp/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 

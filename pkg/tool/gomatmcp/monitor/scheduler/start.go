@@ -15,10 +15,7 @@ func (s *Scheduler) Start() {
 		func() {
 			defer func() {
 				if v := recover(); v != nil {
-					if s.hub != nil {
-						s.hub.Recover(v)
-					}
-
+					s.reporter.Recover(v)
 					s.logger.Plain("scheduler recovered from panic: %v", v)
 				}
 			}()

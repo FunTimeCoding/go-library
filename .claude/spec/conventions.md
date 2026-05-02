@@ -98,7 +98,6 @@
 - **Semantic constant splitting** - when the same string serves different layers (DB column, HTML form field, domain key), use separate constants even if the values are identical today. Example: `NameFieldKey = "name"` (field system), `NameColumn = "name"` (GORM), `NameParameter = "name"` (web routes/forms). They could diverge independently.
 - **Propagate generic constants toward go-library** - when a constant is used across multiple tools or packages (e.g. `FormMethod = "method"` for HTML forms), it belongs in go-library's shared vocabulary (e.g. `web/constant`), not duplicated in each consumer.
 - **Option struct naming** - named after the domain concept, not `Option` (e.g., `option.Log`, `option.Build`, `option.Commit`). File named after the struct. Constructor in `new.go` returns pointer.
-- **Stub tests** - every package gets at least one `_test.go`. When a package has real tests, no stub is needed. Use `assert.Stub(t)` only in packages with no other tests, to prevent `?` in gotestsum output. Constructor tests use `assert.NotNil(t, New(...))`.
 - Tests use `assert.*` helpers to reduce nesting
 - **`new_environment.go`** - when a package reads from environment variables, the environment constructor lives in `new_environment.go` and calls `New()` after reading the required vars. Pattern: `func NewEnvironment() *Client { return New(environment.Required(constant.HostEnvironment), environment.Required(constant.TokenEnvironment)) }`. The base `New()` always takes explicit params; `NewEnvironment()` is the env-reading wrapper.
 - **`example/` subpackage** - every client package should have an `example/` when there's a real usage scenario to demonstrate. Don't create empty or contrived examples just to fill the slot. Entry point lives in `cmd/example/<name>/main.go`. Inactive examples are kept in `if false {}` blocks rather than deleted.
@@ -130,7 +129,7 @@ Enforced by the `goanalyze` `forbidden_import` analyzer (AST-based, no false pos
 ## Interfaces
 
 - **Generic interfaces** (no domain type imports) - define in `pkg/face/`. These are like `io.Reader`: small, shared, used by many consumers. Examples: `Worker`, `Notifier`, `Clock`.
-- **Domain-specific interfaces** (reference types like `*alert.Alert`) - define at the consumer. Domain types often already import `face`, so putting the interface in `face` would create an import cycle. Example: `AlertSource` in `poller/poller.go`.
+- **Domain-specific interfaces** (reference types like `*alert.Alert`) - define at the consumer. Domain types often already import `face`, so putting the interface in `face` would create an import cycle. Example: `AlertSource` in `worker/worker.go`.
 - **Mock convention** - hand-rolled structs in `mock_*` sub-packages near the real implementation (e.g., `mock_notifier/`, `mock_client/`). One file per method. Methods to manipulate state for testing (e.g., `Add()`, `Remove()`).
 
 ## Deviations

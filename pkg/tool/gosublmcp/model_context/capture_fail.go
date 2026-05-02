@@ -9,5 +9,5 @@ func (s *Server) captureFail(
 	e error,
 	message string,
 ) (*mcp.CallToolResult, error) {
-	return response.CaptureFail(s.hub, e, message)
+	return response.CaptureFail(s.reporter, e, message)
 }

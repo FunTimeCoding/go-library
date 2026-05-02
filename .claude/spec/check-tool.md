@@ -10,7 +10,6 @@ cmd/go<tool>/
 
 pkg/tool/go<tool>/
 ├── main.go                         # Main(): register arguments, parse, build option, call Check
-├── main_test.go                    # Stub test
 └── ...
 
 pkg/<domain>/check/<entity>/

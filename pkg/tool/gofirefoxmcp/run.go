@@ -2,19 +2,19 @@ package gofirefoxmcp
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/firefox"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxmcp/option"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/getsentry/sentry-go"
 	"net/http"
 )
 
 func Run(
 	o *option.Firefox,
-	h *sentry.Hub,
+	r face.Reporter,
 ) {
 	c := firefox.NewEnvironment()
 	lifecycle.New(
@@ -24,14 +24,14 @@ func Run(
 			func(m *http.ServeMux) {
 				m.Handle("/", c)
 			},
-			web.RecoveryMiddleware(h),
+			web.RecoveryMiddleware(r),
 		),
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				model_context.New(c, h).Mount(m)
+				model_context.New(c, r).Mount(m)
 			},
-			web.RecoveryMiddleware(h),
+			web.RecoveryMiddleware(r),
 		),
 	).RunUntilSignal()
 }

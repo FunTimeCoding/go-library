@@ -1,10 +1,10 @@
-package poller
+package worker
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/getsentry/sentry-go"
 	"github.com/prometheus/client_golang/prometheus"
 	"time"
 )
@@ -13,10 +13,10 @@ func New(
 	client *github.Client,
 	owner string,
 	interval time.Duration,
-	r *prometheus.Registry,
+	y *prometheus.Registry,
 	l *logger.Logger,
-	h *sentry.Hub,
-) *Poller {
+	r face.Reporter,
+) *Worker {
 	g := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "github_workflow_run_status",
@@ -24,14 +24,14 @@ func New(
 		},
 		[]string{"owner", "repo", "workflow", "branch", "conclusion"},
 	)
-	r.MustRegister(g)
+	y.MustRegister(g)
 
-	return &Poller{
+	return &Worker{
 		client:   client,
 		owner:    owner,
 		interval: interval,
 		gauge:    g,
-		recovery: recovery.New(l, h),
+		recovery: recovery.New(l, r),
 		stop:     make(chan struct{}),
 	}
 }

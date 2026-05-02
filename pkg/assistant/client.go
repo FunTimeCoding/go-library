@@ -3,12 +3,12 @@ package assistant
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/assistant/connection"
-	"github.com/getsentry/sentry-go"
+	"github.com/funtimecoding/go-library/pkg/face"
 )
 
 type Client struct {
 	connection *connection.Connection
-	hub        *sentry.Hub
+	reporter   face.Reporter
 	context    context.Context
 	subscriber connection.Subscriber
 }

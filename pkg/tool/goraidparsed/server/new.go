@@ -1,8 +1,8 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/getsentry/sentry-go"
 )
 
 func New(
@@ -10,13 +10,13 @@ func New(
 	templatePath string,
 	outputPath string,
 	l *logger.Logger,
-	h *sentry.Hub,
+	r face.Reporter,
 ) *Server {
 	return &Server{
 		parserPath:   parserPath,
 		templatePath: templatePath,
 		outputPath:   outputPath,
 		logger:       l,
-		hub:          h,
+		reporter:     r,
 	}
 }

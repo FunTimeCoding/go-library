@@ -30,8 +30,8 @@ c.Remove("fp1")
 Test poll logic directly by calling `Poll()` - no goroutine or ticker needed:
 
 ```go
-p := poller.New(c, s, 1*time.Minute)
-p.Poll()
+w := worker.New(c, s, 1*time.Minute)
+w.Poll()
 records := s.ByName("HighMemory")
 assert.Count(t, 1, records)
 ```

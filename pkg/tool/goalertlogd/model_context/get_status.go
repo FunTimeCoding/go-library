@@ -16,7 +16,7 @@ func (s *Server) getStatus(
 		return s.captureFail(e, "get status failed")
 	}
 
-	lastPoll := s.poller.LastPoll()
+	lastPoll := s.worker.LastPoll()
 
 	if lastPoll.IsZero() {
 		return response.Success(

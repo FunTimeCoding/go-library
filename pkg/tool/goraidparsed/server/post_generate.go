@@ -9,7 +9,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/getsentry/sentry-go"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -51,21 +50,14 @@ func (s *Server) PostGenerate(
 	parser.Start("python", parserScript, workdir, "-d", dateArgument)
 
 	if parser.Error != nil {
-		if s.hub != nil {
-			s.hub.WithScope(
-				func(c *sentry.Scope) {
-					c.SetContext(
-						"parser",
-						map[string]any{
-							"output": parser.OutputString,
-							"stderr": parser.ErrorString,
-						},
-					)
-					s.hub.CaptureException(parser.Error)
-				},
-			)
-		}
-
+		s.reporter.CaptureWithContext(
+			parser.Error,
+			"parser",
+			map[string]any{
+				"output": parser.OutputString,
+				"stderr": parser.ErrorString,
+			},
+		)
 		errors.PanicOnError(parser.Error)
 	}
 
@@ -96,21 +88,14 @@ func (s *Server) PostGenerate(
 	)
 
 	if t.Error != nil {
-		if s.hub != nil {
-			s.hub.WithScope(
-				func(c *sentry.Scope) {
-					c.SetContext(
-						"tiddler_generator",
-						map[string]any{
-							"output": t.OutputString,
-							"stderr": t.ErrorString,
-						},
-					)
-					s.hub.CaptureException(t.Error)
-				},
-			)
-		}
-
+		s.reporter.CaptureWithContext(
+			t.Error,
+			"tiddler_generator",
+			map[string]any{
+				"output": t.OutputString,
+				"stderr": t.ErrorString,
+			},
+		)
 		errors.PanicOnError(t.Error)
 	}
 

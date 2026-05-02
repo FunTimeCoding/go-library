@@ -1,9 +1,9 @@
 package assistant
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assistant/constant"
 	"github.com/funtimecoding/go-library/pkg/assistant/message"
-	"github.com/getsentry/sentry-go"
 )
 
 func (c *Client) Start() {
@@ -11,20 +11,16 @@ func (c *Client) Start() {
 	h := c.subscriber
 	wrap := h
 
-	if c.hub != nil {
+	if c.reporter != nil {
 		wrap = func(m *message.Message) {
 			defer func() {
-				if r := recover(); r != nil {
-					c.hub.WithScope(
-						func(s *sentry.Scope) {
-							s.SetContext(
-								constant.EventContext,
-								map[string]any{
-									constant.TypeKey: m.Event.Type,
-									constant.RawKey:  string(m.Event.Raw),
-								},
-							)
-							c.hub.RecoverWithContext(c.context, r)
+				if v := recover(); v != nil {
+					c.reporter.CaptureWithContext(
+						fmt.Errorf("%v", v),
+						constant.EventContext,
+						map[string]any{
+							constant.TypeKey: m.Event.Type,
+							constant.RawKey:  string(m.Event.Raw),
 						},
 					)
 				}

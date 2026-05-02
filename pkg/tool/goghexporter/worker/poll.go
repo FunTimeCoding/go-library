@@ -1,8 +1,8 @@
-package poller
+package worker
 
 import "github.com/funtimecoding/go-library/pkg/github/run"
 
-func (p *Poller) Poll() {
+func (w *Worker) Poll() {
 	type key struct {
 		repo     string
 		workflow string
@@ -10,10 +10,10 @@ func (p *Poller) Poll() {
 	}
 	latest := make(map[key]*run.Run)
 
-	for _, repo := range p.client.MustRepositories(p.owner) {
+	for _, repo := range w.client.MustRepositories(w.owner) {
 		name := repo.GetName()
 
-		for _, r := range p.client.MustLatestRuns(p.owner, name) {
+		for _, r := range w.client.MustLatestRuns(w.owner, name) {
 			if r.Status != run.Completed {
 				continue
 			}
@@ -26,11 +26,11 @@ func (p *Poller) Poll() {
 		}
 	}
 
-	p.gauge.Reset()
+	w.gauge.Reset()
 
 	for k, r := range latest {
-		p.gauge.WithLabelValues(
-			p.owner,
+		w.gauge.WithLabelValues(
+			w.owner,
 			k.repo,
 			k.workflow,
 			k.branch,

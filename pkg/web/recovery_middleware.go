@@ -1,24 +1,21 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/getsentry/sentry-go"
 	"net/http"
 )
 
-func RecoveryMiddleware(h *sentry.Hub) func(http.Handler) http.Handler {
+func RecoveryMiddleware(r face.Reporter) func(http.Handler) http.Handler {
 	return func(n http.Handler) http.Handler {
 		return http.HandlerFunc(
 			func(
 				w http.ResponseWriter,
-				r *http.Request,
+				q *http.Request,
 			) {
 				defer func() {
 					if v := recover(); v != nil {
-						if h != nil {
-							h.Recover(v)
-						}
-
+						r.Recover(v)
 						http.Error(
 							w,
 							constant.InternalError,
@@ -26,7 +23,7 @@ func RecoveryMiddleware(h *sentry.Hub) func(http.Handler) http.Handler {
 						)
 					}
 				}()
-				n.ServeHTTP(w, r)
+				n.ServeHTTP(w, q)
 			},
 		)
 	}

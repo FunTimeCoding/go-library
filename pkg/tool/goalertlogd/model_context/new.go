@@ -1,18 +1,18 @@
 package model_context
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	modelContext "github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/poller"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
-	"github.com/getsentry/sentry-go"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/worker"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
 	s *store.Store,
-	p *poller.Poller,
-	h *sentry.Hub,
+	p *worker.Worker,
+	r face.Reporter,
 ) *Server {
 	result := &Server{
 		server: server.NewMCPServer(
@@ -20,9 +20,9 @@ func New(
 			modelContext.DefaultVersion,
 			server.WithToolCapabilities(true),
 		),
-		store:  s,
-		poller: p,
-		hub:    h,
+		store:    s,
+		worker:   p,
+		reporter: r,
 	}
 	result.register()
 

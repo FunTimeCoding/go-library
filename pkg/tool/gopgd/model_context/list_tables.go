@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gopgd/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/gopgd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 

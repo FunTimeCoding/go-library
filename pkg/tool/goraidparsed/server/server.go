@@ -1,8 +1,8 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/getsentry/sentry-go"
 )
 
 type Server struct {
@@ -10,5 +10,5 @@ type Server struct {
 	templatePath string
 	outputPath   string
 	logger       *logger.Logger
-	hub          *sentry.Hub
+	reporter     face.Reporter
 }

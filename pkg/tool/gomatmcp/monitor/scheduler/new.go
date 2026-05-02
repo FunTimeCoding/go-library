@@ -1,8 +1,8 @@
 package scheduler
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/getsentry/sentry-go"
 	"github.com/robfig/cron/v3"
 )
 
@@ -10,13 +10,13 @@ func New(
 	schedule string,
 	task func(),
 	l *logger.Logger,
-	h *sentry.Hub,
+	r face.Reporter,
 ) *Scheduler {
 	return &Scheduler{
 		schedule: schedule,
 		task:     task,
 		logger:   l,
-		hub:      h,
+		reporter: r,
 		cron:     cron.New(),
 	}
 }

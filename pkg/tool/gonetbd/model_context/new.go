@@ -1,16 +1,16 @@
 package model_context
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	modelContext "github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbd/constant"
-	"github.com/getsentry/sentry-go"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
 	c *netbox.Client,
-	h *sentry.Hub,
+	r face.Reporter,
 ) *Server {
 	result := &Server{
 		server: server.NewMCPServer(
@@ -18,8 +18,8 @@ func New(
 			modelContext.DefaultVersion,
 			server.WithToolCapabilities(true),
 		),
-		client: c,
-		hub:    h,
+		client:   c,
+		reporter: r,
 	}
 	result.register()
 

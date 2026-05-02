@@ -1,15 +1,15 @@
 package model_context
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/tool/gopgd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gopgd/store"
-	"github.com/getsentry/sentry-go"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
 	s *store.Store,
-	h *sentry.Hub,
+	r face.Reporter,
 ) *Server {
 	result := &Server{
 		server: server.NewMCPServer(
@@ -17,8 +17,8 @@ func New(
 			constant.Version,
 			server.WithToolCapabilities(true),
 		),
-		store: s,
-		hub:   h,
+		store:    s,
+		reporter: r,
 	}
 	result.register()
 

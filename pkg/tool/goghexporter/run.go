@@ -2,18 +2,18 @@ package goghexporter
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/github"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/tool/goghexporter/option"
-	"github.com/funtimecoding/go-library/pkg/tool/goghexporter/poller"
-	"github.com/getsentry/sentry-go"
+	"github.com/funtimecoding/go-library/pkg/tool/goghexporter/worker"
 )
 
 func Run(
 	o *option.Exporter,
-	h *sentry.Hub,
+	r face.Reporter,
 ) {
 	l := logger.New(context.Background())
 	m := metric.New(0, o.Verbose, nil)
@@ -22,13 +22,13 @@ func Run(
 		lifecycle.WithVerbose(o.Verbose),
 		lifecycle.WithWorker(m),
 		lifecycle.WithWorker(
-			poller.New(
+			worker.New(
 				github.NewEnvironment(),
 				o.Owner,
 				o.Interval,
 				m.Registry(),
 				l,
-				h,
+				r,
 			),
 		),
 	).RunUntilSignal()

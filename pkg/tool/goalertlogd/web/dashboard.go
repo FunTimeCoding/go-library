@@ -17,7 +17,7 @@ func (s *Server) dashboard(
 		return
 	}
 
-	lastPoll := s.poller.LastPoll()
+	lastPoll := s.worker.LastPoll()
 	lastPollText := "never"
 
 	if !lastPoll.IsZero() {
@@ -38,7 +38,7 @@ func (s *Server) dashboard(
 				),
 				h.Article(
 					h.Header(g.Text("Currently Firing")),
-					h.P(g.Textf("%d", s.poller.FiringCount())),
+					h.P(g.Textf("%d", s.worker.FiringCount())),
 				),
 				h.Article(
 					h.Header(g.Text("Last Poll")),

@@ -26,7 +26,7 @@ the struct. The struct inside drops the package prefix:
 ```
 pkg/tool/gosalt/analyzer/    → type Live struct
 pkg/tool/goalertlogd/store/  → type Store struct
-pkg/tool/goalertlogd/poller/ → type Poller struct
+pkg/tool/goalertlogd/worker/ → type Worker struct
 ```
 
 Not `analyzer.Analyzer` or `store.StoreStruct` - the package name

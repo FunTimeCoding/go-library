@@ -1,19 +1,19 @@
 package response
 
 import (
-	"github.com/getsentry/sentry-go"
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
 func CaptureFail(
-	h *sentry.Hub,
+	r face.Reporter,
 	e error,
 	message string,
 ) (*mcp.CallToolResult, error) {
 	return FailAny(
 		map[string]any{
 			"error":            message,
-			"event_identifier": h.CaptureException(e),
+			"event_identifier": r.CaptureException(e),
 		},
 	)
 }

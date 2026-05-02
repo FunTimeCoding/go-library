@@ -1,13 +1,13 @@
 package recovery
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/getsentry/sentry-go"
 )
 
 func New(
 	l *logger.Logger,
-	h *sentry.Hub,
+	r face.Reporter,
 ) *Recovery {
-	return &Recovery{logger: l, hub: h}
+	return &Recovery{logger: l, reporter: r}
 }

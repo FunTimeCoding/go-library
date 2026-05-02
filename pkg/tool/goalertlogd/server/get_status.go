@@ -13,7 +13,7 @@ func (s *Server) GetStatus(
 	result := server.StatusResponse{
 		TotalRecords: s.store.MustCount(),
 	}
-	lastPoll := s.poller.LastPoll()
+	lastPoll := s.worker.LastPoll()
 
 	if !lastPoll.IsZero() {
 		result.LastPoll = new(lastPoll.Format(DateFormat))

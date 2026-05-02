@@ -8,7 +8,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/goghexporter/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goghexporter/option"
-	"github.com/getsentry/sentry-go"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"time"
@@ -19,13 +18,19 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	var h *sentry.Hub
+	r := reporter.New(
+		"goghexporter",
+		environment.Optional(sentryConstant.LocatorEnvironment),
+		"",
+		version,
+	)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 
 	if c := environment.Optional(sentryConstant.LocatorEnvironment); c != "" {
 		r := reporter.New("goghexporter", c, "", version)
 		r.Start()
 		defer func() { r.RecoverFlush(recover()) }()
-		h = r.Hub()
 	}
 
 	monitor.VerboseArgument()
@@ -40,5 +45,5 @@ func Main(
 	o.Owner = viper.GetString(argument.Owner)
 	o.Interval = viper.GetDuration(argument.Interval)
 	o.Verbose = viper.GetBool(argument.Verbose)
-	Run(o, h)
+	Run(o, r)
 }

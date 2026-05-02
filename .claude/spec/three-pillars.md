@@ -8,45 +8,41 @@ and graceful degradation.
 
 | Pillar | Where constructed | Where threaded |
 |--------|-------------------|----------------|
-| Sentry hub | `Main()` via reporter | `Run()` param → workers, recovery middleware |
+| Reporter | `Main()` via `reporter.New` | `Run()` param → workers, recovery middleware, model_context |
 | Logger | `Run()` via `logger.New(ctx)` | Workers, lifecycle |
 | Recovery | `Run()` via middleware + worker patterns | HTTP servers, worker loops |
 
 ## Wiring Order
 
-`Main()` creates the reporter and extracts the hub. `Run()` receives
-the hub as a parameter (not on the option struct - option structs hold
+`Main()` creates the reporter unconditionally. Empty locator produces
+noop behavior — no branching, no nil. `Run()` receives the reporter
+as `face.Reporter` (not on the option struct — option structs hold
 configuration, not constructed dependencies). `Run()` creates the
 logger and wires everything into lifecycle.
 
 ```go
 func Main(version, gitHash, buildDate string) {
-    var h *sentry.Hub
-
-    if c := environment.Optional(sentryConstant.LocatorEnvironment); c != "" {
-        r := reporter.New("goexample", c, "", version)
-        r.Start()
-        defer func() { r.RecoverFlush(recover()) }()
-        h = r.Hub()
-    }
+    r := reporter.New("goexample", environment.Optional(sentryConstant.LocatorEnvironment), "", version)
+    r.Start()
+    defer func() { r.RecoverFlush(recover()) }()
 
     monitor.ParseBind(version, gitHash, buildDate)
     o := option.New()
     // ... populate option fields
-    Run(o, h)
+    Run(o, r)
 }
 ```
 
 ```go
-func Run(o *option.Config, h *sentry.Hub) {
+func Run(o *option.Config, r face.Reporter) {
     l := logger.New(context.Background())
     lifecycle.New(
-        lifecycle.WithLogger(l),
-        lifecycle.WithWorker(worker.New(l, h)),
+        l,
+        lifecycle.WithWorker(worker.New(l, r)),
         lifecycle.WithServerMiddleware(
             web.AddressPort(o.Port),
             func(m *http.ServeMux) { /* routes */ },
-            web.RecoveryMiddleware(h),
+            web.RecoveryMiddleware(r),
         ),
     ).RunUntilSignal()
 }
@@ -60,13 +56,13 @@ Three layers, from outermost to innermost:
    catches panics from the entire program. See `entrypoint.md`.
 
 2. **HTTP middleware** (`web.RecoveryMiddleware`): wraps the HTTP mux.
-   Panics from handlers are caught, reported via `hub.Recover(v)`, and
+   Panics from handlers are caught, reported via `r.Recover(v)`, and
    converted to 500 responses. Wired via `WithServerMiddleware` or
    `WithProtectedServerMiddleware`. See `lifecycle.md`.
 
 3. **Worker loops** (`withRecovery`): each worker wraps per-iteration
-   work in a recovery defer. Panics are reported to Sentry and the
-   worker continues. See `error-handling.md`.
+   work in a recovery defer. Panics are reported via `r.Recover(v)`
+   and the worker continues. See `error-handling.md`.
 
 MCP handlers do not need per-handler recover defers - the mcp-go
 framework handles recovery internally.
@@ -85,8 +81,8 @@ Both variants accept a middleware parameter for `web.RecoveryMiddleware`.
 
 ## What Each Component Receives
 
-| Component | Logger | Hub | Why |
-|-----------|--------|-----|-----|
+| Component | Logger | Reporter | Why |
+|-----------|--------|----------|-----|
 | Lifecycle workers | Yes (constructor param) | Yes (for withRecovery) | Workers need both for recovery logging |
 | HTTP route handlers | Via recovery middleware | Via recovery middleware | Middleware catches panics |
 | MCP tool handlers | Not directly | Via Server struct + captureFail | Tier 2 errors use captureFail → response.CaptureFail |

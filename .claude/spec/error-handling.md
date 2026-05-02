@@ -3,7 +3,7 @@
 ## Principle
 
 Minimize `error` returns and `if e != nil` comparisons. Prefer `errors.PanicOnError`
-and rely on Sentry recovery chains to capture unexpected failures. Explicit error
+and rely on recovery chains to capture unexpected failures. Explicit error
 handling is reserved for cases where it is structurally required.
 
 ## Recovery Chain
@@ -14,26 +14,23 @@ Three recovery layers wrap all program execution:
 panics from the entire program. See `entrypoint.md`.
 
 **HTTP middleware** (`web.RecoveryMiddleware`): wraps the HTTP mux. Panics from web
-handlers are caught, reported via `hub.Recover(v)`, and converted to 500 responses.
+handlers are caught, reported via `r.Recover(v)`, and converted to 500 responses.
 
 **Worker goroutines**: each worker's scheduled function opens with an explicit deferred
-recover. Panics are reported to Sentry and the worker continues running (the loop is
-not killed).
+recover. Panics are reported via the reporter and the worker continues running (the
+loop is not killed).
 
 ```go
 defer func() {
     if v := recover(); v != nil {
-        if w.hub != nil {
-            w.hub.Recover(v)
-        }
-
+        w.reporter.Recover(v)
         w.logger.Plain("worker recovered from panic: %v", v)
     }
 }()
 ```
 
-All three layers nil-guard the hub: `if hub != nil { ... }` because `SENTRY_LOCATOR`
-may be unset in development.
+The reporter is never nil — `Main()` always creates one. Empty locator
+produces noop behavior. No nil-guards needed.
 
 ## When to Use Each Strategy
 
@@ -77,7 +74,7 @@ func ProcessRecord(path string) (*Result, error) {
 result, e := store.ProcessRecord(path)
 errors.PanicOnError(e)
 
-// MCP caller - captures to Sentry, returns structured error
+// MCP caller - captures to reporter, returns structured error
 result, e := store.ProcessRecord(path)
 
 if e != nil {
@@ -114,8 +111,8 @@ if f != nil {
 standard `(*mcp.CallToolResult, error)` tuple. Use it for all input validation.
 
 **Tier 2 - Infrastructure failure** (store, DB, external call): capture
-to Sentry and return a structured error with the Sentry event ID. Use
-`captureFail` - a private method on the Server/Tool struct that wraps
+to Sentry and return a structured error with the event ID. Use
+`captureFail` - a private method on the Server struct that wraps
 `response.CaptureFail`.
 
 ```go
@@ -132,22 +129,22 @@ func (s *Server) captureFail(
     e error,
     message string,
 ) (*mcp.CallToolResult, error) {
-    return response.CaptureFail(s.hub, e, message)
+    return response.CaptureFail(s.reporter, e, message)
 }
 ```
 
-`response.CaptureFail` captures the exception to Sentry and returns
-structured JSON with `error` and `event_identifier` fields via
+`response.CaptureFail` captures the exception via the reporter and
+returns structured JSON with `error` and `event_identifier` fields via
 `response.FailAny`. The event ID lets the model look up the
 stacktrace via Sentry MCP tools and diagnose the problem in the same
 conversation.
 
-The hub must be threaded into the MCP server (same pattern as web and
-workers). The hub is nil-safe - `CaptureFail` handles nil hubs
-gracefully.
+The reporter is threaded into the MCP server (same pattern as web and
+workers). The reporter is never nil — it always exists, even in noop
+mode.
 
 Design principle: any `error` value from a function call in an MCP
-handler is worth capturing to Sentry. Even local file I/O errors.
+handler is worth capturing. Even local file I/O errors.
 `response.Fail` is only for validation where the handler constructs
 the error message itself (e.g. "service is required").
 
@@ -180,16 +177,13 @@ Methods called from both web and MCP return `error`. The web caller wraps with
 
 Workers that loop (pollers, watchers, schedulers) wrap per-iteration work
 in a `withRecovery` method. This catches panics from a single iteration,
-reports to Sentry, and lets the loop continue.
+reports via the reporter, and lets the loop continue.
 
 ```go
 func (w *Worker) withRecovery(f func()) {
     defer func() {
         if v := recover(); v != nil {
-            if w.hub != nil {
-                w.hub.Recover(v)
-            }
-
+            w.reporter.Recover(v)
             w.logger.Plain("worker recovered from panic: %v", v)
         }
     }()
@@ -210,14 +204,14 @@ for {
 }
 ```
 
-The `withRecovery` method lives on each worker struct that holds hub +
-logger. See `three-pillars.md` for where this fits in the overall
-recovery layer design.
+The `withRecovery` method lives on each worker struct that holds
+reporter + logger. See `three-pillars.md` for where this fits in the
+overall recovery layer design.
 
 ## HTTP Recovery Middleware
 
 `pkg/web/RecoveryMiddleware` is the shared HTTP recovery layer. It wraps
-the mux, catches panics from any handler, reports via `hub.Recover(v)`,
+the mux, catches panics from any handler, reports via `r.Recover(v)`,
 and returns 500. Wired into lifecycle via `WithServerMiddleware` or
 `WithProtectedServerMiddleware`. See `lifecycle.md`.
 
@@ -229,35 +223,27 @@ output before panicking:
 
 ```go
 if r.Error != nil {
-    if hub != nil {
-        hub.WithScope(func(s *sentry.Scope) {
-            s.SetContext("process", map[string]any{
-                "output": r.OutputString,
-                "stderr": r.ErrorString,
-            })
-            hub.CaptureException(r.Error)
-        })
-    }
-
+    reporter.CaptureWithContext(r.Error, "process", map[string]any{
+        "output": r.OutputString,
+        "stderr": r.ErrorString,
+    })
     errors.PanicOnError(r.Error)
 }
 ```
 
-The `SetContext` call attaches stdout and stderr as structured data on
-the Sentry event - they're available in the Sentry UI without being
+`CaptureWithContext` attaches stdout and stderr as structured context
+on the Sentry event — available in the Sentry UI without being
 stuffed into the panic message.
 
 ## Self-Healing File Operations
 
 In batch operations (cleanup loops, file processing), file remove failures
-are captured to Sentry without panicking. The file stays on disk and
-gets cleaned up on the next run.
+are captured without panicking. The file stays on disk and gets cleaned
+up on the next run.
 
 ```go
 if e := os.Remove(path); e != nil {
-    if hub != nil {
-        hub.CaptureException(e)
-    }
+    c.reporter.CaptureException(e)
 }
 ```
 

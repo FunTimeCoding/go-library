@@ -10,7 +10,6 @@ cmd/go<tool>/
 
 pkg/tool/go<tool>/
 ├── main.go                         # Main(): register flags, parse, build option, call Run()
-├── main_test.go                    # Stub test
 ├── run.go                          # Run(o): wiring, lifecycle, signal block
 ├── option/
 │   ├── <name>.go                   # Option struct (named after tool/domain, not "Option")
@@ -22,20 +21,17 @@ pkg/tool/go<tool>/
 │   ├── record.go                   # Record type
 │   ├── new.go                      # Constructor: opens db, ensures bucket
 │   ├── close.go                    # Close()
-│   ├── <operation>.go              # One file per operation (save.go, resolve.go, by_name.go)
-│   └── store_test.go               # Stub test
-├── poller/                         # Background worker (if needed)
-│   ├── poller.go                   # Poller struct
+│   └── <operation>.go              # One file per operation (save.go, resolve.go, by_name.go)
+├── worker/                         # Background worker (if needed)
+│   ├── worker.go                   # Worker struct
 │   ├── new.go                      # Constructor
 │   ├── start.go                    # Start() - goroutine with ticker
 │   ├── stop.go                     # Stop()
-│   ├── poll.go                     # Poll() - single cycle logic
-│   └── poller_test.go              # assert.NotNil(t, New(...))
+│   └── poll.go                     # Poll() - single cycle logic
 └── server/                         # REST implementation (or manual routes)
     ├── <operation>.go              # Route function returning http.HandlerFunc
     ├── response.go                 # Response struct (if needed)
-    ├── constant.go                 # Server-specific constants
-    └── server_test.go              # Stub test
+    └── constant.go                 # Server-specific constants
 ```
 
 ## Entry Point
@@ -58,24 +54,24 @@ Run(o)
 
 ## Run Function
 
-`Run(o, h)` constructs components and wires lifecycle. It receives the
-sentry hub from `Main()` as a separate parameter - not on the option
-struct. See `three-pillars.md` for the full wiring rationale.
+`Run(o, r)` constructs components and wires lifecycle. It receives the
+reporter from `Main()` as `face.Reporter` — not on the option struct.
+See `three-pillars.md` for the full wiring rationale.
 
 ```go
-func Run(o *option.Log, h *sentry.Hub) {
+func Run(o *option.Log, r face.Reporter) {
     l := logger.New(context.Background())
     s := store.New(o.DatabasePath)
     defer s.Close()
     lifecycle.New(
-        lifecycle.WithLogger(l),
-        lifecycle.WithWorker(poller.New(client, s, l, h, 1*time.Minute)),
+        l,
+        lifecycle.WithWorker(worker.New(client, s, l, r, 1*time.Minute)),
         lifecycle.WithServerMiddleware(
             web.AddressPort(o.Port),
             func(m *http.ServeMux) {
                 m.HandleFunc("/api/alerts", server.Alerts(s))
             },
-            web.RecoveryMiddleware(h),
+            web.RecoveryMiddleware(r),
         ),
     ).RunUntilSignal()
 }
@@ -83,8 +79,8 @@ func Run(o *option.Log, h *sentry.Hub) {
 
 Key conventions:
 - Logger constructed first, threaded to workers and lifecycle
-- Hub threaded to workers (for `withRecovery`) and recovery middleware
-- Use `WithServerMiddleware` (streaming/MCP) or `WithProtectedServerMiddleware` (plain REST) with `web.RecoveryMiddleware(h)`
+- Reporter threaded to workers (for `withRecovery`) and recovery middleware
+- Use `WithServerMiddleware` (streaming/MCP) or `WithProtectedServerMiddleware` (plain REST) with `web.RecoveryMiddleware(r)`
 - Server address uses `web.AddressPort(o.Port)` to format the port as `":8080"`
 - Routes registered in the `func(*http.ServeMux)` callback
 - `RunUntilSignal()` handles run, signal block, and reverse-order stop
@@ -138,12 +134,12 @@ pkg/tool/go<tool>d/web/
 ```
 
 Key conventions:
-- `Server` struct holds dependencies (store, poller, etc.)
+- `Server` struct holds dependencies (store, worker, etc.)
 - `Mount()` registers all routes using method values: `m.HandleFunc("GET /alerts", s.alerts)`
 - Handler methods named after the route, no `handle` prefix: `alerts()`, `dashboard()`, `addSubmit()`
 - Standalone HTML builders named after the component they produce: `alertsTable()`, `addForm()`, `detailRow()`
 - Handler and builder names never collide because the handler is named after the route (`add`), not the component (`addForm`)
-- Methods that access server state (store, poller) stay as methods; pure renderers are standalone functions
+- Methods that access server state (store, worker) stay as methods; pure renderers are standalone functions
 
 ## Workers
 

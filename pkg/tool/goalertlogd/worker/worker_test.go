@@ -1,4 +1,4 @@
-package poller
+package worker
 
 import (
 	"context"
@@ -15,7 +15,7 @@ import (
 
 var testLogger = logger.New(context.Background())
 
-func TestPoller(t *testing.T) {
+func TestWorker(t *testing.T) {
 	assert.NotNil(
 		t,
 		New(nil, nil, testLogger, 1*time.Minute, 30*24*time.Hour, nil),

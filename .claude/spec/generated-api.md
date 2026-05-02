@@ -161,12 +161,12 @@ lifecycle.WithServer(
 )
 ```
 
-When MCP is also mounted, the generative server import uses its
-standard alias:
+When MCP is also mounted, add the `model_context` import and call
+`Mount(m)`:
 
 ```go
 import (
-    generative "github.com/funtimecoding/go-library/pkg/generative/model_context/server"
+    "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/model_context"
     generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/generated/server"
 )
 
@@ -174,9 +174,9 @@ lifecycle.WithServerMiddleware(
     web.AddressPort(o.Port),
     func(m *http.ServeMux) {
         generated.HandlerFromMux(server.New(dep), m)
-        generative.New(model_context.New(dep, h).Nested()).Setup(m)
+        model_context.New(dep, r).Mount(m)
     },
-    web.RecoveryMiddleware(h),
+    web.RecoveryMiddleware(r),
 )
 ```
 

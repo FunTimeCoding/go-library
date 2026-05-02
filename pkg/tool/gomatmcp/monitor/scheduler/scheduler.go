@@ -1,8 +1,8 @@
 package scheduler
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/getsentry/sentry-go"
 	"github.com/robfig/cron/v3"
 	"sync"
 )
@@ -12,7 +12,7 @@ type Scheduler struct {
 	schedule string
 	task     func()
 	logger   *logger.Logger
-	hub      *sentry.Hub
+	reporter face.Reporter
 	entry    cron.EntryID
 	mutex    sync.Mutex
 	running  bool

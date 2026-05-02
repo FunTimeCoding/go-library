@@ -1,4 +1,4 @@
-package poller
+package worker
 
 import (
 	"fmt"
@@ -6,17 +6,17 @@ import (
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 )
 
-func (p *Poller) RecoverStale() {
+func (w *Worker) RecoverStale() {
 	defer func() {
 		if v := recover(); v != nil {
-			p.logger.Structured(
+			w.logger.Structured(
 				"recover stale failed",
 				"error",
 				fmt.Sprint(v),
 			)
 		}
 	}()
-	alerts, _ := p.client.Alerts(advanced_option.New())
+	alerts, _ := w.client.Alerts(advanced_option.New())
 	current := make(map[string]bool)
 
 	for _, a := range alerts {
@@ -25,29 +25,29 @@ func (p *Poller) RecoverStale() {
 		}
 	}
 
-	unresolved := p.store.MustUnresolved()
+	unresolved := w.store.MustUnresolved()
 
 	for _, u := range unresolved {
 		if current[u.Fingerprint] {
-			p.firing[u.Fingerprint] = u.Key
+			w.firing[u.Fingerprint] = u.Key
 		}
 	}
 
 	var resolved int
 
 	for _, u := range unresolved {
-		if p.firing[u.Fingerprint] == u.Key {
+		if w.firing[u.Fingerprint] == u.Key {
 			continue
 		}
 
-		p.store.MustResolve(u.Key)
+		w.store.MustResolve(u.Key)
 		resolved++
 	}
 
-	p.logger.Structured(
+	w.logger.Structured(
 		"recovered stale records",
 		"adopted",
-		len(p.firing),
+		len(w.firing),
 		"resolved",
 		resolved,
 	)

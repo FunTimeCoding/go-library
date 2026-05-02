@@ -1,9 +1,9 @@
-package poller
+package worker
 
 import "time"
 
-func (p *Poller) LastPoll() time.Time {
-	v := p.lastPoll.Load()
+func (w *Worker) LastPoll() time.Time {
+	v := w.lastPoll.Load()
 
 	if v == nil {
 		return time.Time{}

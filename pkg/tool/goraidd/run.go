@@ -2,6 +2,7 @@ package goraidd
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/raid_parser"
@@ -12,14 +13,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/store"
 	raidWeb "github.com/funtimecoding/go-library/pkg/tool/goraidd/web"
 	"github.com/funtimecoding/go-library/pkg/web"
-	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/getsentry/sentry-go"
 	"net/http"
 )
 
 func Run(
 	o *option.Raid,
-	h *sentry.Hub,
+	r face.Reporter,
 ) {
 	l := logger.New(context.Background())
 	s := store.New(
@@ -27,13 +26,13 @@ func Run(
 		o.LogCachePath,
 		o.ElitePath,
 		l,
-		h,
+		r,
 	)
 	lifecycle.New(
 		l,
 		lifecycle.WithWorker(s),
 		lifecycle.WithServerMiddleware(
-			webConstant.ListenAddress,
+			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				p := raid_parser.New("localhost:8081", true)
 				generated.HandlerFromMux(
@@ -52,7 +51,7 @@ func Run(
 					p,
 				).Mount(m)
 			},
-			web.RecoveryMiddleware(h),
+			web.RecoveryMiddleware(r),
 		),
 	).RunUntilSignal()
 }

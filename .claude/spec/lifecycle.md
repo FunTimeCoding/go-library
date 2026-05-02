@@ -119,25 +119,24 @@ lifecycle.WithLogger(logger.New(context.Background()))
 ## Usage Pattern
 
 ```go
-func Run(o *option.Config, h *sentry.Hub) {
+func Run(o *option.Config, r face.Reporter) {
     l := logger.New(context.Background())
     lifecycle.New(
-        lifecycle.WithLogger(l),
-        lifecycle.WithWorker(poller.New(l, h)),
+        l,
+        lifecycle.WithWorker(worker.New(l, r)),
         lifecycle.WithServerMiddleware(
             web.AddressPort(o.Port),
             func(m *http.ServeMux) {
                 m.HandleFunc("/health", health)
             },
-            web.RecoveryMiddleware(h),
+            web.RecoveryMiddleware(r),
         ),
     ).RunUntilSignal()
 }
 ```
 
 See `three-pillars.md` for the full wiring pattern including Main()
-hub extraction.
-```
+reporter creation.
 
 ## Adapting Existing Types
 
@@ -155,4 +154,4 @@ These types implement the Worker interface:
 |------------------------------|------------|----------------------------------|
 | `pkg/metric`                 | `Server`   | Prometheus metrics HTTP endpoint |
 | `pkg/ticker`                 | `Ticker`   | Periodic function execution      |
-| `pkg/errors/sentry/reporter` | `Reporter` | Sentry hub lifecycle + flush     |
+| `pkg/errors/sentry/reporter` | `Reporter` | Error capture + panic recovery   |

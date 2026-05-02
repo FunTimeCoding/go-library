@@ -7,11 +7,13 @@ import (
 
 func Registry() {
 	c := gitlab.NewEnvironment()
-	p := c.MustProjectByName("shiin", "go-mint")
-	repos := c.MustRegistryRepositories(p.Identifier, false)
-	fmt.Printf("Repos: %d\n", len(repos))
+	repositories := c.MustRegistryRepositories(
+		c.MustProjectByName("shiin", "go-mint").Identifier,
+		false,
+	)
+	fmt.Printf("Repositories: %d\n", len(repositories))
 
-	for _, r := range repos {
+	for _, r := range repositories {
 		fmt.Printf("Registry: %d %s\n", r.ID, r.Name)
 	}
 }

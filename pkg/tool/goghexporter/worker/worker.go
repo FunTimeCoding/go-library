@@ -1,4 +1,4 @@
-package poller
+package worker
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type Poller struct {
+type Worker struct {
 	client   *github.Client
 	owner    string
 	interval time.Duration

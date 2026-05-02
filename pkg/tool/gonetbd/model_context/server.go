@@ -1,13 +1,13 @@
 package model_context
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/netbox"
-	"github.com/getsentry/sentry-go"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 type Server struct {
-	server *server.MCPServer
-	client *netbox.Client
-	hub    *sentry.Hub
+	server   *server.MCPServer
+	client   *netbox.Client
+	reporter face.Reporter
 }

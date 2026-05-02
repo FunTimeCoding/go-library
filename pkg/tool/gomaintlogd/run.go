@@ -2,6 +2,7 @@ package gomaintlogd
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
@@ -11,13 +12,12 @@ import (
 	maintenanceWeb "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/web"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/getsentry/sentry-go"
 	"net/http"
 )
 
 func Run(
 	o *option.Log,
-	h *sentry.Hub,
+	r face.Reporter,
 ) {
 	g := logger.New(context.Background())
 	s := newStore(o)
@@ -28,10 +28,10 @@ func Run(
 			constant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s), m)
-				model_context.New(s, h).Mount(m)
+				model_context.New(s, r).Mount(m)
 				maintenanceWeb.New(s).Mount(m)
 			},
-			web.RecoveryMiddleware(h),
+			web.RecoveryMiddleware(r),
 		),
 	).RunUntilSignal()
 }

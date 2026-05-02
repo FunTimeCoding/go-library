@@ -9,13 +9,11 @@ func VirtualMachine(m *virtual_machine.Machine) server.VirtualMachine {
 	result := server.VirtualMachine{Identifier: m.Identifier, Name: m.Name}
 
 	if m.Raw.Cluster.IsSet() && m.Raw.Cluster.Get() != nil {
-		n := m.Raw.Cluster.Get().GetName()
-		result.Cluster = &n
+		result.Cluster = new(m.Raw.Cluster.Get().GetName())
 	}
 
 	if m.Raw.Site.IsSet() && m.Raw.Site.Get() != nil {
-		n := m.Raw.Site.Get().GetName()
-		result.Site = &n
+		result.Site = new(m.Raw.Site.Get().GetName())
 	}
 
 	if len(m.Tags) > 0 {

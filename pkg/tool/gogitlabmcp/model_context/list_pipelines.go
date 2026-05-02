@@ -27,8 +27,7 @@ func (s *Server) ListPipelines(
 	}
 
 	if a.Status != "" {
-		s := gitlab.BuildStateValue(a.Status)
-		o.Status = &s
+		o.Status = new(gitlab.BuildStateValue(a.Status))
 	}
 
 	v, _, e := s.client.Pipelines.ListProjectPipelines(a.Project, o)

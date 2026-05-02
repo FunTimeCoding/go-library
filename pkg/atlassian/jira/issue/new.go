@@ -12,8 +12,6 @@ func New(
 	v *jira.Issue,
 	o *option.Issue,
 ) *Issue {
-	create := time.Time(v.Fields.Created)
-	due := time.Time(v.Fields.Duedate)
 	result := Stub()
 	result.MonitorIdentifier = item.GoJira.StringIdentifier(
 		v.Key,
@@ -25,8 +23,8 @@ func New(
 	result.Status = statusField(v)
 	result.Priority = priorityField(v)
 	result.Type = v.Fields.Type.Name
-	result.Create = &create
-	result.Due = &due
+	result.Create = new(time.Time(v.Fields.Created))
+	result.Due = new(time.Time(v.Fields.Duedate))
 	result.Link = BuildLink(o.Locator, v.Key)
 	result.Labels = v.Fields.Labels
 	result.fieldMap = o.FieldMap

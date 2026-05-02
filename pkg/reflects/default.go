@@ -17,7 +17,7 @@ func Default(a any) bool {
 	default:
 		l := reflect.ValueOf(a)
 
-		if l.Kind() == reflect.Ptr {
+		if l.Kind() == reflect.Pointer {
 			return l.IsNil()
 		}
 

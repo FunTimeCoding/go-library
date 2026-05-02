@@ -6,7 +6,5 @@ import (
 )
 
 func New() *rand.Source {
-	s := rand.NewSource(time.Now().UnixNano())
-
-	return &s
+	return new(rand.NewSource(time.Now().UnixNano()))
 }

@@ -10,8 +10,9 @@ func (c *Client) Tasks(taskType string) string {
 	var p *client.GetTasksParams
 
 	if taskType != "" {
-		t := client.GetTasksParamsType(taskType)
-		p = &client.GetTasksParams{Type: &t}
+		p = &client.GetTasksParams{
+			Type: new(client.GetTasksParamsType(taskType)),
+		}
 	}
 
 	result, e := c.client.GetTasks(c.context, p)

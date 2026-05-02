@@ -13,6 +13,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/string_constant"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/type_receiver"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/unchecked_print_write"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"golang.org/x/tools/go/analysis/multichecker"
 )
@@ -39,5 +40,6 @@ func Main(
 		defer_close.Analyzer,
 		file_identity.Analyzer,
 		type_receiver.Analyzer,
+		unchecked_print_write.Analyzer,
 	)
 }

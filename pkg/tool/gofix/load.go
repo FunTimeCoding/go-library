@@ -1,7 +1,7 @@
 package gofix
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"go/token"
 	"golang.org/x/tools/go/packages"
 	"os"
@@ -21,7 +21,7 @@ func load(
 	result, e := packages.Load(configuration, patterns...)
 
 	if e != nil {
-		fmt.Fprintf(os.Stderr, "load: %s\n", e)
+		errors.Printf("load: %s\n", e)
 		os.Exit(1)
 	}
 
@@ -29,7 +29,7 @@ func load(
 
 	for _, p := range result {
 		for _, e := range p.Errors {
-			fmt.Fprintf(os.Stderr, "%s: %s\n", p.PkgPath, e)
+			errors.Printf("%s: %s\n", p.PkgPath, e)
 			hasError = true
 		}
 	}

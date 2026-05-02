@@ -73,15 +73,13 @@ func TestMatchesWithExactMatcher(t *testing.T) {
 		t.Run(
 			tt.name,
 			func(t *testing.T) {
-				isEqual := true
-				isRegex := false
 				s := newSilence(
 					&start,
 					&end,
 					tt.matcherName,
 					tt.matcherValue,
-					&isEqual,
-					&isRegex,
+					new(true),
+					new(false),
 				)
 				a := newAlert(tt.labels)
 				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
@@ -166,15 +164,13 @@ func TestMatchesWithNotEqualMatcher(t *testing.T) {
 		t.Run(
 			tt.name,
 			func(t *testing.T) {
-				isEqual := false
-				isRegex := false
 				s := newSilence(
 					&start,
 					&end,
 					tt.matcherName,
 					tt.matcherValue,
-					&isEqual,
-					&isRegex,
+					new(false),
+					new(false),
 				)
 				a := newAlert(tt.labels)
 				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
@@ -351,15 +347,13 @@ func TestMatchesWithNotRegexMatcher(t *testing.T) {
 		t.Run(
 			tt.name,
 			func(t *testing.T) {
-				isEqual := false
-				isRegex := true
 				s := newSilence(
 					&start,
 					&end,
 					tt.matcherName,
 					tt.matcherValue,
-					&isEqual,
-					&isRegex,
+					new(false),
+					new(true),
 				)
 				a := newAlert(tt.labels)
 				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
@@ -540,15 +534,13 @@ func TestMatchesWithTimeWindow(t *testing.T) {
 		t.Run(
 			tt.name,
 			func(t *testing.T) {
-				isEqual := true
-				isRegex := false
 				s := newSilence(
 					&tt.start,
 					&tt.end,
 					"alertname",
 					"HighCPU",
-					&isEqual,
-					&isRegex,
+					new(true),
+					new(false),
 				)
 				a := newAlert(models.LabelSet{"alertname": "HighCPU"})
 				matched := len(Matches(s, []*alert.Alert{a}, now)) > 0
@@ -568,17 +560,13 @@ func TestMatchesWithTimeWindow(t *testing.T) {
 
 func TestMatchesWithMultipleAlerts(t *testing.T) {
 	now := time.Now()
-	start := now.Add(-1 * time.Hour)
-	end := now.Add(1 * time.Hour)
-	equal := true
-	regex := false
 	s := newSilence(
-		&start,
-		&end,
+		new(now.Add(-1*time.Hour)),
+		new(now.Add(1*time.Hour)),
 		constant.SeverityLabel,
 		constant.CriticalSeverity,
-		&equal,
-		&regex,
+		new(true),
+		new(false),
 	)
 	alerts := []*alert.Alert{
 		newAlert(

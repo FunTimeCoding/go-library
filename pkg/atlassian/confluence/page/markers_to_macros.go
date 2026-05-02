@@ -1,7 +1,7 @@
 package page
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/system/writer"
 	"strings"
 )
 
@@ -31,14 +31,14 @@ func markersToMacros(markdown string) string {
 			inner := strings.TrimPrefix(body, "```")
 			inner = strings.TrimSuffix(inner, "```")
 			inner = strings.TrimSpace(inner)
-			fmt.Fprintf(
+			writer.Print(
 				&result,
 				`<ac:structured-macro ac:name="%s"><ac:plain-text-body><![CDATA[%s]]></ac:plain-text-body></ac:structured-macro>`,
 				name,
 				inner,
 			)
 		} else {
-			fmt.Fprintf(
+			writer.Print(
 				&result,
 				`<ac:structured-macro ac:name="%s"><ac:rich-text-body>%s</ac:rich-text-body></ac:structured-macro>`,
 				name,

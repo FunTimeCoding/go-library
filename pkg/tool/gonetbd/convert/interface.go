@@ -13,13 +13,11 @@ func Interface(i *network.Interface) server.Interface {
 	}
 
 	if i.Type != "" {
-		t := string(i.Type)
-		result.Type = &t
+		result.Type = new(string(i.Type))
 	}
 
 	if len(i.PhysicalAddress) > 0 {
-		p := i.PhysicalAddress.String()
-		result.PhysicalAddress = &p
+		result.PhysicalAddress = new(i.PhysicalAddress.String())
 	}
 
 	return result

@@ -25,8 +25,7 @@ func Task(t response.Task) server.Task {
 	}
 
 	if len(t.Checklist) > 0 {
-		items := ChecklistItems(t.Checklist)
-		result.Checklist = &items
+		result.Checklist = new(ChecklistItems(t.Checklist))
 	}
 
 	if t.Streak > 0 {
@@ -34,8 +33,7 @@ func Task(t response.Task) server.Task {
 	}
 
 	if t.Value != 0 {
-		v := float32(t.Value)
-		result.Value = &v
+		result.Value = new(float32(t.Value))
 	}
 
 	return result

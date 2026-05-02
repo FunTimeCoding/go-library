@@ -102,10 +102,9 @@ func TestFilterViaREST(t *testing.T) {
 	assert.Count(t, 1, *byAliceSys2.JSON200)
 	assert.String(t, "deploy", (*byAliceSys2.JSON200)[0].Action)
 	// No match
-	nobody := "nobody"
 	byNobody, e := c.GetEntriesWithResponse(
 		x,
-		&client.GetEntriesParams{User: &nobody},
+		&client.GetEntriesParams{User: new("nobody")},
 	)
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, byNobody.StatusCode())
@@ -121,7 +120,6 @@ func TestFilterViaWeb(t *testing.T) {
 	assert.FatalOnError(t, e)
 	x := context.Background()
 	system1 := "worker1"
-	system2 := "worker2"
 	user1 := "alice"
 	user2 := "bob"
 	svc := "nginx"
@@ -142,7 +140,7 @@ func TestFilterViaWeb(t *testing.T) {
 		client.PostEntryJSONRequestBody{
 			Action:      "backup",
 			User:        user2,
-			System:      &system2,
+			System:      new("worker2"),
 			Service:     &svc,
 			Description: &desc,
 		},

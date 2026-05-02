@@ -6,7 +6,5 @@ import (
 )
 
 func statsPointer(s response.Stats) *server.Stats {
-	result := Stats(s)
-
-	return &result
+	return new(Stats(s))
 }

@@ -33,4 +33,5 @@ func Main(
 
 	runFix(f.patterns, f.diff)
 	runCallFormatFix(f.patterns, f.diff)
+	runImportAliasFix(f.patterns, f.diff)
 }

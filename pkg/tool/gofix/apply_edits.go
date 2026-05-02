@@ -1,7 +1,7 @@
 package gofix
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"go/token"
 	"os"
 	"sort"
@@ -25,7 +25,7 @@ func applyEdits(
 		original, e := os.ReadFile(path)
 
 		if e != nil {
-			fmt.Fprintf(os.Stderr, "read %s: %s\n", path, e)
+			errors.Printf("read %s: %s\n", path, e)
 
 			continue
 		}
@@ -48,7 +48,7 @@ func applyEdits(
 			e = os.WriteFile(path, modified, 0644)
 
 			if e != nil {
-				fmt.Fprintf(os.Stderr, "write %s: %s\n", path, e)
+				errors.Printf("write %s: %s\n", path, e)
 			}
 		}
 	}

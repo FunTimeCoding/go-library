@@ -40,5 +40,9 @@ func assertResult(
 		}
 	}
 
-	t.Errorf("expected result {path: %q, message: %q} not found", path, message)
+	t.Errorf(
+		"expected result {path: %q, message: %q} not found",
+		path,
+		message,
+	)
 }

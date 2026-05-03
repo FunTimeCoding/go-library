@@ -9,6 +9,6 @@ func Register() {
 
 func MapKey() {
 	m := map[string]any{}
-	_ = m["name"] // want `string literal "name" has constant constant.Name`
+	_ = m["name"]  // want `string literal "name" has constant constant.Name`
 	m["query"] = 1 // want `string literal "query" has constant constant.Query`
 }

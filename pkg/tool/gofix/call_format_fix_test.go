@@ -116,17 +116,42 @@ func TestCallFormatFix(t *testing.T) {
 		func(t *testing.T) {
 			applied := filterApplied(r.Entries)
 			assert.Integer(t, 6, len(applied))
-			assertResult(t, applied, "long_single_line.go", "formatted call (line 4)")
-			assertResult(t, applied, "shared_line.go", "formatted call (line 8)")
+			assertResult(
+				t,
+				applied,
+				"long_single_line.go",
+				"formatted call (line 4)",
+			)
+			assertResult(
+				t,
+				applied,
+				"shared_line.go",
+				"formatted call (line 8)",
+			)
 			assertResult(
 				t,
 				applied,
 				"first_arg_on_paren_line.go",
 				"formatted call (line 4)",
 			)
-			assertResult(t, applied, "nested_indent.go", "formatted call (line 6)")
-			assertResult(t, applied, "deep_method.go", "formatted call (line 14)")
-			assertResult(t, applied, "multiple_violations.go", "formatted call (line 4)")
+			assertResult(
+				t,
+				applied,
+				"nested_indent.go",
+				"formatted call (line 6)",
+			)
+			assertResult(
+				t,
+				applied,
+				"deep_method.go",
+				"formatted call (line 14)",
+			)
+			assertResult(
+				t,
+				applied,
+				"multiple_violations.go",
+				"formatted call (line 4)",
+			)
 		},
 	)
 }

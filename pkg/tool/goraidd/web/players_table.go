@@ -45,7 +45,11 @@ func playersTable(rows []store.AttendanceRow) gomponents.Node {
 						),
 						html.Td(gomponents.Text(r.Characters)),
 						html.Td(
-							gomponents.Textf("%d / %d", r.Fights, r.Available),
+							gomponents.Textf(
+								"%d / %d",
+								r.Fights,
+								r.Available,
+							),
 						),
 						html.Td(gomponents.Textf("%d%%", pct)),
 					)

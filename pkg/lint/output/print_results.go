@@ -2,7 +2,10 @@ package output
 
 import "fmt"
 
-func PrintResults(entries []Result, summary bool) bool {
+func PrintResults(
+	entries []Result,
+	summary bool,
+) bool {
 	var hasBlocked bool
 	seen := make(map[string]bool)
 

@@ -15,5 +15,5 @@ type Issue struct {
 	LastSeen  *time.Time `json:"lastSeen"`
 	Count     string     `json:"count"`
 	UserCount int        `json:"userCount"`
-	Project Project `json:"project"`
+	Project   Project    `json:"project"`
 }

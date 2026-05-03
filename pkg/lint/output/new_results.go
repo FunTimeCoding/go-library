@@ -6,5 +6,10 @@ import (
 )
 
 func NewResults() Results {
-	return Results{workingDirectory: fmt.Sprintf("%s/", system.WorkingDirectory())}
+	return Results{
+		workingDirectory: fmt.Sprintf(
+			"%s/",
+			system.WorkingDirectory(),
+		),
+	}
 }

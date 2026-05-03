@@ -258,7 +258,12 @@ func TestCheckResultImportCollapsed(t *testing.T) {
 		false,
 		&r,
 	)
-	assertApplied(t, r.Entries, "pkg/foo/foo.go", "collapsed single multi-import")
+	assertApplied(
+		t,
+		r.Entries,
+		"pkg/foo/foo.go",
+		"collapsed single multi-import",
+	)
 }
 
 func TestCheckResultBlankLineRemoved(t *testing.T) {
@@ -276,7 +281,12 @@ func TestCheckResultBlankLineRemoved(t *testing.T) {
 		false,
 		&r,
 	)
-	assertApplied(t, r.Entries, "pkg/foo/foo.go", "removed blank line (line 5)")
+	assertApplied(
+		t,
+		r.Entries,
+		"pkg/foo/foo.go",
+		"removed blank line (line 5)",
+	)
 }
 
 func TestCheckResultBlankLineInserted(t *testing.T) {
@@ -294,7 +304,12 @@ func TestCheckResultBlankLineInserted(t *testing.T) {
 		false,
 		&r,
 	)
-	assertApplied(t, r.Entries, "pkg/foo/foo.go", "inserted blank line (line 5)")
+	assertApplied(
+		t,
+		r.Entries,
+		"pkg/foo/foo.go",
+		"inserted blank line (line 5)",
+	)
 }
 
 func TestCheckResultMissingSentry(t *testing.T) {

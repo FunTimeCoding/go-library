@@ -13,14 +13,22 @@ func TestPrintResults(t *testing.T) {
 		"VerboseApplied",
 		func(t *testing.T) {
 			entries := []result{
-				{Path: "pkg/foo/bar.go", Message: "de-aliased sentry → constant"},
-				{Path: "pkg/foo/baz.go", Message: "renamed dirName → directoryName (4 references)"},
+				{
+					Path:    "pkg/foo/bar.go",
+					Message: "de-aliased sentry → constant",
+				},
+				{
+					Path:    "pkg/foo/baz.go",
+					Message: "renamed dirName → directoryName (4 references)",
+				},
 				{Path: "pkg/foo/baz.go", Message: "formatted call (line 42)"},
 			}
-			output := captureStdout(func() {
-				hasBlocked := printResults(entries, false)
-				assert.False(t, hasBlocked)
-			})
+			output := captureStdout(
+				func() {
+					hasBlocked := printResults(entries, false)
+					assert.False(t, hasBlocked)
+				},
+			)
 			assert.String(
 				t,
 				"pkg/foo/bar.go: de-aliased sentry → constant\npkg/foo/baz.go: renamed dirName → directoryName (4 references)\npkg/foo/baz.go: formatted call (line 42)\n",
@@ -32,14 +40,22 @@ func TestPrintResults(t *testing.T) {
 		"SummaryDeduplicates",
 		func(t *testing.T) {
 			entries := []result{
-				{Path: "pkg/foo/bar.go", Message: "de-aliased sentry → constant"},
-				{Path: "pkg/foo/baz.go", Message: "renamed dirName → directoryName (4 references)"},
+				{
+					Path:    "pkg/foo/bar.go",
+					Message: "de-aliased sentry → constant",
+				},
+				{
+					Path:    "pkg/foo/baz.go",
+					Message: "renamed dirName → directoryName (4 references)",
+				},
 				{Path: "pkg/foo/baz.go", Message: "formatted call (line 42)"},
 			}
-			output := captureStdout(func() {
-				hasBlocked := printResults(entries, true)
-				assert.False(t, hasBlocked)
-			})
+			output := captureStdout(
+				func() {
+					hasBlocked := printResults(entries, true)
+					assert.False(t, hasBlocked)
+				},
+			)
 			assert.String(
 				t,
 				"pkg/foo/bar.go\npkg/foo/baz.go\n",
@@ -52,12 +68,18 @@ func TestPrintResults(t *testing.T) {
 		func(t *testing.T) {
 			entries := []result{
 				{Path: "pkg/foo/bar.go", Message: "de-aliased h → helper"},
-				{Path: "pkg/foo/baz.go", Message: "cannot de-alias mark → server (local collision with \"server\")", Blocked: true},
+				{
+					Path:    "pkg/foo/baz.go",
+					Message: "cannot de-alias mark → server (local collision with \"server\")",
+					Blocked: true,
+				},
 			}
-			output := captureStdout(func() {
-				hasBlocked := printResults(entries, true)
-				assert.True(t, hasBlocked)
-			})
+			output := captureStdout(
+				func() {
+					hasBlocked := printResults(entries, true)
+					assert.True(t, hasBlocked)
+				},
+			)
 			assert.String(
 				t,
 				"pkg/foo/bar.go\npkg/foo/baz.go: cannot de-alias mark → server (local collision with \"server\")\n",
@@ -70,12 +92,18 @@ func TestPrintResults(t *testing.T) {
 		func(t *testing.T) {
 			entries := []result{
 				{Path: "pkg/foo/bar.go", Message: "de-aliased h → helper"},
-				{Path: "pkg/foo/baz.go", Message: "cannot rename dirName (collision)", Blocked: true},
+				{
+					Path:    "pkg/foo/baz.go",
+					Message: "cannot rename dirName (collision)",
+					Blocked: true,
+				},
 			}
-			output := captureStdout(func() {
-				hasBlocked := printResults(entries, false)
-				assert.True(t, hasBlocked)
-			})
+			output := captureStdout(
+				func() {
+					hasBlocked := printResults(entries, false)
+					assert.True(t, hasBlocked)
+				},
+			)
 			assert.String(
 				t,
 				"pkg/foo/bar.go: de-aliased h → helper\npkg/foo/baz.go: cannot rename dirName (collision)\n",
@@ -86,10 +114,12 @@ func TestPrintResults(t *testing.T) {
 	t.Run(
 		"EmptyNoOutput",
 		func(t *testing.T) {
-			output := captureStdout(func() {
-				hasBlocked := printResults(nil, false)
-				assert.False(t, hasBlocked)
-			})
+			output := captureStdout(
+				func() {
+					hasBlocked := printResults(nil, false)
+					assert.False(t, hasBlocked)
+				},
+			)
 			assert.String(t, "", output)
 		},
 	)

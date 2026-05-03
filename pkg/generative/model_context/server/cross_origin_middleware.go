@@ -38,7 +38,10 @@ func crossOriginMiddleware(next http.Handler) http.Handler {
 			w.Header().Set(
 				constant.AccessExpose,
 				join.CommaSpace(
-					[]string{constant.SessionIdentifier, constant.ProtocolVersion},
+					[]string{
+						constant.SessionIdentifier,
+						constant.ProtocolVersion,
+					},
 				),
 			)
 

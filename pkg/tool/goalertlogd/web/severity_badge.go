@@ -9,7 +9,10 @@ import (
 
 func severityBadge(severity string) gomponents.Node {
 	return html.Span(
-		components.Classes{"badge": true, fmt.Sprintf("badge-%s", severity): true},
+		components.Classes{
+			"badge":                           true,
+			fmt.Sprintf("badge-%s", severity): true,
+		},
 		gomponents.Text(severity),
 	)
 }

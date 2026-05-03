@@ -72,8 +72,18 @@ func TestVariableNamingFix(t *testing.T) {
 			applied := filterApplied(r.Entries)
 			assertResult(t, applied, "wrong_single.go", "renamed x → e")
 			assertResult(t, applied, "error_renamed.go", "renamed err → e")
-			assertResult(t, applied, "error_chain_renamed.go", "renamed err → e")
-			assertResult(t, applied, "error_chain_renamed.go", "renamed err2 → f")
+			assertResult(
+				t,
+				applied,
+				"error_chain_renamed.go",
+				"renamed err → e",
+			)
+			assertResult(
+				t,
+				applied,
+				"error_chain_renamed.go",
+				"renamed err2 → f",
+			)
 		},
 	)
 }

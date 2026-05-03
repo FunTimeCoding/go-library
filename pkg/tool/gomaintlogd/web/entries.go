@@ -109,7 +109,10 @@ func (s *Server) entries(
 					),
 					html.Label(
 						gomponents.Raw("&nbsp;"),
-						html.Button(html.Type("submit"), gomponents.Text("Filter")),
+						html.Button(
+							html.Type("submit"),
+							gomponents.Text("Filter"),
+						),
 					),
 				),
 			),

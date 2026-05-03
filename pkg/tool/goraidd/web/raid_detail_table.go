@@ -61,17 +61,64 @@ func raidDetailTable(rows []store.RaidPlayerRow) gomponents.Node {
 							gomponents.Textf(" %s", r.Profession),
 						),
 						html.Td(gomponents.Textf("%d", r.Fights)),
-						html.Td(gomponents.Text(perSecond(r.Damage, seconds, 1))),
-						html.Td(gomponents.Text(perSecond(r.Healing, seconds, 1))),
+						html.Td(
+							gomponents.Text(
+								perSecond(
+									r.Damage,
+									seconds,
+									1,
+								),
+							),
+						),
+						html.Td(
+							gomponents.Text(
+								perSecond(
+									r.Healing,
+									seconds,
+									1,
+								),
+							),
+						),
 						html.Td(
 							gomponents.Text(
 								perSecond(r.ConditionCleanses, seconds, 1),
 							),
 						),
-						html.Td(gomponents.Text(perSecond(r.BoonStrips, seconds, 2))),
-						html.Td(gomponents.Text(perSecond(r.Barrier, seconds, 1))),
-						html.Td(gomponents.Text(perSecond(r.Downs, seconds, 1))),
-						html.Td(gomponents.Text(perMinute(r.DeadCount, minutes))),
+						html.Td(
+							gomponents.Text(
+								perSecond(
+									r.BoonStrips,
+									seconds,
+									2,
+								),
+							),
+						),
+						html.Td(
+							gomponents.Text(
+								perSecond(
+									r.Barrier,
+									seconds,
+									1,
+								),
+							),
+						),
+						html.Td(
+							gomponents.Text(
+								perSecond(
+									r.Downs,
+									seconds,
+									1,
+								),
+							),
+						),
+						html.Td(
+							gomponents.Text(
+								perMinute(
+									r.DeadCount,
+									minutes,
+								),
+							),
+						),
 						html.Td(gomponents.Textf("%.0f", r.DistToCom)),
 					)
 				},

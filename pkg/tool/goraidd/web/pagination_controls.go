@@ -41,7 +41,13 @@ func paginationControls(
 		nodes = append(
 			nodes,
 			html.A(
-				html.Href(paginationLink(offset+pageSize, startValue, endValue)),
+				html.Href(
+					paginationLink(
+						offset+pageSize,
+						startValue,
+						endValue,
+					),
+				),
 				gomponents.Text("Next"),
 			),
 		)

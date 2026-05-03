@@ -7,14 +7,20 @@ type Results struct {
 	Entries          []Result
 }
 
-func (r *Results) Add(path string, message string) {
+func (r *Results) Add(
+	path string,
+	message string,
+) {
 	r.Entries = append(
 		r.Entries,
 		Result{Path: r.Relativize(path), Message: message},
 	)
 }
 
-func (r *Results) AddBlocked(path string, message string) {
+func (r *Results) AddBlocked(
+	path string,
+	message string,
+) {
 	r.Entries = append(
 		r.Entries,
 		Result{Path: r.Relativize(path), Message: message, Blocked: true},

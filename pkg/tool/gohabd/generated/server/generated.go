@@ -43,6 +43,30 @@ func (e CreateTaskRequestType) Valid() bool {
 	}
 }
 
+// Defines values for AllocateStatParamsStat.
+const (
+	Con AllocateStatParamsStat = "con"
+	Int AllocateStatParamsStat = "int"
+	Per AllocateStatParamsStat = "per"
+	Str AllocateStatParamsStat = "str"
+)
+
+// Valid indicates whether the value is a known member of the AllocateStatParamsStat enum.
+func (e AllocateStatParamsStat) Valid() bool {
+	switch e {
+	case Con:
+		return true
+	case Int:
+		return true
+	case Per:
+		return true
+	case Str:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetTasksParamsType.
 const (
 	Dailys  GetTasksParamsType = "dailys"
@@ -115,6 +139,15 @@ type CronResult struct {
 	RolledOver bool   `json:"rolled_over"`
 }
 
+// GearResult defines model for GearResult.
+type GearResult struct {
+	// Equipped Slot to gear key mapping.
+	Equipped map[string]string `json:"equipped"`
+
+	// Owned All owned gear keys.
+	Owned []string `json:"owned"`
+}
+
 // ScoreResult defines model for ScoreResult.
 type ScoreResult struct {
 	Gp    float32 `json:"gp"`
@@ -127,11 +160,18 @@ type ScoreResult struct {
 // Stats defines model for Stats.
 type Stats struct {
 	Class string  `json:"class"`
+	Con   int     `json:"con"`
 	Gp    float32 `json:"gp"`
 	Hp    float32 `json:"hp"`
+	Int   int     `json:"int"`
 	Level int     `json:"level"`
 	Mp    float32 `json:"mp"`
-	Xp    float32 `json:"xp"`
+	Per   int     `json:"per"`
+
+	// Points Unspent stat points.
+	Points int     `json:"points"`
+	Str    int     `json:"str"`
+	Xp     float32 `json:"xp"`
 }
 
 // Tag defines model for Tag.
@@ -153,6 +193,9 @@ type Task struct {
 	Value      *float32         `json:"value,omitempty"`
 }
 
+// AllocateStatParamsStat defines parameters for AllocateStat.
+type AllocateStatParamsStat string
+
 // GetTasksParams defines parameters for GetTasks.
 type GetTasksParams struct {
 	// Type Task type filter.
@@ -171,8 +214,17 @@ type CreateTaskJSONRequestBody = CreateTaskRequest
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
+	// (POST /api/allocate/{stat})
+	AllocateStat(w http.ResponseWriter, r *http.Request, stat AllocateStatParamsStat)
+
 	// (POST /api/cron)
 	RunCron(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/equip/{key})
+	EquipGear(w http.ResponseWriter, r *http.Request, key string)
+
+	// (GET /api/gear)
+	GetGear(w http.ResponseWriter, r *http.Request)
 
 	// (GET /api/stats)
 	GetStats(w http.ResponseWriter, r *http.Request)
@@ -199,11 +251,75 @@ type ServerInterfaceWrapper struct {
 
 type MiddlewareFunc func(http.Handler) http.Handler
 
+// AllocateStat operation middleware
+func (siw *ServerInterfaceWrapper) AllocateStat(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "stat" -------------
+	var stat AllocateStatParamsStat
+
+	err = runtime.BindStyledParameterWithOptions("simple", "stat", r.PathValue("stat"), &stat, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "stat", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.AllocateStat(w, r, stat)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // RunCron operation middleware
 func (siw *ServerInterfaceWrapper) RunCron(w http.ResponseWriter, r *http.Request) {
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.RunCron(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// EquipGear operation middleware
+func (siw *ServerInterfaceWrapper) EquipGear(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "key" -------------
+	var key string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "key", r.PathValue("key"), &key, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.EquipGear(w, r, key)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetGear operation middleware
+func (siw *ServerInterfaceWrapper) GetGear(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetGear(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -436,7 +552,10 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
+	m.HandleFunc("POST "+options.BaseURL+"/api/allocate/{stat}", wrapper.AllocateStat)
 	m.HandleFunc("POST "+options.BaseURL+"/api/cron", wrapper.RunCron)
+	m.HandleFunc("POST "+options.BaseURL+"/api/equip/{key}", wrapper.EquipGear)
+	m.HandleFunc("GET "+options.BaseURL+"/api/gear", wrapper.GetGear)
 	m.HandleFunc("GET "+options.BaseURL+"/api/stats", wrapper.GetStats)
 	m.HandleFunc("GET "+options.BaseURL+"/api/tags", wrapper.GetTags)
 	m.HandleFunc("GET "+options.BaseURL+"/api/tasks", wrapper.GetTasks)
@@ -449,21 +568,26 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/8xWwY7bNhD9FYHtUbA2bU+6tSlQ7KGXzfYUBAEtjSTGFMnljHZjGPr3YijLkiwq3iJJ",
-	"kZut4QzfGz4+zkkUtnXWgCEU+Ulg0UArw8+3DRQHrZDuCVr+4Lx14ElBCHOeBoKS/9DRgcjF3loN0og+",
-	"FaoEQ6pS4GdxJK9MzWGCzxQJ9Knw8NQpz2Xfz4ucU9LZvh/SMd3uP0FBXPetB0nwKPHwAE8dIK2BG0vD",
-	"jxKw8MqRskbkgnOSENuJdBtwJIkUaYgnhQ/xpKMLOWC6lqk2cq+YXimVPnItW1rB3XiRfk51o1MhekYZ",
-	"74s1D4CdjjREVjSc0s8eKpGLn7JJE9lZENk7koRcaQ+V9fDq5VoifSw8E4/IwFutofxonxcyucjoiuR8",
-	"9bxyjPC7wnrYYly72W6ma/fgOaeJf9bwDHoWUYagHkJtPONz7PMVmcaJkB9Wpwxp3ClKJ/RzfQm1RIx2",
-	"9semmJ6Rx6g+ynpN9IadGNnCf7STkBLfHw+RTo9uGNAQtHjrCiz98+IGQnovj/z/6xz0YmOrCJIHeYif",
-	"JskaFww2PGtCueHUk7mtAs9Sd3BbHTFzDxnrQ+FUZSobirLbilzUtpH7UqTiGTwOxvpmd7e7YwTWgZFO",
-	"iVz8Gj6lwklqAt9MOpWNfuTscJ580JLd+b4UuXjoDNtlcF901uDQ51/u7oZ3zxCYkCad06oIidknHEoO",
-	"p39TG5MdB3LLB4KjiQ/h5EVRk9gQkTpBkpSUqqp2nNenAx0czaGGCJ2/gAb3+I58zna/pvIPgg+ocYF4",
-	"lOEW4EeOfyXeV11SNpuV6Nc0ftc6YcxXJPBwgwUvYPF52QKBR5G/35wGkkppAs9DgeLAUwf+OBpVPr7w",
-	"E7/F5IDj6IDn2QEvwwPGpocP/09z8fCa7oY+Ja2kolGmTqiZehFWx6/pNOqJwVgA6Q9bHr/hJb2eJful",
-	"h5HvoF818s03AzD0L+YPDKxMWIA7bvBvw+ktV/2tELmdI96kUqDLiISz02TFfYY8OGWnUnkouFK/bZRh",
-	"xjofwG2N3/95kTa78aTsxUOw7O5c76u3/XqXACe5AN/Y7RL/4mbj5ep4Zinti/kel+iLjjqbXyMSGLjO",
-	"34jOlUEUM7Pt+38DAAD///hrm1jfDQAA",
+	"H4sIAAAAAAAC/8RXzY7bNhB+FYLtoQWE1abtybc2DYIcWhS7m1MQBLQ0lhlTJJcceWMYevdiSEmWVtTa",
+	"i83PzdZwhjPffPPDIy9MbY0GjZ6vjtwXW6hF+Pl6C8VOSY/vEGr6YJ2x4FBCEJOeAoSS/uDBAl/xtTEK",
+	"hOZtxmUJGuVGghvJPTqpKxIjfMGEoM24g/tGOjL7YWykU8lG937MenWz/gwFkt3XDgTCnfC7G7hvwOPc",
+	"cW0w/ijBF05alEbzFScdFmRXPFt2OKGEEhWklcKHtNLBBh3QTU2hbsVaUnilkOpAtkxpOKHxINw41AWk",
+	"grTzMo2L0TfgG5UARGwwZulnBxu+4j/lJ07kHSHyWxToydIaNsbBxceV8PipcBR4ggbOKAXlJ7Of0GSg",
+	"0aMgx6fHllMBvwXhlgImk9ZG5oqylJQXof6bnJm5Os3hrTLI0LAKhGM7OLBaWCt1NaLByRfzoONlUxt/",
+	"KsWCaLASqCcR6rQL3QfhnDjMwBmC6u9LoXJbGAdLsFR2dKtu6jU40tmmPyvYgxpJpEaooqhOa3xJfX4U",
+	"xdbyoB9OZ+RSf1MynMCyeWtSwqcRLCY8HLn8vNilxrSZ54NiJ8wfnbdGdj15ypr32lvQyDwKZPHQiHQj",
+	"Ax4XLL8sD1kH7+BhvCliG6GJUaUSdieqebrOjAotanjmqAgq6fv9LsGXftIFb/rye6q9TWfjrDSzF07H",
+	"YUTNJB4diF06rygqP4ngTANZnMKnwTUT7IVq4Dx9UoM7aMyT0oZ62phglCYpX/HKbMWaOtkenI+0f3V1",
+	"fXUdmqkFLazkK/57+JRxK3Ab4s2FlblQyhQCIT9ShbQh2yamlnIuqIzelbH9hoPURIIVJ2pAcJ6vPjwu",
+	"OjpD7b43zkQsPYYmtGw6Q2703CPIgtUTKOgayLr9KgyhbvCfK56B7x/JmrdG+8iN366v4x6mEWI/EtYq",
+	"WYQI888+trrThReM63Y2597bUiCUodt4FjaFHgRp9BUl5I/ox1TvX9P1Jib2QiqxVsCMY1LvhZLR3BXd",
+	"12Yxa/2GkE7VTaNpgeHfEIHRgpSAgaTMBTF7kLhlxsalIbbhUm42k3DCMM6POzg8QcA3dIj2lHPse9sv",
+	"GWhYsExQNjr+/AVNVSnwvy4QcQeHJ3n4PWk2Wsqe4FrYhghXmGBKn8OaAgks3wJ2SP4g59906xcTuhxt",
+	"dZMIfL+uLIUQy/CH1LmHiLmfeNyPlCWH70j+Qn8vGri0OMw34FkYtFKTz4+C8LszUdCBM0U4vNrYRioE",
+	"N5TbfQPucKq37iU2b/Thhef7J57v3nh+eOT5b9H0LwTX7y5BN+DEaoHFVuqK4faERTidbnOnJ3nXh8Dj",
+	"X6Y8fMXW/fjN3073EWp57QzIV1/NgYhfampAaGhEwOVR+Y/0nuDs/WUbCapMUDg/ntaqNvf0lMuPpXRQ",
+	"kKUnBk149XUJOM/xd38vTJLJUnf5QMlmyxS5wwbHF24b5BdtUQ09UErzoL/75jR6UScoEGMdbw7NeKOK",
+	"SW7b/wMAAP//YhEYRIcTAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

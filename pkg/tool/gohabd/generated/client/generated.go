@@ -40,6 +40,30 @@ func (e CreateTaskRequestType) Valid() bool {
 	}
 }
 
+// Defines values for AllocateStatParamsStat.
+const (
+	Con AllocateStatParamsStat = "con"
+	Int AllocateStatParamsStat = "int"
+	Per AllocateStatParamsStat = "per"
+	Str AllocateStatParamsStat = "str"
+)
+
+// Valid indicates whether the value is a known member of the AllocateStatParamsStat enum.
+func (e AllocateStatParamsStat) Valid() bool {
+	switch e {
+	case Con:
+		return true
+	case Int:
+		return true
+	case Per:
+		return true
+	case Str:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetTasksParamsType.
 const (
 	Dailys  GetTasksParamsType = "dailys"
@@ -112,6 +136,15 @@ type CronResult struct {
 	RolledOver bool   `json:"rolled_over"`
 }
 
+// GearResult defines model for GearResult.
+type GearResult struct {
+	// Equipped Slot to gear key mapping.
+	Equipped map[string]string `json:"equipped"`
+
+	// Owned All owned gear keys.
+	Owned []string `json:"owned"`
+}
+
 // ScoreResult defines model for ScoreResult.
 type ScoreResult struct {
 	Gp    float32 `json:"gp"`
@@ -124,11 +157,18 @@ type ScoreResult struct {
 // Stats defines model for Stats.
 type Stats struct {
 	Class string  `json:"class"`
+	Con   int     `json:"con"`
 	Gp    float32 `json:"gp"`
 	Hp    float32 `json:"hp"`
+	Int   int     `json:"int"`
 	Level int     `json:"level"`
 	Mp    float32 `json:"mp"`
-	Xp    float32 `json:"xp"`
+	Per   int     `json:"per"`
+
+	// Points Unspent stat points.
+	Points int     `json:"points"`
+	Str    int     `json:"str"`
+	Xp     float32 `json:"xp"`
 }
 
 // Tag defines model for Tag.
@@ -149,6 +189,9 @@ type Task struct {
 	Type       string           `json:"type"`
 	Value      *float32         `json:"value,omitempty"`
 }
+
+// AllocateStatParamsStat defines parameters for AllocateStat.
+type AllocateStatParamsStat string
 
 // GetTasksParams defines parameters for GetTasks.
 type GetTasksParams struct {
@@ -238,8 +281,17 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// AllocateStat request
+	AllocateStat(ctx context.Context, stat AllocateStatParamsStat, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// RunCron request
 	RunCron(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EquipGear request
+	EquipGear(ctx context.Context, key string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetGear request
+	GetGear(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetStats request
 	GetStats(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -259,8 +311,44 @@ type ClientInterface interface {
 	ScoreTask(ctx context.Context, identifier string, direction ScoreTaskParamsDirection, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
+func (c *Client) AllocateStat(ctx context.Context, stat AllocateStatParamsStat, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAllocateStatRequest(c.Server, stat)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) RunCron(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRunCronRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EquipGear(ctx context.Context, key string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEquipGearRequest(c.Server, key)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetGear(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetGearRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -343,6 +431,40 @@ func (c *Client) ScoreTask(ctx context.Context, identifier string, direction Sco
 	return c.Client.Do(req)
 }
 
+// NewAllocateStatRequest generates requests for AllocateStat
+func NewAllocateStatRequest(server string, stat AllocateStatParamsStat) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "stat", stat, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/allocate/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewRunCronRequest generates requests for RunCron
 func NewRunCronRequest(server string) (*http.Request, error) {
 	var err error
@@ -363,6 +485,67 @@ func NewRunCronRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewEquipGearRequest generates requests for EquipGear
+func NewEquipGearRequest(server string, key string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "key", key, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/equip/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetGearRequest generates requests for GetGear
+func NewGetGearRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/gear")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -597,8 +780,17 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// AllocateStatWithResponse request
+	AllocateStatWithResponse(ctx context.Context, stat AllocateStatParamsStat, reqEditors ...RequestEditorFn) (*AllocateStatResponse, error)
+
 	// RunCronWithResponse request
 	RunCronWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RunCronResponse, error)
+
+	// EquipGearWithResponse request
+	EquipGearWithResponse(ctx context.Context, key string, reqEditors ...RequestEditorFn) (*EquipGearResponse, error)
+
+	// GetGearWithResponse request
+	GetGearWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetGearResponse, error)
 
 	// GetStatsWithResponse request
 	GetStatsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetStatsResponse, error)
@@ -618,6 +810,28 @@ type ClientWithResponsesInterface interface {
 	ScoreTaskWithResponse(ctx context.Context, identifier string, direction ScoreTaskParamsDirection, reqEditors ...RequestEditorFn) (*ScoreTaskResponse, error)
 }
 
+type AllocateStatResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Stats
+}
+
+// Status returns HTTPResponse.Status
+func (r AllocateStatResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AllocateStatResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type RunCronResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -634,6 +848,50 @@ func (r RunCronResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r RunCronResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type EquipGearResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *GearResult
+}
+
+// Status returns HTTPResponse.Status
+func (r EquipGearResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EquipGearResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetGearResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *GearResult
+}
+
+// Status returns HTTPResponse.Status
+func (r GetGearResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetGearResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -750,6 +1008,15 @@ func (r ScoreTaskResponse) StatusCode() int {
 	return 0
 }
 
+// AllocateStatWithResponse request returning *AllocateStatResponse
+func (c *ClientWithResponses) AllocateStatWithResponse(ctx context.Context, stat AllocateStatParamsStat, reqEditors ...RequestEditorFn) (*AllocateStatResponse, error) {
+	rsp, err := c.AllocateStat(ctx, stat, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAllocateStatResponse(rsp)
+}
+
 // RunCronWithResponse request returning *RunCronResponse
 func (c *ClientWithResponses) RunCronWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RunCronResponse, error) {
 	rsp, err := c.RunCron(ctx, reqEditors...)
@@ -757,6 +1024,24 @@ func (c *ClientWithResponses) RunCronWithResponse(ctx context.Context, reqEditor
 		return nil, err
 	}
 	return ParseRunCronResponse(rsp)
+}
+
+// EquipGearWithResponse request returning *EquipGearResponse
+func (c *ClientWithResponses) EquipGearWithResponse(ctx context.Context, key string, reqEditors ...RequestEditorFn) (*EquipGearResponse, error) {
+	rsp, err := c.EquipGear(ctx, key, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEquipGearResponse(rsp)
+}
+
+// GetGearWithResponse request returning *GetGearResponse
+func (c *ClientWithResponses) GetGearWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetGearResponse, error) {
+	rsp, err := c.GetGear(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetGearResponse(rsp)
 }
 
 // GetStatsWithResponse request returning *GetStatsResponse
@@ -812,6 +1097,32 @@ func (c *ClientWithResponses) ScoreTaskWithResponse(ctx context.Context, identif
 	return ParseScoreTaskResponse(rsp)
 }
 
+// ParseAllocateStatResponse parses an HTTP response from a AllocateStatWithResponse call
+func ParseAllocateStatResponse(rsp *http.Response) (*AllocateStatResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AllocateStatResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Stats
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseRunCronResponse parses an HTTP response from a RunCronWithResponse call
 func ParseRunCronResponse(rsp *http.Response) (*RunCronResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -828,6 +1139,58 @@ func ParseRunCronResponse(rsp *http.Response) (*RunCronResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest CronResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEquipGearResponse parses an HTTP response from a EquipGearWithResponse call
+func ParseEquipGearResponse(rsp *http.Response) (*EquipGearResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EquipGearResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest GearResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetGearResponse parses an HTTP response from a GetGearWithResponse call
+func ParseGetGearResponse(rsp *http.Response) (*GetGearResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetGearResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest GearResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

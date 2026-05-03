@@ -86,6 +86,53 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Stats"
+  /api/allocate/{stat}:
+    post:
+      operationId: allocateStat
+      parameters:
+      - name: stat
+        in: path
+        required: true
+        schema:
+          type: string
+          enum: [str, con, int, per]
+        description: Stat to allocate a point to.
+      responses:
+        "200":
+          description: Updated stats after allocation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stats"
+        "400":
+          description: No points available or invalid stat.
+  /api/gear:
+    get:
+      operationId: getGear
+      responses:
+        "200":
+          description: Equipped and owned gear.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GearResult"
+  /api/equip/{key}:
+    post:
+      operationId: equipGear
+      parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Gear key to equip or unequip (toggles).
+      responses:
+        "200":
+          description: Updated gear state.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GearResult"
   /api/cron:
     post:
       operationId: runCron
@@ -172,7 +219,7 @@ components:
           type: string
     Stats:
       type: object
-      required: [hp, mp, xp, gp, level, class]
+      required: [hp, mp, xp, gp, level, class, points, str, con, int, per]
       properties:
         hp:
           type: number
@@ -186,6 +233,31 @@ components:
           type: integer
         class:
           type: string
+        points:
+          type: integer
+          description: Unspent stat points.
+        str:
+          type: integer
+        con:
+          type: integer
+        int:
+          type: integer
+        per:
+          type: integer
+    GearResult:
+      type: object
+      required: [equipped, owned]
+      properties:
+        equipped:
+          type: object
+          additionalProperties:
+            type: string
+          description: Slot to gear key mapping.
+        owned:
+          type: array
+          items:
+            type: string
+          description: All owned gear keys.
     CronResult:
       type: object
       required: [rolled_over, last_cron]

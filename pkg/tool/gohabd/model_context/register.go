@@ -70,10 +70,47 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.GetStats,
 			mcp.WithDescription(
-				"Get Habitica user stats: HP, MP, XP, gold, level, and class.",
+				"Get Habitica user stats: HP, MP, XP, gold, level, class, unspent points, and allocated stats.",
 			),
 		),
 		s.getStats,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.AllocateStat,
+			mcp.WithDescription(
+				"Allocate one unspent stat point. Returns updated stats.",
+			),
+			mcp.WithString(
+				constant.Stat,
+				mcp.Required(),
+				mcp.Description("Stat to allocate to: str, con, int, or per"),
+			),
+		),
+		s.allocateStat,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.GetGear,
+			mcp.WithDescription(
+				"List equipped gear slots and all owned gear keys.",
+			),
+		),
+		s.getGear,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.EquipGear,
+			mcp.WithDescription(
+				"Equip or unequip a gear item (toggles). Returns updated gear state.",
+			),
+			mcp.WithString(
+				constant.Key,
+				mcp.Required(),
+				mcp.Description("Gear key to equip or unequip"),
+			),
+		),
+		s.equipGear,
 	)
 	s.server.AddTool(
 		mcp.NewTool(

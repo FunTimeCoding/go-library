@@ -85,7 +85,7 @@ async def send_text(connection, session_id, text):
 
 
 KEY_MAP = {
-    "enter": "\n",
+    "enter": "\r",
     "tab": "\t",
     "escape": "\x1b",
     "ctrl+c": "\x03",

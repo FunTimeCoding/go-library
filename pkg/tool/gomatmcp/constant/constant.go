@@ -1,7 +1,8 @@
 package constant
 
-const Name = "Mattermost"
 const (
+	Name = "Mattermost"
+
 	MyChannels        = "my_channels"
 	MyThreads         = "my_threads"
 	SearchChannels    = "search_channels"

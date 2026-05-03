@@ -1,7 +1,8 @@
 package constant
 
-const Name = "Atlassian"
 const (
+	Name = "Atlassian"
+
 	JiraSearch              = "jira_search"
 	JiraGetIssue            = "jira_get_issue"
 	JiraSearchProjects      = "jira_search_projects"
@@ -30,9 +31,7 @@ const (
 	ConfluenceListSpaces      = "confluence_list_spaces"
 	ConfluenceGetPageChildren = "confluence_get_page_children"
 	ConfluenceAddComment      = "confluence_add_comment"
-)
 
-const (
 	AllowedValueLimit = 5
 
 	ChecklistField       = "Checklists"

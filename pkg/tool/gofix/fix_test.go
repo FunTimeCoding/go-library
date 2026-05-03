@@ -258,7 +258,7 @@ func TestFix(t *testing.T) {
 			)
 			assert.String(
 				t,
-				"//go:build linux\n\npackage tagged\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Handle(e error) bool {\n\treturn errors.Is(e, sentinel.ErrorQuit)\n}\n",
+				"//go:build ignore\n\npackage tagged\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Handle(e error) bool {\n\treturn errors.Is(e, sentinel.ErrorQuit)\n}\n",
 				readFile(
 					t,
 					filepath.Join(
@@ -407,7 +407,7 @@ func writeTestModule(t *testing.T) string {
 		t,
 		directory,
 		"pkg/tagged/tagged.go",
-		"//go:build linux\n\npackage tagged\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Handle(e error) bool {\n\treturn errors.Is(e, sentinel.ErrQuit)\n}\n",
+		"//go:build ignore\n\npackage tagged\n\nimport (\n\t\"errors\"\n\t\"testmodule/pkg/sentinel\"\n)\n\nfunc Handle(e error) bool {\n\treturn errors.Is(e, sentinel.ErrQuit)\n}\n",
 	)
 	writeFile(
 		t,

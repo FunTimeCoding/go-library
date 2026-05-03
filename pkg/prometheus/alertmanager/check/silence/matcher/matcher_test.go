@@ -592,10 +592,10 @@ func TestMatchesWithMultipleAlerts(t *testing.T) {
 	}
 
 	for _, a := range m {
-		if a.Labels["severity"] != "critical" {
+		if a.Labels[constant.SeverityLabel] != "critical" {
 			t.Errorf(
 				"Expected all matched alerts to have severity=critical, got %s",
-				a.Labels["severity"],
+				a.Labels[constant.SeverityLabel],
 			)
 		}
 	}

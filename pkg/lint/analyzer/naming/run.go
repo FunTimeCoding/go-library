@@ -13,9 +13,9 @@ func run(p *analysis.Pass) (any, error) {
 	skip := make(map[string]bool)
 
 	for _, f := range p.Files {
-		name := filepath.Base(p.Fset.File(f.Pos()).Name())
+		name := p.Fset.File(f.Pos()).Name()
 
-		if name == constant.GeneratedFile {
+		if filepath.Base(name) == constant.GeneratedFile || ast.IsGenerated(f) {
 			skip[name] = true
 		}
 	}
@@ -25,7 +25,7 @@ func run(p *analysis.Pass) (any, error) {
 		[]ast.Node{(*ast.Ident)(nil)},
 		func(n ast.Node) {
 			ident := n.(*ast.Ident)
-			file := filepath.Base(p.Fset.File(ident.Pos()).Name())
+			file := p.Fset.File(ident.Pos()).Name()
 
 			if skip[file] {
 				return

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/iterm/response"
 	"github.com/funtimecoding/go-library/pkg/iterm/session"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"net/http"
@@ -27,9 +28,7 @@ func (c *Client) Sessions() ([]session.Session, error) {
 		)
 	}
 
-	var result struct {
-		Sessions []session.Session `json:"sessions"`
-	}
+	var result response.Sessions
 
 	if e = json.NewDecoder(r.Body).Decode(&result); e != nil {
 		return nil, fmt.Errorf("list sessions: %w", e)

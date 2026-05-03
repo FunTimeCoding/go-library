@@ -3,6 +3,7 @@ package goanalyze
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/anonymous_struct"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/call_format"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/defer_close"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/file_identity"
@@ -41,5 +42,6 @@ func Main(
 		file_identity.Analyzer,
 		type_receiver.Analyzer,
 		unchecked_print_write.Analyzer,
+		anonymous_struct.Analyzer,
 	)
 }

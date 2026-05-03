@@ -4,23 +4,12 @@ import "time"
 
 type Log struct {
 	FileName string `json:"FileName"`
-	Players  []struct {
-		Name                string `json:"Name"`
-		AccountName         string `json:"AccountName"`
-		Subgroup            int    `json:"Subgroup"`
-		Profession          int    `json:"Profession"`
-		EliteSpecialization int    `json:"EliteSpecialization"`
-		GuildGUID           string `json:"GuildGuid"`
-		Tag                 int    `json:"Tag"`
-	} `json:"Players"`
+	Players []Player `json:"Players"`
 	EncounterResult int `json:"EncounterResult"`
 	EncounterMode   int `json:"EncounterMode"`
 	Encounter       int `json:"Encounter"`
 	MapID           int `json:"MapId"`
-	PointOfView     struct {
-		CharacterName string `json:"CharacterName"`
-		AccountName   string `json:"AccountName"`
-	} `json:"PointOfView"`
+	PointOfView PointOfView `json:"PointOfView"`
 	GameBuild          int       `json:"GameBuild"`
 	EvtcVersion        string    `json:"EvtcVersion"`
 	GameLanguage       int       `json:"GameLanguage"`
@@ -28,11 +17,7 @@ type Log struct {
 	HealthPercentage   any       `json:"HealthPercentage"`
 	EncounterStartTime time.Time `json:"EncounterStartTime"`
 	EncounterDuration  string    `json:"EncounterDuration"`
-	DpsReportEIUpload  struct {
-		Locator         any `json:"Url"`
-		ProcessingError any `json:"ProcessingError"`
-		UploadTime      any `json:"UploadTime"`
-	} `json:"DpsReportEIUpload"`
+	DpsReportEIUpload DpsReport `json:"DpsReportEIUpload"`
 	ParsingStatus               int       `json:"ParsingStatus"`
 	ParseTime                   time.Time `json:"ParseTime"`
 	ParseMilliseconds           int       `json:"ParseMilliseconds"`
@@ -41,8 +26,6 @@ type Log struct {
 	IsEncounterStartTimePrecise bool      `json:"IsEncounterStartTimePrecise"`
 	Tags                        []any     `json:"Tags"`
 	IsFavorite                  bool      `json:"IsFavorite"`
-	LogExtras                   struct {
-		FractalExtras any `json:"FractalExtras"`
-	} `json:"LogExtras"`
+	LogExtras LogExtras `json:"LogExtras"`
 	MissingEncounterStart bool `json:"MissingEncounterStart"`
 }

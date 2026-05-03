@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/sublime/response"
 	"github.com/funtimecoding/go-library/pkg/sublime/view"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"net/http"
@@ -25,9 +26,7 @@ func (c *Client) Views() ([]view.View, error) {
 		return nil, fmt.Errorf("list views: %d: %s", r.StatusCode, b)
 	}
 
-	var result struct {
-		Views []view.View `json:"views"`
-	}
+	var result response.Views
 
 	if e = json.NewDecoder(r.Body).Decode(&result); e != nil {
 		return nil, fmt.Errorf("list views: %w", e)

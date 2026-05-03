@@ -10,6 +10,6 @@ type Client struct {
 	address    string
 	connection *websocket.Conn
 	mutex      sync.Mutex
-	pending    map[int]chan response
+	pending    map[int]chan reply
 	identifier atomic.Int64
 }

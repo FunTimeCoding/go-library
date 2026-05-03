@@ -13,24 +13,11 @@ func checkFile(
 	ast.Inspect(
 		file,
 		func(n ast.Node) bool {
-			call, okay := n.(*ast.CallExpr)
-
-			if !okay {
-				return true
-			}
-
-			skipIndex := -1
-
-			if isAssertCall(p, call) {
-				skipIndex = 1
-			}
-
-			for i, a := range call.Args {
-				if i == skipIndex {
-					continue
-				}
-
-				checkArgument(p, a, constants)
+			switch v := n.(type) {
+			case *ast.CallExpr:
+				checkCallArguments(p, v, constants)
+			case *ast.IndexExpr:
+				checkArgument(p, v.Index, constants)
 			}
 
 			return true

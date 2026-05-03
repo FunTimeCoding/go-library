@@ -1,9 +1,5 @@
 package graph_query
 
 type ProjectResult struct {
-	Payload struct {
-		Project struct {
-			ID string `json:"id"`
-		} `json:"project"`
-	} `json:"data"`
+	Payload projectPayload `json:"data"`
 }

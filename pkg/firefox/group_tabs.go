@@ -1,6 +1,9 @@
 package firefox
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/firefox/response"
+)
 
 func (c *Client) GroupTabs(
 	tabIdentifiers []int,
@@ -30,9 +33,7 @@ func (c *Client) GroupTabs(
 		return 0, fmt.Errorf("group tabs: %w", e)
 	}
 
-	var result struct {
-		GroupIdentifier int `json:"group_id"`
-	}
+	var result response.GroupTabs
 
 	if e = decodeResult(r, &result); e != nil {
 		return 0, fmt.Errorf("group tabs: %w", e)

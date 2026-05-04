@@ -33,7 +33,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.13.9
 	github.com/getkin/kin-openapi v0.137.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.46.1
+	github.com/getsentry/sentry-go v0.46.2
 	github.com/go-git/go-billy/v5 v5.8.0
 	github.com/go-git/go-git/v5 v5.18.0
 	github.com/go-openapi/runtime v0.29.4

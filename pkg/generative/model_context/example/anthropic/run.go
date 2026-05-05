@@ -20,7 +20,7 @@ func Run() {
 	s := mcp.NewServer(
 		&mcp.Implementation{
 			Name:    "Greeter",
-			Version: constant.DefaultVersionPrefixed,
+			Version: constant.DefaultVersion,
 		},
 		nil,
 	)

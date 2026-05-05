@@ -2,11 +2,9 @@ package godebian
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/semver"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/godebian/option"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -17,12 +15,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
-		r := reporter.New("godebian", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("godebian", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	pflag.String(
 		argument.Executable,
 		"",

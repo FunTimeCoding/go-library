@@ -327,7 +327,12 @@ func TestCheckResultMissingSentry(t *testing.T) {
 		false,
 		&r,
 	)
-	assertBlocked(t, r.Entries, "cmd/gofoo", "missing sentry reporter")
+	assertBlocked(
+		t,
+		r.Entries,
+		"cmd/gofoo",
+		"missing sentry reporter",
+	)
 }
 
 func assertApplied(

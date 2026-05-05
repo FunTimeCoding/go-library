@@ -2,9 +2,9 @@ package example_client
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/helper"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"github.com/gorilla/websocket"
 	"log"
@@ -18,9 +18,12 @@ func Run() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 	u := url.URL{
-		Scheme: web.Socket,
-		Host:   constant.Address,
-		Path:   location.Echo,
+		Scheme: constant.Socket,
+		Host: web.AddressHostPort(
+			constant.Localhost,
+			constant.ListenPort,
+		),
+		Path: location.Echo,
 	}
 	log.Printf("connect to %s", u.String())
 	l := helper.Dial(u)

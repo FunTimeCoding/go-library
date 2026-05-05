@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"testing"
 )
@@ -15,7 +16,10 @@ func TestModelContextClient(t *testing.T) {
 	defer l.Stop()
 	x := context.Background()
 	c := mcp.NewClient(
-		&mcp.Implementation{Name: "test-client", Version: "1.0.0"},
+		&mcp.Implementation{
+			Name:    "test-client",
+			Version: constant.DefaultVersion,
+		},
 		nil,
 	)
 	endpoint := fmt.Sprintf("http://localhost:%d/mcp", port)

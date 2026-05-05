@@ -10,15 +10,10 @@ import (
 func Start(
 	projectName string,
 	locator string,
-	environment string,
 	version string,
 ) *sentry.Hub {
 	errors.FatalOnEmpty(projectName, "projectName")
 	errors.FatalOnEmpty(locator, "locator")
-
-	if environment == "" {
-		environment = constant.UndefinedEnvironment
-	}
 
 	if version == "" {
 		version = constant.UndefinedVersion
@@ -28,7 +23,7 @@ func Start(
 	client, e := sentry.NewClient(
 		sentry.ClientOptions{
 			Dsn:         locator,
-			Environment: environment,
+			Environment: constant.UndefinedEnvironment,
 			Release: fmt.Sprintf(
 				"%s@%s",
 				projectName,

@@ -2,12 +2,11 @@ package goloki
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/loki"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/loki/option"
-	lokiConstant "github.com/funtimecoding/go-library/pkg/prometheus/loki/constant"
+	"github.com/funtimecoding/go-library/pkg/prometheus/loki/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -19,12 +18,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-		r := reporter.New("goloki", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("goloki", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	monitor.CopyableArgument()
 	pflag.Duration(argument.Since, time.Hour, "Time range to query")
 	pflag.String(argument.Route, "", "Filter by HTTP route")
@@ -50,7 +46,7 @@ func Main(
 	o.BodyOnly = viper.GetBool(argument.Body)
 	o.Copyable = viper.GetBool(argument.Copyable)
 	o.Limit = viper.GetInt(argument.Limit)
-	o.Namespaces = environment.Slice(lokiConstant.NamespaceEnvironment)
-	o.Exclude = environment.Slice(lokiConstant.ExcludeEnvironment)
+	o.Namespaces = environment.Slice(constant.NamespaceEnvironment)
+	o.Exclude = environment.Slice(constant.ExcludeEnvironment)
 	loki.Check(o)
 }

@@ -1,7 +1,6 @@
 package goanalyze
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/anonymous_struct"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/call_format"
@@ -15,7 +14,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/type_receiver"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/unchecked_print_write"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"golang.org/x/tools/go/analysis/multichecker"
 )
 
@@ -24,12 +22,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
-		r := reporter.New("goanalyze", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("goanalyze", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	multichecker.Main(
 		naming.Analyzer,
 		forbidden_call.Analyzer,

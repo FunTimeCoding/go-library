@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -28,7 +29,7 @@ func setup(t *testing.T) (*store.Store, int, *lifecycle.Lifecycle) {
 			n,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s), m)
-				model_context.New(s, nil).Mount(m)
+				model_context.New(s, nil, constant.DefaultVersion).Mount(m)
 				web.New(s).Mount(m)
 			},
 		),

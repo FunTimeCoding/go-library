@@ -1,7 +1,7 @@
 package constant
 
 const (
-	Name = "Maintenance Log"
+	Name = "gomaintlogd"
 
 	AddEntry    = "add_entry"
 	ListEntries = "list_entries"

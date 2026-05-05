@@ -9,7 +9,7 @@ Sublime Text ← plugin_host (Python 3.8) ← py/sublime_bridge/
     ↕ HTTP 127.0.0.1:6123
 pkg/sublime/          - Go client library, entity-wrapper pattern
     ↕
-pkg/tool/gosublmcp/   - MCP server (default :8080, --port override)
+pkg/tool/gosublimed/   - MCP server (default :8080, --port override)
     ↕ streamable HTTP
 Claude Code / CLI / web consumers
 ```

@@ -39,7 +39,7 @@ func main() {
 	build.DebianPackages()
 	relational.FirstSkipNotFound(nil, nil, nil)
 	unexpected.Float(0)
-	sentry.Start("", "", "", "")
+	sentry.Start("", "", "")
 	sentry.Flush(nil)
 	markup.ToNotation("")
 	system.CreateTarZip("", "")

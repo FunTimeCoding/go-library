@@ -3,7 +3,6 @@ package gogitstatus
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
 	"github.com/funtimecoding/go-library/pkg/git/check/status/option"
@@ -19,12 +18,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-		r := reporter.New("gogitstatus", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("gogitstatus", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	monitor.NotationArgument()
 	monitor.AllArgument()
 	monitor.VerboseArgument()

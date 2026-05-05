@@ -2,7 +2,6 @@ package goghexporter
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	sentryConstant "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
@@ -18,21 +17,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(
-		"goghexporter",
-		environment.Optional(sentryConstant.LocatorEnvironment),
-		"",
-		version,
-	)
+	r := reporter.New(constant.Name, version)
 	r.Start()
 	defer func() { r.RecoverFlush(recover()) }()
-
-	if c := environment.Optional(sentryConstant.LocatorEnvironment); c != "" {
-		r := reporter.New("goghexporter", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
 	monitor.VerboseArgument()
 	pflag.String(
 		argument.Owner,

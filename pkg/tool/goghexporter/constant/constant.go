@@ -1,3 +1,7 @@
 package constant
 
-const OwnerEnvironment = "GITHUB_EXPORTER_OWNER"
+const (
+	Name = "goghexporter"
+
+	OwnerEnvironment = "GITHUB_EXPORTER_OWNER"
+)

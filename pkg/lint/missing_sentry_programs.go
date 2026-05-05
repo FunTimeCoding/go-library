@@ -9,9 +9,7 @@ import (
 	"strings"
 )
 
-func missingSentryPrograms(
-	v *virtual_file_system.System,
-) []string {
+func missingSentryPrograms(v *virtual_file_system.System) []string {
 	programs := make(map[string]bool)
 
 	for _, p := range v.Files() {
@@ -49,7 +47,7 @@ func missingSentryPrograms(
 
 		content := v.Read(p)
 
-		if strings.Contains(content, "reporter.New(") {
+		if strings.Contains(content, "reporter.New") {
 			d := filepath.Dir(p)
 			parts := strings.SplitN(d, separator.Slash, 4)
 

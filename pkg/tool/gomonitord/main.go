@@ -2,14 +2,13 @@ package gomonitord
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/coder"
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/example_client"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 )
 
 func Main(
@@ -17,12 +16,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-		r := reporter.New("gomonitord", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("gomonitord", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 
 	if false {
@@ -36,6 +32,8 @@ func Main(
 	}
 
 	if true {
-		gorilla.Run(constant.Address)
+		gorilla.Run(
+			web.AddressHostPort(constant.Localhost, constant.ListenPort),
+		)
 	}
 }

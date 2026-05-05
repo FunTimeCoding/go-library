@@ -2,12 +2,10 @@ package gotrivy
 
 import (
 	"fmt"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
 func Main(
@@ -15,12 +13,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-		r := reporter.New("gotrivy", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("gotrivy", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 	k := client.NewEnvironment()
 	f := constant.Format

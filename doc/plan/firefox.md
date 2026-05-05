@@ -11,7 +11,7 @@ Firefox ← WebExtension (js/firefox_bridge/)
     ↕ WebSocket client → localhost:6125
 pkg/firefox/            - Go (websocket server + client facade)
     ↕
-pkg/tool/gofirefoxmcp/  - MCP server (default :8080, --port override)
+pkg/tool/gofirefoxd/    - MCP server (default :8080, --port override)
                           also hosts websocket on :6125 (--bridge-port override)
     ↕ streamable HTTP
 Claude Code / CLI / web consumers

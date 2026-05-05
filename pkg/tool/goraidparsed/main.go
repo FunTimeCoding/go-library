@@ -2,10 +2,9 @@ package goraidparsed
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/option"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/spf13/pflag"
@@ -16,12 +15,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(
-		"goraidparsed",
-		environment.Optional(constant.LocatorEnvironment),
-		"",
-		version,
-	)
+	r := reporter.New(constant.Name, version)
 	r.Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	pflag.Int(argument.Port, web.ListenPort, web.PortUsage)

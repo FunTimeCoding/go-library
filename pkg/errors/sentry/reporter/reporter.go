@@ -6,6 +6,5 @@ type Reporter struct {
 	hub         *sentry.Hub
 	project     string
 	locator     string
-	environment string
 	version     string
 }

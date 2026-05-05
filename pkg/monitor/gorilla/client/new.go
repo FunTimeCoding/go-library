@@ -1,8 +1,8 @@
 package client
 
 import (
-	"github.com/funtimecoding/go-library/pkg/monitor/constant"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"net/url"
 )
@@ -10,9 +10,12 @@ import (
 func New() *Client {
 	return &Client{
 		locator: url.URL{
-			Scheme: web.Socket,
-			Host:   constant.Address,
-			Path:   location.Monitor,
+			Scheme: constant.Socket,
+			Host: web.AddressHostPort(
+				constant.Localhost,
+				constant.ListenPort,
+			),
+			Path: location.Monitor,
 		},
 		done: make(chan struct{}),
 	}

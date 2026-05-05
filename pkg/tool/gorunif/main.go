@@ -2,10 +2,8 @@ package gorunif
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if/option"
@@ -18,12 +16,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-		r := reporter.New("gorunif", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("gorunif", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	pflag.String(constant.Base, "HEAD~1", "Base commit")
 	pflag.String(constant.Head, "HEAD", "Head commit")
 	monitor.VerboseArgument()

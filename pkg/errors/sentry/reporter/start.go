@@ -7,10 +7,5 @@ func (r *Reporter) Start() {
 		return
 	}
 
-	r.hub = sentry.Start(
-		r.project,
-		r.locator,
-		r.environment,
-		r.version,
-	)
+	r.hub = sentry.Start(r.project, r.locator, r.version)
 }

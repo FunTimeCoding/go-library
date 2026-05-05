@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/web"
+	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/location"
 	"github.com/funtimecoding/go-library/pkg/web/request_context"
 	"net/http"
@@ -14,7 +15,7 @@ func New(
 	verbose bool,
 ) *Server {
 	if port == 0 {
-		port = 8080
+		port = constant.ListenPort
 	}
 
 	m := http.NewServeMux()

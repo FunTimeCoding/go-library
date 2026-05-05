@@ -1,3 +1,0 @@
-FROM alpine:3.23.4
-COPY tmp/gonetbd/linux-amd64/gonetbd /usr/local/bin/gonetbd
-ENTRYPOINT ["gonetbd"]

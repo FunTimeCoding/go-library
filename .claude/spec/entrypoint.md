@@ -38,7 +38,7 @@ func Main(
     gitHash string,
     buildDate string,
 ) {
-    r := reporter.New("go<tool>", environment.Optional(sentry.LocatorEnvironment), "", version)
+    r := reporter.NewEnvironment("go<tool>", version)
     r.Start()
     defer func() { r.RecoverFlush(recover()) }()
 
@@ -59,7 +59,7 @@ work. The reporter captures unhandled panics and provides error reporting
 to all downstream components.
 
 ```go
-r := reporter.New("go<tool>", environment.Optional(sentry.LocatorEnvironment), "", version)
+r := reporter.NewEnvironment("go<tool>", version)
 r.Start()
 defer func() { r.RecoverFlush(recover()) }()
 

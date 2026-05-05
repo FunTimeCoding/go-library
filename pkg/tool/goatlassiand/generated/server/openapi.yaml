@@ -1,0 +1,423 @@
+---
+openapi: "3.0.0"
+info:
+  title: goatlassiand
+  version: 1.0.0
+paths:
+  /api/v1/jira/search:
+    get:
+      operationId: searchIssues
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+        description: JQL query string.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Maximum number of results. Omit for all.
+      responses:
+        "200":
+          description: Issues matching the JQL query.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JiraIssue"
+        "400":
+          description: Missing or invalid query parameter.
+  /api/v1/jira/issue/{key}:
+    get:
+      operationId: getIssue
+      parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Issue key (e.g. PROJ-123).
+      responses:
+        "200":
+          description: Issue detail.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JiraIssue"
+        "404":
+          description: Issue not found.
+  /api/v1/jira/issue/{key}/transitions:
+    get:
+      operationId: getTransitions
+      parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Issue key.
+      responses:
+        "200":
+          description: Available transitions for the issue.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JiraTransition"
+  /api/v1/jira/issue/{key}/transition:
+    post:
+      operationId: transitionIssue
+      parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Issue key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransitionRequest"
+      responses:
+        "204":
+          description: Transition applied.
+        "400":
+          description: Invalid transition.
+  /api/v1/jira/issue/{key}/comment:
+    post:
+      operationId: addIssueComment
+      parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Issue key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentRequest"
+      responses:
+        "204":
+          description: Comment added.
+        "400":
+          description: Missing body.
+  /api/v1/jira/projects:
+    get:
+      operationId: listProjects
+      responses:
+        "200":
+          description: All visible projects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JiraProject"
+  /api/v1/confluence/spaces:
+    get:
+      operationId: listSpaces
+      responses:
+        "200":
+          description: All visible spaces.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConfluenceSpace"
+  /api/v1/confluence/search:
+    get:
+      operationId: searchPages
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+        description: CQL query string or plain text.
+      responses:
+        "200":
+          description: Pages matching the query.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConfluencePage"
+        "400":
+          description: Missing or invalid query parameter.
+  /api/v1/confluence/page:
+    post:
+      operationId: createPage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePageRequest"
+      responses:
+        "201":
+          description: Created page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfluencePageDetail"
+        "400":
+          description: Missing required fields.
+  /api/v1/confluence/page/{identifier}:
+    get:
+      operationId: getPage
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Page ID.
+      responses:
+        "200":
+          description: Page detail with body content.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfluencePageDetail"
+        "404":
+          description: Page not found.
+    put:
+      operationId: updatePage
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Page ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePageRequest"
+      responses:
+        "200":
+          description: Updated page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfluencePageDetail"
+        "404":
+          description: Page not found.
+  /api/v1/confluence/page/{identifier}/children:
+    get:
+      operationId: getPageChildren
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Parent page ID.
+      responses:
+        "200":
+          description: Child pages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConfluencePage"
+  /api/v1/confluence/page/{identifier}/comment:
+    post:
+      operationId: addPageComment
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Page ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentRequest"
+      responses:
+        "204":
+          description: Comment added.
+        "400":
+          description: Missing body.
+components:
+  schemas:
+    JiraIssue:
+      type: object
+      required:
+      - key
+      - summary
+      - status
+      - type
+      properties:
+        key:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        priority:
+          type: string
+        type:
+          type: string
+        assignee:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+        created:
+          type: string
+        due:
+          type: string
+        link:
+          type: string
+    JiraProject:
+      type: object
+      required:
+      - key
+      - name
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        link:
+          type: string
+    JiraTransition:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+        toStatus:
+          type: string
+    ConfluenceSpace:
+      type: object
+      required:
+      - identifier
+      - key
+      - name
+      properties:
+        identifier:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        homepageIdentifier:
+          type: string
+    ConfluencePage:
+      type: object
+      required:
+      - identifier
+      - title
+      properties:
+        identifier:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        link:
+          type: string
+    ConfluencePageDetail:
+      type: object
+      required:
+      - identifier
+      - title
+      properties:
+        identifier:
+          type: string
+        title:
+          type: string
+        spaceIdentifier:
+          type: string
+        body:
+          type: string
+        link:
+          type: string
+    CreatePageRequest:
+      type: object
+      required:
+      - spaceIdentifier
+      - parentIdentifier
+      - title
+      - body
+      properties:
+        spaceIdentifier:
+          type: string
+          description: Space ID to create the page in.
+        parentIdentifier:
+          type: string
+          description: Parent page ID.
+        title:
+          type: string
+          description: Page title.
+        body:
+          type: string
+          description: Page content in markdown.
+    UpdatePageRequest:
+      type: object
+      required:
+      - title
+      - body
+      properties:
+        title:
+          type: string
+          description: Page title.
+        body:
+          type: string
+          description: Page content in markdown.
+        message:
+          type: string
+          description: Version comment.
+    TransitionRequest:
+      type: object
+      required:
+      - transitionIdentifier
+      properties:
+        transitionIdentifier:
+          type: string
+          description: Transition ID from get_transitions.
+    CommentRequest:
+      type: object
+      required:
+      - body
+      properties:
+        body:
+          type: string
+          description: Comment body text.

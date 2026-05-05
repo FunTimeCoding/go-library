@@ -3,8 +3,7 @@ package goversion
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/constant"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
 	"github.com/funtimecoding/go-library/pkg/go_mod/check/version"
@@ -15,6 +14,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goversion/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -24,17 +24,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-		r := reporter.New(
-			"goversion",
-			c,
-			"",
-			programVersion,
-		)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New(constant.Name, programVersion)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	monitor.NotationArgument()
 	monitor.AllArgument()
 	pflag.String(argument.Skip, "", "Skip matches")
@@ -54,7 +46,7 @@ func Main(
 		0,
 		environment.Fallback(
 			status.RepositoryRootEnvironment,
-			constant.CurrentDirectory,
+			library.CurrentDirectory,
 		),
 	)
 	o.Depth = viper.GetInt(argument.Depth)

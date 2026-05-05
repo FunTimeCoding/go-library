@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/constant"
-	sentry "github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/github"
 	githubConstant "github.com/funtimecoding/go-library/pkg/github/constant"
@@ -17,7 +16,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"os"
@@ -28,12 +26,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(sentry.LocatorEnvironment); c != "" {
-		r := reporter.New("goupdate", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("goupdate", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	pflag.Bool(argument.Continue, false, "Continue on error")
 	var exclusives []string
 	pflag.StringSliceVar(

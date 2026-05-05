@@ -9,7 +9,7 @@ import (
 
 func TestParseLocator(t *testing.T) {
 	actual := ParseLocator(
-		locator.New(constant.Example).Port(8080).String(),
+		locator.New(constant.Example).Port(constant.ListenPort).String(),
 	)
 	assert.String(t, "https://example.org:8080", actual.String())
 	assert.String(t, "https", actual.Scheme)

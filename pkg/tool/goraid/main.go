@@ -3,10 +3,8 @@ package goraid
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/raid"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -16,19 +14,16 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
-		r := reporter.New("goraid", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("goraid", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	c := raid.NewEnvironment()
 	root := &cobra.Command{
 		Use:     "goraid",
 		Version: fmt.Sprintf("%s (%s %s)", version, gitHash, buildDate),
 	}
-	root.AddCommand(logsCommand(c))
-	root.AddCommand(reportsCommand(c))
+	root.AddCommand(logs(c))
+	root.AddCommand(reports(c))
 
 	if f := root.Execute(); f != nil {
 		errors.Printf("%v", f)

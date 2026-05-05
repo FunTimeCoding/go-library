@@ -7,8 +7,6 @@ const (
 	FileEnvironment   = "MONITOR_FILE"
 	ManualEnvironment = "MONITOR_MANUAL"
 
-	Address = "localhost:8080"
-
 	NotationReport int = 10 // Limit
 )
 

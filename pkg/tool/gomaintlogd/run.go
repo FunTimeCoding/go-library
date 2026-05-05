@@ -28,7 +28,7 @@ func Run(
 			constant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s), m)
-				model_context.New(s, r).Mount(m)
+				model_context.New(s, r, o.Version).Mount(m)
 				maintenanceWeb.New(s).Mount(m)
 			},
 			web.RecoveryMiddleware(r),

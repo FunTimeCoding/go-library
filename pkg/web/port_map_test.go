@@ -1,7 +1,10 @@
 package web
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"testing"
+)
 
 func TestPortMap(t *testing.T) {
-	PortMap(8080, 80)
+	PortMap(constant.ListenPort, 80)
 }

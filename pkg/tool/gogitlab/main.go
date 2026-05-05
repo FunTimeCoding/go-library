@@ -2,12 +2,11 @@ package gogitlab
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/job"
 	"github.com/funtimecoding/go-library/pkg/gitlab/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitlabd/constant"
 	"github.com/spf13/viper"
 )
 
@@ -16,12 +15,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
-		r := reporter.New("gogitlab", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New(constant.Name, version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	monitor.CopyableArgument()
 	monitor.NotationArgument()
 	monitor.AllArgument()

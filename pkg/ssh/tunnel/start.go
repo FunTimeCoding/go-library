@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/run"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"log"
 	"net"
 	"time"
@@ -19,7 +20,7 @@ func (t *Tunnel) Start(
 	localPort int,
 ) *Result {
 	if localPort == 0 {
-		localPort = system.FindUnusedPort(8080)
+		localPort = system.FindUnusedPort(web.ListenPort)
 	}
 
 	go func() {
@@ -66,7 +67,7 @@ func (t *Tunnel) Start(
 		if t.Verbose {
 			fmt.Printf(
 				"Forward up: %s:%d to %s:%d\n",
-				"localhost",
+				web.Localhost,
 				localPort,
 				targetHost,
 				targetPort,

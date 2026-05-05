@@ -1,3 +1,0 @@
-FROM alpine:3.23.4
-COPY tmp/gogitlabmcp/linux-amd64/gogitlabmcp /usr/local/bin/gogitlabmcp
-ENTRYPOINT ["gogitlabmcp"]

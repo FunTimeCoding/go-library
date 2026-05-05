@@ -12,7 +12,9 @@ func TestHostFromLocator(t *testing.T) {
 		t,
 		"example.org",
 		HostFromLocator(
-			locator.New(constant.Example).Port(8080).Path("/a").String(),
+			locator.New(
+				constant.Example,
+			).Port(constant.ListenPort).Path("/a").String(),
 		),
 	)
 	assert.String(

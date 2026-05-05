@@ -1,7 +1,7 @@
 package constant
 
 const (
-	Name = "Alert Log"
+	Name = "goalertlogd"
 
 	GetAlerts       = "get_alerts"
 	GetRecentAlerts = "get_recent_alerts"

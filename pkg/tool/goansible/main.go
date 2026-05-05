@@ -1,10 +1,8 @@
 package goansible
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
 func Main(
@@ -12,12 +10,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	if c := environment.Optional(constant.LocatorEnvironment); c != "" {
-		r := reporter.New("goansible", c, "", version)
-		r.Start()
-		defer func() { r.RecoverFlush(recover()) }()
-	}
-
+	r := reporter.New("goansible", version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 	// TODO: Find Ansible API, allow calling it from CI/CD
 }

@@ -1,3 +1,0 @@
-FROM alpine:3.23.4
-COPY tmp/gopgd/linux-amd64/gopgd /usr/local/bin/gopgd
-ENTRYPOINT ["gopgd"]

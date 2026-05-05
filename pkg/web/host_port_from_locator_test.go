@@ -14,7 +14,7 @@ func TestHostPortFromLocator(t *testing.T) {
 		HostPortFromLocator(
 			locator.New(
 				constant.Example,
-			).Port(8080).Path("/a").String(),
+			).Port(constant.ListenPort).Path("/a").String(),
 		),
 	)
 }

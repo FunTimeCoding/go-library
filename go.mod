@@ -13,7 +13,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.4.1
 	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447
 	github.com/andygrunwald/go-jira v1.17.0
-	github.com/anthropics/anthropic-sdk-go v1.39.0
+	github.com/anthropics/anthropic-sdk-go v1.40.0
 	github.com/apenella/go-ansible/v2 v2.4.1
 	github.com/bndr/gojenkins v1.2.0
 	github.com/bwmarrin/discordgo v0.29.0
@@ -62,7 +62,7 @@ require (
 	github.com/nsf/termbox-go v1.1.1
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/olekukonko/tablewriter v1.1.4
-	github.com/ollama/ollama v0.23.0
+	github.com/ollama/ollama v0.23.1
 	github.com/openai/openai-go/v3 v3.34.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
@@ -95,7 +95,7 @@ require (
 	golang.org/x/time v0.15.0
 	golang.org/x/tools v0.44.0
 	gonum.org/v1/gonum v0.17.0
-	google.golang.org/api v0.277.0
+	google.golang.org/api v0.278.0
 	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0

@@ -14,6 +14,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/type_receiver"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/unchecked_print_write"
+	"github.com/funtimecoding/go-library/pkg/tool/goanalyze/constant"
 	"golang.org/x/tools/go/analysis/multichecker"
 )
 
@@ -22,8 +23,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("goanalyze", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	multichecker.Main(
 		naming.Analyzer,

@@ -5,8 +5,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/build"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/system/constant"
+	system "github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/join"
+	"github.com/funtimecoding/go-library/pkg/tool/gopackage/constant"
 	"os"
 )
 
@@ -15,15 +16,14 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gopackage", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 	var runs int
 
 	for _, name := range build.OutputDirectories() {
 		fmt.Printf("Name: %s\n", name)
-		outputDirectory := join.Relative(constant.Temporary, name)
+		outputDirectory := join.Relative(system.Temporary, name)
 		fmt.Printf("Output directory: %s\n", outputDirectory)
 
 		for _, systemArchitecture := range build.SystemArchitectures() {

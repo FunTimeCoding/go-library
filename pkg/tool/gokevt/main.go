@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/check/event"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/check/event/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/gokevt/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -15,8 +16,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gokevt", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.NotationArgument()
 	monitor.AllArgument()

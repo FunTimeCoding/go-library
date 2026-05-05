@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/github/check/job"
 	"github.com/funtimecoding/go-library/pkg/github/check/job/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/goghjob/constant"
 	"github.com/spf13/viper"
 )
 
@@ -14,8 +15,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("goghjob", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.NotationArgument()
 	monitor.AllArgument()

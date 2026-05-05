@@ -3,9 +3,10 @@ package gosed
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/git/constant"
+	git "github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
+	"github.com/funtimecoding/go-library/pkg/tool/gosed/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gosed/sed"
 	"github.com/funtimecoding/go-library/pkg/tool/gosed/sed/option"
 	"github.com/spf13/pflag"
@@ -17,13 +18,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gosed", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	common.Arguments()
 	pflag.String(
 		argument.Branch,
-		constant.MainBranch,
+		git.MainBranch,
 		"Branch to commit to",
 	)
 	pflag.String(argument.Path, "", "Path in repository")

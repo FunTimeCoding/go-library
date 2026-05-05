@@ -3,6 +3,7 @@ package goansible
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/goansible/constant"
 )
 
 func Main(
@@ -10,8 +11,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("goansible", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 	// TODO: Find Ansible API, allow calling it from CI/CD

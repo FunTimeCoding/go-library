@@ -48,8 +48,7 @@ func Main(
     gitHash string,
     buildDate string,
 ) {
-    r := reporter.New(constant.Name, version)
-    r.Start()
+    r := reporter.New(constant.Name, version).Start()
     defer func() { r.RecoverFlush(recover()) }()
 
     pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
@@ -71,21 +70,16 @@ func Main(
     gitHash string,
     buildDate string,
 ) {
-    r := reporter.New(constant.Name, version)
-    r.Start()
+    r := reporter.New(constant.Name, version).Start()
     defer func() { r.RecoverFlush(recover()) }()
     c := client.NewEnvironment()
-    root := &cobra.Command{
+    o := &cobra.Command{
         Use:     constant.Name,
         Version: argument.CobraVersion(version, gitHash, buildDate),
     }
-    root.AddCommand(listItems(c))
-    root.AddCommand(createItem(c))
-
-    if f := root.Execute(); f != nil {
-        errors.Printf("%v", f)
-        os.Exit(1)
-    }
+    o.AddCommand(listItems(c))
+    o.AddCommand(createItem(c))
+    errors.PanicOnError(o.Execute())
 }
 ```
 
@@ -130,8 +124,7 @@ work. The reporter captures unhandled panics and provides error reporting
 to all downstream components.
 
 ```go
-r := reporter.New(constant.Name, version)
-r.Start()
+r := reporter.New(constant.Name, version).Start()
 defer func() { r.RecoverFlush(recover()) }()
 
 // ... flag parsing, option construction

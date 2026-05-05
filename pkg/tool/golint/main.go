@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/lint"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/golint/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -14,8 +15,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("golint", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	pflag.Bool(
 		argument.Fix,

@@ -6,8 +6,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/loki"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/loki/option"
-	"github.com/funtimecoding/go-library/pkg/prometheus/loki/constant"
+	lokiConstant "github.com/funtimecoding/go-library/pkg/prometheus/loki/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goloki/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"time"
@@ -18,8 +19,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("goloki", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.CopyableArgument()
 	pflag.Duration(argument.Since, time.Hour, "Time range to query")
@@ -46,7 +46,7 @@ func Main(
 	o.BodyOnly = viper.GetBool(argument.Body)
 	o.Copyable = viper.GetBool(argument.Copyable)
 	o.Limit = viper.GetInt(argument.Limit)
-	o.Namespaces = environment.Slice(constant.NamespaceEnvironment)
-	o.Exclude = environment.Slice(constant.ExcludeEnvironment)
+	o.Namespaces = environment.Slice(lokiConstant.NamespaceEnvironment)
+	o.Exclude = environment.Slice(lokiConstant.ExcludeEnvironment)
 	loki.Check(o)
 }

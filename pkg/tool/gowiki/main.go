@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
+	wiki "github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/gowiki/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -17,15 +18,14 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gowiki", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.CopyableArgument()
 	pflag.Bool(argument.Watched, false, "Watched")
 	pflag.Bool(argument.Favorites, false, "Favorites")
 	monitor.ParseBind(version, gitHash, buildDate)
 	c := confluence.NewEnvironment()
-	f := constant.Format.Copy()
+	f := wiki.Format.Copy()
 
 	if viper.GetBool(argument.Copyable) {
 		f.Tag(tag.Copyable)

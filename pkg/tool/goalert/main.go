@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
+	"github.com/funtimecoding/go-library/pkg/tool/goalert/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -15,8 +16,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("goalert", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.CopyableArgument()
 	monitor.NotationArgument()

@@ -3,7 +3,7 @@ package goupdate
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/constant"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/github"
 	githubConstant "github.com/funtimecoding/go-library/pkg/github/constant"
@@ -16,6 +16,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/tool/goupdate/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"os"
@@ -26,8 +27,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("goupdate", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	pflag.Bool(argument.Continue, false, "Continue on error")
 	var exclusives []string
@@ -68,10 +68,10 @@ func Main(
 
 	goString := goVersion.String()
 	system.Run(
-		constant.Go,
-		constant.Mod,
-		constant.Edit,
-		key_value.Equals(constant.VersionArgument, goString),
+		library.Go,
+		library.Mod,
+		library.Edit,
+		key_value.Equals(library.VersionArgument, goString),
 	)
 
 	if file := ContainerFileName(); file != "" {

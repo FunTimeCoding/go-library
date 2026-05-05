@@ -20,8 +20,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.NewOptional("gobuild", version)
-	r.Start()
+	r := reporter.NewOptional("gobuild", version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	pflag.String(
 		argument.Main,

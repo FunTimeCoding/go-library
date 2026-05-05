@@ -7,8 +7,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
 	"github.com/funtimecoding/go-library/pkg/git/check/status/option"
 	"github.com/funtimecoding/go-library/pkg/monitor"
-	"github.com/funtimecoding/go-library/pkg/monitor/item/constant"
+	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/gogitstatus/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -18,8 +19,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gogitstatus", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.NotationArgument()
 	monitor.AllArgument()
@@ -34,7 +34,7 @@ func Main(
 		3,
 		fmt.Sprintf(
 			"Depth to scan for %s. Default is 3.",
-			constant.GoGitStatus.Plural,
+			item.GoGitStatus.Plural,
 		),
 	)
 	monitor.ParseBind(version, gitHash, buildDate)

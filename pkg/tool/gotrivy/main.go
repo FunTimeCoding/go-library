@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
-	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
+	kubernetes "github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/gotrivy/constant"
 )
 
 func Main(
@@ -13,18 +14,17 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gotrivy", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 	k := client.NewEnvironment()
-	f := constant.Format
+	f := kubernetes.Format
 
-	for _, j := range k.CronJobs(constant.TrivyNamespace) {
+	for _, j := range k.CronJobs(kubernetes.TrivyNamespace) {
 		fmt.Printf("CronJob: %s\n", j.Format(f))
 	}
 
-	for _, j := range k.Jobs(constant.TrivyNamespace) {
+	for _, j := range k.Jobs(kubernetes.TrivyNamespace) {
 		fmt.Printf("Job: %s\n", j.Format(f))
 	}
 }

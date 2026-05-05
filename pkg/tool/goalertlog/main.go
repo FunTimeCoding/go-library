@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/goalertlog/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/client"
 )
 
@@ -12,8 +13,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("goalertlog", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 	l := client.NewEnvironment()

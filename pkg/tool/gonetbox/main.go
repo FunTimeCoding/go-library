@@ -7,7 +7,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetbox/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/client"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func Main(
@@ -15,48 +14,43 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	c := client.NewEnvironment()
-	root := &cobra.Command{
+	o := &cobra.Command{
 		Use:     constant.Name,
 		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
-	root.AddCommand(listDevices(c))
-	root.AddCommand(getDevice(c))
-	root.AddCommand(listInterfaces(c))
-	root.AddCommand(listAddresses(c))
-	root.AddCommand(listSites(c))
-	root.AddCommand(listTenants(c))
-	root.AddCommand(listDeviceRoles(c))
-	root.AddCommand(listManufacturers(c))
-	root.AddCommand(listDeviceTypes(c))
-	root.AddCommand(createSite(c))
-	root.AddCommand(createTenant(c))
-	root.AddCommand(createDeviceRole(c))
-	root.AddCommand(createManufacturer(c))
-	root.AddCommand(createDeviceType(c))
-	root.AddCommand(createDevice(c))
-	root.AddCommand(createInterface(c))
-	root.AddCommand(createAddress(c))
-	root.AddCommand(listClusterTypes(c))
-	root.AddCommand(listClusters(c))
-	root.AddCommand(listVirtualMachines(c))
-	root.AddCommand(createClusterType(c))
-	root.AddCommand(createCluster(c))
-	root.AddCommand(createVirtualMachine(c))
-	root.AddCommand(createVirtualInterface(c))
-	root.AddCommand(createVirtualAddress(c))
-	root.AddCommand(listTags(c))
-	root.AddCommand(createTag(c))
-	root.AddCommand(addDeviceTag(c))
-	root.AddCommand(removeDeviceTag(c))
-	root.AddCommand(addVirtualTag(c))
-	root.AddCommand(removeVirtualTag(c))
-
-	if f := root.Execute(); f != nil {
-		errors.Printf("%v", f)
-		os.Exit(1)
-	}
+	o.AddCommand(listDevices(c))
+	o.AddCommand(getDevice(c))
+	o.AddCommand(listInterfaces(c))
+	o.AddCommand(listAddresses(c))
+	o.AddCommand(listSites(c))
+	o.AddCommand(listTenants(c))
+	o.AddCommand(listDeviceRoles(c))
+	o.AddCommand(listManufacturers(c))
+	o.AddCommand(listDeviceTypes(c))
+	o.AddCommand(createSite(c))
+	o.AddCommand(createTenant(c))
+	o.AddCommand(createDeviceRole(c))
+	o.AddCommand(createManufacturer(c))
+	o.AddCommand(createDeviceType(c))
+	o.AddCommand(createDevice(c))
+	o.AddCommand(createInterface(c))
+	o.AddCommand(createAddress(c))
+	o.AddCommand(listClusterTypes(c))
+	o.AddCommand(listClusters(c))
+	o.AddCommand(listVirtualMachines(c))
+	o.AddCommand(createClusterType(c))
+	o.AddCommand(createCluster(c))
+	o.AddCommand(createVirtualMachine(c))
+	o.AddCommand(createVirtualInterface(c))
+	o.AddCommand(createVirtualAddress(c))
+	o.AddCommand(listTags(c))
+	o.AddCommand(createTag(c))
+	o.AddCommand(addDeviceTag(c))
+	o.AddCommand(removeDeviceTag(c))
+	o.AddCommand(addVirtualTag(c))
+	o.AddCommand(removeVirtualTag(c))
+	errors.PanicOnError(o.Execute())
 }

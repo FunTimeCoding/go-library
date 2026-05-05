@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/duplicate"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/missing"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/order"
+	"github.com/funtimecoding/go-library/pkg/tool/god8y/constant"
 	"os"
 )
 
@@ -14,8 +15,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("god8y", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 
 	if len(os.Args) >= 3 && os.Args[1] == "merge" {

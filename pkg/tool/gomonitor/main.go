@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/check/collect"
+	"github.com/funtimecoding/go-library/pkg/tool/gomonitor/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomonitor/option"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -17,8 +18,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gomonitor", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	pflag.Bool(argument.Connect, false, "Connect to the server")
 	pflag.Bool(argument.Once, false, "Run once and exit")

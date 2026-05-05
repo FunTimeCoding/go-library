@@ -24,8 +24,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, programVersion)
-	r.Start()
+	r := reporter.New(constant.Name, programVersion).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.NotationArgument()
 	monitor.AllArgument()

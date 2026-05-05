@@ -2,11 +2,12 @@ package godownload
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/constant"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
+	"github.com/funtimecoding/go-library/pkg/tool/godownload/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/godownload/download"
 	"github.com/funtimecoding/go-library/pkg/tool/godownload/download/option"
 	"github.com/spf13/pflag"
@@ -18,13 +19,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("godownload", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	common.Arguments()
 	pflag.String(
 		argument.PackageVersion,
-		constant.LatestVersion,
+		library.LatestVersion,
 		"Version to download, falls back to latest if not found",
 	)
 	pflag.String(

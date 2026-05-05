@@ -21,9 +21,12 @@ configuration, not constructed dependencies). `Run()` creates the
 logger and wires everything into lifecycle.
 
 ```go
-func Main(version, gitHash, buildDate string) {
-    r := reporter.New(constant.Name, version)
-    r.Start()
+func Main(
+    version string,
+    gitHash string,
+    buildDate string,
+) {
+    r := reporter.New(constant.Name, version).Start()
     defer func() { r.RecoverFlush(recover()) }()
 
     monitor.ParseBind(version, gitHash, buildDate)

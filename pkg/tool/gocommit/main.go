@@ -3,11 +3,12 @@ package gocommit
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/git/constant"
+	git "github.com/funtimecoding/go-library/pkg/git/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/gocommit/commit"
 	"github.com/funtimecoding/go-library/pkg/tool/gocommit/commit/option"
+	"github.com/funtimecoding/go-library/pkg/tool/gocommit/constant"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -17,13 +18,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gocommit", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	common.Arguments()
 	pflag.String(
 		argument.Branch,
-		constant.MainBranch,
+		git.MainBranch,
 		"Branch to commit to",
 	)
 	pflag.String(argument.Path, "", "Path in repository")

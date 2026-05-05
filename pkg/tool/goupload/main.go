@@ -5,10 +5,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/build"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
+	gitlab "github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
+	"github.com/funtimecoding/go-library/pkg/tool/goupload/constant"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -22,33 +23,32 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("goupload", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	locatorDefault := ""
 
-	if s := os.Getenv(constant.InterfaceLocator); s != "" {
+	if s := os.Getenv(gitlab.InterfaceLocator); s != "" {
 		locatorDefault = s
 	}
 
 	projectDefault := ""
 
-	if s := os.Getenv(constant.ProjectIdentifier); s != "" {
+	if s := os.Getenv(gitlab.ProjectIdentifier); s != "" {
 		projectDefault = s
 	}
 
 	tagDefault := ""
 
-	if s := os.Getenv(constant.CommitTag); s != "" {
+	if s := os.Getenv(gitlab.CommitTag); s != "" {
 		tagDefault = s
 	}
 
 	headerDefault := ""
 
-	if s := os.Getenv(constant.JobToken); s != "" {
+	if s := os.Getenv(gitlab.JobToken); s != "" {
 		headerDefault = fmt.Sprintf(
 			"%s=%s",
-			constant.JobTokenHeader,
+			gitlab.JobTokenHeader,
 			s,
 		)
 	}

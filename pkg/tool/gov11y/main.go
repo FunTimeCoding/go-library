@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/gov11y/constant"
 	"github.com/funtimecoding/go-library/pkg/vulnerability/check/vulnerability"
 	"github.com/funtimecoding/go-library/pkg/vulnerability/check/vulnerability/option"
 	"github.com/spf13/pflag"
@@ -15,8 +16,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gov11y", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	pflag.String(argument.Filter, "", "modules, comma separated")
 	monitor.VerboseArgument()

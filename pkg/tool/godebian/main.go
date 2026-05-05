@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/semver"
+	"github.com/funtimecoding/go-library/pkg/tool/godebian/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/godebian/option"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -15,8 +16,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("godebian", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	pflag.String(
 		argument.Executable,

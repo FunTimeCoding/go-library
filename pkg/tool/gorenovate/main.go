@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
-	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
+	kubernetes "github.com/funtimecoding/go-library/pkg/kubernetes/constant"
 	"github.com/funtimecoding/go-library/pkg/monitor"
+	"github.com/funtimecoding/go-library/pkg/tool/gorenovate/constant"
 	"os"
 )
 
@@ -14,8 +15,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gorenovate", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 	var missing []string
@@ -29,13 +29,13 @@ func Main(
 	}
 
 	k := client.NewEnvironment()
-	f := constant.Format
+	f := kubernetes.Format
 
-	for _, j := range k.CronJobs(constant.RenovateNamespace) {
+	for _, j := range k.CronJobs(kubernetes.RenovateNamespace) {
 		fmt.Printf("CronJob: %s\n", j.Format(f))
 	}
 
-	for _, j := range k.Jobs(constant.RenovateNamespace) {
+	for _, j := range k.Jobs(kubernetes.RenovateNamespace) {
 		fmt.Printf("Job: %s\n", j.Format(f))
 	}
 

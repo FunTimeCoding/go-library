@@ -17,8 +17,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
 	pflag.String(

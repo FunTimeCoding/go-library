@@ -10,7 +10,6 @@ import (
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func Main(
@@ -18,8 +17,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	v, e := client.NewClient(
 		locator.New(
@@ -30,21 +28,17 @@ func Main(
 		).Port(web.ListenPort).Insecure().String(),
 	)
 	errors.PanicOnError(e)
-	root := &cobra.Command{
+	o := &cobra.Command{
 		Use:     constant.Name,
 		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
-	root.AddCommand(listInstances(v))
-	root.AddCommand(query(v))
-	root.AddCommand(explain(v))
-	root.AddCommand(listSchemas(v))
-	root.AddCommand(listTables(v))
-	root.AddCommand(describeTable(v))
-	root.AddCommand(listIndexes(v))
-	root.AddCommand(tableSizes(v))
-
-	if f := root.Execute(); f != nil {
-		errors.Printf("%v", f)
-		os.Exit(1)
-	}
+	o.AddCommand(listInstances(v))
+	o.AddCommand(query(v))
+	o.AddCommand(explain(v))
+	o.AddCommand(listSchemas(v))
+	o.AddCommand(listTables(v))
+	o.AddCommand(describeTable(v))
+	o.AddCommand(listIndexes(v))
+	o.AddCommand(tableSizes(v))
+	errors.PanicOnError(o.Execute())
 }

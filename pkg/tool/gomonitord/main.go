@@ -7,8 +7,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/monitor/coder"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/example_client"
+	"github.com/funtimecoding/go-library/pkg/tool/gomonitord/constant"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	webConstant "github.com/funtimecoding/go-library/pkg/web/constant"
 )
 
 func Main(
@@ -16,8 +17,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gomonitord", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	monitor.ParseBind(version, gitHash, buildDate)
 
@@ -33,7 +33,10 @@ func Main(
 
 	if true {
 		gorilla.Run(
-			web.AddressHostPort(constant.Localhost, constant.ListenPort),
+			web.AddressHostPort(
+				webConstant.Localhost,
+				webConstant.ListenPort,
+			),
 		)
 	}
 }

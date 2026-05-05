@@ -7,7 +7,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gohabitica/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/client"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func Main(
@@ -15,23 +14,18 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	c := client.NewEnvironment()
-	root := &cobra.Command{
+	o := &cobra.Command{
 		Use:     constant.Name,
 		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
-	root.AddCommand(tasks(c))
-	root.AddCommand(create(c))
-	root.AddCommand(score(c))
-	root.AddCommand(tags(c))
-	root.AddCommand(statistic(c))
-	root.AddCommand(cron(c))
-
-	if f := root.Execute(); f != nil {
-		errors.Printf("%v", f)
-		os.Exit(1)
-	}
+	o.AddCommand(tasks(c))
+	o.AddCommand(create(c))
+	o.AddCommand(score(c))
+	o.AddCommand(tags(c))
+	o.AddCommand(statistic(c))
+	o.AddCommand(cron(c))
+	errors.PanicOnError(o.Execute())
 }

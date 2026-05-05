@@ -2,6 +2,7 @@ package gofix
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/tool/gofix/constant"
 	"os"
 )
 
@@ -10,8 +11,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New("gofix", version)
-	r.Start()
+	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	f := parseFlags()
 

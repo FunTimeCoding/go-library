@@ -53,7 +53,7 @@ require (
 	github.com/kestra-io/client-sdk/go-sdk v1.0.1
 	github.com/liushuangls/go-anthropic/v2 v2.19.0
 	github.com/luthermonson/go-proxmox v0.4.1
-	github.com/mark3labs/mcp-go v0.51.0
+	github.com/mark3labs/mcp-go v0.52.0
 	github.com/mattermost/mattermost/server/public v0.3.1
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.6.0
@@ -86,7 +86,7 @@ require (
 	github.com/trivago/tgo v1.0.7
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
-	gitlab.com/gitlab-org/api/client-go/v2 v2.24.0
+	gitlab.com/gitlab-org/api/client-go/v2 v2.24.1
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.50.0
 	golang.org/x/mod v0.35.0

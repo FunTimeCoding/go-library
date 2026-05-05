@@ -1,0 +1,32 @@
+package model_context
+
+import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/gosentryd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gosentryd/model_context/argument"
+	"github.com/mark3labs/mcp-go/mcp"
+)
+
+func (s *Server) UpdateIssue(
+	_ context.Context,
+	_ mcp.CallToolRequest,
+	a argument.UpdateIssue,
+) (*mcp.CallToolResult, error) {
+	if a.Identifier == "" {
+		return response.Fail("identifier is required")
+	}
+
+	result, e := s.client.UpdateIssue(
+		s.organization,
+		a.Identifier,
+		a.Status,
+		a.AssignedTo,
+	)
+
+	if e != nil {
+		return s.captureFail(e, constant.Unreachable)
+	}
+
+	return response.SuccessAny(result)
+}

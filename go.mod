@@ -13,7 +13,7 @@ require (
 	github.com/amikos-tech/chroma-go v0.4.1
 	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447
 	github.com/andygrunwald/go-jira v1.17.0
-	github.com/anthropics/anthropic-sdk-go v1.38.0
+	github.com/anthropics/anthropic-sdk-go v1.39.0
 	github.com/apenella/go-ansible/v2 v2.4.1
 	github.com/bndr/gojenkins v1.2.0
 	github.com/bwmarrin/discordgo v0.29.0
@@ -28,15 +28,15 @@ require (
 	github.com/dimchansky/utfbom v1.1.1
 	github.com/docker/go-units v0.5.0
 	github.com/fatih/color v1.19.0
-	github.com/fsnotify/fsnotify v1.10.0
+	github.com/fsnotify/fsnotify v1.10.1
 	github.com/gage-technologies/mistral-go v1.1.0
 	github.com/gdamore/tcell/v2 v2.13.9
 	github.com/getkin/kin-openapi v0.137.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.46.1
+	github.com/getsentry/sentry-go v0.46.2
 	github.com/go-git/go-billy/v5 v5.8.0
 	github.com/go-git/go-git/v5 v5.18.0
-	github.com/go-openapi/runtime v0.29.4
+	github.com/go-openapi/runtime v0.29.5
 	github.com/go-openapi/strfmt v0.26.2
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/go-test/deep v1.1.1
@@ -53,7 +53,7 @@ require (
 	github.com/kestra-io/client-sdk/go-sdk v1.0.1
 	github.com/liushuangls/go-anthropic/v2 v2.19.0
 	github.com/luthermonson/go-proxmox v0.4.1
-	github.com/mark3labs/mcp-go v0.50.0
+	github.com/mark3labs/mcp-go v0.51.0
 	github.com/mattermost/mattermost/server/public v0.3.1
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.6.0
@@ -63,7 +63,7 @@ require (
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/olekukonko/tablewriter v1.1.4
 	github.com/ollama/ollama v0.23.0
-	github.com/openai/openai-go/v3 v3.33.0
+	github.com/openai/openai-go/v3 v3.34.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -86,7 +86,7 @@ require (
 	github.com/trivago/tgo v1.0.7
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
-	gitlab.com/gitlab-org/api/client-go/v2 v2.21.0
+	gitlab.com/gitlab-org/api/client-go/v2 v2.24.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.50.0
 	golang.org/x/mod v0.35.0

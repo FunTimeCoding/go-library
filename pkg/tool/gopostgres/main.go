@@ -1,7 +1,7 @@
 package gopostgres
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
@@ -32,7 +32,7 @@ func Main(
 	errors.PanicOnError(e)
 	root := &cobra.Command{
 		Use:     constant.Name,
-		Version: fmt.Sprintf("%s (%s %s)", version, gitHash, buildDate),
+		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
 	root.AddCommand(listInstances(v))
 	root.AddCommand(query(v))

@@ -1,7 +1,7 @@
 package gohabitica
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabitica/constant"
@@ -21,7 +21,7 @@ func Main(
 	c := client.NewEnvironment()
 	root := &cobra.Command{
 		Use:     constant.Name,
-		Version: fmt.Sprintf("%s (%s %s)", version, gitHash, buildDate),
+		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
 	root.AddCommand(tasks(c))
 	root.AddCommand(create(c))

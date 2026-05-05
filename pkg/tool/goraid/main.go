@@ -1,7 +1,7 @@
 package goraid
 
 import (
-	"fmt"
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/raid"
@@ -20,7 +20,7 @@ func Main(
 	c := raid.NewEnvironment()
 	root := &cobra.Command{
 		Use:     "goraid",
-		Version: fmt.Sprintf("%s (%s %s)", version, gitHash, buildDate),
+		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
 	root.AddCommand(logs(c))
 	root.AddCommand(reports(c))

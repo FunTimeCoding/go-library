@@ -77,7 +77,7 @@ func Main(
     c := client.NewEnvironment()
     root := &cobra.Command{
         Use:     constant.Name,
-        Version: fmt.Sprintf("%s (%s %s)", version, gitHash, buildDate),
+        Version: argument.CobraVersion(version, gitHash, buildDate),
     }
     root.AddCommand(listItems(c))
     root.AddCommand(createItem(c))

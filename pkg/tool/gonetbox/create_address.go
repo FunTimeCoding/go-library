@@ -9,7 +9,7 @@ import (
 
 func createAddress(c *client.Client) *cobra.Command {
 	var interfaceName string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "create-address [device] [address]",
 		Short: "Assign an IP address to a device interface",
 		Args:  cobra.ExactArgs(2),
@@ -26,13 +26,13 @@ func createAddress(c *client.Client) *cobra.Command {
 			)
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&interfaceName,
 		"interface",
 		"",
 		"interface name (required)",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("interface"))
+	errors.PanicOnError(result.MarkFlagRequired("interface"))
 
-	return command
+	return result
 }

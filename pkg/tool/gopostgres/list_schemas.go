@@ -9,7 +9,7 @@ import (
 
 func listSchemas(c *client.Client) *cobra.Command {
 	var instance string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "list-schemas",
 		Short: "List schemas in the active database",
 		Run: func(
@@ -24,13 +24,13 @@ func listSchemas(c *client.Client) *cobra.Command {
 			printResponse(r)
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&instance,
 		"instance",
 		"",
 		"Instance name (required)",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("instance"))
+	errors.PanicOnError(result.MarkFlagRequired("instance"))
 
-	return command
+	return result
 }

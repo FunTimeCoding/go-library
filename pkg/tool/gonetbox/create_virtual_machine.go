@@ -9,7 +9,7 @@ import (
 
 func createVirtualMachine(c *client.Client) *cobra.Command {
 	var cluster string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "create-virtual-machine [name]",
 		Short: "Create a NetBox virtual machine",
 		Args:  cobra.ExactArgs(1),
@@ -20,13 +20,13 @@ func createVirtualMachine(c *client.Client) *cobra.Command {
 			fmt.Println(c.CreateVirtualMachine(arguments[0], cluster))
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&cluster,
 		"cluster",
 		"",
 		"cluster name (required)",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("cluster"))
+	errors.PanicOnError(result.MarkFlagRequired("cluster"))
 
-	return command
+	return result
 }

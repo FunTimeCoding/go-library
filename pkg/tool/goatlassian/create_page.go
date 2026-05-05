@@ -10,7 +10,7 @@ import (
 func createPage(c *client.Client) *cobra.Command {
 	var space string
 	var parent string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "create-page [title] [body]",
 		Short: "Create a Confluence page with markdown content",
 		Args:  cobra.ExactArgs(2),
@@ -28,20 +28,20 @@ func createPage(c *client.Client) *cobra.Command {
 			)
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&space,
 		"space",
 		"",
 		"space identifier (required)",
 	)
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&parent,
 		"parent",
 		"",
 		"parent page identifier (required)",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("space"))
-	errors.PanicOnError(command.MarkFlagRequired("parent"))
+	errors.PanicOnError(result.MarkFlagRequired("space"))
+	errors.PanicOnError(result.MarkFlagRequired("parent"))
 
-	return command
+	return result
 }

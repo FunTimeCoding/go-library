@@ -8,7 +8,7 @@ import (
 
 func updatePage(c *client.Client) *cobra.Command {
 	var message string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "update-page [identifier] [title] [body]",
 		Short: "Update a Confluence page with markdown content",
 		Args:  cobra.ExactArgs(3),
@@ -32,7 +32,7 @@ func updatePage(c *client.Client) *cobra.Command {
 			)
 		},
 	}
-	command.Flags().StringVar(&message, "message", "", "version comment")
+	result.Flags().StringVar(&message, "message", "", "version comment")
 
-	return command
+	return result
 }

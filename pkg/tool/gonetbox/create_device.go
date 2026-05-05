@@ -12,7 +12,7 @@ func createDevice(c *client.Client) *cobra.Command {
 	var deviceType string
 	var site string
 	var tenant string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "create-device [name]",
 		Short: "Create a NetBox device",
 		Args:  cobra.ExactArgs(1),
@@ -37,23 +37,23 @@ func createDevice(c *client.Client) *cobra.Command {
 			)
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&role,
 		"role",
 		"",
 		"device role name (required)",
 	)
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&deviceType,
 		"type",
 		"",
 		"device type model (required)",
 	)
-	command.Flags().StringVar(&site, "site", "", "site name (required)")
-	command.Flags().StringVar(&tenant, "tenant", "", "tenant name (optional)")
-	errors.PanicOnError(command.MarkFlagRequired("role"))
-	errors.PanicOnError(command.MarkFlagRequired("type"))
-	errors.PanicOnError(command.MarkFlagRequired("site"))
+	result.Flags().StringVar(&site, "site", "", "site name (required)")
+	result.Flags().StringVar(&tenant, "tenant", "", "tenant name (optional)")
+	errors.PanicOnError(result.MarkFlagRequired("role"))
+	errors.PanicOnError(result.MarkFlagRequired("type"))
+	errors.PanicOnError(result.MarkFlagRequired("site"))
 
-	return command
+	return result
 }

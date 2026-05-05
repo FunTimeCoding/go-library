@@ -9,7 +9,7 @@ import (
 
 func query(c *client.Client) *cobra.Command {
 	var instance string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "query [sql]",
 		Short: "Execute SQL against a PostgreSQL instance",
 		Args:  cobra.ExactArgs(1),
@@ -28,13 +28,13 @@ func query(c *client.Client) *cobra.Command {
 			printResponse(r)
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&instance,
 		"instance",
 		"",
 		"Instance name (required)",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("instance"))
+	errors.PanicOnError(result.MarkFlagRequired("instance"))
 
-	return command
+	return result
 }

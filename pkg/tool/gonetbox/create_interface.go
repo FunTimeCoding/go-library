@@ -9,7 +9,7 @@ import (
 
 func createInterface(c *client.Client) *cobra.Command {
 	var interfaceType string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "create-interface [device] [name]",
 		Short: "Create a network interface on a device",
 		Args:  cobra.ExactArgs(2),
@@ -26,13 +26,13 @@ func createInterface(c *client.Client) *cobra.Command {
 			)
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&interfaceType,
 		"type",
 		"",
 		"interface type (e.g. 1000base-t)",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("type"))
+	errors.PanicOnError(result.MarkFlagRequired("type"))
 
-	return command
+	return result
 }

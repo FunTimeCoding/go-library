@@ -12,7 +12,7 @@ func logs(c *raid.Client) *cobra.Command {
 	var limit int
 	var start string
 	var end string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "logs",
 		Short: "List available combat logs",
 		Run: func(
@@ -51,25 +51,25 @@ func logs(c *raid.Client) *cobra.Command {
 			fmt.Println(c.Logs(o, l, s, e))
 		},
 	}
-	command.Flags().IntVar(&offset, "offset", 0, "offset into log list")
-	command.Flags().IntVar(
+	result.Flags().IntVar(&offset, "offset", 0, "offset into log list")
+	result.Flags().IntVar(
 		&limit,
 		"limit",
 		0,
 		"maximum number of logs to return",
 	)
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&start,
 		"start",
 		"",
 		"filter logs after this time (RFC3339)",
 	)
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&end,
 		"end",
 		"",
 		"filter logs before this time (RFC3339)",
 	)
 
-	return command
+	return result
 }

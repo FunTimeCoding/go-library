@@ -76,11 +76,11 @@ type Server struct {
 
 `new.go` - create the MCPServer, register tools, return:
 ```go
-func New(s *store.Store, r face.Reporter, w *worker.Worker) *Server {
+func New(s *store.Store, r face.Reporter, w *worker.Worker, version string) *Server {
     result := &Server{
         server: server.NewMCPServer(
-            "<service-name>",
-            constant.DefaultVersion,
+            constant.Name,
+            version,
             server.WithToolCapabilities(true),
         ),
         store:    s,
@@ -182,7 +182,7 @@ lifecycle.WithServerMiddleware(
     web.AddressPort(o.Port),
     func(m *http.ServeMux) {
         generated.HandlerFromMux(server.New(s, p), m)
-        model_context.New(s, r, p).Mount(m)
+        model_context.New(s, r, p, o.Version).Mount(m)
     },
     web.RecoveryMiddleware(r),
 )

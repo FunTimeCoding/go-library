@@ -10,7 +10,7 @@ import (
 func explain(c *client.Client) *cobra.Command {
 	var instance string
 	var analyze bool
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "explain [sql]",
 		Short: "Show execution plan for a SQL query",
 		Args:  cobra.ExactArgs(1),
@@ -30,19 +30,19 @@ func explain(c *client.Client) *cobra.Command {
 			printResponse(r)
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&instance,
 		"instance",
 		"",
 		"Instance name (required)",
 	)
-	command.Flags().BoolVar(
+	result.Flags().BoolVar(
 		&analyze,
 		"analyze",
 		false,
 		"Run EXPLAIN ANALYZE",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("instance"))
+	errors.PanicOnError(result.MarkFlagRequired("instance"))
 
-	return command
+	return result
 }

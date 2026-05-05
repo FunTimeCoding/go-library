@@ -9,7 +9,7 @@ import (
 
 func createDeviceType(c *client.Client) *cobra.Command {
 	var manufacturer string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "create-device-type [model]",
 		Short: "Create a NetBox device type",
 		Args:  cobra.ExactArgs(1),
@@ -20,13 +20,13 @@ func createDeviceType(c *client.Client) *cobra.Command {
 			fmt.Println(c.CreateDeviceType(arguments[0], manufacturer))
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&manufacturer,
 		"manufacturer",
 		"",
 		"manufacturer name (required)",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("manufacturer"))
+	errors.PanicOnError(result.MarkFlagRequired("manufacturer"))
 
-	return command
+	return result
 }

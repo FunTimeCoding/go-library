@@ -26,11 +26,21 @@ These are injected by `gobuild` at compile time - see `build.md`.
 
 ## Main Function
 
-`Main()` is the first real function in every program. It always:
+`Main()` is the first real function in every program. There are two
+shapes depending on whether the tool uses flat flags or subcommands.
 
-1. Creates the reporter (see below)
-2. Registers flags and calls `monitor.ParseBind`
-3. Delegates to the tool-specific logic (`Check()`, `Run()`, etc.)
+### Choosing between flat flags and subcommands
+
+**Flat flags** (pflag + viper + `monitor.ParseBind`): daemons and
+single-purpose tools. Daemons should always use flat flags — they
+take a port and maybe a config path, nothing more. Standalone tools
+that do one thing also use flat flags.
+
+**Subcommands** (cobra): tools with multiple distinct operations.
+Typically CLI clients that talk to a daemon (gopostgres, gonetbox,
+gohabitica), but also standalone tools that grew past a single verb.
+
+### Flat-flag Main (daemons, single-purpose tools)
 
 ```go
 func Main(
@@ -38,7 +48,7 @@ func Main(
     gitHash string,
     buildDate string,
 ) {
-    r := reporter.NewEnvironment("go<tool>", version)
+    r := reporter.New(constant.Name, version)
     r.Start()
     defer func() { r.RecoverFlush(recover()) }()
 
@@ -46,11 +56,72 @@ func Main(
     monitor.ParseBind(version, gitHash, buildDate)
     o := option.New()
     o.Port = argument.RequiredInteger(argument.Port)
+    o.Version = version
     Run(o, r)
 }
 ```
 
 `monitor.ParseBind` adds `--version` flag, calls `argument.ParseBind()`, and exits on `--version`. Argument registration order: domain-specific `pflag` calls first, then `monitor.ParseBind()`. After parsing, populate the option struct using `argument.RequiredInteger` (or `argument.RequiredString`, `environment.Required`, etc.).
+
+### Subcommand Main (multi-operation tools)
+
+```go
+func Main(
+    version string,
+    gitHash string,
+    buildDate string,
+) {
+    r := reporter.New(constant.Name, version)
+    r.Start()
+    defer func() { r.RecoverFlush(recover()) }()
+    c := client.NewEnvironment()
+    root := &cobra.Command{
+        Use:     constant.Name,
+        Version: fmt.Sprintf("%s (%s %s)", version, gitHash, buildDate),
+    }
+    root.AddCommand(listItems(c))
+    root.AddCommand(createItem(c))
+
+    if f := root.Execute(); f != nil {
+        errors.Printf("%v", f)
+        os.Exit(1)
+    }
+}
+```
+
+No `monitor.ParseBind` — cobra handles `--version` via the `Version`
+field. No option struct — each subcommand owns its own flags.
+
+Each subcommand lives in its own file and returns a `*cobra.Command`:
+
+```go
+func createItem(c *client.Client) *cobra.Command {
+    var name string
+    result := &cobra.Command{
+        Use:   "create-item [value]",
+        Short: "Create a new item",
+        Args:  cobra.ExactArgs(1),
+        Run: func(
+            _ *cobra.Command,
+            arguments []string,
+        ) {
+            fmt.Println(c.Create(arguments[0], name))
+        },
+    }
+    result.Flags().StringVar(
+        &name,
+        "name",
+        "",
+        "Item name",
+    )
+
+    return result
+}
+```
+
+Subcommand flags use `result.Flags().StringVar` (bound to local
+variables), not global `pflag` registration. Required flags use
+`result.MarkFlagRequired`.
 
 ## Reporter Integration
 
@@ -59,7 +130,7 @@ work. The reporter captures unhandled panics and provides error reporting
 to all downstream components.
 
 ```go
-r := reporter.NewEnvironment("go<tool>", version)
+r := reporter.New(constant.Name, version)
 r.Start()
 defer func() { r.RecoverFlush(recover()) }()
 

@@ -8,7 +8,7 @@ import (
 
 func searchIssues(c *client.Client) *cobra.Command {
 	var limit int
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "search-issues [query]",
 		Short: "Search Jira issues using JQL",
 		Args:  cobra.ExactArgs(1),
@@ -25,7 +25,7 @@ func searchIssues(c *client.Client) *cobra.Command {
 			fmt.Println(c.SearchIssues(arguments[0], l))
 		},
 	}
-	command.Flags().IntVar(&limit, "limit", 0, "maximum number of results")
+	result.Flags().IntVar(&limit, "limit", 0, "maximum number of results")
 
-	return command
+	return result
 }

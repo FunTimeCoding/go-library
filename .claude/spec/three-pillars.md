@@ -22,7 +22,7 @@ logger and wires everything into lifecycle.
 
 ```go
 func Main(version, gitHash, buildDate string) {
-    r := reporter.New("goexample", environment.Optional(sentryConstant.LocatorEnvironment), "", version)
+    r := reporter.New(constant.Name, version)
     r.Start()
     defer func() { r.RecoverFlush(recover()) }()
 

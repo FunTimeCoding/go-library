@@ -8,7 +8,7 @@ import (
 
 func tasks(c *client.Client) *cobra.Command {
 	var taskType string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "tasks",
 		Short: "List tasks",
 		Run: func(
@@ -18,12 +18,12 @@ func tasks(c *client.Client) *cobra.Command {
 			fmt.Println(c.Tasks(taskType))
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&taskType,
 		"type",
 		"",
 		"Task type: habits, dailys, todos, rewards",
 	)
 
-	return command
+	return result
 }

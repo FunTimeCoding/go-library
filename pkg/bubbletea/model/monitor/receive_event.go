@@ -11,9 +11,8 @@ func (m *Model) receiveEvent(s receive.Message) {
 	for _, line := range s.Text {
 		p := split.Comma(line)
 		log.Printf("receive event: %s\n", line)
-		command := p[0]
 
-		switch command {
+		switch p[0] {
 		case constant.FlagAddCommand:
 			handle := p[1]
 			identifier := p[2]

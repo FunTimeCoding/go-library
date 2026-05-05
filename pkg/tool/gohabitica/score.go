@@ -8,7 +8,7 @@ import (
 
 func score(c *client.Client) *cobra.Command {
 	var direction string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "score [identifier]",
 		Short: "Score a task",
 		Args:  cobra.ExactArgs(1),
@@ -19,12 +19,12 @@ func score(c *client.Client) *cobra.Command {
 			fmt.Println(c.Score(arguments[0], direction))
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&direction,
 		"direction",
 		"up",
 		"Score direction: up or down",
 	)
 
-	return command
+	return result
 }

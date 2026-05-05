@@ -10,7 +10,7 @@ import (
 func listTables(c *client.Client) *cobra.Command {
 	var instance string
 	var schema string
-	command := &cobra.Command{
+	result := &cobra.Command{
 		Use:   "list-tables",
 		Short: "List tables in a schema",
 		Run: func(
@@ -28,19 +28,19 @@ func listTables(c *client.Client) *cobra.Command {
 			printResponse(r)
 		},
 	}
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&instance,
 		"instance",
 		"",
 		"Instance name (required)",
 	)
-	command.Flags().StringVar(
+	result.Flags().StringVar(
 		&schema,
 		"schema",
 		"",
 		"Schema name (default: public)",
 	)
-	errors.PanicOnError(command.MarkFlagRequired("instance"))
+	errors.PanicOnError(result.MarkFlagRequired("instance"))
 
-	return command
+	return result
 }

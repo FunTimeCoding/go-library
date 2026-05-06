@@ -2,7 +2,6 @@ package model_context
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -11,15 +10,12 @@ import (
 func (s *Server) keys(
 	_ context.Context,
 	_ mcp.CallToolRequest,
-) (result *mcp.CallToolResult, returnError error) {
-	defer func() {
-		if v := recover(); v != nil {
-			result, returnError = s.captureFail(
-				fmt.Errorf("%v", v),
-				constant.KeysFailed,
-			)
-		}
-	}()
+) (*mcp.CallToolResult, error) {
+	result, e := s.runner.SaltClient().Keys()
 
-	return response.SuccessAny(s.runner.SaltClient().Keys())
+	if e != nil {
+		return s.captureFail(e, constant.KeysFailed)
+	}
+
+	return response.SuccessAny(result)
 }

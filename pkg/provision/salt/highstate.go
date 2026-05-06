@@ -4,6 +4,6 @@ import "github.com/daixijun/go-salt/v2"
 
 func (c *Client) Highstate(
 	target string,
-) map[string]salt.LocalClientReturn {
+) (map[string]salt.LocalClientReturn, error) {
 	return c.Local(target, "state.highstate", nil)
 }

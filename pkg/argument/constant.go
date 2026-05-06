@@ -3,6 +3,7 @@ package argument
 const (
 	Action         = "action"
 	All            = "all"
+	AnsiblePath    = "ansible-path"
 	Arm            = "arm"
 	Body           = "body"
 	Branch         = "branch"
@@ -20,6 +21,7 @@ const (
 	Core           = "core"
 	Create         = "create"
 	Critical       = "critical"
+	ClonePath      = "clone-path"
 	Dense          = "dense"
 	Depth          = "depth"
 	Disk           = "disk"
@@ -76,6 +78,7 @@ const (
 	Parent         = "parent"
 	Password       = "password"
 	Path           = "path"
+	Playbook       = "playbook"
 	Pod            = "pod"
 	Port           = "port"
 	Pretend        = "pretend"

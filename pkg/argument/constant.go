@@ -106,6 +106,7 @@ const (
 	Tag            = "tag"
 	Team           = "team"
 	Template       = "template"
+	TerraformPath  = "terraform-path"
 	Text           = "text"
 	Timeout        = "timeout"
 	Title          = "title"

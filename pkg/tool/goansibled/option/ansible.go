@@ -1,8 +1,11 @@
 package option
 
 type Ansible struct {
-	Repository  string
-	ClonePath   string
-	AnsiblePath string
-	Playbook    []string
+	Port            int
+	Version         string
+	Repository      string
+	ClonePath       string
+	AnsiblePath     string
+	Playbook        []string
+	PostgresLocator string
 }

@@ -1,0 +1,3 @@
+FROM docker.io/saltstack/salt:3006.5
+COPY tmp/gosaltd/linux-amd64/gosaltd /usr/local/bin
+ENTRYPOINT ["gosaltd"]

@@ -109,6 +109,8 @@ gopostgresd
 goraid
 goraidd
 goraidparsed
+gosalt
+gosaltd
 gosentry
 gosentryd
 gosilence

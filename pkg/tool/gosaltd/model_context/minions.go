@@ -11,7 +11,13 @@ func (s *Server) minions(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	result, e := s.runner.SaltClient().Minions()
+	c := s.runner.SaltClient()
+
+	if c == nil {
+		return response.Fail(constant.NotConnected)
+	}
+
+	result, e := c.Minions()
 
 	if e != nil {
 		return s.captureFail(e, constant.MinionsFailed)

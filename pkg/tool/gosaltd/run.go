@@ -21,8 +21,7 @@ func Run(
 ) {
 	l := logger.New(context.Background())
 	s := store.New(relational.New(o.PostgresLocator).Mapper())
-	c := salt.NewEnvironment()
-	n := runner.New(o, c, s, l, r)
+	n := runner.New(o, salt.NewEnvironment, s, l, r)
 	lifecycle.New(
 		l,
 		lifecycle.WithWorker(n),

@@ -7,6 +7,7 @@ import (
 
 func (r *Runner) run() {
 	r.recovery.Run(r.gitClone)
+	r.recovery.Run(r.connect)
 	r.recovery.Run(func() { r.apply(store.TriggerTimer) })
 	syncTicker := time.NewTicker(SyncInterval)
 	defer syncTicker.Stop()

@@ -11,19 +11,19 @@ import (
 
 func New(
 	o *option.Salt,
-	c *salt.Client,
+	connector func() *salt.Client,
 	s *store.Store,
 	l *logger.Logger,
 	r face.Reporter,
 ) *Runner {
 	return &Runner{
-		repository: o.Repository,
-		clonePath:  o.ClonePath,
-		salt:       c,
-		logger:     l,
-		recovery:   recovery.New(l, r),
-		store:      s,
-		trigger:    make(chan TriggerRequest, 1),
-		stop:       make(chan struct{}),
+		repository:    o.Repository,
+		clonePath:     o.ClonePath,
+		saltConnector: connector,
+		logger:        l,
+		recovery:      recovery.New(l, r),
+		store:         s,
+		trigger:       make(chan TriggerRequest, 1),
+		stop:          make(chan struct{}),
 	}
 }

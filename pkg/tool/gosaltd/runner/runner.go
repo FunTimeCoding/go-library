@@ -8,12 +8,13 @@ import (
 )
 
 type Runner struct {
-	repository string
-	clonePath  string
-	salt       *salt.Client
-	logger     *logger.Logger
-	recovery   *recovery.Recovery
-	store      *store.Store
-	trigger    chan TriggerRequest
-	stop       chan struct{}
+	repository    string
+	clonePath     string
+	saltConnector func() *salt.Client
+	salt          *salt.Client
+	logger        *logger.Logger
+	recovery      *recovery.Recovery
+	store         *store.Store
+	trigger       chan TriggerRequest
+	stop          chan struct{}
 }

@@ -11,7 +11,13 @@ func (s *Server) keys(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	result, e := s.runner.SaltClient().Keys()
+	c := s.runner.SaltClient()
+
+	if c == nil {
+		return response.Fail(constant.NotConnected)
+	}
+
+	result, e := c.Keys()
 
 	if e != nil {
 		return s.captureFail(e, constant.KeysFailed)

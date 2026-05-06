@@ -15,4 +15,5 @@ const (
 	RunLookupFailed  = "failed to look up run"
 	MinionsFailed    = "failed to list minions"
 	KeysFailed       = "failed to list keys"
+	NotConnected     = "salt API not connected yet"
 )

@@ -1,6 +1,7 @@
 package constant
 
 const (
-	Base = "base"
-	Head = "head"
+	Base   = "base"
+	Head   = "head"
+	Suffix = "suffix"
 )

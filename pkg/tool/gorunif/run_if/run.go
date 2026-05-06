@@ -12,9 +12,10 @@ import (
 )
 
 func Run(o *option.RunIf) {
-	base := viper.GetString(constant.Base)
+	base := resolveBase(viper.GetString(constant.Base))
 	head := viper.GetString(constant.Head)
-	path := argument.RequiredPositional(0, "PATH")
+	suffix := viper.GetBool(constant.Suffix)
+	pattern := argument.RequiredPositional(0, "PATTERN")
 	execute := argument.RequiredPositional(1, "EXECUTE")
 	r := run.New()
 	r.Start(
@@ -30,11 +31,19 @@ func Run(o *option.RunIf) {
 			fmt.Printf("Change: %s\n", p)
 		}
 
-		if strings.HasPrefix(p, path) {
+		var match bool
+
+		if suffix {
+			match = strings.HasSuffix(p, pattern)
+		} else {
+			match = strings.HasPrefix(p, pattern)
+		}
+
+		if match {
 			changed = true
 
 			if o.Verbose {
-				fmt.Printf("Match: %s\n", path)
+				fmt.Printf("Match: %s\n", pattern)
 			}
 
 			break

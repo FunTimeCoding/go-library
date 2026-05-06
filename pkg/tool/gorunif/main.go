@@ -19,8 +19,17 @@ func Main(
 ) {
 	r := reporter.New(constant.Name, version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.String(runIfConstant.Base, "HEAD~1", "Base commit")
+	pflag.String(
+		runIfConstant.Base,
+		"",
+		"Base commit (default: remote tracking branch)",
+	)
 	pflag.String(runIfConstant.Head, "HEAD", "Head commit")
+	pflag.Bool(
+		runIfConstant.Suffix,
+		false,
+		"Match path as suffix instead of prefix",
+	)
 	monitor.VerboseArgument()
 	monitor.ParseBind(version, gitHash, buildDate)
 	o := option.New()

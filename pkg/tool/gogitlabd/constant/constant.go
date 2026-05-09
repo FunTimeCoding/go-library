@@ -39,4 +39,6 @@ const (
 	CreateBranch = "create_branch"
 
 	Unreachable = "GitLab API unreachable"
+
+	ServerInstructions = "GitLab API — projects, pipelines, merge requests, commits, CI variables. Projects are referenced by path (owner/repo) or numeric ID."
 )

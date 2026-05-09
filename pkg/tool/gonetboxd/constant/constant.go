@@ -50,4 +50,6 @@ const (
 	VirtualMachine = "virtual_machine"
 
 	Unreachable = "NetBox API unreachable"
+
+	ServerInstructions = "NetBox infrastructure inventory — devices, interfaces, IP addresses, sites, clusters, virtual machines. Both read and create operations."
 )

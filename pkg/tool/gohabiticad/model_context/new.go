@@ -17,6 +17,7 @@ func New(
 			constant.Name,
 			version,
 			server.WithToolCapabilities(true),
+			server.WithInstructions(constant.ServerInstructions),
 		),
 		habitica: c,
 		reporter: r,

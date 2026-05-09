@@ -32,6 +32,8 @@ const (
 	ConfluenceGetPageChildren = "confluence_get_page_children"
 	ConfluenceAddComment      = "confluence_add_comment"
 
+	ServerInstructions = "Jira and Confluence — search and manage issues, transitions, checklists, comments, issue links. Confluence: search, read, create, and update pages."
+
 	AllowedValueLimit = 5
 
 	ChecklistField       = "Checklists"

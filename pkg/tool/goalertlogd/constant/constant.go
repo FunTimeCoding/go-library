@@ -11,4 +11,6 @@ const (
 	End   = "end"
 	N     = "n"
 	Start = "start"
+
+	ServerInstructions = "Alert lifecycle tracker — query active, recent, and top alerts. Tracks when alerts start, end, and recur."
 )

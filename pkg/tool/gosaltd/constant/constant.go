@@ -11,6 +11,8 @@ const (
 	Limit            = "limit"
 	Status           = "status"
 	Identifier       = "id"
+	ServerInstructions = "Salt highstate runner — trigger highstate on all minions and check results. Runs execute asynchronously; use runs and run tools to poll for completion."
+
 	RecentRunsFailed = "failed to list recent runs"
 	RunLookupFailed  = "failed to look up run"
 	MinionsFailed    = "failed to list minions"

@@ -17,4 +17,6 @@ const (
 	DeleteIssue       = "delete_issue"
 
 	Unreachable = "Sentry API unreachable"
+
+	ServerInstructions = "Error tracking and triage. Search unresolved issues, inspect stack traces and events, delete resolved errors. Check after deploying new service versions."
 )

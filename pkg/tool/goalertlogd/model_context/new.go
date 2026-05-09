@@ -19,6 +19,7 @@ func New(
 			constant.Name,
 			version,
 			server.WithToolCapabilities(true),
+			server.WithInstructions(constant.ServerInstructions),
 		),
 		store:    s,
 		worker:   p,

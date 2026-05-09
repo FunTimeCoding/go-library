@@ -15,6 +15,8 @@ const (
 
 	Unreachable = "Habitica API unreachable"
 
+	ServerInstructions = "Habitica task gamification — score tasks, check stats, manage gear. Habits use up/down direction, dailies and todos use up to complete."
+
 	Direction = "direction"
 	Key       = "key"
 	Notes     = "notes"

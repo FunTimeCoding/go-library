@@ -16,4 +16,6 @@ const (
 	BridgePortFlag = "bridge-port"
 
 	NotResponding = "Firefox not responding"
+
+	ServerInstructions = "Firefox browser — list, read, create, close, and navigate tabs. Tab groups for organization."
 )

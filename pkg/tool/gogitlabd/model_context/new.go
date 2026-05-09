@@ -16,6 +16,8 @@ func New(
 		server: server.NewMCPServer(
 			constant.Name,
 			version,
+			server.WithToolCapabilities(true),
+			server.WithInstructions(constant.ServerInstructions),
 		),
 		client:   c,
 		reporter: r,

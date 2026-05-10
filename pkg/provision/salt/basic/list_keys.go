@@ -14,9 +14,8 @@ func (c *Client) ListKeys() (*response.KeysReturn, error) {
 	}
 
 	var r response.Keys
-	f := json.Unmarshal(b, &r)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &r); f != nil {
 		return nil, f
 	}
 

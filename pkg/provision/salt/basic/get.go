@@ -2,6 +2,7 @@ package basic
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/provision/salt/constant"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"io"
 	"net/http"
@@ -19,6 +20,7 @@ func (c *Client) Get(path string) ([]byte, error) {
 	}
 
 	r.Header.Set(web.Accept, web.Object)
+	r.Header.Set(constant.TokenHeader, c.token)
 	s, f := c.client.Do(r)
 
 	if f != nil {

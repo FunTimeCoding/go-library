@@ -13,19 +13,19 @@ func (c *Client) ListMinions() ([]response.Minion, error) {
 		return nil, e
 	}
 
-	var raw response.MinionList
+	var r response.MinionList
 
-	if f := json.Unmarshal(b, &raw); f != nil {
+	if f := json.Unmarshal(b, &r); f != nil {
 		return nil, f
 	}
 
-	if len(raw.Return) == 0 {
+	if len(r.Return) == 0 {
 		return nil, nil
 	}
 
 	var result []response.Minion
 
-	for _, v := range raw.Return[0] {
+	for _, v := range r.Return[0] {
 		var m response.Minion
 
 		if f := json.Unmarshal(v, &m); f != nil {

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/provision/salt/constant"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"io"
 	"net/http"
@@ -32,6 +33,9 @@ func (c *Client) Post(
 	r.Header.Set(web.Accept, web.Object)
 	r.Header.Set(web.ContentType, web.Object)
 
+	if c.token != "" {
+		r.Header.Set(constant.TokenHeader, c.token)
+	}
 
 	s, g := c.client.Do(r)
 

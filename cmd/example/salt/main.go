@@ -6,7 +6,8 @@ func main() {
 	example.Keys()
 
 	if false {
-		example.Minions()
+		example.Accept()
 		example.Jobs()
+		example.Minions()
 	}
 }

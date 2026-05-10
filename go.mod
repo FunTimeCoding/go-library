@@ -23,7 +23,6 @@ require (
 	github.com/coreos/go-oidc/v3 v3.18.0
 	github.com/coreos/go-semver v0.3.1
 	github.com/ctreminiom/go-atlassian/v2 v2.12.0
-	github.com/daixijun/go-salt/v2 v2.0.1
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/dimchansky/utfbom v1.1.1
 	github.com/docker/go-units v0.5.0

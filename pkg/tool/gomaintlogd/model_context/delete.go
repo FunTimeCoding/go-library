@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -18,7 +19,7 @@ func (s *Server) delete(
 	}
 
 	if e := s.store.Delete(uint(id)); e != nil {
-		return s.captureFail(e, constant.DatabaseUnreachable)
+		return s.captureFail(e, library.UnexpectedError)
 	}
 
 	return response.Success("Entry %d deleted successfully", int(id))

@@ -13,7 +13,7 @@ func (s *Server) listSpaces(
 	result, e := s.confluence.Spaces()
 
 	if e != nil {
-		return s.captureFail(e, "Confluence API unreachable")
+		return s.captureDetail(e)
 	}
 
 	return response.SuccessAny(result)

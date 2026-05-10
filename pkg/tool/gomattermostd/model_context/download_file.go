@@ -3,7 +3,6 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"os"
@@ -25,7 +24,7 @@ func (s *Server) DownloadFile(
 	)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	b, _, e := s.client.Nested().GetFile(
@@ -34,7 +33,7 @@ func (s *Server) DownloadFile(
 	)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	path := a.Path

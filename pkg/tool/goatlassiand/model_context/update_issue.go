@@ -101,7 +101,7 @@ func (s *Server) updateIssue(
 		fieldMap, h := s.jira.FieldMap()
 
 		if h != nil {
-			return s.captureFail(h, "Jira API unreachable")
+			return s.captureDetail(h)
 		}
 
 		for name, value := range fields {

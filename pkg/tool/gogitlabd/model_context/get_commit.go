@@ -3,7 +3,6 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gogitlabd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -24,7 +23,7 @@ func (s *Server) GetCommit(
 	v, _, e := s.client.Commits.GetCommit(a.Project, a.Sha, nil)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	return response.SuccessAny(v)

@@ -3,7 +3,6 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mattermost/mattermost/server/public/model"
@@ -22,7 +21,7 @@ func (s *Server) SearchChannels(
 	me, e := s.client.Me()
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	team := s.client.DefaultTeam()
@@ -33,7 +32,7 @@ func (s *Server) SearchChannels(
 	)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	type row struct {

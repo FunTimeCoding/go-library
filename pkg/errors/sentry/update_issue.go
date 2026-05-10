@@ -30,9 +30,8 @@ func (c *Client) UpdateIssue(
 	}
 
 	var result response.Issue
-	f := json.Unmarshal(b, &result)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &result); f != nil {
 		return nil, f
 	}
 

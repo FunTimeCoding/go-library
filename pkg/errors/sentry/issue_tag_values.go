@@ -34,9 +34,8 @@ func (c *Client) IssueTagValues(
 	}
 
 	var result []response.TagValue
-	f := json.Unmarshal(b, &result)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &result); f != nil {
 		return nil, f
 	}
 

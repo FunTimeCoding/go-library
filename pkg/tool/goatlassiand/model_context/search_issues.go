@@ -27,7 +27,7 @@ func (s *Server) searchIssues(
 	result, h := s.jira.SearchLimit(int(limit), query)
 
 	if h != nil {
-		return s.captureFail(h, "Jira API unreachable")
+		return s.captureDetail(h)
 	}
 
 	return response.SuccessAny(convert.JiraIssues(result))

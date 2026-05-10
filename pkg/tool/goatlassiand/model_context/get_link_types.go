@@ -16,7 +16,7 @@ func (s *Server) getLinkTypes(
 	)
 
 	if e != nil {
-		return s.captureFail(e, "Jira API unreachable")
+		return s.captureDetail(e)
 	}
 
 	var parsed linkTypeResponse

@@ -32,9 +32,8 @@ func (c *Client) Releases(
 	}
 
 	var result []response.Release
-	f := json.Unmarshal(b, &result)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &result); f != nil {
 		return nil, f
 	}
 

@@ -3,7 +3,6 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -26,7 +25,7 @@ func (s *Server) GetThreadReplies(
 	replies, f := s.client.Thread(parent)
 
 	if f != nil {
-		return s.captureFail(f, constant.Unreachable)
+		return s.captureDetail(f)
 	}
 
 	type row struct {

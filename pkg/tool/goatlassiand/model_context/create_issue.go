@@ -44,7 +44,7 @@ func (s *Server) createIssue(
 	reporter, i := s.jira.User()
 
 	if i != nil {
-		return s.captureFail(i, "Jira API unreachable")
+		return s.captureDetail(i)
 	}
 
 	raw.Fields.Reporter = reporter
@@ -85,7 +85,7 @@ func (s *Server) createIssue(
 		fieldMap, j := s.jira.FieldMap()
 
 		if j != nil {
-			return s.captureFail(j, "Jira API unreachable")
+			return s.captureDetail(j)
 		}
 
 		for name, value := range fields {

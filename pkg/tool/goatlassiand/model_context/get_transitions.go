@@ -20,7 +20,7 @@ func (s *Server) getTransitions(
 	result, g := s.jira.Transitions(key)
 
 	if g != nil {
-		return s.captureFail(g, "Jira API unreachable")
+		return s.captureDetail(g)
 	}
 
 	return response.SuccessAny(result)

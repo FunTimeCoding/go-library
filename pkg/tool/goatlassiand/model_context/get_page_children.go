@@ -20,7 +20,7 @@ func (s *Server) getPageChildren(
 	result, g := s.confluence.ChildPagesByIdentifier(identifier)
 
 	if g != nil {
-		return s.captureFail(g, "Confluence API unreachable")
+		return s.captureDetail(g)
 	}
 
 	return response.SuccessAny(result)

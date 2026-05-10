@@ -46,5 +46,9 @@ func (c *Client) PostOldPath(
 		return "", g
 	}
 
+	if result.StatusCode >= http.StatusBadRequest {
+		return "", parseDetail(b, result.Status)
+	}
+
 	return string(b), nil
 }

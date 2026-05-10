@@ -20,7 +20,7 @@ func (s *Server) writeChecklist(
 	m, e := s.jira.FieldMap()
 
 	if e != nil {
-		return s.captureFail(e, "Jira API unreachable")
+		return s.captureDetail(e)
 	}
 
 	field := m.ByName(constant.ChecklistField)

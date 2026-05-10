@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
-	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -25,7 +24,7 @@ func (s *Server) listDevices(
 	}
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	return response.SuccessAny(convert.Devices(result))

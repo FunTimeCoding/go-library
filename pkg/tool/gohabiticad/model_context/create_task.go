@@ -33,7 +33,7 @@ func (s *Server) createTask(
 	result, h := s.habitica.CreateTask(body)
 
 	if h != nil {
-		return s.captureFail(h, constant.Unreachable)
+		return s.captureDetail(h)
 	}
 
 	return response.SuccessAny(convert.Task(result))

@@ -2,11 +2,14 @@ package habitica
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
-	constant2 "github.com/funtimecoding/go-library/pkg/habitica/constant"
+	"github.com/funtimecoding/go-library/pkg/habitica/constant"
+	"github.com/funtimecoding/go-library/pkg/habitica/response"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/web/detail_error"
 	"io"
 	"net/http"
 )
@@ -28,9 +31,9 @@ func (c *Client) do(
 		return nil, e
 	}
 
-	r.Header.Set(constant2.UserHeader, c.userIdentifier)
-	r.Header.Set(constant2.TokenHeader, c.token)
-	r.Header.Set(constant.ContentType, constant.Object)
+	r.Header.Set(constant.UserHeader, c.userIdentifier)
+	r.Header.Set(constant.TokenHeader, c.token)
+	r.Header.Set(web.ContentType, web.Object)
 	result, f := c.client.Do(r)
 
 	if f != nil {
@@ -54,13 +57,16 @@ func (c *Client) do(
 			)
 		}
 
-		return nil, fmt.Errorf(
-			"habitica %s %s: %d %s",
-			method,
-			path,
-			result.StatusCode,
-			string(b),
-		)
+		var r response.Error
+
+		if json.Unmarshal(b, &r) == nil && r.Message != "" {
+			return nil, detail_error.New(
+				r.Message,
+				result.Status,
+			)
+		}
+
+		return nil, fmt.Errorf("%s", result.Status)
 	}
 
 	return result, nil

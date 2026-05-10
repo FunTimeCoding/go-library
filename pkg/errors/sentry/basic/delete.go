@@ -26,7 +26,7 @@ func (c *Client) Delete(path string) error {
 		return f
 	}
 
-	_, g := io.ReadAll(s.Body)
+	result, g := io.ReadAll(s.Body)
 	h := s.Body.Close()
 
 	if g != nil {
@@ -35,6 +35,10 @@ func (c *Client) Delete(path string) error {
 
 	if h != nil {
 		return h
+	}
+
+	if s.StatusCode >= http.StatusBadRequest {
+		return parseDetail(result, s.Status)
 	}
 
 	return nil

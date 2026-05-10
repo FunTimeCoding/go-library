@@ -17,9 +17,8 @@ func (c *Client) Teams(organization string) ([]response.Team, error) {
 	}
 
 	var result []response.Team
-	f := json.Unmarshal(b, &result)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &result); f != nil {
 		return nil, f
 	}
 

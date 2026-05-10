@@ -42,9 +42,8 @@ func (c *Client) IssueEvents(
 	}
 
 	var result []response.Event
-	f := json.Unmarshal(b, &result)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &result); f != nil {
 		return nil, f
 	}
 

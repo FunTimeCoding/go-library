@@ -17,9 +17,8 @@ func (c *Client) Organization(slug string) (*response.Organization, error) {
 	}
 
 	var result response.Organization
-	f := json.Unmarshal(b, &result)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &result); f != nil {
 		return nil, f
 	}
 

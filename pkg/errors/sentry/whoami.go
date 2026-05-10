@@ -13,9 +13,8 @@ func (c *Client) Whoami() (*response.User, error) {
 	}
 
 	var result response.User
-	f := json.Unmarshal(b, &result)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &result); f != nil {
 		return nil, f
 	}
 

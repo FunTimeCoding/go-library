@@ -29,5 +29,9 @@ func (c *Client) DeleteV2(l string) (string, error) {
 		return "", g
 	}
 
+	if result.StatusCode >= http.StatusBadRequest {
+		return "", parseDetail(b, result.Status)
+	}
+
 	return string(b), nil
 }

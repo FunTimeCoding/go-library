@@ -21,7 +21,5 @@ const (
 	GetUserProfile    = "get_user_profile"
 	RunMonitoring     = "run_monitoring"
 
-	Unreachable = "Mattermost API unreachable"
-
 	ServerInstructions = "Mattermost messaging — channels, threads, search, direct messages, reactions, file sharing."
 )

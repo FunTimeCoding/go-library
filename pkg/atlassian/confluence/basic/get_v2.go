@@ -1,7 +1,6 @@
 package basic
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 )
@@ -30,16 +29,9 @@ func (c *Client) GetV2(l string) (string, error) {
 		return "", g
 	}
 
-	body := string(b)
-
-	if result.StatusCode >= 400 {
-		return "", fmt.Errorf(
-			"confluence GET %s: %d %s",
-			l,
-			result.StatusCode,
-			body,
-		)
+	if result.StatusCode >= http.StatusBadRequest {
+		return "", parseDetail(b, result.Status)
 	}
 
-	return body, nil
+	return string(b), nil
 }

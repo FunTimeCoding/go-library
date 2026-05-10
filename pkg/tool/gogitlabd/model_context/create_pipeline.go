@@ -3,7 +3,6 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gogitlabd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"gitlab.com/gitlab-org/api/client-go/v2"
@@ -28,7 +27,7 @@ func (s *Server) CreatePipeline(
 	)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	return response.SuccessAny(v)

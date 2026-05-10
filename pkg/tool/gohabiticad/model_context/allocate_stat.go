@@ -21,7 +21,7 @@ func (s *Server) allocateStat(
 	result, g := s.habitica.Allocate(stat)
 
 	if g != nil {
-		return s.captureFail(g, constant.Unreachable)
+		return s.captureDetail(g)
 	}
 
 	return response.SuccessAny(convert.Stats(result))

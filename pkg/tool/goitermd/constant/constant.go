@@ -12,7 +12,5 @@ const (
 	SetTabColor  = "set_tab_color"
 	CreateTab    = "create_tab"
 
-	NotResponding = "iTerm not responding"
-
 	ServerInstructions = "iTerm2 terminal workspace — read screens, send text and keys, manage tabs. Check job_name and command_line before sending to avoid unintended commands on production sessions."
 )

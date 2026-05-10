@@ -16,7 +16,7 @@ func (s *Server) getTasks(
 	result, e := s.habitica.Tasks(taskType)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	return response.SuccessAny(convert.Tasks(result))

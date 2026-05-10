@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
@@ -22,7 +23,7 @@ func (s *Server) update(
 	e, f := s.store.Get(uint(id))
 
 	if f != nil {
-		return s.captureFail(f, constant.DatabaseUnreachable)
+		return s.captureFail(f, library.UnexpectedError)
 	}
 
 	if v := r.GetString(constant.Action, ""); v != "" {
@@ -59,7 +60,7 @@ func (s *Server) update(
 	}
 
 	if g := s.store.Update(e); g != nil {
-		return s.captureFail(g, constant.DatabaseUnreachable)
+		return s.captureFail(g, library.UnexpectedError)
 	}
 
 	return response.Success(

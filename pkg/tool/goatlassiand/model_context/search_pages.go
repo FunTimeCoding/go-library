@@ -20,7 +20,7 @@ func (s *Server) searchPages(
 	result, g := s.confluence.Search(query)
 
 	if g != nil {
-		return s.captureFail(g, "Confluence API unreachable")
+		return s.captureDetail(g)
 	}
 
 	return response.SuccessAny(result)

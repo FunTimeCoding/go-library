@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/post"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -27,14 +26,14 @@ func (s *Server) SearchMessages(
 	)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	posts := post.NewSlice(post.FromList(list, true))
 	g := s.client.Enrich(posts)
 
 	if g != nil {
-		return s.captureFail(g, constant.Unreachable)
+		return s.captureDetail(g)
 	}
 
 	type row struct {

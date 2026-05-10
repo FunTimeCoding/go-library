@@ -21,13 +21,13 @@ func (s *Server) equipGear(
 	e := s.habitica.Equip(key)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	result, g := s.habitica.UserGear()
 
 	if g != nil {
-		return s.captureFail(g, constant.Unreachable)
+		return s.captureDetail(g)
 	}
 
 	return response.SuccessAny(convert.Gear(result))

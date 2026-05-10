@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/notation"
@@ -62,7 +63,7 @@ func (s *Server) list(
 	entries, e := s.store.List(filter)
 
 	if e != nil {
-		return s.captureFail(e, constant.DatabaseUnreachable)
+		return s.captureFail(e, library.UnexpectedError)
 	}
 
 	return response.Success(

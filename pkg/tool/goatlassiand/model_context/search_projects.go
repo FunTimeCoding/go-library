@@ -29,7 +29,7 @@ func (s *Server) searchProjects(
 	projects, h := s.jira.Projects()
 
 	if h != nil {
-		return s.captureFail(h, "Jira API unreachable")
+		return s.captureDetail(h)
 	}
 
 	var result []*server.JiraProject

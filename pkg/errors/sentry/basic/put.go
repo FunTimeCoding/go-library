@@ -51,5 +51,9 @@ func (c *Client) Put(
 		return nil, i
 	}
 
+	if s.StatusCode >= http.StatusBadRequest {
+		return nil, parseDetail(result, s.Status)
+	}
+
 	return result, nil
 }

@@ -1,5 +1,7 @@
 package constant
 
+import "errors"
+
 const (
 	Name = "gosentryd"
 
@@ -16,7 +18,7 @@ const (
 	GetIssueEvent     = "get_issue_event"
 	DeleteIssue       = "delete_issue"
 
-	Unreachable = "Sentry API unreachable"
-
 	ServerInstructions = "Error tracking and triage. Search unresolved issues, inspect stack traces and events, delete resolved errors. Check after deploying new service versions."
 )
+
+var ErrorProjectNotFound = errors.New("project not found")

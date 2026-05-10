@@ -11,7 +11,5 @@ const (
 	CloseView  = "close_view"
 	OpenFile   = "open_file"
 
-	NotResponding = "Sublime Text not responding"
-
 	ServerInstructions = "Sublime Text editor — read, edit, and create buffers. Scratch buffers persist across plugin reloads and Sublime restarts."
 )

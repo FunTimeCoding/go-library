@@ -3,7 +3,6 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -20,7 +19,7 @@ func (s *Server) GetUserProfile(
 	u, e := s.client.User(a.UserID)
 
 	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+		return s.captureDetail(e)
 	}
 
 	return response.SuccessAny(

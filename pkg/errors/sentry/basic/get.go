@@ -42,5 +42,9 @@ func (c *Client) Get(
 		return nil, h
 	}
 
+	if s.StatusCode >= http.StatusBadRequest {
+		return nil, parseDetail(result, s.Status)
+	}
+
 	return result, nil
 }

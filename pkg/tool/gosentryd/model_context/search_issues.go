@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"errors"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gosentryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gosentryd/model_context/argument"
@@ -13,16 +14,26 @@ func (s *Server) SearchIssues(
 	_ mcp.CallToolRequest,
 	a argument.SearchIssues,
 ) (*mcp.CallToolResult, error) {
-	result, e := s.client.SearchIssues(
+	project, e := s.resolveProject(a.Project)
+
+	if e != nil {
+		if errors.Is(e, constant.ErrorProjectNotFound) {
+			return response.Fail(e.Error())
+		}
+
+		return s.captureDetail(e)
+	}
+
+	result, f := s.client.SearchIssues(
 		s.organization,
 		a.Query,
-		a.Project,
+		project,
 		a.Limit,
 		a.Cursor,
 	)
 
-	if e != nil {
-		return s.captureFail(e, constant.Unreachable)
+	if f != nil {
+		return s.captureDetail(f)
 	}
 
 	return response.SuccessAny(result)

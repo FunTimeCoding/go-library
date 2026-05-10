@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
-	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -25,7 +25,7 @@ func (s *Server) GroupTabs(
 	)
 
 	if e != nil {
-		return s.captureFail(e, constant.NotResponding)
+		return s.captureFail(e, constant.UnexpectedError)
 	}
 
 	return response.Success("grouped into group %d", groupIdentifier)

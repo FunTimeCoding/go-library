@@ -17,9 +17,8 @@ func (c *Client) OrganizationProjects(organization string) ([]response.Project, 
 	}
 
 	var result []response.Project
-	f := json.Unmarshal(b, &result)
 
-	if f != nil {
+	if f := json.Unmarshal(b, &result); f != nil {
 		return nil, f
 	}
 

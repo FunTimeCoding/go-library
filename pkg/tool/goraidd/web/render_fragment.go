@@ -11,6 +11,6 @@ func renderFragment(
 	w http.ResponseWriter,
 	fragment gomponents.Node,
 ) {
-	w.Header().Set(constant.ContentType, "text/html; charset=utf-8")
+	w.Header().Set(constant.ContentType, constant.MarkupUnicode)
 	errors.PanicOnError(fragment.Render(w))
 }

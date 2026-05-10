@@ -9,8 +9,8 @@ import (
 
 func renderFragment(
 	w http.ResponseWriter,
-	fragment gomponents.Node,
+	n gomponents.Node,
 ) {
-	w.Header().Set(constant.ContentType, "text/html; charset=utf-8")
-	errors.PanicOnError(fragment.Render(w))
+	w.Header().Set(constant.ContentType, constant.MarkupUnicode)
+	errors.PanicOnError(n.Render(w))
 }

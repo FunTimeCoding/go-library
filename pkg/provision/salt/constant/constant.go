@@ -8,4 +8,20 @@ const (
 	AuthenticationEnvironment = "SALT_AUTHENTICATION"
 
 	Run = "cmd.run"
+
+	TokenHeader = "X-Auth-Token"
+
+	LoginPath   = "login"
+	KeysPath    = "keys"
+	MinionsPath = "minions"
+	JobsPath    = "jobs"
+
+	LocalClient      = "local"
+	LocalAsyncClient = "local_async"
+	WheelClient      = "wheel"
+
+	GlobTarget = "glob"
+
+	KeyAccept = "key.accept"
+	KeyDelete = "key.delete"
 )

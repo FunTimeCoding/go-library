@@ -11,6 +11,6 @@ func renderPage(
 	w http.ResponseWriter,
 	page gomponents.Node,
 ) {
-	w.Header().Set(constant.ContentType, "text/html; charset=utf-8")
+	w.Header().Set(constant.ContentType, constant.MarkupUnicode)
 	errors.PanicOnError(page.Render(w))
 }

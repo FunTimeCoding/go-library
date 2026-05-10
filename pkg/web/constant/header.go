@@ -20,4 +20,6 @@ const (
 
 	ProtocolVersion   = "Mcp-Protocol-Version"
 	SessionIdentifier = "Mcp-Session-Id"
+
+	MarkupUnicode = "text/html; charset=utf-8"
 )

@@ -38,6 +38,16 @@ func (r *Run) Start(s ...string) string {
 	}
 
 	if r.Panic {
+		if e != nil && r.reporter != nil {
+			r.reporter.CaptureWithContext(
+				e,
+				r.reporterLabel,
+				map[string]any{
+				"output": r.OutputString,
+				"stderr": r.ErrorString,
+			})
+		}
+
 		library.PanicOnError(e)
 	}
 

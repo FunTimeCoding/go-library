@@ -19,6 +19,7 @@ func New(
 		clonePath:     o.ClonePath,
 		terraformPath: o.TerraformPath,
 		logger:        l,
+		reporter:      r,
 		recovery:      recovery.New(l, r),
 		store:         s,
 		trigger:       make(chan TriggerRequest, 1),

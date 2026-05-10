@@ -10,5 +10,6 @@ func (r *Runner) terraformInit() {
 	r.logger.Structured("terraform_init")
 	c := run.New()
 	c.Directory = directory
+	c.SetReporter(r.reporter, "terraform init")
 	c.Start("terraform", "init")
 }

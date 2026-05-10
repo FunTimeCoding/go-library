@@ -111,19 +111,12 @@ if f != nil {
 standard `(*mcp.CallToolResult, error)` tuple. Use it for all input validation.
 
 **Tier 2 - Infrastructure failure** (store, DB, external call): capture
-to Sentry and return a structured error with the event ID. Use
-`captureFail` - a private method on the Server struct that wraps
-`response.CaptureFail`.
+to Sentry and return a structured error with the event ID. Two layers:
 
-```go
-result, e := s.store.UpdateRecord(id)
+`captureFail` is the primitive — a private method on the Server struct
+that wraps `response.CaptureFail`. Takes the error and a model-facing
+message. The error goes to sentry, the message goes to the model.
 
-if e != nil {
-    return s.captureFail(e, "update record failed")
-}
-```
-
-`captureFail` lives in its own file (`capture_fail.go`):
 ```go
 func (s *Server) captureFail(
     e error,
@@ -132,6 +125,75 @@ func (s *Server) captureFail(
     return response.CaptureFail(s.reporter, e, message)
 }
 ```
+
+`captureDetail` is the per-service wrapper that whitelists known error
+types. It checks for API-specific typed errors, relays their message
+to the model if recognized, and falls back to `constant.UnexpectedError`
+for anything unknown. Lives in its own file (`capture_detail.go`).
+
+```go
+func (s *Server) captureDetail(e error) (*mcp.CallToolResult, error) {
+    if d, okay := errors.AsType[*detail_error.Detail](e); okay {
+        return s.captureFail(e, d.Detail)
+    }
+
+    return s.captureFail(e, constant.UnexpectedError)
+}
+```
+
+Each service's `captureDetail` checks for different error types
+depending on its API:
+
+- Sentry, Habitica, Jellyfin, Confluence: `*detail_error.Detail`
+  from `parseDetail` in the HTTP client
+- GitLab: `*gitlab.ErrorResponse` → `e.Message`
+- Mattermost: `*model.AppError` → `e.Message`
+- NetBox: `netbox.GenericOpenAPIError` → parse `detail` from body
+- Jira/Confluence (goatlassiand): both `*jira.Error` → `ErrorMessages[0]`
+  and `*detail_error.Detail`
+- Proxmox: sentinel errors via `errors.Is` (`ErrNotFound`,
+  `ErrNotAuthorized`, `ErrTimeout`)
+- GORM services: `gorm.ErrRecordNotFound` via `errors.Is`
+
+Most handlers call `captureDetail(e)` directly:
+
+```go
+result, e := s.client.SearchIssues(...)
+
+if e != nil {
+    return s.captureDetail(e)
+}
+```
+
+Use `captureFail(e, message)` directly only when the handler knows
+a specific message that `captureDetail` can't derive — e.g. after
+a multi-step operation where the context matters.
+
+**`detail_error.Detail`** (`pkg/web/detail_error/`): a shared typed
+error carrying a `Detail` string and `Status` string. HTTP clients
+return this from `parseDetail` when the API response contains a
+known error message field. The `Detail` field is what gets relayed
+to the model.
+
+**`constant.UnexpectedError`** (`pkg/constant/`): the shared fallback
+message — `"unexpected error"`. Honest about not knowing what went
+wrong. The model gets this alongside the sentry event ID and can
+look up the full error if needed. Never lie about the cause — don't
+use "API unreachable" or "database unreachable" as catch-all messages.
+
+**`parseDetail`** in HTTP clients: checks the response status code
+and parses the error body for a known message field. Each API has
+its own shape:
+
+- Sentry: `{"detail": "..."}` (JSON)
+- Confluence: `{"message": "..."}` (JSON)
+- Habitica: `{"message": "..."}` (JSON)
+- Jellyfin: `{"title": "..."}` (ASP.NET ProblemDetails JSON),
+  or plain text body, or empty
+- Salt: `<p>...</p>` in CherryPy HTML error pages
+
+If the known field is found, returns `detail_error.New(message, status)`.
+Otherwise returns `fmt.Errorf("%s", status)`.
 
 `response.CaptureFail` captures the exception via the reporter and
 returns structured JSON with `error` and `event_identifier` fields via
@@ -217,23 +279,37 @@ and returns 500. Wired into lifecycle via `WithServerMiddleware` or
 
 ## External Process Failure
 
-When shelling out to an external process (Python scripts, yt-dlp,
-ffmpeg) via `run.New().NoPanic()`, enrich Sentry with the process
-output before panicking:
+When shelling out to an external process (terraform, git, ansible,
+yt-dlp, ffmpeg), use `SetReporter` on `run.Run` to enrich Sentry
+with stdout and stderr automatically on failure:
 
 ```go
-if r.Error != nil {
-    reporter.CaptureWithContext(r.Error, "process", map[string]any{
-        "output": r.OutputString,
-        "stderr": r.ErrorString,
-    })
-    errors.PanicOnError(r.Error)
-}
+c := run.New()
+c.Directory = directory
+c.SetReporter(r.reporter, "terraform init")
+c.Start("terraform", "init")
 ```
 
-`CaptureWithContext` attaches stdout and stderr as structured context
-on the Sentry event — available in the Sentry UI without being
-stuffed into the panic message.
+`SetReporter` stores the reporter and a label on the `Run` struct.
+When `Start` encounters an error and `Panic` is true (the default),
+it calls `CaptureWithContext` with the process output before
+panicking. The Sentry event gets stdout and stderr as structured
+context — visible in the Sentry UI without being stuffed into the
+panic message.
+
+For cases where the caller needs to inspect the error before
+deciding what to do (e.g. parsing terraform's JSON output to
+decide whether to retry with `-upgrade`), use `NoPanic()` and
+handle manually:
+
+```go
+c := run.New().NoPanic()
+c.Start("terraform", "init", "-json")
+
+if c.Error != nil && needsUpgrade(c.OutputString) {
+    // retry with different args
+}
+```
 
 ## Self-Healing File Operations
 

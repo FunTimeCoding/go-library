@@ -2,7 +2,7 @@ package github
 
 import (
 	"github.com/funtimecoding/go-library/pkg/github/run"
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v86/github"
 )
 
 func (c *Client) LatestRuns(owner, repo string) ([]*run.Run, error) {

@@ -2,7 +2,7 @@ package tag
 
 import (
 	"github.com/funtimecoding/go-library/pkg/git/constant"
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v86/github"
 	"golang.org/x/mod/semver"
 	"strings"
 )

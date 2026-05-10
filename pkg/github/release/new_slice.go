@@ -1,6 +1,6 @@
 package release
 
-import "github.com/google/go-github/v85/github"
+import "github.com/google/go-github/v86/github"
 
 func NewSlice(v []*github.RepositoryRelease) []*Release {
 	var result []*Release

@@ -7,6 +7,14 @@ import (
 )
 
 func NewEnvironment() *Client {
+	var o []Option
+
+	if v := environment.Optional(
+		constant.AuthenticationEnvironment,
+	); v != "" {
+		o = append(o, WithAuthentication(v))
+	}
+
 	return New(
 		environment.Required(constant.HostEnvironment),
 		strings.ToIntegerStrict(
@@ -14,5 +22,6 @@ func NewEnvironment() *Client {
 		),
 		environment.Required(constant.UserEnvironment),
 		environment.Required(constant.PasswordEnvironment),
+		o...,
 	)
 }

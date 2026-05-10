@@ -12,14 +12,29 @@ func New(
 	port int,
 	user string,
 	password string,
+	o ...Option,
 ) *Client {
-	x := context.Background()
-	c := salt.NewClient(
+	result := &Client{context: context.Background()}
+
+	for _, f := range o {
+		f(result)
+	}
+
+	options := []salt.ClientOption{
 		salt.WithEndpoint(locator.New(host).Port(port).Insecure().String()),
 		salt.WithUsername(user),
 		salt.WithPassword(password),
-	)
-	errors.PanicOnError(c.Login(x))
+	}
 
-	return &Client{context: x, client: c}
+	if result.authentication != "" {
+		options = append(
+			options,
+			salt.WithAuthBackend(result.authentication),
+		)
+	}
+
+	result.client = salt.NewClient(options...)
+	errors.PanicOnError(result.client.Login(result.context))
+
+	return result
 }

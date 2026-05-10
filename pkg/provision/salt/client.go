@@ -6,6 +6,7 @@ import (
 )
 
 type Client struct {
-	context context.Context
-	client  *salt.Client
+	context        context.Context
+	client         *salt.Client
+	authentication string
 }

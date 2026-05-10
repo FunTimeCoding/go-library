@@ -1,9 +1,12 @@
 package salt
 
-import "github.com/daixijun/go-salt/v2"
+import (
+	"github.com/funtimecoding/go-library/pkg/provision/salt/basic/response"
+	"github.com/funtimecoding/go-library/pkg/provision/salt/constant"
+)
 
 func (c *Client) Highstate(
 	target string,
-) (map[string]salt.LocalClientReturn, error) {
-	return c.Local(target, "state.highstate", nil)
+) (map[string]response.LocalReturn, error) {
+	return c.Local(target, constant.Highstate, nil)
 }

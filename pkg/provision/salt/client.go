@@ -1,12 +1,8 @@
 package salt
 
-import (
-	"context"
-	"github.com/daixijun/go-salt/v2"
-)
+import "github.com/funtimecoding/go-library/pkg/provision/salt/basic"
 
 type Client struct {
-	context        context.Context
-	client         *salt.Client
+	basic          *basic.Client
 	authentication string
 }

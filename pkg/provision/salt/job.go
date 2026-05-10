@@ -1,7 +1,7 @@
 package salt
 
-import "github.com/daixijun/go-salt/v2"
+import "github.com/funtimecoding/go-library/pkg/provision/salt/basic/response"
 
-func (c *Client) Job(identifier string) (*salt.Job, error) {
-	return c.client.LookupJID(c.context, identifier)
+func (c *Client) Job(identifier string) (*response.Job, error) {
+	return c.basic.LookupJob(identifier)
 }

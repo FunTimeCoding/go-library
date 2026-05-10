@@ -7,7 +7,8 @@ const (
 	PasswordEnvironment       = "SALT_PASSWORD"
 	AuthenticationEnvironment = "SALT_AUTHENTICATION"
 
-	Run = "cmd.run"
+	Run       = "cmd.run"
+	Highstate = "state.highstate"
 
 	TokenHeader = "X-Auth-Token"
 

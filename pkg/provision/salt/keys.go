@@ -1,7 +1,7 @@
 package salt
 
-import "github.com/daixijun/go-salt/v2"
+import "github.com/funtimecoding/go-library/pkg/provision/salt/basic/response"
 
-func (c *Client) Keys() (*salt.ListKeysReturn, error) {
-	return c.client.ListKeys(c.context)
+func (c *Client) Keys() (*response.KeysReturn, error) {
+	return c.basic.ListKeys()
 }

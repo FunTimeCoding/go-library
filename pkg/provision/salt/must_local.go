@@ -1,15 +1,15 @@
 package salt
 
 import (
-	"github.com/daixijun/go-salt/v2"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/provision/salt/basic/response"
 )
 
 func (c *Client) MustLocal(
 	glob string,
 	function string,
 	a []string,
-) map[string]salt.LocalClientReturn {
+) map[string]response.LocalReturn {
 	result, e := c.Local(glob, function, a)
 	errors.PanicOnError(e)
 

@@ -1,7 +1,7 @@
 package example
 
 func firstArgOnParenLine() {
-	withStruct("name", // want `each argument should be on its own line`
+	withStruct("name",
 		Options{Value: 1},
 	)
 }

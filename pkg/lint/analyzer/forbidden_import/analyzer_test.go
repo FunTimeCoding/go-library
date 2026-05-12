@@ -1,11 +1,38 @@
 package forbidden_import
 
 import (
-	"golang.org/x/tools/go/analysis/analysistest"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/testutil"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
-func TestAnalyzer(t *testing.T) {
-	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, Analyzer, "example")
+func TestCheck(t *testing.T) {
+	temporary := testutil.PrepareTestPackage(
+		t,
+		"testdata/src/example",
+		"require github.com/stretchr/testify v1.0.0",
+		"replace github.com/stretchr/testify => ./stub/testify",
+	)
+	stubDirectory := filepath.Join(temporary, "stub", "testify")
+	testutil.CopyTree(
+		t,
+		"testdata/src/github.com/stretchr/testify",
+		stubDirectory,
+	)
+	e := os.WriteFile(
+		filepath.Join(stubDirectory, "go.mod"),
+		[]byte("module github.com/stretchr/testify\n\ngo 1.26.3\n"),
+		0644,
+	)
+
+	if e != nil {
+		t.Fatalf("write stub go.mod: %s", e)
+	}
+
+	p, results := testutil.LoadFromDirectory(t, temporary)
+	Check(p, results)
+	testutil.AssertBlocked(t, results, 2)
+	testutil.AssertBlockedContains(t, results, "pflag")
+	testutil.AssertBlockedContains(t, results, "testify")
 }

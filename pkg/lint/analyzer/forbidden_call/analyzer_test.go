@@ -1,11 +1,13 @@
 package forbidden_call
 
 import (
-	"golang.org/x/tools/go/analysis/analysistest"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/testutil"
 	"testing"
 )
 
-func TestAnalyzer(t *testing.T) {
-	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, Analyzer, "example")
+func TestCheck(t *testing.T) {
+	p, results := testutil.LoadTestPackage(t, "testdata/src/example")
+	Check(p, results)
+	testutil.AssertBlocked(t, results, 2)
+	testutil.AssertBlockedContains(t, results, "pkg/system/run")
 }

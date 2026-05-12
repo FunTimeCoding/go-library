@@ -1,15 +1,18 @@
 package file_identity
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 	"strings"
 )
 
 func checkFile(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	file *ast.File,
 	name string,
 ) {
@@ -66,12 +69,16 @@ func checkFile(
 		)
 	}
 
+	filename := p.Fset.Position(file.Pos()).Filename
+
 	if len(identities) > 1 {
-		p.Reportf(
-			identities[1].position,
-			"multiple identities in one file: %s and %s",
-			identities[0].name,
-			identities[1].name,
+		results.AddBlocked(
+			filename,
+			fmt.Sprintf(
+				"multiple identities in one file: %s and %s",
+				identities[0].name,
+				identities[1].name,
+			),
 		)
 
 		return
@@ -95,12 +102,14 @@ func checkFile(
 	expected := toSnakeCase(sole.name)
 
 	if stem != expected {
-		p.Reportf(
-			sole.position,
-			"filename %s does not match identity %s (expected %s.go)",
-			name,
-			sole.name,
-			expected,
+		results.AddBlocked(
+			filename,
+			fmt.Sprintf(
+				"filename %s does not match identity %s (expected %s.go)",
+				name,
+				sole.name,
+				expected,
+			),
 		)
 	}
 }

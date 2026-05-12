@@ -1,12 +1,15 @@
 package variable_naming
 
 import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
 func checkFunction(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	f *ast.FuncDecl,
 ) {
 	variables := collectVariables(p.TypesInfo, f.Body)
@@ -43,14 +46,16 @@ func checkFunction(
 			continue
 		}
 
-		p.Reportf(
-			v.ident.Pos(),
-			"variable %s of type %s should be named %s",
-			v.ident.Name,
-			v.typ.String(),
-			ideal,
+		results.AddBlocked(
+			p.Fset.Position(v.ident.Pos()).Filename,
+			fmt.Sprintf(
+				"variable %s of type %s should be named %s",
+				v.ident.Name,
+				v.typ.String(),
+				ideal,
+			),
 		)
 	}
 
-	checkOkay(p, f)
+	checkOkay(p, results, f)
 }

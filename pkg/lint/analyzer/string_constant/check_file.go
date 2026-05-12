@@ -1,12 +1,14 @@
 package string_constant
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
 func checkFile(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	file *ast.File,
 	constants map[string]knownConstant,
 ) {
@@ -15,9 +17,9 @@ func checkFile(
 		func(n ast.Node) bool {
 			switch v := n.(type) {
 			case *ast.CallExpr:
-				checkCallArguments(p, v, constants)
+				checkCallArguments(p, results, v, constants)
 			case *ast.IndexExpr:
-				checkArgument(p, v.Index, constants)
+				checkArgument(p, results, v.Index, constants)
 			}
 
 			return true

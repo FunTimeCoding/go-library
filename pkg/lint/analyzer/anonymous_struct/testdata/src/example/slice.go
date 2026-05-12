@@ -1,6 +1,6 @@
 package example
 
-var patterns = []struct { // want `anonymous struct; extract a named type`
+var patterns = []struct {
 	keyword string
 	score   int
 }{

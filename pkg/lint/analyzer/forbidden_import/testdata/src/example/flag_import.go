@@ -1,5 +1,5 @@
 package example
 
-import "flag" // want `use "github.com/spf13/pflag" instead of "flag"`
+import "flag"
 
 var _ = flag.String

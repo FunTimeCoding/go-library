@@ -1,46 +1,45 @@
 package unchecked_print_write
 
 import (
-	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"go/types"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
+	"path/filepath"
 )
 
-func check(
-	p *analysis.Pass,
-	call *ast.CallExpr,
+func Check(
+	p *packages.Package,
+	results *output.Results,
 ) {
-	selector, okay := call.Fun.(*ast.SelectorExpr)
+	for _, file := range p.Syntax {
+		if filepath.Base(p.Fset.File(file.Pos()).Name()) == constant.GeneratedFile {
+			continue
+		}
 
-	if !okay {
-		return
+		if ast.IsGenerated(file) {
+			continue
+		}
+
+		ast.Inspect(
+			file,
+			func(n ast.Node) bool {
+				statement, okay := n.(*ast.ExprStmt)
+
+				if !okay {
+					return true
+				}
+
+				call, okay := statement.X.(*ast.CallExpr)
+
+				if !okay {
+					return true
+				}
+
+				checkCall(p, results, call)
+
+				return true
+			},
+		)
 	}
-
-	o, okay := p.TypesInfo.Uses[selector.Sel]
-
-	if !okay {
-		return
-	}
-
-	f, okay := o.(*types.Func)
-
-	if !okay {
-		return
-	}
-
-	a := f.Pkg()
-
-	if a == nil || a.Path() != "fmt" || f.Name() != "Fprintf" {
-		return
-	}
-
-	if suppress.IsSuppressed(p, call, "unchecked_print_write") {
-		return
-	}
-
-	p.Reportf(
-		call.Pos(),
-		"use writer.Print, errors.Printf, or check the error from fmt.Fprintf",
-	)
 }

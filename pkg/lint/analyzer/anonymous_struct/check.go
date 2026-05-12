@@ -1,29 +1,51 @@
 package anonymous_struct
 
 import (
-	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
+	"path/filepath"
+	"strings"
 )
 
-func check(
-	p *analysis.Pass,
-	s *ast.StructType,
+func Check(
+	p *packages.Package,
+	results *output.Results,
 ) {
-	if s.Fields == nil || len(s.Fields.List) == 0 {
-		return
-	}
+	for _, file := range p.Syntax {
+		name := filepath.Base(p.Fset.File(file.Pos()).Name())
 
-	if isEmbeddingWrapper(s) {
-		return
-	}
+		if name == constant.GeneratedFile {
+			continue
+		}
 
-	if suppress.IsSuppressed(p, s, "anonymous_struct") {
-		return
-	}
+		if strings.HasSuffix(name, "_test.go") {
+			continue
+		}
 
-	p.Reportf(
-		s.Pos(),
-		"anonymous struct; extract a named type",
-	)
+		if ast.IsGenerated(file) {
+			continue
+		}
+
+		named := collectNamedStructPositions(file)
+		ast.Inspect(
+			file,
+			func(n ast.Node) bool {
+				s, okay := n.(*ast.StructType)
+
+				if !okay {
+					return true
+				}
+
+				if named[s.Pos()] {
+					return true
+				}
+
+				checkStruct(p, results, s)
+
+				return true
+			},
+		)
+	}
 }

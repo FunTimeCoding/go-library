@@ -2,11 +2,11 @@ package file_identity
 
 import (
 	"go/types"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
 func isInterfaceMethod(
-	p *analysis.Pass,
+	p *packages.Package,
 	f *types.Func,
 ) bool {
 	s, okay := f.Type().(*types.Signature)
@@ -29,7 +29,7 @@ func isInterfaceMethod(
 
 	methodName := f.Name()
 
-	for _, m := range p.Pkg.Imports() {
+	for _, m := range p.Types.Imports() {
 		scope := m.Scope()
 
 		for _, name := range scope.Names() {

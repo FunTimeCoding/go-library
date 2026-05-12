@@ -1,37 +1,39 @@
 package call_format
 
 import (
-	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
+	"path/filepath"
 )
 
-func check(
-	p *analysis.Pass,
-	call *ast.CallExpr,
+func Check(
+	p *packages.Package,
+	results *output.Results,
 ) {
-	if len(call.Args) < 2 {
-		return
-	}
+	for _, file := range p.Syntax {
+		if filepath.Base(p.Fset.File(file.Pos()).Name()) == constant.GeneratedFile {
+			continue
+		}
 
-	if suppress.IsSuppressed(p, call, "call_format") {
-		return
-	}
+		if ast.IsGenerated(file) {
+			continue
+		}
 
-	if !IsViolation(p.Fset, call) {
-		return
-	}
+		ast.Inspect(
+			file,
+			func(n ast.Node) bool {
+				call, okay := n.(*ast.CallExpr)
 
-	openLine := p.Fset.Position(call.Lparen).Line
-	closeLine := p.Fset.Position(call.Rparen).Line
+				if !okay {
+					return true
+				}
 
-	if openLine == closeLine {
-		p.Reportf(
-			call.Pos(),
-			"call exceeds %d characters; split arguments to separate lines",
-			maxLineLength,
+				checkCall(p, results, call)
+
+				return true
+			},
 		)
-	} else {
-		reportMultiLine(p, call)
 	}
 }

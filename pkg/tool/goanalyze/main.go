@@ -1,6 +1,7 @@
 package goanalyze
 
 import (
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/anonymous_struct"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/call_format"
@@ -14,8 +15,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/type_receiver"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/unchecked_print_write"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/variable_naming"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/tool/goanalyze/constant"
-	"golang.org/x/tools/go/analysis/multichecker"
+	"go/token"
+	"golang.org/x/tools/go/packages"
+	"os"
 )
 
 func Main(
@@ -25,18 +30,45 @@ func Main(
 ) {
 	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	multichecker.Main(
-		naming.Analyzer,
-		forbidden_call.Analyzer,
-		forbidden_import.Analyzer,
-		string_concatenation.Analyzer,
-		string_constant.Analyzer,
-		struct_literal.Analyzer,
-		call_format.Analyzer,
-		defer_close.Analyzer,
-		file_identity.Analyzer,
-		type_receiver.Analyzer,
-		unchecked_print_write.Analyzer,
-		anonymous_struct.Analyzer,
-	)
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean("summary", false, "One line per file")
+	a.Parse(version, gitHash, buildDate)
+	patterns := a.Positionals()
+
+	if len(patterns) == 0 {
+		patterns = []string{"./..."}
+	}
+
+	fileSet := token.NewFileSet()
+	loaded := load(fileSet, patterns)
+	results := output.NewResults()
+
+	for _, p := range loaded {
+		run(p, &results)
+	}
+
+	hasBlocked := output.PrintResults(results.Entries, a.GetBoolean("summary"))
+
+	if hasBlocked {
+		os.Exit(1)
+	}
+}
+
+func run(
+	p *packages.Package,
+	results *output.Results,
+) {
+	naming.Check(p, results)
+	forbidden_call.Check(p, results)
+	forbidden_import.Check(p, results)
+	string_concatenation.Check(p, results)
+	string_constant.Check(p, results)
+	struct_literal.Check(p, results)
+	call_format.Check(p, results)
+	defer_close.Check(p, results)
+	file_identity.Check(p, results)
+	type_receiver.Check(p, results)
+	unchecked_print_write.Check(p, results)
+	anonymous_struct.Check(p, results)
+	variable_naming.Check(p, results)
 }

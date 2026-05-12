@@ -1,12 +1,14 @@
 package string_constant
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
 func checkCallArguments(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	call *ast.CallExpr,
 	constants map[string]knownConstant,
 ) {
@@ -21,6 +23,6 @@ func checkCallArguments(
 			continue
 		}
 
-		checkArgument(p, a, constants)
+		checkArgument(p, results, a, constants)
 	}
 }

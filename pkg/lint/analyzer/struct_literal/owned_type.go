@@ -5,13 +5,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"go/ast"
 	"go/types"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 	"path/filepath"
 	"strings"
 )
 
 func ownedType(
-	p *analysis.Pass,
+	p *packages.Package,
 	sel *ast.SelectorExpr,
 	module string,
 ) *types.TypeName {

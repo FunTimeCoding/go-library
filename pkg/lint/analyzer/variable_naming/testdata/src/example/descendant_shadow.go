@@ -3,7 +3,7 @@ package example
 import "sort"
 
 func DescendantShadow() {
-	n := 0 // want `variable n of type int should be named a`
+	n := 0
 	items := []int{3, 1, 2}
 	sort.Slice(
 		items,

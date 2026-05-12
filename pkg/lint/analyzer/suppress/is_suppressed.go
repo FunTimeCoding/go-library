@@ -3,29 +3,27 @@ package suppress
 import (
 	"fmt"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"go/token"
 	"strings"
 )
 
-// IsSuppressed reports whether node is suppressed by a goanalyze:ignore comment
-// on the same line. key is the analyzer name (e.g. "string_concat").
-// A bare "goanalyze:ignore" suppresses all analyzers; "goanalyze:ignore <key>"
-// suppresses only the named analyzer.
 func IsSuppressed(
-	p *analysis.Pass,
-	n ast.Node,
+	fileSet *token.FileSet,
+	files []*ast.File,
+	position token.Pos,
 	key string,
 ) bool {
-	position := p.Fset.Position(n.Pos())
+	line := fileSet.Position(position).Line
+	filename := fileSet.Position(position).Filename
 
-	for _, file := range p.Files {
-		if p.Fset.File(file.Pos()).Name() != position.Filename {
+	for _, file := range files {
+		if fileSet.File(file.Pos()).Name() != filename {
 			continue
 		}
 
 		for _, group := range file.Comments {
 			for _, comment := range group.List {
-				if p.Fset.Position(comment.Pos()).Line != position.Line {
+				if fileSet.Position(comment.Pos()).Line != line {
 					continue
 				}
 

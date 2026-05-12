@@ -1,15 +1,8 @@
 package naming
 
-import (
-	"go/types"
-	"golang.org/x/tools/go/analysis"
-)
+import "go/types"
 
-// isInterfaceMethod reports whether object is a method that satisfies an interface
-// declared in an external package. Such methods cannot be renamed freely, so
-// naming checks are skipped for them.
 func isInterfaceMethod(
-	p *analysis.Pass,
 	o types.Object,
 ) bool {
 	f, isFunction := o.(*types.Func)
@@ -38,7 +31,7 @@ func isInterfaceMethod(
 
 	methodName := f.Name()
 
-	for _, m := range p.Pkg.Imports() {
+	for _, m := range f.Pkg().Imports() {
 		scope := m.Scope()
 
 		for _, name := range scope.Names() {

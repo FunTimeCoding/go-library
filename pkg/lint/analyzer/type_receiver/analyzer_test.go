@@ -1,21 +1,24 @@
 package type_receiver
 
 import (
-	"golang.org/x/tools/go/analysis/analysistest"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/testutil"
 	"testing"
 )
 
-func TestAnalyzer(t *testing.T) {
-	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, Analyzer, "example")
+func TestCheck(t *testing.T) {
+	p, results := testutil.LoadTestPackage(t, "testdata/src/example")
+	Check(p, results)
+	testutil.AssertBlocked(t, results, 1)
 }
 
 func TestUnexported(t *testing.T) {
-	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, Analyzer, "unexported")
+	p, results := testutil.LoadTestPackage(t, "testdata/src/unexported")
+	Check(p, results)
+	testutil.AssertBlocked(t, results, 1)
 }
 
 func TestClean(t *testing.T) {
-	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, Analyzer, "clean")
+	p, results := testutil.LoadTestPackage(t, "testdata/src/clean")
+	Check(p, results)
+	testutil.AssertBlocked(t, results, 0)
 }

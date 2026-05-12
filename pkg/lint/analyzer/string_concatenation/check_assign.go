@@ -2,13 +2,15 @@ package string_concatenation
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
 func checkAssign(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	s *ast.AssignStmt,
 ) {
 	t := p.TypesInfo.TypeOf(s.Lhs[0])
@@ -23,12 +25,12 @@ func checkAssign(
 		return
 	}
 
-	if suppress.IsSuppressed(p, s, "string_concat") {
+	if suppress.IsSuppressed(p.Fset, p.Syntax, s.Pos(), "string_concat") {
 		return
 	}
 
-	p.Reportf(
-		s.Pos(),
+	results.AddBlocked(
+		p.Fset.Position(s.Pos()).Filename,
 		"use fmt.Sprintf instead of string concatenation",
 	)
 }

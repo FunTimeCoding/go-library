@@ -1,5 +1,5 @@
 package example
 
-import "github.com/stretchr/testify/assert" // want `use "github.com/funtimecoding/go-library/pkg/assert" instead of testify`
+import "github.com/stretchr/testify/assert"
 
 var _ = assert.True

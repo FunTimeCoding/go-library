@@ -1,20 +1,22 @@
 package call_format
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
 func reportMultiLine(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	call *ast.CallExpr,
 ) {
 	openParenLine := p.Fset.Position(call.Lparen).Line
 	firstArgLine := p.Fset.Position(call.Args[0].Pos()).Line
 
 	if openParenLine == firstArgLine {
-		p.Reportf(
-			call.Args[0].Pos(),
+		results.AddBlocked(
+			p.Fset.Position(call.Args[0].Pos()).Filename,
 			"each argument should be on its own line",
 		)
 
@@ -26,8 +28,8 @@ func reportMultiLine(
 		currentStart := p.Fset.Position(call.Args[i].Pos()).Line
 
 		if previousEnd == currentStart {
-			p.Reportf(
-				call.Args[i].Pos(),
+			results.AddBlocked(
+				p.Fset.Position(call.Args[i].Pos()).Filename,
 				"each argument should be on its own line",
 			)
 

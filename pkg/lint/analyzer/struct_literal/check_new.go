@@ -1,13 +1,16 @@
 package struct_literal
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
 func checkNew(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	call *ast.CallExpr,
 	module string,
 ) {
@@ -33,14 +36,16 @@ func checkNew(
 		return
 	}
 
-	if suppress.IsSuppressed(p, call, "struct_literal") {
+	if suppress.IsSuppressed(p.Fset, p.Syntax, call.Pos(), "struct_literal") {
 		return
 	}
 
-	p.Reportf(
-		call.Pos(),
-		"use a constructor function instead of new(%s.%s)",
-		t.Pkg().Name(),
-		t.Name(),
+	results.AddBlocked(
+		p.Fset.Position(call.Pos()).Filename,
+		fmt.Sprintf(
+			"use a constructor function instead of new(%s.%s)",
+			t.Pkg().Name(),
+			t.Name(),
+		),
 	)
 }

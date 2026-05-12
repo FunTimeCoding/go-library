@@ -2,8 +2,8 @@ package example
 
 type AppServer struct{}
 
-func (h *AppServer) Process() { // want `variable h of type \*example.AppServer should be named s`
-	var s string // want `variable s of type string should be named t`
+func (h *AppServer) Process() {
+	var s string
 	_ = h
 	_ = s
 }

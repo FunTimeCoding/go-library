@@ -2,7 +2,7 @@ package example
 
 func sharedLineArgs() {
 	withStruct(
-		"name", Options{ // want `each argument should be on its own line`
+		"name", Options{
 			Value: 1,
 		},
 	)

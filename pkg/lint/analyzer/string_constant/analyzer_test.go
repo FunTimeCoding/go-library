@@ -1,21 +1,26 @@
 package string_constant
 
 import (
-	"golang.org/x/tools/go/analysis/analysistest"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/testutil"
 	"testing"
 )
 
 func TestFlagged(t *testing.T) {
-	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, Analyzer, "flagged")
+	p, results := testutil.LoadTestPackage(t, "testdata/src/flagged")
+	Check(p, results)
+	testutil.AssertBlocked(t, results, 4)
 }
 
 func TestClean(t *testing.T) {
-	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, Analyzer, "clean")
+	temporary := testutil.PrepareTestPackage(t, "testdata/src/clean")
+	testutil.WriteModFile(t, temporary, "clean")
+	p, results := testutil.LoadFromDirectory(t, temporary)
+	Check(p, results)
+	testutil.AssertBlocked(t, results, 0)
 }
 
 func TestNoConstant(t *testing.T) {
-	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, Analyzer, "no_constant")
+	p, results := testutil.LoadTestPackage(t, "testdata/src/no_constant")
+	Check(p, results)
+	testutil.AssertBlocked(t, results, 0)
 }

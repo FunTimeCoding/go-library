@@ -1,0 +1,141 @@
+---
+openapi: "3.0.0"
+info:
+  title: gotelemetryd
+  version: 1.0.0
+paths:
+  /api/events:
+    post:
+      operationId: postEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventRequest"
+      responses:
+        "200":
+          description: Event recorded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventResponse"
+    get:
+      operationId: getEvents
+      parameters:
+      - name: tool
+        in: query
+        schema:
+          type: string
+      - name: surface
+        in: query
+        schema:
+          type: string
+      - name: actor
+        in: query
+        schema:
+          type: string
+      - name: since
+        in: query
+        schema:
+          type: string
+      - name: until
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      responses:
+        "200":
+          description: Usage events.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventEntry"
+  /api/summary:
+    get:
+      operationId: getSummary
+      parameters:
+      - name: since
+        in: query
+        schema:
+          type: string
+      - name: until
+        in: query
+        schema:
+          type: string
+      - name: group_by
+        in: query
+        schema:
+          type: string
+          enum: [tool, surface]
+          default: tool
+      responses:
+        "200":
+          description: Aggregated usage summary.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SummaryEntry"
+components:
+  schemas:
+    EventRequest:
+      type: object
+      required: [tool, surface, actor, outcome]
+      properties:
+        tool:
+          type: string
+        surface:
+          type: string
+        actor:
+          type: string
+        outcome:
+          type: string
+        duration_ms:
+          type: integer
+    EventResponse:
+      type: object
+      required: [id]
+      properties:
+        id:
+          type: integer
+    EventEntry:
+      type: object
+      required: [id, tool, surface, actor, outcome, created_at]
+      properties:
+        id:
+          type: integer
+        tool:
+          type: string
+        surface:
+          type: string
+        actor:
+          type: string
+        outcome:
+          type: string
+        duration_ms:
+          type: integer
+        created_at:
+          type: string
+    SummaryEntry:
+      type: object
+      required: [tool, count]
+      properties:
+        tool:
+          type: string
+        surface:
+          type: string
+        count:
+          type: integer

@@ -1,14 +1,17 @@
 package forbidden_call
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
 func checkCall(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	call *ast.CallExpr,
 ) {
 	sel, isSel := call.Fun.(*ast.SelectorExpr)
@@ -39,13 +42,15 @@ func checkCall(
 		return
 	}
 
-	if suppress.IsSuppressed(p, call, "forbidden_call") {
+	if suppress.IsSuppressed(p.Fset, p.Syntax, call.Pos(), "forbidden_call") {
 		return
 	}
 
-	p.Reportf(
-		call.Pos(),
-		"use pkg/system/run instead of exec.%s",
-		f.Name(),
+	results.AddBlocked(
+		p.Fset.Position(call.Pos()).Filename,
+		fmt.Sprintf(
+			"use pkg/system/run instead of exec.%s",
+			f.Name(),
+		),
 	)
 }

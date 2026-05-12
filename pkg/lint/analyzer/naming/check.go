@@ -1,54 +1,49 @@
 package naming
 
 import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/lint/segment"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
-	"go/types"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 )
 
-func check(
-	p *analysis.Pass,
-	ident *ast.Ident,
-	o types.Object,
+func Check(
+	p *packages.Package,
+	results *output.Results,
 ) {
-	if isInterfaceMethod(p, o) {
-		return
+	skip := make(map[string]bool)
+
+	for _, f := range p.Syntax {
+		name := p.Fset.File(f.Pos()).Name()
+
+		if isGenerated(name) || ast.IsGenerated(f) {
+			skip[name] = true
+		}
 	}
 
-	v, isVariable := o.(*types.Var)
-	isField := isVariable && v.IsField()
-	r := segment.Check(ident.Name, isVariable, isField)
+	for _, file := range p.Syntax {
+		ast.Inspect(
+			file,
+			func(n ast.Node) bool {
+				ident, okay := n.(*ast.Ident)
 
-	if r == nil {
-		return
-	}
+				if !okay {
+					return true
+				}
 
-	if r.Banned {
-		p.Report(
-			analysis.Diagnostic{
-				Pos: ident.Pos(),
-				End: ident.End(),
-				Message: fmt.Sprintf(
-					"avoid %q in name, use a more specific term",
-					r.Segment,
-				),
+				if skip[p.Fset.File(ident.Pos()).Name()] {
+					return true
+				}
+
+				o, isDefined := p.TypesInfo.Defs[ident]
+
+				if !isDefined {
+					return true
+				}
+
+				checkIdent(p, results, ident, o)
+
+				return true
 			},
 		)
-
-		return
 	}
-
-	p.Report(
-		analysis.Diagnostic{
-			Pos: ident.Pos(),
-			End: ident.End(),
-			Message: segment.FormatMessage(
-				r.Applicable,
-				r.Segment,
-				ident.Name,
-			),
-		},
-	)
 }

@@ -1,14 +1,17 @@
 package string_constant
 
 import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/token"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 	"strings"
 )
 
 func checkArgument(
-	p *analysis.Pass,
+	p *packages.Package,
+	results *output.Results,
 	e ast.Expr,
 	constants map[string]knownConstant,
 ) {
@@ -30,11 +33,13 @@ func checkArgument(
 		return
 	}
 
-	p.Reportf(
-		l.Pos(),
-		"string literal %q has constant %s.%s",
-		value,
-		c.packageName,
-		c.name,
+	results.AddBlocked(
+		p.Fset.Position(l.Pos()).Filename,
+		fmt.Sprintf(
+			"string literal %q has constant %s.%s",
+			value,
+			c.packageName,
+			c.name,
+		),
 	)
 }

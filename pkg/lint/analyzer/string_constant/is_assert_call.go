@@ -3,12 +3,12 @@ package string_constant
 import (
 	"go/ast"
 	"go/types"
-	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/packages"
 	"strings"
 )
 
 func isAssertCall(
-	p *analysis.Pass,
+	p *packages.Package,
 	call *ast.CallExpr,
 ) bool {
 	s, okay := call.Fun.(*ast.SelectorExpr)

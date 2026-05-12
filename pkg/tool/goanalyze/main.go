@@ -15,7 +15,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/type_receiver"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/unchecked_print_write"
-	"github.com/funtimecoding/go-library/pkg/lint/analyzer/variable_naming"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/tool/goanalyze/constant"
 	"go/token"
@@ -70,5 +69,4 @@ func run(
 	type_receiver.Check(p, results)
 	unchecked_print_write.Check(p, results)
 	anonymous_struct.Check(p, results)
-	variable_naming.Check(p, results)
 }

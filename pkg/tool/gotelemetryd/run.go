@@ -9,7 +9,7 @@ import (
 	generated "github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/option"
-	rest "github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -26,7 +26,7 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(rest.New(s), m)
+				generated.HandlerFromMux(server.New(s), m)
 				model_context.New(s, r, o.Version).Mount(m)
 			},
 			web.RecoveryMiddleware(r),

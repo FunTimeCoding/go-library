@@ -2,7 +2,11 @@ package parse
 
 import "go/ast"
 
-func FindCall(e ast.Expr, p string, function string) *ast.CallExpr {
+func FindCall(
+	e ast.Expr,
+	p string,
+	function string,
+) *ast.CallExpr {
 	c, okay := e.(*ast.CallExpr)
 
 	if !okay {

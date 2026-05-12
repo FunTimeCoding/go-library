@@ -13,8 +13,14 @@ func inspectWithParent(
 	p *packages.Package,
 	results *output.Results,
 ) {
-	var walk func(ast.Node, ast.Node)
-	walk = func(n ast.Node, parent ast.Node) {
+	var walk func(
+		ast.Node,
+		ast.Node,
+	)
+	walk = func(
+		n ast.Node,
+		parent ast.Node,
+	) {
 		if n == nil {
 			return
 		}

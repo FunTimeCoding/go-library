@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	ListInstances = "list_instances"
 	UseInstance   = "use_instance"
 	Query         = "query"
@@ -21,5 +20,4 @@ const (
 	DescribeTable = "describe_table"
 	ListIndexes   = "list_indexes"
 	TableSizes    = "table_sizes"
-
 )

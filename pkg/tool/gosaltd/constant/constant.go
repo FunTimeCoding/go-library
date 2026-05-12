@@ -11,15 +11,14 @@ var Identity = identity.New(
 )
 
 const (
-
-	Trigger            = "trigger"
-	Runs               = "runs"
-	Run                = "run"
-	Minions            = "minions"
-	Keys               = "keys"
-	Limit              = "limit"
-	Status             = "status"
-	Identifier         = "id"
+	Trigger    = "trigger"
+	Runs       = "runs"
+	Run        = "run"
+	Minions    = "minions"
+	Keys       = "keys"
+	Limit      = "limit"
+	Status     = "status"
+	Identifier = "id"
 
 	RecentRunsFailed = "failed to list recent runs"
 	RunLookupFailed  = "failed to look up run"

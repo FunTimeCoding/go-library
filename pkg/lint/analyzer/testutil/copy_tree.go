@@ -21,7 +21,11 @@ func CopyTree(
 
 	e = filepath.WalkDir(
 		absolute,
-		func(path string, d fs.DirEntry, walkError error) error {
+		func(
+			path string,
+			d fs.DirEntry,
+			walkError error,
+		) error {
 			if walkError != nil {
 				return walkError
 			}

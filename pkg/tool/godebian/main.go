@@ -23,7 +23,11 @@ func Main(
 		"Package semantic version: 1.0.0, v-prefix gets trimmed",
 	)
 	a.String(maintainerNameArgument, "", "Maintainer name: AN Other")
-	a.String(maintainerEmailArgument, "", "Maintainer email: another@example.org")
+	a.String(
+		maintainerEmailArgument,
+		"",
+		"Maintainer email: another@example.org",
+	)
 	a.Boolean(systemdUnitFlag, false, "Create a systemd unit")
 	a.Parse(version, gitHash, buildDate)
 	o := option.New()

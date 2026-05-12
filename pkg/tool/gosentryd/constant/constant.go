@@ -14,7 +14,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	Whoami            = "whoami"
 	FindOrganizations = "find_organizations"
 	FindProjects      = "find_projects"
@@ -27,7 +26,6 @@ const (
 	UpdateIssue       = "update_issue"
 	GetIssueEvent     = "get_issue_event"
 	DeleteIssue       = "delete_issue"
-
 )
 
 var ErrorProjectNotFound = errors.New("project not found")

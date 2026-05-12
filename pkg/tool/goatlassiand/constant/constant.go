@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	JiraSearch              = "jira_search"
 	JiraGetIssue            = "jira_get_issue"
 	JiraSearchProjects      = "jira_search_projects"
@@ -40,7 +39,7 @@ const (
 	ConfluenceListSpaces      = "confluence_list_spaces"
 	ConfluenceGetPageChildren = "confluence_get_page_children"
 	ConfluenceAddComment      = "confluence_add_comment"
-	AllowedValueLimit = 5
+	AllowedValueLimit         = 5
 
 	ChecklistField       = "Checklists"
 	Unassign             = "none"

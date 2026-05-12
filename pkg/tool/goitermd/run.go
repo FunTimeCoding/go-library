@@ -21,7 +21,11 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				model_context.New(iterm.NewEnvironment(), r, o.Version).Mount(m)
+				model_context.New(
+					iterm.NewEnvironment(),
+					r,
+					o.Version,
+				).Mount(m)
 			},
 			web.RecoveryMiddleware(r),
 		),

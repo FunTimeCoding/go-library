@@ -43,9 +43,10 @@ func (r *Run) Start(s ...string) string {
 				e,
 				r.reporterLabel,
 				map[string]any{
-				"output": r.OutputString,
-				"stderr": r.ErrorString,
-			})
+					"output": r.OutputString,
+					"stderr": r.ErrorString,
+				},
+			)
 		}
 
 		library.PanicOnError(e)

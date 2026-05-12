@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	GetAlerts       = "get_alerts"
 	GetRecentAlerts = "get_recent_alerts"
 	GetTopAlerts    = "get_top_alerts"
@@ -20,5 +19,4 @@ const (
 	End   = "end"
 	N     = "n"
 	Start = "start"
-
 )

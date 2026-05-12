@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	MyChannels        = "my_channels"
 	MyThreads         = "my_threads"
 	SearchChannels    = "search_channels"
@@ -29,5 +28,4 @@ const (
 	GetUsers          = "get_users"
 	GetUserProfile    = "get_user_profile"
 	RunMonitoring     = "run_monitoring"
-
 )

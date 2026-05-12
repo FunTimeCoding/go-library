@@ -28,9 +28,9 @@ func Main(
 	a.String(
 		argument.Output,
 		environment.Fallback(
-		"OUTPUT",
-		download.DefaultOutput,
-	),
+			"OUTPUT",
+			download.DefaultOutput,
+		),
 		"Output directory for executable",
 	)
 	a.Boolean(argument.Verbose, false, "Verbose output")

@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	ListTabs     = "list_tabs"
 	ReadTab      = "read_tab"
 	CreateTab    = "create_tab"
@@ -23,5 +22,4 @@ const (
 	UpdateGroup  = "update_group"
 
 	BridgePortFlag = "bridge-port"
-
 )

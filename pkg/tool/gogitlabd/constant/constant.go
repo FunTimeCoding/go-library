@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	GetProject         = "get_project"
 	ListProjects       = "list_projects"
 	SearchRepositories = "search_repositories"
@@ -46,5 +45,4 @@ const (
 	DeleteProjectVariable = "delete_project_variable"
 
 	CreateBranch = "create_branch"
-
 )

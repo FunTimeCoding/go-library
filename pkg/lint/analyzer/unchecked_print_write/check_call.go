@@ -37,7 +37,12 @@ func checkCall(
 		return
 	}
 
-	if suppress.IsSuppressed(p.Fset, p.Syntax, call.Pos(), "unchecked_print_write") {
+	if suppress.IsSuppressed(
+		p.Fset,
+		p.Syntax,
+		call.Pos(),
+		"unchecked_print_write",
+	) {
 		return
 	}
 

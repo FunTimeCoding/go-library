@@ -2,7 +2,11 @@ package parse
 
 import "go/ast"
 
-func matchesCall(c *ast.CallExpr, p string, function string) bool {
+func matchesCall(
+	c *ast.CallExpr,
+	p string,
+	function string,
+) bool {
 	s, okay := c.Fun.(*ast.SelectorExpr)
 
 	if !okay {

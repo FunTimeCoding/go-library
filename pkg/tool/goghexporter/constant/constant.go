@@ -9,6 +9,5 @@ var Identity = identity.New(
 )
 
 const (
-
 	OwnerEnvironment = "GITHUB_EXPORTER_OWNER"
 )

@@ -47,7 +47,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.Summary,
 			mcp.WithDescription(
-				"Aggregated usage summary — counts per tool, optionally broken down by surface. The heatmap.",
+				"Aggregated usage summary - counts per tool, optionally broken down by surface. The heatmap.",
 			),
 			mcp.WithString(
 				constant.Since,

@@ -5,7 +5,10 @@ import (
 	"go/token"
 )
 
-func FindVariable(f *ast.File, name string) *ast.ValueSpec {
+func FindVariable(
+	f *ast.File,
+	name string,
+) *ast.ValueSpec {
 	for _, d := range f.Decls {
 		g, okay := d.(*ast.GenDecl)
 

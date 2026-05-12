@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	AddEntry    = "add_entry"
 	ListEntries = "list_entries"
 	UpdateEntry = "update_entry"

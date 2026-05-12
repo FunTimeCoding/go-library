@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	ListSessions = "list_sessions"
 	ReadScreen   = "read_screen"
 	ReadHistory  = "read_history"
@@ -20,5 +19,4 @@ const (
 	SetTabTitle  = "set_tab_title"
 	SetTabColor  = "set_tab_color"
 	CreateTab    = "create_tab"
-
 )

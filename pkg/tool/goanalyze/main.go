@@ -46,7 +46,10 @@ func Main(
 		run(p, &results)
 	}
 
-	hasBlocked := output.PrintResults(results.Entries, a.GetBoolean("summary"))
+	hasBlocked := output.PrintResults(
+		results.Entries,
+		a.GetBoolean("summary"),
+	)
 
 	if hasBlocked {
 		os.Exit(1)

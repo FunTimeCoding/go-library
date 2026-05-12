@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	NetboxListDevices            = "netbox_list_devices"
 	NetboxGetDevice              = "netbox_get_device"
 	NetboxListInterfaces         = "netbox_list_interfaces"
@@ -57,5 +56,4 @@ const (
 	Tenant         = "tenant"
 	Type           = "type"
 	VirtualMachine = "virtual_machine"
-
 )

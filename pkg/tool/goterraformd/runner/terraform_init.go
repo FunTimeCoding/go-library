@@ -27,9 +27,10 @@ func (r *Runner) terraformInit() {
 			c.Error,
 			"terraform init",
 			map[string]any{
-			"output": c.OutputString,
-			"stderr": c.ErrorString,
-		})
+				"output": c.OutputString,
+				"stderr": c.ErrorString,
+			},
+		)
 		panic(c.Error)
 	}
 }

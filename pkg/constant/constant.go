@@ -45,7 +45,7 @@ const (
 	PhysicalTest1 = "00:00:00:00:00:01"
 	PhysicalTest2 = "00:00:00:00:00:02"
 
-	Unauthorized    = "Unauthorized"
+	Unauthorized = "Unauthorized"
 
 	UnexpectedError = "unexpected error"
 

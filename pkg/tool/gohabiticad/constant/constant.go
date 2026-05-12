@@ -11,7 +11,6 @@ var Identity = identity.New(
 )
 
 const (
-
 	GetTasks     = "get_tasks"
 	CreateTask   = "create_task"
 	ScoreTask    = "score_task"
@@ -21,10 +20,10 @@ const (
 	GetGear      = "get_gear"
 	EquipGear    = "equip_gear"
 	Cron         = "cron"
-	Direction = "direction"
-	Key       = "key"
-	Notes     = "notes"
-	Stat      = "stat"
-	TaskType  = "task_type"
-	Text      = "text"
+	Direction    = "direction"
+	Key          = "key"
+	Notes        = "notes"
+	Stat         = "stat"
+	TaskType     = "task_type"
+	Text         = "text"
 )

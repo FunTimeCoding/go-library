@@ -52,7 +52,7 @@ require (
 	github.com/kestra-io/client-sdk/go-sdk v1.0.1
 	github.com/liushuangls/go-anthropic/v2 v2.20.0
 	github.com/luthermonson/go-proxmox v0.5.0
-	github.com/mark3labs/mcp-go v0.52.0
+	github.com/mark3labs/mcp-go v0.53.0
 	github.com/mattermost/mattermost/server/public v0.4.0
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.6.0
@@ -94,7 +94,7 @@ require (
 	golang.org/x/time v0.15.0
 	golang.org/x/tools v0.45.0
 	gonum.org/v1/gonum v0.17.0
-	google.golang.org/api v0.278.0
+	google.golang.org/api v0.279.0
 	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0

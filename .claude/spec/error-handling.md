@@ -29,7 +29,7 @@ defer func() {
 }()
 ```
 
-The reporter is never nil — `Main()` always creates one. Empty locator
+The reporter is never nil - `Main()` always creates one. Empty locator
 produces noop behavior. No nil-guards needed.
 
 ## When to Use Each Strategy
@@ -113,7 +113,7 @@ standard `(*mcp.CallToolResult, error)` tuple. Use it for all input validation.
 **Tier 2 - Infrastructure failure** (store, DB, external call): capture
 to Sentry and return a structured error with the event ID. Two layers:
 
-`captureFail` is the primitive — a private method on the Server struct
+`captureFail` is the primitive - a private method on the Server struct
 that wraps `response.CaptureFail`. Takes the error and a model-facing
 message. The error goes to sentry, the message goes to the model.
 
@@ -166,7 +166,7 @@ if e != nil {
 ```
 
 Use `captureFail(e, message)` directly only when the handler knows
-a specific message that `captureDetail` can't derive — e.g. after
+a specific message that `captureDetail` can't derive - e.g. after
 a multi-step operation where the context matters.
 
 **`detail_error.Detail`** (`pkg/web/detail_error/`): a shared typed
@@ -176,9 +176,9 @@ known error message field. The `Detail` field is what gets relayed
 to the model.
 
 **`constant.UnexpectedError`** (`pkg/constant/`): the shared fallback
-message — `"unexpected error"`. Honest about not knowing what went
+message - `"unexpected error"`. Honest about not knowing what went
 wrong. The model gets this alongside the sentry event ID and can
-look up the full error if needed. Never lie about the cause — don't
+look up the full error if needed. Never lie about the cause - don't
 use "API unreachable" or "database unreachable" as catch-all messages.
 
 **`parseDetail`** in HTTP clients: checks the response status code
@@ -202,7 +202,7 @@ stacktrace via Sentry MCP tools and diagnose the problem in the same
 conversation.
 
 The reporter is threaded into the MCP server (same pattern as web and
-workers). The reporter is never nil — it always exists, even in noop
+workers). The reporter is never nil - it always exists, even in noop
 mode.
 
 Design principle: any `error` value from a function call in an MCP
@@ -294,7 +294,7 @@ c.Start("terraform", "init")
 When `Start` encounters an error and `Panic` is true (the default),
 it calls `CaptureWithContext` with the process output before
 panicking. The Sentry event gets stdout and stderr as structured
-context — visible in the Sentry UI without being stuffed into the
+context - visible in the Sentry UI without being stuffed into the
 panic message.
 
 For cases where the caller needs to inspect the error before

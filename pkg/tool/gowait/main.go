@@ -3,12 +3,9 @@ package gowait
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gowait/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gowait/wait"
 	"github.com/funtimecoding/go-library/pkg/tool/gowait/wait/option"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 	"time"
 )
 
@@ -17,20 +14,22 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.String(argument.File, "", "File to wait for")
-	pflag.String(argument.Process, "", "Process to wait for")
-	pflag.String(argument.Locator, "", "Locator to wait for")
-	pflag.String(argument.Contains, "", "String for locator")
-	pflag.Duration(argument.Timeout, 3*time.Minute, "")
-	monitor.VerboseArgument()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.String(argument.File, "", "File to wait for")
+	a.String(argument.Process, "", "Process to wait for")
+	a.String(argument.Locator, "", "Locator to wait for")
+	a.String(argument.Contains, "", "String for locator")
+	a.Duration(argument.Timeout, 3*time.Minute, "")
+	a.Boolean(argument.Verbose, false, "Verbose output")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.File = viper.GetString(argument.File)
-	o.Process = viper.GetString(argument.Process)
-	o.Locator = viper.GetString(argument.Locator)
-	o.Timeout = viper.GetDuration(argument.Timeout)
-	o.Verbose = viper.GetBool(argument.Verbose)
+	o.File = a.GetString(argument.File)
+	o.Process = a.GetString(argument.Process)
+	o.Locator = a.GetString(argument.Locator)
+	o.Contains = a.GetString(argument.Contains)
+	o.Timeout = a.GetDuration(argument.Timeout)
+	o.Verbose = a.GetBoolean(argument.Verbose)
 	wait.Run(o)
 }

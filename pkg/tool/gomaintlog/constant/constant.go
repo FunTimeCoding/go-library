@@ -1,3 +1,9 @@
 package constant
 
-const Name = "gomaintlog"
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gomaintlog",
+	"Maintenance log viewer",
+	"gomaintlog",
+)

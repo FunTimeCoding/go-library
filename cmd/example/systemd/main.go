@@ -8,13 +8,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/ssh/command"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/time"
-	"github.com/spf13/pflag"
 )
 
 func main() {
-	pflag.Parse()
-	host := argument.RequiredPositional(0, "HOST")
-	service := argument.RequiredPositional(1, "SERVICE")
+	a := argument.NewSimple("systemd-example")
+	a.ParseSimple()
+	host := a.RequiredPositional(0, "HOST")
+	service := a.RequiredPositional(1, "SERVICE")
 	fmt.Printf("Host: %s\n", host)
 	fmt.Printf("Service: %s\n", service)
 	s := ssh.New(system.User().Username, host, true)

@@ -17,7 +17,7 @@ func Check(o *option.File) {
 		r.AddNote("verbose output")
 	}
 
-	for i, p := range collect() {
+	for i, p := range collect(o.Paths) {
 		t := system.Stat(p).ModTime()
 
 		if time.Since(t) > 5*time.Minute {

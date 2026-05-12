@@ -4,20 +4,19 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func File() {
-	pflag.String(argument.Owner, "", "group or user")
-	pflag.String(argument.Repository, "", "repository name")
-	pflag.String(argument.Branch, "", "branch name")
-	pflag.String(argument.File, "", "file path")
-	argument.ParseBind()
-	owner := viper.GetString(argument.Owner)
-	repository := viper.GetString(argument.Repository)
-	branch := viper.GetString(argument.Branch)
-	file := viper.GetString(argument.File)
+	a := argument.NewSimple("gitlab-file")
+	a.String(argument.Owner, "", "group or user")
+	a.String(argument.Repository, "", "repository name")
+	a.String(argument.Branch, "", "branch name")
+	a.String(argument.File, "", "file path")
+	a.ParseSimple()
+	owner := a.GetString(argument.Owner)
+	repository := a.GetString(argument.Repository)
+	branch := a.GetString(argument.Branch)
+	file := a.GetString(argument.File)
 	g := gitlab.NewEnvironment()
 	p := g.MustProjectByName(owner, repository)
 	f := g.MustFile(p.Identifier, branch, file)

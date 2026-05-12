@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gomattermostd",
+	"Mattermost messaging bridge",
+	"gomattermostd",
+).WithInstructions(
+	"Mattermost messaging - channels, threads, search, direct messages, reactions, file sharing.",
+)
+
 const (
-	Name = "gomattermostd"
 
 	MyChannels        = "my_channels"
 	MyThreads         = "my_threads"
@@ -21,5 +30,4 @@ const (
 	GetUserProfile    = "get_user_profile"
 	RunMonitoring     = "run_monitoring"
 
-	ServerInstructions = "Mattermost messaging — channels, threads, search, direct messages, reactions, file sharing."
 )

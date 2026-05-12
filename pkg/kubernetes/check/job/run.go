@@ -4,20 +4,19 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Run() {
-	pflag.Bool(TrivyArgument, false, "Run Trivy job")
-	pflag.Bool(LabArgument, false, "Renovate GitLab")
-	pflag.Bool(HubArgument, false, "Renovate GitHub")
-	pflag.Bool(argument.Wait, false, "Wait for job to complete")
-	argument.ParseBind()
-	trivy := viper.GetBool(TrivyArgument)
-	lab := viper.GetBool(LabArgument)
-	hub := viper.GetBool(HubArgument)
-	wait := viper.GetBool(argument.Wait)
+	a := argument.NewSimple("kubernetes-job")
+	a.Boolean(TrivyArgument, false, "Run Trivy job")
+	a.Boolean(LabArgument, false, "Renovate GitLab")
+	a.Boolean(HubArgument, false, "Renovate GitHub")
+	a.Boolean(argument.Wait, false, "Wait for job to complete")
+	a.ParseSimple()
+	trivy := a.GetBoolean(TrivyArgument)
+	lab := a.GetBoolean(LabArgument)
+	hub := a.GetBoolean(HubArgument)
+	wait := a.GetBoolean(argument.Wait)
 	k := client.NewEnvironment()
 
 	if !trivy && !lab && !hub {

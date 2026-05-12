@@ -1,14 +1,13 @@
 package argument
 
-import (
-	"github.com/funtimecoding/go-library/pkg/strings/split"
-	"github.com/spf13/viper"
-)
+import "github.com/funtimecoding/go-library/pkg/strings/split"
 
-func Slice(name string) []string {
-	if s := viper.GetString(name); s != "" {
-		return split.Comma(s)
+func (i *Instance) Slice(name string) []string {
+	v := i.GetString(name)
+
+	if v == "" {
+		return []string{}
 	}
 
-	return []string{}
+	return split.Comma(v)
 }

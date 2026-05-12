@@ -16,10 +16,10 @@ func New(
 ) *Server {
 	result := &Server{
 		server: server.NewMCPServer(
-			constant.Name,
+			constant.Identity.Name(),
 			version,
 			server.WithToolCapabilities(true),
-			server.WithInstructions(constant.ServerInstructions),
+			server.WithInstructions(constant.Identity.Instructions()),
 		),
 		store:    s,
 		worker:   p,

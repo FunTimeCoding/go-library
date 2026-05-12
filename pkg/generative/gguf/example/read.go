@@ -8,9 +8,10 @@ import (
 )
 
 func Read() {
-	argument.ParseBind()
+	a := argument.NewSimple("gguf-read")
+	a.ParseSimple()
 	result, e := gguf_parser.ParseGGUFFile(
-		argument.RequiredPositional(0, "PATH"),
+		a.RequiredPositional(0, "PATH"),
 		gguf_parser.SkipLargeMetadata(),
 		gguf_parser.UseMMap(),
 	)

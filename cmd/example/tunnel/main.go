@@ -5,14 +5,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/ssh/tunnel"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/spf13/pflag"
 )
 
 func main() {
-	pflag.String(argument.Host, "", "Relay host")
-	pflag.String(TargetHost, "", "Target host")
-	pflag.Int(TargetPort, 0, "Target port")
-	argument.ParseBind()
+	a := argument.NewSimple("tunnel")
+	a.String(argument.Host, "", "Relay host")
+	a.String(TargetHost, "", "Target host")
+	a.Integer(TargetPort, 0, "Target port")
+	a.ParseSimple()
 	t := tunnel.New()
 
 	if false {
@@ -22,9 +22,9 @@ func main() {
 
 	fmt.Printf("Start: %+v\n", t)
 	t.Start(
-		argument.Required(argument.Host),
-		argument.Required(TargetHost),
-		argument.RequiredInteger(TargetPort),
+		a.Required(argument.Host),
+		a.Required(TargetHost),
+		a.RequiredInteger(TargetPort),
 		0,
 	)
 	defer t.Stop()

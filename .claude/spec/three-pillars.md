@@ -15,8 +15,8 @@ and graceful degradation.
 ## Wiring Order
 
 `Main()` creates the reporter unconditionally. Empty locator produces
-noop behavior — no branching, no nil. `Run()` receives the reporter
-as `face.Reporter` (not on the option struct — option structs hold
+noop behavior - no branching, no nil. `Run()` receives the reporter
+as `face.Reporter` (not on the option struct - option structs hold
 configuration, not constructed dependencies). `Run()` creates the
 logger and wires everything into lifecycle.
 
@@ -26,10 +26,12 @@ func Main(
     gitHash string,
     buildDate string,
 ) {
-    r := reporter.New(constant.Name, version).Start()
+    r := reporter.New(constant.Identity.Name(), version).Start()
     defer func() { r.RecoverFlush(recover()) }()
 
-    monitor.ParseBind(version, gitHash, buildDate)
+    a := argument.NewInstance(constant.Identity)
+    // ... register flags
+    a.Parse(version, gitHash, buildDate)
     o := option.New()
     // ... populate option fields
     Run(o, r)

@@ -1,7 +1,11 @@
 package constant
 
-const (
-	Name = "gopostgres"
+import "github.com/funtimecoding/go-library/pkg/identity"
 
-	HostEnvironment = "POSTGRES_HOST"
+var Identity = identity.New(
+	"gopostgres",
+	"PostgreSQL query CLI for gopostgresd",
+	"gopostgres [command]",
 )
+
+const HostEnvironment = "POSTGRES_HOST"

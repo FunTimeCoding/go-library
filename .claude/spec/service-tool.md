@@ -38,24 +38,25 @@ pkg/tool/go<tool>/
 
 See `entrypoint.md` for linker variables, `Main()`, and sentry setup.
 
-`Main()` registers the `--port` flag, builds the option struct, and calls `Run()`. Sentry and `monitor.ParseBind` are handled per the entrypoint convention.
+`Main()` registers the `--port` flag, builds the option struct, and calls `Run()`. Sentry and argument parsing are handled per the entrypoint convention.
 
 ```go
-pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
-monitor.ParseBind(version, gitHash, buildDate)
+a := argument.NewInstance(constant.Identity)
+a.Integer(argument.Port, web.ListenPort, web.PortUsage)
+a.Parse(version, gitHash, buildDate)
 o := option.New()
-o.Port = argument.RequiredInteger(argument.Port)
+o.Port = a.RequiredInteger(argument.Port)
 Run(o)
 ```
 
 - `web.ListenPort` (8080) is the default; override with `--port`
-- `argument.RequiredInteger` reads the flag value via viper
+- `a.RequiredInteger` reads the flag value from the scoped instance
 - Port lives in the option struct as `int`, not as a formatted address string
 
 ## Run Function
 
 `Run(o, r)` constructs components and wires lifecycle. It receives the
-reporter from `Main()` as `face.Reporter` — not on the option struct.
+reporter from `Main()` as `face.Reporter` - not on the option struct.
 See `three-pillars.md` for the full wiring rationale.
 
 ```go

@@ -5,10 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/check/issue"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/check/issue/option"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gosentry/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -16,29 +13,34 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.CopyableArgument()
-	monitor.NotationArgument()
-	monitor.AllArgument()
-	monitor.VerboseArgument()
-	pflag.String(
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(
+		argument.Copyable,
+		false,
+		"Disable OSC8 links and add a copyable link instead",
+	)
+	a.Boolean(argument.Notation, false, "JSON output")
+	a.Boolean(argument.All, false, "Include filtered in output")
+	a.Boolean(argument.Verbose, false, "Verbose output")
+	a.String(
 		argument.Issue,
 		"",
 		"Show details for a specific issue (e.g. GO-1B)",
 	)
-	monitor.ParseBind(version, gitHash, buildDate)
+	a.Parse(version, gitHash, buildDate)
 
-	if i := viper.GetString(argument.Issue); i != "" {
+	if i := a.GetString(argument.Issue); i != "" {
 		showIssue(i)
 
 		return
 	}
 
 	p := option.New()
-	p.Notation = viper.GetBool(argument.Notation)
-	p.All = viper.GetBool(argument.All)
-	p.Verbose = viper.GetBool(argument.Verbose)
-	p.Copyable = viper.GetBool(argument.Copyable)
+	p.Notation = a.GetBoolean(argument.Notation)
+	p.All = a.GetBoolean(argument.All)
+	p.Verbose = a.GetBoolean(argument.Verbose)
+	p.Copyable = a.GetBoolean(argument.Copyable)
 	issue.Check(p)
 }

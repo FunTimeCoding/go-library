@@ -4,10 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/lint"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/golint/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -15,29 +12,34 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.Bool(
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(
 		argument.Fix,
 		false,
 		"Fix concerns that can be fixed",
 	)
-	pflag.Bool(
+	a.Boolean(
 		argument.Summary,
 		false,
 		"Print one line per modified file instead of per-edit detail",
 	)
-	pflag.String(
+	a.String(
 		argument.Skip,
 		"",
 		"Directories to skip, comma separated",
 	)
-	monitor.VerboseArgument()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a.Boolean(
+		argument.Verbose,
+		false,
+		"Verbose output",
+	)
+	a.Parse(version, gitHash, buildDate)
 	lint.Lint(
-		viper.GetString(argument.Skip),
-		viper.GetBool(argument.Verbose),
-		viper.GetBool(argument.Fix),
-		viper.GetBool(argument.Summary),
+		a.GetString(argument.Skip),
+		a.GetBoolean(argument.Verbose),
+		a.GetBoolean(argument.Fix),
+		a.GetBoolean(argument.Summary),
 	)
 }

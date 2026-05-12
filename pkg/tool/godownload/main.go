@@ -4,14 +4,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
 	"github.com/funtimecoding/go-library/pkg/tool/godownload/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/godownload/download"
 	"github.com/funtimecoding/go-library/pkg/tool/godownload/download/option"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -19,29 +16,34 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	common.Arguments()
-	pflag.String(
+	a := argument.NewInstance(constant.Identity)
+	common.Arguments(a)
+	a.String(
 		argument.PackageVersion,
 		library.LatestVersion,
 		"Version to download, falls back to latest if not found",
 	)
-	pflag.String(
+	a.String(
 		argument.Output,
-		environment.Fallback("OUTPUT", download.DefaultOutput),
+		environment.Fallback(
+		"OUTPUT",
+		download.DefaultOutput,
+	),
 		"Output directory for executable",
 	)
-	monitor.VerboseArgument()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a.Boolean(argument.Verbose, false, "Verbose output")
+	a.Parse(version, gitHash, buildDate)
+	common.ValidateArguments(a)
 	o := option.New()
-	o.Host = viper.GetString(argument.Host)
-	o.Token = viper.GetString(argument.Token)
-	o.Owner = viper.GetString(argument.Owner)
-	o.Repository = viper.GetString(argument.Repository)
-	o.PackageVersion = viper.GetString(argument.PackageVersion)
-	o.Output = viper.GetString(argument.Output)
-	o.Verbose = viper.GetBool(argument.Verbose)
-	o.Package = argument.RequiredPositional(0, "PACKAGE")
+	o.Host = a.GetString(argument.Host)
+	o.Token = a.GetString(argument.Token)
+	o.Owner = a.GetString(argument.Owner)
+	o.Repository = a.GetString(argument.Repository)
+	o.PackageVersion = a.GetString(argument.PackageVersion)
+	o.Output = a.GetString(argument.Output)
+	o.Verbose = a.GetBoolean(argument.Verbose)
+	o.Package = a.RequiredPositional(0, "PACKAGE")
 	download.Run(o)
 }

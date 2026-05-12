@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"goitermd",
+	"iTerm2 terminal workspace bridge",
+	"goitermd",
+).WithInstructions(
+	"iTerm2 terminal workspace - read screens, send text and keys, manage tabs. Check job_name and command_line before sending to avoid unintended commands on production sessions.",
+)
+
 const (
-	Name = "goitermd"
 
 	ListSessions = "list_sessions"
 	ReadScreen   = "read_screen"
@@ -12,5 +21,4 @@ const (
 	SetTabColor  = "set_tab_color"
 	CreateTab    = "create_tab"
 
-	ServerInstructions = "iTerm2 terminal workspace — read screens, send text and keys, manage tabs. Check job_name and command_line before sending to avoid unintended commands on production sessions."
 )

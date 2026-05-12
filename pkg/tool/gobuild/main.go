@@ -6,12 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/build"
 	"github.com/funtimecoding/go-library/pkg/build/option"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/funtimecoding/go-library/pkg/system/constant"
+	systemConstant "github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/join"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
+	"github.com/funtimecoding/go-library/pkg/tool/gobuild/constant"
 	"log"
 )
 
@@ -20,28 +18,29 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.NewOptional("gobuild", version).Start()
+	r := reporter.NewOptional(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.String(
+	a := argument.NewInstance(constant.Identity)
+	a.String(
 		argument.Main,
 		"",
 		"Path to main.go, defaults to cmd/$NAME/main.go",
 	)
-	pflag.String(
+	a.String(
 		argument.Output,
 		"",
 		"Output path, defaults to tmp/$NAME/$OS-$ARCH/$NAME",
 	)
-	pflag.String(argument.BuildTags, "", "Build tags")
-	pflag.Bool(build.CopyToBinFlag, false, "Copy to $HOME/bin")
-	pflag.Bool(constant.LinuxAMD64, false, "Linux AMD64")
-	pflag.Bool(constant.DarwinARM64, false, "Darwin ARM64")
-	pflag.Bool(constant.DarwinAMD64, false, "Darwin AMD64")
-	pflag.Bool(build.Native, false, "Enable CGO")
-	monitor.ParseBind(version, gitHash, buildDate)
-	linuxAMD64 := viper.GetBool(constant.LinuxAMD64)
-	darwinARM64 := viper.GetBool(constant.DarwinARM64)
-	darwinAMD64 := viper.GetBool(constant.DarwinAMD64)
+	a.String(argument.BuildTags, "", "Build tags")
+	a.Boolean(build.CopyToBinFlag, false, "Copy to $HOME/bin")
+	a.Boolean(systemConstant.LinuxAMD64, false, "Linux AMD64")
+	a.Boolean(systemConstant.DarwinARM64, false, "Darwin ARM64")
+	a.Boolean(systemConstant.DarwinAMD64, false, "Darwin AMD64")
+	a.Boolean(build.Native, false, "Enable CGO")
+	a.Parse(version, gitHash, buildDate)
+	linuxAMD64 := a.GetBoolean(systemConstant.LinuxAMD64)
+	darwinARM64 := a.GetBoolean(systemConstant.DarwinARM64)
+	darwinAMD64 := a.GetBoolean(systemConstant.DarwinAMD64)
 
 	if !linuxAMD64 && !darwinARM64 && !darwinAMD64 {
 		linuxAMD64 = true
@@ -49,11 +48,14 @@ func Main(
 		darwinAMD64 = true
 	}
 
-	name := argument.Positional(0)
+	name := a.Argument(0)
 
 	if name == "" {
 		for _, n := range system.Directories(
-			join.Absolute(system.WorkingDirectory(), constant.CommandPath),
+			join.Absolute(
+				system.WorkingDirectory(),
+				systemConstant.CommandPath,
+			),
 		) {
 			if n == build.ExamplePath {
 				continue
@@ -69,10 +71,10 @@ func Main(
 			o := option.New()
 			o.Name = n
 			o.MainPath = mainPath
-			o.Output = viper.GetString(argument.Output)
-			o.BuildTags = viper.GetString(argument.BuildTags)
-			o.CopyToBin = viper.GetBool(build.CopyToBinFlag)
-			o.Native = viper.GetBool(build.Native)
+			o.Output = a.GetString(argument.Output)
+			o.BuildTags = a.GetString(argument.BuildTags)
+			o.CopyToBin = a.GetBoolean(build.CopyToBinFlag)
+			o.Native = a.GetBoolean(build.Native)
 			o.LinuxAMD64 = linuxAMD64
 			o.DarwinARM64 = darwinARM64
 			o.DarwinAMD64 = darwinAMD64
@@ -82,7 +84,7 @@ func Main(
 		return
 	}
 
-	mainPath := viper.GetString(argument.Main)
+	mainPath := a.GetString(argument.Main)
 
 	if mainPath == "" {
 		if mainPath = build.GuessMainPath(name); mainPath == "" {
@@ -93,10 +95,10 @@ func Main(
 	o := option.New()
 	o.Name = name
 	o.MainPath = mainPath
-	o.Output = viper.GetString(argument.Output)
-	o.BuildTags = viper.GetString(argument.BuildTags)
-	o.CopyToBin = viper.GetBool(build.CopyToBinFlag)
-	o.Native = viper.GetBool(build.Native)
+	o.Output = a.GetString(argument.Output)
+	o.BuildTags = a.GetString(argument.BuildTags)
+	o.CopyToBin = a.GetBoolean(build.CopyToBinFlag)
+	o.Native = a.GetBoolean(build.Native)
 	o.LinuxAMD64 = linuxAMD64
 	o.DarwinARM64 = darwinARM64
 	o.DarwinAMD64 = darwinAMD64

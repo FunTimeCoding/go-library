@@ -8,8 +8,9 @@ import (
 )
 
 func AddResponder() {
-	argument.ParseBind()
-	r := argument.RequiredPositional(0, "RESPONDER_NAME")
+	a := argument.NewSimple("add-responder")
+	a.ParseSimple()
+	r := a.RequiredPositional(0, "RESPONDER_NAME")
 	c := common.Opsgenie()
 	f := option.ExtendedColor.Copy()
 

@@ -32,7 +32,7 @@ func layout(
 				html.Nav(
 					html.Class("container"),
 					html.Ul(
-						html.Li(html.Strong(gomponents.Text(constant.Name))),
+						html.Li(html.Strong(gomponents.Text(constant.Identity.Name()))),
 					),
 					html.Ul(
 						navigationLink("/", "Dashboard", currentPath),

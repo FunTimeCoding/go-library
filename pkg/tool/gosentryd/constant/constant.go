@@ -1,9 +1,19 @@
 package constant
 
-import "errors"
+import (
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/identity"
+)
+
+var Identity = identity.New(
+	"gosentryd",
+	"Sentry error tracking bridge",
+	"gosentryd",
+).WithInstructions(
+	"Error tracking and triage. Search unresolved issues, inspect stack traces and events, delete resolved errors. Check after deploying new service versions.",
+)
 
 const (
-	Name = "gosentryd"
 
 	Whoami            = "whoami"
 	FindOrganizations = "find_organizations"
@@ -18,7 +28,6 @@ const (
 	GetIssueEvent     = "get_issue_event"
 	DeleteIssue       = "delete_issue"
 
-	ServerInstructions = "Error tracking and triage. Search unresolved issues, inspect stack traces and events, delete resolved errors. Check after deploying new service versions."
 )
 
 var ErrorProjectNotFound = errors.New("project not found")

@@ -3,7 +3,6 @@ package gobundle
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gobundle/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gobundle/option"
 )
@@ -13,15 +12,16 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Name = argument.RequiredPositional(0, "NAME")
-	o.Path = argument.RequiredPositional(1, "PATH")
-	o.Executable = argument.RequiredPositional(2, "EXECUTABLE")
-	o.Icon = argument.RequiredPositional(3, "ICON")
-	o.Vendor = argument.RequiredPositional(4, "VENDOR")
-	o.BundleVersion = argument.RequiredPositional(5, "VERSION")
+	o.Name = a.RequiredPositional(0, "NAME")
+	o.Path = a.RequiredPositional(1, "PATH")
+	o.Executable = a.RequiredPositional(2, "EXECUTABLE")
+	o.Icon = a.RequiredPositional(3, "ICON")
+	o.Vendor = a.RequiredPositional(4, "VENDOR")
+	o.BundleVersion = a.RequiredPositional(5, "VERSION")
 	Run(o)
 }

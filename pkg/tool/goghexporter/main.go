@@ -3,12 +3,9 @@ package goghexporter
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/goghexporter/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goghexporter/option"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 	"time"
 )
 
@@ -17,19 +14,20 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.VerboseArgument()
-	pflag.String(
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(argument.Verbose, false, "Verbose output")
+	a.String(
 		argument.Owner,
 		environment.Optional(constant.OwnerEnvironment),
 		"GitHub owner",
 	)
-	pflag.Duration(argument.Interval, 5*time.Minute, "Poll interval")
-	monitor.ParseBind(version, gitHash, buildDate)
+	a.Duration(argument.Interval, 5*time.Minute, "Poll interval")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Owner = viper.GetString(argument.Owner)
-	o.Interval = viper.GetDuration(argument.Interval)
-	o.Verbose = viper.GetBool(argument.Verbose)
+	o.Owner = a.GetString(argument.Owner)
+	o.Interval = a.GetDuration(argument.Interval)
+	o.Verbose = a.GetBoolean(argument.Verbose)
 	Run(o, r)
 }

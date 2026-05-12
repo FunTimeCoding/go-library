@@ -10,8 +10,9 @@ import (
 )
 
 func Before() {
-	argument.ParseBind()
-	channel := argument.RequiredPositional(0, "CHANNEL")
+	a := argument.NewSimple("mattermost-before")
+	a.ParseSimple()
+	channel := a.RequiredPositional(0, "CHANNEL")
 	m := mattermost.NewEnvironment(mattermost.WithVerbose(false))
 	c := m.MustTeamChannel(channel)
 	f := constant.Format

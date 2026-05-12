@@ -1,8 +1,8 @@
 package gogw2
 
 import (
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gogw2/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gogw2/option"
 )
@@ -12,9 +12,10 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
 	Run(o)
 }

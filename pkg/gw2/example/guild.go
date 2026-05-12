@@ -4,15 +4,14 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/gw2"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Guild() {
-	pflag.String(argument.Tag, "", "Guild tag")
-	argument.ParseBind()
+	a := argument.NewSimple("gw2-guild")
+	a.String(argument.Tag, "", "Guild tag")
+	a.ParseSimple()
 	c := gw2.NewEnvironment()
-	tag := viper.GetString(argument.Tag)
+	tag := a.GetString(argument.Tag)
 	account := c.Account()
 
 	if len(account.GuildLeader) == 0 {

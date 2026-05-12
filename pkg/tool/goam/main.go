@@ -3,7 +3,6 @@ package goam
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/amtool"
 	"github.com/funtimecoding/go-library/pkg/tool/goam/constant"
 )
@@ -13,8 +12,9 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.ParseBind(version, gitHash, buildDate)
-	amtool.Run(argument.Positional(0))
+	a := argument.NewInstance(constant.Identity)
+	a.Parse(version, gitHash, buildDate)
+	amtool.Run(a.Argument(0))
 }

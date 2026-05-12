@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gohabiticad",
+	"Habitica task gamification bridge",
+	"gohabiticad",
+).WithInstructions(
+	"Habitica task gamification - score tasks, check stats, manage gear. Habits use up/down direction, dailies and todos use up to complete.",
+)
+
 const (
-	Name = "gohabiticad"
 
 	GetTasks     = "get_tasks"
 	CreateTask   = "create_task"
@@ -12,9 +21,6 @@ const (
 	GetGear      = "get_gear"
 	EquipGear    = "equip_gear"
 	Cron         = "cron"
-
-	ServerInstructions = "Habitica task gamification — score tasks, check stats, manage gear. Habits use up/down direction, dailies and todos use up to complete."
-
 	Direction = "direction"
 	Key       = "key"
 	Notes     = "notes"

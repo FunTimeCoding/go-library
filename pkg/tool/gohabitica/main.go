@@ -14,11 +14,12 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	c := client.NewEnvironment()
 	o := &cobra.Command{
-		Use:     constant.Name,
+		Use:     constant.Identity.Usage(),
+		Short:   constant.Identity.Description(),
 		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
 	o.AddCommand(tasks(c))

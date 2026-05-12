@@ -4,4 +4,5 @@ type File struct {
 	Notation bool
 	All      bool
 	Verbose  bool
+	Paths    []string
 }

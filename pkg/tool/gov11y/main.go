@@ -3,12 +3,9 @@ package gov11y
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gov11y/constant"
 	"github.com/funtimecoding/go-library/pkg/vulnerability/check/vulnerability"
 	"github.com/funtimecoding/go-library/pkg/vulnerability/check/vulnerability/option"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -16,13 +13,14 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.String(argument.Filter, "", "modules, comma separated")
-	monitor.VerboseArgument()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.String(argument.Filter, "", "modules, comma separated")
+	a.Boolean(argument.Verbose, false, "Verbose output")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Verbose = viper.GetBool(argument.Verbose)
-	o.Filter = argument.Slice(argument.Filter)
+	o.Verbose = a.GetBoolean(argument.Verbose)
+	o.Filter = a.Slice(argument.Filter)
 	vulnerability.Check(o)
 }

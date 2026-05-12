@@ -2,9 +2,9 @@ package gocat
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/argument"
 	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/strings/slice"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -20,9 +20,10 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Parse(version, gitHash, buildDate)
 	pattern := filepath.Join(library.CurrentDirectory, "*.go")
 	files := slice.StripSuffix(system.Glob(pattern), "_test.go")
 

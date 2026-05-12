@@ -1,17 +1,25 @@
 package constant
 
-const (
-	Name = "gosaltd"
+import "github.com/funtimecoding/go-library/pkg/identity"
 
-	Trigger          = "trigger"
-	Runs             = "runs"
-	Run              = "run"
-	Minions          = "minions"
-	Keys             = "keys"
-	Limit            = "limit"
-	Status           = "status"
-	Identifier       = "id"
-	ServerInstructions = "Salt highstate runner — trigger highstate on all minions and check results. Runs execute asynchronously; use runs and run tools to poll for completion."
+var Identity = identity.New(
+	"gosaltd",
+	"Salt highstate runner",
+	"gosaltd",
+).WithInstructions(
+	"Salt highstate runner - trigger highstate on all minions and check results. Runs execute asynchronously; use runs and run tools to poll for completion.",
+)
+
+const (
+
+	Trigger            = "trigger"
+	Runs               = "runs"
+	Run                = "run"
+	Minions            = "minions"
+	Keys               = "keys"
+	Limit              = "limit"
+	Status             = "status"
+	Identifier         = "id"
 
 	RecentRunsFailed = "failed to list recent runs"
 	RunLookupFailed  = "failed to look up run"

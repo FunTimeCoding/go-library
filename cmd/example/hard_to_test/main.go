@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/brave"
@@ -71,7 +70,6 @@ func main() {
 	web.WriteBytesSafe(nil, 0, nil)
 	web.DefaultServer(nil)
 	push.Send(nil)
-	argument.RequiredInteger64("")
 	errors.NotFound("")
 	relational.NewEnvironment()
 	gitlab.NewGitLabCom("")

@@ -4,22 +4,21 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/chat/discord"
 	"github.com/funtimecoding/go-library/pkg/system"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func DeleteLoop() {
-	pflag.String(
+	a := argument.NewSimple("discord-delete-loop")
+	a.String(
 		DeleteLoopArgument,
 		"",
 		"Delete messages in a loop, requires channel",
 	)
-	argument.ParseBind()
+	a.ParseSimple()
 	c := discord.NewEnvironment()
 	c.Listen(false)
 	defer c.Close()
 
-	if h := viper.GetString(DeleteLoopArgument); h != "" {
+	if h := a.GetString(DeleteLoopArgument); h != "" {
 		c.DeleteLoop(h)
 
 		return

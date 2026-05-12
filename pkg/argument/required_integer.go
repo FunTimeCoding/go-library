@@ -1,5 +1,13 @@
 package argument
 
-func RequiredInteger(name string) int {
-	return RequiredIntegerExit(name, 1)
+import "github.com/funtimecoding/go-library/pkg/system"
+
+func (i *Instance) RequiredInteger(name string) int {
+	v := i.GetInteger(name)
+
+	if v == 0 {
+		system.Exitf(1, "flag empty: %s\n", name)
+	}
+
+	return v
 }

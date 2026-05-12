@@ -5,20 +5,19 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func BranchRequest() {
-	pflag.Int64(argument.Project, 0, "Project ID")
-	pflag.String(argument.Branch, "", "Branch name")
-	argument.ParseBind()
+	a := argument.NewSimple("gitlab-branch-request")
+	a.Integer64(argument.Project, 0, "Project ID")
+	a.String(argument.Branch, "", "Branch name")
+	a.ParseSimple()
 	g := gitlab.NewEnvironment()
 	f := constant.Format
 	fmt.Println(
 		g.MustBranchRequest(
-			viper.GetInt64(argument.Project),
-			viper.GetString(argument.Branch),
+			a.GetInteger64(argument.Project),
+			a.GetString(argument.Branch),
 		).Format(f),
 	)
 }

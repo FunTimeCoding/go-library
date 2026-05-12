@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gopostgresd",
+	"Multi-instance PostgreSQL access bridge",
+	"gopostgresd",
+).WithInstructions(
+	"Multi-instance PostgreSQL access. Call use_instance to select a database before querying - the active instance persists across tool calls within a session. Call list_instances to see available databases.",
+)
+
 const (
-	Name = "gopostgresd"
 
 	ListInstances = "list_instances"
 	UseInstance   = "use_instance"
@@ -13,5 +22,4 @@ const (
 	ListIndexes   = "list_indexes"
 	TableSizes    = "table_sizes"
 
-	ServerInstructions = "Multi-instance PostgreSQL access. Call use_instance to select a database before querying — the active instance persists across tool calls within a session. Call list_instances to see available databases."
 )

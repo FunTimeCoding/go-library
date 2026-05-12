@@ -24,11 +24,6 @@ pkg/<domain>/constant/
 └── constant.go                     # Format preset (option.Color.Copy() + domain tags)
 
 pkg/monitor/
-├── parse_bind.go                   # ParseBind(version, gitHash, buildDate)
-├── copyable_argument.go            # CopyableArgument(): reusable --copyable flag
-├── notation_argument.go            # NotationArgument(): reusable --notation flag
-├── all_argument.go                 # AllArgument(): reusable --all flag
-├── verbose_argument.go             # VerboseArgument(): reusable --verbose flag
 └── item/constant/constant.go       # Item identifiers for monitor.NoRelevant()
 
 pkg/argument/
@@ -39,7 +34,7 @@ pkg/argument/
 
 See `entrypoint.md` for linker variables, `Main()`, and sentry setup.
 
-After the standard entrypoint setup, `Main()` registers check-specific flags (copyable, notation, all), builds the option struct, and calls `Check()`. Argument registration order: reusable monitor helpers first, then domain-specific `pflag` calls, then `monitor.ParseBind()`.
+After the standard entrypoint setup, `Main()` registers check-specific flags (copyable, notation, all) on the argument instance, builds the option struct, and calls `Check()`.
 
 ## Option Struct
 
@@ -172,18 +167,20 @@ The check function copies this preset and applies option flags. Common flag mapp
 | `Extended`    | `f.Extended()`           |
 | `Fingerprint` | `f.Tag(tag.Fingerprint)` |
 
-## Reusable Argument Helpers
+## Common Check Flags
 
-Common arguments live in `pkg/monitor/` as `<Name>Argument()` functions. Each registers a `pflag.Bool` with the constant from `pkg/argument/constant.go`.
+Most check tools register the same boolean flags on the argument
+instance. Flag name constants live in `pkg/argument/constant.go`.
 
-| Helper               | Flag         | Description                                        |
+| Constant             | Flag         | Description                                        |
 |----------------------|--------------|----------------------------------------------------|
-| `CopyableArgument()` | `--copyable` | Disable OSC8 links and add a copyable link instead |
-| `NotationArgument()` | `--notation` | JSON output                                        |
-| `AllArgument()`      | `--all`      | Include filtered items                             |
-| `VerboseArgument()`  | `--verbose`  | Verbose output                                     |
+| `argument.Copyable`  | `--copyable` | Disable OSC8 links and add a copyable link instead |
+| `argument.Notation`  | `--notation` | JSON output                                        |
+| `argument.All`       | `--all`      | Include filtered items                             |
+| `argument.Verbose`   | `--verbose`  | Verbose output                                     |
 
-Domain-specific flags (e.g., `--critical`, `--set`) use `pflag` directly in the entrypoint.
+Domain-specific flags (e.g., `--critical`, `--set`) are registered
+on the same instance in Main().
 
 ## Multi-Entity Domains
 

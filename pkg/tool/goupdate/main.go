@@ -9,7 +9,6 @@ import (
 	githubConstant "github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/github/release"
 	"github.com/funtimecoding/go-library/pkg/go_mod"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/project"
 	"github.com/funtimecoding/go-library/pkg/runtime"
 	"github.com/funtimecoding/go-library/pkg/semver"
@@ -17,8 +16,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/goupdate/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 	"os"
 )
 
@@ -27,25 +24,26 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.Bool(argument.Continue, false, "Continue on error")
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(argument.Continue, false, "Continue on error")
 	var exclusives []string
-	pflag.StringSliceVar(
+	a.StringSliceVariable(
 		&exclusives,
 		argument.Exclusive,
 		nil,
 		"One or more matches to exclusively update, comma separated",
 	)
 	var downgrades []string
-	pflag.StringSliceVar(
+	a.StringSliceVariable(
 		&downgrades,
 		argument.Downgrade,
 		nil,
 		"One or more downgrades to apply after update, comma separated",
 	)
-	monitor.ParseBind(version, gitHash, buildDate)
-	continueOnError := viper.GetBool(argument.Continue)
+	a.Parse(version, gitHash, buildDate)
+	continueOnError := a.GetBoolean(argument.Continue)
 
 	if len(exclusives) > 0 {
 		fmt.Printf("Exclusive matches: %s\n", join.Comma(exclusives))

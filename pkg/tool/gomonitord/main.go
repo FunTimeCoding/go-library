@@ -1,9 +1,9 @@
 package gomonitord
 
 import (
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/coder"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla"
 	"github.com/funtimecoding/go-library/pkg/monitor/gorilla/example_client"
@@ -17,9 +17,10 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Parse(version, gitHash, buildDate)
 
 	if false {
 		// Start server: go run cmd/gomonitord/main.go localhost:3002

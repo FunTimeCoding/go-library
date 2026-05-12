@@ -5,16 +5,15 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
-	"github.com/spf13/pflag"
 )
 
-func Arguments() {
-	pflag.String(
+func Arguments(a *argument.Instance) {
+	a.String(
 		argument.Host,
 		environment.Optional(constant.QualifiedName),
 		fmt.Sprintf("Host, fallback: %s", constant.QualifiedName),
 	)
-	pflag.String(
+	a.String(
 		argument.Token,
 		environment.Fallback(
 			TokenEnvironment,
@@ -26,7 +25,7 @@ func Arguments() {
 			constant.JobToken,
 		),
 	)
-	pflag.String(
+	a.String(
 		argument.Owner,
 		environment.Fallback(
 			OwnerEnvironment,
@@ -38,7 +37,7 @@ func Arguments() {
 			constant.ProjectNamespace,
 		),
 	)
-	pflag.String(
+	a.String(
 		argument.Repository,
 		environment.Optional(RepositoryEnvironment),
 		fmt.Sprintf("Repository, fallback: %s", RepositoryEnvironment),

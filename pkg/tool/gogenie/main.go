@@ -5,9 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert"
 	"github.com/funtimecoding/go-library/pkg/atlassian/opsgenie/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gogenie/constant"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -15,15 +13,20 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.CopyableArgument()
-	monitor.NotationArgument()
-	monitor.AllArgument()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(
+		argument.Copyable,
+		false,
+		"Disable OSC8 links and add a copyable link instead",
+	)
+	a.Boolean(argument.Notation, false, "JSON output")
+	a.Boolean(argument.All, false, "Include filtered in output")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Copyable = viper.GetBool(argument.Copyable)
-	o.Notation = viper.GetBool(argument.Notation)
-	o.All = viper.GetBool(argument.All)
+	o.Copyable = a.GetBoolean(argument.Copyable)
+	o.Notation = a.GetBoolean(argument.Notation)
+	o.All = a.GetBoolean(argument.All)
 	alert.Check(o)
 }

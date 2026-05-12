@@ -6,12 +6,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/git/check/status"
 	"github.com/funtimecoding/go-library/pkg/git/check/status/option"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	item "github.com/funtimecoding/go-library/pkg/monitor/item/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitstatus/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -19,17 +16,18 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.NotationArgument()
-	monitor.AllArgument()
-	monitor.VerboseArgument()
-	pflag.String(
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(argument.Notation, false, "JSON output")
+	a.Boolean(argument.All, false, "Include filtered in output")
+	a.Boolean(argument.Verbose, false, "Verbose output")
+	a.String(
 		argument.Path,
 		"",
 		"Path to scan for git repositories. If not set, the current working directory will be used.",
 	)
-	pflag.Int(
+	a.Integer(
 		argument.Depth,
 		3,
 		fmt.Sprintf(
@@ -37,13 +35,13 @@ func Main(
 			item.GoGitStatus.Plural,
 		),
 	)
-	monitor.ParseBind(version, gitHash, buildDate)
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Notation = viper.GetBool(argument.Notation)
-	o.All = viper.GetBool(argument.All)
-	o.Verbose = viper.GetBool(argument.Verbose)
-	o.Path = viper.GetString(argument.Path)
-	o.Depth = viper.GetInt(argument.Depth)
+	o.Notation = a.GetBoolean(argument.Notation)
+	o.All = a.GetBoolean(argument.All)
+	o.Verbose = a.GetBoolean(argument.Verbose)
+	o.Path = a.GetString(argument.Path)
+	o.Depth = a.GetInteger(argument.Depth)
 
 	if s := environment.Optional(status.RepositoryRootEnvironment); s != "" {
 		o.Path = s

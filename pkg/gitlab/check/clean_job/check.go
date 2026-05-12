@@ -6,19 +6,18 @@ import (
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 	"os"
 )
 
 func Check() {
-	pflag.String(argument.Namespace, "", "Namespace")
-	pflag.String(argument.Project, "", "Project")
-	pflag.String(argument.Match, "", "Description match")
-	argument.ParseBind()
+	a := argument.NewSimple("clean-job")
+	a.String(argument.Namespace, "", "Namespace")
+	a.String(argument.Project, "", "Project")
+	a.String(argument.Match, "", "Description match")
+	a.ParseSimple()
 	g := gitlab.NewEnvironment()
 	f := constant.Format.Copy().Tag(tag.Dense)
-	m := viper.GetString(argument.Match)
+	m := a.GetString(argument.Match)
 
 	if m == "" {
 		fmt.Printf(
@@ -44,8 +43,8 @@ func Check() {
 
 	if false {
 		p := g.MustProjectByName(
-			argument.Required(argument.Namespace),
-			argument.Required(argument.Project),
+			a.Required(argument.Namespace),
+			a.Required(argument.Project),
 		)
 
 		if false {

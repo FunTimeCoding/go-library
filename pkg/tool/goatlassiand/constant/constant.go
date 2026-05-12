@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"goatlassiand",
+	"Jira and Confluence bridge",
+	"goatlassiand",
+).WithInstructions(
+	"Jira and Confluence - search and manage issues, transitions, checklists, comments, issue links. Confluence: search, read, create, and update pages.",
+)
+
 const (
-	Name = "goatlassiand"
 
 	JiraSearch              = "jira_search"
 	JiraGetIssue            = "jira_get_issue"
@@ -31,9 +40,6 @@ const (
 	ConfluenceListSpaces      = "confluence_list_spaces"
 	ConfluenceGetPageChildren = "confluence_get_page_children"
 	ConfluenceAddComment      = "confluence_add_comment"
-
-	ServerInstructions = "Jira and Confluence — search and manage issues, transitions, checklists, comments, issue links. Confluence: search, read, create, and update pages."
-
 	AllowedValueLimit = 5
 
 	ChecklistField       = "Checklists"
@@ -57,5 +63,4 @@ const (
 	SpaceIdentifier      = "space_identifier"
 	Summary              = "summary"
 	TransitionIdentifier = "transition_identifier"
-
 )

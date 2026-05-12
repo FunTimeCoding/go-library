@@ -7,12 +7,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	gitlab "github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/packages"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/goupload/constant"
 	"github.com/funtimecoding/go-library/pkg/web"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -23,7 +20,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	locatorDefault := ""
 
@@ -53,26 +50,23 @@ func Main(
 		)
 	}
 
-	pflag.String(argument.Locator, locatorDefault, "GitLab API base URL")
-	pflag.String(
-		argument.Project,
-		projectDefault,
-		"Project ID to update to",
-	)
-	pflag.String(argument.Tag, tagDefault, "Git tag")
-	pflag.String(
+	a := argument.NewInstance(constant.Identity)
+	a.String(argument.Locator, locatorDefault, "GitLab API base URL")
+	a.String(argument.Project, projectDefault, "Project ID to update to")
+	a.String(argument.Tag, tagDefault, "Git tag")
+	a.String(
 		argument.Header,
 		headerDefault,
 		"Header for authentication in key=value format",
 	)
-	monitor.ParseBind(version, gitHash, buildDate)
-	locator := argument.Required(argument.Locator)
+	a.Parse(version, gitHash, buildDate)
+	locator := a.Required(argument.Locator)
 	fmt.Printf("Locator: %s\n", locator)
-	project := argument.Required(argument.Project)
+	project := a.Required(argument.Project)
 	fmt.Printf("Project: %s\n", project)
-	tag := argument.Required(argument.Tag)
+	tag := a.Required(argument.Tag)
 	fmt.Printf("Tag: %s\n", tag)
-	headers := build.Headers(viper.GetString(argument.Header))
+	headers := build.Headers(a.GetString(argument.Header))
 	var runs int
 
 	for _, name := range build.OutputDirectories() {

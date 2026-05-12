@@ -7,15 +7,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/brave/bookmark"
 	"github.com/funtimecoding/go-library/pkg/brave/bookmark/node"
 	"github.com/funtimecoding/go-library/pkg/brave/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func BookmarkSearch() {
-	pflag.String(argument.Type, bookmark.DirectoryType, "bookmark type")
-	argument.ParseBind()
-	search := argument.RequiredPositional(0, "NAME")
-	bookmarkType := viper.GetString(argument.Type)
+	a := argument.NewSimple("bookmark-search")
+	a.String(argument.Type, bookmark.DirectoryType, "bookmark type")
+	a.ParseSimple()
+	search := a.RequiredPositional(0, "NAME")
+	bookmarkType := a.GetString(argument.Type)
 	b := brave.Bookmark(constant.DefaultProfile)
 	f := constant.Format
 	root := node.New(b.Root.Bar)

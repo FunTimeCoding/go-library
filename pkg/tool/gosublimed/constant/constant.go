@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gosublimed",
+	"Sublime Text editor bridge",
+	"gosublimed",
+).WithInstructions(
+	"Sublime Text editor - read, edit, and create buffers. Scratch buffers persist across plugin reloads and Sublime restarts.",
+)
+
 const (
-	Name    = "gosublimed"
 
 	ListViews  = "list_views"
 	ReadView   = "read_view"
@@ -11,5 +20,4 @@ const (
 	CloseView  = "close_view"
 	OpenFile   = "open_file"
 
-	ServerInstructions = "Sublime Text editor — read, edit, and create buffers. Scratch buffers persist across plugin reloads and Sublime restarts."
 )

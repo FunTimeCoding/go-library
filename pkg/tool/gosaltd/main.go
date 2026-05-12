@@ -3,13 +3,11 @@ package gosaltd
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/relational/postgres"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/option"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
-	"github.com/spf13/pflag"
 )
 
 func Main(
@@ -17,17 +15,18 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
-	pflag.String(argument.Repository, "", "Git repository URL")
-	pflag.String(argument.ClonePath, "", "Local repository path")
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Integer(argument.Port, web.ListenPort, web.PortUsage)
+	a.String(argument.Repository, "", "Git repository URL")
+	a.String(argument.ClonePath, "", "Local repository path")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Port = argument.RequiredInteger(argument.Port)
+	o.Port = a.RequiredInteger(argument.Port)
 	o.Version = version
-	o.Repository = argument.Required(argument.Repository)
-	o.ClonePath = argument.Required(argument.ClonePath)
+	o.Repository = a.Required(argument.Repository)
+	o.ClonePath = a.Required(argument.ClonePath)
 	o.PostgresLocator = environment.Required(postgres.LocatorEnvironment)
 	Run(o, r)
 }

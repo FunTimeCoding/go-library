@@ -1,8 +1,8 @@
 package god8y
 
 import (
+	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/duplicate"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/missing"
 	"github.com/funtimecoding/go-library/pkg/text/dictionary/check/order"
@@ -15,7 +15,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 
 	if len(os.Args) >= 3 && os.Args[1] == "merge" {
@@ -24,7 +24,8 @@ func Main(
 		return
 	}
 
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Parse(version, gitHash, buildDate)
 	order.Run()
 	missing.Run()
 	duplicate.Run()

@@ -2,27 +2,19 @@ package run_if
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system/run"
-	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if/option"
-	"github.com/spf13/viper"
 	"strings"
 )
 
 func Run(o *option.RunIf) {
-	base := resolveBase(viper.GetString(constant.Base))
-	head := viper.GetString(constant.Head)
-	suffix := viper.GetBool(constant.Suffix)
-	pattern := argument.RequiredPositional(0, "PATTERN")
-	execute := argument.RequiredPositional(1, "EXECUTE")
 	r := run.New()
 	r.Start(
 		"git",
 		"diff",
 		"--name-only",
-		fmt.Sprintf("%s..%s", base, head),
+		fmt.Sprintf("%s..%s", resolveBase(o.Base), o.Head),
 	)
 	changed := false
 
@@ -33,17 +25,17 @@ func Run(o *option.RunIf) {
 
 		var match bool
 
-		if suffix {
-			match = strings.HasSuffix(p, pattern)
+		if o.Suffix {
+			match = strings.HasSuffix(p, o.Pattern)
 		} else {
-			match = strings.HasPrefix(p, pattern)
+			match = strings.HasPrefix(p, o.Pattern)
 		}
 
 		if match {
 			changed = true
 
 			if o.Verbose {
-				fmt.Printf("Match: %s\n", pattern)
+				fmt.Printf("Match: %s\n", o.Pattern)
 			}
 
 			break
@@ -51,6 +43,6 @@ func Run(o *option.RunIf) {
 	}
 
 	if changed {
-		run.New().Execute("sh", "-c", execute)
+		run.New().Execute("sh", "-c", o.Execute)
 	}
 }

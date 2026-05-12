@@ -31,14 +31,15 @@ shapes depending on whether the tool uses flat flags or subcommands.
 
 ### Choosing between flat flags and subcommands
 
-**Flat flags** (pflag + viper + `monitor.ParseBind`): daemons and
-single-purpose tools. Daemons should always use flat flags — they
+**Flat flags** (`argument.NewInstance` + identity): daemons and
+single-purpose tools. Daemons should always use flat flags - they
 take a port and maybe a config path, nothing more. Standalone tools
 that do one thing also use flat flags.
 
-**Subcommands** (cobra): tools with multiple distinct operations.
-Typically CLI clients that talk to a daemon (gopostgres, gonetbox,
-gohabitica), but also standalone tools that grew past a single verb.
+**Subcommands** (cobra + identity): tools with multiple distinct
+operations. Typically CLI clients that talk to a daemon (gopostgres,
+gonetbox, gohabitica), but also standalone tools that grew past a
+single verb.
 
 ### Flat-flag Main (daemons, single-purpose tools)
 
@@ -48,19 +49,42 @@ func Main(
     gitHash string,
     buildDate string,
 ) {
-    r := reporter.New(constant.Name, version).Start()
+    r := reporter.New(constant.Identity.Name(), version).Start()
     defer func() { r.RecoverFlush(recover()) }()
-
-    pflag.Int(argument.Port, web.ListenPort, web.PortUsage)
-    monitor.ParseBind(version, gitHash, buildDate)
+    a := argument.NewInstance(constant.Identity)
+    a.String(argument.File, "", "File to wait for")
+    a.String(argument.Process, "", "Process to wait for")
+    a.String(argument.Locator, "", "Locator to wait for")
+    a.String(argument.Contains, "", "String for locator")
+    a.Duration(argument.Timeout, 3*time.Minute, "")
+    a.Boolean(argument.Verbose, false, "Verbose output")
+    a.Parse(version, gitHash, buildDate)
     o := option.New()
-    o.Port = argument.RequiredInteger(argument.Port)
-    o.Version = version
-    Run(o, r)
+    o.File = a.GetString(argument.File)
+    o.Process = a.GetString(argument.Process)
+    o.Locator = a.GetString(argument.Locator)
+    o.Contains = a.GetString(argument.Contains)
+    o.Timeout = a.GetDuration(argument.Timeout)
+    o.Verbose = a.GetBoolean(argument.Verbose)
+    wait.Run(o)
 }
 ```
 
-`monitor.ParseBind` adds `--version` flag, calls `argument.ParseBind()`, and exits on `--version`. Argument registration order: domain-specific `pflag` calls first, then `monitor.ParseBind()`. After parsing, populate the option struct using `argument.RequiredInteger` (or `argument.RequiredString`, `environment.Required`, etc.).
+`argument.NewInstance` takes the tool's identity, creates a scoped
+flag set, and wires `--help` from the identity. `Parse()` registers
+`--version`, parses, and exits cleanly on `--help` or `--version`.
+After parsing, populate the option struct using instance getters
+(`a.GetString`, `a.GetBoolean`, `a.GetDuration`) or required
+variants (`a.Required`, `a.RequiredInteger`).
+
+Registration methods: `Boolean`, `String`, `Integer`, `Duration`,
+`BooleanVariable`, `StringVariable`, `IntegerVariable`,
+`StringSliceVariable`, `BooleanShort`, `IntegerShort`.
+
+Retrieval methods: `GetBoolean`, `GetString`, `GetInteger`,
+`GetDuration`, `Required`, `RequiredInteger`, `RequiredPositional`,
+`Positionals`, `Argument`, `ArgumentCount`, `Slice`,
+`PositionalFallback`.
 
 ### Subcommand Main (multi-operation tools)
 
@@ -70,11 +94,12 @@ func Main(
     gitHash string,
     buildDate string,
 ) {
-    r := reporter.New(constant.Name, version).Start()
+    r := reporter.New(constant.Identity.Name(), version).Start()
     defer func() { r.RecoverFlush(recover()) }()
     c := client.NewEnvironment()
     o := &cobra.Command{
-        Use:     constant.Name,
+        Use:     constant.Identity.Usage(),
+        Short:   constant.Identity.Description(),
         Version: argument.CobraVersion(version, gitHash, buildDate),
     }
     o.AddCommand(listItems(c))
@@ -83,8 +108,9 @@ func Main(
 }
 ```
 
-No `monitor.ParseBind` — cobra handles `--version` via the `Version`
-field. No option struct — each subcommand owns its own flags.
+Cobra handles `--version` via the `Version` field and `--help`
+natively. Identity provides `Use` and `Short` on the root command.
+No option struct - each subcommand owns its own flags.
 
 Each subcommand lives in its own file and returns a `*cobra.Command`:
 
@@ -114,7 +140,7 @@ func createItem(c *client.Client) *cobra.Command {
 ```
 
 Subcommand flags use `result.Flags().StringVar` (bound to local
-variables), not global `pflag` registration. Required flags use
+variables), not the argument instance. Required flags use
 `result.MarkFlagRequired`.
 
 ## Reporter Integration
@@ -124,7 +150,7 @@ work. The reporter captures unhandled panics and provides error reporting
 to all downstream components.
 
 ```go
-r := reporter.New(constant.Name, version).Start()
+r := reporter.New(constant.Identity.Name(), version).Start()
 defer func() { r.RecoverFlush(recover()) }()
 
 // ... flag parsing, option construction

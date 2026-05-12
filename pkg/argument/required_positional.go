@@ -1,8 +1,16 @@
 package argument
 
-func RequiredPositional(
-	n int,
-	name string,
+import "github.com/funtimecoding/go-library/pkg/system"
+
+func (i *Instance) RequiredPositional(
+	number int,
+	description string,
 ) string {
-	return RequiredPositionalExit(n, name, 1)
+	if s := i.Argument(number); s != "" {
+		return s
+	}
+
+	system.Exitf(1, "positional empty: %s\n", description)
+
+	return ""
 }

@@ -6,6 +6,7 @@ import (
 )
 
 func Open() {
-	argument.ParseBind()
-	site.New().OpenChat(argument.RequiredPositional(0, "CHAT"))
+	a := argument.NewSimple("brave-open")
+	a.ParseSimple()
+	site.New().OpenChat(a.RequiredPositional(0, "CHAT"))
 }

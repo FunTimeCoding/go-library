@@ -17,7 +17,7 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	v, e := client.NewClient(
 		locator.New(
@@ -29,7 +29,8 @@ func Main(
 	)
 	errors.PanicOnError(e)
 	o := &cobra.Command{
-		Use:     constant.Name,
+		Use:     constant.Identity.Usage(),
+		Short:   constant.Identity.Description(),
 		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
 	o.AddCommand(listInstances(v))

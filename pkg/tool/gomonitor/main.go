@@ -3,14 +3,11 @@ package gomonitor
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/bubbletea"
-	monitorModel "github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor"
+	"github.com/funtimecoding/go-library/pkg/bubbletea/model/monitor"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/monitor/check/collect"
 	"github.com/funtimecoding/go-library/pkg/tool/gomonitor/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomonitor/option"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -18,22 +15,19 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.Bool(argument.Connect, false, "Connect to the server")
-	pflag.Bool(argument.Once, false, "Run once and exit")
-	pflag.Bool(
-		argument.DryRun,
-		false,
-		"Print sources without executing",
-	)
-	pflag.Bool(argument.Parallel, false, "Run checks in parallel")
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(argument.Connect, false, "Connect to the server")
+	a.Boolean(argument.Once, false, "Run once and exit")
+	a.Boolean(argument.DryRun, false, "Print sources without executing")
+	a.Boolean(argument.Parallel, false, "Run checks in parallel")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Once = viper.GetBool(argument.Once)
-	o.Connect = viper.GetBool(argument.Connect)
-	o.DryRun = viper.GetBool(argument.DryRun)
-	o.Parallel = viper.GetBool(argument.Parallel)
+	o.Once = a.GetBoolean(argument.Once)
+	o.Connect = a.GetBoolean(argument.Connect)
+	o.DryRun = a.GetBoolean(argument.DryRun)
+	o.Parallel = a.GetBoolean(argument.Parallel)
 
 	if o.Once {
 		collect.Check(o.DryRun, o.Parallel)
@@ -41,5 +35,5 @@ func Main(
 		return
 	}
 
-	bubbletea.Run(monitorModel.New(o.Connect), true)
+	bubbletea.Run(monitor.New(o.Connect), true)
 }

@@ -1,3 +1,9 @@
 package constant
 
-const Name = "goam"
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"goam",
+	"Alertmanager CLI",
+	"goam [flags]",
+)

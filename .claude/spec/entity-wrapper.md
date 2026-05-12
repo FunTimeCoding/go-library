@@ -301,7 +301,7 @@ Types that shape what callers see. Scoped to where they're consumed:
 - Types used only by MCP tools → `model_context/response/`
 - Types used only by REST handlers → `server/response/`
 
-`convert/` is the primary location — see `model-context.md`. Layer-specific
+`convert/` is the primary location - see `model-context.md`. Layer-specific
 `response/` subpackages exist when a layer has output shapes not shared
 with the other.
 
@@ -325,7 +325,7 @@ This eliminates the `Data` suffix problem - `response.Link` vs `link.Link` provi
 ### `argument/` - MCP tool parameter structs
 
 JSON shapes for MCP tool input parameters. One file per argument type.
-Lives inside `model_context/argument/` — scoped to the layer that
+Lives inside `model_context/argument/` - scoped to the layer that
 consumes it.
 
 ### `result/` - store return types

@@ -3,12 +3,9 @@ package gosilence
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/check/silence/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gosilence/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -16,18 +13,23 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.CopyableArgument()
-	monitor.NotationArgument()
-	monitor.AllArgument()
-	pflag.String(argument.Set, "", "Name, creates or updates")
-	pflag.String(argument.Duration, "", "Duration, default 10m")
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(
+		argument.Copyable,
+		false,
+		"Disable OSC8 links and add a copyable link instead",
+	)
+	a.Boolean(argument.Notation, false, "JSON output")
+	a.Boolean(argument.All, false, "Include filtered in output")
+	a.String(argument.Set, "", "Name, creates or updates")
+	a.String(argument.Duration, "", "Duration, default 10m")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Notation = viper.GetBool(argument.Notation)
-	o.All = viper.GetBool(argument.All)
-	o.Set = viper.GetString(argument.Set)
-	o.Copyable = viper.GetBool(argument.Copyable)
+	o.Notation = a.GetBoolean(argument.Notation)
+	o.All = a.GetBoolean(argument.All)
+	o.Set = a.GetString(argument.Set)
+	o.Copyable = a.GetBoolean(argument.Copyable)
 	silence.Check(o)
 }

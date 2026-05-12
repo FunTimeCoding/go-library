@@ -1,3 +1,9 @@
 package constant
 
-const Name = "gopackage"
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gopackage",
+	"Package builder",
+	"gopackage",
+)

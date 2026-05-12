@@ -1,3 +1,9 @@
 package constant
 
-const Name = "gotrivy"
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gotrivy",
+	"Trivy vulnerability scanner",
+	"gotrivy",
+)

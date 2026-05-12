@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gogitlabd",
+	"GitLab API bridge",
+	"gogitlabd",
+).WithInstructions(
+	"GitLab API - projects, pipelines, merge requests, commits, CI variables. Projects are referenced by path (owner/repo) or numeric ID.",
+)
+
 const (
-	Name    = "gogitlabd"
 
 	GetProject         = "get_project"
 	ListProjects       = "list_projects"
@@ -38,5 +47,4 @@ const (
 
 	CreateBranch = "create_branch"
 
-	ServerInstructions = "GitLab API — projects, pipelines, merge requests, commits, CI variables. Projects are referenced by path (owner/repo) or numeric ID."
 )

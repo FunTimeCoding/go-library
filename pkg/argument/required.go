@@ -1,5 +1,13 @@
 package argument
 
-func Required(name string) string {
-	return RequiredExit(name, 1)
+import "github.com/funtimecoding/go-library/pkg/system"
+
+func (i *Instance) Required(name string) string {
+	v := i.GetString(name)
+
+	if v == "" {
+		system.Exitf(1, "flag empty: %s\n", name)
+	}
+
+	return v
 }

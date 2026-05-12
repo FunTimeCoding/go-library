@@ -6,9 +6,10 @@ import (
 )
 
 func main() {
-	argument.ParseBind()
+	a := argument.NewSimple("argument-example")
+	a.ParseSimple()
 	fmt.Printf(
 		"Positional argument 0: %s\n",
-		argument.Positional(0),
+		a.Argument(0),
 	)
 }

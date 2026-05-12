@@ -5,28 +5,27 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/tool/common"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Alert() {
-	pflag.Bool(argument.Create, false, "Create alert")
-	pflag.String(argument.User, "", "User email for alert")
-	pflag.String(argument.Text, "", "Alert name")
-	pflag.String(argument.Close, "", "Alert ID")
-	argument.ParseBind()
+	a := argument.NewSimple("opsgenie-alert")
+	a.Boolean(argument.Create, false, "Create alert")
+	a.String(argument.User, "", "User email for alert")
+	a.String(argument.Text, "", "Alert name")
+	a.String(argument.Close, "", "Alert ID")
+	a.ParseSimple()
 	c := common.Opsgenie()
 
-	if viper.GetBool(argument.Create) {
+	if a.GetBoolean(argument.Create) {
 		c.Create(
-			viper.GetString(argument.User),
-			viper.GetString(argument.Text),
+			a.GetString(argument.User),
+			a.GetString(argument.Text),
 		)
 
 		return
 	}
 
-	if i := viper.GetString(argument.Close); i != "" {
+	if i := a.GetString(argument.Close); i != "" {
 		c.Close(i)
 
 		return

@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gofirefoxd",
+	"Firefox browser tab management bridge",
+	"gofirefoxd",
+).WithInstructions(
+	"Firefox browser - list, read, create, close, and navigate tabs. Tab groups for organization.",
+)
+
 const (
-	Name    = "gofirefoxd"
 
 	ListTabs     = "list_tabs"
 	ReadTab      = "read_tab"
@@ -15,5 +24,4 @@ const (
 
 	BridgePortFlag = "bridge-port"
 
-	ServerInstructions = "Firefox browser — list, read, create, close, and navigate tabs. Tab groups for organization."
 )

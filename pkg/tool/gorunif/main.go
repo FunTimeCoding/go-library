@@ -3,13 +3,10 @@ package gorunif
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if"
 	runIfConstant "github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gorunif/run_if/option"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -17,22 +14,28 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	pflag.String(
+	a := argument.NewInstance(constant.Identity)
+	a.String(
 		runIfConstant.Base,
 		"",
 		"Base commit (default: remote tracking branch)",
 	)
-	pflag.String(runIfConstant.Head, "HEAD", "Head commit")
-	pflag.Bool(
+	a.String(runIfConstant.Head, "HEAD", "Head commit")
+	a.Boolean(
 		runIfConstant.Suffix,
 		false,
 		"Match path as suffix instead of prefix",
 	)
-	monitor.VerboseArgument()
-	monitor.ParseBind(version, gitHash, buildDate)
+	a.Boolean(argument.Verbose, false, "Verbose output")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Verbose = viper.GetBool(argument.Verbose)
+	o.Verbose = a.GetBoolean(argument.Verbose)
+	o.Base = a.GetString(runIfConstant.Base)
+	o.Head = a.GetString(runIfConstant.Head)
+	o.Suffix = a.GetBoolean(runIfConstant.Suffix)
+	o.Pattern = a.RequiredPositional(0, "PATTERN")
+	o.Execute = a.RequiredPositional(1, "EXECUTE")
 	run_if.Run(o)
 }

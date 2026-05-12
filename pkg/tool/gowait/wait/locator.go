@@ -3,8 +3,8 @@ package wait
 import (
 	"context"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/gowait/wait/option"
 	"io"
 	"net/http"
@@ -13,7 +13,10 @@ import (
 )
 
 func Locator(o *option.Wait) {
-	expect := argument.Required(argument.Contains)
+	if o.Contains == "" {
+		system.Exitf(1, "flag empty: contains\n")
+	}
+
 	x, cancel := context.WithTimeout(context.Background(), o.Timeout)
 	defer cancel()
 	c := &http.Client{Timeout: 10 * time.Second}
@@ -54,7 +57,7 @@ func Locator(o *option.Wait) {
 					fmt.Printf("Response: %s\n", content)
 				}
 
-				if strings.Contains(content, expect) {
+				if strings.Contains(content, o.Contains) {
 					fmt.Println("Found")
 
 					return

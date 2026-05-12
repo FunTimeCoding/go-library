@@ -10,8 +10,9 @@ import (
 )
 
 func main() {
-	argument.ParseBind()
-	n := argument.RequiredPositional(0, "NODE")
+	a := argument.NewSimple("ssh-example")
+	a.ParseSimple()
+	n := a.RequiredPositional(0, "NODE")
 	fmt.Printf("Node: %s\n", n)
 
 	if false {

@@ -6,15 +6,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/brave"
 	"github.com/funtimecoding/go-library/pkg/brave/bookmark/node"
 	"github.com/funtimecoding/go-library/pkg/brave/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func BookmarkNode() {
-	pflag.Int(argument.Depth, 0, "")
-	argument.ParseBind()
-	depth := viper.GetInt(argument.Depth)
-	directory := argument.RequiredPositional(0, "DIRECTORY")
+	a := argument.NewSimple("bookmark-node")
+	a.Integer(argument.Depth, 0, "")
+	a.ParseSimple()
+	depth := a.GetInteger(argument.Depth)
+	directory := a.RequiredPositional(0, "DIRECTORY")
 	b := brave.Bookmark(constant.DefaultProfile)
 	f := constant.Format
 	d := node.DirectoryByNameStrict(node.New(b.Root.Bar), directory)

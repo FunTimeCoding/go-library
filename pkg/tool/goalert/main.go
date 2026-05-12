@@ -3,12 +3,9 @@ package goalert
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/alert/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goalert/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -16,29 +13,34 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.CopyableArgument()
-	monitor.NotationArgument()
-	monitor.AllArgument()
-	pflag.Bool(argument.Critical, false, "Critical severity only")
-	pflag.Bool(argument.Warning, false, "Warning severity only")
-	pflag.Bool(argument.Extended, false, "Extended output")
-	pflag.Bool(argument.Suppressed, false, "Include suppressed")
-	pflag.Bool(argument.Rules, false, "Print rules")
-	pflag.Bool(argument.Firing, false, "Print firing rules")
-	pflag.Bool(argument.Fingerprint, false, "Fingerprint column")
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(
+		argument.Copyable,
+		false,
+		"Disable OSC8 links and add a copyable link instead",
+	)
+	a.Boolean(argument.Notation, false, "JSON output")
+	a.Boolean(argument.All, false, "Include filtered in output")
+	a.Boolean(argument.Critical, false, "Critical severity only")
+	a.Boolean(argument.Warning, false, "Warning severity only")
+	a.Boolean(argument.Extended, false, "Extended output")
+	a.Boolean(argument.Suppressed, false, "Include suppressed")
+	a.Boolean(argument.Rules, false, "Print rules")
+	a.Boolean(argument.Firing, false, "Print firing rules")
+	a.Boolean(argument.Fingerprint, false, "Fingerprint column")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Notation = viper.GetBool(argument.Notation)
-	o.All = viper.GetBool(argument.All)
-	o.Critical = viper.GetBool(argument.Critical)
-	o.Warning = viper.GetBool(argument.Warning)
-	o.Extended = viper.GetBool(argument.Extended)
-	o.Suppressed = viper.GetBool(argument.Suppressed)
-	o.Rules = viper.GetBool(argument.Rules)
-	o.Firing = viper.GetBool(argument.Firing)
-	o.Fingerprint = viper.GetBool(argument.Fingerprint)
-	o.Copyable = viper.GetBool(argument.Copyable)
+	o.Notation = a.GetBoolean(argument.Notation)
+	o.All = a.GetBoolean(argument.All)
+	o.Critical = a.GetBoolean(argument.Critical)
+	o.Warning = a.GetBoolean(argument.Warning)
+	o.Extended = a.GetBoolean(argument.Extended)
+	o.Suppressed = a.GetBoolean(argument.Suppressed)
+	o.Rules = a.GetBoolean(argument.Rules)
+	o.Firing = a.GetBoolean(argument.Firing)
+	o.Fingerprint = a.GetBoolean(argument.Fingerprint)
+	o.Copyable = a.GetBoolean(argument.Copyable)
 	alert.Check(o)
 }

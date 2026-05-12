@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"goalertlogd",
+	"Alert lifecycle tracker",
+	"goalertlogd",
+).WithInstructions(
+	"Alert lifecycle tracker - query active, recent, and top alerts. Tracks when alerts start, end, and recur.",
+)
+
 const (
-	Name = "goalertlogd"
 
 	GetAlerts       = "get_alerts"
 	GetRecentAlerts = "get_recent_alerts"
@@ -12,5 +21,4 @@ const (
 	N     = "n"
 	Start = "start"
 
-	ServerInstructions = "Alert lifecycle tracker — query active, recent, and top alerts. Tracks when alerts start, end, and recur."
 )

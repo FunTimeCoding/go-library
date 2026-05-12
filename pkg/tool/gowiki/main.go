@@ -7,10 +7,7 @@ import (
 	wiki "github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gowiki/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func Main(
@@ -18,20 +15,25 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.CopyableArgument()
-	pflag.Bool(argument.Watched, false, "Watched")
-	pflag.Bool(argument.Favorites, false, "Favorites")
-	monitor.ParseBind(version, gitHash, buildDate)
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(
+		argument.Copyable,
+		false,
+		"Disable OSC8 links and add a copyable link instead",
+	)
+	a.Boolean(argument.Watched, false, "Watched")
+	a.Boolean(argument.Favorites, false, "Favorites")
+	a.Parse(version, gitHash, buildDate)
 	c := confluence.NewEnvironment()
 	f := wiki.Format.Copy()
 
-	if viper.GetBool(argument.Copyable) {
+	if a.GetBoolean(argument.Copyable) {
 		f.Tag(tag.Copyable)
 	}
 
-	if viper.GetBool(argument.Watched) || viper.GetBool(argument.Favorites) {
+	if a.GetBoolean(argument.Watched) || a.GetBoolean(argument.Favorites) {
 		fmt.Println("Watch")
 
 		for _, p := range c.MustWatched() {

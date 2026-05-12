@@ -79,9 +79,10 @@ type Server struct {
 func New(s *store.Store, r face.Reporter, w *worker.Worker, version string) *Server {
     result := &Server{
         server: server.NewMCPServer(
-            constant.Name,
+            constant.Identity.Name(),
             version,
             server.WithToolCapabilities(true),
+            server.WithInstructions(constant.Identity.Instructions()),
         ),
         store:    s,
         reporter: r,

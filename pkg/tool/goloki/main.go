@@ -3,14 +3,11 @@ package goloki
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/loki"
 	"github.com/funtimecoding/go-library/pkg/prometheus/check/loki/option"
 	lokiConstant "github.com/funtimecoding/go-library/pkg/prometheus/loki/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/tool/goloki/constant"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 	"time"
 )
 
@@ -19,33 +16,28 @@ func Main(
 	gitHash string,
 	buildDate string,
 ) {
-	r := reporter.New(constant.Name, version).Start()
+	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	monitor.CopyableArgument()
-	pflag.Duration(argument.Since, time.Hour, "Time range to query")
-	pflag.String(argument.Route, "", "Filter by HTTP route")
-	pflag.String(argument.Message, "", "Filter by message field")
-	pflag.BoolP(
-		argument.Body,
-		"b",
+	a := argument.NewInstance(constant.Identity)
+	a.Boolean(
+		argument.Copyable,
 		false,
-		"Output only the body field",
+		"Disable OSC8 links and add a copyable link instead",
 	)
-	pflag.IntP(
-		argument.Limit,
-		"n",
-		10,
-		"Maximum number of log entries",
-	)
-	monitor.ParseBind(version, gitHash, buildDate)
+	a.Duration(argument.Since, time.Hour, "Time range to query")
+	a.String(argument.Route, "", "Filter by HTTP route")
+	a.String(argument.Message, "", "Filter by message field")
+	a.BooleanShort(argument.Body, "b", false, "Output only the body field")
+	a.IntegerShort(argument.Limit, "n", 10, "Maximum number of log entries")
+	a.Parse(version, gitHash, buildDate)
 	o := option.New()
-	o.Namespace = argument.Positional(0)
-	o.Since = viper.GetDuration(argument.Since)
-	o.Route = viper.GetString(argument.Route)
-	o.Message = viper.GetString(argument.Message)
-	o.BodyOnly = viper.GetBool(argument.Body)
-	o.Copyable = viper.GetBool(argument.Copyable)
-	o.Limit = viper.GetInt(argument.Limit)
+	o.Namespace = a.Argument(0)
+	o.Since = a.GetDuration(argument.Since)
+	o.Route = a.GetString(argument.Route)
+	o.Message = a.GetString(argument.Message)
+	o.BodyOnly = a.GetBoolean(argument.Body)
+	o.Copyable = a.GetBoolean(argument.Copyable)
+	o.Limit = a.GetInteger(argument.Limit)
 	o.Namespaces = environment.Slice(lokiConstant.NamespaceEnvironment)
 	o.Exclude = environment.Slice(lokiConstant.ExcludeEnvironment)
 	loki.Check(o)

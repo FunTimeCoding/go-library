@@ -1,7 +1,16 @@
 package constant
 
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gonetboxd",
+	"NetBox infrastructure inventory bridge",
+	"gonetboxd",
+).WithInstructions(
+	"NetBox infrastructure inventory - devices, interfaces, IP addresses, sites, clusters, virtual machines. Both read and create operations.",
+)
+
 const (
-	Name = "gonetboxd"
 
 	NetboxListDevices            = "netbox_list_devices"
 	NetboxGetDevice              = "netbox_get_device"
@@ -49,5 +58,4 @@ const (
 	Type           = "type"
 	VirtualMachine = "virtual_machine"
 
-	ServerInstructions = "NetBox infrastructure inventory — devices, interfaces, IP addresses, sites, clusters, virtual machines. Both read and create operations."
 )

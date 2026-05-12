@@ -6,6 +6,7 @@ import (
 )
 
 func Send() {
-	argument.ParseBind()
-	site.New().Send(argument.RequiredPositional(0, "TEXT"))
+	a := argument.NewSimple("brave-send")
+	a.ParseSimple()
+	site.New().Send(a.RequiredPositional(0, "TEXT"))
 }

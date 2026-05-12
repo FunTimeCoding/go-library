@@ -1,3 +1,9 @@
 package constant
 
-const Name = "goupload"
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"goupload",
+	"Build artifact uploader",
+	"goupload",
+)

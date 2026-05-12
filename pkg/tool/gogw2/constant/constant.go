@@ -1,3 +1,9 @@
 package constant
 
-const Name = "gogw2"
+import "github.com/funtimecoding/go-library/pkg/identity"
+
+var Identity = identity.New(
+	"gogw2",
+	"Guild Wars 2 API tool",
+	"gogw2",
+)

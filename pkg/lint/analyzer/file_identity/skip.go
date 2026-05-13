@@ -10,10 +10,6 @@ func skip(name string) bool {
 		return true
 	}
 
-	if name == "main.go" || name == "doc.go" {
-		return true
-	}
-
 	base := strings.TrimSuffix(name, constant.GoExtension)
 
 	if base == "constant" || strings.HasPrefix(base, "constant_") {

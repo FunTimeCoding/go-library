@@ -50,7 +50,7 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.9.2
 	github.com/kestra-io/client-sdk/go-sdk v1.0.1
-	github.com/liushuangls/go-anthropic/v2 v2.20.0
+	github.com/liushuangls/go-anthropic/v2 v2.20.1
 	github.com/luthermonson/go-proxmox v0.5.0
 	github.com/mark3labs/mcp-go v0.53.0
 	github.com/mattermost/mattermost/server/public v0.4.0

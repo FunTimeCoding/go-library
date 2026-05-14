@@ -30,6 +30,15 @@ func (s *Server) PostEvent(
 		e.DurationMillisecond = int64(*request.DurationMs)
 	}
 
+	if request.Detail != nil {
+		encoded, marshalError := json.Marshal(*request.Detail)
+
+		if marshalError == nil {
+			detail := string(encoded)
+			e.Detail = &detail
+		}
+	}
+
 	s.store.Create(e)
 	web.EncodeNotation(w, server.EventResponse{Id: int(e.ID)})
 }

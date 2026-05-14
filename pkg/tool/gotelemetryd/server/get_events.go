@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -58,6 +59,14 @@ func (s *Server) GetEvents(
 		if e.DurationMillisecond > 0 {
 			ms := int(e.DurationMillisecond)
 			entry.DurationMs = &ms
+		}
+
+		if e.Detail != nil {
+			var detail map[string]string
+
+			if json.Unmarshal([]byte(*e.Detail), &detail) == nil {
+				entry.Detail = &detail
+			}
 		}
 
 		entries = append(entries, entry)

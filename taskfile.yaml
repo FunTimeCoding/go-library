@@ -30,10 +30,14 @@ tasks:
     - cd pkg/tool/gonetboxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
     - cd pkg/tool/gopostgresd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     - cd pkg/tool/gopostgresd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goproxmoxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goproxmoxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
     - cd pkg/tool/goraidd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     - cd pkg/tool/goraidd/generated/server && oapi-codegen --config config.yaml openapi.yaml
     - cd pkg/tool/goraidparsed/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
     - cd pkg/tool/goraidparsed/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gotelemetryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gotelemetryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
     silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:

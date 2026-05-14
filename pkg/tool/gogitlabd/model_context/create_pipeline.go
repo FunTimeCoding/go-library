@@ -21,9 +21,34 @@ func (s *Server) CreatePipeline(
 		return response.Fail("reference is required")
 	}
 
+	project, e := s.resolveProject(a.Project)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	options := &gitlab.CreatePipelineOptions{Ref: &a.Reference}
+
+	if len(a.Variables) > 0 {
+		vars := make([]*gitlab.PipelineVariableOptions, 0, len(a.Variables))
+
+		for key, value := range a.Variables {
+			k := key
+			l := value
+			vars = append(
+				vars,
+				&gitlab.PipelineVariableOptions{
+				Key:   &k,
+				Value: &l,
+			})
+		}
+
+		options.Variables = &vars
+	}
+
 	v, _, e := s.client.Pipelines.CreatePipeline(
-		a.Project,
-		&gitlab.CreatePipelineOptions{Ref: &a.Reference},
+		project,
+		options,
 	)
 
 	if e != nil {

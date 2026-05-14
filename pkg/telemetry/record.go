@@ -1,14 +1,7 @@
 package telemetry
 
-func (c *Client) Record(
-	tool string,
-	surface string,
-	actor string,
-	outcome string,
-) {
-	if c == nil {
-		return
-	}
+import "github.com/funtimecoding/go-library/pkg/telemetry/record"
 
-	go c.send(tool, surface, actor, outcome, 0)
+func (c *Client) Record(r *record.Record) {
+	go c.send(r)
 }

@@ -1,0 +1,642 @@
+---
+openapi: "3.0.0"
+info:
+  title: goproxmoxd
+  version: 1.0.0
+paths:
+  /api/v1/nodes:
+    get:
+      operationId: listNodes
+      responses:
+        "200":
+          description: All Proxmox nodes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Node"
+  /api/v1/nodes/{name}/status:
+    get:
+      operationId: getNodeStatus
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Node name.
+      responses:
+        "200":
+          description: Node status detail.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NodeStatus"
+        "404":
+          description: Node not found.
+  /api/v1/machines:
+    get:
+      operationId: listMachines
+      parameters:
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter by node name. Omit for all nodes.
+      responses:
+        "200":
+          description: Virtual machines.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Machine"
+  /api/v1/machines/{vmid}:
+    get:
+      operationId: getMachine
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Machine detail.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MachineDetail"
+        "404":
+          description: Machine not found.
+  /api/v1/machines/{vmid}/snapshots:
+    get:
+      operationId: listSnapshots
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Snapshots for the machine.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Snapshot"
+        "404":
+          description: Machine not found.
+    post:
+      operationId: createSnapshot
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotRequest"
+      responses:
+        "200":
+          description: Snapshot created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Machine not found.
+  /api/v1/machines/{vmid}/snapshots/{name}/rollback:
+    post:
+      operationId: rollbackSnapshot
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Snapshot name.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Rollback initiated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Machine or snapshot not found.
+  /api/v1/machines/{vmid}/snapshots/{name}:
+    delete:
+      operationId: deleteSnapshot
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Snapshot name.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Snapshot deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Machine or snapshot not found.
+  /api/v1/machines/{vmid}/start:
+    post:
+      operationId: startMachine
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Machine started.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Machine not found.
+  /api/v1/machines/{vmid}/stop:
+    post:
+      operationId: stopMachine
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Machine stopped.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Machine not found.
+  /api/v1/machines/{vmid}/shutdown:
+    post:
+      operationId: shutdownMachine
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Machine shutdown initiated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Machine not found.
+  /api/v1/machines/{vmid}/reset:
+    post:
+      operationId: resetMachine
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Machine reset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Machine not found.
+  /api/v1/nodes/{name}/networks:
+    get:
+      operationId: listNetworks
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Node name.
+      responses:
+        "200":
+          description: Network interfaces on the node.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Network"
+        "404":
+          description: Node not found.
+  /api/v1/containers:
+    get:
+      operationId: listContainers
+      parameters:
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter by node name. Omit for all nodes.
+      responses:
+        "200":
+          description: LXC containers.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Container"
+  /api/v1/containers/{vmid}:
+    get:
+      operationId: getContainer
+      parameters:
+      - name: vmid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Container VMID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Container detail.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContainerDetail"
+        "404":
+          description: Container not found.
+components:
+  schemas:
+    Node:
+      type: object
+      required:
+      - name
+      - status
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+        cpu:
+          type: number
+          format: double
+        maxCpu:
+          type: integer
+        mem:
+          type: integer
+          format: int64
+        maxMem:
+          type: integer
+          format: int64
+        disk:
+          type: integer
+          format: int64
+        maxDisk:
+          type: integer
+          format: int64
+        uptime:
+          type: integer
+          format: int64
+    NodeStatus:
+      type: object
+      properties:
+        cpu:
+          type: number
+          format: double
+        uptime:
+          type: integer
+        kernelVersion:
+          type: string
+        proxmoxVersion:
+          type: string
+        loadAverage:
+          type: array
+          items:
+            type: string
+        memory:
+          $ref: "#/components/schemas/MemoryInfo"
+        swap:
+          $ref: "#/components/schemas/MemoryInfo"
+        rootFilesystem:
+          $ref: "#/components/schemas/MemoryInfo"
+    MemoryInfo:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+        used:
+          type: integer
+          format: int64
+        free:
+          type: integer
+          format: int64
+    Machine:
+      type: object
+      required:
+      - vmid
+      - name
+      properties:
+        vmid:
+          type: integer
+          format: int64
+        name:
+          type: string
+        node:
+          type: string
+        status:
+          type: string
+        cpu:
+          type: number
+          format: double
+        cpus:
+          type: integer
+        mem:
+          type: integer
+          format: int64
+        maxMem:
+          type: integer
+          format: int64
+        uptime:
+          type: integer
+          format: int64
+        tags:
+          type: string
+    MachineDetail:
+      type: object
+      required:
+      - vmid
+      - name
+      properties:
+        vmid:
+          type: integer
+          format: int64
+        name:
+          type: string
+        node:
+          type: string
+        status:
+          type: string
+        cpu:
+          type: number
+          format: double
+        cpus:
+          type: integer
+        mem:
+          type: integer
+          format: int64
+        maxMem:
+          type: integer
+          format: int64
+        disk:
+          type: integer
+          format: int64
+        maxDisk:
+          type: integer
+          format: int64
+        uptime:
+          type: integer
+          format: int64
+        tags:
+          type: string
+        description:
+          type: string
+        osType:
+          type: string
+        sockets:
+          type: integer
+        cores:
+          type: integer
+    Container:
+      type: object
+      required:
+      - vmid
+      - name
+      properties:
+        vmid:
+          type: integer
+          format: int64
+        name:
+          type: string
+        node:
+          type: string
+        status:
+          type: string
+        cpus:
+          type: integer
+        maxMem:
+          type: integer
+          format: int64
+        maxDisk:
+          type: integer
+          format: int64
+        maxSwap:
+          type: integer
+          format: int64
+        uptime:
+          type: integer
+          format: int64
+        tags:
+          type: string
+    ContainerDetail:
+      type: object
+      required:
+      - vmid
+      - name
+      properties:
+        vmid:
+          type: integer
+          format: int64
+        name:
+          type: string
+        node:
+          type: string
+        status:
+          type: string
+        cpus:
+          type: integer
+        maxMem:
+          type: integer
+          format: int64
+        maxDisk:
+          type: integer
+          format: int64
+        maxSwap:
+          type: integer
+          format: int64
+        uptime:
+          type: integer
+          format: int64
+        tags:
+          type: string
+        hostname:
+          type: string
+        description:
+          type: string
+        arch:
+          type: string
+        cores:
+          type: integer
+        memory:
+          type: integer
+    TaskResult:
+      type: object
+      required:
+      - taskId
+      properties:
+        taskId:
+          type: string
+    Network:
+      type: object
+      required:
+      - iface
+      properties:
+        iface:
+          type: string
+        type:
+          type: string
+        active:
+          type: boolean
+        address:
+          type: string
+        cidr:
+          type: string
+        gateway:
+          type: string
+        netmask:
+          type: string
+        bridgePorts:
+          type: string
+        comments:
+          type: string
+        autostart:
+          type: boolean
+    Snapshot:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        parent:
+          type: string
+    SnapshotRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string

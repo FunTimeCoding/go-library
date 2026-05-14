@@ -4,24 +4,19 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/telemetry/record"
 )
 
-func (c *Client) send(
-	tool string,
-	surface string,
-	actor string,
-	outcome string,
-	durationMillisecond int64,
-) {
+func (c *Client) send(r *record.Record) {
 	body := map[string]any{
-		"tool":    tool,
-		"surface": surface,
-		"actor":   actor,
-		"outcome": outcome,
+		"tool":    r.Tool,
+		"surface": r.Surface,
+		"actor":   r.Actor,
+		"outcome": r.Outcome,
 	}
 
-	if durationMillisecond > 0 {
-		body["duration_ms"] = durationMillisecond
+	if len(r.Detail) > 0 {
+		body["detail"] = r.Detail
 	}
 
 	encoded, e := json.Marshal(body)
@@ -30,7 +25,7 @@ func (c *Client) send(
 		return
 	}
 
-	response, e := c.httpClient.Post(
+	response, e := c.client.Post(
 		fmt.Sprintf("%s/api/events", c.base),
 		"application/json",
 		bytes.NewReader(encoded),

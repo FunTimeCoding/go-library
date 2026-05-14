@@ -39,22 +39,24 @@ func (e GetSummaryParamsGroupBy) Valid() bool {
 
 // EventEntry defines model for EventEntry.
 type EventEntry struct {
-	Actor      string `json:"actor"`
-	CreatedAt  string `json:"created_at"`
-	DurationMs *int   `json:"duration_ms,omitempty"`
-	Id         int    `json:"id"`
-	Outcome    string `json:"outcome"`
-	Surface    string `json:"surface"`
-	Tool       string `json:"tool"`
+	Actor      string             `json:"actor"`
+	CreatedAt  string             `json:"created_at"`
+	Detail     *map[string]string `json:"detail,omitempty"`
+	DurationMs *int               `json:"duration_ms,omitempty"`
+	Id         int                `json:"id"`
+	Outcome    string             `json:"outcome"`
+	Surface    string             `json:"surface"`
+	Tool       string             `json:"tool"`
 }
 
 // EventRequest defines model for EventRequest.
 type EventRequest struct {
-	Actor      string `json:"actor"`
-	DurationMs *int   `json:"duration_ms,omitempty"`
-	Outcome    string `json:"outcome"`
-	Surface    string `json:"surface"`
-	Tool       string `json:"tool"`
+	Actor      string             `json:"actor"`
+	Detail     *map[string]string `json:"detail,omitempty"`
+	DurationMs *int               `json:"duration_ms,omitempty"`
+	Outcome    string             `json:"outcome"`
+	Surface    string             `json:"surface"`
+	Tool       string             `json:"tool"`
 }
 
 // EventResponse defines model for EventResponse.
@@ -377,16 +379,16 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/7yVzW7bMAzHXyXgdjTibMMuvm1AMOw2bNipKAJVpl0VtqRQVAAj8LsPkpwvRG2Sbust",
-	"MSlSf/JHagvS9NZo1Oyg2oKTj9iL+HO5Qc1LzTSEf5aMRWKF0SYkGwo/eLAIFTgmpVsYC5CEgrFeCc6a",
-	"a0+CldGr3h3ZlWZskYKDqvPfjWdpeswGdZ4aIfM2NqbLGMYCCNdeEdZQ3YWsk+shWjGpPOQ+UXdf7GKa",
-	"hyeUHJLFkv3EtUfHtxTtYlX+r/qLwl/Q6qzRDs/F5vt4XvZc6F++7wUNz7AnjdecL9M/K0XKcX634K50",
-	"Y2IgxV2wtYaxwx6ZhkDRBskpo6GCD/PFfBG7Z1ELq6CCT/FTAVbwYxRTCqtK3OzGr8WoLMiNQHyvoYJv",
-	"yMvkEQ6S6JGRHFR3W1Ahz9ojDVCAFoGQfTfjJGcV588d2n/z0R0vt+dU+nUZvWb1KpWd6hWfHKyxEb5j",
-	"qD4vigyw+TCmaRw+EycX5j5glmYlNvrjYpFY1oyJZmFtp2TsevnkAkDbo+CKMe2G94QNVPCuPOztclra",
-	"5dHGHvd3EERiSOTW6CQpywnP3060OEvszZODNS7D3w/jEoCQZgUdfzX1cNP9L157tzXH04lk8jj+Ze2u",
-	"yD1tsUyVosOMUBqqsY51Gos0ti6tqZfmdtpk1w3u2w9DS8bb1cOQ53i3SVD7PvNMHLbjPs2bUH7yOlzB",
-	"+Ze2JWzDsz3zEfmpb6mX4/gnAAD//3TPRK4DCQAA",
+	"H4sIAAAAAAAC/7xVT2/bPgz9KgV/v6MRZxt28W0DgmG3YsNORRGoFu2qsCWFogIYgb/7IMmpE0Rtk27L",
+	"zZb4R3x8fNxBbXprNGp2UO3A1Y/Yi/i52qLmlWYawp8lY5FYYbwTNRsKHzxYhAock9ItjAXUhIJRrgVn",
+	"ryWyUF0MIaViZbTobo9Cn7hMB+bhCWuOMTyJ4LnuDx2UZmyRgoGS+XPjuTY9ZrM4T42o83dsTJe5GAsg",
+	"3HhFKKG6C1kn0zlaMSE15z5C6D5TXYT9B248Or4E+Ksg+28RfBO8V/By1miHp4DluXDaulzon77vBQ0v",
+	"zEBtvOY8TH8NipTj9G3BXOnGxECKu3DXGsYOe2QaAhO3SE4ZDRV8WCwXy9g9i1pYBRV8ikcFWMGPsZhS",
+	"WFXidi8DLcbKQrmREN8lVPANeZUsgiOJHhnJQXW3AxXybDzSAAVoERjy3M2oKNmK835z+y923fPl8pxK",
+	"vy+j16zeVWWnesVHjhIb4TuG6vOyyBA2H8Y0jcMX4uTC3AeapVmJjf64XCYua8bEZmFtp+rY9fLJBQLt",
+	"DoIrxqQN/xM2UMF/5bw/yml5lAebY1YZQSSGxFyJriZlOdHzlxMt3iTuLZKBNS7Dv1vjEgEhzQo6/mrk",
+	"cNH733z2XnnH44lk8jj+IXZn5J5ULINSNLghrA1JlBGnsUhj65JMvTa3k5KdN7jXH4aWjLfrhyHP472S",
+	"oPZ9Zk3M6vic5iosP9oOZ/D8S9sStmH13/hI+alvqZfj+DsAAP//D4s7eosJAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

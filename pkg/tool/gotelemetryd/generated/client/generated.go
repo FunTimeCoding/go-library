@@ -36,22 +36,24 @@ func (e GetSummaryParamsGroupBy) Valid() bool {
 
 // EventEntry defines model for EventEntry.
 type EventEntry struct {
-	Actor      string `json:"actor"`
-	CreatedAt  string `json:"created_at"`
-	DurationMs *int   `json:"duration_ms,omitempty"`
-	Id         int    `json:"id"`
-	Outcome    string `json:"outcome"`
-	Surface    string `json:"surface"`
-	Tool       string `json:"tool"`
+	Actor      string             `json:"actor"`
+	CreatedAt  string             `json:"created_at"`
+	Detail     *map[string]string `json:"detail,omitempty"`
+	DurationMs *int               `json:"duration_ms,omitempty"`
+	Id         int                `json:"id"`
+	Outcome    string             `json:"outcome"`
+	Surface    string             `json:"surface"`
+	Tool       string             `json:"tool"`
 }
 
 // EventRequest defines model for EventRequest.
 type EventRequest struct {
-	Actor      string `json:"actor"`
-	DurationMs *int   `json:"duration_ms,omitempty"`
-	Outcome    string `json:"outcome"`
-	Surface    string `json:"surface"`
-	Tool       string `json:"tool"`
+	Actor      string             `json:"actor"`
+	Detail     *map[string]string `json:"detail,omitempty"`
+	DurationMs *int               `json:"duration_ms,omitempty"`
+	Outcome    string             `json:"outcome"`
+	Surface    string             `json:"surface"`
+	Tool       string             `json:"tool"`
 }
 
 // EventResponse defines model for EventResponse.

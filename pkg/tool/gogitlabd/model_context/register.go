@@ -139,6 +139,12 @@ func (s *Server) register() {
 				mcp.Required(),
 				mcp.Description("Branch or tag to run the pipeline on"),
 			),
+			mcp.WithObject(
+				"variables",
+				mcp.Description(
+					"Pipeline variables as key-value pairs (e.g. {\"DEPLOY_TARGET\": \"sentry\"})",
+				),
+			),
 		),
 		mcp.NewTypedToolHandler(s.CreatePipeline),
 	)

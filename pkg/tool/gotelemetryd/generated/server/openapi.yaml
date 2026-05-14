@@ -105,6 +105,10 @@ components:
           type: string
         duration_ms:
           type: integer
+        detail:
+          type: object
+          additionalProperties:
+            type: string
     EventResponse:
       type: object
       required: [id]
@@ -127,6 +131,10 @@ components:
           type: string
         duration_ms:
           type: integer
+        detail:
+          type: object
+          additionalProperties:
+            type: string
         created_at:
           type: string
     SummaryEntry:

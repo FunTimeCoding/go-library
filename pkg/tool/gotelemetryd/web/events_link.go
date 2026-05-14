@@ -5,7 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 )
 
-func eventsLink(o *store.QueryOption, page int) string {
+func eventsLink(
+	o *store.QueryOption,
+	page int,
+) string {
 	link := fmt.Sprintf("/events?page=%d", page)
 
 	if o.Tool != "" {

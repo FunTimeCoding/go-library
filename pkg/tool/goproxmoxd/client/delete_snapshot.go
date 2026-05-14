@@ -6,7 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) DeleteSnapshot(vmid int64, name string, node *string) string {
+func (c *Client) DeleteSnapshot(
+	vmid int64,
+	name string,
+	node *string,
+) string {
 	result, e := c.client.DeleteSnapshot(
 		c.context,
 		vmid,

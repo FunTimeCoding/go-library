@@ -6,7 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) CreateSnapshot(vmid int64, name string, node *string) string {
+func (c *Client) CreateSnapshot(
+	vmid int64,
+	name string,
+	node *string,
+) string {
 	body := client.CreateSnapshotJSONRequestBody{Name: name}
 	result, e := c.client.CreateSnapshot(
 		c.context,

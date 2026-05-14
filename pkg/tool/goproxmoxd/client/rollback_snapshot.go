@@ -6,7 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) RollbackSnapshot(vmid int64, name string, node *string) string {
+func (c *Client) RollbackSnapshot(
+	vmid int64,
+	name string,
+	node *string,
+) string {
 	result, e := c.client.RollbackSnapshot(
 		c.context,
 		vmid,

@@ -37,7 +37,10 @@ func (s *Server) heatmap(
 			cells = append(cells, html.Td(gomponents.Text(row.Surface)))
 		}
 
-		cells = append(cells, html.Td(gomponents.Text(fmt.Sprintf("%d", row.Count))))
+		cells = append(
+			cells,
+			html.Td(gomponents.Text(fmt.Sprintf("%d", row.Count))),
+		)
 		tableRows = append(tableRows, html.Tr(cells...))
 	}
 

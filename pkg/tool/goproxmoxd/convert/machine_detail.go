@@ -15,17 +15,17 @@ func MachineDetail(v *proxmox.VirtualMachine) server.MachineDetail {
 	maxDisk := int64(v.MaxDisk)
 	uptime := int64(v.Uptime)
 	result := server.MachineDetail{
-		Vmid:   vmid,
-		Name:   v.Name,
-		Node:   &v.Node,
-		Status: &v.Status,
-		Cpu:    &cpu,
-		Cpus:   &cpus,
-		Mem:    &mem,
-		MaxMem: &maxMem,
-		Disk:   &disk,
+		Vmid:    vmid,
+		Name:    v.Name,
+		Node:    &v.Node,
+		Status:  &v.Status,
+		Cpu:     &cpu,
+		Cpus:    &cpus,
+		Mem:     &mem,
+		MaxMem:  &maxMem,
+		Disk:    &disk,
 		MaxDisk: &maxDisk,
-		Uptime: &uptime,
+		Uptime:  &uptime,
 	}
 
 	if v.Tags != "" {

@@ -11,14 +11,14 @@ var Identity = identity.New(
 )
 
 const (
-	ListNodes      = "list_nodes"
-	GetNodeStatus  = "get_node_status"
-	ListMachines    = "list_machines"
-	GetMachine      = "get_machine"
-	StartMachine    = "start_machine"
-	StopMachine     = "stop_machine"
-	ShutdownMachine = "shutdown_machine"
-	ResetMachine    = "reset_machine"
+	ListNodes        = "list_nodes"
+	GetNodeStatus    = "get_node_status"
+	ListMachines     = "list_machines"
+	GetMachine       = "get_machine"
+	StartMachine     = "start_machine"
+	StopMachine      = "stop_machine"
+	ShutdownMachine  = "shutdown_machine"
+	ResetMachine     = "reset_machine"
 	ListSnapshots    = "list_snapshots"
 	CreateSnapshot   = "create_snapshot"
 	RollbackSnapshot = "rollback_snapshot"

@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) GetContainer(vmid int64, node *string) string {
+func (c *Client) GetContainer(
+	vmid int64,
+	node *string,
+) string {
 	result, e := c.client.GetContainer(
 		c.context,
 		vmid,

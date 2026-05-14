@@ -2,7 +2,10 @@ package server
 
 import "github.com/luthermonson/go-proxmox"
 
-func (s *Server) findMachine(vmid int64, node *string) *proxmox.VirtualMachine {
+func (s *Server) findMachine(
+	vmid int64,
+	node *string,
+) *proxmox.VirtualMachine {
 	if node != nil && *node != "" {
 		n := s.client.MustNode(*node)
 

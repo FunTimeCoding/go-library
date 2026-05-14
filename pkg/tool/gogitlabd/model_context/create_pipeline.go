@@ -38,9 +38,10 @@ func (s *Server) CreatePipeline(
 			vars = append(
 				vars,
 				&gitlab.PipelineVariableOptions{
-				Key:   &k,
-				Value: &l,
-			})
+					Key:   &k,
+					Value: &l,
+				},
+			)
 		}
 
 		options.Variables = &vars

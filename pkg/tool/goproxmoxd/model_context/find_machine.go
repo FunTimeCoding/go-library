@@ -2,7 +2,10 @@ package model_context
 
 import "github.com/luthermonson/go-proxmox"
 
-func (s *Server) findMachine(vmid int, nodeName string) (*proxmox.VirtualMachine, error) {
+func (s *Server) findMachine(
+	vmid int,
+	nodeName string,
+) (*proxmox.VirtualMachine, error) {
 	if nodeName != "" {
 		node, e := s.client.Node(nodeName)
 

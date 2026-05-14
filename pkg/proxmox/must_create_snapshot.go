@@ -5,7 +5,10 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func (c *Client) MustCreateSnapshot(v *proxmox.VirtualMachine, name string) *proxmox.Task {
+func (c *Client) MustCreateSnapshot(
+	v *proxmox.VirtualMachine,
+	name string,
+) *proxmox.Task {
 	result, e := c.CreateSnapshot(v, name)
 	errors.PanicOnError(e)
 

@@ -1,5 +1,5 @@
 package option
 
-func New() *Analyze{
+func New() *Analyze {
 	return &Analyze{}
 }

@@ -61,7 +61,7 @@ require (
 	github.com/nsf/termbox-go v1.1.1
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/olekukonko/tablewriter v1.1.4
-	github.com/ollama/ollama v0.23.4
+	github.com/ollama/ollama v0.24.0
 	github.com/openai/openai-go/v3 v3.35.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23

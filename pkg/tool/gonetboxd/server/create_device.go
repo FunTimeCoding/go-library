@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/netbox/tenant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
@@ -15,10 +14,37 @@ func (s *Server) CreateDevice(
 	q *http.Request,
 ) {
 	var body server.CreateDeviceRequest
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	role := s.client.MustDeviceRoleByName(body.Role)
-	deviceType := s.client.MustDeviceTypeByName(body.Type)
-	site := s.client.MustSiteByName(body.Site)
+
+	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
+		web.InvalidRequestBody(w)
+
+		return
+	}
+
+	role, e := s.client.DeviceRoleByName(body.Role)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	deviceType, f := s.client.DeviceTypeByName(body.Type)
+
+	if f != nil {
+		s.captureDetail(w, f)
+
+		return
+	}
+
+	site, g := s.client.SiteByName(body.Site)
+
+	if g != nil {
+		s.captureDetail(w, g)
+
+		return
+	}
+
 	var tags []string
 
 	if body.Tags != nil {
@@ -28,10 +54,18 @@ func (s *Server) CreateDevice(
 	var ten *tenant.Tenant
 
 	if body.Tenant != nil && *body.Tenant != "" {
-		ten = s.client.MustTenantByName(*body.Tenant)
+		t, h := s.client.TenantByName(*body.Tenant)
+
+		if h != nil {
+			s.captureDetail(w, h)
+
+			return
+		}
+
+		ten = t
 	}
 
-	d := s.client.MustCreateDevice(
+	d, i := s.client.CreateDevice(
 		body.Name,
 		role,
 		tags,
@@ -39,6 +73,13 @@ func (s *Server) CreateDevice(
 		site,
 		ten,
 	)
+
+	if i != nil {
+		s.captureDetail(w, i)
+
+		return
+	}
+
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(w, convert.Device(d))

@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -13,9 +12,29 @@ func (s *Server) CreateDeviceType(
 	q *http.Request,
 ) {
 	var body server.CreateDeviceTypeRequest
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	m := s.client.MustManufacturerByName(body.Manufacturer)
-	t := s.client.MustCreateDeviceType(body.Model, m)
+
+	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
+		web.InvalidRequestBody(w)
+
+		return
+	}
+
+	m, e := s.client.ManufacturerByName(body.Manufacturer)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	t, f := s.client.CreateDeviceType(body.Model, m)
+
+	if f != nil {
+		s.captureDetail(w, f)
+
+		return
+	}
+
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

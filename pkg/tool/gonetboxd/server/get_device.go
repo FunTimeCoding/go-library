@@ -11,8 +11,13 @@ func (s *Server) GetDevice(
 	_ *http.Request,
 	name string,
 ) {
-	web.EncodeNotation(
-		w,
-		convert.Device(s.client.MustDeviceByNameStrict(name)),
-	)
+	d, e := s.client.DeviceByNameStrict(name)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	web.EncodeNotation(w, convert.Device(d))
 }

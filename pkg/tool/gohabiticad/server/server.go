@@ -1,7 +1,7 @@
 package server
 
-import "github.com/funtimecoding/go-library/pkg/habitica"
+import "github.com/funtimecoding/go-library/pkg/tool/gohabiticad/face"
 
 type Server struct {
-	habitica *habitica.Client
+	habitica face.HabiticaSource
 }

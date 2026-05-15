@@ -7,7 +7,7 @@ Integration testing patterns for service tools. Unit testing philosophy lives in
 Use a real bbolt database on a temporary path:
 
 ```go
-path := filepath.Join(t.TempDir(), "test.db")
+path := filepath.Join(t.TempDir(), constant.TestDatabase)
 defer system.Remove(path)
 s := store.New(path)
 defer s.Close()

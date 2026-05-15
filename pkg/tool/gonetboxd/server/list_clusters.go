@@ -10,7 +10,14 @@ func (s *Server) ListClusters(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	clusters := s.client.MustClusters()
+	clusters, e := s.client.Clusters()
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
 	result := make([]server.Cluster, 0, len(clusters))
 
 	for _, cl := range clusters {

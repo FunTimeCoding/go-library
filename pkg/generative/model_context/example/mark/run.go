@@ -3,6 +3,7 @@ package mark
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/example/mark/option"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/server"
@@ -25,7 +26,7 @@ import (
 func Run(o *option.Mark) {
 	s := mark.NewMCPServer(
 		"Demo",
-		constant.DefaultVersion,
+		library.DefaultVersion,
 		mark.WithToolCapabilities(false),
 	)
 	s.AddTool(

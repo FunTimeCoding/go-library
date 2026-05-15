@@ -10,7 +10,14 @@ func (s *Server) ListTags(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	tags := s.client.MustTags()
+	tags, e := s.client.Tags()
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
 	result := make([]server.Tag, 0, len(tags))
 
 	for _, t := range tags {

@@ -12,13 +12,27 @@ func (s *Server) ListDevices(
 	_ *http.Request,
 	v server.ListDevicesParams,
 ) {
-	var devices []server.Device
-
 	if v.Query != nil && *v.Query != "" {
-		devices = convert.Devices(s.client.MustDevicesByMatch(*v.Query))
-	} else {
-		devices = convert.Devices(s.client.MustDevices())
+		devices, e := s.client.DevicesByMatch(*v.Query)
+
+		if e != nil {
+			s.captureDetail(w, e)
+
+			return
+		}
+
+		web.EncodeNotation(w, convert.Devices(devices))
+
+		return
 	}
 
-	web.EncodeNotation(w, devices)
+	devices, e := s.client.Devices()
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	web.EncodeNotation(w, convert.Devices(devices))
 }

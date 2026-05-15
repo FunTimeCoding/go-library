@@ -10,7 +10,14 @@ func (s *Server) ListDeviceTypes(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	types := s.client.MustDeviceTypes()
+	types, e := s.client.DeviceTypes()
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
 	result := make([]server.DeviceType, 0, len(types))
 
 	for _, t := range types {

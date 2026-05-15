@@ -10,5 +10,13 @@ func (s *Server) ListSites(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, convert.Sites(s.client.MustSites()))
+	sites, e := s.client.Sites()
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	web.EncodeNotation(w, convert.Sites(sites))
 }

@@ -15,13 +15,12 @@ import (
 
 func TestRunWorkerStartOrder(t *testing.T) {
 	var log []string
-	l := New(
+	New(
 		logger.New(context.Background()),
 		WithWorker(mock_worker.New("a", &log)),
 		WithWorker(mock_worker.New("b", &log)),
 		WithWorker(mock_worker.New("c", &log)),
-	)
-	l.Run()
+	).Run()
 	assert.Count(t, 3, log)
 	assert.String(t, "start:a", log[0])
 	assert.String(t, "start:b", log[1])
@@ -46,13 +45,11 @@ func TestStopWorkerReverseOrder(t *testing.T) {
 }
 
 func TestRunEmpty(t *testing.T) {
-	l := New(logger.New(context.Background()))
-	l.Run()
+	New(logger.New(context.Background())).Run()
 }
 
 func TestStopEmpty(t *testing.T) {
-	l := New(logger.New(context.Background()))
-	l.Stop()
+	New(logger.New(context.Background())).Stop()
 }
 
 func TestRunServerResponds(t *testing.T) {

@@ -9,6 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
 	maintenanceWeb "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/web"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
@@ -20,7 +21,7 @@ func Run(
 	r face.Reporter,
 ) {
 	g := logger.New(context.Background())
-	s := newStore(o)
+	s := store.New(o)
 	defer s.Close()
 	lifecycle.New(
 		g,

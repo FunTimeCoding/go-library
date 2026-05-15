@@ -2,13 +2,13 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
-	"github.com/funtimecoding/go-library/pkg/habitica"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/constant"
+	habitica "github.com/funtimecoding/go-library/pkg/tool/gohabiticad/face"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
-	c *habitica.Client,
+	c habitica.HabiticaSource,
 	r face.Reporter,
 	version string,
 ) *Server {

@@ -12,6 +12,13 @@ func (s *Server) RemoveDeviceTag(
 	name string,
 	tag string,
 ) {
-	d := s.client.MustRemoveTag(name, tag)
+	d, e := s.client.RemoveTag(name, tag)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
 	web.EncodeNotation(w, convert.Device(d))
 }

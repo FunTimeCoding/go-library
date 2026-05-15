@@ -3,6 +3,7 @@ package anthropic
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/constant"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -20,7 +21,7 @@ func Run() {
 	s := mcp.NewServer(
 		&mcp.Implementation{
 			Name:    "Greeter",
-			Version: constant.DefaultVersion,
+			Version: library.DefaultVersion,
 		},
 		nil,
 	)

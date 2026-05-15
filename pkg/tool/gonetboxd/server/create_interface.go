@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/netbox-community/go-netbox/v4"
@@ -15,13 +14,33 @@ func (s *Server) CreateInterface(
 	name string,
 ) {
 	var body server.CreateInterfaceRequest
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	d := s.client.MustDeviceByNameStrict(name)
-	i := s.client.MustCreateInterface(
+
+	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
+		web.InvalidRequestBody(w)
+
+		return
+	}
+
+	d, e := s.client.DeviceByNameStrict(name)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	i, f := s.client.CreateInterface(
 		d,
 		body.Name,
 		netbox.InterfaceTypeValue(body.Type),
 	)
+
+	if f != nil {
+		s.captureDetail(w, f)
+
+		return
+	}
+
 	result := server.Interface{
 		Identifier: i.Identifier,
 		Name:       i.Name,

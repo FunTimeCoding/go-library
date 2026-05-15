@@ -10,7 +10,14 @@ func (s *Server) ListClusterTypes(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	types := s.client.MustClusterTypes()
+	types, e := s.client.ClusterTypes()
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
 	result := make([]server.ClusterType, 0, len(types))
 
 	for _, t := range types {

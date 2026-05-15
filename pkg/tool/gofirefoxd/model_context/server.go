@@ -2,12 +2,12 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
-	"github.com/funtimecoding/go-library/pkg/firefox"
+	firefox "github.com/funtimecoding/go-library/pkg/tool/gofirefoxd/face"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 type Server struct {
 	server   *server.MCPServer
-	client   *firefox.Client
+	client   firefox.FirefoxSource
 	reporter face.Reporter
 }

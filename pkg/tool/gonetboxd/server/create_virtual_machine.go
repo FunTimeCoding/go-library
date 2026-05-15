@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -13,9 +12,29 @@ func (s *Server) CreateVirtualMachine(
 	q *http.Request,
 ) {
 	var body server.CreateVirtualMachineRequest
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-	cl := s.client.MustClusterByName(body.Cluster)
-	vm := s.client.MustCreateVirtualMachine(body.Name, cl)
+
+	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
+		web.InvalidRequestBody(w)
+
+		return
+	}
+
+	cl, e := s.client.ClusterByName(body.Cluster)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	vm, f := s.client.CreateVirtualMachine(body.Name, cl)
+
+	if f != nil {
+		s.captureDetail(w, f)
+
+		return
+	}
+
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
 	web.Encode(

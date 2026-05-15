@@ -12,6 +12,13 @@ func (s *Server) AddDeviceTag(
 	name string,
 	tag string,
 ) {
-	d := s.client.MustAddTag(name, tag)
+	d, e := s.client.AddTag(name, tag)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
 	web.EncodeNotation(w, convert.Device(d))
 }

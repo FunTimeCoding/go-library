@@ -1,7 +1,7 @@
 package server
 
-import "github.com/funtimecoding/go-library/pkg/habitica"
+import "github.com/funtimecoding/go-library/pkg/tool/gohabiticad/face"
 
-func New(c *habitica.Client) *Server {
+func New(c face.HabiticaSource) *Server {
 	return &Server{habitica: c}
 }

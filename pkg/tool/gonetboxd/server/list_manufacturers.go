@@ -10,7 +10,14 @@ func (s *Server) ListManufacturers(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	manufacturers := s.client.MustManufacturers()
+	manufacturers, e := s.client.Manufacturers()
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
 	result := make([]server.Manufacturer, 0, len(manufacturers))
 
 	for _, m := range manufacturers {

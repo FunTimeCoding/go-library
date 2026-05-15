@@ -29,7 +29,8 @@ const (
 
 	Direct = "direct"
 
-	CurrentDirectory     = "."
+	CurrentDirectory = "."
+
 	GoExtension          = ".go"
 	GraphicExtension     = ".png"
 	HypertextExtension   = ".html"
@@ -47,9 +48,16 @@ const (
 
 	Unauthorized = "Unauthorized"
 
-	UnexpectedError = "unexpected error"
+	InvalidRequestBody = "invalid request body"
+	UnexpectedError    = "unexpected error"
 
 	GoLibraryModule = "github.com/funtimecoding/go-library"
+
+	DefaultVersion = "1.0.0"
+
+	TestClient = "test-client"
+
+	TestDatabase = "test.db"
 )
 
 // For console status option

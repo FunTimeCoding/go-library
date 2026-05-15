@@ -11,9 +11,21 @@ func (s *Server) ListInterfaces(
 	_ *http.Request,
 	name string,
 ) {
-	d := s.client.MustDeviceByNameStrict(name)
-	web.EncodeNotation(
-		w,
-		convert.Interfaces(s.client.MustDeviceInterfaces(d.Identifier)),
-	)
+	d, e := s.client.DeviceByNameStrict(name)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	interfaces, f := s.client.DeviceInterfaces(d.Identifier)
+
+	if f != nil {
+		s.captureDetail(w, f)
+
+		return
+	}
+
+	web.EncodeNotation(w, convert.Interfaces(interfaces))
 }

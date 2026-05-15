@@ -11,8 +11,13 @@ func (s *Server) ListAddresses(
 	_ *http.Request,
 	name string,
 ) {
-	web.EncodeNotation(
-		w,
-		convert.Addresses(s.client.MustDeviceAddresses(name)),
-	)
+	addresses, e := s.client.DeviceAddresses(name)
+
+	if e != nil {
+		s.captureDetail(w, e)
+
+		return
+	}
+
+	web.EncodeNotation(w, convert.Addresses(addresses))
 }

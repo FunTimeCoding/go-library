@@ -11,4 +11,5 @@ func TestEquals(t *testing.T) {
 	assert.String(t, "ab", Empty("a", "b"))
 	assert.String(t, "a:b", Colon("a", "b"))
 	assert.String(t, "a/b", Slash("a", "b"))
+	assert.String(t, "a@b", At("a", "b"))
 }

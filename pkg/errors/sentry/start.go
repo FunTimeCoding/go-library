@@ -1,9 +1,9 @@
 package sentry
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
+	"github.com/funtimecoding/go-library/pkg/strings/join/key_value"
 	"github.com/getsentry/sentry-go"
 )
 
@@ -22,17 +22,14 @@ func Start(
 	h := sentry.CurrentHub()
 	client, e := sentry.NewClient(
 		sentry.ClientOptions{
-			Dsn:         locator,
-			Environment: constant.UndefinedEnvironment,
-			Release: fmt.Sprintf(
-				"%s@%s",
-				projectName,
-				version,
-			),
+			Dsn:              locator,
+			Environment:      constant.UndefinedEnvironment,
+			Release:          key_value.At(projectName, version),
 			EnableTracing:    true,
 			TracesSampleRate: 1.0,
 			AttachStacktrace: true,
 			SendDefaultPII:   true,
+			BeforeSend:       enrichResponseBody,
 		},
 	)
 	errors.FatalOnError(e)

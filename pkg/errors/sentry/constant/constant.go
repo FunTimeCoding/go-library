@@ -15,6 +15,9 @@ const (
 	LocatorEnvironment      = "SENTRY_LOCATOR"
 
 	ErrorType = "error"
+
+	Response = "response"
+	Body     = "body"
 )
 
 const (

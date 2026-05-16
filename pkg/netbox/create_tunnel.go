@@ -17,7 +17,10 @@ func (c *Client) CreateTunnel(
 	)
 	q.SetGroup(
 		netbox.BriefTunnelGroupRequestAsPatchedWritableTunnelRequestGroup(
-			netbox.NewBriefTunnelGroupRequest(group.Name, group.Raw.GetSlug()),
+			netbox.NewBriefTunnelGroupRequest(
+				group.Name,
+				group.Raw.GetSlug(),
+			),
 		),
 	)
 	q.SetStatus(netbox.PATCHEDWRITABLETUNNELREQUESTSTATUS_ACTIVE)

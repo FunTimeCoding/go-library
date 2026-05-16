@@ -12,7 +12,12 @@ import (
 func TestPollSavesNewAlert(t *testing.T) {
 	o := worker_tester.New(t)
 	o.MockClient.Add(
-		alert.NewBasic("abc123", "HighMemory", "critical", "Memory above 90%"),
+		alert.NewBasic(
+			"abc123",
+			"HighMemory",
+			"critical",
+			"Memory above 90%",
+		),
 	)
 	o.Worker.Poll()
 	records := o.Store.MustByName("HighMemory")

@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -58,17 +59,7 @@ func (s *Server) CreateVirtualTunnelTermination(
 		return
 	}
 
-	terminationType := constant.VirtualInterfaceAddress
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.TunnelTermination{
-			Identifier:            tt.Identifier,
-			Tunnel:                &t.Name,
-			Role:                  &body.Role,
-			TerminationType:       &terminationType,
-			TerminationIdentifier: &tt.TerminationIdentifier,
-		},
-	)
+	web.Encode(w, convert.TunnelTermination(tt))
 }

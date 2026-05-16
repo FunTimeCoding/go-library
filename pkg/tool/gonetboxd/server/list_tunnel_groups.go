@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -18,14 +18,5 @@ func (s *Server) ListTunnelGroups(
 		return
 	}
 
-	result := make([]server.TunnelGroup, 0, len(groups))
-
-	for _, g := range groups {
-		result = append(
-			result,
-			server.TunnelGroup{Identifier: g.Identifier, Name: g.Name},
-		)
-	}
-
-	web.EncodeNotation(w, result)
+	web.EncodeNotation(w, convert.TunnelGroups(groups))
 }

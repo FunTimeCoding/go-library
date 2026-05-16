@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -37,13 +38,5 @@ func (s *Server) CreateTunnel(
 
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.Tunnel{
-			Identifier:    t.Identifier,
-			Name:          t.Name,
-			Encapsulation: &body.Encapsulation,
-			Group:         &g.Name,
-		},
-	)
+	web.Encode(w, convert.Tunnel(t))
 }

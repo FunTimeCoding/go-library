@@ -148,7 +148,10 @@ depending on its API:
   from `parseDetail` in the HTTP client
 - GitLab: `*gitlab.ErrorResponse` → `e.Message`
 - Mattermost: `*model.AppError` → `e.Message`
-- NetBox: `netbox.GenericOpenAPIError` → parse `detail` from body
+- NetBox: `*netbox.GenericOpenAPIError` → `common.ExtractMessage`
+  parses `detail` string, then field-level validation errors
+  (`__all__` and per-field arrays). Shared between REST and MCP
+  surfaces via `gonetboxd/common/`.
 - Jira/Confluence (goatlassiand): both `*jira.Error` → `ErrorMessages[0]`
   and `*detail_error.Detail`
 - Proxmox: sentinel errors via `errors.Is` (`ErrNotFound`,
@@ -276,6 +279,27 @@ overall recovery layer design.
 the mux, catches panics from any handler, reports via `r.Recover(v)`,
 and returns 500. Wired into lifecycle via `WithServerMiddleware` or
 `WithProtectedServerMiddleware`. See `lifecycle.md`.
+
+### Sentry body enrichment
+
+`pkg/errors/sentry/start.go` installs a `BeforeSend` hook that
+checks every error for `face.BodyProvider` (an interface with
+`Body() []byte`). When present — e.g. `*netbox.GenericOpenAPIError`
+— the response body is attached as a `response` context on the
+Sentry event. This works for both `CaptureException` and `Recover`
+paths (via `OriginalException` and `RecoveredException` in the
+`EventHint`). No caller changes needed — any error satisfying
+`BodyProvider` is automatically enriched.
+
+### REST captureDetail variant (gonetboxd)
+
+When a REST API serves both CLI and MCP consumers and needs to surface
+meaningful error messages (not just 500), handlers use the non-Must
+client methods and call `captureDetail` on error — the same pattern
+as MCP handlers. The Server struct holds a `face.Reporter` for Sentry
+reporting. Shared error extraction logic lives in a `common/` package
+(e.g. `gonetboxd/common/ExtractMessage`). The recovery middleware
+remains as a safety net for unexpected panics.
 
 ## External Process Failure
 

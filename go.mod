@@ -41,6 +41,7 @@ require (
 	github.com/go-test/deep v1.1.1
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v86 v86.0.0
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/gpustack/gguf-parser-go v0.24.0
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20260430175825-547a3b5a00a5
@@ -51,7 +52,7 @@ require (
 	github.com/jackc/pgx/v5 v5.9.2
 	github.com/kestra-io/client-sdk/go-sdk v1.0.1
 	github.com/liushuangls/go-anthropic/v2 v2.20.1
-	github.com/luthermonson/go-proxmox v0.5.0
+	github.com/luthermonson/go-proxmox v0.5.1
 	github.com/mark3labs/mcp-go v0.54.0
 	github.com/mattermost/mattermost/server/public v0.4.0
 	github.com/mitchellh/go-ps v1.0.0
@@ -61,8 +62,8 @@ require (
 	github.com/nsf/termbox-go v1.1.1
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/olekukonko/tablewriter v1.1.4
-	github.com/ollama/ollama v0.23.4
-	github.com/openai/openai-go/v3 v3.35.0
+	github.com/ollama/ollama v0.24.0
+	github.com/openai/openai-go/v3 v3.36.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
@@ -85,7 +86,7 @@ require (
 	github.com/trivago/tgo v1.0.7
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
-	gitlab.com/gitlab-org/api/client-go/v2 v2.26.0
+	gitlab.com/gitlab-org/api/client-go/v2 v2.26.1
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.51.0
 	golang.org/x/mod v0.36.0
@@ -146,7 +147,7 @@ require (
 	github.com/creasty/defaults v1.8.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.6.1 // indirect
 	github.com/dennwc/varint v1.0.0 // indirect
-	github.com/diskfs/go-diskfs v1.9.2 // indirect
+	github.com/diskfs/go-diskfs v1.9.3 // indirect
 	github.com/djherbis/times v1.6.0 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/dyatlov/go-opengraph/opengraph v0.0.0-20220524092352-606d7b1e5f8a // indirect
@@ -213,7 +214,6 @@ require (
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/jsonschema-go v0.4.3 // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.15 // indirect
 	github.com/googleapis/gax-go/v2 v2.22.0 // indirect
 	github.com/grafana/loki/pkg/push v0.0.0-20240912152814-63e84b476a9a // indirect

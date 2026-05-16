@@ -6,22 +6,16 @@ import (
 )
 
 func Machine(v proxmox.VirtualMachine) server.Machine {
-	vmid := int64(v.VMID)
-	cpu := v.CPU
-	cpus := v.CPUs
-	mem := int64(v.Mem)
-	maxMem := int64(v.MaxMem)
-	uptime := int64(v.Uptime)
 	result := server.Machine{
-		Vmid:   vmid,
+		Vmid:   int64(v.VMID),
 		Name:   v.Name,
 		Node:   &v.Node,
 		Status: &v.Status,
-		Cpu:    &cpu,
-		Cpus:   &cpus,
-		Mem:    &mem,
-		MaxMem: &maxMem,
-		Uptime: &uptime,
+		Cpu:    new(v.CPU),
+		Cpus:   new(v.CPUs),
+		Mem:    new(int64(v.Mem)),
+		MaxMem: new(int64(v.MaxMem)),
+		Uptime: new(int64(v.Uptime)),
 	}
 
 	if v.Tags != "" {

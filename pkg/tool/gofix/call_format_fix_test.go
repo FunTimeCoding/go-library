@@ -10,7 +10,7 @@ import (
 func TestCallFormatFix(t *testing.T) {
 	directory := writeCallFormatTestModule(t)
 	r := output.NewResultsWithDirectory(directory)
-	runCallFormatFixWithDirectory([]string{"./..."}, directory, &r)
+	runCallFormatFixWithDirectory([]string{"./..."}, directory, r)
 	t.Run(
 		"LongSingleLine",
 		func(t *testing.T) {

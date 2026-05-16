@@ -57,8 +57,7 @@ func (s *Server) GetEvents(
 		}
 
 		if e.DurationMillisecond > 0 {
-			ms := int(e.DurationMillisecond)
-			entry.DurationMs = &ms
+			entry.DurationMs = new(int(e.DurationMillisecond))
 		}
 
 		if e.Detail != nil {

@@ -60,5 +60,7 @@ func Main(
 	o.AddCommand(createTunnel(c))
 	o.AddCommand(createDeviceTunnelTermination(c))
 	o.AddCommand(createVirtualTunnelTermination(c))
+	o.AddCommand(listPrefixes(c))
+	o.AddCommand(createPrefix(c))
 	errors.PanicOnError(o.Execute())
 }

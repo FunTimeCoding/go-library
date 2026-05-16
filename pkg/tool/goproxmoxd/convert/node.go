@@ -6,23 +6,15 @@ import (
 )
 
 func Node(n proxmox.NodeStatus) server.Node {
-	cpu := n.CPU
-	maxCpu := n.MaxCPU
-	mem := int64(n.Mem)
-	maxMem := int64(n.MaxMem)
-	disk := int64(n.Disk)
-	maxDisk := int64(n.MaxDisk)
-	uptime := int64(n.Uptime)
-
 	return server.Node{
 		Name:    n.Node,
 		Status:  n.Status,
-		Cpu:     &cpu,
-		MaxCpu:  &maxCpu,
-		Mem:     &mem,
-		MaxMem:  &maxMem,
-		Disk:    &disk,
-		MaxDisk: &maxDisk,
-		Uptime:  &uptime,
+		Cpu:     new(n.CPU),
+		MaxCpu:  new(n.MaxCPU),
+		Mem:     new(int64(n.Mem)),
+		MaxMem:  new(int64(n.MaxMem)),
+		Disk:    new(int64(n.Disk)),
+		MaxDisk: new(int64(n.MaxDisk)),
+		Uptime:  new(int64(n.Uptime)),
 	}
 }

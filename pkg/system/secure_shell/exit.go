@@ -6,10 +6,8 @@ import (
 )
 
 func Exit(e error) int {
-	var exit *ssh.ExitError
-
-	if errors.As(e, &exit) {
-		return exit.ExitStatus()
+	if x, okay := errors.AsType[*ssh.ExitError](e); okay {
+		return x.ExitStatus()
 	}
 
 	return 0

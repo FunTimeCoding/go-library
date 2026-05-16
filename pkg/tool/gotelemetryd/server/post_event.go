@@ -34,8 +34,7 @@ func (s *Server) PostEvent(
 		encoded, marshalError := json.Marshal(*request.Detail)
 
 		if marshalError == nil {
-			detail := string(encoded)
-			e.Detail = &detail
+			e.Detail = new(string(encoded))
 		}
 	}
 

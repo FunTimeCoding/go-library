@@ -2,14 +2,14 @@ package output
 
 import "fmt"
 
-func NewResultsWithDirectory(directory string) Results {
+func NewResultsWithDirectory(directory string) *Results {
 	if directory == "" {
-		return Results{}
+		return &Results{}
 	}
 
 	if directory[len(directory)-1] != '/' {
 		directory = fmt.Sprintf("%s/", directory)
 	}
 
-	return Results{workingDirectory: directory}
+	return &Results{workingDirectory: directory}
 }

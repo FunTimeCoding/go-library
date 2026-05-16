@@ -10,7 +10,12 @@ import (
 func TestVariableNamingFix(t *testing.T) {
 	directory := writeVariableNamingTestModule(t)
 	r := output.NewResultsWithDirectory(directory)
-	runVariableNamingFixWithDirectory([]string{"./..."}, directory, false, &r)
+	runVariableNamingFixWithDirectory(
+		[]string{"./..."},
+		directory,
+		false,
+		r,
+	)
 	t.Run(
 		"WrongSingleLetter",
 		func(t *testing.T) {

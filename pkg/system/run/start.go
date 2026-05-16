@@ -31,9 +31,7 @@ func (r *Run) Start(s ...string) string {
 		r.Print()
 	}
 
-	var f *exec.ExitError
-
-	if errors.As(e, &f) {
+	if f, okay := errors.AsType[*exec.ExitError](e); okay {
 		r.Exit = f.ExitCode()
 	}
 

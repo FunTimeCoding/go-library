@@ -101,6 +101,18 @@ type CreateNameRequest struct {
 	Name string `json:"name"`
 }
 
+// CreatePrefixRequest defines model for CreatePrefixRequest.
+type CreatePrefixRequest struct {
+	// Description Description (optional).
+	Description *string `json:"description,omitempty"`
+
+	// Prefix CIDR notation (e.g. 192.168.178.0/24).
+	Prefix string `json:"prefix"`
+
+	// Site Site name (optional).
+	Site *string `json:"site,omitempty"`
+}
+
 // CreateTunnelRequest defines model for CreateTunnelRequest.
 type CreateTunnelRequest struct {
 	// Encapsulation Encapsulation type (e.g. wireguard, gre, openvpn).
@@ -180,6 +192,14 @@ type Interface struct {
 type Manufacturer struct {
 	Identifier int32  `json:"identifier"`
 	Name       string `json:"name"`
+}
+
+// Prefix defines model for Prefix.
+type Prefix struct {
+	Description *string `json:"description,omitempty"`
+	Identifier  int32   `json:"identifier"`
+	Prefix      string  `json:"prefix"`
+	Site        *string `json:"site,omitempty"`
 }
 
 // Site defines model for Site.
@@ -270,6 +290,9 @@ type CreateDeviceTunnelTerminationJSONRequestBody = CreateTunnelTerminationReque
 
 // CreateManufacturerJSONRequestBody defines body for CreateManufacturer for application/json ContentType.
 type CreateManufacturerJSONRequestBody = CreateNameRequest
+
+// CreatePrefixJSONRequestBody defines body for CreatePrefix for application/json ContentType.
+type CreatePrefixJSONRequestBody = CreatePrefixRequest
 
 // CreateSiteJSONRequestBody defines body for CreateSite for application/json ContentType.
 type CreateSiteJSONRequestBody = CreateNameRequest
@@ -451,6 +474,14 @@ type ClientInterface interface {
 	CreateManufacturerWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateManufacturer(ctx context.Context, body CreateManufacturerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListPrefixes request
+	ListPrefixes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreatePrefixWithBody request with any body
+	CreatePrefixWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreatePrefix(ctx context.Context, body CreatePrefixJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListSites request
 	ListSites(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -875,6 +906,42 @@ func (c *Client) CreateManufacturerWithBody(ctx context.Context, contentType str
 
 func (c *Client) CreateManufacturer(ctx context.Context, body CreateManufacturerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateManufacturerRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListPrefixes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPrefixesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreatePrefixWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePrefixRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreatePrefix(ctx context.Context, body CreatePrefixJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePrefixRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1992,6 +2059,73 @@ func NewCreateManufacturerRequestWithBody(server string, contentType string, bod
 	return req, nil
 }
 
+// NewListPrefixesRequest generates requests for ListPrefixes
+func NewListPrefixesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/prefixes")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreatePrefixRequest calls the generic CreatePrefix builder with application/json body
+func NewCreatePrefixRequest(server string, body CreatePrefixJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreatePrefixRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreatePrefixRequestWithBody generates requests for CreatePrefix with any type of body
+func NewCreatePrefixRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/prefixes")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListSitesRequest generates requests for ListSites
 func NewListSitesRequest(server string) (*http.Request, error) {
 	var err error
@@ -2768,6 +2902,14 @@ type ClientWithResponsesInterface interface {
 
 	CreateManufacturerWithResponse(ctx context.Context, body CreateManufacturerJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateManufacturerResponse, error)
 
+	// ListPrefixesWithResponse request
+	ListPrefixesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPrefixesResponse, error)
+
+	// CreatePrefixWithBodyWithResponse request with any body
+	CreatePrefixWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePrefixResponse, error)
+
+	CreatePrefixWithResponse(ctx context.Context, body CreatePrefixJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePrefixResponse, error)
+
 	// ListSitesWithResponse request
 	ListSitesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSitesResponse, error)
 
@@ -3297,6 +3439,50 @@ func (r CreateManufacturerResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateManufacturerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListPrefixesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Prefix
+}
+
+// Status returns HTTPResponse.Status
+func (r ListPrefixesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListPrefixesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreatePrefixResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Prefix
+}
+
+// Status returns HTTPResponse.Status
+func (r CreatePrefixResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreatePrefixResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -3958,6 +4144,32 @@ func (c *ClientWithResponses) CreateManufacturerWithResponse(ctx context.Context
 		return nil, err
 	}
 	return ParseCreateManufacturerResponse(rsp)
+}
+
+// ListPrefixesWithResponse request returning *ListPrefixesResponse
+func (c *ClientWithResponses) ListPrefixesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPrefixesResponse, error) {
+	rsp, err := c.ListPrefixes(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListPrefixesResponse(rsp)
+}
+
+// CreatePrefixWithBodyWithResponse request with arbitrary body returning *CreatePrefixResponse
+func (c *ClientWithResponses) CreatePrefixWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePrefixResponse, error) {
+	rsp, err := c.CreatePrefixWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreatePrefixResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreatePrefixWithResponse(ctx context.Context, body CreatePrefixJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePrefixResponse, error) {
+	rsp, err := c.CreatePrefix(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreatePrefixResponse(rsp)
 }
 
 // ListSitesWithResponse request returning *ListSitesResponse
@@ -4730,6 +4942,58 @@ func ParseCreateManufacturerResponse(rsp *http.Response) (*CreateManufacturerRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
 		var dest Manufacturer
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListPrefixesResponse parses an HTTP response from a ListPrefixesWithResponse call
+func ParseListPrefixesResponse(rsp *http.Response) (*ListPrefixesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListPrefixesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Prefix
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreatePrefixResponse parses an HTTP response from a CreatePrefixWithResponse call
+func ParseCreatePrefixResponse(rsp *http.Response) (*CreatePrefixResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreatePrefixResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Prefix
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

@@ -6,26 +6,18 @@ import (
 )
 
 func MachineDetail(v *proxmox.VirtualMachine) server.MachineDetail {
-	vmid := int64(v.VMID)
-	cpu := v.CPU
-	cpus := v.CPUs
-	mem := int64(v.Mem)
-	maxMem := int64(v.MaxMem)
-	disk := int64(v.Disk)
-	maxDisk := int64(v.MaxDisk)
-	uptime := int64(v.Uptime)
 	result := server.MachineDetail{
-		Vmid:    vmid,
+		Vmid:    int64(v.VMID),
 		Name:    v.Name,
 		Node:    &v.Node,
 		Status:  &v.Status,
-		Cpu:     &cpu,
-		Cpus:    &cpus,
-		Mem:     &mem,
-		MaxMem:  &maxMem,
-		Disk:    &disk,
-		MaxDisk: &maxDisk,
-		Uptime:  &uptime,
+		Cpu:     new(v.CPU),
+		Cpus:    new(v.CPUs),
+		Mem:     new(int64(v.Mem)),
+		MaxMem:  new(int64(v.MaxMem)),
+		Disk:    new(int64(v.Disk)),
+		MaxDisk: new(int64(v.MaxDisk)),
+		Uptime:  new(int64(v.Uptime)),
 	}
 
 	if v.Tags != "" {

@@ -45,10 +45,9 @@ func TestWebService(t *testing.T) {
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, events.StatusCode())
 	assert.Count(t, 2, *events.JSON200)
-	tool := "save_memory"
 	filtered, e := c.GetEventsWithResponse(
 		x,
-		&client.GetEventsParams{Tool: &tool},
+		&client.GetEventsParams{Tool: new("save_memory")},
 	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 1, *filtered.JSON200)

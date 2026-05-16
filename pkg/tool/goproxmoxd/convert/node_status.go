@@ -6,40 +6,26 @@ import (
 )
 
 func NodeStatus(s *node_status.Status) server.NodeStatus {
-	cpu := s.Processor
-	uptime := s.Uptime
-	kernelVersion := s.KernelVersion
-	proxmoxVersion := s.ProxmoxVersion
-	memFree := s.Memory.Free
-	memTotal := s.Memory.Total
-	memUsed := s.Memory.Used
-	swapFree := s.Swap.Free
-	swapTotal := s.Swap.Total
-	swapUsed := int64(s.Swap.Used)
-	rootFree := s.RootFilesystem.Free
-	rootTotal := s.RootFilesystem.Total
-	rootUsed := s.RootFilesystem.Used
-
 	return server.NodeStatus{
-		Cpu:            &cpu,
-		Uptime:         &uptime,
-		KernelVersion:  &kernelVersion,
-		ProxmoxVersion: &proxmoxVersion,
+		Cpu:            new(s.Processor),
+		Uptime:         new(s.Uptime),
+		KernelVersion:  new(s.KernelVersion),
+		ProxmoxVersion: new(s.ProxmoxVersion),
 		LoadAverage:    &s.LoadAverage,
 		Memory: &server.MemoryInfo{
-			Free:  &memFree,
-			Total: &memTotal,
-			Used:  &memUsed,
+			Free:  new(s.Memory.Free),
+			Total: new(s.Memory.Total),
+			Used:  new(s.Memory.Used),
 		},
 		Swap: &server.MemoryInfo{
-			Free:  &swapFree,
-			Total: &swapTotal,
-			Used:  &swapUsed,
+			Free:  new(s.Swap.Free),
+			Total: new(s.Swap.Total),
+			Used:  new(int64(s.Swap.Used)),
 		},
 		RootFilesystem: &server.MemoryInfo{
-			Free:  &rootFree,
-			Total: &rootTotal,
-			Used:  &rootUsed,
+			Free:  new(s.RootFilesystem.Free),
+			Total: new(s.RootFilesystem.Total),
+			Used:  new(s.RootFilesystem.Used),
 		},
 	}
 }

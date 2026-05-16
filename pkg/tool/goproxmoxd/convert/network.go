@@ -6,12 +6,10 @@ import (
 )
 
 func Network(n proxmox.NodeNetwork) server.Network {
-	active := int(n.Active) == 1
-	autostart := n.Autostart == 1
 	result := server.Network{
 		Iface:     n.Iface,
-		Active:    &active,
-		Autostart: &autostart,
+		Active:    new(int(n.Active) == 1),
+		Autostart: new(n.Autostart == 1),
 	}
 
 	if n.Type != "" {

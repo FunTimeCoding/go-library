@@ -35,10 +35,8 @@ func HostKnown(host string) bool {
 		return true
 	}
 
-	var keyError *knownhosts.KeyError
-
-	if errors.As(e, &keyError) {
-		return len(keyError.Want) > 0
+	if r, okay := errors.AsType[*knownhosts.KeyError](e); okay {
+		return len(r.Want) > 0
 	}
 
 	return false

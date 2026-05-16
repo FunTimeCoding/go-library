@@ -22,14 +22,14 @@ func Go(o *option.Build) {
 	if p.Output == "" {
 		if p.Name == "" {
 			panic("output empty and main not specified")
-		} else {
-			p.Output = join.Relative(
-				systemConstant.Temporary,
-				p.Name,
-				SystemArchitecture(p.OperatingSystem, p.Architecture),
-				p.Name,
-			)
 		}
+
+		p.Output = join.Relative(
+			systemConstant.Temporary,
+			p.Name,
+			SystemArchitecture(p.OperatingSystem, p.Architecture),
+			p.Name,
+		)
 	}
 
 	fmt.Printf("Name: %s\n", p.Name)

@@ -6,22 +6,16 @@ import (
 )
 
 func Container(c proxmox.Container) server.Container {
-	vmid := int64(c.VMID)
-	cpus := c.CPUs
-	maxMem := int64(c.MaxMem)
-	maxDisk := int64(c.MaxDisk)
-	maxSwap := int64(c.MaxSwap)
-	uptime := int64(c.Uptime)
 	result := server.Container{
-		Vmid:    vmid,
+		Vmid:    int64(c.VMID),
 		Name:    c.Name,
 		Node:    &c.Node,
 		Status:  &c.Status,
-		Cpus:    &cpus,
-		MaxMem:  &maxMem,
-		MaxDisk: &maxDisk,
-		MaxSwap: &maxSwap,
-		Uptime:  &uptime,
+		Cpus:    new(c.CPUs),
+		MaxMem:  new(int64(c.MaxMem)),
+		MaxDisk: new(int64(c.MaxDisk)),
+		MaxSwap: new(int64(c.MaxSwap)),
+		Uptime:  new(int64(c.Uptime)),
 	}
 
 	if c.Tags != "" {

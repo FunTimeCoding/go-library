@@ -495,6 +495,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Device"
+  /api/v1/prefixes:
+    get:
+      operationId: listPrefixes
+      responses:
+        "200":
+          description: All prefixes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Prefix"
+    post:
+      operationId: createPrefix
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrefixRequest"
+      responses:
+        "201":
+          description: Created prefix.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prefix"
   /api/v1/tunnel-groups:
     get:
       operationId: listTunnelGroups
@@ -842,6 +869,35 @@ components:
           type: array
           items:
             type: string
+    Prefix:
+      type: object
+      required:
+      - identifier
+      - prefix
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        prefix:
+          type: string
+        description:
+          type: string
+        site:
+          type: string
+    CreatePrefixRequest:
+      type: object
+      required:
+      - prefix
+      properties:
+        prefix:
+          type: string
+          description: CIDR notation (e.g. 192.168.178.0/24).
+        site:
+          type: string
+          description: Site name (optional).
+        description:
+          type: string
+          description: Description (optional).
     ClusterType:
       type: object
       required:

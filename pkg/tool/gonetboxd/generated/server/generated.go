@@ -104,6 +104,18 @@ type CreateNameRequest struct {
 	Name string `json:"name"`
 }
 
+// CreatePrefixRequest defines model for CreatePrefixRequest.
+type CreatePrefixRequest struct {
+	// Description Description (optional).
+	Description *string `json:"description,omitempty"`
+
+	// Prefix CIDR notation (e.g. 192.168.178.0/24).
+	Prefix string `json:"prefix"`
+
+	// Site Site name (optional).
+	Site *string `json:"site,omitempty"`
+}
+
 // CreateTunnelRequest defines model for CreateTunnelRequest.
 type CreateTunnelRequest struct {
 	// Encapsulation Encapsulation type (e.g. wireguard, gre, openvpn).
@@ -183,6 +195,14 @@ type Interface struct {
 type Manufacturer struct {
 	Identifier int32  `json:"identifier"`
 	Name       string `json:"name"`
+}
+
+// Prefix defines model for Prefix.
+type Prefix struct {
+	Description *string `json:"description,omitempty"`
+	Identifier  int32   `json:"identifier"`
+	Prefix      string  `json:"prefix"`
+	Site        *string `json:"site,omitempty"`
 }
 
 // Site defines model for Site.
@@ -273,6 +293,9 @@ type CreateDeviceTunnelTerminationJSONRequestBody = CreateTunnelTerminationReque
 
 // CreateManufacturerJSONRequestBody defines body for CreateManufacturer for application/json ContentType.
 type CreateManufacturerJSONRequestBody = CreateNameRequest
+
+// CreatePrefixJSONRequestBody defines body for CreatePrefix for application/json ContentType.
+type CreatePrefixJSONRequestBody = CreatePrefixRequest
 
 // CreateSiteJSONRequestBody defines body for CreateSite for application/json ContentType.
 type CreateSiteJSONRequestBody = CreateNameRequest
@@ -366,6 +389,12 @@ type ServerInterface interface {
 
 	// (POST /api/v1/manufacturers)
 	CreateManufacturer(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/prefixes)
+	ListPrefixes(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/prefixes)
+	CreatePrefix(w http.ResponseWriter, r *http.Request)
 
 	// (GET /api/v1/sites)
 	ListSites(w http.ResponseWriter, r *http.Request)
@@ -855,6 +884,34 @@ func (siw *ServerInterfaceWrapper) CreateManufacturer(w http.ResponseWriter, r *
 	handler.ServeHTTP(w, r)
 }
 
+// ListPrefixes operation middleware
+func (siw *ServerInterfaceWrapper) ListPrefixes(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListPrefixes(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreatePrefix operation middleware
+func (siw *ServerInterfaceWrapper) CreatePrefix(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreatePrefix(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListSites operation middleware
 func (siw *ServerInterfaceWrapper) ListSites(w http.ResponseWriter, r *http.Request) {
 
@@ -1321,6 +1378,8 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/devices/{name}/tunnel-terminations/create", wrapper.CreateDeviceTunnelTermination)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/manufacturers", wrapper.ListManufacturers)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/manufacturers", wrapper.CreateManufacturer)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/prefixes", wrapper.ListPrefixes)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/prefixes", wrapper.CreatePrefix)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/sites", wrapper.ListSites)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/sites", wrapper.CreateSite)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/tags", wrapper.ListTags)
@@ -1346,39 +1405,41 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+xb3W7bOhJ+FUK7Fymg+CcNDnZ9lz1n9yDAZrtIjdwUvWCkic1WolSS8tYI/O4LkZRF",
-	"/VCiXFtxjd4lpkTOfPPNcDhDvXpBEqcJBSq4t3j1eLCGGMs/78KQAZd/pixJgQkC8j9cDohtCt7C44IR",
-	"uvJ2vkdCoIK8EGD58EvCYiy8hUeoeH/j+cXzhApYActfoDiG1pmS5y8QiKX8uTG88z0G3zLCIPQWn8xV",
-	"/b14n/fLqanySX+PMi6UbFWdjic3J6J9QAxXRS7SoUeBzml0OUwyBliA5s4jfMuAi04KhcADRlJBEuot",
-	"vPv/Ij2GCEW/3//xiGgicD6KrmCymqD5328m89/+NplP5rPpze27SamSQUMqgL3gAFpWKIZQrgNKKBJr",
-	"QCFsSAB6CaDJvG3eOiD7RXpIJyHRJrNCUhihKq1+S8raqmlBt+prH4nQ+l3FGRcIRwxwuEXwnXDRDllB",
-	"z/b189FBE9awktrph7TQdqj+kMYYiJR6yQ4USyL7W/ngQLyOBzxeKbcVEPOOyOFhxvBW/g8UU9FcfCl/",
-	"71gefZCP4mgAAzRCkgBxEkJ0BBpIWwxjQx7qrIyIMc1ecCAypmJeVYMHY3SgbaTCrpj0q6+m86vy2jXf",
-	"h6qBrlALcWVQ8xGI9WyI/5dTSWV1CJ7NZs+Yw7Xw0Xy2Un8ODAJ2rf+D436FHRayr7DMKIXIugbQAKc8",
-	"i7DCoA7JP81hE5b/EQarDLPQRysGPkpSoJuUtsO9YkmWtriwFA3J0YFcbeeCntCNn9pAVQAKWfvwXAKL",
-	"CZXvWKE9dF9OGHp6GBDWDVlUbL9KAZiP1tmzj3iafAWLE0hNOlE8MPLpmf1K1iCFt+P6RJjIcHTkMMDf",
-	"28PAMD/S8j3gYE2oXbqgTLrtyc2P8lzLgmIlzDDCFxK2qapi/RGy7IjQr63bu/UokTISY7a96zhvFfRv",
-	"pifACI4GnlB+IBM56XFHJ4Ra1zM67ZS5yREEq2cx9mxkgOjqnTbZ781YXBW94lonPeWn6y0nAY66OH5M",
-	"Jj3UMD4jLn3UbnlGIi3x6twk2geccxJqnzX0JJL2LPBkLvYDCv1ZCHd2UBvp3RHks+6holzm3jrpb7et",
-	"kxrvWmqYZrbpDE0bJvU08cxMVs0SO9PDE240R0t6DsBgJyuSL4mcnYicbd4qoSCek++h53sbYFxlsfPJ",
-	"bDKT1e8UKE6Jt/Dey598L8ViLeWb4pRMN/Opxu06X0wOrEAGxhxbzVlv4f2bcGFUi3l+6gCeJpSrl25m",
-	"M2mEhApQgRWnaUQCOcP0C1ceptoCFZj+yuDFW3h/mZYNhKnuHkzN8nQTwJ1fy93voggFRqGRT9RTacJb",
-	"NKqUU5eqhMTU2eMfSbgdpE2nEo1qxK5qfMEy2DXgnB9PABPFJmpKvrCCnARu59c54kSPUakxkBYDGHFS",
-	"NtSK+G9DCAcy1HmgyijX+U7XzYXypDUOHYyTnSMjwrJi78IKY4ELDRMmhHZiGLBZyNG/j5Sn3THJMWQX",
-	"CcvCvDs5Tr6HNDsYb0KRvo3EAK+dIi7s4DJVYTgGte98qhfq/kWifLfSM6LnrS7/BZjDNaEcKCeCbADl",
-	"mmNC+bsJ+hATgV4ShnAkW1ckn+hbBmxbJF3lvyUi9eT183icdeGrxssC9TSQVpHpci+DR2DvmzK3n7U2",
-	"FF9zduysvP0TxB7BTtYa3WV0Bd9xIFCMRbB+t6djnp+XbCwanRWgTknOw0DUaoUgMIkmOWtvZ7f23nqS",
-	"e2FGw260p/oyRE+8uNs/5Y79uaDtFAqKmqZDLCivvQBHmHOyohAikRg9MFfMHQNHIdwbYX+qYFW7eDRy",
-	"tNpb3B6utJ16rLlvEna70H352IX6UFnUcvGiPRwyWXD2nRJtR+e5N3q4F+U+jVbzyA5kmNvuQntz9Zi1",
-	"qOz1nWfyx35i9+mrVzZwzBWu3q9wAHL6KvBqp1KDCJSLVBF9hDjZwB7TN4DUf21q2rWAkFKee46WK8Ek",
-	"tuEEPYLIGOUoS8N69ut7adZC9Lsw/GWTU9gEh2GPRTo8SnZ+ro0m0bADX7MNdmEbkfVK2cgbUhPojo1J",
-	"WRUZVs3DrC6rWHct89pH9371UHlyjPSrcl3CsQZX0cehCFdZ40JrtFUc7QwysavzhBPRcxz4KJ8Ygxfy",
-	"roojH6TcDjyQc16o/RVedrvnGNXt3Zu+6sT19NbOMwdHY+dCO9h6ud/lL87UEqyOPQKvGoaWd5p6bK2f",
-	"GcXc6o6Vq8WVZC5GV/Neqt01ah2ml080rK9SQXkTrIcD5a2skYhgXANzZYPx/YITJ4wlLpUYJoq9yaNE",
-	"zsIR87jgwJSl+fh4fKkky4NYY+rXDoGL2mPqOkxBd4fwTn+2elNv6HeEuv036hbhtf6+o5sI1SuH4xCi",
-	"ds3RkRib6mcrLgypLXRKprR/4DMyY+rA2plTA7OPQoe2zrRAjh0024dJv1ppR2qloYSipwd7fcVm9sFd",
-	"n8Y960u1vO27w7dxfKee0CEEGNLW0LI41NBPafWfuZjeH8Y7Gx1PDz1Njl8WGsdClraHto+L2x3c+yhM",
-	"PLT58dMG4gvqgjQD9G73/wAAAP//8RXgZn1KAAA=",
+	"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",
+	"/4HzbTl4TgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

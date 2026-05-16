@@ -8,13 +8,11 @@ import (
 
 func ExitErrorCode(e error) int {
 	if e != nil {
-		var f *exec.ExitError
-
-		if errors.As(e, &f) {
+		if f, okay := errors.AsType[*exec.ExitError](e); okay {
 			return f.ExitCode()
-		} else {
-			errorLibrary.PanicOnError(e)
 		}
+
+		errorLibrary.PanicOnError(e)
 	}
 
 	return 0

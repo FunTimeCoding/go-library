@@ -427,4 +427,113 @@ func (s *Server) register() {
 		),
 		s.removeVirtualTag,
 	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.NetboxListTunnelGroups,
+			mcp.WithDescription("List all VPN tunnel groups"),
+		),
+		s.listTunnelGroups,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.NetboxListTunnels,
+			mcp.WithDescription("List all VPN tunnels"),
+		),
+		s.listTunnels,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.NetboxListTunnelTerminations,
+			mcp.WithDescription("List all VPN tunnel terminations"),
+		),
+		s.listTunnelTerminations,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.NetboxCreateTunnelGroup,
+			mcp.WithDescription("Create a VPN tunnel group"),
+			mcp.WithString(
+				parameter.Name,
+				mcp.Required(),
+				mcp.Description("Tunnel group name"),
+			),
+		),
+		s.createTunnelGroup,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.NetboxCreateTunnel,
+			mcp.WithDescription("Create a VPN tunnel in a group"),
+			mcp.WithString(
+				parameter.Name,
+				mcp.Required(),
+				mcp.Description("Tunnel name"),
+			),
+			mcp.WithString(
+				constant.Encapsulation,
+				mcp.Required(),
+				mcp.Description("Encapsulation type (e.g. wireguard, gre, openvpn)"),
+			),
+			mcp.WithString(
+				constant.Group,
+				mcp.Required(),
+				mcp.Description("Tunnel group name"),
+			),
+		),
+		s.createTunnel,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.NetboxCreateDeviceTunnelTermination,
+			mcp.WithDescription("Create a tunnel termination on a device interface"),
+			mcp.WithString(
+				constant.Device,
+				mcp.Required(),
+				mcp.Description("Device name"),
+			),
+			mcp.WithString(
+				constant.Tunnel,
+				mcp.Required(),
+				mcp.Description("Tunnel name"),
+			),
+			mcp.WithString(
+				constant.Interface,
+				mcp.Required(),
+				mcp.Description("Interface name on the device"),
+			),
+			mcp.WithString(
+				constant.Role,
+				mcp.Required(),
+				mcp.Description("Termination role (peer, hub, spoke)"),
+			),
+		),
+		s.createDeviceTunnelTermination,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.NetboxCreateVirtualTunnelTermination,
+			mcp.WithDescription("Create a tunnel termination on a VM interface"),
+			mcp.WithString(
+				constant.VirtualMachine,
+				mcp.Required(),
+				mcp.Description("VM name"),
+			),
+			mcp.WithString(
+				constant.Tunnel,
+				mcp.Required(),
+				mcp.Description("Tunnel name"),
+			),
+			mcp.WithString(
+				constant.Interface,
+				mcp.Required(),
+				mcp.Description("Interface name on the VM"),
+			),
+			mcp.WithString(
+				constant.Role,
+				mcp.Required(),
+				mcp.Description("Termination role (peer, hub, spoke)"),
+			),
+		),
+		s.createVirtualTunnelTermination,
+	)
 }

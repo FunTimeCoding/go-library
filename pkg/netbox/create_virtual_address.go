@@ -1,6 +1,7 @@
 package netbox
 
 import (
+	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/internet_address"
 	"github.com/netbox-community/go-netbox/v4"
 )
@@ -10,7 +11,7 @@ func (c *Client) CreateVirtualAddress(
 	address string,
 ) (*internet_address.Address, error) {
 	q := netbox.NewWritableIPAddressRequest(address)
-	q.SetAssignedObjectType("virtualization.vminterface")
+	q.SetAssignedObjectType(constant.VirtualInterfaceAddress)
 	q.SetAssignedObjectId(int64(interfaceIdentifier))
 	result, _, e := c.client.IpamAPI.IpamIpAddressesCreate(
 		c.context,

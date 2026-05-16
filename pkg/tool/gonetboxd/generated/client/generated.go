@@ -101,6 +101,30 @@ type CreateNameRequest struct {
 	Name string `json:"name"`
 }
 
+// CreateTunnelRequest defines model for CreateTunnelRequest.
+type CreateTunnelRequest struct {
+	// Encapsulation Encapsulation type (e.g. wireguard, gre, openvpn).
+	Encapsulation string `json:"encapsulation"`
+
+	// Group Tunnel group name (must already exist).
+	Group string `json:"group"`
+
+	// Name Tunnel name.
+	Name string `json:"name"`
+}
+
+// CreateTunnelTerminationRequest defines model for CreateTunnelTerminationRequest.
+type CreateTunnelTerminationRequest struct {
+	// Interface Interface name on the device or VM.
+	Interface string `json:"interface"`
+
+	// Role Termination role (peer, hub, spoke).
+	Role string `json:"role"`
+
+	// Tunnel Tunnel name (must already exist).
+	Tunnel string `json:"tunnel"`
+}
+
 // CreateVirtualInterfaceRequest defines model for CreateVirtualInterfaceRequest.
 type CreateVirtualInterfaceRequest struct {
 	// Name Interface name (e.g. ens3, eth0).
@@ -176,6 +200,29 @@ type Tenant struct {
 	Name       string `json:"name"`
 }
 
+// Tunnel defines model for Tunnel.
+type Tunnel struct {
+	Encapsulation *string `json:"encapsulation,omitempty"`
+	Group         *string `json:"group,omitempty"`
+	Identifier    int32   `json:"identifier"`
+	Name          string  `json:"name"`
+}
+
+// TunnelGroup defines model for TunnelGroup.
+type TunnelGroup struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// TunnelTermination defines model for TunnelTermination.
+type TunnelTermination struct {
+	Identifier            int32   `json:"identifier"`
+	Role                  *string `json:"role,omitempty"`
+	TerminationIdentifier *int64  `json:"terminationIdentifier,omitempty"`
+	TerminationType       *string `json:"terminationType,omitempty"`
+	Tunnel                *string `json:"tunnel,omitempty"`
+}
+
 // VirtualInterface defines model for VirtualInterface.
 type VirtualInterface struct {
 	Identifier int32  `json:"identifier"`
@@ -218,6 +265,9 @@ type CreateAddressJSONRequestBody = CreateAddressRequest
 // CreateInterfaceJSONRequestBody defines body for CreateInterface for application/json ContentType.
 type CreateInterfaceJSONRequestBody = CreateInterfaceRequest
 
+// CreateDeviceTunnelTerminationJSONRequestBody defines body for CreateDeviceTunnelTermination for application/json ContentType.
+type CreateDeviceTunnelTerminationJSONRequestBody = CreateTunnelTerminationRequest
+
 // CreateManufacturerJSONRequestBody defines body for CreateManufacturer for application/json ContentType.
 type CreateManufacturerJSONRequestBody = CreateNameRequest
 
@@ -230,6 +280,12 @@ type CreateTagJSONRequestBody = CreateNameRequest
 // CreateTenantJSONRequestBody defines body for CreateTenant for application/json ContentType.
 type CreateTenantJSONRequestBody = CreateNameRequest
 
+// CreateTunnelGroupJSONRequestBody defines body for CreateTunnelGroup for application/json ContentType.
+type CreateTunnelGroupJSONRequestBody = CreateNameRequest
+
+// CreateTunnelJSONRequestBody defines body for CreateTunnel for application/json ContentType.
+type CreateTunnelJSONRequestBody = CreateTunnelRequest
+
 // CreateVirtualMachineJSONRequestBody defines body for CreateVirtualMachine for application/json ContentType.
 type CreateVirtualMachineJSONRequestBody = CreateVirtualMachineRequest
 
@@ -238,6 +294,9 @@ type CreateVirtualAddressJSONRequestBody = CreateAddressRequest
 
 // CreateVirtualInterfaceJSONRequestBody defines body for CreateVirtualInterface for application/json ContentType.
 type CreateVirtualInterfaceJSONRequestBody = CreateVirtualInterfaceRequest
+
+// CreateVirtualTunnelTerminationJSONRequestBody defines body for CreateVirtualTunnelTermination for application/json ContentType.
+type CreateVirtualTunnelTerminationJSONRequestBody = CreateTunnelTerminationRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -380,6 +439,11 @@ type ClientInterface interface {
 	// AddDeviceTag request
 	AddDeviceTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateDeviceTunnelTerminationWithBody request with any body
+	CreateDeviceTunnelTerminationWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateDeviceTunnelTermination(ctx context.Context, name string, body CreateDeviceTunnelTerminationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListManufacturers request
 	ListManufacturers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -412,6 +476,25 @@ type ClientInterface interface {
 
 	CreateTenant(ctx context.Context, body CreateTenantJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListTunnelGroups request
+	ListTunnelGroups(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateTunnelGroupWithBody request with any body
+	CreateTunnelGroupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateTunnelGroup(ctx context.Context, body CreateTunnelGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListTunnelTerminations request
+	ListTunnelTerminations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListTunnels request
+	ListTunnels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateTunnelWithBody request with any body
+	CreateTunnelWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateTunnel(ctx context.Context, body CreateTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListVirtualMachines request
 	ListVirtualMachines(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -435,6 +518,11 @@ type ClientInterface interface {
 
 	// AddVirtualTag request
 	AddVirtualTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateVirtualTunnelTerminationWithBody request with any body
+	CreateVirtualTunnelTerminationWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateVirtualTunnelTermination(ctx context.Context, name string, body CreateVirtualTunnelTerminationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListClusterTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -737,6 +825,30 @@ func (c *Client) AddDeviceTag(ctx context.Context, name string, tag string, reqE
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateDeviceTunnelTerminationWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceTunnelTerminationRequestWithBody(c.Server, name, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDeviceTunnelTermination(ctx context.Context, name string, body CreateDeviceTunnelTerminationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceTunnelTerminationRequest(c.Server, name, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListManufacturers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListManufacturersRequest(c.Server)
 	if err != nil {
@@ -881,6 +993,90 @@ func (c *Client) CreateTenant(ctx context.Context, body CreateTenantJSONRequestB
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListTunnelGroups(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListTunnelGroupsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTunnelGroupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTunnelGroupRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTunnelGroup(ctx context.Context, body CreateTunnelGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTunnelGroupRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListTunnelTerminations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListTunnelTerminationsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListTunnels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListTunnelsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTunnelWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTunnelRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTunnel(ctx context.Context, body CreateTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTunnelRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListVirtualMachines(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListVirtualMachinesRequest(c.Server)
 	if err != nil {
@@ -979,6 +1175,30 @@ func (c *Client) RemoveVirtualTag(ctx context.Context, name string, tag string, 
 
 func (c *Client) AddVirtualTag(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAddVirtualTagRequest(c.Server, name, tag)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualTunnelTerminationWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualTunnelTerminationRequestWithBody(c.Server, name, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualTunnelTermination(ctx context.Context, name string, body CreateVirtualTunnelTerminationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualTunnelTerminationRequest(c.Server, name, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1658,6 +1878,53 @@ func NewAddDeviceTagRequest(server string, name string, tag string) (*http.Reque
 	return req, nil
 }
 
+// NewCreateDeviceTunnelTerminationRequest calls the generic CreateDeviceTunnelTermination builder with application/json body
+func NewCreateDeviceTunnelTerminationRequest(server string, name string, body CreateDeviceTunnelTerminationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDeviceTunnelTerminationRequestWithBody(server, name, "application/json", bodyReader)
+}
+
+// NewCreateDeviceTunnelTerminationRequestWithBody generates requests for CreateDeviceTunnelTermination with any type of body
+func NewCreateDeviceTunnelTerminationRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s/tunnel-terminations/create", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListManufacturersRequest generates requests for ListManufacturers
 func NewListManufacturersRequest(server string) (*http.Request, error) {
 	var err error
@@ -1926,6 +2193,167 @@ func NewCreateTenantRequestWithBody(server string, contentType string, body io.R
 	return req, nil
 }
 
+// NewListTunnelGroupsRequest generates requests for ListTunnelGroups
+func NewListTunnelGroupsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tunnel-groups")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateTunnelGroupRequest calls the generic CreateTunnelGroup builder with application/json body
+func NewCreateTunnelGroupRequest(server string, body CreateTunnelGroupJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateTunnelGroupRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateTunnelGroupRequestWithBody generates requests for CreateTunnelGroup with any type of body
+func NewCreateTunnelGroupRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tunnel-groups")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListTunnelTerminationsRequest generates requests for ListTunnelTerminations
+func NewListTunnelTerminationsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tunnel-terminations")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListTunnelsRequest generates requests for ListTunnels
+func NewListTunnelsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tunnels")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateTunnelRequest calls the generic CreateTunnel builder with application/json body
+func NewCreateTunnelRequest(server string, body CreateTunnelJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateTunnelRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateTunnelRequestWithBody generates requests for CreateTunnel with any type of body
+func NewCreateTunnelRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/tunnels")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListVirtualMachinesRequest generates requests for ListVirtualMachines
 func NewListVirtualMachinesRequest(server string) (*http.Request, error) {
 	var err error
@@ -2169,6 +2597,53 @@ func NewAddVirtualTagRequest(server string, name string, tag string) (*http.Requ
 	return req, nil
 }
 
+// NewCreateVirtualTunnelTerminationRequest calls the generic CreateVirtualTunnelTermination builder with application/json body
+func NewCreateVirtualTunnelTerminationRequest(server string, name string, body CreateVirtualTunnelTerminationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateVirtualTunnelTerminationRequestWithBody(server, name, "application/json", bodyReader)
+}
+
+// NewCreateVirtualTunnelTerminationRequestWithBody generates requests for CreateVirtualTunnelTermination with any type of body
+func NewCreateVirtualTunnelTerminationRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/virtual-machines/%s/tunnel-terminations/create", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -2280,6 +2755,11 @@ type ClientWithResponsesInterface interface {
 	// AddDeviceTagWithResponse request
 	AddDeviceTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*AddDeviceTagResponse, error)
 
+	// CreateDeviceTunnelTerminationWithBodyWithResponse request with any body
+	CreateDeviceTunnelTerminationWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceTunnelTerminationResponse, error)
+
+	CreateDeviceTunnelTerminationWithResponse(ctx context.Context, name string, body CreateDeviceTunnelTerminationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceTunnelTerminationResponse, error)
+
 	// ListManufacturersWithResponse request
 	ListManufacturersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListManufacturersResponse, error)
 
@@ -2312,6 +2792,25 @@ type ClientWithResponsesInterface interface {
 
 	CreateTenantWithResponse(ctx context.Context, body CreateTenantJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTenantResponse, error)
 
+	// ListTunnelGroupsWithResponse request
+	ListTunnelGroupsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTunnelGroupsResponse, error)
+
+	// CreateTunnelGroupWithBodyWithResponse request with any body
+	CreateTunnelGroupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTunnelGroupResponse, error)
+
+	CreateTunnelGroupWithResponse(ctx context.Context, body CreateTunnelGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTunnelGroupResponse, error)
+
+	// ListTunnelTerminationsWithResponse request
+	ListTunnelTerminationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTunnelTerminationsResponse, error)
+
+	// ListTunnelsWithResponse request
+	ListTunnelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTunnelsResponse, error)
+
+	// CreateTunnelWithBodyWithResponse request with any body
+	CreateTunnelWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTunnelResponse, error)
+
+	CreateTunnelWithResponse(ctx context.Context, body CreateTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTunnelResponse, error)
+
 	// ListVirtualMachinesWithResponse request
 	ListVirtualMachinesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error)
 
@@ -2335,6 +2834,11 @@ type ClientWithResponsesInterface interface {
 
 	// AddVirtualTagWithResponse request
 	AddVirtualTagWithResponse(ctx context.Context, name string, tag string, reqEditors ...RequestEditorFn) (*AddVirtualTagResponse, error)
+
+	// CreateVirtualTunnelTerminationWithBodyWithResponse request with any body
+	CreateVirtualTunnelTerminationWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualTunnelTerminationResponse, error)
+
+	CreateVirtualTunnelTerminationWithResponse(ctx context.Context, name string, body CreateVirtualTunnelTerminationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualTunnelTerminationResponse, error)
 }
 
 type ListClusterTypesResponse struct {
@@ -2733,6 +3237,28 @@ func (r AddDeviceTagResponse) StatusCode() int {
 	return 0
 }
 
+type CreateDeviceTunnelTerminationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *TunnelTermination
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateDeviceTunnelTerminationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateDeviceTunnelTerminationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListManufacturersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2909,6 +3435,116 @@ func (r CreateTenantResponse) StatusCode() int {
 	return 0
 }
 
+type ListTunnelGroupsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]TunnelGroup
+}
+
+// Status returns HTTPResponse.Status
+func (r ListTunnelGroupsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListTunnelGroupsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateTunnelGroupResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *TunnelGroup
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateTunnelGroupResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateTunnelGroupResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListTunnelTerminationsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]TunnelTermination
+}
+
+// Status returns HTTPResponse.Status
+func (r ListTunnelTerminationsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListTunnelTerminationsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListTunnelsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Tunnel
+}
+
+// Status returns HTTPResponse.Status
+func (r ListTunnelsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListTunnelsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateTunnelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *Tunnel
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateTunnelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateTunnelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListVirtualMachinesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -3035,6 +3671,28 @@ func (r AddVirtualTagResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r AddVirtualTagResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateVirtualTunnelTerminationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *TunnelTermination
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateVirtualTunnelTerminationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateVirtualTunnelTerminationResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -3259,6 +3917,23 @@ func (c *ClientWithResponses) AddDeviceTagWithResponse(ctx context.Context, name
 	return ParseAddDeviceTagResponse(rsp)
 }
 
+// CreateDeviceTunnelTerminationWithBodyWithResponse request with arbitrary body returning *CreateDeviceTunnelTerminationResponse
+func (c *ClientWithResponses) CreateDeviceTunnelTerminationWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceTunnelTerminationResponse, error) {
+	rsp, err := c.CreateDeviceTunnelTerminationWithBody(ctx, name, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceTunnelTerminationResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateDeviceTunnelTerminationWithResponse(ctx context.Context, name string, body CreateDeviceTunnelTerminationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceTunnelTerminationResponse, error) {
+	rsp, err := c.CreateDeviceTunnelTermination(ctx, name, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceTunnelTerminationResponse(rsp)
+}
+
 // ListManufacturersWithResponse request returning *ListManufacturersResponse
 func (c *ClientWithResponses) ListManufacturersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListManufacturersResponse, error) {
 	rsp, err := c.ListManufacturers(ctx, reqEditors...)
@@ -3363,6 +4038,67 @@ func (c *ClientWithResponses) CreateTenantWithResponse(ctx context.Context, body
 	return ParseCreateTenantResponse(rsp)
 }
 
+// ListTunnelGroupsWithResponse request returning *ListTunnelGroupsResponse
+func (c *ClientWithResponses) ListTunnelGroupsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTunnelGroupsResponse, error) {
+	rsp, err := c.ListTunnelGroups(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListTunnelGroupsResponse(rsp)
+}
+
+// CreateTunnelGroupWithBodyWithResponse request with arbitrary body returning *CreateTunnelGroupResponse
+func (c *ClientWithResponses) CreateTunnelGroupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTunnelGroupResponse, error) {
+	rsp, err := c.CreateTunnelGroupWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTunnelGroupResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateTunnelGroupWithResponse(ctx context.Context, body CreateTunnelGroupJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTunnelGroupResponse, error) {
+	rsp, err := c.CreateTunnelGroup(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTunnelGroupResponse(rsp)
+}
+
+// ListTunnelTerminationsWithResponse request returning *ListTunnelTerminationsResponse
+func (c *ClientWithResponses) ListTunnelTerminationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTunnelTerminationsResponse, error) {
+	rsp, err := c.ListTunnelTerminations(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListTunnelTerminationsResponse(rsp)
+}
+
+// ListTunnelsWithResponse request returning *ListTunnelsResponse
+func (c *ClientWithResponses) ListTunnelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTunnelsResponse, error) {
+	rsp, err := c.ListTunnels(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListTunnelsResponse(rsp)
+}
+
+// CreateTunnelWithBodyWithResponse request with arbitrary body returning *CreateTunnelResponse
+func (c *ClientWithResponses) CreateTunnelWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTunnelResponse, error) {
+	rsp, err := c.CreateTunnelWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTunnelResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateTunnelWithResponse(ctx context.Context, body CreateTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTunnelResponse, error) {
+	rsp, err := c.CreateTunnel(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTunnelResponse(rsp)
+}
+
 // ListVirtualMachinesWithResponse request returning *ListVirtualMachinesResponse
 func (c *ClientWithResponses) ListVirtualMachinesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListVirtualMachinesResponse, error) {
 	rsp, err := c.ListVirtualMachines(ctx, reqEditors...)
@@ -3439,6 +4175,23 @@ func (c *ClientWithResponses) AddVirtualTagWithResponse(ctx context.Context, nam
 		return nil, err
 	}
 	return ParseAddVirtualTagResponse(rsp)
+}
+
+// CreateVirtualTunnelTerminationWithBodyWithResponse request with arbitrary body returning *CreateVirtualTunnelTerminationResponse
+func (c *ClientWithResponses) CreateVirtualTunnelTerminationWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualTunnelTerminationResponse, error) {
+	rsp, err := c.CreateVirtualTunnelTerminationWithBody(ctx, name, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualTunnelTerminationResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateVirtualTunnelTerminationWithResponse(ctx context.Context, name string, body CreateVirtualTunnelTerminationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualTunnelTerminationResponse, error) {
+	rsp, err := c.CreateVirtualTunnelTermination(ctx, name, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualTunnelTerminationResponse(rsp)
 }
 
 // ParseListClusterTypesResponse parses an HTTP response from a ListClusterTypesWithResponse call
@@ -3909,6 +4662,32 @@ func ParseAddDeviceTagResponse(rsp *http.Response) (*AddDeviceTagResponse, error
 	return response, nil
 }
 
+// ParseCreateDeviceTunnelTerminationResponse parses an HTTP response from a CreateDeviceTunnelTerminationWithResponse call
+func ParseCreateDeviceTunnelTerminationResponse(rsp *http.Response) (*CreateDeviceTunnelTerminationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDeviceTunnelTerminationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest TunnelTermination
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListManufacturersResponse parses an HTTP response from a ListManufacturersWithResponse call
 func ParseListManufacturersResponse(rsp *http.Response) (*ListManufacturersResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -4117,6 +4896,136 @@ func ParseCreateTenantResponse(rsp *http.Response) (*CreateTenantResponse, error
 	return response, nil
 }
 
+// ParseListTunnelGroupsResponse parses an HTTP response from a ListTunnelGroupsWithResponse call
+func ParseListTunnelGroupsResponse(rsp *http.Response) (*ListTunnelGroupsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListTunnelGroupsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []TunnelGroup
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateTunnelGroupResponse parses an HTTP response from a CreateTunnelGroupWithResponse call
+func ParseCreateTunnelGroupResponse(rsp *http.Response) (*CreateTunnelGroupResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateTunnelGroupResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest TunnelGroup
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListTunnelTerminationsResponse parses an HTTP response from a ListTunnelTerminationsWithResponse call
+func ParseListTunnelTerminationsResponse(rsp *http.Response) (*ListTunnelTerminationsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListTunnelTerminationsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []TunnelTermination
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListTunnelsResponse parses an HTTP response from a ListTunnelsWithResponse call
+func ParseListTunnelsResponse(rsp *http.Response) (*ListTunnelsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListTunnelsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Tunnel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateTunnelResponse parses an HTTP response from a CreateTunnelWithResponse call
+func ParseCreateTunnelResponse(rsp *http.Response) (*CreateTunnelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateTunnelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Tunnel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListVirtualMachinesResponse parses an HTTP response from a ListVirtualMachinesWithResponse call
 func ParseListVirtualMachinesResponse(rsp *http.Response) (*ListVirtualMachinesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -4267,6 +5176,32 @@ func ParseAddVirtualTagResponse(rsp *http.Response) (*AddVirtualTagResponse, err
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateVirtualTunnelTerminationResponse parses an HTTP response from a CreateVirtualTunnelTerminationWithResponse call
+func ParseCreateVirtualTunnelTerminationResponse(rsp *http.Response) (*CreateVirtualTunnelTerminationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateVirtualTunnelTerminationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest TunnelTermination
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
 
 	}
 

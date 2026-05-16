@@ -14,8 +14,8 @@ const (
 
 	PageLimit int32 = 1000
 
-	// InterfaceAddress when assigning an IP or MAC address to a network device
-	InterfaceAddress = "dcim.interface"
+	InterfaceAddress        = "dcim.interface"
+	VirtualInterfaceAddress = "virtualization.vminterface"
 
 	Interface = "/api"
 

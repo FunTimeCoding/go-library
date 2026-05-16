@@ -104,6 +104,30 @@ type CreateNameRequest struct {
 	Name string `json:"name"`
 }
 
+// CreateTunnelRequest defines model for CreateTunnelRequest.
+type CreateTunnelRequest struct {
+	// Encapsulation Encapsulation type (e.g. wireguard, gre, openvpn).
+	Encapsulation string `json:"encapsulation"`
+
+	// Group Tunnel group name (must already exist).
+	Group string `json:"group"`
+
+	// Name Tunnel name.
+	Name string `json:"name"`
+}
+
+// CreateTunnelTerminationRequest defines model for CreateTunnelTerminationRequest.
+type CreateTunnelTerminationRequest struct {
+	// Interface Interface name on the device or VM.
+	Interface string `json:"interface"`
+
+	// Role Termination role (peer, hub, spoke).
+	Role string `json:"role"`
+
+	// Tunnel Tunnel name (must already exist).
+	Tunnel string `json:"tunnel"`
+}
+
 // CreateVirtualInterfaceRequest defines model for CreateVirtualInterfaceRequest.
 type CreateVirtualInterfaceRequest struct {
 	// Name Interface name (e.g. ens3, eth0).
@@ -179,6 +203,29 @@ type Tenant struct {
 	Name       string `json:"name"`
 }
 
+// Tunnel defines model for Tunnel.
+type Tunnel struct {
+	Encapsulation *string `json:"encapsulation,omitempty"`
+	Group         *string `json:"group,omitempty"`
+	Identifier    int32   `json:"identifier"`
+	Name          string  `json:"name"`
+}
+
+// TunnelGroup defines model for TunnelGroup.
+type TunnelGroup struct {
+	Identifier int32  `json:"identifier"`
+	Name       string `json:"name"`
+}
+
+// TunnelTermination defines model for TunnelTermination.
+type TunnelTermination struct {
+	Identifier            int32   `json:"identifier"`
+	Role                  *string `json:"role,omitempty"`
+	TerminationIdentifier *int64  `json:"terminationIdentifier,omitempty"`
+	TerminationType       *string `json:"terminationType,omitempty"`
+	Tunnel                *string `json:"tunnel,omitempty"`
+}
+
 // VirtualInterface defines model for VirtualInterface.
 type VirtualInterface struct {
 	Identifier int32  `json:"identifier"`
@@ -221,6 +268,9 @@ type CreateAddressJSONRequestBody = CreateAddressRequest
 // CreateInterfaceJSONRequestBody defines body for CreateInterface for application/json ContentType.
 type CreateInterfaceJSONRequestBody = CreateInterfaceRequest
 
+// CreateDeviceTunnelTerminationJSONRequestBody defines body for CreateDeviceTunnelTermination for application/json ContentType.
+type CreateDeviceTunnelTerminationJSONRequestBody = CreateTunnelTerminationRequest
+
 // CreateManufacturerJSONRequestBody defines body for CreateManufacturer for application/json ContentType.
 type CreateManufacturerJSONRequestBody = CreateNameRequest
 
@@ -233,6 +283,12 @@ type CreateTagJSONRequestBody = CreateNameRequest
 // CreateTenantJSONRequestBody defines body for CreateTenant for application/json ContentType.
 type CreateTenantJSONRequestBody = CreateNameRequest
 
+// CreateTunnelGroupJSONRequestBody defines body for CreateTunnelGroup for application/json ContentType.
+type CreateTunnelGroupJSONRequestBody = CreateNameRequest
+
+// CreateTunnelJSONRequestBody defines body for CreateTunnel for application/json ContentType.
+type CreateTunnelJSONRequestBody = CreateTunnelRequest
+
 // CreateVirtualMachineJSONRequestBody defines body for CreateVirtualMachine for application/json ContentType.
 type CreateVirtualMachineJSONRequestBody = CreateVirtualMachineRequest
 
@@ -241,6 +297,9 @@ type CreateVirtualAddressJSONRequestBody = CreateAddressRequest
 
 // CreateVirtualInterfaceJSONRequestBody defines body for CreateVirtualInterface for application/json ContentType.
 type CreateVirtualInterfaceJSONRequestBody = CreateVirtualInterfaceRequest
+
+// CreateVirtualTunnelTerminationJSONRequestBody defines body for CreateVirtualTunnelTermination for application/json ContentType.
+type CreateVirtualTunnelTerminationJSONRequestBody = CreateTunnelTerminationRequest
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
@@ -299,6 +358,9 @@ type ServerInterface interface {
 	// (PUT /api/v1/devices/{name}/tags/{tag})
 	AddDeviceTag(w http.ResponseWriter, r *http.Request, name string, tag string)
 
+	// (POST /api/v1/devices/{name}/tunnel-terminations/create)
+	CreateDeviceTunnelTermination(w http.ResponseWriter, r *http.Request, name string)
+
 	// (GET /api/v1/manufacturers)
 	ListManufacturers(w http.ResponseWriter, r *http.Request)
 
@@ -323,6 +385,21 @@ type ServerInterface interface {
 	// (POST /api/v1/tenants)
 	CreateTenant(w http.ResponseWriter, r *http.Request)
 
+	// (GET /api/v1/tunnel-groups)
+	ListTunnelGroups(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/tunnel-groups)
+	CreateTunnelGroup(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/tunnel-terminations)
+	ListTunnelTerminations(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/v1/tunnels)
+	ListTunnels(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/v1/tunnels)
+	CreateTunnel(w http.ResponseWriter, r *http.Request)
+
 	// (GET /api/v1/virtual-machines)
 	ListVirtualMachines(w http.ResponseWriter, r *http.Request)
 
@@ -340,6 +417,9 @@ type ServerInterface interface {
 
 	// (PUT /api/v1/virtual-machines/{name}/tags/{tag})
 	AddVirtualTag(w http.ResponseWriter, r *http.Request, name string, tag string)
+
+	// (POST /api/v1/virtual-machines/{name}/tunnel-terminations/create)
+	CreateVirtualTunnelTermination(w http.ResponseWriter, r *http.Request, name string)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -722,6 +802,31 @@ func (siw *ServerInterfaceWrapper) AddDeviceTag(w http.ResponseWriter, r *http.R
 	handler.ServeHTTP(w, r)
 }
 
+// CreateDeviceTunnelTermination operation middleware
+func (siw *ServerInterfaceWrapper) CreateDeviceTunnelTermination(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateDeviceTunnelTermination(w, r, name)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListManufacturers operation middleware
 func (siw *ServerInterfaceWrapper) ListManufacturers(w http.ResponseWriter, r *http.Request) {
 
@@ -825,6 +930,76 @@ func (siw *ServerInterfaceWrapper) CreateTenant(w http.ResponseWriter, r *http.R
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreateTenant(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListTunnelGroups operation middleware
+func (siw *ServerInterfaceWrapper) ListTunnelGroups(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListTunnelGroups(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateTunnelGroup operation middleware
+func (siw *ServerInterfaceWrapper) CreateTunnelGroup(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateTunnelGroup(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListTunnelTerminations operation middleware
+func (siw *ServerInterfaceWrapper) ListTunnelTerminations(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListTunnelTerminations(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListTunnels operation middleware
+func (siw *ServerInterfaceWrapper) ListTunnels(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListTunnels(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateTunnel operation middleware
+func (siw *ServerInterfaceWrapper) CreateTunnel(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateTunnel(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -980,6 +1155,31 @@ func (siw *ServerInterfaceWrapper) AddVirtualTag(w http.ResponseWriter, r *http.
 	handler.ServeHTTP(w, r)
 }
 
+// CreateVirtualTunnelTermination operation middleware
+func (siw *ServerInterfaceWrapper) CreateVirtualTunnelTermination(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateVirtualTunnelTermination(w, r, name)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 type UnescapedCookieParamError struct {
 	ParamName string
 	Err       error
@@ -1118,6 +1318,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/devices/{name}/tags", wrapper.ListDeviceTags)
 	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/devices/{name}/tags/{tag}", wrapper.RemoveDeviceTag)
 	m.HandleFunc("PUT "+options.BaseURL+"/api/v1/devices/{name}/tags/{tag}", wrapper.AddDeviceTag)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/devices/{name}/tunnel-terminations/create", wrapper.CreateDeviceTunnelTermination)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/manufacturers", wrapper.ListManufacturers)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/manufacturers", wrapper.CreateManufacturer)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/sites", wrapper.ListSites)
@@ -1126,12 +1327,18 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/tags", wrapper.CreateTag)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/tenants", wrapper.ListTenants)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/tenants", wrapper.CreateTenant)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/tunnel-groups", wrapper.ListTunnelGroups)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/tunnel-groups", wrapper.CreateTunnelGroup)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/tunnel-terminations", wrapper.ListTunnelTerminations)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/tunnels", wrapper.ListTunnels)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/tunnels", wrapper.CreateTunnel)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/virtual-machines", wrapper.ListVirtualMachines)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/virtual-machines", wrapper.CreateVirtualMachine)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/virtual-machines/{name}/addresses/create", wrapper.CreateVirtualAddress)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/virtual-machines/{name}/interfaces/create", wrapper.CreateVirtualInterface)
 	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/virtual-machines/{name}/tags/{tag}", wrapper.RemoveVirtualTag)
 	m.HandleFunc("PUT "+options.BaseURL+"/api/v1/virtual-machines/{name}/tags/{tag}", wrapper.AddVirtualTag)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/virtual-machines/{name}/tunnel-terminations/create", wrapper.CreateVirtualTunnelTermination)
 
 	return m
 }
@@ -1139,34 +1346,39 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"/f6fAAAA///zAwXT6zsAAA==",
+	"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",
+	"4qHNj182EJ9RF6QZoLfbvwIAAP//UAsJSH5KAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

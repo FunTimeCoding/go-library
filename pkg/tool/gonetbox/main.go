@@ -53,5 +53,12 @@ func Main(
 	o.AddCommand(removeDeviceTag(c))
 	o.AddCommand(addVirtualTag(c))
 	o.AddCommand(removeVirtualTag(c))
+	o.AddCommand(listTunnelGroups(c))
+	o.AddCommand(listTunnels(c))
+	o.AddCommand(listTunnelTerminations(c))
+	o.AddCommand(createTunnelGroup(c))
+	o.AddCommand(createTunnel(c))
+	o.AddCommand(createDeviceTunnelTermination(c))
+	o.AddCommand(createVirtualTunnelTermination(c))
 	errors.PanicOnError(o.Execute())
 }

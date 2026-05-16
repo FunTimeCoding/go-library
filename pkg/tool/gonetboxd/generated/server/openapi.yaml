@@ -495,6 +495,118 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Device"
+  /api/v1/tunnel-groups:
+    get:
+      operationId: listTunnelGroups
+      responses:
+        "200":
+          description: All tunnel groups.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TunnelGroup"
+    post:
+      operationId: createTunnelGroup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNameRequest"
+      responses:
+        "201":
+          description: Created tunnel group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TunnelGroup"
+  /api/v1/tunnels:
+    get:
+      operationId: listTunnels
+      responses:
+        "200":
+          description: All tunnels.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tunnel"
+    post:
+      operationId: createTunnel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTunnelRequest"
+      responses:
+        "201":
+          description: Created tunnel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tunnel"
+  /api/v1/tunnel-terminations:
+    get:
+      operationId: listTunnelTerminations
+      responses:
+        "200":
+          description: All tunnel terminations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TunnelTermination"
+  /api/v1/devices/{name}/tunnel-terminations/create:
+    post:
+      operationId: createDeviceTunnelTermination
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Device name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTunnelTerminationRequest"
+      responses:
+        "201":
+          description: Created tunnel termination on device interface.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TunnelTermination"
+  /api/v1/virtual-machines/{name}/tunnel-terminations/create:
+    post:
+      operationId: createVirtualTunnelTermination
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Virtual machine name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTunnelTerminationRequest"
+      responses:
+        "201":
+          description: Created tunnel termination on VM interface.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TunnelTermination"
   /api/v1/virtual-machines/{name}/tags/{tag}:
     put:
       operationId: addVirtualTag
@@ -833,3 +945,78 @@ components:
           format: int32
         name:
           type: string
+    TunnelGroup:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+    Tunnel:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        name:
+          type: string
+        encapsulation:
+          type: string
+        group:
+          type: string
+    TunnelTermination:
+      type: object
+      required:
+      - identifier
+      properties:
+        identifier:
+          type: integer
+          format: int32
+        tunnel:
+          type: string
+        role:
+          type: string
+        terminationType:
+          type: string
+        terminationIdentifier:
+          type: integer
+          format: int64
+    CreateTunnelRequest:
+      type: object
+      required:
+      - name
+      - encapsulation
+      - group
+      properties:
+        name:
+          type: string
+          description: Tunnel name.
+        encapsulation:
+          type: string
+          description: Encapsulation type (e.g. wireguard, gre, openvpn).
+        group:
+          type: string
+          description: Tunnel group name (must already exist).
+    CreateTunnelTerminationRequest:
+      type: object
+      required:
+      - tunnel
+      - interface
+      - role
+      properties:
+        tunnel:
+          type: string
+          description: Tunnel name (must already exist).
+        interface:
+          type: string
+          description: Interface name on the device or VM.
+        role:
+          type: string
+          description: Termination role (peer, hub, spoke).

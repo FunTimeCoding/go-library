@@ -40,7 +40,7 @@ type ClusterType struct {
 
 // CreateAddressRequest defines model for CreateAddressRequest.
 type CreateAddressRequest struct {
-	// Address IP address in CIDR notation (e.g. 144.76.220.60/32).
+	// Address IP address in CIDR notation (e.g. 192.168.1.10/24).
 	Address string `json:"address"`
 
 	// Interface Interface name on the device (e.g. eno1).

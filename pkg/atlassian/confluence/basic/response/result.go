@@ -1,7 +1,7 @@
 package response
 
 type Result struct {
-	Id                  string              `json:"id"`
+	Identifier          string              `json:"id"`
 	Type                string              `json:"type"`
 	Status              string              `json:"status"`
 	Title               string              `json:"title"`

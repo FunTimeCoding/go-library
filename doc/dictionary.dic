@@ -21,6 +21,7 @@ coolify
 funtimecoding
 gdamore
 grafana
+kestra
 habitica
 homeassistant
 alice
@@ -256,11 +257,11 @@ circuitgroupassignment
 dcim
 ipam
 
-# Kestra
-kestra
-
 # Compliance
 SBOM
+
+# Concept
+guid
 
 # Homebrew
 autobump

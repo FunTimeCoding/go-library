@@ -2,7 +2,7 @@ package response
 
 type User struct {
 	Type                   string         `json:"type"`
-	AccountId              string         `json:"accountId"`
+	AccountIdentifier      string         `json:"accountId"`
 	AccountType            string         `json:"accountType"`
 	Email                  string         `json:"email"`
 	PublicName             string         `json:"publicName"`

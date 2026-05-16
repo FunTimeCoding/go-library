@@ -9,7 +9,10 @@ func ConfluencePages(v []*search_result.Result) []*server.ConfluencePage {
 	result := make([]*server.ConfluencePage, 0, len(v))
 
 	for _, r := range v {
-		p := &server.ConfluencePage{Identifier: r.Raw.Id, Title: r.Name}
+		p := &server.ConfluencePage{
+			Identifier: r.Raw.Identifier,
+			Title:      r.Name,
+		}
 
 		if r.Raw.Type != "" {
 			p.Type = &r.Raw.Type

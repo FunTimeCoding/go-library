@@ -16,10 +16,10 @@ func TestModelContext(t *testing.T) {
 	assert.Count(t, 8, o.Client.ListTools())
 	o.MockClient.AddSession(
 		session.Session{
-			Identifier: "sess-1",
-			TabId:      "tab-1",
-			TabTitle:   "build",
-			JobName:    "zsh",
+			Identifier:    "sess-1",
+			TabIdentifier: "tab-1",
+			TabTitle:      "build",
+			JobName:       "zsh",
 		},
 	)
 	assert.StringContains(

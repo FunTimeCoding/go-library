@@ -12,9 +12,9 @@ import (
 func (s *Server) UpdateEntry(
 	w http.ResponseWriter,
 	r *http.Request,
-	id int,
+	identifier int,
 ) {
-	e, f := s.store.Get(uint(id))
+	e, f := s.store.Get(uint(identifier))
 	errors.PanicOnError(f)
 	var body server.UpdateEntryJSONRequestBody
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))

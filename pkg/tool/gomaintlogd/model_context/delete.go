@@ -12,15 +12,15 @@ func (s *Server) delete(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	id := r.GetFloat(constant.Identifier, 0)
+	identifier := r.GetFloat(constant.Identifier, 0)
 
-	if id == 0 {
+	if identifier == 0 {
 		return response.Fail("id is required")
 	}
 
-	if e := s.store.Delete(uint(id)); e != nil {
+	if e := s.store.Delete(uint(identifier)); e != nil {
 		return s.captureFail(e, library.UnexpectedError)
 	}
 
-	return response.Success("Entry %d deleted successfully", int(id))
+	return response.Success("Entry %d deleted successfully", int(identifier))
 }

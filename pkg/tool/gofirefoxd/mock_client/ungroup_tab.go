@@ -5,7 +5,7 @@ import "fmt"
 func (c *Client) UngroupTab(identifier int) error {
 	for i, t := range c.tabs {
 		if t.Identifier == identifier {
-			c.tabs[i].GroupId = 0
+			c.tabs[i].GroupIdentifier = 0
 
 			return nil
 		}

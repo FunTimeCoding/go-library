@@ -8,8 +8,8 @@ import (
 func (s *Server) DeleteEntry(
 	w http.ResponseWriter,
 	_ *http.Request,
-	id int,
+	identifier int,
 ) {
-	errors.PanicOnError(s.store.Delete(uint(id)))
+	errors.PanicOnError(s.store.Delete(uint(identifier)))
 	w.WriteHeader(http.StatusNoContent)
 }

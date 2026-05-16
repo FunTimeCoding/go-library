@@ -3,7 +3,7 @@ package aleeva_report
 type Report struct {
 	DiscordName         string            `json:"discordName"`
 	DiscordTag          string            `json:"discordTag"`
-	DiscordId           string            `json:"discordId"`
+	DiscordIdentifier   string            `json:"discordId"`
 	DiscordJoinTime     string            `json:"discordJoinTime"`
 	DiscordCreationTime string            `json:"discordCreationTime"`
 	Permissions         []string          `json:"permissions"`

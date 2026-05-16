@@ -14,13 +14,13 @@ func (s *Server) update(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	id := r.GetFloat(constant.Identifier, 0)
+	identifier := r.GetFloat(constant.Identifier, 0)
 
-	if id == 0 {
+	if identifier == 0 {
 		return response.Fail("id is required")
 	}
 
-	e, f := s.store.Get(uint(id))
+	e, f := s.store.Get(uint(identifier))
 
 	if f != nil {
 		return s.captureFail(f, library.UnexpectedError)

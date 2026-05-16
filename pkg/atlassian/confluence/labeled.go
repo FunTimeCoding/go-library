@@ -17,7 +17,7 @@ func (c *Client) Labeled() ([]*page.Page, error) {
 
 	for _, l := range labels {
 		if slices.Contains(c.labels, l.Name) {
-			identifiers = append(identifiers, l.Id)
+			identifiers = append(identifiers, l.Identifier)
 		}
 	}
 

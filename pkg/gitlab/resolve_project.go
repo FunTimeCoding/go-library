@@ -6,17 +6,17 @@ import (
 )
 
 func (c *Client) ResolveProject(identifier string) (int64, error) {
-	id, e := strconv.ParseInt(identifier, 10, 64)
+	i, e := strconv.ParseInt(identifier, 10, 64)
 
 	if e == nil {
-		return id, nil
+		return i, nil
 	}
 
-	result, _, e := c.client.Projects.GetProject(identifier, nil)
+	result, _, f := c.client.Projects.GetProject(identifier, nil)
 
-	if e != nil {
-		return 0, fmt.Errorf("project %s: %w", identifier, e)
+	if f != nil {
+		return 0, fmt.Errorf("project %s: %w", identifier, f)
 	}
 
-	return int64(result.ID), nil
+	return result.ID, nil
 }

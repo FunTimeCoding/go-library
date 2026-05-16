@@ -1,6 +1,7 @@
 package segment
 
 var Suggestions = map[string]Suggestion{
+	"id":     {Words: []string{"identifier"}},
 	"url":    {Letters: []string{"l"}, Words: []string{"locator"}},
 	"mcp":    {Letters: []string{"c"}, Words: []string{"model_context"}},
 	"dir":    {Letters: []string{"d"}, Words: []string{"directory"}},

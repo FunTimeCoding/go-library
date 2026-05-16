@@ -15,8 +15,8 @@ func ConfluencePageDetail(p *page.Page) *server.ConfluencePageDetail {
 		result.Link = &p.Link
 	}
 
-	if p.Raw.SpaceId != "" {
-		result.SpaceIdentifier = &p.Raw.SpaceId
+	if p.Raw.SpaceIdentifier != "" {
+		result.SpaceIdentifier = &p.Raw.SpaceIdentifier
 	}
 
 	if p.Raw.Body.Storage.Value != "" {

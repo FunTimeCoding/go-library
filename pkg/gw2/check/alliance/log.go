@@ -115,8 +115,8 @@ func Log(
 		}
 
 		if slices.Contains(teams, currentTeam) {
-			for account, teamId := range r.WvwTeams {
-				if teamId == currentTeam {
+			for account, teamIdentifier := range r.WvwTeams {
+				if teamIdentifier == currentTeam {
 					onTeam = append(onTeam, account)
 				}
 			}
@@ -135,14 +135,14 @@ func Log(
 			),
 		)
 
-		for account, teamId := range r.WvwTeams {
-			if teamId != currentTeam {
+		for account, teamIdentifier := range r.WvwTeams {
+			if teamIdentifier != currentTeam {
 				confirmedNotOnTeam = append(confirmedNotOnTeam, account)
 			}
 		}
 
-		for account, teamId := range r.WvwTeams {
-			if teamId != currentTeam {
+		for account, teamIdentifier := range r.WvwTeams {
+			if teamIdentifier != currentTeam {
 				onDiscord = append(onDiscord, account)
 			}
 		}

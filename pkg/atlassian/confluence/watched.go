@@ -16,7 +16,7 @@ func (c *Client) Watched() ([]*page.Page, error) {
 
 	for _, r := range results {
 		if r.Raw.Type == constant.PageType {
-			p, f := c.Page(r.Raw.Id)
+			p, f := c.Page(r.Raw.Identifier)
 
 			if f != nil {
 				return nil, f

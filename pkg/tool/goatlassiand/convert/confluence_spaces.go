@@ -23,8 +23,8 @@ func ConfluenceSpaces(v []*space.Space) []*server.ConfluenceSpace {
 			p.Description = &s.Raw.Description
 		}
 
-		if s.Raw.HomepageId != "" {
-			p.HomepageIdentifier = &s.Raw.HomepageId
+		if s.Raw.HomepageIdentifier != "" {
+			p.HomepageIdentifier = &s.Raw.HomepageIdentifier
 		}
 
 		result = append(result, p)

@@ -5,7 +5,7 @@ import "time"
 type Workflow struct {
 	Create            time.Time              `json:"createdAt"`
 	Update            time.Time              `json:"updatedAt"`
-	Id                string                 `json:"id"`
+	Identifier        string                 `json:"id"`
 	Name              string                 `json:"name"`
 	Active            bool                   `json:"active"`
 	Archived          bool                   `json:"isArchived"`

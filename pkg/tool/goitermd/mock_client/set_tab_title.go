@@ -7,7 +7,7 @@ func (c *Client) SetTabTitle(
 	title string,
 ) error {
 	for i, s := range c.sessions {
-		if s.TabId == tabIdentifier {
+		if s.TabIdentifier == tabIdentifier {
 			c.sessions[i].TabTitle = title
 
 			return nil

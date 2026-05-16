@@ -39,7 +39,7 @@ func (c *Client) ChildPages(
 	var result []*page.Page
 
 	for _, p := range children.Results {
-		v, g := c.Page(p.Id)
+		v, g := c.Page(p.Identifier)
 
 		if g != nil {
 			return nil, g

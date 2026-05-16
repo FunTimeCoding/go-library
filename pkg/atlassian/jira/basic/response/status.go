@@ -5,6 +5,6 @@ type Status struct {
 	Description    string         `json:"description"`
 	IconLocator    string         `json:"iconUrl"`
 	Name           string         `json:"name"`
-	Id             string         `json:"id"`
+	Identifier     string         `json:"id"`
 	StatusCategory StatusCategory `json:"statusCategory"`
 }

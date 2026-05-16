@@ -7,7 +7,7 @@ func FromValue(v Values) *Issue {
 	result.Key = v.IssueKey
 
 	for _, e := range v.RequestFieldValues {
-		switch e.FieldId {
+		switch e.FieldIdentifier {
 		case customer.SummaryField:
 			result.Title = e.Value.(string)
 		case customer.DescriptionField:

@@ -27,10 +27,10 @@ func collectDescendantNames(
 		ast.Inspect(
 			s,
 			func(n ast.Node) bool {
-				id, okay := n.(*ast.Ident)
+				identifier, okay := n.(*ast.Ident)
 
-				if okay && y.Defs[id] != nil {
-					result[id.Name] = true
+				if okay && y.Defs[identifier] != nil {
+					result[identifier.Name] = true
 				}
 
 				return true

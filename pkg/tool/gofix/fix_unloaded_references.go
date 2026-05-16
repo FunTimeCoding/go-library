@@ -70,7 +70,10 @@ func fixUnloadedReferences(
 					return nil
 				}
 
-				if loadedFiles[path] {
+				full, e := filepath.Abs(path)
+				errors.PanicOnError(e)
+
+				if loadedFiles[full] {
 					return nil
 				}
 

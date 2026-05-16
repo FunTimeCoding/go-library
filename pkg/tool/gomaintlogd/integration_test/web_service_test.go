@@ -34,7 +34,7 @@ func TestWebService(t *testing.T) {
 	assert.NotNil(t, create.JSON200)
 	assert.String(t, "restarted web server", create.JSON200.Action)
 	assert.String(t, "jdoe", create.JSON200.User)
-	id := create.JSON200.Id
+	id := create.JSON200.Identifier
 	status, e := c.GetStatusWithResponse(x)
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, status.StatusCode())

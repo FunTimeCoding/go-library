@@ -12,10 +12,10 @@ func (s *Server) raidDetail(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	id, e := strconv.Atoi(r.PathValue("id"))
+	identifier, e := strconv.Atoi(r.PathValue("id"))
 	errors.PanicOnError(e)
-	fights := s.store.RaidFights(id)
-	players := s.store.RaidPlayerStats(id)
+	fights := s.store.RaidFights(identifier)
+	players := s.store.RaidPlayerStats(identifier)
 	renderPage(
 		w,
 		layout(

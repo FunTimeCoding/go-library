@@ -11,13 +11,13 @@ func (s *Server) getRun(
 	_ context.Context,
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	id := uint(r.GetInt(constant.Identifier, 0))
+	identifier := uint(r.GetInt(constant.Identifier, 0))
 
-	if id == 0 {
+	if identifier == 0 {
 		return response.Fail("id is required")
 	}
 
-	result, e := s.store.Find(id)
+	result, e := s.store.Find(identifier)
 
 	if e != nil {
 		return s.captureFail(e, constant.RunLookupFailed)

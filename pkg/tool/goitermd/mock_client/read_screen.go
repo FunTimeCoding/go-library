@@ -2,14 +2,14 @@ package mock_client
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/iterm/session"
+	"github.com/funtimecoding/go-library/pkg/iterm/screen"
 )
 
-func (c *Client) ReadScreen(identifier string) (session.Screen, error) {
+func (c *Client) ReadScreen(identifier string) (*screen.Screen, error) {
 	s, okay := c.screens[identifier]
 
 	if !okay {
-		return session.Screen{}, fmt.Errorf(
+		return screen.Stub(), fmt.Errorf(
 			"session %s not found",
 			identifier,
 		)

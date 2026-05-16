@@ -2,20 +2,20 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
-	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/types/checklist_item"
 )
 
-func formatChecklist(items []convert.ChecklistItem) string {
+func formatChecklist(v []*checklist_item.Item) string {
 	var lines []string
 
-	for _, item := range items {
-		if item.Checked {
-			lines = append(lines, join.Empty("+ ", item.Text))
+	for _, i := range v {
+		if i.Checked {
+			lines = append(lines, join.Empty("+ ", i.Text))
 		} else {
-			lines = append(lines, join.Empty("- ", item.Text))
+			lines = append(lines, join.Empty("- ", i.Text))
 		}
 	}
 
-	return join.Empty(strings.Join(lines, "\n"), "\n")
+	return join.Empty(join.NewLine(lines), separator.Unix)
 }

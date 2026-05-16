@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system"
 )
 
-func NewResults() Results {
-	return Results{
+func NewResults() *Results {
+	return &Results{
 		workingDirectory: fmt.Sprintf(
 			"%s/",
 			system.WorkingDirectory(),

@@ -5,8 +5,8 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func Containers(items proxmox.Containers) []server.Container {
-	result := make([]server.Container, len(items))
+func Containers(items proxmox.Containers) []*server.Container {
+	result := make([]*server.Container, len(items))
 
 	for i, c := range items {
 		result[i] = Container(*c)

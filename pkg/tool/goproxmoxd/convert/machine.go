@@ -5,8 +5,8 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func Machine(v proxmox.VirtualMachine) server.Machine {
-	result := server.Machine{
+func Machine(v proxmox.VirtualMachine) *server.Machine {
+	result := &server.Machine{
 		Vmid:   int64(v.VMID),
 		Name:   v.Name,
 		Node:   &v.Node,

@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func Tunnel(t *tunnel.Tunnel) server.Tunnel {
-	result := server.Tunnel{Identifier: t.Identifier, Name: t.Name}
+func Tunnel(t *tunnel.Tunnel) *server.Tunnel {
+	result := &server.Tunnel{Identifier: t.Identifier, Name: t.Name}
 
 	if t.Raw.Encapsulation.Value != nil {
 		result.Encapsulation = new(string(*t.Raw.Encapsulation.Value))

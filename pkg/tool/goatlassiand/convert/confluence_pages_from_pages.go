@@ -5,11 +5,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
 )
 
-func ConfluencePagesFromPages(v []*page.Page) []server.ConfluencePage {
-	result := make([]server.ConfluencePage, 0, len(v))
+func ConfluencePagesFromPages(v []*page.Page) []*server.ConfluencePage {
+	result := make([]*server.ConfluencePage, 0, len(v))
 
 	for _, p := range v {
-		a := server.ConfluencePage{Identifier: p.Identifier, Title: p.Name}
+		a := &server.ConfluencePage{Identifier: p.Identifier, Title: p.Name}
 
 		if p.Link != "" {
 			a.Link = &p.Link

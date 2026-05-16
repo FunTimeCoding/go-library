@@ -5,5 +5,5 @@ type CreateMetaField struct {
 	Key           string              `json:"key"`
 	Required      bool                `json:"required"`
 	Schema        string              `json:"schema"`
-	AllowedValues []CreateMetaAllowed `json:"allowed_values,omitempty"`
+	AllowedValues []*CreateMetaAllowed `json:"allowed_values,omitempty"`
 }

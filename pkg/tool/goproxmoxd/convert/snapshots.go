@@ -5,8 +5,8 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func Snapshots(items []*proxmox.Snapshot) []server.Snapshot {
-	result := make([]server.Snapshot, len(items))
+func Snapshots(items []*proxmox.Snapshot) []*server.Snapshot {
+	result := make([]*server.Snapshot, len(items))
 
 	for i, s := range items {
 		result[i] = Snapshot(s)

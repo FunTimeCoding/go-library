@@ -8,7 +8,7 @@ import (
 
 func (c *Client) readLoop(connection *websocket.Conn) {
 	for {
-		var r reply
+		var r *reply
 
 		if e := wsjson.Read(context.Background(), connection, &r); e != nil {
 			return

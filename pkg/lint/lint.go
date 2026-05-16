@@ -88,7 +88,7 @@ func Lint(
 		}
 	}
 
-	fixes := Check(v, skip, fix, verbose, false, &r)
+	fixes := Check(v, skip, fix, verbose, false, r)
 
 	if fix {
 		fixes.Flush(constant.CurrentDirectory)

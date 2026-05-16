@@ -33,10 +33,10 @@ func (c *Client) GroupTabs(
 		return 0, fmt.Errorf("group tabs: %w", e)
 	}
 
-	var result response.GroupTabs
+	var result *response.GroupTabs
 
-	if e = decodeResult(r, &result); e != nil {
-		return 0, fmt.Errorf("group tabs: %w", e)
+	if f := decodeResult(r, &result); f != nil {
+		return 0, fmt.Errorf("group tabs: %w", f)
 	}
 
 	return result.GroupIdentifier, nil

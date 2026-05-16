@@ -1,13 +1,13 @@
 package mock_client
 
-import "github.com/funtimecoding/go-library/pkg/habitica/response"
+import "github.com/funtimecoding/go-library/pkg/habitica/task"
 
-func (c *Client) Tasks(taskType string) ([]response.Task, error) {
+func (c *Client) Tasks(taskType string) ([]*task.Task, error) {
 	if taskType == "" {
 		return c.tasks, nil
 	}
 
-	var result []response.Task
+	var result []*task.Task
 
 	for _, t := range c.tasks {
 		if t.Type == taskType {

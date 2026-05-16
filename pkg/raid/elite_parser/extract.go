@@ -2,15 +2,15 @@ package elite_parser
 
 import "github.com/funtimecoding/go-library/pkg/raid/elite"
 
-func Extract(fight *elite.Fight) []PlayerFightStat {
-	var result []PlayerFightStat
+func Extract(fight *elite.Fight) []*PlayerFightStatistic {
+	var result []*PlayerFightStatistic
 
 	for _, player := range fight.Players {
 		if player.NotInSquad {
 			continue
 		}
 
-		stat := PlayerFightStat{
+		stat := &PlayerFightStatistic{
 			Identity:  extractIdentity(player),
 			Offensive: extractOffensive(player),
 			Defensive: extractDefensive(player),

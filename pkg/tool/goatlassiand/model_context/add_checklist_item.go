@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/types/checklist_item"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -33,14 +33,10 @@ func (s *Server) addChecklistItem(
 
 	items = append(
 		items,
-		convert.ChecklistItem{
-			Index: len(items) + 1,
-			Text:  text,
-		},
+		checklist_item.New(len(items), text, false),
 	)
-	fail, e := s.writeChecklist(c, key, items)
 
-	if fail != nil {
+	if fail, e := s.writeChecklist(c, key, items); fail != nil {
 		return fail, e
 	}
 

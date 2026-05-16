@@ -5,7 +5,8 @@ package web_service
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/habitica/response"
+	"github.com/funtimecoding/go-library/pkg/habitica/tag"
+	"github.com/funtimecoding/go-library/pkg/habitica/task"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/client"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/integration_test/web_service_tester"
 	"net/http"
@@ -17,12 +18,14 @@ func TestWebService(t *testing.T) {
 	defer o.Close()
 	c := o.Client
 	x := context.Background()
-	o.MockClient.AddTask(response.Task{
-		ID:   "task-1",
-		Text: "Deploy fleet",
-		Type: "daily",
-	})
-	o.MockClient.AddTag(response.Tag{ID: "tag-1", Name: "deploy"})
+	o.MockClient.AddTask(
+		task.Task{
+			ID:   "task-1",
+			Text: "Deploy fleet",
+			Type: "daily",
+		},
+	)
+	o.MockClient.AddTag(tag.Tag{ID: "tag-1", Name: "deploy"})
 	tasks, e := c.GetTasksWithResponse(x, &client.GetTasksParams{})
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, tasks.StatusCode())

@@ -164,9 +164,12 @@ components:
         completed:
           type: boolean
         checklist:
+          # Optional: only present on dailies and todos, not habits or rewards.
           type: array
           items:
-            $ref: "#/components/schemas/ChecklistItem"
+            nullable: true
+            allOf:
+            - $ref: "#/components/schemas/ChecklistItem"
         streak:
           type: integer
         value:

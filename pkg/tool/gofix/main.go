@@ -32,11 +32,11 @@ func Main(
 	s := newResults()
 
 	if a.GetBoolean("rename") {
-		runVariableNamingFix(patterns, diff, &s)
+		runVariableNamingFix(patterns, diff, s)
 	} else {
-		runFix(patterns, diff, &s)
-		runCallFormatFix(patterns, diff, &s)
-		runImportAliasFix(patterns, diff, &s)
+		runFix(patterns, diff, s)
+		runCallFormatFix(patterns, diff, s)
+		runImportAliasFix(patterns, diff, s)
 	}
 
 	hasBlocked := printResults(s.Entries, a.GetBoolean("summary"))

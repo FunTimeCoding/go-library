@@ -5,8 +5,8 @@ import (
 	"github.com/netbox-community/go-netbox/v4"
 )
 
-func VirtualInterface(i *netbox.VMInterface) server.VirtualInterface {
-	return server.VirtualInterface{
+func VirtualInterface(i *netbox.VMInterface) *server.VirtualInterface {
+	return &server.VirtualInterface{
 		Identifier: i.GetId(),
 		Name:       i.GetName(),
 	}

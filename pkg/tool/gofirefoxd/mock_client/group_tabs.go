@@ -13,7 +13,7 @@ func (c *Client) GroupTabs(
 		id = c.groupID
 	}
 
-	c.groups[id] = group{title: title, color: color}
+	c.groups[id] = &group{title: title, color: color}
 
 	for _, tabID := range tabIdentifiers {
 		for i, t := range c.tabs {

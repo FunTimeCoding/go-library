@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func Device(d *device.Device) server.Device {
-	result := server.Device{
+func Device(d *device.Device) *server.Device {
+	result := &server.Device{
 		Identifier: d.Identifier,
 		Name:       d.Name,
 	}

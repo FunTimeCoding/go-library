@@ -18,7 +18,7 @@ func New(
 ) *Store {
 	errors.PanicOnError(m.AutoMigrate(raid.NewRaid()))
 	errors.PanicOnError(m.AutoMigrate(raid.NewFight()))
-	errors.PanicOnError(m.AutoMigrate(raid.NewPlayerFightStat()))
+	errors.PanicOnError(m.AutoMigrate(raid.NewPlayerFightStatistic()))
 	s := &Store{
 		mapper:       m,
 		logger:       l,

@@ -1,9 +1,9 @@
 package habitica
 
-import "github.com/funtimecoding/go-library/pkg/habitica/response"
+import "github.com/funtimecoding/go-library/pkg/habitica/tag"
 
-func (c *Client) Tags() ([]response.Tag, error) {
-	var result []response.Tag
+func (c *Client) Tags() ([]*tag.Tag, error) {
+	var result []*tag.Tag
 
 	return result, c.get("/tags", &result)
 }

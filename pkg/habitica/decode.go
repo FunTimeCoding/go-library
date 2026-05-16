@@ -2,7 +2,7 @@ package habitica
 
 import (
 	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/habitica/response"
+	"github.com/funtimecoding/go-library/pkg/habitica/envelope"
 	"io"
 	"net/http"
 )
@@ -21,7 +21,7 @@ func (c *Client) decode(
 		return e
 	}
 
-	var envelope response.Envelope
+	var envelope *envelope.Envelope
 
 	if f := json.Unmarshal(b, &envelope); f != nil {
 		return f

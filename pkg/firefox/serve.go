@@ -14,9 +14,7 @@ func (c *Client) ServeHTTP(
 	connection, e := websocket.Accept(
 		w,
 		r,
-		&websocket.AcceptOptions{
-			InsecureSkipVerify: true,
-		},
+		&websocket.AcceptOptions{InsecureSkipVerify: true},
 	)
 
 	if e != nil {

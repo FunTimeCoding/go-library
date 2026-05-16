@@ -10,9 +10,9 @@ import (
 func (s *Server) AllocateStat(
 	w http.ResponseWriter,
 	_ *http.Request,
-	stat server.AllocateStatParamsStat,
+	t server.AllocateStatParamsStat,
 ) {
-	result, e := s.habitica.Allocate(string(stat))
+	result, e := s.habitica.Allocate(string(t))
 
 	if e != nil {
 		http.Error(w, e.Error(), http.StatusBadRequest)

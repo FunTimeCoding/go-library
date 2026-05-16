@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
 )
 
-func NodeStatus(s *node_status.Status) server.NodeStatus {
-	return server.NodeStatus{
+func NodeStatus(s *node_status.Status) *server.NodeStatus {
+	return &server.NodeStatus{
 		Cpu:            new(s.Processor),
 		Uptime:         new(s.Uptime),
 		KernelVersion:  new(s.KernelVersion),

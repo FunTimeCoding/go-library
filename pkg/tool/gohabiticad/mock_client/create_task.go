@@ -2,19 +2,16 @@ package mock_client
 
 import (
 	"github.com/funtimecoding/go-library/pkg/habitica/request"
-	"github.com/funtimecoding/go-library/pkg/habitica/response"
+	"github.com/funtimecoding/go-library/pkg/habitica/task"
 	"github.com/google/uuid"
 )
 
-func (c *Client) CreateTask(
-	body request.CreateTaskBody,
-) (response.Task, error) {
-	task := response.Task{
-		ID:   uuid.New().String(),
-		Text: body.Text,
-		Type: body.Type,
-	}
-	c.tasks = append(c.tasks, task)
+func (c *Client) CreateTask(b *request.CreateTaskBody) (*task.Task, error) {
+	t := task.Stub()
+	t.ID = uuid.New().String()
+	t.Text = b.Text
+	t.Type = b.Type
+	c.tasks = append(c.tasks, t)
 
-	return task, nil
+	return t, nil
 }

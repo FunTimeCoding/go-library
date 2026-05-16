@@ -2,7 +2,10 @@ package mock_client
 
 import "fmt"
 
-func (c *Client) SendText(identifier string, text string) error {
+func (c *Client) SendText(
+	identifier string,
+	text string,
+) error {
 	s, okay := c.screens[identifier]
 
 	if !okay {

@@ -2,18 +2,18 @@ package convert
 
 import "github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 
-func issueLinks(i *issue.Issue) []IssueLink {
+func issueLinks(i *issue.Issue) []*IssueLink {
 	if i.Raw.Fields.IssueLinks == nil {
 		return nil
 	}
 
-	var result []IssueLink
+	var result []*IssueLink
 
 	for _, l := range i.Raw.Fields.IssueLinks {
 		if l.OutwardIssue != nil {
 			result = append(
 				result,
-				IssueLink{
+				&IssueLink{
 					Identifier: l.ID,
 					Direction:  "outward",
 					Type:       l.Type.Outward,
@@ -27,7 +27,7 @@ func issueLinks(i *issue.Issue) []IssueLink {
 		if l.InwardIssue != nil {
 			result = append(
 				result,
-				IssueLink{
+				&IssueLink{
 					Identifier: l.ID,
 					Direction:  "inward",
 					Type:       l.Type.Inward,

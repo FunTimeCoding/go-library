@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func TunnelTermination(t *tunnel_termination.Termination) server.TunnelTermination {
-	result := server.TunnelTermination{Identifier: t.Identifier}
+func TunnelTermination(t *tunnel_termination.Termination) *server.TunnelTermination {
+	result := &server.TunnelTermination{Identifier: t.Identifier}
 
 	if t.Role != "" {
 		result.Role = &t.Role

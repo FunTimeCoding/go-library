@@ -8,25 +8,30 @@ import (
 )
 
 func (c *Client) CloseView(identifier int) error {
-	l := c.base.Copy().Path("/views/%d", identifier).String()
-	q, e := http.NewRequest(http.MethodDelete, l, nil)
+	q, e := http.NewRequest(
+		http.MethodDelete,
+		c.base.Copy().Path("/views/%d", identifier).String(),
+		nil,
+	)
 
 	if e != nil {
 		return fmt.Errorf("close view: %w", e)
 	}
 
-	r, e := c.client.Do(q)
+	r, f := c.client.Do(q)
 
-	if e != nil {
-		return fmt.Errorf("close view: %w", e)
+	if f != nil {
+		return fmt.Errorf("close view: %w", f)
 	}
 
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusOK {
-		b := system.ReadAll(r.Body)
-
-		return fmt.Errorf("close view: %d: %s", r.StatusCode, b)
+		return fmt.Errorf(
+			"close view: %d: %s",
+			r.StatusCode,
+			system.ReadAll(r.Body),
+		)
 	}
 
 	return nil

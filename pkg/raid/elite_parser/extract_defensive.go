@@ -2,14 +2,14 @@ package elite_parser
 
 import "github.com/funtimecoding/go-library/pkg/raid/elite"
 
-func extractDefensive(player elite.Player) Defensive {
-	if len(player.Defenses) == 0 {
-		return Defensive{}
+func extractDefensive(p *elite.Player) *Defensive {
+	if len(p.Defenses) == 0 {
+		return &Defensive{}
 	}
 
-	d := player.Defenses[0]
+	d := p.Defenses[0]
 
-	return Defensive{
+	return &Defensive{
 		DamageTaken:      d.DamageTaken,
 		DownCount:        d.DownCount,
 		DeadCount:        d.DeadCount,

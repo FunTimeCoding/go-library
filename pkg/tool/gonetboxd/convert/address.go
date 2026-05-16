@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func Address(a *internet_address.Address) server.Address {
-	result := server.Address{
+func Address(a *internet_address.Address) *server.Address {
+	result := &server.Address{
 		Identifier: a.Identifier,
 		Address:    a.Address.String(),
 	}

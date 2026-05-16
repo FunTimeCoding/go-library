@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func ParseAction(raw string) Action {
+func ParseAction(raw string) *Action {
 	colon := strings.IndexByte(raw, ':')
 
 	if colon < 0 {
@@ -17,5 +17,5 @@ func ParseAction(raw string) Action {
 	remainder := raw[colon+1:]
 	prefix, value := key_value.Equals(remainder)
 
-	return Action{Path: path, Prefix: prefix, Value: value}
+	return &Action{Path: path, Prefix: prefix, Value: value}
 }

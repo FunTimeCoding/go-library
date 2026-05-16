@@ -1,11 +1,14 @@
 package convert
 
-import "github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/types/checklist_item"
+)
 
 type IssueWithCustomFields struct {
 	*server.JiraIssue
-	Links        []IssueLink       `json:"links,omitempty"`
-	Comments     []IssueComment    `json:"comments,omitempty"`
-	Checklist    []ChecklistItem   `json:"checklist,omitempty"`
-	CustomFields map[string]string `json:"custom_fields,omitempty"`
+	Links        []*IssueLink           `json:"links,omitempty"`
+	Comments     []*IssueComment        `json:"comments,omitempty"`
+	Checklist    []*checklist_item.Item `json:"checklist,omitempty"`
+	CustomFields map[string]string      `json:"custom_fields,omitempty"`
 }

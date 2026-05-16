@@ -1,12 +1,12 @@
 package convert
 
 import (
-	"github.com/funtimecoding/go-library/pkg/habitica/response"
+	"github.com/funtimecoding/go-library/pkg/habitica/task"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
 )
 
-func Task(t response.Task) server.Task {
-	result := server.Task{
+func Task(t *task.Task) *server.Task {
+	result := &server.Task{
 		Identifier: t.ID,
 		Text:       t.Text,
 		Type:       t.Type,
@@ -25,7 +25,7 @@ func Task(t response.Task) server.Task {
 	}
 
 	if len(t.Checklist) > 0 {
-		result.Checklist = new(ChecklistItems(t.Checklist))
+		result.Checklist = ChecklistItems(t.Checklist)
 	}
 
 	if t.Streak > 0 {

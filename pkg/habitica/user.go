@@ -1,12 +1,12 @@
 package habitica
 
 import (
-	"github.com/funtimecoding/go-library/pkg/habitica/response"
+	"github.com/funtimecoding/go-library/pkg/habitica/user"
 	"net/http"
 )
 
-func (c *Client) user() (response.User, error) {
-	var result response.User
+func (c *Client) user() (*user.User, error) {
+	var result *user.User
 	r, e := c.do(http.MethodGet, "/user", nil)
 
 	if e != nil {

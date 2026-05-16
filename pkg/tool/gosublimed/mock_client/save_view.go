@@ -2,7 +2,10 @@ package mock_client
 
 import "fmt"
 
-func (c *Client) SaveView(identifier int, path string) error {
+func (c *Client) SaveView(
+	identifier int,
+	path string,
+) error {
 	for i, v := range c.views {
 		if v.Identifier == identifier {
 			c.views[i].FilePath = path

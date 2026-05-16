@@ -5,8 +5,8 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func Container(c proxmox.Container) server.Container {
-	result := server.Container{
+func Container(c proxmox.Container) *server.Container {
+	result := &server.Container{
 		Vmid:    int64(c.VMID),
 		Name:    c.Name,
 		Node:    &c.Node,

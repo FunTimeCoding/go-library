@@ -5,6 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func DeviceRole(r *device_role.Role) server.DeviceRole {
-	return server.DeviceRole{Identifier: r.Identifier, Name: r.Name}
+func DeviceRole(r *device_role.Role) *server.DeviceRole {
+	return &server.DeviceRole{Identifier: r.Identifier, Name: r.Name}
 }

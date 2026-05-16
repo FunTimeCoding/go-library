@@ -15,7 +15,7 @@ func (s *Store) PlayerAttendance(since time.Time) []AttendanceRow {
 	)
 	var rows []AttendanceRow
 	errors.PanicOnError(
-		s.mapper.Model(raid.NewPlayerFightStat()).
+		s.mapper.Model(raid.NewPlayerFightStatistic()).
 			Select(
 				"account",
 				"string_agg(DISTINCT name, ', ' ORDER BY name) as characters",

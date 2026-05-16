@@ -1,9 +1,12 @@
 package mock_client
 
-import "github.com/funtimecoding/go-library/pkg/iterm/session"
+import (
+	"github.com/funtimecoding/go-library/pkg/iterm/screen"
+	"github.com/funtimecoding/go-library/pkg/iterm/session"
+)
 
 type Client struct {
-	sessions []session.Session
-	screens  map[string]session.Screen
+	sessions []*session.Session
+	screens  map[string]*screen.Screen
 	nextID   int
 }

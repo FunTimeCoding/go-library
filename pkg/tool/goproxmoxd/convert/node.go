@@ -5,8 +5,8 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func Node(n proxmox.NodeStatus) server.Node {
-	return server.Node{
+func Node(n proxmox.NodeStatus) *server.Node {
+	return &server.Node{
 		Name:    n.Node,
 		Status:  n.Status,
 		Cpu:     new(n.CPU),

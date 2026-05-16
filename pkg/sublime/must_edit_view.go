@@ -10,7 +10,7 @@ func (c *Client) MustEditView(
 	old string,
 	new string,
 	all bool,
-) view.View {
+) *view.View {
 	result, e := c.EditView(identifier, old, new, all)
 	errors.PanicOnError(e)
 

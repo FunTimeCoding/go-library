@@ -10,28 +10,31 @@ import (
 	"net/http"
 )
 
-func (c *Client) CreateTab() (session.Session, error) {
-	l := c.base.Copy().Path("/tabs").String()
-	r, e := c.client.Post(l, constant.Object, nil)
+func (c *Client) CreateTab() (*session.Session, error) {
+	r, e := c.client.Post(
+		c.base.Copy().Path("/tabs").String(),
+		constant.Object,
+		nil,
+	)
 
 	if e != nil {
-		return session.Session{}, fmt.Errorf("create tab: %w", e)
+		return session.Stub(), fmt.Errorf("create tab: %w", e)
 	}
 
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusCreated {
-		return session.Session{}, fmt.Errorf(
+		return session.Stub(), fmt.Errorf(
 			"create tab: %d: %s",
 			r.StatusCode,
 			system.ReadAll(r.Body),
 		)
 	}
 
-	var result session.Session
+	var result *session.Session
 
 	if f := json.NewDecoder(r.Body).Decode(&result); f != nil {
-		return session.Session{}, fmt.Errorf("create tab: %w", f)
+		return session.Stub(), fmt.Errorf("create tab: %w", f)
 	}
 
 	return result, nil

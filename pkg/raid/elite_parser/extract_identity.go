@@ -2,21 +2,21 @@ package elite_parser
 
 import "github.com/funtimecoding/go-library/pkg/raid/elite"
 
-func extractIdentity(player elite.Player) Identity {
-	result := Identity{
-		Account:    player.Account,
-		Name:       player.Name,
-		Profession: player.Profession,
-		Group:      player.Group,
-		Commander:  player.HasCommanderTag,
+func extractIdentity(p *elite.Player) *Identity {
+	result := &Identity{
+		Account:    p.Account,
+		Name:       p.Name,
+		Profession: p.Profession,
+		Group:      p.Group,
+		Commander:  p.HasCommanderTag,
 	}
 
-	if len(player.ActiveTimes) > 0 {
-		result.ActiveTimeMS = player.ActiveTimes[0]
+	if len(p.ActiveTimes) > 0 {
+		result.ActiveTimeMS = p.ActiveTimes[0]
 	}
 
-	if len(player.StatsAll) > 0 {
-		result.DistToCom = player.StatsAll[0].DistToCom
+	if len(p.StatsAll) > 0 {
+		result.DistToCom = p.StatsAll[0].DistToCom
 	}
 
 	return result

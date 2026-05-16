@@ -11,7 +11,7 @@ func (c *Client) EditView(
 	old string,
 	new string,
 	all bool,
-) (view.View, error) {
+) (*view.View, error) {
 	for i, v := range c.views {
 		if v.Identifier == identifier {
 			if all {
@@ -26,5 +26,5 @@ func (c *Client) EditView(
 		}
 	}
 
-	return view.View{}, fmt.Errorf("view %d not found", identifier)
+	return view.Stub(), fmt.Errorf("view %d not found", identifier)
 }

@@ -19,7 +19,7 @@ func PlayerStats() {
 	directory := a.RequiredPositional(0, "DIRECTORY")
 	entries, e := os.ReadDir(directory)
 	errors.PanicOnError(e)
-	var allStats []elite_parser.PlayerFightStat
+	var allStats []*elite_parser.PlayerFightStatistic
 	fightCount := 0
 	skipped := 0
 

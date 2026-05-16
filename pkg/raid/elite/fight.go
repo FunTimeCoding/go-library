@@ -6,6 +6,6 @@ type Fight struct {
 	MapID        int      `json:"mapID"`
 	FightName    string   `json:"fightName"`
 	Success      bool     `json:"success"`
-	Targets      []Target `json:"targets"`
-	Players      []Player `json:"players"`
+	Targets      []*Target `json:"targets"`
+	Players      []*Player `json:"players"`
 }

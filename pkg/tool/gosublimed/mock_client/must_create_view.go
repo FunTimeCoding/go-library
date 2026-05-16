@@ -9,7 +9,7 @@ func (c *Client) MustCreateView(
 	title string,
 	content string,
 	syntax string,
-) view.View {
+) *view.View {
 	result, e := c.CreateView(title, content, syntax)
 	errors.PanicOnError(e)
 

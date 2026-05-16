@@ -2,17 +2,17 @@ package elite_parser
 
 import "github.com/funtimecoding/go-library/pkg/raid/elite"
 
-func extractBoons(player elite.Player) Boons {
-	var result Boons
+func extractBoons(p *elite.Player) *Boons {
+	result := &Boons{}
 
-	for _, buff := range player.BuffUptimes {
-		if len(buff.Entries) == 0 {
+	for _, b := range p.BuffUptimes {
+		if len(b.Entries) == 0 {
 			continue
 		}
 
-		uptime := buff.Entries[0].Uptime
+		uptime := b.Entries[0].Uptime
 
-		switch buff.Identifier {
+		switch b.Identifier {
 		case elite.BuffStability:
 			result.Stability = uptime
 		case elite.BuffMight:

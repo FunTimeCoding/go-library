@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func VirtualMachine(m *virtual_machine.Machine) server.VirtualMachine {
-	result := server.VirtualMachine{Identifier: m.Identifier, Name: m.Name}
+func VirtualMachine(m *virtual_machine.Machine) *server.VirtualMachine {
+	result := &server.VirtualMachine{Identifier: m.Identifier, Name: m.Name}
 
 	if m.Raw.Cluster.IsSet() && m.Raw.Cluster.Get() != nil {
 		result.Cluster = new(m.Raw.Cluster.Get().GetName())

@@ -5,6 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func Manufacturer(m *manufacturer.Manufacturer) server.Manufacturer {
-	return server.Manufacturer{Identifier: m.Identifier, Name: m.Name}
+func Manufacturer(m *manufacturer.Manufacturer) *server.Manufacturer {
+	return &server.Manufacturer{Identifier: m.Identifier, Name: m.Name}
 }

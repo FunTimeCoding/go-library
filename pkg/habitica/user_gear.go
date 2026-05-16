@@ -1,8 +1,8 @@
 package habitica
 
-import "github.com/funtimecoding/go-library/pkg/habitica/response"
+import "github.com/funtimecoding/go-library/pkg/habitica/gear"
 
-func (c *Client) UserGear() (response.Gear, error) {
+func (c *Client) UserGear() (*gear.Gear, error) {
 	result, e := c.user()
 
 	return result.Items.Gear, e

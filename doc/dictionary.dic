@@ -301,6 +301,7 @@ proxmox
 pveversion
 secureboot
 sysname
+vmid
 
 # HTMX
 HTMX

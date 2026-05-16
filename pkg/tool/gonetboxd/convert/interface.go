@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func Interface(i *network.Interface) server.Interface {
-	result := server.Interface{Identifier: i.Identifier, Name: i.Name}
+func Interface(i *network.Interface) *server.Interface {
+	result := &server.Interface{Identifier: i.Identifier, Name: i.Name}
 
 	if i.Description != "" {
 		result.Description = &i.Description

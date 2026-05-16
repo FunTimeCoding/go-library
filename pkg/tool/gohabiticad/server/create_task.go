@@ -16,16 +16,15 @@ func (s *Server) CreateTask(
 ) {
 	var b server.CreateTaskJSONRequestBody
 	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&b))
-	body := request.CreateTaskBody{
-		Type: string(b.Type),
-		Text: b.Text,
-	}
+	c := request.New()
+	c.Type = string(b.Type)
+	c.Text = b.Text
 
 	if b.Notes != nil {
-		body.Notes = *b.Notes
+		c.Notes = *b.Notes
 	}
 
 	web.ObjectHeader(w)
 	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, convert.Task(s.habitica.MustCreateTask(body)))
+	web.Encode(w, convert.Task(s.habitica.MustCreateTask(c)))
 }

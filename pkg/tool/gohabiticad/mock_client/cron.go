@@ -1,7 +1,7 @@
 package mock_client
 
-import "github.com/funtimecoding/go-library/pkg/habitica/response"
+import "github.com/funtimecoding/go-library/pkg/habitica/cron"
 
-func (c *Client) Cron() (response.CronResult, error) {
-	return response.CronResult{RolledOver: false}, nil
+func (c *Client) Cron() (*cron.Cron, error) {
+	return cron.New(), nil
 }

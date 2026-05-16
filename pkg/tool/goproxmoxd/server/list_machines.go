@@ -12,17 +12,20 @@ func (s *Server) ListMachines(
 	_ *http.Request,
 	v server.ListMachinesParams,
 ) {
-	var result []server.Machine
+	var result []*server.Machine
 
 	if v.Node != nil && *v.Node != "" {
-		node := s.client.MustNode(*v.Node)
-		machines := s.client.MustMachines(node)
-		result = convert.Machines(machines)
+		result = convert.Machines(
+			s.client.MustMachines(s.client.MustNode(*v.Node)),
+		)
 	} else {
 		for _, ns := range s.client.MustNodes() {
-			node := s.client.MustNode(ns.Node)
-			machines := s.client.MustMachines(node)
-			result = append(result, convert.Machines(machines)...)
+			result = append(
+				result,
+				convert.Machines(
+					s.client.MustMachines(s.client.MustNode(ns.Node)),
+				)...,
+			)
 		}
 	}
 

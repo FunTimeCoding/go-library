@@ -179,15 +179,15 @@ type Tag struct {
 
 // Task defines model for Task.
 type Task struct {
-	Checklist  *[]ChecklistItem `json:"checklist,omitempty"`
-	Completed  *bool            `json:"completed,omitempty"`
-	Identifier string           `json:"identifier"`
-	Notes      *string          `json:"notes,omitempty"`
-	Streak     *int             `json:"streak,omitempty"`
-	Tags       *[]string        `json:"tags,omitempty"`
-	Text       string           `json:"text"`
-	Type       string           `json:"type"`
-	Value      *float32         `json:"value,omitempty"`
+	Checklist  *[]*ChecklistItem `json:"checklist,omitempty"`
+	Completed  *bool             `json:"completed,omitempty"`
+	Identifier string            `json:"identifier"`
+	Notes      *string           `json:"notes,omitempty"`
+	Streak     *int              `json:"streak,omitempty"`
+	Tags       *[]string         `json:"tags,omitempty"`
+	Text       string            `json:"text"`
+	Type       string            `json:"type"`
+	Value      *float32          `json:"value,omitempty"`
 }
 
 // AllocateStatParamsStat defines parameters for AllocateStat.

@@ -6,13 +6,12 @@ func (c *Client) CreateView(
 	title string,
 	content string,
 	syntax string,
-) (view.View, error) {
-	v := view.View{
-		Identifier: c.nextID,
-		Title:      title,
-		Text:       content,
-		Syntax:     syntax,
-	}
+) (*view.View, error) {
+	v := view.Stub()
+	v.Identifier = c.nextID
+	v.Title = title
+	v.Text = content
+	v.Syntax = syntax
 	c.nextID++
 	c.views = append(c.views, v)
 

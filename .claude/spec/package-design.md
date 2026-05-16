@@ -17,6 +17,48 @@ domain identity may also warrant their own package, even without receivers,
 to keep the parent package's import graph clean and the concept
 self-contained.
 
+## Bag Packages vs Own Packages
+
+Bag packages (`response/`, `request/`, `argument/`) hold pure data
+structs — no functions, no receivers. Typically shapes from external
+APIs (Habitica, Jira, Sentry, Salt, Loki, brew). The package groups
+by role (what came in, what goes out), not by type.
+
+When a type has distinct domain identity within our code — or gains
+behavior (formatters, receivers, helpers) — it moves to its own
+package named after the type. Examples: `response.Task` → `task.Task`,
+`session.History` → `history.History`, `session.Screen` →
+`screen.Screen`.
+
+The migration is one-directional: bag → own package. Own-package
+types get `New()` in `new.go` for construction and `Stub()` in
+`stub.go` for zero-value error returns. Bag structs get neither.
+
+Decision rule: **our types get own packages, their shapes stay in
+bags.**
+
+## Pointer Convention
+
+Convert functions and domain constructors return pointers
+(`*server.Tunnel`, not `server.Tunnel`). Slice returns are slices
+of pointers (`[]*server.Tunnel`). This applies to:
+
+- `convert/` functions (netbox, proxmox, habitica, atlassian)
+- `New()` and `Stub()` constructors
+- Source interface methods (`HabiticaSource`, `SublimeSource`, etc.)
+
+In OpenAPI specs, optional arrays of objects use `nullable: true`
+with `allOf` wrapping to generate `*[]*Type`:
+
+```yaml
+checklist:
+  type: array
+  items:
+    nullable: true
+    allOf:
+    - $ref: "#/components/schemas/ChecklistItem"
+```
+
 ## When to Extract
 
 When a second struct with receivers appears in a package, extract it and

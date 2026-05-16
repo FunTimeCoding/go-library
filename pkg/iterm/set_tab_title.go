@@ -14,14 +14,17 @@ func (c *Client) SetTabTitle(
 	tabIdentifier string,
 	title string,
 ) error {
-	l := c.base.Copy().Path("/tabs/%s/title", tabIdentifier).String()
 	body, e := json.Marshal(map[string]string{"title": title})
 
 	if e != nil {
 		return fmt.Errorf("set tab title: %w", e)
 	}
 
-	r, f := c.client.Post(l, constant.Object, bytes.NewReader(body))
+	r, f := c.client.Post(
+		c.base.Copy().Path("/tabs/%s/title", tabIdentifier).String(),
+		constant.Object,
+		bytes.NewReader(body),
+	)
 
 	if f != nil {
 		return fmt.Errorf("set tab title: %w", f)

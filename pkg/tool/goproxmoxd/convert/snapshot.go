@@ -5,8 +5,8 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func Snapshot(s *proxmox.Snapshot) server.Snapshot {
-	result := server.Snapshot{
+func Snapshot(s *proxmox.Snapshot) *server.Snapshot {
+	result := &server.Snapshot{
 		Name: s.Name,
 	}
 

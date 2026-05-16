@@ -11,34 +11,37 @@ import (
 	"net/http"
 )
 
-func (c *Client) OpenFile(path string) (view.View, error) {
-	l := c.base.Copy().Path("/open").String()
+func (c *Client) OpenFile(path string) (*view.View, error) {
 	body, e := json.Marshal(map[string]string{"file_path": path})
 
 	if e != nil {
-		return view.View{}, fmt.Errorf("open file: %w", e)
+		return view.Stub(), fmt.Errorf("open file: %w", e)
 	}
 
-	r, f := c.client.Post(l, constant.Object, bytes.NewReader(body))
+	r, f := c.client.Post(
+		c.base.Copy().Path("/open").String(),
+		constant.Object,
+		bytes.NewReader(body),
+	)
 
 	if f != nil {
-		return view.View{}, fmt.Errorf("open file: %w", f)
+		return view.Stub(), fmt.Errorf("open file: %w", f)
 	}
 
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusOK {
-		return view.View{}, fmt.Errorf(
+		return view.Stub(), fmt.Errorf(
 			"open file: %d: %s",
 			r.StatusCode,
 			system.ReadAll(r.Body),
 		)
 	}
 
-	var result view.View
+	var result *view.View
 
-	if e = json.NewDecoder(r.Body).Decode(&result); e != nil {
-		return view.View{}, fmt.Errorf("open file: %w", e)
+	if g := json.NewDecoder(r.Body).Decode(&result); g != nil {
+		return view.Stub(), fmt.Errorf("open file: %w", g)
 	}
 
 	return result, nil

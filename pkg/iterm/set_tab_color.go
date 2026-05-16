@@ -16,7 +16,6 @@ func (c *Client) SetTabColor(
 	green int,
 	blue int,
 ) error {
-	l := c.base.Copy().Path("/sessions/%s/color", sessionIdentifier).String()
 	body, e := json.Marshal(
 		map[string]int{
 			"red":   red,
@@ -29,7 +28,11 @@ func (c *Client) SetTabColor(
 		return fmt.Errorf("set tab color: %w", e)
 	}
 
-	r, f := c.client.Post(l, constant.Object, bytes.NewReader(body))
+	r, f := c.client.Post(
+		c.base.Copy().Path("/sessions/%s/color", sessionIdentifier).String(),
+		constant.Object,
+		bytes.NewReader(body),
+	)
 
 	if f != nil {
 		return fmt.Errorf("set tab color: %w", f)

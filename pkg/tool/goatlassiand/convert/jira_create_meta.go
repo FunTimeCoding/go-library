@@ -64,7 +64,7 @@ func JiraCreateMeta(
 				if v.Value != "" {
 					f.AllowedValues = append(
 						f.AllowedValues,
-						CreateMetaAllowed{
+						&CreateMetaAllowed{
 							Identifier: v.ID,
 							Value:      v.Value,
 						},
@@ -72,7 +72,7 @@ func JiraCreateMeta(
 				} else if n, okay := m["name"].(string); okay {
 					f.AllowedValues = append(
 						f.AllowedValues,
-						CreateMetaAllowed{
+						&CreateMetaAllowed{
 							Identifier: v.ID,
 							Value:      n,
 						},

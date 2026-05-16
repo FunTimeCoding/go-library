@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func (c *Client) Sessions() ([]session.Session, error) {
+func (c *Client) Sessions() ([]*session.Session, error) {
 	l := c.base.Copy().Path("/sessions").String()
 	r, e := c.client.Get(l)
 
@@ -28,7 +28,7 @@ func (c *Client) Sessions() ([]session.Session, error) {
 		)
 	}
 
-	var result response.Sessions
+	var result *response.Sessions
 
 	if e = json.NewDecoder(r.Body).Decode(&result); e != nil {
 		return nil, fmt.Errorf("list sessions: %w", e)

@@ -14,14 +14,17 @@ func (c *Client) SendText(
 	identifier string,
 	text string,
 ) error {
-	l := c.base.Copy().Path("/sessions/%s/send", identifier).String()
 	body, e := json.Marshal(map[string]string{"text": text})
 
 	if e != nil {
 		return fmt.Errorf("send text: %w", e)
 	}
 
-	r, f := c.client.Post(l, constant.Object, bytes.NewReader(body))
+	r, f := c.client.Post(
+		c.base.Copy().Path("/sessions/%s/send", identifier).String(),
+		constant.Object,
+		bytes.NewReader(body),
+	)
 
 	if f != nil {
 		return fmt.Errorf("send text: %w", f)

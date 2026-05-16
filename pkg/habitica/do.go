@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/habitica/constant"
-	"github.com/funtimecoding/go-library/pkg/habitica/response"
+	"github.com/funtimecoding/go-library/pkg/habitica/error_payload"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
@@ -57,11 +57,11 @@ func (c *Client) do(
 			)
 		}
 
-		var r response.Error
+		var o error_payload.Payload
 
-		if json.Unmarshal(b, &r) == nil && r.Message != "" {
+		if json.Unmarshal(b, &o) == nil && o.Message != "" {
 			return nil, detail_error.New(
-				r.Message,
+				o.Message,
 				result.Status,
 			)
 		}

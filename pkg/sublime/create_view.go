@@ -15,8 +15,7 @@ func (c *Client) CreateView(
 	title string,
 	content string,
 	syntax string,
-) (view.View, error) {
-	l := c.base.Copy().Path("/views").String()
+) (*view.View, error) {
 	body, e := json.Marshal(
 		map[string]string{
 			"title":   title,
@@ -26,29 +25,33 @@ func (c *Client) CreateView(
 	)
 
 	if e != nil {
-		return view.View{}, fmt.Errorf("create view: %w", e)
+		return view.Stub(), fmt.Errorf("create view: %w", e)
 	}
 
-	r, f := c.client.Post(l, constant.Object, bytes.NewReader(body))
+	r, f := c.client.Post(
+		c.base.Copy().Path("/views").String(),
+		constant.Object,
+		bytes.NewReader(body),
+	)
 
 	if f != nil {
-		return view.View{}, fmt.Errorf("create view: %w", f)
+		return view.Stub(), fmt.Errorf("create view: %w", f)
 	}
 
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusCreated {
-		return view.View{}, fmt.Errorf(
+		return view.Stub(), fmt.Errorf(
 			"create view: %d: %s",
 			r.StatusCode,
 			system.ReadAll(r.Body),
 		)
 	}
 
-	var result view.View
+	var result *view.View
 
 	if g := json.NewDecoder(r.Body).Decode(&result); g != nil {
-		return view.View{}, fmt.Errorf("create view: %w", g)
+		return view.Stub(), fmt.Errorf("create view: %w", g)
 	}
 
 	return result, nil

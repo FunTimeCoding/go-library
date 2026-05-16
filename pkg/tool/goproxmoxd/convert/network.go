@@ -5,8 +5,8 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func Network(n proxmox.NodeNetwork) server.Network {
-	result := server.Network{
+func Network(n proxmox.NodeNetwork) *server.Network {
+	result := &server.Network{
 		Iface:     n.Iface,
 		Active:    new(int(n.Active) == 1),
 		Autostart: new(n.Autostart == 1),

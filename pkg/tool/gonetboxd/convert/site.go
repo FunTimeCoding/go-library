@@ -5,6 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func Site(s *site.Site) server.Site {
-	return server.Site{Identifier: s.Identifier, Name: s.Name}
+func Site(s *site.Site) *server.Site {
+	return &server.Site{Identifier: s.Identifier, Name: s.Name}
 }

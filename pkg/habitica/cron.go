@@ -1,34 +1,36 @@
 package habitica
 
-import "github.com/funtimecoding/go-library/pkg/habitica/response"
+import "github.com/funtimecoding/go-library/pkg/habitica/cron"
 
-func (c *Client) Cron() (response.CronResult, error) {
+func (c *Client) Cron() (*cron.Cron, error) {
 	before, e := c.user()
 
 	if e != nil {
-		return response.CronResult{}, e
+		return cron.Stub(), e
 	}
 
 	if !before.NeedsCron {
-		return response.CronResult{
-			LastCron: before.LastCron,
-		}, nil
+		result := cron.New()
+		result.LastCron = before.LastCron
+
+		return result, nil
 	}
 
 	if f := c.postDiscard("/cron"); f != nil {
-		return response.CronResult{}, f
+		return cron.Stub(), f
 	}
 
 	after, g := c.user()
 
 	if g != nil {
-		return response.CronResult{}, g
+		return cron.Stub(), g
 	}
 
-	return response.CronResult{
-		RolledOver: true,
-		LastCron:   after.LastCron,
-		Before:     &before.Stats,
-		After:      &after.Stats,
-	}, nil
+	result := cron.New()
+	result.RolledOver = true
+	result.LastCron = after.LastCron
+	result.Before = before.Stats
+	result.After = after.Stats
+
+	return result, nil
 }

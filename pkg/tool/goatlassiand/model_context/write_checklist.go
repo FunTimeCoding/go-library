@@ -7,7 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/types/checklist_item"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/trivago/tgo/tcontainer"
 )
@@ -15,7 +15,7 @@ import (
 func (s *Server) writeChecklist(
 	c context.Context,
 	key string,
-	items []convert.ChecklistItem,
+	items []*checklist_item.Item,
 ) (*mcp.CallToolResult, error) {
 	m, e := s.jira.FieldMap()
 

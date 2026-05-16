@@ -13,13 +13,13 @@ func runActions(
 	project int64,
 	o *option.Sed,
 ) {
-	actions := make([]Action, len(o.RawActions))
+	actions := make([]*Action, len(o.RawActions))
 
 	for i, raw := range o.RawActions {
 		actions[i] = ParseAction(raw)
 	}
 
-	grouped := make(map[string][]Action)
+	grouped := make(map[string][]*Action)
 	var order []string
 
 	for _, a := range actions {

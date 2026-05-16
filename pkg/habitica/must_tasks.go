@@ -2,10 +2,10 @@ package habitica
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/habitica/response"
+	"github.com/funtimecoding/go-library/pkg/habitica/task"
 )
 
-func (c *Client) MustTasks(taskType string) []response.Task {
+func (c *Client) MustTasks(taskType string) []*task.Task {
 	result, e := c.Tasks(taskType)
 	errors.PanicOnError(e)
 

@@ -25,11 +25,10 @@ func (s *Server) createTask(
 		return response.Fail("text is required: %v", g)
 	}
 
-	body := request.CreateTaskBody{
-		Type:  taskType,
-		Text:  text,
-		Notes: r.GetString(constant.Notes, ""),
-	}
+	body := request.New()
+	body.Type = taskType
+	body.Text = text
+	body.Notes = r.GetString(constant.Notes, "")
 	result, h := s.habitica.CreateTask(body)
 
 	if h != nil {

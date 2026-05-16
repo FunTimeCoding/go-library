@@ -3,29 +3,26 @@ package firefox
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/firefox/tab"
+	"github.com/funtimecoding/go-library/pkg/firefox/content"
 )
 
 func (c *Client) ReadTab(
 	identifier int,
 	raw bool,
-) (tab.Content, error) {
+) (*content.Content, error) {
 	r, e := c.send(
 		"read_tab",
-		map[string]any{
-			"tab_id": identifier,
-			"raw":    raw,
-		},
+		map[string]any{"tab_id": identifier, "raw": raw},
 	)
 
 	if e != nil {
-		return tab.Content{}, fmt.Errorf("read tab: %w", e)
+		return content.Stub(), fmt.Errorf("read tab: %w", e)
 	}
 
-	var result tab.Content
+	var result *content.Content
 
-	if e = json.Unmarshal(r.Result, &result); e != nil {
-		return tab.Content{}, fmt.Errorf("read tab: %w", e)
+	if f := json.Unmarshal(r.Result, &result); f != nil {
+		return content.Stub(), fmt.Errorf("read tab: %w", f)
 	}
 
 	return result, nil

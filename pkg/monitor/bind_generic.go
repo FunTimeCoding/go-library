@@ -5,13 +5,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-func BindGeneric() Option {
+func BindGeneric() *Option {
 	NotationArgument()
 	AllArgument()
 	VerboseArgument()
 	argument.ParseBind()
 
-	return Option{
+	return &Option{
 		Notation: viper.GetBool(argument.Notation),
 		All:      viper.GetBool(argument.All),
 		Verbose:  viper.GetBool(argument.Verbose),

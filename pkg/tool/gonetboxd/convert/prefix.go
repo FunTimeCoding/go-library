@@ -5,8 +5,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func Prefix(p *prefix.Prefix) server.Prefix {
-	result := server.Prefix{
+func Prefix(p *prefix.Prefix) *server.Prefix {
+	result := &server.Prefix{
 		Identifier: p.Identifier,
 		Prefix:     p.Name,
 	}
@@ -15,8 +15,10 @@ func Prefix(p *prefix.Prefix) server.Prefix {
 		result.Description = &p.Description
 	}
 
-	if p.Raw.ScopeType.IsSet() && p.Raw.ScopeId.IsSet() {
-		result.Site = new(p.Raw.GetDisplay())
+	if scope, okay := p.Raw.GetScope().(map[string]any); okay {
+		if name, found := scope["name"].(string); found && name != "" {
+			result.Site = &name
+		}
 	}
 
 	return result

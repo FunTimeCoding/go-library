@@ -183,6 +183,26 @@ lifecycle.WithServerMiddleware(
 REST routes (`/api/...`) and MCP routes (`/mcp`, `/sse`, `/message`)
 don't conflict on the same mux.
 
+## OpenAPI Spec Patterns
+
+Optional arrays of objects generate `*[]*Type` when the items are
+nullable. Use `nullable: true` with `allOf` wrapping:
+
+```yaml
+checklist:
+  # Optional: only present on certain task types.
+  type: array
+  items:
+    nullable: true
+    allOf:
+    - $ref: "#/components/schemas/ChecklistItem"
+```
+
+Without `nullable: true` on items, oapi-codegen generates
+`*[]Type` (pointer to slice of values). The nullable pattern
+keeps pointer convention consistent between the generated types
+and the `convert/` layer.
+
 ## What Not To Do
 
 - Don't put hand-written code in `generated/` - that's machine output

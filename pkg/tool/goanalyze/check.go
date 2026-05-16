@@ -13,6 +13,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/struct_literal"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/type_receiver"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/unchecked_print_write"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/value_return"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"golang.org/x/tools/go/packages"
 )
@@ -33,4 +34,5 @@ func check(
 	type_receiver.Check(p, results)
 	unchecked_print_write.Check(p, results)
 	anonymous_struct.Check(p, results)
+	value_return.Check(p, results)
 }

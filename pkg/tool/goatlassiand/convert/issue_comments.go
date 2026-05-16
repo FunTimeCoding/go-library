@@ -2,15 +2,15 @@ package convert
 
 import "github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 
-func issueComments(i *issue.Issue) []IssueComment {
+func issueComments(i *issue.Issue) []*IssueComment {
 	if i.Raw.Fields.Comments == nil {
 		return nil
 	}
 
-	var result []IssueComment
+	var result []*IssueComment
 
 	for _, c := range i.Raw.Fields.Comments.Comments {
-		comment := IssueComment{
+		comment := &IssueComment{
 			Identifier: c.ID,
 			Author:     c.Author.DisplayName,
 			Body:       c.Body,

@@ -2,10 +2,13 @@ package firefox
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/firefox/tab"
+	"github.com/funtimecoding/go-library/pkg/firefox/content"
 )
 
-func (c *Client) MustReadTab(identifier int, raw bool) tab.Content {
+func (c *Client) MustReadTab(
+	identifier int,
+	raw bool,
+) *content.Content {
 	result, e := c.ReadTab(identifier, raw)
 	errors.PanicOnError(e)
 

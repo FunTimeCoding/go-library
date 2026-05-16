@@ -2,19 +2,19 @@ package elite_parser
 
 import "github.com/funtimecoding/go-library/pkg/raid/elite"
 
-func extractOffensive(player elite.Player) Offensive {
-	var result Offensive
+func extractOffensive(p *elite.Player) *Offensive {
+	result := &Offensive{}
 
-	for _, targets := range player.DPSTargets {
-		for _, target := range targets {
-			result.Damage += target.Damage
+	for _, targets := range p.DPSTargets {
+		for _, t := range targets {
+			result.Damage += t.Damage
 		}
 	}
 
-	for _, targets := range player.StatsTargets {
-		for _, target := range targets {
-			result.Kills += target.Killed
-			result.Downs += target.Downed
+	for _, t := range p.StatsTargets {
+		for _, t := range t {
+			result.Kills += t.Killed
+			result.Downs += t.Downed
 		}
 	}
 

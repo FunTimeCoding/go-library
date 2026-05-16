@@ -5,8 +5,8 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func ContainerDetail(c *proxmox.Container) server.ContainerDetail {
-	result := server.ContainerDetail{
+func ContainerDetail(c *proxmox.Container) *server.ContainerDetail {
+	result := &server.ContainerDetail{
 		Vmid:    int64(c.VMID),
 		Name:    c.Name,
 		Node:    &c.Node,

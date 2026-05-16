@@ -12,17 +12,20 @@ func (s *Server) ListContainers(
 	_ *http.Request,
 	v server.ListContainersParams,
 ) {
-	var result []server.Container
+	var result []*server.Container
 
 	if v.Node != nil && *v.Node != "" {
-		node := s.client.MustNode(*v.Node)
-		containers := s.client.MustContainers(node)
-		result = convert.Containers(containers)
+		result = convert.Containers(
+			s.client.MustContainers(s.client.MustNode(*v.Node)),
+		)
 	} else {
 		for _, ns := range s.client.MustNodes() {
-			node := s.client.MustNode(ns.Node)
-			containers := s.client.MustContainers(node)
-			result = append(result, convert.Containers(containers)...)
+			result = append(
+				result,
+				convert.Containers(
+					s.client.MustContainers(s.client.MustNode(ns.Node)),
+				)...,
+			)
 		}
 	}
 

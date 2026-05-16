@@ -1,20 +1,21 @@
 package mock_client
 
-import "github.com/funtimecoding/go-library/pkg/habitica/response"
+import (
+	"github.com/funtimecoding/go-library/pkg/habitica/gear"
+	"github.com/funtimecoding/go-library/pkg/habitica/statistic"
+)
 
 func New() *Client {
-	return &Client{
-		stats: response.Stats{
-			HP:    50,
-			MP:    30,
-			XP:    100,
-			GP:    10,
-			Level: 5,
-			Class: "warrior",
-		},
-		gear: response.Gear{
-			Equipped: map[string]string{},
-			Owned:    map[string]bool{},
-		},
-	}
+	stats := statistic.Stub()
+	stats.HP = 50
+	stats.MP = 30
+	stats.XP = 100
+	stats.GP = 10
+	stats.Level = 5
+	stats.Class = "warrior"
+	g := gear.Stub()
+	g.Equipped = map[string]string{}
+	g.Owned = map[string]bool{}
+
+	return &Client{stats: stats, gear: g}
 }

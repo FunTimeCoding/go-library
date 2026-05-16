@@ -10,9 +10,8 @@ import (
 	"net/http"
 )
 
-func (c *Client) Views() ([]view.View, error) {
-	l := c.base.Copy().Path("/views").String()
-	r, e := c.client.Get(l)
+func (c *Client) Views() ([]*view.View, error) {
+	r, e := c.client.Get(c.base.Copy().Path("/views").String())
 
 	if e != nil {
 		return nil, fmt.Errorf("list views: %w", e)
@@ -21,12 +20,14 @@ func (c *Client) Views() ([]view.View, error) {
 	defer errors.LogClose(r.Body)
 
 	if r.StatusCode != http.StatusOK {
-		b := system.ReadAll(r.Body)
-
-		return nil, fmt.Errorf("list views: %d: %s", r.StatusCode, b)
+		return nil, fmt.Errorf(
+			"list views: %d: %s",
+			r.StatusCode,
+			system.ReadAll(r.Body),
+		)
 	}
 
-	var result response.Views
+	var result *response.Views
 
 	if e = json.NewDecoder(r.Body).Decode(&result); e != nil {
 		return nil, fmt.Errorf("list views: %w", e)

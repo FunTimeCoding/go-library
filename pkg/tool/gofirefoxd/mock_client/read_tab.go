@@ -2,22 +2,23 @@ package mock_client
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/firefox/tab"
+	"github.com/funtimecoding/go-library/pkg/firefox/content"
 )
 
 func (c *Client) ReadTab(
 	identifier int,
 	_ bool,
-) (tab.Content, error) {
+) (*content.Content, error) {
 	for _, t := range c.tabs {
 		if t.Identifier == identifier {
-			return tab.Content{
-				Identifier: t.Identifier,
-				Locator:    t.Locator,
-				Title:      t.Title,
-			}, nil
+			result := content.New()
+			result.Identifier = t.Identifier
+			result.Locator = t.Locator
+			result.Title = t.Title
+
+			return result, nil
 		}
 	}
 
-	return tab.Content{}, fmt.Errorf("tab %d not found", identifier)
+	return content.Stub(), fmt.Errorf("tab %d not found", identifier)
 }

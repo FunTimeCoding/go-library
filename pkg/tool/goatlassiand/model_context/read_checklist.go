@@ -3,12 +3,10 @@ package model_context
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/types/checklist_item"
 )
 
-func (s *Server) readChecklist(
-	key string,
-) ([]convert.ChecklistItem, error) {
+func (s *Server) readChecklist(key string) ([]*checklist_item.Item, error) {
 	i, e := s.jira.Issue(key)
 
 	if e != nil {

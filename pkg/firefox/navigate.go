@@ -8,10 +8,7 @@ func (c *Client) Navigate(
 ) error {
 	_, e := c.send(
 		"navigate",
-		map[string]any{
-			"tab_id": identifier,
-			"url":    l,
-		},
+		map[string]any{"tab_id": identifier, "url": l},
 	)
 
 	if e != nil {

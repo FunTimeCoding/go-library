@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
+	goraidd "github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
@@ -10,7 +11,7 @@ func dateFilter(startValue, endValue string) gomponents.Node {
 	return html.Form(
 		html.Class("filter-form"),
 		html.Method(constant.Get),
-		html.Action("/"),
+		html.Action(goraidd.LogsPath),
 		html.Div(
 			html.Class("grid"),
 			html.Label(

@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/gw2/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	goraidd "github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -28,5 +29,5 @@ func (s *Server) generate(
 	}
 
 	s.parser.Generate(files, nil)
-	http.Redirect(w, r, "/reports", http.StatusSeeOther)
+	http.Redirect(w, r, goraidd.ReportsPath, http.StatusSeeOther)
 }

@@ -9,7 +9,7 @@ import (
 
 func addForm() gomponents.Node {
 	return html.Form(
-		htmx.Post("/add"),
+		htmx.Post(constant.AddEntryPath),
 		htmx.Target("#add-form"),
 		htmx.Swap("outerHTML"),
 		html.ID("add-form"),
@@ -58,6 +58,9 @@ func addForm() gomponents.Node {
 				html.Rows("3"),
 			),
 		),
-		html.Button(html.Type("submit"), gomponents.Text("Add Entry")),
+		html.Button(
+			html.Type("submit"),
+			gomponents.Text(constant.AddEntryTitle),
+		),
 	)
 }

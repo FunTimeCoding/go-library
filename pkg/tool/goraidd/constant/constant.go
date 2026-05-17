@@ -7,3 +7,14 @@ var Identity = identity.New(
 	"RAID monitoring service",
 	"goraidd [flags]",
 )
+
+const (
+	LogsTitle    = "Logs"
+	LogsPath     = "/"
+	ReportsTitle = "Reports"
+	ReportsPath  = "/reports"
+	RaidsTitle   = "Raids"
+	RaidsPath    = "/raids"
+	PlayersTitle = "Players"
+	PlayersPath  = "/players"
+)

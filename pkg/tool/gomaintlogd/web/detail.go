@@ -7,5 +7,5 @@ func (s *Server) detail(
 	r *http.Request,
 ) {
 	e := s.entryFromQuery(r)
-	renderFragment(w, detailRow(e))
+	s.view.RenderFragment(w, detailRow(e))
 }

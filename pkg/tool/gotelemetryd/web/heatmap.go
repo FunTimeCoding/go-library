@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 	"net/http"
@@ -54,7 +55,7 @@ func (s *Server) heatmap(
 
 	headerCells = append(headerCells, html.Th(gomponents.Text("Count")))
 	var content []gomponents.Node
-	content = append(content, html.H3(gomponents.Text("Heatmap")))
+	content = append(content, html.H3(gomponents.Text(constant.HeatmapTitle)))
 	content = append(content, windowSelector(window, groupBy))
 
 	if len(tableRows) == 0 {
@@ -72,5 +73,5 @@ func (s *Server) heatmap(
 		)
 	}
 
-	renderPage(w, layout("/", content...))
+	s.view.RenderPage(w, "", constant.HeatmapPath, content...)
 }

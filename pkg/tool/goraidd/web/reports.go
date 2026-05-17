@@ -3,6 +3,7 @@ package web
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
+	goraidd "github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 	"net/http"
@@ -25,19 +26,17 @@ func (s *Server) reports(
 		}
 	}
 
-	if s.isHTMX(r) {
-		renderFragment(w, reportsTable(reports))
+	if s.view.IsExtendedRequest(r) {
+		s.view.RenderFragment(w, reportsTable(reports))
 
 		return
 	}
 
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			"Reports",
-			"/reports",
-			html.H1(gomponents.Text("Generated Reports")),
-			reportsTable(reports),
-		),
+		goraidd.ReportsTitle,
+		goraidd.ReportsPath,
+		html.H1(gomponents.Text("Generated Reports")),
+		reportsTable(reports),
 	)
 }

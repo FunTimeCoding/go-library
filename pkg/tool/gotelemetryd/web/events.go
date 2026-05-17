@@ -64,7 +64,7 @@ func (s *Server) events(
 	}
 
 	var content []gomponents.Node
-	content = append(content, html.H3(gomponents.Text("Events")))
+	content = append(content, html.H3(gomponents.Text(constant.EventsTitle)))
 	content = append(content, filterBar(o))
 
 	if len(rows) == 0 {
@@ -121,5 +121,5 @@ func (s *Server) events(
 		content = append(content, html.P(gomponents.Group(navigation)))
 	}
 
-	renderPage(w, layout("/events", content...))
+	s.view.RenderPage(w, "", constant.EventsPath, content...)
 }

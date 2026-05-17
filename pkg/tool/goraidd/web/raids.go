@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 	"net/http"
@@ -11,13 +12,11 @@ func (s *Server) raids(
 	r *http.Request,
 ) {
 	rows := s.store.Raids()
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			"Raids",
-			"/raids",
-			html.H1(gomponents.Textf("Raids (%d)", len(rows))),
-			raidsTable(rows),
-		),
+		constant.RaidsTitle,
+		constant.RaidsPath,
+		html.H1(gomponents.Textf("Raids (%d)", len(rows))),
+		raidsTable(rows),
 	)
 }

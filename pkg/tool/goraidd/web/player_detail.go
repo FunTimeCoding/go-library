@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 	"net/http"
@@ -12,13 +13,11 @@ func (s *Server) playerDetail(
 ) {
 	account := r.PathValue("account")
 	rows := s.store.PlayerDetail(account)
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			account,
-			"/players",
-			html.H1(gomponents.Text(account)),
-			playerDetailTable(rows),
-		),
+		account,
+		constant.PlayersPath,
+		html.H1(gomponents.Text(account)),
+		playerDetailTable(rows),
 	)
 }

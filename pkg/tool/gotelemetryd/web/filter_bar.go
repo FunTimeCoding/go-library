@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -16,7 +17,7 @@ func filterBar(o *store.QueryOption) gomponents.Node {
 			html.Span(
 				gomponents.Text(fmt.Sprintf("tool=%s ", o.Tool)),
 				html.A(
-					gomponents.Attr("href", "/events"),
+					gomponents.Attr("href", constant.EventsPath),
 					gomponents.Text("×"),
 				),
 			),
@@ -29,7 +30,7 @@ func filterBar(o *store.QueryOption) gomponents.Node {
 			html.Span(
 				gomponents.Text(fmt.Sprintf("surface=%s ", o.Surface)),
 				html.A(
-					gomponents.Attr("href", "/events"),
+					gomponents.Attr("href", constant.EventsPath),
 					gomponents.Text("×"),
 				),
 			),
@@ -42,7 +43,7 @@ func filterBar(o *store.QueryOption) gomponents.Node {
 			html.Span(
 				gomponents.Text(fmt.Sprintf("actor=%s ", o.Actor)),
 				html.A(
-					gomponents.Attr("href", "/events"),
+					gomponents.Attr("href", constant.EventsPath),
 					gomponents.Text("×"),
 				),
 			),

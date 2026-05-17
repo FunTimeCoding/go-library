@@ -24,4 +24,11 @@ const (
 	Timestamp   = "timestamp"
 	Until       = "until"
 	User        = "user"
+
+	DashboardTitle = "Dashboard"
+	DashboardPath  = "/"
+	EntriesTitle   = "Entries"
+	EntriesPath    = "/entries"
+	AddEntryTitle  = "Add Entry"
+	AddEntryPath   = "/add"
 )

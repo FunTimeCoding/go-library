@@ -26,5 +26,5 @@ func (s *Server) editSubmit(
 	}
 
 	errors.PanicOnError(s.store.Update(e))
-	renderFragment(w, detailRow(e))
+	s.view.RenderFragment(w, detailRow(e))
 }

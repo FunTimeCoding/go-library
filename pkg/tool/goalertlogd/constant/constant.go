@@ -19,4 +19,9 @@ const (
 	End   = "end"
 	N     = "n"
 	Start = "start"
+
+	DashboardTitle = "Dashboard"
+	DashboardPath  = "/"
+	RecentTitle    = "Recent"
+	RecentPath     = "/recent"
 )

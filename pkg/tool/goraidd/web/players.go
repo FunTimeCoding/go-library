@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 	"net/http"
@@ -13,13 +14,11 @@ func (s *Server) players(
 ) {
 	since := time.Now().AddDate(0, -1, 0)
 	rows := s.store.PlayerAttendance(since)
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			"Players",
-			"/players",
-			html.H1(gomponents.Textf("Player Attendance (%d)", len(rows))),
-			playersTable(rows),
-		),
+		constant.PlayersTitle,
+		constant.PlayersPath,
+		html.H1(gomponents.Textf("Player Attendance (%d)", len(rows))),
+		playersTable(rows),
 	)
 }

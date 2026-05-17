@@ -45,78 +45,76 @@ func (s *Server) entries(
 	errors.PanicOnError(e)
 	table := entriesTable(entries)
 
-	if s.isHTMX(r) {
-		renderFragment(w, table)
+	if s.view.IsExtendedRequest(r) {
+		s.view.RenderFragment(w, table)
 
 		return
 	}
 
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			"Entries",
-			"/entries",
-			html.H1(gomponents.Text("Entries")),
-			html.Form(
-				html.Class("filter-form"),
-				htmx.Get("/entries"),
-				htmx.Target("#entries-table"),
-				htmx.Swap("innerHTML"),
-				html.Div(
-					html.Class("grid"),
-					html.Label(
-						gomponents.Text("System"),
-						html.Input(
-							html.Type("text"),
-							html.Name(constant.System),
-							html.Value(f.System),
-							html.Placeholder("e.g. worker1"),
-						),
-					),
-					html.Label(
-						gomponents.Text("Service"),
-						html.Input(
-							html.Type("text"),
-							html.Name(constant.Service),
-							html.Value(f.Service),
-							html.Placeholder("e.g. nginx"),
-						),
-					),
-					html.Label(
-						gomponents.Text("User"),
-						html.Input(
-							html.Type("text"),
-							html.Name(constant.User),
-							html.Value(f.User),
-						),
+		constant.EntriesTitle,
+		constant.EntriesPath,
+		html.H1(gomponents.Text(constant.EntriesTitle)),
+		html.Form(
+			html.Class("filter-form"),
+			htmx.Get(constant.EntriesPath),
+			htmx.Target("#entries-table"),
+			htmx.Swap("innerHTML"),
+			html.Div(
+				html.Class("grid"),
+				html.Label(
+					gomponents.Text("System"),
+					html.Input(
+						html.Type("text"),
+						html.Name(constant.System),
+						html.Value(f.System),
+						html.Placeholder("e.g. worker1"),
 					),
 				),
-				html.Div(
-					html.Class("grid"),
-					html.Label(
-						gomponents.Text("Since"),
-						html.Input(
-							html.Type("datetime-local"),
-							html.Name(constant.Since),
-						),
+				html.Label(
+					gomponents.Text("Service"),
+					html.Input(
+						html.Type("text"),
+						html.Name(constant.Service),
+						html.Value(f.Service),
+						html.Placeholder("e.g. nginx"),
 					),
-					html.Label(
-						gomponents.Text("Until"),
-						html.Input(
-							html.Type("datetime-local"),
-							html.Name(constant.Until),
-						),
-					),
-					html.Label(
-						gomponents.Raw("&nbsp;"),
-						html.Button(
-							html.Type("submit"),
-							gomponents.Text("Filter"),
-						),
+				),
+				html.Label(
+					gomponents.Text("User"),
+					html.Input(
+						html.Type("text"),
+						html.Name(constant.User),
+						html.Value(f.User),
 					),
 				),
 			),
-			html.Div(html.ID("entries-table"), table),
+			html.Div(
+				html.Class("grid"),
+				html.Label(
+					gomponents.Text("Since"),
+					html.Input(
+						html.Type("datetime-local"),
+						html.Name(constant.Since),
+					),
+				),
+				html.Label(
+					gomponents.Text("Until"),
+					html.Input(
+						html.Type("datetime-local"),
+						html.Name(constant.Until),
+					),
+				),
+				html.Label(
+					gomponents.Raw("&nbsp;"),
+					html.Button(
+						html.Type("submit"),
+						gomponents.Text("Filter"),
+					),
+				),
+			),
 		),
+		html.Div(html.ID("entries-table"), table),
 	)
 }

@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 	"net/http"
@@ -16,13 +17,11 @@ func (s *Server) raidDetail(
 	errors.PanicOnError(e)
 	fights := s.store.RaidFights(identifier)
 	players := s.store.RaidPlayerStats(identifier)
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			"Raid",
-			"/raids",
-			html.H1(gomponents.Textf("Raid - %d fights", len(fights))),
-			raidDetailTable(players),
-		),
+		"Raid",
+		constant.RaidsPath,
+		html.H1(gomponents.Textf("Raid - %d fights", len(fights))),
+		raidDetailTable(players),
 	)
 }

@@ -18,8 +18,17 @@ direction, and the criteria for introducing them.
 | `server/` | REST implementation. Implements the generated `ServerInterface`. | `generated/server/`, `store/`, `convert/` |
 | `model_context/` | MCP tool implementations. Each method is a handler. | `store/`, `constant/`, `convert/`, `response/` |
 | `convert/` | Type filtering shared by `model_context/` and `server/`. | `types/`, `generated/server/` |
-| `web/` | HTML rendering (gomponents). Flat; file-prefix grouping. | `store/`, `constant/`, `model/` |
+| `web/` | HTML rendering (gomponents). Holds `*view.View` on Server. Flat; file-prefix grouping. | `store/`, `constant/`, `model/`, `web/view/` |
 | `integration_test/` | Cross-package tests using only the public API. External test package. | all exported packages |
+
+### Shared web packages (go-library)
+
+| Package | Role |
+|---------|------|
+| `web/layout/` | Fluent HTML page builder. `New(identity)` + `With*` + `Clone()` + `Render()`. |
+| `web/layout/navigation_item/` | `New(path, label)` / `NewExternal(path, label)` for nav links. |
+| `web/view/` | HTTP layer wrapping layout. `RenderPage`, `RenderFragment`, `IsExtendedRequest`. |
+| `web/theme/constant/` | CSS palette constants (pico.css overrides). Downstream repos can define additional palettes. |
 
 ## Dependency Direction
 
@@ -35,6 +44,8 @@ constant/   model/
   |   +-------+-------+-------+----------+----------+
   |           |       |       |          |
 server/  model_context/  web/  client/  integration_test/
+                          ↑
+                    web/view/ → web/layout/ → web/layout/navigation_item/
 ```
 
 `server/`, `model_context/`, `web/`, and `client/` are leaf packages -

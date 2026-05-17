@@ -1,4 +1,4 @@
-package web
+package view
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
@@ -7,10 +7,10 @@ import (
 	"net/http"
 )
 
-func renderPage(
+func (v *View) RenderFragment(
 	w http.ResponseWriter,
-	page gomponents.Node,
+	fragment gomponents.Node,
 ) {
 	w.Header().Set(constant.ContentType, constant.MarkupUnicode)
-	errors.PanicOnError(page.Render(w))
+	errors.PanicOnError(fragment.Render(w))
 }

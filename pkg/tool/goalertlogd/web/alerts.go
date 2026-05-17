@@ -19,14 +19,12 @@ func (s *Server) alerts(
 	}
 
 	records := s.store.MustByName(name)
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			name,
-			"",
-			html.H1(gomponents.Textf("Alert: %s", name)),
-			html.P(gomponents.Textf("%d occurrences", len(records))),
-			alertsTable(records),
-		),
+		name,
+		"",
+		html.H1(gomponents.Textf("Alert: %s", name)),
+		html.P(gomponents.Textf("%d occurrences", len(records))),
+		alertsTable(records),
 	)
 }

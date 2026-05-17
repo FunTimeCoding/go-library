@@ -116,26 +116,97 @@ func Alerts(s *store.Store) http.HandlerFunc {
 
 ## HTML Web Package
 
-When a service tool serves an HTML UI (using gomponents), routes are grouped under a `web/` package rather than `server/`. Use this pattern instead of `server/` when handlers need shared state and render HTML rather than JSON.
+When a service tool serves an HTML UI (using gomponents), routes are grouped
+under a `web/` package rather than `server/`. Use this pattern instead of
+`server/` when handlers need shared state and render HTML rather than JSON.
 
 ```
 pkg/tool/go<tool>d/web/
-├── server.go           # type Server struct (dependencies only, no functions)
-├── new.go              # NewServer(deps) *Server
+├── server.go           # type Server struct (dependencies + view)
+├── new.go              # New(deps) *Server — constructs view
 ├── mount.go            # (s *Server) Mount(m *http.ServeMux)
-├── is_htmx.go          # (s *Server) isHTMX(r *http.Request) bool
-├── render_page.go      # renderPage(w, page g.Node)
-├── render_fragment.go  # renderFragment(w, fragment g.Node)
-├── <route>.go          # handler method named after route: alerts(), dashboard()
-├── <component>.go      # HTML builder named after component: alerts_table.go
-├── layout.go           # layout() - full page shell
-├── navigation_link.go  # navigationLink() - navigation component
-└── constant/
-    └── constant.go     # inlineCSS and other web-layer constants
+├── constant.go         # inlineCSS (component CSS specific to this service)
+├── <route>.go          # handler method: dashboard(), alerts()
+└── <component>.go      # HTML builder: alerts_table.go, add_form.go
 ```
 
+### View and Layout
+
+The `Server` holds a `*view.View` constructed in `New`. The view wraps
+a `*layout.Page` template configured with the service's identity, theme,
+style, and navigation items. Handlers call `s.view.RenderPage` for full pages
+and `s.view.RenderFragment` for HTMX partials.
+
+```go
+type Server struct {
+    store *store.Store
+    view  *view.View
+}
+
+func New(s *store.Store) *Server {
+    return &Server{
+        store: s,
+        view: view.New(
+            layout.New(constant.Identity).
+                WithTheme(theme.Archive).
+                WithStyle(inlineCSS).
+                WithItems(
+                    navigation_item.New(constant.DashboardPath, constant.DashboardTitle),
+                    navigation_item.New(constant.EntriesPath, constant.EntriesTitle),
+                ),
+        ),
+    }
+}
+```
+
+Handlers use the view directly — no `pageLayout`, `renderPage`,
+`renderFragment`, `isHTMX`, or `navigationLink` wrapper functions:
+
+```go
+func (s *Server) dashboard(w http.ResponseWriter, r *http.Request) {
+    if s.view.IsExtendedRequest(r) {
+        s.view.RenderFragment(w, s.recentTable())
+        return
+    }
+    s.view.RenderPage(w, constant.DashboardTitle, constant.DashboardPath,
+        html.H1(gomponents.Text(constant.DashboardTitle)),
+        s.recentTable(),
+    )
+}
+```
+
+### Packages involved
+
+| Package | Location | Role |
+|---------|----------|------|
+| `layout` | `pkg/web/layout/` | Fluent HTML page builder. `New(identity)` + `With*` methods + `Render()`. Owns the full page skeleton (head, nav, main, footer). |
+| `layout/navigation_item` | `pkg/web/layout/navigation_item/` | `New(path, label)` / `NewExternal(path, label)` for nav links. Renders with active-state highlighting. |
+| `view` | `pkg/web/view/` | HTTP layer wrapping layout. `RenderPage`, `RenderFragment`, `IsExtendedRequest`. Clones the layout template per request. |
+| `theme/constant` | `pkg/web/theme/constant/` | CSS palette constants (pico.css custom property overrides). |
+
+### Page titles and paths
+
+Each service declares page titles and paths as constants in its `constant/`
+package. Both navigation items and handlers reference the same constants:
+
+```go
+const (
+    DashboardTitle = "Dashboard"
+    DashboardPath  = "/"
+    EntriesTitle   = "Entries"
+    EntriesPath    = "/entries"
+)
+```
+
+### Themes
+
+Theme constants in `pkg/web/theme/constant/` are pico.css custom property
+overrides. Each service picks one in its `New`. Available palettes:
+Sentinel, Archive, Tyria. Additional palettes can be defined in downstream
+repos.
+
 Key conventions:
-- `Server` struct holds dependencies (store, worker, etc.)
+- `Server` struct holds dependencies and a `*view.View`
 - `Mount()` registers all routes using method values: `m.HandleFunc("GET /alerts", s.alerts)`
 - Handler methods named after the route, no `handle` prefix: `alerts()`, `dashboard()`, `addSubmit()`
 - Standalone HTML builders named after the component they produce: `alertsTable()`, `addForm()`, `detailRow()`

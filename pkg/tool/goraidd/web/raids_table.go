@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/store"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -18,7 +19,7 @@ func raidsTable(rows []store.RaidRow) gomponents.Node {
 				html.Th(gomponents.Text("Name")),
 				html.Th(gomponents.Text("Date")),
 				html.Th(gomponents.Text("Fights")),
-				html.Th(gomponents.Text("Players")),
+				html.Th(gomponents.Text(constant.PlayersTitle)),
 			),
 		),
 		html.TBody(

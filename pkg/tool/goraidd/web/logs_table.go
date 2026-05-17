@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/raid"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
@@ -35,7 +36,7 @@ func logsTable(
 					html.Th(gomponents.Text("Time")),
 					html.Th(gomponents.Text("Duration")),
 					html.Th(gomponents.Text("Map")),
-					html.Th(gomponents.Text("Players")),
+					html.Th(gomponents.Text(constant.PlayersTitle)),
 					html.Th(gomponents.Text("Enemies")),
 				),
 			),

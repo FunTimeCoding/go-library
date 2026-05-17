@@ -3,6 +3,7 @@ package web
 import (
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 	"net/http"
@@ -56,8 +57,8 @@ func (s *Server) logs(
 	total := len(fights)
 
 	if filtered {
-		if s.isHTMX(r) {
-			renderFragment(
+		if s.view.IsExtendedRequest(r) {
+			s.view.RenderFragment(
 				w,
 				logsTable(fights, 0, total, startValue, endValue, true),
 			)
@@ -65,28 +66,26 @@ func (s *Server) logs(
 			return
 		}
 
-		renderPage(
+		s.view.RenderPage(
 			w,
-			layout(
-				"Logs",
-				"/",
-				html.H1(gomponents.Textf("Combat Logs (%d)", total)),
-				dateFilter(startValue, endValue),
-				html.Form(
-					html.Class("generate-form"),
-					html.Method("post"),
-					logsTable(fights, 0, total, startValue, endValue, true),
-					html.Button(
-						html.Type("submit"),
-						html.FormAction("/generate"),
-						gomponents.Text("Generate Report"),
-					),
-					html.Button(
-						html.Type("submit"),
-						html.FormAction("/raids/create"),
-						html.Class("secondary"),
-						gomponents.Text("Create Raid"),
-					),
+			constant.LogsTitle,
+			constant.LogsPath,
+			html.H1(gomponents.Textf("Combat Logs (%d)", total)),
+			dateFilter(startValue, endValue),
+			html.Form(
+				html.Class("generate-form"),
+				html.Method("post"),
+				logsTable(fights, 0, total, startValue, endValue, true),
+				html.Button(
+					html.Type("submit"),
+					html.FormAction("/generate"),
+					gomponents.Text("Generate Report"),
+				),
+				html.Button(
+					html.Type("submit"),
+					html.FormAction("/raids/create"),
+					html.Class("secondary"),
+					gomponents.Text("Create Raid"),
 				),
 			),
 		)
@@ -108,8 +107,8 @@ func (s *Server) logs(
 
 	page := fights[offset:end]
 
-	if s.isHTMX(r) {
-		renderFragment(
+	if s.view.IsExtendedRequest(r) {
+		s.view.RenderFragment(
 			w,
 			logsTable(page, offset, total, startValue, endValue, false),
 		)
@@ -117,28 +116,26 @@ func (s *Server) logs(
 		return
 	}
 
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			"Logs",
-			"/",
-			html.H1(gomponents.Textf("Combat Logs (%d)", total)),
-			dateFilter(startValue, endValue),
-			html.Form(
-				html.Class("generate-form"),
-				html.Method("post"),
-				logsTable(page, offset, total, startValue, endValue, false),
-				html.Button(
-					html.Type("submit"),
-					html.FormAction("/generate"),
-					gomponents.Text("Generate Report"),
-				),
-				html.Button(
-					html.Type("submit"),
-					html.FormAction("/raids/create"),
-					html.Class("secondary"),
-					gomponents.Text("Create Raid"),
-				),
+		constant.LogsTitle,
+		constant.LogsPath,
+		html.H1(gomponents.Textf("Combat Logs (%d)", total)),
+		dateFilter(startValue, endValue),
+		html.Form(
+			html.Class("generate-form"),
+			html.Method("post"),
+			logsTable(page, offset, total, startValue, endValue, false),
+			html.Button(
+				html.Type("submit"),
+				html.FormAction("/generate"),
+				gomponents.Text("Generate Report"),
+			),
+			html.Button(
+				html.Type("submit"),
+				html.FormAction("/raids/create"),
+				html.Class("secondary"),
+				gomponents.Text("Create Raid"),
 			),
 		),
 	)

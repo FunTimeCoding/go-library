@@ -21,7 +21,7 @@ func (s *Server) addSubmit(
 	e.Service = r.FormValue(constant.Service)
 	e.Description = r.FormValue(constant.Description)
 	errors.PanicOnError(s.store.Add(e))
-	renderFragment(
+	s.view.RenderFragment(
 		w,
 		html.Div(
 			html.Div(

@@ -31,51 +31,49 @@ func (s *Server) recent(
 
 	table := recentTable(s.store.MustByTimeRange(start, end))
 
-	if s.isHTMX(r) {
-		renderFragment(w, table)
+	if s.view.IsExtendedRequest(r) {
+		s.view.RenderFragment(w, table)
 
 		return
 	}
 
-	renderPage(
+	s.view.RenderPage(
 		w,
-		layout(
-			"Recent",
-			"/recent",
-			html.H1(gomponents.Text("Recent Alerts")),
-			html.Form(
-				html.Class("filter-form"),
-				htmx.Get("/recent"),
-				htmx.Target("#recent-table"),
-				htmx.Swap("innerHTML"),
-				html.Div(
-					html.Class("grid"),
-					html.Label(
-						gomponents.Text("Start"),
-						html.Input(
-							html.Type("datetime-local"),
-							html.Name(constant.Start),
-							html.Value(start.Format("2006-01-02T15:04")),
-						),
+		constant.RecentTitle,
+		constant.RecentPath,
+		html.H1(gomponents.Text("Recent Alerts")),
+		html.Form(
+			html.Class("filter-form"),
+			htmx.Get(constant.RecentPath),
+			htmx.Target("#recent-table"),
+			htmx.Swap("innerHTML"),
+			html.Div(
+				html.Class("grid"),
+				html.Label(
+					gomponents.Text("Start"),
+					html.Input(
+						html.Type("datetime-local"),
+						html.Name(constant.Start),
+						html.Value(start.Format("2006-01-02T15:04")),
 					),
-					html.Label(
-						gomponents.Text("End"),
-						html.Input(
-							html.Type("datetime-local"),
-							html.Name(constant.End),
-							html.Value(end.Format("2006-01-02T15:04")),
-						),
+				),
+				html.Label(
+					gomponents.Text("End"),
+					html.Input(
+						html.Type("datetime-local"),
+						html.Name(constant.End),
+						html.Value(end.Format("2006-01-02T15:04")),
 					),
-					html.Label(
-						gomponents.Raw("&nbsp;"),
-						html.Button(
-							html.Type("submit"),
-							gomponents.Text("Filter"),
-						),
+				),
+				html.Label(
+					gomponents.Raw("&nbsp;"),
+					html.Button(
+						html.Type("submit"),
+						gomponents.Text("Filter"),
 					),
 				),
 			),
-			html.Div(html.ID("recent-table"), table),
 		),
+		html.Div(html.ID("recent-table"), table),
 	)
 }

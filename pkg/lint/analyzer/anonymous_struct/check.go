@@ -20,7 +20,7 @@ func Check(
 			continue
 		}
 
-		if strings.HasSuffix(name, "_test.go") {
+		if strings.HasSuffix(name, constant.TestSuffix) {
 			continue
 		}
 

@@ -1,0 +1,59 @@
+package model_context
+
+import (
+	"context"
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/mark3labs/mcp-go/mcp"
+	"strings"
+)
+
+func (s *Server) roster(
+	x context.Context,
+	_ mcp.CallToolRequest,
+) (*mcp.CallToolResult, error) {
+	s.resolveCaller(x, constant.Roster)
+	sessions := s.service.Store.ListSessions()
+
+	if len(sessions) == 0 {
+		return response.Success("No active sessions.")
+	}
+
+	var lines []string
+
+	for _, session := range sessions {
+		line := session.Name
+
+		if session.Topic != "" {
+			line = fmt.Sprintf("%s - %s", line, session.Topic)
+		}
+
+		var details []string
+
+		if session.TurnCount > 0 {
+			details = append(
+				details,
+				fmt.Sprintf("%d turns", session.TurnCount),
+			)
+		}
+
+		alias := s.service.Store.GetAlias(session.Identifier)
+
+		if alias != "" {
+			details = append(details, fmt.Sprintf("alias: %s", alias))
+		}
+
+		if session.FirstMessage != "" {
+			details = append(details, fmt.Sprintf("%q", session.FirstMessage))
+		}
+
+		if len(details) > 0 {
+			line = fmt.Sprintf("%s\n  %s", line, strings.Join(details, " · "))
+		}
+
+		lines = append(lines, line)
+	}
+
+	return response.Success(strings.Join(lines, "\n"))
+}

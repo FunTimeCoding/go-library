@@ -1,7 +1,7 @@
 package store
 
-func (s *Store) ActiveInstance(sessionID string) (string, bool) {
-	v, okay := s.sessions.Load(sessionID)
+func (s *Store) ActiveInstance(sessionIdentifier string) (string, bool) {
+	v, okay := s.sessions.Load(sessionIdentifier)
 
 	if !okay {
 		return "", false

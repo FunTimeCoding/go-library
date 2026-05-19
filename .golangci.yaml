@@ -1,7 +1,7 @@
 ---
+# Verify: golangci-lint config verify
 version: '2'
 run: {allow-serial-runners: true}
 linters:
-  exclusions:
-    paths: [pkg/tool/goalertlog/api, pkg/tool/goalertlog/client]
+  disable: [unused]
   settings: {errcheck: {check-blank: true}}

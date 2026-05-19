@@ -15,7 +15,7 @@ func TestModelContext(t *testing.T) {
 	defer o.Close()
 	assert.Count(t, 9, o.Client.ListTools())
 	o.MockClient.AddTab(
-		tab.Tab{
+		&tab.Tab{
 			Identifier: 100,
 			Locator:    "https://example.com",
 			Title:      "Example",

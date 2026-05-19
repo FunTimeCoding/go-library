@@ -10,16 +10,16 @@ import (
 
 func New(
 	host string,
-	userID string,
+	userIdentifier string,
 	token string,
 ) *Client {
 	errors.FatalOnEmpty(host, "host")
-	errors.FatalOnEmpty(userID, "user")
+	errors.FatalOnEmpty(userIdentifier, "user")
 	errors.FatalOnEmpty(token, "token")
 
 	return &Client{
 		base:           join.Empty(locator.New(host).String(), constant.Base),
-		userIdentifier: userID,
+		userIdentifier: userIdentifier,
 		token:          token,
 		client:         &http.Client{},
 	}

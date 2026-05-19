@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"path/filepath"
 	"strings"
 )
@@ -31,7 +32,7 @@ func missingTestDirectories(
 	}
 
 	for _, p := range paths {
-		if strings.HasSuffix(p, "_test.go") {
+		if strings.HasSuffix(p, constant.TestSuffix) {
 			directories[filepath.Dir(p)] = true
 		}
 	}

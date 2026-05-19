@@ -1,0 +1,12 @@
+package store
+
+type SearchResult struct {
+	Identifier  int64    `json:"identifier"`
+	Name        string   `json:"name"`
+	Content     string   `json:"content"`
+	Description string   `json:"description"`
+	Type        string   `json:"type"`
+	Tags        []string `json:"tags,omitempty"`
+	UpdatedAt   string   `json:"updated_at"`
+	Rank        float64  `json:"rank"`
+}

@@ -6,10 +6,10 @@ import (
 )
 
 func (c *Client) MustScore(
-	taskID string,
+	taskIdentifier string,
 	direction string,
 ) *score.Score {
-	result, e := c.Score(taskID, direction)
+	result, e := c.Score(taskIdentifier, direction)
 	errors.PanicOnError(e)
 
 	return result

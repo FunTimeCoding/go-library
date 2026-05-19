@@ -20,21 +20,21 @@ func collectFromConstantDirectory(
 		return
 	}
 
-	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasSuffix(
-			entry.Name(),
+	for _, n := range entries {
+		if n.IsDir() || !strings.HasSuffix(
+			n.Name(),
 			constant.GoExtension,
 		) {
 			continue
 		}
 
-		if strings.HasSuffix(entry.Name(), "_test.go") {
+		if strings.HasSuffix(n.Name(), constant.TestSuffix) {
 			continue
 		}
 
 		parseConstants(
 			result,
-			filepath.Join(constantDirectory, entry.Name()),
+			filepath.Join(constantDirectory, n.Name()),
 			subDirectory,
 			distance,
 		)

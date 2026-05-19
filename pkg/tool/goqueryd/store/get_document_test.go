@@ -1,0 +1,42 @@
+//go:build local
+
+package store
+
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"testing"
+)
+
+func TestGetDocumentByRelativePath(t *testing.T) {
+	s, _ := indexedTestStore(t)
+	defer s.Close()
+	d := s.MustGetDocument("test/alpha.md")
+	assert.NotNil(t, d)
+	assert.String(t, "Search Pipeline", d.Title)
+	assert.StringContains(t, "hybrid search pipeline", d.Body)
+}
+
+func TestGetDocumentByVirtualPath(t *testing.T) {
+	s, _ := indexedTestStore(t)
+	defer s.Close()
+	d := s.MustGetDocument("qmd://test/alpha.md")
+	assert.NotNil(t, d)
+	assert.String(t, "Search Pipeline", d.Title)
+	assert.String(t, "qmd://test/alpha.md", d.VirtualPath)
+}
+
+func TestGetDocumentNotFound(t *testing.T) {
+	s, _ := indexedTestStore(t)
+	defer s.Close()
+	d := s.MustGetDocument("test/nonexistent.md")
+	assert.Nil(t, d)
+}
+
+func TestGetDocumentWithContext(t *testing.T) {
+	s, _ := indexedTestStore(t)
+	defer s.Close()
+	s.AddContext("test", "/", "root context")
+	d := s.MustGetDocument("test/alpha.md")
+	assert.NotNil(t, d)
+	assert.String(t, "root context", d.Context)
+}

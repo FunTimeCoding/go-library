@@ -25,7 +25,9 @@ const (
 	IdeaPath                    = ".idea"
 	KubernetesConfigurationPath = ".kube/config"
 	MarkdownPath                = "markdown"
+	MemoryPath                  = "memory"
 	NotationPath                = "notation"
+	SearchPath                  = "search"
 	QuerySocketPath             = ".osquery/shell.em"
 
 	Transmission = "tcp"

@@ -6,7 +6,7 @@ import (
 )
 
 func skip(name string) bool {
-	if strings.HasSuffix(name, "_test.go") {
+	if strings.HasSuffix(name, constant.TestSuffix) {
 		return true
 	}
 

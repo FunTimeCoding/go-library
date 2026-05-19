@@ -1,0 +1,33 @@
+package web
+
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
+	"net/http"
+)
+
+func (s *Server) dashboard(
+	w http.ResponseWriter,
+	_ *http.Request,
+) {
+	s.view.RenderPage(
+		w,
+		constant.DashboardTitle,
+		constant.DashboardPath,
+		html.Div(
+			gomponents.Attr("hx-ext", "sse"),
+			gomponents.Attr("sse-connect", "/event"),
+			html.H3(gomponents.Text("Roster")),
+			html.Div(
+				gomponents.Attr("sse-swap", constant.Roster),
+				s.rosterSection(),
+			),
+			html.H3(gomponents.Text("Recent Activity")),
+			html.Div(
+				gomponents.Attr("sse-swap", constant.Activity),
+				s.activitySection(),
+			),
+		),
+	)
+}

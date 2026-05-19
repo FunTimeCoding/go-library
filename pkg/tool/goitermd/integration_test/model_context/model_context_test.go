@@ -15,7 +15,7 @@ func TestModelContext(t *testing.T) {
 	defer o.Close()
 	assert.Count(t, 8, o.Client.ListTools())
 	o.MockClient.AddSession(
-		session.Session{
+		&session.Session{
 			Identifier:    "sess-1",
 			TabIdentifier: "tab-1",
 			TabTitle:      "build",

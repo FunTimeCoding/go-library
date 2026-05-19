@@ -228,9 +228,9 @@ func (s *Store) CreateIfAbsent(v *Record) {
 }
 
 // Called from MCP handler → return error
-func (s *Store) UpdateStatus(id string, status string) error {
+func (s *Store) UpdateStatus(identifier string, status string) error {
     return s.database.Model(&Record{}).
-        Where("id = ?", id).
+        Where("identifier = ?", identifier).
         Update("status", status).Error
 }
 ```

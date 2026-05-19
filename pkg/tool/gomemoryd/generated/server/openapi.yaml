@@ -1,0 +1,82 @@
+---
+openapi: "3.0.0"
+info:
+  title: gomemoryd
+  version: 1.0.0
+paths:
+  /api/versions:
+    get:
+      operationId: getVersions
+      parameters:
+      - name: since
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      responses:
+        "200":
+          description: Memory versions since timestamp.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VersionEntry"
+  /api/impressions:
+    post:
+      operationId: postImpressions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                content:
+                  type: string
+                source:
+                  type: string
+      responses:
+        "200":
+          description: Impression created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpressionResponse"
+components:
+  schemas:
+    ImpressionResponse:
+      type: object
+      required: [identifier]
+      properties:
+        identifier:
+          type: integer
+    VersionEntry:
+      type: object
+      required: [identifier, memory_identifier, name, description, changed_at, change_type, source]
+      properties:
+        identifier:
+          type: integer
+        memory_identifier:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        changed_at:
+          type: string
+        change_type:
+          type: string
+        source:
+          type: string

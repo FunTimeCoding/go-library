@@ -11,12 +11,12 @@ import (
 )
 
 type HabiticaSource interface {
-	Allocate(stat string) (*statistic.Statistic, error)
+	Allocate(statistic string) (*statistic.Statistic, error)
 	CreateTask(*request.CreateTaskBody) (*task.Task, error)
 	Cron() (*cron.Cron, error)
 	Equip(key string) error
 	Score(
-		taskID string,
+		taskIdentifier string,
 		direction string,
 	) (*score.Score, error)
 	Tags() ([]*tag.Tag, error)
@@ -26,7 +26,7 @@ type HabiticaSource interface {
 	MustCreateTask(*request.CreateTaskBody) *task.Task
 	MustCron() *cron.Cron
 	MustScore(
-		taskID string,
+		taskIdentifier string,
 		direction string,
 	) *score.Score
 	MustTags() []*tag.Tag

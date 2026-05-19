@@ -1,0 +1,31 @@
+package model_context
+
+import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
+	"github.com/mark3labs/mcp-go/mcp"
+)
+
+func (s *Server) addCollection(
+	_ context.Context,
+	q mcp.CallToolRequest,
+) (*mcp.CallToolResult, error) {
+	name, e := q.RequireString(parameter.Name)
+
+	if e != nil {
+		return response.Fail("name is required: %v", e)
+	}
+
+	path, f := q.RequireString(constant.Path)
+
+	if f != nil {
+		return response.Fail("path is required: %v", f)
+	}
+
+	pattern := q.GetString(constant.Pattern, "")
+	s.store.AddCollection(name, path, pattern)
+
+	return response.Success("collection %s added", name)
+}

@@ -36,6 +36,7 @@ const (
 	HypertextExtension   = ".html"
 	MarkdownExtension    = ".md"
 	MarkupExtension      = ".yaml"
+	NotationLogExtension = ".jsonl"
 	ShortMarkupExtension = ".yml"
 
 	LatestVersion = "latest"
@@ -58,6 +59,8 @@ const (
 	TestClient = "test-client"
 
 	TestDatabase = "test.db"
+
+	TestSuffix = "_test.go"
 )
 
 // For console status option

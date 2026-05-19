@@ -7,8 +7,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/provision/salt/constant"
 )
 
-func (c *Client) LookupJob(jid string) (*response.Job, error) {
-	b, e := c.Get(fmt.Sprintf("%s/%s", constant.JobsPath, jid))
+func (c *Client) LookupJob(jobIdentifier string) (*response.Job, error) {
+	b, e := c.Get(
+		fmt.Sprintf("%s/%s", constant.JobsPath, jobIdentifier),
+	)
 
 	if e != nil {
 		return nil, e
@@ -21,13 +23,13 @@ func (c *Client) LookupJob(jid string) (*response.Job, error) {
 	}
 
 	if len(r.Details) == 0 {
-		return nil, fmt.Errorf("job %s not found", jid)
+		return nil, fmt.Errorf("job %s not found", jobIdentifier)
 	}
 
 	job := r.Details[0]
 
 	if job.Error != "" {
-		return nil, fmt.Errorf("job %s: %s", jid, job.Error)
+		return nil, fmt.Errorf("job %s: %s", jobIdentifier, job.Error)
 	}
 
 	return &job, nil

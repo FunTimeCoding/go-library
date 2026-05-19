@@ -74,6 +74,11 @@ gobuild
 gochk
 gochroma
 goclean
+gomemory
+gomemoryd
+goclaude
+goclauded
+goqueryd
 gocontainer
 godebian
 godockerhub
@@ -251,6 +256,9 @@ datdba
 datistemplate
 datname
 rolname
+
+# SQLite
+rowid
 
 # NetBox
 circuitgroupassignment

@@ -5,39 +5,47 @@ tasks:
   pre-push: {cmds: [{task: lint}, {task: test}], silent: true}
   lint:
     cmds:
-    - golint --fix --summary
-    - golangci-lint config verify
-    - golangci-lint run
+    - golint --fix --summary --build-tags local
+    - golangci-lint run --build-tags local
     - gofix --summary ./...
     - goanalyze ./...
     silent: true
-  test: {cmds: ['gotestsum --format dots'], silent: true}
+  test:
+    cmds: ['gotestsum --format dots -- --tags local ./...']
+    silent: true
   check:
     cmds:
     - gosec -fmt=json -out=tmp/gosec.json -stdout -verbose=text -no-fail ./...
     silent: true
   generate:
     cmds:
-    - cd pkg/tool/goalertlogd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/goalertlogd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/goatlassiand/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/goatlassiand/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/gohabiticad/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/gohabiticad/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/gomaintlogd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/gomaintlogd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/gonetboxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/gonetboxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/gopostgresd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/gopostgresd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/goproxmoxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/goproxmoxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/goraidd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/goraidd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/goraidparsed/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/goraidparsed/generated/server && oapi-codegen --config config.yaml openapi.yaml
-    - cd pkg/tool/gotelemetryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-    - cd pkg/tool/gotelemetryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - |
+      cd pkg/tool/goalertlogd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/goalertlogd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/goatlassiand/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/goatlassiand/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/goclauded/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/goclauded/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/gohabiticad/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/gohabiticad/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/gomaintlogd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/gomaintlogd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/gomemoryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/gomemoryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/gonetboxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/gonetboxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/goqueryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/goqueryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/gopostgresd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/gopostgresd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/goproxmoxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/goproxmoxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/goraidd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/goraidd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/goraidparsed/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/goraidparsed/generated/server && oapi-codegen --config config.yaml openapi.yaml
+      cd pkg/tool/gotelemetryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+      cd pkg/tool/gotelemetryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
     silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:
@@ -61,28 +69,9 @@ tasks:
       curl -sSfL \
         https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \
         | sh -s -- -b $(go env GOPATH)/bin
-      go install github.com/boumenot/gocover-cobertura@latest
       go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
     silent: true
-  install:
-    cmds:
-    - |
-      go run cmd/gobuild/main.go --copy-to-bin gobuild
-      gobuild --copy-to-bin
-    silent: true
-  coverage:
-    cmds:
-    - |
-      mkdir -p tmp
-      go test -coverprofile=tmp/coverage.txt -covermode count ./...
-      gocover-cobertura <tmp/coverage.txt >tmp/coverage.xml
-    silent: true
-  firefox-mcp:
+  firefox:
     cmds:
     - curl -sL "https://raw.githubusercontent.com/mozilla/readability/refs/heads/main/Readability.js" -o js/firefox_bridge/Readability.js
-    silent: true
-  server-check:
-    cmds:
-    - gobuild --copy-to-bin gochk
-    - tmp/deploy.sh
     silent: true

@@ -1,0 +1,388 @@
+---
+openapi: "3.0.0"
+info:
+  title: goqueryd
+  version: 1.0.0
+paths:
+  /api/search:
+    get:
+      operationId: getSearch
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: collection
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+      - name: mode
+        in: query
+        schema:
+          type: string
+          enum: [hybrid, keyword]
+          default: hybrid
+      - name: full
+        in: query
+        schema:
+          type: boolean
+          default: false
+      - name: source_type
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Search results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SearchResult"
+  /api/list:
+    get:
+      operationId: getList
+      parameters:
+      - name: collection
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Documents in collection.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DocumentEntry"
+  /api/status:
+    get:
+      operationId: getStatus
+      responses:
+        "200":
+          description: Index status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+  /api/index:
+    post:
+      operationId: postIndex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                collection:
+                  type: string
+      responses:
+        "200":
+          description: Index results per collection.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IndexResult"
+  /api/embed:
+    post:
+      operationId: postEmbed
+      responses:
+        "200":
+          description: Embedding results.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmbedResult"
+  /api/collection:
+    post:
+      operationId: postCollection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, path]
+              properties:
+                name:
+                  type: string
+                path:
+                  type: string
+                pattern:
+                  type: string
+      responses:
+        "200":
+          description: Collection added.
+  /api/context:
+    get:
+      operationId: getContext
+      responses:
+        "200":
+          description: All contexts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContextEntry"
+    post:
+      operationId: postContext
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [collection, path_prefix, description]
+              properties:
+                collection:
+                  type: string
+                path_prefix:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "200":
+          description: Context added.
+    delete:
+      operationId: deleteContext
+      parameters:
+      - name: collection
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: path_prefix
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Context removed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+  /api/document:
+    get:
+      operationId: getDocument
+      parameters:
+      - name: path
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Single document with full content.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResult"
+    post:
+      operationId: postDocument
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [collection, path, body]
+              properties:
+                collection:
+                  type: string
+                path:
+                  type: string
+                body:
+                  type: string
+                source_type:
+                  type: string
+      responses:
+        "200":
+          description: Document pushed.
+    delete:
+      operationId: deleteDocument
+      parameters:
+      - name: collection
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Document deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+  /api/tag:
+    get:
+      operationId: getTag
+      parameters:
+      - name: collection
+        in: query
+        schema:
+          type: string
+      - name: path
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Source type tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SourceTypeTag"
+    post:
+      operationId: postTag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [path, source_type]
+              properties:
+                collection:
+                  type: string
+                path:
+                  type: string
+                source_type:
+                  type: string
+      responses:
+        "200":
+          description: Tag set or removed.
+components:
+  schemas:
+    SearchResult:
+      type: object
+      required: [virtual_path, file_path, collection, path, title, hash, score, source]
+      properties:
+        virtual_path:
+          type: string
+        file_path:
+          type: string
+        collection:
+          type: string
+        path:
+          type: string
+        title:
+          type: string
+        hash:
+          type: string
+        score:
+          type: number
+        source:
+          type: string
+        source_type:
+          type: string
+        context:
+          type: string
+        snippet:
+          type: string
+        snippet_line:
+          type: integer
+        body:
+          type: string
+    Status:
+      type: object
+      required: [collections, total_documents, total_embeddings, pending_embeddings]
+      properties:
+        collections:
+          type: array
+          items:
+            $ref: "#/components/schemas/CollectionStatus"
+        total_documents:
+          type: integer
+        total_embeddings:
+          type: integer
+        pending_embeddings:
+          type: integer
+    CollectionStatus:
+      type: object
+      required: [name, path, pattern, document_count]
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        pattern:
+          type: string
+        document_count:
+          type: integer
+    IndexResult:
+      type: object
+      required: [collection, indexed, updated, unchanged, removed]
+      properties:
+        collection:
+          type: string
+        indexed:
+          type: integer
+        updated:
+          type: integer
+        unchanged:
+          type: integer
+        removed:
+          type: integer
+    EmbedResult:
+      type: object
+      required: [documents, chunks]
+      properties:
+        documents:
+          type: integer
+        chunks:
+          type: integer
+    ContextEntry:
+      type: object
+      required: [collection, path_prefix, description]
+      properties:
+        collection:
+          type: string
+        path_prefix:
+          type: string
+        description:
+          type: string
+    SourceTypeTag:
+      type: object
+      properties:
+        collection:
+          type: string
+        path_prefix:
+          type: string
+        source_type:
+          type: string
+    DocumentEntry:
+      type: object
+      required: [virtual_path, file_path, title]
+      properties:
+        virtual_path:
+          type: string
+        file_path:
+          type: string
+        title:
+          type: string

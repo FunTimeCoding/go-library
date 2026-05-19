@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) Score(
-	taskID string,
+	taskIdentifier string,
 	direction string,
 ) (*score.Score, error) {
 	if direction == "" {
@@ -16,7 +16,7 @@ func (c *Client) Score(
 	var result *score.Score
 
 	return result, c.post(
-		join.Empty("/tasks/", taskID, "/score/", direction),
+		join.Empty("/tasks/", taskIdentifier, "/score/", direction),
 		nil,
 		&result,
 	)

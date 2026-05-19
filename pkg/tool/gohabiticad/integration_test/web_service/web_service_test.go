@@ -19,13 +19,13 @@ func TestWebService(t *testing.T) {
 	c := o.Client
 	x := context.Background()
 	o.MockClient.AddTask(
-		task.Task{
+		&task.Task{
 			ID:   "task-1",
 			Text: "Deploy fleet",
 			Type: "daily",
 		},
 	)
-	o.MockClient.AddTag(tag.Tag{ID: "tag-1", Name: "deploy"})
+	o.MockClient.AddTag(&tag.Tag{ID: "tag-1", Name: "deploy"})
 	tasks, e := c.GetTasksWithResponse(x, &client.GetTasksParams{})
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, tasks.StatusCode())

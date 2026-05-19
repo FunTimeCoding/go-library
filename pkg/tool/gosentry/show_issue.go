@@ -7,13 +7,13 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 )
 
-func showIssue(shortID string) {
+func showIssue(shortIdentifier string) {
 	c := sentry.NewEnvironment()
-	org := environment.Required(constant.OrganizationEnvironment)
-	i := c.MustIssueByShortIdentifier(org, shortID)
+	o := environment.Required(constant.OrganizationEnvironment)
+	i := c.MustIssueByShortIdentifier(o, shortIdentifier)
 
 	if i == nil {
-		fmt.Printf("Issue not found: %s\n", shortID)
+		fmt.Printf("Issue not found: %s\n", shortIdentifier)
 
 		return
 	}
@@ -45,7 +45,7 @@ func showIssue(shortID string) {
 		fmt.Printf("Culprit:  %s\n", r.Culprit)
 	}
 
-	e := c.MustLatestEvent(org, r.ID)
+	e := c.MustLatestEvent(o, r.ID)
 	fmt.Println()
 	fmt.Printf("Latest Event: %s\n", e.EventID)
 

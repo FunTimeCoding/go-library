@@ -25,7 +25,7 @@ func Main(
 	a := argument.NewInstance(constant.Identity)
 	a.Parse(version, gitHash, buildDate)
 	pattern := filepath.Join(library.CurrentDirectory, "*.go")
-	files := slice.StripSuffix(system.Glob(pattern), "_test.go")
+	files := slice.StripSuffix(system.Glob(pattern), library.TestSuffix)
 
 	if len(files) == 0 {
 		fmt.Println("No relevant files")

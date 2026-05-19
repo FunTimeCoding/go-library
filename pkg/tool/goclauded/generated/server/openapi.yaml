@@ -1,0 +1,845 @@
+---
+openapi: "3.0.0"
+info:
+  title: goclauded
+  version: 1.0.0
+paths:
+  /api/register:
+    post:
+      operationId: postRegister
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "200":
+          description: Session registered.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterResponse"
+  /api/check:
+    get:
+      operationId: getCheck
+      parameters:
+      - name: session
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: preview
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: Session roster and pending messages.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckResponse"
+  /api/announce:
+    post:
+      operationId: postAnnounce
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnnounceRequest"
+      responses:
+        "200":
+          description: Announcement registered.
+  /api/send:
+    post:
+      operationId: postSend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendRequest"
+      responses:
+        "200":
+          description: Message sent.
+  /api/release:
+    post:
+      operationId: postRelease
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReleaseRequest"
+      responses:
+        "200":
+          description: Session released.
+  /api/wait:
+    get:
+      operationId: getWait
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: timeout
+        in: query
+        schema:
+          type: integer
+          default: 30
+      responses:
+        "200":
+          description: Pending messages or empty if timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitResponse"
+  /api/listen:
+    post:
+      operationId: postListen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListenRequest"
+      responses:
+        "200":
+          description: Listening state toggled.
+  /api/session/{name}:
+    delete:
+      operationId: deleteSession
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session deleted.
+  /api/alias:
+    get:
+      operationId: getAliases
+      responses:
+        "200":
+          description: All aliases.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AliasListResponse"
+    post:
+      operationId: postAlias
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AliasRequest"
+      responses:
+        "200":
+          description: Alias set.
+  /api/alias/{session}:
+    delete:
+      operationId: deleteAlias
+      parameters:
+      - name: session
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Alias deleted.
+  /api/sessions:
+    get:
+      operationId: getSessions
+      parameters:
+      - name: peek
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: All sessions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionListResponse"
+  /api/sessions/heatmap:
+    get:
+      operationId: getSessionsHeatmap
+      parameters:
+      - name: bash
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: Tool usage across all sessions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatmapResponse"
+  /api/sessions/find:
+    get:
+      operationId: getSessionsFind
+      parameters:
+      - name: tool
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Sessions ranked by tool usage.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindResponse"
+  /api/sessions/bash-dump:
+    get:
+      operationId: getSessionsBashDump
+      responses:
+        "200":
+          description: All Bash commands across sessions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BashDumpResponse"
+  /api/sessions/export:
+    post:
+      operationId: postSessionsExport
+      responses:
+        "200":
+          description: All sessions exported.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExportResponse"
+  /api/sessions/{identifier}:
+    delete:
+      operationId: deleteSessionById
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session deleted.
+  /api/sessions/{identifier}/detail:
+    get:
+      operationId: getSessionDetail
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session detail with alias, description, metadata, completions, and summary.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionDetailResponse"
+        "404":
+          description: Session not found.
+  /api/sessions/{identifier}/peek:
+    get:
+      operationId: getSessionPeek
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session peek data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeekResponse"
+  /api/sessions/{identifier}/messages:
+    get:
+      operationId: getSessionMessages
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session messages.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessagesResponse"
+  /api/sessions/{identifier}/tools:
+    get:
+      operationId: getSessionTools
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Tool usage for a session.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolsResponse"
+  /api/sessions/{identifier}/tool-context:
+    get:
+      operationId: getSessionToolContext
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: filter
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: surround
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      responses:
+        "200":
+          description: Conversation context around tool uses.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolContextResponse"
+  /api/sessions/{identifier}/export:
+    post:
+      operationId: postSessionExport
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session exported.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExportResponse"
+  /api/sweep:
+    post:
+      operationId: postSweep
+      responses:
+        "200":
+          description: Sweep completed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SweepResponse"
+  /api/timeline:
+    get:
+      operationId: getTimeline
+      parameters:
+      - name: since
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      responses:
+        "200":
+          description: Merged timeline of session events and memory activity.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimelineEntry"
+components:
+  schemas:
+    TimelineEntry:
+      type: object
+      required: [timestamp, kind, actor, subject]
+      properties:
+        timestamp:
+          type: string
+        kind:
+          type: string
+        actor:
+          type: string
+        subject:
+          type: string
+        detail:
+          type: string
+    RegisterRequest:
+      type: object
+      required:
+      - session
+      properties:
+        session:
+          type: string
+    RegisterResponse:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+    CheckResponse:
+      type: object
+      required:
+      - name
+      - changed
+      - sessions
+      - messages
+      - completions
+      properties:
+        name:
+          type: string
+        changed:
+          type: boolean
+        sessions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionEntry"
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Message"
+        completions:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompletionEntry"
+        timeoutMessage:
+          type: string
+        reannounce:
+          type: boolean
+        memoryActivity:
+          type: array
+          items:
+            $ref: "#/components/schemas/MemoryActivityEntry"
+    MemoryActivityEntry:
+      type: object
+      required:
+      - memory_identifier
+      - name
+      - change_type
+      - source
+      properties:
+        memory_identifier:
+          type: integer
+        name:
+          type: string
+        change_type:
+          type: string
+        source:
+          type: string
+    CompletionEntry:
+      type: object
+      required:
+      - name
+      - topic
+      - kind
+      properties:
+        name:
+          type: string
+        topic:
+          type: string
+        kind:
+          type: string
+    SessionEntry:
+      type: object
+      required:
+      - name
+      - topic
+      properties:
+        name:
+          type: string
+        topic:
+          type: string
+        alias:
+          type: string
+        slug:
+          type: string
+        firstMessage:
+          type: string
+        turnCount:
+          type: integer
+        files:
+          type: array
+          items:
+            type: string
+    Message:
+      type: object
+      required:
+      - from
+      - body
+      - timestamp
+      properties:
+        from:
+          type: string
+        body:
+          type: string
+        timestamp:
+          type: string
+    AnnounceRequest:
+      type: object
+      required:
+      - name
+      - topic
+      properties:
+        name:
+          type: string
+        topic:
+          type: string
+        files:
+          type: array
+          items:
+            type: string
+    SendRequest:
+      type: object
+      required:
+      - name
+      - body
+      properties:
+        name:
+          type: string
+        to:
+          type: string
+        body:
+          type: string
+    WaitResponse:
+      type: object
+      required:
+      - messages
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Message"
+    ListenRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        listening:
+          type: boolean
+    ReleaseRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+    AliasListResponse:
+      type: object
+      required:
+      - aliases
+      properties:
+        aliases:
+          type: array
+          items:
+            $ref: "#/components/schemas/AliasEntry"
+    AliasEntry:
+      type: object
+      required:
+      - session
+      - name
+      properties:
+        session:
+          type: string
+        name:
+          type: string
+    AliasRequest:
+      type: object
+      required:
+      - session
+      properties:
+        session:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    SessionListResponse:
+      type: object
+      required:
+      - sessions
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionDetail"
+    SessionDetail:
+      type: object
+      required:
+      - identifier
+      - timestamp
+      - lines
+      properties:
+        identifier:
+          type: string
+        slug:
+          type: string
+        timestamp:
+          type: string
+        cwd:
+          type: string
+        branch:
+          type: string
+        alias:
+          type: string
+        preview:
+          type: string
+        lines:
+          type: integer
+    PeekResponse:
+      type: object
+      required:
+      - lineCount
+      - userMessages
+      properties:
+        lineCount:
+          type: integer
+        userMessages:
+          type: array
+          items:
+            type: string
+    MessagesResponse:
+      type: object
+      required:
+      - messages
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionMessage"
+    SessionMessage:
+      type: object
+      required:
+      - role
+      - text
+      - timestamp
+      properties:
+        role:
+          type: string
+        text:
+          type: string
+        timestamp:
+          type: string
+        isMeta:
+          type: boolean
+    ToolsResponse:
+      type: object
+      required:
+      - calls
+      - counts
+      - total
+      properties:
+        calls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolCallEntry"
+        counts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolCount"
+        total:
+          type: integer
+    ToolCallEntry:
+      type: object
+      required:
+      - name
+      - timestamp
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+        timestamp:
+          type: string
+        detail:
+          type: string
+    ToolCount:
+      type: object
+      required:
+      - name
+      - count
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+    ToolContextResponse:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolContextResult"
+    ToolContextResult:
+      type: object
+      required:
+      - toolName
+      properties:
+        toolName:
+          type: string
+        before:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionMessage"
+        after:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionMessage"
+    ExportResponse:
+      type: object
+      required:
+      - paths
+      properties:
+        paths:
+          type: array
+          items:
+            type: string
+    HeatmapResponse:
+      type: object
+      required:
+      - sessionCount
+      - sessionsWithCalls
+      - totalCalls
+      - entries
+      properties:
+        sessionCount:
+          type: integer
+        sessionsWithCalls:
+          type: integer
+        totalCalls:
+          type: integer
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/HeatmapEntry"
+    HeatmapEntry:
+      type: object
+      required:
+      - name
+      - calls
+      - sessions
+      properties:
+        name:
+          type: string
+        calls:
+          type: integer
+        sessions:
+          type: integer
+    FindResponse:
+      type: object
+      required:
+      - matches
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: "#/components/schemas/FindMatch"
+    FindMatch:
+      type: object
+      required:
+      - count
+      - sessionId
+      - name
+      properties:
+        count:
+          type: integer
+        sessionId:
+          type: string
+        name:
+          type: string
+    BashDumpResponse:
+      type: object
+      required:
+      - commands
+      properties:
+        commands:
+          type: array
+          items:
+            type: string
+    SessionDetailResponse:
+      type: object
+      required:
+      - identifier
+      properties:
+        identifier:
+          type: string
+        alias:
+          type: string
+        description:
+          type: string
+        slug:
+          type: string
+        created:
+          type: string
+        turnCount:
+          type: integer
+        completions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionDetailCompletion"
+        summary:
+          type: string
+    SessionDetailCompletion:
+      type: object
+      required:
+      - kind
+      - topic
+      properties:
+        kind:
+          type: string
+        topic:
+          type: string
+        summary:
+          type: string
+        timestamp:
+          type: string
+    SweepResponse:
+      type: object
+      required:
+      - copied
+      - updated
+      - skipped
+      properties:
+        copied:
+          type: integer
+        updated:
+          type: integer
+        skipped:
+          type: integer

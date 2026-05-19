@@ -1,0 +1,8 @@
+package model_context
+
+import "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+
+type memoryWithHistory struct {
+	store.Memory
+	History []store.Version `json:"history,omitempty"`
+}

@@ -1,8 +1,8 @@
 package store
 
 func (s *Store) SetActiveInstance(
-	sessionID string,
+	sessionIdentifier string,
 	instance string,
 ) {
-	s.sessions.Store(sessionID, instance)
+	s.sessions.Store(sessionIdentifier, instance)
 }

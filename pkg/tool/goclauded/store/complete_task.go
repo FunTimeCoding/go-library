@@ -1,0 +1,31 @@
+package store
+
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
+)
+
+func (s *Store) CompleteTask(name string) string {
+	var i session.Session
+	result := s.database.Where("name = ?", name).Limit(1).Find(&i)
+	errors.PanicOnError(result.Error)
+
+	if result.RowsAffected == 0 {
+		return ""
+	}
+
+	topic := i.Topic
+	errors.PanicOnError(
+		s.database.Model(session.New()).
+			Where("name = ?", name).
+			Updates(
+				map[string]any{
+					"topic": "",
+					"files": "",
+				},
+			).Error,
+	)
+	s.notify()
+
+	return topic
+}

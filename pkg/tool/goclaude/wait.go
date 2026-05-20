@@ -3,15 +3,14 @@ package goclaude
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/spf13/cobra"
 	"os"
 )
 
-func wait() *cobra.Command {
-	var host string
-	var port int
+func wait(c *command_context.Context) *cobra.Command {
 	var timeout int
 	result := &cobra.Command{
 		Use:   "wait",
@@ -21,12 +20,8 @@ func wait() *cobra.Command {
 			_ *cobra.Command,
 			_ []string,
 		) {
-			name := os.Getenv("GOCLAUDED_NAME")
-			c, e := client.NewClientWithResponses(
-				locator.New(host).Port(port).Insecure().String(),
-			)
-			errors.PanicOnError(e)
-			response, e := c.GetWaitWithResponse(
+			name := os.Getenv(constant.NameEnvironment)
+			response, e := c.Client().GetWaitWithResponse(
 				context.Background(),
 				&client.GetWaitParams{
 					Name:    name,
@@ -55,18 +50,6 @@ func wait() *cobra.Command {
 			os.Exit(2)
 		},
 	}
-	result.Flags().StringVar(
-		&host,
-		"host",
-		"localhost",
-		"goclauded host",
-	)
-	result.Flags().IntVar(
-		&port,
-		"port",
-		8583,
-		"goclauded port",
-	)
 	result.Flags().IntVar(
 		&timeout,
 		"timeout",

@@ -17,7 +17,7 @@ func (c *Client) IssueByShortIdentifier(
 			"projects/%s/%s/issues",
 			organization,
 			strings.ToLower(
-				strings.SplitN(identifier, "-", 2)[0],
+				identifier[:strings.LastIndex(identifier, "-")],
 			),
 		),
 		map[string]string{"shortIdLookup": "1", "query": identifier},

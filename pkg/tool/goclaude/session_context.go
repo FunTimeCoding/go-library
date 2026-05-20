@@ -4,12 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
 	"github.com/spf13/cobra"
 	"strings"
 )
 
-func sessionContext(c *client.ClientWithResponses) *cobra.Command {
+func sessionContext(c *command_context.Context) *cobra.Command {
 	var surround int
 	result := &cobra.Command{
 		Use:   "context <id-or-name> <tool-filter>",
@@ -19,7 +20,7 @@ func sessionContext(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			arguments []string,
 		) {
-			identifier := resolveSession(c, arguments[0])
+			identifier := resolveSession(c.Client(), arguments[0])
 
 			if identifier == "" {
 				fmt.Printf(
@@ -30,7 +31,7 @@ func sessionContext(c *client.ClientWithResponses) *cobra.Command {
 				return
 			}
 
-			response, e := c.GetSessionToolContextWithResponse(
+			response, e := c.Client().GetSessionToolContextWithResponse(
 				context.Background(),
 				identifier,
 				&client.GetSessionToolContextParams{

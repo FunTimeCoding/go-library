@@ -4,9 +4,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclaude/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/spf13/cobra"
 )
 
@@ -17,18 +18,32 @@ func Main(
 ) {
 	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
+	var host string
+	var port int
+	c := command_context.New()
 	o := &cobra.Command{
 		Use:     constant.Identity.Usage(),
 		Short:   constant.Identity.Description(),
 		Version: argument.CobraVersion(version, gitHash, buildDate),
+		PersistentPreRun: func(_ *cobra.Command, _ []string) {
+			c.Initialize(host, port)
+		},
 	}
-	c, e := client.NewClientWithResponses(
-		locator.New("localhost").Port(8583).Insecure().String(),
+	o.PersistentFlags().StringVar(
+		&host,
+		"host",
+		environment.Fallback(constant.HostEnvironment, web.Localhost),
+		"goclauded host",
 	)
-	errors.PanicOnError(e)
+	o.PersistentFlags().IntVar(
+		&port,
+		"port",
+		environment.FallbackInteger(constant.PortEnvironment, web.ListenPort),
+		"goclauded port",
+	)
 	o.AddCommand(sessionBranch(c))
-	o.AddCommand(register())
-	o.AddCommand(check())
-	o.AddCommand(wait())
+	o.AddCommand(register(c))
+	o.AddCommand(check(c))
+	o.AddCommand(wait(c))
 	errors.PanicOnError(o.Execute())
 }

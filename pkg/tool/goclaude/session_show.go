@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/spf13/cobra"
 )
 
-func sessionShow(c *client.ClientWithResponses) *cobra.Command {
+func sessionShow(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "show <id-or-name>",
 		Short: "Show session detail with alias, description, completions, and summary",
@@ -17,7 +17,7 @@ func sessionShow(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			arguments []string,
 		) {
-			response, e := c.GetSessionDetailWithResponse(
+			response, e := c.Client().GetSessionDetailWithResponse(
 				context.Background(),
 				arguments[0],
 			)

@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/spf13/cobra"
 )
 
-func sessionExport(c *client.ClientWithResponses) *cobra.Command {
+func sessionExport(c *command_context.Context) *cobra.Command {
 	var all bool
 	result := &cobra.Command{
 		Use:   "export [id-or-name]",
@@ -19,7 +19,7 @@ func sessionExport(c *client.ClientWithResponses) *cobra.Command {
 			arguments []string,
 		) {
 			if all {
-				response, e := c.PostSessionsExportWithResponse(
+				response, e := c.Client().PostSessionsExportWithResponse(
 					context.Background(),
 				)
 				errors.PanicOnError(e)
@@ -37,7 +37,7 @@ func sessionExport(c *client.ClientWithResponses) *cobra.Command {
 				return
 			}
 
-			identifier := resolveSession(c, arguments[0])
+			identifier := resolveSession(c.Client(), arguments[0])
 
 			if identifier == "" {
 				fmt.Printf(
@@ -48,7 +48,7 @@ func sessionExport(c *client.ClientWithResponses) *cobra.Command {
 				return
 			}
 
-			response, e := c.PostSessionExportWithResponse(
+			response, e := c.Client().PostSessionExportWithResponse(
 				context.Background(),
 				identifier,
 			)

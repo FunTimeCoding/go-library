@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
 	"github.com/spf13/cobra"
 )
 
-func sessionFind(c *client.ClientWithResponses) *cobra.Command {
+func sessionFind(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "find <tool-filter>",
 		Short: "Find sessions by tool usage",
@@ -17,7 +18,7 @@ func sessionFind(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			arguments []string,
 		) {
-			response, e := c.GetSessionsFindWithResponse(
+			response, e := c.Client().GetSessionsFindWithResponse(
 				context.Background(),
 				&client.GetSessionsFindParams{
 					Tool: arguments[0],

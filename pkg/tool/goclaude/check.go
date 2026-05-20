@@ -4,15 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/spf13/cobra"
 	"os"
 )
 
-func check() *cobra.Command {
-	var host string
-	var port int
+func check(c *command_context.Context) *cobra.Command {
 	result := &cobra.Command{
 		Use:   "check",
 		Short: "Check goclauded for session roster and messages (hook output)",
@@ -22,11 +20,7 @@ func check() *cobra.Command {
 			_ []string,
 		) {
 			sessionID := sessionIdentifierFromEnvironment()
-			c, e := client.NewClientWithResponses(
-				locator.New(host).Port(port).Insecure().String(),
-			)
-			errors.PanicOnError(e)
-			response, e := c.GetCheckWithResponse(
+			response, e := c.Client().GetCheckWithResponse(
 				context.Background(),
 				&client.GetCheckParams{Session: sessionID},
 			)
@@ -60,18 +54,6 @@ func check() *cobra.Command {
 			errors.PanicOnError(json.NewEncoder(os.Stdout).Encode(output))
 		},
 	}
-	result.Flags().StringVar(
-		&host,
-		"host",
-		"localhost",
-		"goclauded host",
-	)
-	result.Flags().IntVar(
-		&port,
-		"port",
-		8583,
-		"goclauded port",
-	)
 
 	return result
 }

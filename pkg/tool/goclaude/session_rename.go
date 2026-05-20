@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
 	"github.com/spf13/cobra"
 )
 
-func sessionRename(c *client.ClientWithResponses) *cobra.Command {
+func sessionRename(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "rename <id-or-name> <new-name>",
 		Short: "Set a display name for a session",
@@ -17,7 +18,7 @@ func sessionRename(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			arguments []string,
 		) {
-			identifier := resolveSession(c, arguments[0])
+			identifier := resolveSession(c.Client(), arguments[0])
 
 			if identifier == "" {
 				fmt.Printf(
@@ -29,7 +30,7 @@ func sessionRename(c *client.ClientWithResponses) *cobra.Command {
 			}
 
 			name := arguments[1]
-			_, e := c.PostAliasWithResponse(
+			_, e := c.Client().PostAliasWithResponse(
 				context.Background(),
 				client.PostAliasJSONRequestBody{
 					Session: identifier,

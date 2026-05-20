@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/spf13/cobra"
 )
 
-func sessionBashDump(c *client.ClientWithResponses) *cobra.Command {
+func sessionBashDump(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "bash-dump",
 		Short: "Dump all raw Bash commands across sessions",
@@ -17,7 +17,7 @@ func sessionBashDump(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			_ []string,
 		) {
-			response, e := c.GetSessionsBashDumpWithResponse(
+			response, e := c.Client().GetSessionsBashDumpWithResponse(
 				context.Background(),
 			)
 			errors.PanicOnError(e)

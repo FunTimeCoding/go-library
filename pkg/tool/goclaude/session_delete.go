@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/spf13/cobra"
 )
 
-func sessionDelete(c *client.ClientWithResponses) *cobra.Command {
+func sessionDelete(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "delete <id-or-name>",
 		Short: "Delete a session and its data",
@@ -17,7 +17,7 @@ func sessionDelete(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			arguments []string,
 		) {
-			identifier := resolveSession(c, arguments[0])
+			identifier := resolveSession(c.Client(), arguments[0])
 
 			if identifier == "" {
 				fmt.Printf(
@@ -28,7 +28,7 @@ func sessionDelete(c *client.ClientWithResponses) *cobra.Command {
 				return
 			}
 
-			_, e := c.DeleteSessionByIdWithResponse(
+			_, e := c.Client().DeleteSessionByIdWithResponse(
 				context.Background(),
 				identifier,
 			)

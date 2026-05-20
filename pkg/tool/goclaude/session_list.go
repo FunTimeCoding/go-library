@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
 	"github.com/spf13/cobra"
 )
 
-func sessionList(c *client.ClientWithResponses) *cobra.Command {
+func sessionList(c *command_context.Context) *cobra.Command {
 	var peek bool
 	result := &cobra.Command{
 		Use:   "list",
@@ -18,7 +19,7 @@ func sessionList(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			_ []string,
 		) {
-			response, e := c.GetSessionsWithResponse(
+			response, e := c.Client().GetSessionsWithResponse(
 				context.Background(),
 				&client.GetSessionsParams{Peek: &peek},
 			)

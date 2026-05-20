@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/spf13/cobra"
 )
 
-func sessionSweep(c *client.ClientWithResponses) *cobra.Command {
+func sessionSweep(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "sweep",
 		Short: "Copy session files to safe harbor",
@@ -17,7 +17,7 @@ func sessionSweep(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			_ []string,
 		) {
-			response, e := c.PostSweepWithResponse(
+			response, e := c.Client().PostSweepWithResponse(
 				context.Background(),
 			)
 			errors.PanicOnError(e)

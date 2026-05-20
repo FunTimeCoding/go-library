@@ -1,11 +1,11 @@
 package goclaude
 
 import (
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/spf13/cobra"
 )
 
-func sessionBranch(c *client.ClientWithResponses) *cobra.Command {
+func sessionBranch(c *command_context.Context) *cobra.Command {
 	result := &cobra.Command{Use: "session"}
 	result.AddCommand(sessionList(c))
 	result.AddCommand(sessionShow(c))

@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/spf13/cobra"
 )
 
-func sessionTools(c *client.ClientWithResponses) *cobra.Command {
+func sessionTools(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "tools <id-or-name>",
 		Short: "Show tool usage counts for a session",
@@ -17,7 +17,7 @@ func sessionTools(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			arguments []string,
 		) {
-			identifier := resolveSession(c, arguments[0])
+			identifier := resolveSession(c.Client(), arguments[0])
 
 			if identifier == "" {
 				fmt.Printf(
@@ -28,7 +28,7 @@ func sessionTools(c *client.ClientWithResponses) *cobra.Command {
 				return
 			}
 
-			response, e := c.GetSessionToolsWithResponse(
+			response, e := c.Client().GetSessionToolsWithResponse(
 				context.Background(),
 				identifier,
 			)

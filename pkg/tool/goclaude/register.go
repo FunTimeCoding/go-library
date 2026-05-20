@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/spf13/cobra"
 	"os"
 )
 
-func register() *cobra.Command {
-	var host string
-	var port int
+func register(c *command_context.Context) *cobra.Command {
 	result := &cobra.Command{
 		Use:   "register",
 		Short: "Register session with goclauded (SessionStart hook)",
@@ -28,11 +27,7 @@ func register() *cobra.Command {
 				return
 			}
 
-			c, e := client.NewClientWithResponses(
-				locator.New(host).Port(port).Insecure().String(),
-			)
-			errors.PanicOnError(e)
-			response, e := c.PostRegisterWithResponse(
+			response, e := c.Client().PostRegisterWithResponse(
 				context.Background(),
 				client.PostRegisterJSONRequestBody{
 					Session: sessionID,
@@ -60,29 +55,18 @@ func register() *cobra.Command {
 				if fe == nil {
 					_, e = fmt.Fprintf(
 						f,
-						"export GOCLAUDED_SESSION_ID=%s\n",
+						"export %s=%s\n",
+					constant.SessionIdentifierEnvironment,
 						sessionID,
 					)
 					errors.PanicOnError(e)
-					_, e = fmt.Fprintf(f, "export GOCLAUDED_NAME=%s\n", name)
+					_, e = fmt.Fprintf(f, "export %s=%s\n", constant.NameEnvironment, name)
 					errors.PanicOnError(e)
 					errors.PanicOnError(f.Close())
 				}
 			}
 		},
 	}
-	result.Flags().StringVar(
-		&host,
-		"host",
-		"localhost",
-		"goclauded host",
-	)
-	result.Flags().IntVar(
-		&port,
-		"port",
-		8583,
-		"goclauded port",
-	)
 
 	return result
 }

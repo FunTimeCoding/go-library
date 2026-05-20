@@ -8,4 +8,9 @@ var Identity = identity.New(
 	"goclaude [command]",
 )
 
-const SessionIdentifierEnvironment = "GOCLAUDED_SESSION_ID"
+const (
+	SessionIdentifierEnvironment = "CLAUDE_SESSION_ID"
+	NameEnvironment = "CLAUDE_NAME"
+	HostEnvironment = "CLAUDE_HOST"
+	PortEnvironment = "CLAUDE_PORT"
+)

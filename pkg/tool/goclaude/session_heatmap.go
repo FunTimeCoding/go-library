@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
 	"github.com/spf13/cobra"
 )
 
-func sessionHeatmap(c *client.ClientWithResponses) *cobra.Command {
+func sessionHeatmap(c *command_context.Context) *cobra.Command {
 	var bash bool
 	result := &cobra.Command{
 		Use:   "heatmap",
@@ -18,7 +19,7 @@ func sessionHeatmap(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			_ []string,
 		) {
-			response, e := c.GetSessionsHeatmapWithResponse(
+			response, e := c.Client().GetSessionsHeatmapWithResponse(
 				context.Background(),
 				&client.GetSessionsHeatmapParams{
 					Bash: &bash,

@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/spf13/cobra"
 )
 
-func sessionPrint(c *client.ClientWithResponses) *cobra.Command {
+func sessionPrint(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "print <id-or-name>",
 		Short: "Print a session to stdout",
@@ -17,7 +17,7 @@ func sessionPrint(c *client.ClientWithResponses) *cobra.Command {
 			_ *cobra.Command,
 			arguments []string,
 		) {
-			identifier := resolveSession(c, arguments[0])
+			identifier := resolveSession(c.Client(), arguments[0])
 
 			if identifier == "" {
 				fmt.Printf(
@@ -28,7 +28,7 @@ func sessionPrint(c *client.ClientWithResponses) *cobra.Command {
 				return
 			}
 
-			response, e := c.GetSessionMessagesWithResponse(
+			response, e := c.Client().GetSessionMessagesWithResponse(
 				context.Background(),
 				identifier,
 			)

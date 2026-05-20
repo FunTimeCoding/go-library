@@ -2,19 +2,17 @@ package check
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/linux"
 	"github.com/funtimecoding/go-library/pkg/linux/systemd/command"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/strings/split"
 	"github.com/funtimecoding/go-library/pkg/system/constant"
 	"github.com/funtimecoding/go-library/pkg/system/run"
-	"github.com/spf13/viper"
 	"runtime"
 	"slices"
 )
 
-func Check() {
+func Check(port string) {
 	switch runtime.GOOS {
 	case constant.Linux:
 		fmt.Println("Linux")
@@ -24,7 +22,7 @@ func Check() {
 		diskFull()
 
 		if run.CommandExists(linux.Jc) {
-			if port := viper.GetString(argument.Port); port != "" {
+			if port != "" {
 				ports := split.Comma(port)
 				var found []string
 

@@ -21,5 +21,5 @@ func Main(
 		"Port, multiple values separated by comma",
 	)
 	a.Parse(version, gitHash, buildDate)
-	check.Check()
+	check.Check(a.GetString(argument.Port))
 }

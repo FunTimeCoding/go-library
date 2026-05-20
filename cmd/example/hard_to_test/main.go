@@ -17,7 +17,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/markup"
 	"github.com/funtimecoding/go-library/pkg/metric"
-	"github.com/funtimecoding/go-library/pkg/monitor"
 	"github.com/funtimecoding/go-library/pkg/notifier/mattermost_notifier"
 	"github.com/funtimecoding/go-library/pkg/project"
 	"github.com/funtimecoding/go-library/pkg/prometheus/push"
@@ -80,7 +79,6 @@ func main() {
 	client.NewContextStrict("")
 	client.NewInCluster("")
 	chromium.NewCombined("")
-	monitor.BindGeneric()
 	brave.OpenProfileLink("", "")
 	writer.Print(nil, "")
 	page.PrintBody(response.Body{})

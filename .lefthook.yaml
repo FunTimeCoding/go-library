@@ -1,2 +1,3 @@
 ---
+# https://lefthook.dev/configuration
 pre-push: {jobs: [{run: task pre-push}]}

@@ -1,4 +1,5 @@
 ---
+# https://golangci-lint.run/docs/configuration/file
 # Verify: golangci-lint config verify
 version: '2'
 run: {allow-serial-runners: true}

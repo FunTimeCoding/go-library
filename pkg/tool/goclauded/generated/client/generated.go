@@ -16,29 +16,11 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
-// AliasEntry defines model for AliasEntry.
-type AliasEntry struct {
-	Name    string `json:"name"`
-	Session string `json:"session"`
-}
-
-// AliasListResponse defines model for AliasListResponse.
-type AliasListResponse struct {
-	Aliases []AliasEntry `json:"aliases"`
-}
-
-// AliasRequest defines model for AliasRequest.
-type AliasRequest struct {
-	Description *string `json:"description,omitempty"`
-	Name        *string `json:"name,omitempty"`
-	Session     string  `json:"session"`
-}
-
 // AnnounceRequest defines model for AnnounceRequest.
 type AnnounceRequest struct {
-	Files *[]string `json:"files,omitempty"`
-	Name  string    `json:"name"`
-	Topic string    `json:"topic"`
+	Callsign string    `json:"callsign"`
+	Files    *[]string `json:"files,omitempty"`
+	Topic    string    `json:"topic"`
 }
 
 // BashDumpResponse defines model for BashDumpResponse.
@@ -48,11 +30,11 @@ type BashDumpResponse struct {
 
 // CheckResponse defines model for CheckResponse.
 type CheckResponse struct {
+	Callsign       string                 `json:"callsign"`
 	Changed        bool                   `json:"changed"`
 	Completions    []CompletionEntry      `json:"completions"`
 	MemoryActivity *[]MemoryActivityEntry `json:"memoryActivity,omitempty"`
 	Messages       []Message              `json:"messages"`
-	Name           string                 `json:"name"`
 	Reannounce     *bool                  `json:"reannounce,omitempty"`
 	Sessions       []SessionEntry         `json:"sessions"`
 	TimeoutMessage *string                `json:"timeoutMessage,omitempty"`
@@ -63,6 +45,15 @@ type CompletionEntry struct {
 	Kind  string `json:"kind"`
 	Name  string `json:"name"`
 	Topic string `json:"topic"`
+}
+
+// EditSessionRequest defines model for EditSessionRequest.
+type EditSessionRequest struct {
+	Description *string `json:"description,omitempty"`
+	Files       *string `json:"files,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Session     string  `json:"session"`
+	Topic       *string `json:"topic,omitempty"`
 }
 
 // ExportResponse defines model for ExportResponse.
@@ -99,8 +90,8 @@ type HeatmapResponse struct {
 
 // ListenRequest defines model for ListenRequest.
 type ListenRequest struct {
+	Callsign  string `json:"callsign"`
 	Listening *bool  `json:"listening,omitempty"`
-	Name      string `json:"name"`
 }
 
 // MemoryActivityEntry defines model for MemoryActivityEntry.
@@ -136,31 +127,51 @@ type RegisterRequest struct {
 
 // RegisterResponse defines model for RegisterResponse.
 type RegisterResponse struct {
-	Name string `json:"name"`
+	Callsign string `json:"callsign"`
 }
 
 // ReleaseRequest defines model for ReleaseRequest.
 type ReleaseRequest struct {
-	Name string `json:"name"`
+	Callsign string `json:"callsign"`
+}
+
+// ResolveAmbiguousResponse defines model for ResolveAmbiguousResponse.
+type ResolveAmbiguousResponse struct {
+	Matches []ResolveMatch `json:"matches"`
+}
+
+// ResolveMatch defines model for ResolveMatch.
+type ResolveMatch struct {
+	Alias      *string `json:"alias,omitempty"`
+	Field      string  `json:"field"`
+	Identifier string  `json:"identifier"`
+	Name       *string `json:"name,omitempty"`
+}
+
+// ResolveResponse defines model for ResolveResponse.
+type ResolveResponse struct {
+	Identifier string `json:"identifier"`
 }
 
 // SendRequest defines model for SendRequest.
 type SendRequest struct {
-	Body string  `json:"body"`
-	Name string  `json:"name"`
-	To   *string `json:"to,omitempty"`
+	Body     string  `json:"body"`
+	Callsign string  `json:"callsign"`
+	To       *string `json:"to,omitempty"`
 }
 
 // SessionDetail defines model for SessionDetail.
 type SessionDetail struct {
-	Alias      *string `json:"alias,omitempty"`
-	Branch     *string `json:"branch,omitempty"`
-	Cwd        *string `json:"cwd,omitempty"`
-	Identifier string  `json:"identifier"`
-	Lines      int     `json:"lines"`
-	Preview    *string `json:"preview,omitempty"`
-	Slug       *string `json:"slug,omitempty"`
-	Timestamp  string  `json:"timestamp"`
+	Alias       *string `json:"alias,omitempty"`
+	Branch      *string `json:"branch,omitempty"`
+	Cwd         *string `json:"cwd,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Identifier  string  `json:"identifier"`
+	Lines       int     `json:"lines"`
+	Name        *string `json:"name,omitempty"`
+	Preview     *string `json:"preview,omitempty"`
+	Slug        *string `json:"slug,omitempty"`
+	Timestamp   string  `json:"timestamp"`
 }
 
 // SessionDetailCompletion defines model for SessionDetailCompletion.
@@ -174,10 +185,12 @@ type SessionDetailCompletion struct {
 // SessionDetailResponse defines model for SessionDetailResponse.
 type SessionDetailResponse struct {
 	Alias       *string                    `json:"alias,omitempty"`
+	Callsign    *string                    `json:"callsign,omitempty"`
 	Completions *[]SessionDetailCompletion `json:"completions,omitempty"`
 	Created     *string                    `json:"created,omitempty"`
 	Description *string                    `json:"description,omitempty"`
 	Identifier  string                     `json:"identifier"`
+	Name        *string                    `json:"name,omitempty"`
 	Slug        *string                    `json:"slug,omitempty"`
 	Summary     *string                    `json:"summary,omitempty"`
 	TurnCount   *int                       `json:"turnCount,omitempty"`
@@ -186,9 +199,9 @@ type SessionDetailResponse struct {
 // SessionEntry defines model for SessionEntry.
 type SessionEntry struct {
 	Alias        *string   `json:"alias,omitempty"`
+	Callsign     string    `json:"callsign"`
 	Files        *[]string `json:"files,omitempty"`
 	FirstMessage *string   `json:"firstMessage,omitempty"`
-	Name         string    `json:"name"`
 	Slug         *string   `json:"slug,omitempty"`
 	Topic        string    `json:"topic"`
 	TurnCount    *int      `json:"turnCount,omitempty"`
@@ -267,9 +280,16 @@ type GetCheckParams struct {
 	Preview *bool  `form:"preview,omitempty" json:"preview,omitempty"`
 }
 
+// GetResolveParams defines parameters for GetResolve.
+type GetResolveParams struct {
+	Query string `form:"query" json:"query"`
+}
+
 // GetSessionsParams defines parameters for GetSessions.
 type GetSessionsParams struct {
-	Peek *bool `form:"peek,omitempty" json:"peek,omitempty"`
+	Peek   *bool `form:"peek,omitempty" json:"peek,omitempty"`
+	Limit  *int  `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int  `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
 // GetSessionsFindParams defines parameters for GetSessionsFind.
@@ -297,12 +317,9 @@ type GetTimelineParams struct {
 
 // GetWaitParams defines parameters for GetWait.
 type GetWaitParams struct {
-	Name    string `form:"name" json:"name"`
-	Timeout *int   `form:"timeout,omitempty" json:"timeout,omitempty"`
+	Callsign string `form:"callsign" json:"callsign"`
+	Timeout  *int   `form:"timeout,omitempty" json:"timeout,omitempty"`
 }
-
-// PostAliasJSONRequestBody defines body for PostAlias for application/json ContentType.
-type PostAliasJSONRequestBody = AliasRequest
 
 // PostAnnounceJSONRequestBody defines body for PostAnnounce for application/json ContentType.
 type PostAnnounceJSONRequestBody = AnnounceRequest
@@ -318,6 +335,9 @@ type PostReleaseJSONRequestBody = ReleaseRequest
 
 // PostSendJSONRequestBody defines body for PostSend for application/json ContentType.
 type PostSendJSONRequestBody = SendRequest
+
+// PostEditSessionJSONRequestBody defines body for PostEditSession for application/json ContentType.
+type PostEditSessionJSONRequestBody = EditSessionRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -392,17 +412,6 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetAliases request
-	GetAliases(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostAliasWithBody request with any body
-	PostAliasWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	PostAlias(ctx context.Context, body PostAliasJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeleteAlias request
-	DeleteAlias(ctx context.Context, session string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// PostAnnounceWithBody request with any body
 	PostAnnounceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -426,19 +435,27 @@ type ClientInterface interface {
 
 	PostRelease(ctx context.Context, body PostReleaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetResolve request
+	GetResolve(ctx context.Context, params *GetResolveParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PostSendWithBody request with any body
 	PostSendWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostSend(ctx context.Context, body PostSendJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteSession request
-	DeleteSession(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteSession(ctx context.Context, callsign string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSessions request
 	GetSessions(ctx context.Context, params *GetSessionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSessionsBashDump request
 	GetSessionsBashDump(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostEditSessionWithBody request with any body
+	PostEditSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostEditSession(ctx context.Context, body PostEditSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostSessionsExport request
 	PostSessionsExport(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -478,54 +495,6 @@ type ClientInterface interface {
 
 	// GetWait request
 	GetWait(ctx context.Context, params *GetWaitParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-}
-
-func (c *Client) GetAliases(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAliasesRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) PostAliasWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostAliasRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) PostAlias(ctx context.Context, body PostAliasJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostAliasRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeleteAlias(ctx context.Context, session string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAliasRequest(c.Server, session)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
 }
 
 func (c *Client) PostAnnounceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -636,6 +605,18 @@ func (c *Client) PostRelease(ctx context.Context, body PostReleaseJSONRequestBod
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetResolve(ctx context.Context, params *GetResolveParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetResolveRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) PostSendWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostSendRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -660,8 +641,8 @@ func (c *Client) PostSend(ctx context.Context, body PostSendJSONRequestBody, req
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSession(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSessionRequest(c.Server, name)
+func (c *Client) DeleteSession(ctx context.Context, callsign string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSessionRequest(c.Server, callsign)
 	if err != nil {
 		return nil, err
 	}
@@ -686,6 +667,30 @@ func (c *Client) GetSessions(ctx context.Context, params *GetSessionsParams, req
 
 func (c *Client) GetSessionsBashDump(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetSessionsBashDumpRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostEditSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostEditSessionRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostEditSession(ctx context.Context, body PostEditSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostEditSessionRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -850,107 +855,6 @@ func (c *Client) GetWait(ctx context.Context, params *GetWaitParams, reqEditors 
 		return nil, err
 	}
 	return c.Client.Do(req)
-}
-
-// NewGetAliasesRequest generates requests for GetAliases
-func NewGetAliasesRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/alias")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostAliasRequest calls the generic PostAlias builder with application/json body
-func NewPostAliasRequest(server string, body PostAliasJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPostAliasRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPostAliasRequestWithBody generates requests for PostAlias with any type of body
-func NewPostAliasRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/alias")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewDeleteAliasRequest generates requests for DeleteAlias
-func NewDeleteAliasRequest(server string, session string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "session", session, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/alias/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
 }
 
 // NewPostAnnounceRequest calls the generic PostAnnounce builder with application/json body
@@ -1174,6 +1078,51 @@ func NewPostReleaseRequestWithBody(server string, contentType string, body io.Re
 	return req, nil
 }
 
+// NewGetResolveRequest generates requests for GetResolve
+func NewGetResolveRequest(server string, params *GetResolveParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/resolve")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewPostSendRequest calls the generic PostSend builder with application/json body
 func NewPostSendRequest(server string, body PostSendJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -1215,12 +1164,12 @@ func NewPostSendRequestWithBody(server string, contentType string, body io.Reade
 }
 
 // NewDeleteSessionRequest generates requests for DeleteSession
-func NewDeleteSessionRequest(server string, name string) (*http.Request, error) {
+func NewDeleteSessionRequest(server string, callsign string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "callsign", callsign, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
 	if err != nil {
 		return nil, err
 	}
@@ -1286,6 +1235,38 @@ func NewGetSessionsRequest(server string, params *GetSessionsParams) (*http.Requ
 
 		}
 
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -1320,6 +1301,46 @@ func NewGetSessionsBashDumpRequest(server string) (*http.Request, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewPostEditSessionRequest calls the generic PostEditSession builder with application/json body
+func NewPostEditSessionRequest(server string, body PostEditSessionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostEditSessionRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostEditSessionRequestWithBody generates requests for PostEditSession with any type of body
+func NewPostEditSessionRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/sessions/edit")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -1847,7 +1868,7 @@ func NewGetWaitRequest(server string, params *GetWaitParams) (*http.Request, err
 	if params != nil {
 		queryValues := queryURL.Query()
 
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "name", params.Name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "callsign", params.Callsign, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 			return nil, err
 		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 			return nil, err
@@ -1929,17 +1950,6 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetAliasesWithResponse request
-	GetAliasesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAliasesResponse, error)
-
-	// PostAliasWithBodyWithResponse request with any body
-	PostAliasWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostAliasResponse, error)
-
-	PostAliasWithResponse(ctx context.Context, body PostAliasJSONRequestBody, reqEditors ...RequestEditorFn) (*PostAliasResponse, error)
-
-	// DeleteAliasWithResponse request
-	DeleteAliasWithResponse(ctx context.Context, session string, reqEditors ...RequestEditorFn) (*DeleteAliasResponse, error)
-
 	// PostAnnounceWithBodyWithResponse request with any body
 	PostAnnounceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostAnnounceResponse, error)
 
@@ -1963,19 +1973,27 @@ type ClientWithResponsesInterface interface {
 
 	PostReleaseWithResponse(ctx context.Context, body PostReleaseJSONRequestBody, reqEditors ...RequestEditorFn) (*PostReleaseResponse, error)
 
+	// GetResolveWithResponse request
+	GetResolveWithResponse(ctx context.Context, params *GetResolveParams, reqEditors ...RequestEditorFn) (*GetResolveResponse, error)
+
 	// PostSendWithBodyWithResponse request with any body
 	PostSendWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSendResponse, error)
 
 	PostSendWithResponse(ctx context.Context, body PostSendJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSendResponse, error)
 
 	// DeleteSessionWithResponse request
-	DeleteSessionWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*DeleteSessionResponse, error)
+	DeleteSessionWithResponse(ctx context.Context, callsign string, reqEditors ...RequestEditorFn) (*DeleteSessionResponse, error)
 
 	// GetSessionsWithResponse request
 	GetSessionsWithResponse(ctx context.Context, params *GetSessionsParams, reqEditors ...RequestEditorFn) (*GetSessionsResponse, error)
 
 	// GetSessionsBashDumpWithResponse request
 	GetSessionsBashDumpWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetSessionsBashDumpResponse, error)
+
+	// PostEditSessionWithBodyWithResponse request with any body
+	PostEditSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostEditSessionResponse, error)
+
+	PostEditSessionWithResponse(ctx context.Context, body PostEditSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*PostEditSessionResponse, error)
 
 	// PostSessionsExportWithResponse request
 	PostSessionsExportWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostSessionsExportResponse, error)
@@ -2015,70 +2033,6 @@ type ClientWithResponsesInterface interface {
 
 	// GetWaitWithResponse request
 	GetWaitWithResponse(ctx context.Context, params *GetWaitParams, reqEditors ...RequestEditorFn) (*GetWaitResponse, error)
-}
-
-type GetAliasesResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *AliasListResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r GetAliasesResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetAliasesResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type PostAliasResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r PostAliasResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostAliasResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DeleteAliasResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r DeleteAliasResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAliasResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
 }
 
 type PostAnnounceResponse struct {
@@ -2188,6 +2142,29 @@ func (r PostReleaseResponse) StatusCode() int {
 	return 0
 }
 
+type GetResolveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ResolveResponse
+	JSON409      *ResolveAmbiguousResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetResolveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetResolveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type PostSendResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2268,6 +2245,27 @@ func (r GetSessionsBashDumpResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetSessionsBashDumpResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostEditSessionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r PostEditSessionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostEditSessionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2559,41 +2557,6 @@ func (r GetWaitResponse) StatusCode() int {
 	return 0
 }
 
-// GetAliasesWithResponse request returning *GetAliasesResponse
-func (c *ClientWithResponses) GetAliasesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAliasesResponse, error) {
-	rsp, err := c.GetAliases(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetAliasesResponse(rsp)
-}
-
-// PostAliasWithBodyWithResponse request with arbitrary body returning *PostAliasResponse
-func (c *ClientWithResponses) PostAliasWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostAliasResponse, error) {
-	rsp, err := c.PostAliasWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostAliasResponse(rsp)
-}
-
-func (c *ClientWithResponses) PostAliasWithResponse(ctx context.Context, body PostAliasJSONRequestBody, reqEditors ...RequestEditorFn) (*PostAliasResponse, error) {
-	rsp, err := c.PostAlias(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostAliasResponse(rsp)
-}
-
-// DeleteAliasWithResponse request returning *DeleteAliasResponse
-func (c *ClientWithResponses) DeleteAliasWithResponse(ctx context.Context, session string, reqEditors ...RequestEditorFn) (*DeleteAliasResponse, error) {
-	rsp, err := c.DeleteAlias(ctx, session, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeleteAliasResponse(rsp)
-}
-
 // PostAnnounceWithBodyWithResponse request with arbitrary body returning *PostAnnounceResponse
 func (c *ClientWithResponses) PostAnnounceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostAnnounceResponse, error) {
 	rsp, err := c.PostAnnounceWithBody(ctx, contentType, body, reqEditors...)
@@ -2671,6 +2634,15 @@ func (c *ClientWithResponses) PostReleaseWithResponse(ctx context.Context, body 
 	return ParsePostReleaseResponse(rsp)
 }
 
+// GetResolveWithResponse request returning *GetResolveResponse
+func (c *ClientWithResponses) GetResolveWithResponse(ctx context.Context, params *GetResolveParams, reqEditors ...RequestEditorFn) (*GetResolveResponse, error) {
+	rsp, err := c.GetResolve(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetResolveResponse(rsp)
+}
+
 // PostSendWithBodyWithResponse request with arbitrary body returning *PostSendResponse
 func (c *ClientWithResponses) PostSendWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSendResponse, error) {
 	rsp, err := c.PostSendWithBody(ctx, contentType, body, reqEditors...)
@@ -2689,8 +2661,8 @@ func (c *ClientWithResponses) PostSendWithResponse(ctx context.Context, body Pos
 }
 
 // DeleteSessionWithResponse request returning *DeleteSessionResponse
-func (c *ClientWithResponses) DeleteSessionWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*DeleteSessionResponse, error) {
-	rsp, err := c.DeleteSession(ctx, name, reqEditors...)
+func (c *ClientWithResponses) DeleteSessionWithResponse(ctx context.Context, callsign string, reqEditors ...RequestEditorFn) (*DeleteSessionResponse, error) {
+	rsp, err := c.DeleteSession(ctx, callsign, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2713,6 +2685,23 @@ func (c *ClientWithResponses) GetSessionsBashDumpWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseGetSessionsBashDumpResponse(rsp)
+}
+
+// PostEditSessionWithBodyWithResponse request with arbitrary body returning *PostEditSessionResponse
+func (c *ClientWithResponses) PostEditSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostEditSessionResponse, error) {
+	rsp, err := c.PostEditSessionWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostEditSessionResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostEditSessionWithResponse(ctx context.Context, body PostEditSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*PostEditSessionResponse, error) {
+	rsp, err := c.PostEditSession(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostEditSessionResponse(rsp)
 }
 
 // PostSessionsExportWithResponse request returning *PostSessionsExportResponse
@@ -2832,64 +2821,6 @@ func (c *ClientWithResponses) GetWaitWithResponse(ctx context.Context, params *G
 	return ParseGetWaitResponse(rsp)
 }
 
-// ParseGetAliasesResponse parses an HTTP response from a GetAliasesWithResponse call
-func ParseGetAliasesResponse(rsp *http.Response) (*GetAliasesResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetAliasesResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AliasListResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostAliasResponse parses an HTTP response from a PostAliasWithResponse call
-func ParsePostAliasResponse(rsp *http.Response) (*PostAliasResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostAliasResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseDeleteAliasResponse parses an HTTP response from a DeleteAliasWithResponse call
-func ParseDeleteAliasResponse(rsp *http.Response) (*DeleteAliasResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeleteAliasResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
 // ParsePostAnnounceResponse parses an HTTP response from a PostAnnounceWithResponse call
 func ParsePostAnnounceResponse(rsp *http.Response) (*PostAnnounceResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -2990,6 +2921,39 @@ func ParsePostReleaseResponse(rsp *http.Response) (*PostReleaseResponse, error) 
 	return response, nil
 }
 
+// ParseGetResolveResponse parses an HTTP response from a GetResolveWithResponse call
+func ParseGetResolveResponse(rsp *http.Response) (*GetResolveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetResolveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ResolveResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ResolveAmbiguousResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParsePostSendResponse parses an HTTP response from a PostSendWithResponse call
 func ParsePostSendResponse(rsp *http.Response) (*PostSendResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -3069,6 +3033,22 @@ func ParseGetSessionsBashDumpResponse(rsp *http.Response) (*GetSessionsBashDumpR
 		}
 		response.JSON200 = &dest
 
+	}
+
+	return response, nil
+}
+
+// ParsePostEditSessionResponse parses an HTTP response from a PostEditSessionWithResponse call
+func ParsePostEditSessionResponse(rsp *http.Response) (*PostEditSessionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostEditSessionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
 	}
 
 	return response, nil

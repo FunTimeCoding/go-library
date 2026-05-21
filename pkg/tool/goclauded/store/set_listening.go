@@ -10,9 +10,8 @@ func (s *Store) SetListening(
 	listening bool,
 ) {
 	errors.PanicOnError(
-		s.database.Model(session.New()).
-			Where("name = ?", name).
+		s.database.Model(session.Stub()).
+			Where("callsign = ?", name).
 			Update("listening", listening).Error,
 	)
-	s.notify()
 }

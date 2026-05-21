@@ -29,7 +29,7 @@ func (s *Service) Timeline(q argument.Timeline) []*timeline.Entry {
 
 	var entries []*timeline.Entry
 
-	for _, e := range s.Store.EventsSince(
+	for _, e := range s.store.EventsSince(
 		since,
 		before,
 		q.Kind,
@@ -39,6 +39,7 @@ func (s *Service) Timeline(q argument.Timeline) []*timeline.Entry {
 		entries = append(
 			entries,
 			timeline.FromEvent(
+				e.Identifier,
 				e.Kind,
 				e.Name,
 				e.Body,

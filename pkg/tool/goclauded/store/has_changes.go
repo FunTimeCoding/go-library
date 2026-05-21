@@ -11,17 +11,8 @@ func (s *Store) HasChanges(
 	name string,
 	lastSeen time.Time,
 ) bool {
-	var e session.Session
-	s.database.Where("name = ?", name).Limit(1).Find(&e)
-
-	if e.NeedsRoster {
-		s.database.Model(&e).UpdateColumn("needs_roster", false)
-
-		return true
-	}
-
 	var rosterCount int64
-	s.database.Model(session.New()).
+	s.database.Model(session.Stub()).
 		Where("name != ? AND updated_at > ?", name, lastSeen).
 		Count(&rosterCount)
 

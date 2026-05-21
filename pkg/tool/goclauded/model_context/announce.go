@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
-	"strings"
 )
 
 func (s *Server) announce(
@@ -39,17 +39,15 @@ func (s *Server) announce(
 	}
 
 	if cs := server.ClientSessionFromContext(x); cs != nil {
-		s.service.Store.BindModelContextSession(name, cs.SessionID())
+		s.service.BindModelContextSession(name, cs.SessionID())
 	}
 
 	c := s.resolveCaller(x, constant.Announce)
-	s.service.Store.Announce(name, topic, strings.Join(files, "\n"))
-	s.service.Store.LogEvent(
+	s.service.Announce(
 		c.SessionIdentifier,
-		constant.Announce,
 		name,
-		"",
 		topic,
+		join.NewLine(files),
 	)
 
 	return response.Success(

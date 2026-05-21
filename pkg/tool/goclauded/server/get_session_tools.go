@@ -12,7 +12,7 @@ func (s *Server) GetSessionTools(
 	r *http.Request,
 	identifier string,
 ) {
-	calls := s.claude.ToolCalls(identifier)
+	calls := s.service.ToolCalls(identifier)
 	var entries []server.ToolCallEntry
 
 	for _, c := range calls {

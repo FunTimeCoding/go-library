@@ -22,7 +22,7 @@ func (s *Server) messagesPage(
 
 	limit := 20
 	skip := (page - 1) * limit
-	messages := s.service.Store.AllMessages(limit+1, skip)
+	messages := s.service.AllMessages(limit+1, skip)
 	hasMore := len(messages) > limit
 
 	if hasMore {

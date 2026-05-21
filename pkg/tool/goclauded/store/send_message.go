@@ -13,5 +13,4 @@ func (s *Store) SendMessage(
 	errors.PanicOnError(
 		s.database.Create(message.New(fromName, toName, body)).Error,
 	)
-	s.notify()
 }

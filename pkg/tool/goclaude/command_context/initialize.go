@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
-func (c *Context) Initialize(host string, port int) {
+func (c *Context) Initialize(
+	host string,
+	port int,
+) {
 	r, e := client.NewClientWithResponses(
 		locator.New(host).Port(port).Insecure().String(),
 	)

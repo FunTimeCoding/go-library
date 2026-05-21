@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -28,19 +29,11 @@ func (s *Server) edit(
 		return response.Fail("invalid event identifier")
 	}
 
-	s.resolveCaller(x, constant.Edit)
-	edited := s.service.Store.EditEvent(uint(identifier), message)
+	s.resolveCaller(x, constant.EditEvent)
+	_, g := s.service.EditEvent(uint(identifier), message)
 
-	switch edited.Kind {
-	case constant.Summarize:
-		s.service.Store.UpdateSummaryBody(edited.SessionIdentifier, message)
-		s.pushSummary(edited.Name, message)
-	case constant.Complete:
-		s.service.Store.UpdateCompletionSummary(
-			edited.SessionIdentifier,
-			edited.Target,
-			message,
-		)
+	if g != nil {
+		return s.captureFail(g, library.UnexpectedError)
 	}
 
 	return response.Success(

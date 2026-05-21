@@ -23,5 +23,4 @@ func (s *Store) CreateCompletion(
 			),
 		).Error,
 	)
-	s.notify()
 }

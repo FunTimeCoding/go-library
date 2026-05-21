@@ -10,7 +10,7 @@ var Identity = identity.New(
 
 const (
 	SessionIdentifierEnvironment = "CLAUDE_SESSION_ID"
-	NameEnvironment = "CLAUDE_NAME"
-	HostEnvironment = "CLAUDE_HOST"
-	PortEnvironment = "CLAUDE_PORT"
+	NameEnvironment              = "CLAUDE_NAME"
+	HostEnvironment              = "CLAUDE_HOST"
+	PortEnvironment              = "CLAUDE_PORT"
 )

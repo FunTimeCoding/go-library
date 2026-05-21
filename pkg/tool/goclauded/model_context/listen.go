@@ -13,11 +13,11 @@ func (s *Server) listen(
 ) (*mcp.CallToolResult, error) {
 	c := s.resolveCaller(x, constant.Listen)
 
-	if c.Name == "" {
+	if c.Callsign == "" {
 		return response.Fail("unknown session - announce first to bind your identity")
 	}
 
-	s.service.Store.SetListening(c.Name, true)
+	s.service.SetListening(c.Callsign, true)
 
 	return response.Success("Listening for messages. You will be woken when a message arrives.")
 }

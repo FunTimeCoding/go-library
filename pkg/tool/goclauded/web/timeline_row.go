@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/timeline"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -15,8 +16,32 @@ func timelineRow(e *timeline.Entry) gomponents.Node {
 		display = t.Local().Format("15:04")
 	}
 
+	description := timeline.FormatDescription(e)
+	eventCell := []gomponents.Node{gomponents.Text(description)}
+
+	if e.Identifier > 0 && isEditable(e.Kind) {
+		eventCell = append(
+			eventCell,
+			gomponents.Text(" "),
+			html.Span(
+				html.Class("rename-icon"),
+				gomponents.Attr(
+					"hx-get",
+					fmt.Sprintf("/history/%d/edit", e.Identifier),
+				),
+				gomponents.Attr(
+					"hx-target",
+					fmt.Sprintf("#event-%d", e.Identifier),
+				),
+				gomponents.Attr("hx-swap", "innerHTML"),
+				gomponents.Text("✎"),
+			),
+		)
+	}
+
 	return html.Tr(
+		html.ID(fmt.Sprintf("event-%d", e.Identifier)),
 		html.Td(gomponents.Text(display)),
-		html.Td(gomponents.Text(timeline.FormatDescription(e))),
+		html.Td(gomponents.Group(eventCell)),
 	)
 }

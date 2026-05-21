@@ -20,7 +20,7 @@ func TestEditCascadeSummary(t *testing.T) {
 			constant.Body: "original summary",
 		},
 	)
-	events := s.Store().EventsSince(
+	events := s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
 		constant.Summarize,
@@ -29,13 +29,13 @@ func TestEditCascadeSummary(t *testing.T) {
 	)
 	assert.Count(t, 1, events)
 	a.MustCallTool(
-		constant.Edit,
+		constant.EditEvent,
 		map[string]any{
 			constant.Identifier: float64(events[0].Identifier),
 			constant.Message:    "corrected summary via edit",
 		},
 	)
-	summaries := s.Store().ListSummaries()
+	summaries := s.Store.ListSummaries()
 	assert.Count(t, 1, summaries)
 	assert.String(t, "corrected summary via edit", summaries[0].Body)
 }
@@ -52,8 +52,8 @@ func TestEditCascadeSummaryPushesIndexer(t *testing.T) {
 			constant.Body: "original",
 		},
 	)
-	before := len(s.Indexer().Pushed)
-	events := s.Store().EventsSince(
+	before := len(s.Indexer.Pushed)
+	events := s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
 		constant.Summarize,
@@ -61,14 +61,14 @@ func TestEditCascadeSummaryPushesIndexer(t *testing.T) {
 		0,
 	)
 	a.MustCallTool(
-		constant.Edit,
+		constant.EditEvent,
 		map[string]any{
 			constant.Identifier: float64(events[0].Identifier),
 			constant.Message:    "edited via cascade",
 		},
 	)
-	assert.Integer(t, before+1, len(s.Indexer().Pushed))
-	last := s.Indexer().Pushed[len(s.Indexer().Pushed)-1]
+	assert.Integer(t, before+1, len(s.Indexer.Pushed))
+	last := s.Indexer.Pushed[len(s.Indexer.Pushed)-1]
 	assert.String(t, "edited via cascade", last.Body)
 }
 
@@ -84,7 +84,7 @@ func TestEditCascadeCompletion(t *testing.T) {
 			constant.Message: "hasty completion",
 		},
 	)
-	events := s.Store().EventsSince(
+	events := s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
 		constant.Complete,
@@ -93,13 +93,13 @@ func TestEditCascadeCompletion(t *testing.T) {
 	)
 	assert.Count(t, 1, events)
 	a.MustCallTool(
-		constant.Edit,
+		constant.EditEvent,
 		map[string]any{
 			constant.Identifier: float64(events[0].Identifier),
 			constant.Message:    "corrected completion with details",
 		},
 	)
-	completions := s.Store().RecentCompletions()
+	completions := s.Store.RecentCompletions()
 	var found bool
 
 	for _, c := range completions {
@@ -124,8 +124,8 @@ func TestEditMomentNoCascade(t *testing.T) {
 			constant.Line: "something landed",
 		},
 	)
-	before := len(s.Indexer().Pushed)
-	events := s.Store().EventsSince(
+	before := len(s.Indexer.Pushed)
+	events := s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
 		constant.Moment,
@@ -134,14 +134,14 @@ func TestEditMomentNoCascade(t *testing.T) {
 	)
 	assert.Count(t, 1, events)
 	a.MustCallTool(
-		constant.Edit,
+		constant.EditEvent,
 		map[string]any{
 			constant.Identifier: float64(events[0].Identifier),
 			constant.Message:    "revised moment",
 		},
 	)
-	assert.Integer(t, before, len(s.Indexer().Pushed))
-	edited := s.Store().EventsSince(
+	assert.Integer(t, before, len(s.Indexer.Pushed))
+	edited := s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
 		constant.Moment,

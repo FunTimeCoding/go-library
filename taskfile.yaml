@@ -19,33 +19,32 @@ tasks:
     silent: true
   generate:
     cmds:
-    - |
-      cd pkg/tool/goalertlogd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/goalertlogd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/goatlassiand/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/goatlassiand/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/goclauded/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/goclauded/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/gohabiticad/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/gohabiticad/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/gomaintlogd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/gomaintlogd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/gomemoryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/gomemoryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/gonetboxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/gonetboxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/goqueryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/goqueryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/gopostgresd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/gopostgresd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/goproxmoxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/goproxmoxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/goraidd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/goraidd/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/goraidparsed/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/goraidparsed/generated/server && oapi-codegen --config config.yaml openapi.yaml
-      cd pkg/tool/gotelemetryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
-      cd pkg/tool/gotelemetryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goalertlogd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goalertlogd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goatlassiand/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goatlassiand/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goclauded/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goclauded/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gohabiticad/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gohabiticad/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gomaintlogd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gomaintlogd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gomemoryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gomemoryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gonetboxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gonetboxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goqueryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goqueryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gopostgresd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gopostgresd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goproxmoxd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goproxmoxd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goraidd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goraidd/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/goraidparsed/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/goraidparsed/generated/server && oapi-codegen --config config.yaml openapi.yaml
+    - cd pkg/tool/gotelemetryd/generated/client && oapi-codegen --config config.yaml ../server/openapi.yaml
+    - cd pkg/tool/gotelemetryd/generated/server && oapi-codegen --config config.yaml openapi.yaml
     silent: true
   build: {cmds: ['go run cmd/gobuild/main.go'], silent: true}
   update:

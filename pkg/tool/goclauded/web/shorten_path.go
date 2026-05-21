@@ -1,16 +1,16 @@
 package web
 
 import (
-	"github.com/funtimecoding/go-library/pkg/strings/separator"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/split"
 )
 
 func shortenPath(path string) string {
-	parts := strings.Split(path, separator.Slash)
+	parts := split.Slash(path)
 
 	if len(parts) <= 2 {
 		return path
 	}
 
-	return strings.Join(parts[len(parts)-2:], separator.Slash)
+	return join.Slash(parts[len(parts)-2:])
 }

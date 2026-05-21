@@ -6,10 +6,16 @@ const inlineCSS = `
 		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 		gap: 1rem;
 	}
-	.session-card {
+	a.session-card {
+		display: block;
+		text-decoration: none;
+		color: inherit;
 		border: 1px solid var(--pico-muted-border-color);
 		border-radius: var(--pico-border-radius);
 		padding: 1rem 1.25rem;
+	}
+	a.session-card:hover {
+		border-color: var(--pico-primary);
 	}
 	.session-card h4 {
 		margin-bottom: 0.25rem;
@@ -40,6 +46,7 @@ const inlineCSS = `
 	.kind-complete { background: #2ecc40; color: #fff; }
 	.kind-update { background: #0074d9; color: #fff; }
 	table { margin-bottom: 0; }
+	main a { text-decoration: none; }
 `
 
 const connectionIndicatorJS = `

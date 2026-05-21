@@ -42,7 +42,7 @@ func register(c *command_context.Context) *cobra.Command {
 				return
 			}
 
-			name := response.JSON200.Name
+			name := response.JSON200.Callsign
 			envFile := os.Getenv("CLAUDE_ENV_FILE")
 
 			if envFile != "" {
@@ -56,11 +56,16 @@ func register(c *command_context.Context) *cobra.Command {
 					_, e = fmt.Fprintf(
 						f,
 						"export %s=%s\n",
-					constant.SessionIdentifierEnvironment,
+						constant.SessionIdentifierEnvironment,
 						sessionID,
 					)
 					errors.PanicOnError(e)
-					_, e = fmt.Fprintf(f, "export %s=%s\n", constant.NameEnvironment, name)
+					_, e = fmt.Fprintf(
+						f,
+						"export %s=%s\n",
+						constant.NameEnvironment,
+						name,
+					)
 					errors.PanicOnError(e)
 					errors.PanicOnError(f.Close())
 				}

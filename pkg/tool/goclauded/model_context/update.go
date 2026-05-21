@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
-	"strings"
 )
 
 func (s *Server) update(
@@ -15,7 +15,7 @@ func (s *Server) update(
 ) (*mcp.CallToolResult, error) {
 	c := s.resolveCaller(x, constant.Update)
 
-	if c.Name == "" {
+	if c.Callsign == "" {
 		return response.Fail("unknown session - announce first to bind your identity")
 	}
 
@@ -28,29 +28,20 @@ func (s *Server) update(
 	var files []string
 
 	if raw, okay := q.GetArguments()[constant.Files]; okay {
-		if list, okay := raw.([]any); okay {
+		if list, okay1 := raw.([]any); okay1 {
 			for _, item := range list {
-				if str, okay := item.(string); okay {
+				if str, okay2 := item.(string); okay2 {
 					files = append(files, str)
 				}
 			}
 		}
 	}
 
-	s.service.Store.UpdateTopic(c.Name, topic, strings.Join(files, "\n"))
-	s.service.Store.CreateCompletion(
+	s.service.Update(
 		c.SessionIdentifier,
-		c.Name,
-		constant.Update,
+		c.Callsign,
 		topic,
-		"",
-	)
-	s.service.Store.LogEvent(
-		c.SessionIdentifier,
-		constant.Update,
-		c.Name,
-		"",
-		topic,
+		join.NewLine(files),
 	)
 
 	return response.Success(

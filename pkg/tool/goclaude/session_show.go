@@ -17,20 +17,34 @@ func sessionShow(c *command_context.Context) *cobra.Command {
 			_ *cobra.Command,
 			arguments []string,
 		) {
-			response, e := c.Client().GetSessionDetailWithResponse(
-				context.Background(),
-				arguments[0],
-			)
-			errors.PanicOnError(e)
+			identifier := resolveSession(c.Client(), arguments[0])
 
-			if response.JSON200 == nil {
+			if identifier == "" {
 				fmt.Printf("session not found: %s\n", arguments[0])
 
 				return
 			}
 
+			response, e := c.Client().GetSessionDetailWithResponse(
+				context.Background(),
+				identifier,
+			)
+			errors.PanicOnError(e)
+
+			if response.JSON200 == nil {
+				return
+			}
+
 			d := response.JSON200
 			fmt.Printf("Identifier: %s\n", d.Identifier)
+
+			if d.Name != nil {
+				fmt.Printf("Name: %s\n", *d.Name)
+			}
+
+			if d.Callsign != nil {
+				fmt.Printf("Callsign: %s\n", *d.Callsign)
+			}
 
 			if d.Alias != nil {
 				fmt.Printf("Alias: %s\n", *d.Alias)

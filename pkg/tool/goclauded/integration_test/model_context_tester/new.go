@@ -36,6 +36,6 @@ func New(
 		Context:    x,
 		RestClient: restClient,
 		UUID:       identifier,
-		PoolName:   response.JSON200.Name,
+		PoolName:   response.JSON200.Callsign,
 	}
 }

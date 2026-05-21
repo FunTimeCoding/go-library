@@ -6,6 +6,7 @@ import (
 )
 
 func FromEvent(
+	identifier uint,
 	kind string,
 	name string,
 	body string,
@@ -33,11 +34,12 @@ func FromEvent(
 	}
 
 	entry := &Entry{
-		Timestamp: timestamp,
-		Kind:      kind,
-		Actor:     name,
-		Subject:   subject,
-		Detail:    detail,
+		Identifier: identifier,
+		Timestamp:  timestamp,
+		Kind:       kind,
+		Actor:      name,
+		Subject:    subject,
+		Detail:     detail,
 	}
 
 	if kind == "summarize" {

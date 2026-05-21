@@ -14,7 +14,7 @@ func TestAnnounce(t *testing.T) {
 	a.Announce(a.Name(), "reviewing proposals")
 	r := a.Check()
 	assert.Count(t, 1, r.Sessions)
-	assert.String(t, a.Name(), r.Sessions[0].Name)
+	assert.String(t, a.Name(), r.Sessions[0].Callsign)
 	assert.String(t, "reviewing proposals", r.Sessions[0].Topic)
 }
 

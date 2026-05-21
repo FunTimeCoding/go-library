@@ -11,7 +11,7 @@ func (s *Server) PostSessionExport(
 	_ *http.Request,
 	identifier string,
 ) {
-	session := s.claude.Resolve(identifier)
+	session := s.service.Resolve(identifier)
 
 	if session.Identifier == "" {
 		w.WriteHeader(http.StatusNotFound)

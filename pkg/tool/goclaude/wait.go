@@ -24,7 +24,7 @@ func wait(c *command_context.Context) *cobra.Command {
 			response, e := c.Client().GetWaitWithResponse(
 				context.Background(),
 				&client.GetWaitParams{
-					Name:    name,
+					Callsign: name,
 					Timeout: &timeout,
 				},
 			)

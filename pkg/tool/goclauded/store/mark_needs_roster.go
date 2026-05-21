@@ -7,7 +7,7 @@ import (
 
 func (s *Store) MarkNeedsRoster(identifier string) {
 	errors.PanicOnError(
-		s.database.Model(session.New()).
+		s.database.Model(session.Stub()).
 			Where("identifier = ?", identifier).
 			UpdateColumn("needs_roster", true).Error,
 	)

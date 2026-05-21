@@ -10,8 +10,8 @@ func (s *Store) BindModelContextSession(
 	modelContextSessionIdentifier string,
 ) {
 	errors.PanicOnError(
-		s.database.Model(session.New()).
-			Where("name = ?", name).
+		s.database.Model(session.Stub()).
+			Where("callsign = ?", name).
 			Update(
 				"model_context_session",
 				modelContextSessionIdentifier,

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 	"strings"
@@ -14,7 +15,7 @@ func (s *Server) roster(
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
 	s.resolveCaller(x, constant.Roster)
-	sessions := s.service.Store.ListSessions()
+	sessions := s.service.ListSessions()
 
 	if len(sessions) == 0 {
 		return response.Success("No active sessions.")
@@ -23,7 +24,7 @@ func (s *Server) roster(
 	var lines []string
 
 	for _, session := range sessions {
-		line := session.Name
+		line := session.CallsignValue()
 
 		if session.Topic != "" {
 			line = fmt.Sprintf("%s - %s", line, session.Topic)
@@ -38,10 +39,12 @@ func (s *Server) roster(
 			)
 		}
 
-		alias := s.service.Store.GetAlias(session.Identifier)
+		if session.Alias != nil {
+			details = append(details, fmt.Sprintf("alias: %s", *session.Alias))
+		}
 
-		if alias != "" {
-			details = append(details, fmt.Sprintf("alias: %s", alias))
+		if session.Description != "" {
+			details = append(details, session.Description)
 		}
 
 		if session.FirstMessage != "" {
@@ -55,5 +58,5 @@ func (s *Server) roster(
 		lines = append(lines, line)
 	}
 
-	return response.Success(strings.Join(lines, "\n"))
+	return response.Success(join.NewLine(lines))
 }

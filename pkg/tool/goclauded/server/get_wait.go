@@ -10,16 +10,16 @@ import (
 func (s *Server) GetWait(
 	w http.ResponseWriter,
 	_ *http.Request,
-	params server.GetWaitParams,
+	p server.GetWaitParams,
 ) {
 	timeout := 30
 
-	if params.Timeout != nil {
-		timeout = *params.Timeout
+	if p.Timeout != nil {
+		timeout = *p.Timeout
 	}
 
-	pending := s.service.Store.WaitMessage(
-		params.Name,
+	pending := s.service.WaitMessage(
+		p.Callsign,
 		time.Duration(timeout)*time.Second,
 	)
 	var messages []server.Message

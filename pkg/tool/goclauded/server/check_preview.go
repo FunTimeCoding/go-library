@@ -11,7 +11,7 @@ func (s *Server) checkPreview(
 	w http.ResponseWriter,
 	sessionIdentifier string,
 ) {
-	name := s.service.Store.NameBySessionIdentifier(sessionIdentifier)
+	name := s.service.CallsignBySessionIdentifier(sessionIdentifier)
 
 	if name == "" {
 		web.EncodeNotation(
@@ -29,10 +29,10 @@ func (s *Server) checkPreview(
 
 	var entries []server.SessionEntry
 
-	for _, e := range s.service.Store.ListSessions() {
+	for _, e := range s.service.ListSessions() {
 		entry := server.SessionEntry{
-			Name:  e.Name,
-			Topic: e.Topic,
+			Callsign: e.CallsignValue(),
+			Topic:    e.Topic,
 		}
 
 		if e.Files != "" {
@@ -45,7 +45,7 @@ func (s *Server) checkPreview(
 
 	var completions []server.CompletionEntry
 
-	for _, c := range s.service.Store.RecentCompletions() {
+	for _, c := range s.service.RecentCompletions() {
 		completions = append(
 			completions,
 			server.CompletionEntry{
@@ -67,7 +67,7 @@ func (s *Server) checkPreview(
 	web.EncodeNotation(
 		w,
 		server.CheckResponse{
-			Name:        name,
+			Callsign:    name,
 			Changed:     true,
 			Sessions:    entries,
 			Messages:    []server.Message{},

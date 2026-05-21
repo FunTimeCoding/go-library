@@ -7,7 +7,7 @@ import (
 
 func (s *Store) CompleteTask(name string) string {
 	var i session.Session
-	result := s.database.Where("name = ?", name).Limit(1).Find(&i)
+	result := s.database.Where("callsign = ?", name).Limit(1).Find(&i)
 	errors.PanicOnError(result.Error)
 
 	if result.RowsAffected == 0 {
@@ -16,8 +16,8 @@ func (s *Store) CompleteTask(name string) string {
 
 	topic := i.Topic
 	errors.PanicOnError(
-		s.database.Model(session.New()).
-			Where("name = ?", name).
+		s.database.Model(session.Stub()).
+			Where("callsign = ?", name).
 			Updates(
 				map[string]any{
 					"topic": "",
@@ -25,7 +25,6 @@ func (s *Store) CompleteTask(name string) string {
 				},
 			).Error,
 	)
-	s.notify()
 
 	return topic
 }

@@ -11,14 +11,8 @@ func (s *Store) UpdateTopic(
 	files string,
 ) {
 	errors.PanicOnError(
-		s.database.Model(session.New()).
-			Where("name = ?", name).
-			Updates(
-				map[string]any{
-					"topic": topic,
-					"files": files,
-				},
-			).Error,
+		s.database.Model(session.Stub()).
+			Where("callsign = ?", name).
+			Updates(map[string]any{"topic": topic, "files": files}).Error,
 	)
-	s.notify()
 }

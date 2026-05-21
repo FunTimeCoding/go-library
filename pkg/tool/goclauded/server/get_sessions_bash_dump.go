@@ -12,8 +12,8 @@ func (s *Server) GetSessionsBashDump(
 ) {
 	var commands []string
 
-	for _, session := range s.claude.Sessions() {
-		for _, call := range s.claude.ToolCalls(session.Identifier) {
+	for _, session := range s.service.Sessions() {
+		for _, call := range s.service.ToolCalls(session.Identifier) {
 			if call.Name == "Bash" && call.Detail != "" {
 				commands = append(commands, call.Detail)
 			}

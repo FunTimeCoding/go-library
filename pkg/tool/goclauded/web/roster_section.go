@@ -6,7 +6,7 @@ import (
 )
 
 func (s *Server) rosterSection() gomponents.Node {
-	sessions := s.service.Store.ListSessions()
+	sessions := s.service.ListSessions()
 
 	if len(sessions) == 0 {
 		return html.P(gomponents.Text("No active sessions."))
@@ -14,8 +14,11 @@ func (s *Server) rosterSection() gomponents.Node {
 
 	var cards []gomponents.Node
 
-	for _, e := range sessions {
-		cards = append(cards, sessionCard(&e))
+	for i := range sessions {
+		cards = append(
+			cards,
+			sessionCard(&sessions[i], sessions[i].Lines),
+		)
 	}
 
 	return html.Div(

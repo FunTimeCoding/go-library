@@ -12,8 +12,8 @@ func (s *Store) ListSessions() []session.Session {
 	cutoff := s.clock().Add(-1 * time.Hour)
 	errors.PanicOnError(
 		s.database.
-			Where("last_seen > ?", cutoff).
-			Order(constant.SessionName).
+			Where("last_seen > ? AND callsign IS NOT NULL", cutoff).
+			Order(constant.Callsign).
 			Find(&result).Error,
 	)
 

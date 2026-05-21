@@ -11,7 +11,7 @@ func sessionBranch(c *command_context.Context) *cobra.Command {
 	result.AddCommand(sessionShow(c))
 	result.AddCommand(sessionPrint(c))
 	result.AddCommand(sessionPeek(c))
-	result.AddCommand(sessionRename(c))
+	result.AddCommand(sessionEdit(c))
 	result.AddCommand(sessionDelete(c))
 	result.AddCommand(sessionExport(c))
 	result.AddCommand(sessionTools(c))

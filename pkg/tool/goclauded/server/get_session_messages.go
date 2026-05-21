@@ -11,7 +11,7 @@ func (s *Server) GetSessionMessages(
 	r *http.Request,
 	identifier string,
 ) {
-	messages := s.claude.Messages(identifier)
+	messages := s.service.Messages(identifier)
 	var result []server.SessionMessage
 
 	for _, m := range messages {

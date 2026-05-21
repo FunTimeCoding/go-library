@@ -19,29 +19,11 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
-// AliasEntry defines model for AliasEntry.
-type AliasEntry struct {
-	Name    string `json:"name"`
-	Session string `json:"session"`
-}
-
-// AliasListResponse defines model for AliasListResponse.
-type AliasListResponse struct {
-	Aliases []AliasEntry `json:"aliases"`
-}
-
-// AliasRequest defines model for AliasRequest.
-type AliasRequest struct {
-	Description *string `json:"description,omitempty"`
-	Name        *string `json:"name,omitempty"`
-	Session     string  `json:"session"`
-}
-
 // AnnounceRequest defines model for AnnounceRequest.
 type AnnounceRequest struct {
-	Files *[]string `json:"files,omitempty"`
-	Name  string    `json:"name"`
-	Topic string    `json:"topic"`
+	Callsign string    `json:"callsign"`
+	Files    *[]string `json:"files,omitempty"`
+	Topic    string    `json:"topic"`
 }
 
 // BashDumpResponse defines model for BashDumpResponse.
@@ -51,11 +33,11 @@ type BashDumpResponse struct {
 
 // CheckResponse defines model for CheckResponse.
 type CheckResponse struct {
+	Callsign       string                 `json:"callsign"`
 	Changed        bool                   `json:"changed"`
 	Completions    []CompletionEntry      `json:"completions"`
 	MemoryActivity *[]MemoryActivityEntry `json:"memoryActivity,omitempty"`
 	Messages       []Message              `json:"messages"`
-	Name           string                 `json:"name"`
 	Reannounce     *bool                  `json:"reannounce,omitempty"`
 	Sessions       []SessionEntry         `json:"sessions"`
 	TimeoutMessage *string                `json:"timeoutMessage,omitempty"`
@@ -66,6 +48,15 @@ type CompletionEntry struct {
 	Kind  string `json:"kind"`
 	Name  string `json:"name"`
 	Topic string `json:"topic"`
+}
+
+// EditSessionRequest defines model for EditSessionRequest.
+type EditSessionRequest struct {
+	Description *string `json:"description,omitempty"`
+	Files       *string `json:"files,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Session     string  `json:"session"`
+	Topic       *string `json:"topic,omitempty"`
 }
 
 // ExportResponse defines model for ExportResponse.
@@ -102,8 +93,8 @@ type HeatmapResponse struct {
 
 // ListenRequest defines model for ListenRequest.
 type ListenRequest struct {
+	Callsign  string `json:"callsign"`
 	Listening *bool  `json:"listening,omitempty"`
-	Name      string `json:"name"`
 }
 
 // MemoryActivityEntry defines model for MemoryActivityEntry.
@@ -139,31 +130,51 @@ type RegisterRequest struct {
 
 // RegisterResponse defines model for RegisterResponse.
 type RegisterResponse struct {
-	Name string `json:"name"`
+	Callsign string `json:"callsign"`
 }
 
 // ReleaseRequest defines model for ReleaseRequest.
 type ReleaseRequest struct {
-	Name string `json:"name"`
+	Callsign string `json:"callsign"`
+}
+
+// ResolveAmbiguousResponse defines model for ResolveAmbiguousResponse.
+type ResolveAmbiguousResponse struct {
+	Matches []ResolveMatch `json:"matches"`
+}
+
+// ResolveMatch defines model for ResolveMatch.
+type ResolveMatch struct {
+	Alias      *string `json:"alias,omitempty"`
+	Field      string  `json:"field"`
+	Identifier string  `json:"identifier"`
+	Name       *string `json:"name,omitempty"`
+}
+
+// ResolveResponse defines model for ResolveResponse.
+type ResolveResponse struct {
+	Identifier string `json:"identifier"`
 }
 
 // SendRequest defines model for SendRequest.
 type SendRequest struct {
-	Body string  `json:"body"`
-	Name string  `json:"name"`
-	To   *string `json:"to,omitempty"`
+	Body     string  `json:"body"`
+	Callsign string  `json:"callsign"`
+	To       *string `json:"to,omitempty"`
 }
 
 // SessionDetail defines model for SessionDetail.
 type SessionDetail struct {
-	Alias      *string `json:"alias,omitempty"`
-	Branch     *string `json:"branch,omitempty"`
-	Cwd        *string `json:"cwd,omitempty"`
-	Identifier string  `json:"identifier"`
-	Lines      int     `json:"lines"`
-	Preview    *string `json:"preview,omitempty"`
-	Slug       *string `json:"slug,omitempty"`
-	Timestamp  string  `json:"timestamp"`
+	Alias       *string `json:"alias,omitempty"`
+	Branch      *string `json:"branch,omitempty"`
+	Cwd         *string `json:"cwd,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Identifier  string  `json:"identifier"`
+	Lines       int     `json:"lines"`
+	Name        *string `json:"name,omitempty"`
+	Preview     *string `json:"preview,omitempty"`
+	Slug        *string `json:"slug,omitempty"`
+	Timestamp   string  `json:"timestamp"`
 }
 
 // SessionDetailCompletion defines model for SessionDetailCompletion.
@@ -177,10 +188,12 @@ type SessionDetailCompletion struct {
 // SessionDetailResponse defines model for SessionDetailResponse.
 type SessionDetailResponse struct {
 	Alias       *string                    `json:"alias,omitempty"`
+	Callsign    *string                    `json:"callsign,omitempty"`
 	Completions *[]SessionDetailCompletion `json:"completions,omitempty"`
 	Created     *string                    `json:"created,omitempty"`
 	Description *string                    `json:"description,omitempty"`
 	Identifier  string                     `json:"identifier"`
+	Name        *string                    `json:"name,omitempty"`
 	Slug        *string                    `json:"slug,omitempty"`
 	Summary     *string                    `json:"summary,omitempty"`
 	TurnCount   *int                       `json:"turnCount,omitempty"`
@@ -189,9 +202,9 @@ type SessionDetailResponse struct {
 // SessionEntry defines model for SessionEntry.
 type SessionEntry struct {
 	Alias        *string   `json:"alias,omitempty"`
+	Callsign     string    `json:"callsign"`
 	Files        *[]string `json:"files,omitempty"`
 	FirstMessage *string   `json:"firstMessage,omitempty"`
-	Name         string    `json:"name"`
 	Slug         *string   `json:"slug,omitempty"`
 	Topic        string    `json:"topic"`
 	TurnCount    *int      `json:"turnCount,omitempty"`
@@ -270,9 +283,16 @@ type GetCheckParams struct {
 	Preview *bool  `form:"preview,omitempty" json:"preview,omitempty"`
 }
 
+// GetResolveParams defines parameters for GetResolve.
+type GetResolveParams struct {
+	Query string `form:"query" json:"query"`
+}
+
 // GetSessionsParams defines parameters for GetSessions.
 type GetSessionsParams struct {
-	Peek *bool `form:"peek,omitempty" json:"peek,omitempty"`
+	Peek   *bool `form:"peek,omitempty" json:"peek,omitempty"`
+	Limit  *int  `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int  `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
 // GetSessionsFindParams defines parameters for GetSessionsFind.
@@ -300,12 +320,9 @@ type GetTimelineParams struct {
 
 // GetWaitParams defines parameters for GetWait.
 type GetWaitParams struct {
-	Name    string `form:"name" json:"name"`
-	Timeout *int   `form:"timeout,omitempty" json:"timeout,omitempty"`
+	Callsign string `form:"callsign" json:"callsign"`
+	Timeout  *int   `form:"timeout,omitempty" json:"timeout,omitempty"`
 }
-
-// PostAliasJSONRequestBody defines body for PostAlias for application/json ContentType.
-type PostAliasJSONRequestBody = AliasRequest
 
 // PostAnnounceJSONRequestBody defines body for PostAnnounce for application/json ContentType.
 type PostAnnounceJSONRequestBody = AnnounceRequest
@@ -322,17 +339,11 @@ type PostReleaseJSONRequestBody = ReleaseRequest
 // PostSendJSONRequestBody defines body for PostSend for application/json ContentType.
 type PostSendJSONRequestBody = SendRequest
 
+// PostEditSessionJSONRequestBody defines body for PostEditSession for application/json ContentType.
+type PostEditSessionJSONRequestBody = EditSessionRequest
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-
-	// (GET /api/alias)
-	GetAliases(w http.ResponseWriter, r *http.Request)
-
-	// (POST /api/alias)
-	PostAlias(w http.ResponseWriter, r *http.Request)
-
-	// (DELETE /api/alias/{session})
-	DeleteAlias(w http.ResponseWriter, r *http.Request, session string)
 
 	// (POST /api/announce)
 	PostAnnounce(w http.ResponseWriter, r *http.Request)
@@ -349,17 +360,23 @@ type ServerInterface interface {
 	// (POST /api/release)
 	PostRelease(w http.ResponseWriter, r *http.Request)
 
+	// (GET /api/resolve)
+	GetResolve(w http.ResponseWriter, r *http.Request, params GetResolveParams)
+
 	// (POST /api/send)
 	PostSend(w http.ResponseWriter, r *http.Request)
 
-	// (DELETE /api/session/{name})
-	DeleteSession(w http.ResponseWriter, r *http.Request, name string)
+	// (DELETE /api/session/{callsign})
+	DeleteSession(w http.ResponseWriter, r *http.Request, callsign string)
 
 	// (GET /api/sessions)
 	GetSessions(w http.ResponseWriter, r *http.Request, params GetSessionsParams)
 
 	// (GET /api/sessions/bash-dump)
 	GetSessionsBashDump(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/sessions/edit)
+	PostEditSession(w http.ResponseWriter, r *http.Request)
 
 	// (POST /api/sessions/export)
 	PostSessionsExport(w http.ResponseWriter, r *http.Request)
@@ -409,59 +426,6 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
-
-// GetAliases operation middleware
-func (siw *ServerInterfaceWrapper) GetAliases(w http.ResponseWriter, r *http.Request) {
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.GetAliases(w, r)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
-// PostAlias operation middleware
-func (siw *ServerInterfaceWrapper) PostAlias(w http.ResponseWriter, r *http.Request) {
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.PostAlias(w, r)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
-// DeleteAlias operation middleware
-func (siw *ServerInterfaceWrapper) DeleteAlias(w http.ResponseWriter, r *http.Request) {
-
-	var err error
-
-	// ------------- Path parameter "session" -------------
-	var session string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "session", r.PathValue("session"), &session, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
-	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "session", Err: err})
-		return
-	}
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.DeleteAlias(w, r, session)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
 
 // PostAnnounce operation middleware
 func (siw *ServerInterfaceWrapper) PostAnnounce(w http.ResponseWriter, r *http.Request) {
@@ -561,6 +525,40 @@ func (siw *ServerInterfaceWrapper) PostRelease(w http.ResponseWriter, r *http.Re
 	handler.ServeHTTP(w, r)
 }
 
+// GetResolve operation middleware
+func (siw *ServerInterfaceWrapper) GetResolve(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetResolveParams
+
+	// ------------- Required query parameter "query" -------------
+
+	if paramValue := r.URL.Query().Get("query"); paramValue != "" {
+
+	} else {
+		siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "query"})
+		return
+	}
+
+	err = runtime.BindQueryParameterWithOptions("form", true, true, "query", r.URL.Query(), &params.Query, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "query", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetResolve(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // PostSend operation middleware
 func (siw *ServerInterfaceWrapper) PostSend(w http.ResponseWriter, r *http.Request) {
 
@@ -580,17 +578,17 @@ func (siw *ServerInterfaceWrapper) DeleteSession(w http.ResponseWriter, r *http.
 
 	var err error
 
-	// ------------- Path parameter "name" -------------
-	var name string
+	// ------------- Path parameter "callsign" -------------
+	var callsign string
 
-	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	err = runtime.BindStyledParameterWithOptions("simple", "callsign", r.PathValue("callsign"), &callsign, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "callsign", Err: err})
 		return
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.DeleteSession(w, r, name)
+		siw.Handler.DeleteSession(w, r, callsign)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -616,6 +614,22 @@ func (siw *ServerInterfaceWrapper) GetSessions(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "offset", r.URL.Query(), &params.Offset, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "offset", Err: err})
+		return
+	}
+
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetSessions(w, r, params)
 	}))
@@ -632,6 +646,20 @@ func (siw *ServerInterfaceWrapper) GetSessionsBashDump(w http.ResponseWriter, r 
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetSessionsBashDump(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// PostEditSession operation middleware
+func (siw *ServerInterfaceWrapper) PostEditSession(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.PostEditSession(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -982,18 +1010,18 @@ func (siw *ServerInterfaceWrapper) GetWait(w http.ResponseWriter, r *http.Reques
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetWaitParams
 
-	// ------------- Required query parameter "name" -------------
+	// ------------- Required query parameter "callsign" -------------
 
-	if paramValue := r.URL.Query().Get("name"); paramValue != "" {
+	if paramValue := r.URL.Query().Get("callsign"); paramValue != "" {
 
 	} else {
-		siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "name"})
+		siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "callsign"})
 		return
 	}
 
-	err = runtime.BindQueryParameterWithOptions("form", true, true, "name", r.URL.Query(), &params.Name, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	err = runtime.BindQueryParameterWithOptions("form", true, true, "callsign", r.URL.Query(), &params.Callsign, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "callsign", Err: err})
 		return
 	}
 
@@ -1136,18 +1164,17 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
-	m.HandleFunc("GET "+options.BaseURL+"/api/alias", wrapper.GetAliases)
-	m.HandleFunc("POST "+options.BaseURL+"/api/alias", wrapper.PostAlias)
-	m.HandleFunc("DELETE "+options.BaseURL+"/api/alias/{session}", wrapper.DeleteAlias)
 	m.HandleFunc("POST "+options.BaseURL+"/api/announce", wrapper.PostAnnounce)
 	m.HandleFunc("GET "+options.BaseURL+"/api/check", wrapper.GetCheck)
 	m.HandleFunc("POST "+options.BaseURL+"/api/listen", wrapper.PostListen)
 	m.HandleFunc("POST "+options.BaseURL+"/api/register", wrapper.PostRegister)
 	m.HandleFunc("POST "+options.BaseURL+"/api/release", wrapper.PostRelease)
+	m.HandleFunc("GET "+options.BaseURL+"/api/resolve", wrapper.GetResolve)
 	m.HandleFunc("POST "+options.BaseURL+"/api/send", wrapper.PostSend)
-	m.HandleFunc("DELETE "+options.BaseURL+"/api/session/{name}", wrapper.DeleteSession)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/session/{callsign}", wrapper.DeleteSession)
 	m.HandleFunc("GET "+options.BaseURL+"/api/sessions", wrapper.GetSessions)
 	m.HandleFunc("GET "+options.BaseURL+"/api/sessions/bash-dump", wrapper.GetSessionsBashDump)
+	m.HandleFunc("POST "+options.BaseURL+"/api/sessions/edit", wrapper.PostEditSession)
 	m.HandleFunc("POST "+options.BaseURL+"/api/sessions/export", wrapper.PostSessionsExport)
 	m.HandleFunc("GET "+options.BaseURL+"/api/sessions/find", wrapper.GetSessionsFind)
 	m.HandleFunc("GET "+options.BaseURL+"/api/sessions/heatmap", wrapper.GetSessionsHeatmap)
@@ -1168,41 +1195,42 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"CaiyNjcAAA==",
+	"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",
+	"AAD//0ntls20OQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

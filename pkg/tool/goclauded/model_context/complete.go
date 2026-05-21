@@ -14,7 +14,7 @@ func (s *Server) complete(
 ) (*mcp.CallToolResult, error) {
 	c := s.resolveCaller(x, constant.Complete)
 
-	if c.Name == "" {
+	if c.Callsign == "" {
 		return response.Fail("unknown session - announce first to bind your identity")
 	}
 
@@ -24,7 +24,7 @@ func (s *Server) complete(
 		return response.Fail("message is required: %v", e)
 	}
 
-	topic := s.service.Store.CompleteTask(c.Name)
+	topic := s.service.CompleteTask(c.Callsign)
 
 	if topic == "" {
 		topic = q.GetString(constant.Topic, "")
@@ -34,20 +34,7 @@ func (s *Server) complete(
 		return response.Fail("no active topic - provide a topic parameter or announce first")
 	}
 
-	s.service.Store.UpsertCompletion(
-		c.SessionIdentifier,
-		c.Name,
-		constant.Complete,
-		topic,
-		message,
-	)
-	s.service.Store.UpsertEvent(
-		c.SessionIdentifier,
-		constant.Complete,
-		c.Name,
-		topic,
-		message,
-	)
+	s.service.Complete(c.SessionIdentifier, c.Callsign, topic, message)
 
 	return response.Success(
 		fmt.Sprintf("Completed %s: %s", topic, message),

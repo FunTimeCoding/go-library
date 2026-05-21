@@ -1,14 +1,16 @@
 package web
 
-import "strings"
+import (
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/split"
+)
 
 func shortenPaths(files string) string {
-	lines := strings.Split(files, "\n")
 	var result []string
 
-	for _, line := range lines {
+	for _, line := range split.NewLine(files) {
 		result = append(result, shortenPath(line))
 	}
 
-	return strings.Join(result, ", ")
+	return join.CommaSpace(result)
 }

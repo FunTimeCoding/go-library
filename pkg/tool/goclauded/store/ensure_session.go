@@ -20,7 +20,7 @@ func (s *Store) EnsureSession(identifier string) *ensure_result.Result {
 			},
 		)
 
-		return ensure_result.NewExisting(i.Name, previousLastSeen)
+		return ensure_result.NewExisting(i.CallsignValue(), previousLastSeen)
 	}
 
 	name := s.NextName()
@@ -32,7 +32,6 @@ func (s *Store) EnsureSession(identifier string) *ensure_result.Result {
 	errors.PanicOnError(
 		s.database.Create(session.NewRegistered(identifier, name)).Error,
 	)
-	s.notify()
 
 	return ensure_result.New(name)
 }

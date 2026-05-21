@@ -9,12 +9,14 @@ import (
 )
 
 func (c *Client) Delete(sessionIdentifier string) {
-	errors.PanicOnError(
-		os.Remove(
-			filepath.Join(
-				c.base,
-				join.Empty(sessionIdentifier, constant.NotationLogExtension),
-			),
+	e := os.Remove(
+		filepath.Join(
+			c.base,
+			join.Empty(sessionIdentifier, constant.NotationLogExtension),
 		),
 	)
+
+	if e != nil && !os.IsNotExist(e) {
+		errors.PanicOnError(e)
+	}
 }

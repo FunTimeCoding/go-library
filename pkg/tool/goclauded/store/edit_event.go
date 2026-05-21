@@ -18,7 +18,6 @@ func (s *Store) EditEvent(
 		s.database.Model(&existing).
 			Update(constant.Body, body).Error,
 	)
-	s.notify()
 	existing.Body = body
 
 	return &existing

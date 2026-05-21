@@ -15,12 +15,16 @@ func (s *Server) register() {
 			mcp.WithString(
 				constant.SessionName,
 				mcp.Required(),
-				mcp.Description("Your assigned name from the hook context"),
+				mcp.Description(
+					"Your assigned name from the hook context",
+				),
 			),
 			mcp.WithString(
 				constant.Topic,
 				mcp.Required(),
-				mcp.Description("Short description of what you're working on"),
+				mcp.Description(
+					"Short description of what you're working on",
+				),
 			),
 			mcp.WithArray(
 				constant.Files,
@@ -38,11 +42,15 @@ func (s *Server) register() {
 			mcp.WithString(
 				constant.Message,
 				mcp.Required(),
-				mcp.Description("Summary of what was accomplished (1-2 sentences)"),
+				mcp.Description(
+					"Summary of what was accomplished (1-2 sentences)",
+				),
 			),
 			mcp.WithString(
 				constant.Topic,
-				mcp.Description("Topic to complete, if no active topic was announced"),
+				mcp.Description(
+					"Topic to complete, if no active topic was announced",
+				),
 			),
 		),
 		s.complete,
@@ -60,7 +68,9 @@ func (s *Server) register() {
 			),
 			mcp.WithArray(
 				constant.Files,
-				mcp.Description("Updated files or packages you're touching"),
+				mcp.Description(
+					"Updated files or packages you're touching",
+				),
 			),
 		),
 		s.update,
@@ -76,14 +86,16 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			constant.Edit,
+			constant.EditEvent,
 			mcp.WithDescription(
 				"Edit the body of a history event by ID. Use to fix a hasty summary or correct a milestone description. Editing a summarize or complete event cascades the change to the corresponding record.",
 			),
 			mcp.WithNumber(
 				constant.Identifier,
 				mcp.Required(),
-				mcp.Description("Event ID from history output (e.g. 42)"),
+				mcp.Description(
+					"Event ID from history output (e.g. 42)",
+				),
 			),
 			mcp.WithString(
 				constant.Message,
@@ -104,13 +116,36 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.ListSessions,
+			mcp.WithDescription(
+				"Browse all sessions (active and historical) with names, descriptions, and turn counts.",
+			),
+			mcp.WithNumber(
+				constant.Limit,
+				mcp.Description(
+					"Maximum sessions to return (default 20)",
+				),
+			),
+			mcp.WithNumber(
+				constant.Offset,
+				mcp.Description(
+					"Number of sessions to skip (default 0)",
+				),
+			),
+		),
+		s.listSessions,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.History,
 			mcp.WithDescription(
 				"Show recent events - announcements, completions, messages, moments, summaries. Use to catch up on what happened.",
 			),
 			mcp.WithNumber(
 				constant.Limit,
-				mcp.Description("Number of events to show (default 20)"),
+				mcp.Description(
+					"Number of events to show (default 20)",
+				),
 			),
 			mcp.WithNumber(
 				constant.Offset,
@@ -118,19 +153,27 @@ func (s *Server) register() {
 			),
 			mcp.WithString(
 				constant.Since,
-				mcp.Description("Duration lookback window (e.g. 72h, 168h)"),
+				mcp.Description(
+					"Duration lookback window (e.g. 72h, 168h)",
+				),
 			),
 			mcp.WithString(
 				constant.Before,
-				mcp.Description("Duration upper bound (e.g. 72h). Use with since for a time window."),
+				mcp.Description(
+					"Duration upper bound (e.g. 72h). Use with since for a time window.",
+				),
 			),
 			mcp.WithString(
 				constant.Kind,
-				mcp.Description("Filter by event type (e.g. moment, summarize, announce, complete)"),
+				mcp.Description(
+					"Filter by event type (e.g. moment, summarize, announce, complete)",
+				),
 			),
 			mcp.WithBoolean(
 				constant.Full,
-				mcp.Description("Return full event bodies without truncation (default false)"),
+				mcp.Description(
+					"Return full event bodies without truncation (default false)",
+				),
 			),
 		),
 		s.history,
@@ -146,21 +189,36 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			constant.Rename,
+			constant.EditSession,
 			mcp.WithDescription(
-				"Set a display alias for a session. Defaults to renaming yourself. Specify a target (pool name, existing alias, or session UUID) to rename another session.",
+				"Edit session metadata. Set alias, description, topic, or files. All fields optional but at least one required. Defaults to your own session; specify a target to edit another.",
 			),
 			mcp.WithString(
 				constant.Alias,
-				mcp.Required(),
-				mcp.Description("The alias to set"),
+				mcp.Description("Display name for the session"),
+			),
+			mcp.WithString(
+				constant.Description,
+				mcp.Description(
+					"What the session was about (1-3 sentences)",
+				),
+			),
+			mcp.WithString(
+				constant.Topic,
+				mcp.Description("Current task"),
+			),
+			mcp.WithString(
+				constant.Files,
+				mcp.Description("Files or packages being touched"),
 			),
 			mcp.WithString(
 				constant.Target,
-				mcp.Description("Session to rename (pool name, alias, or UUID). Omit to rename yourself."),
+				mcp.Description(
+					"Session to edit (pool name, alias, or UUID). Omit to edit yourself.",
+				),
 			),
 		),
-		s.rename,
+		s.editSession,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
@@ -170,7 +228,9 @@ func (s *Server) register() {
 			),
 			mcp.WithString(
 				constant.To,
-				mcp.Description("Recipient name (omit to broadcast to all)"),
+				mcp.Description(
+					"Recipient name (omit to broadcast to all)",
+				),
 			),
 			mcp.WithString(
 				constant.Body,
@@ -211,24 +271,6 @@ func (s *Server) register() {
 			),
 		),
 		s.summarize,
-	)
-	s.server.AddTool(
-		mcp.NewTool(
-			constant.Describe,
-			mcp.WithDescription(
-				"Set a description for a session. The description captures what the session was about in a sentence or paragraph - the layer between the alias (scan label) and the full summaries.",
-			),
-			mcp.WithString(
-				constant.Description,
-				mcp.Required(),
-				mcp.Description("The session description"),
-			),
-			mcp.WithString(
-				constant.Target,
-				mcp.Description("Session to describe (pool name, alias, or UUID). Omit to describe your own session."),
-			),
-		),
-		s.describe,
 	)
 	s.server.AddTool(
 		mcp.NewTool(

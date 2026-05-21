@@ -13,6 +13,7 @@ func (s *Server) PostRelease(
 ) {
 	var body server.ReleaseRequest
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	s.service.Store.ReleaseByName(body.Name)
+	identifier := s.service.ResolveByCallsign(body.Callsign)
+	s.service.Release(identifier, body.Callsign)
 	w.WriteHeader(http.StatusOK)
 }

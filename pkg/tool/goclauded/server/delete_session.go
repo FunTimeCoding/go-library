@@ -5,8 +5,8 @@ import "net/http"
 func (s *Server) DeleteSession(
 	w http.ResponseWriter,
 	_ *http.Request,
-	name string,
+	callsign string,
 ) {
-	s.service.Store.ReleaseByName(name)
+	s.service.ReleaseByCallsign(callsign)
 	w.WriteHeader(http.StatusOK)
 }

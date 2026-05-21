@@ -1,3 +1,5 @@
+//go:build local
+
 package model_context
 
 import (
@@ -7,14 +9,14 @@ import (
 	"testing"
 )
 
-func TestRenameSelf(t *testing.T) {
+func TestEditSessionAliasSelf(t *testing.T) {
 	s := base.New(t)
 	defer s.Close()
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "working")
 	a.MustCallTool(
-		constant.Rename,
+		constant.EditSession,
 		map[string]any{
 			constant.Alias: "my-project",
 		},
@@ -23,17 +25,17 @@ func TestRenameSelf(t *testing.T) {
 	assert.StringContains(t, "my-project", roster)
 }
 
-func TestRenameOther(t *testing.T) {
+func TestEditSessionAliasOther(t *testing.T) {
 	s := base.New(t)
 	defer s.Close()
 	a := s.NewSession(t)
 	defer a.Close()
 	b := s.NewSession(t)
 	defer b.Close()
-	a.Announce(a.Name(), "renamer")
-	b.Announce(b.Name(), "rename candidate")
+	a.Announce(a.Name(), "editor")
+	b.Announce(b.Name(), "target")
 	a.MustCallTool(
-		constant.Rename,
+		constant.EditSession,
 		map[string]any{
 			constant.Alias:  "the-target",
 			constant.Target: b.Name(),
@@ -41,4 +43,41 @@ func TestRenameOther(t *testing.T) {
 	)
 	roster := a.MustCallTool(constant.Roster, map[string]any{})
 	assert.StringContains(t, "the-target", roster)
+}
+
+func TestEditSessionDescription(t *testing.T) {
+	s := base.New(t)
+	defer s.Close()
+	a := s.NewSession(t)
+	defer a.Close()
+	a.Announce(a.Name(), "working")
+	a.MustCallTool(
+		constant.EditSession,
+		map[string]any{
+			constant.Description: "Fixed the auth bug",
+		},
+	)
+	assert.String(
+		t,
+		"Fixed the auth bug",
+		s.Store.GetSession(a.UUID).Description,
+	)
+}
+
+func TestEditSessionBoth(t *testing.T) {
+	s := base.New(t)
+	defer s.Close()
+	a := s.NewSession(t)
+	defer a.Close()
+	a.Announce(a.Name(), "working")
+	a.MustCallTool(
+		constant.EditSession,
+		map[string]any{
+			constant.Alias:       "my-project",
+			constant.Description: "Refactored the CLI",
+		},
+	)
+	e := s.Store.GetSession(a.UUID)
+	assert.String(t, "my-project", e.AliasValue())
+	assert.String(t, "Refactored the CLI", e.Description)
 }

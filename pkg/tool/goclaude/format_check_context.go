@@ -18,7 +18,7 @@ func formatCheckContext(body *client.CheckResponse) string {
 	var parts []string
 	parts = append(
 		parts,
-		fmt.Sprintf("[goclauded] Called %s today.", body.Name),
+		fmt.Sprintf("[goclauded] Called %s today.", body.Callsign),
 	)
 
 	if hasReannounce {
@@ -32,7 +32,7 @@ func formatCheckContext(body *client.CheckResponse) string {
 		parts = append(parts, "Active sessions:")
 
 		for _, s := range body.Sessions {
-			line := fmt.Sprintf("  %s", s.Name)
+			line := fmt.Sprintf("  %s", s.Callsign)
 
 			if s.Topic != "" {
 				line = fmt.Sprintf("%s - %s", line, s.Topic)

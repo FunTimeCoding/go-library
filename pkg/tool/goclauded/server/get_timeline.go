@@ -10,20 +10,20 @@ import (
 func (s *Server) GetTimeline(
 	w http.ResponseWriter,
 	_ *http.Request,
-	params server.GetTimelineParams,
+	p server.GetTimelineParams,
 ) {
 	a := argument.Timeline{Limit: 50}
 
-	if params.Limit != nil {
-		a.Limit = *params.Limit
+	if p.Limit != nil {
+		a.Limit = *p.Limit
 	}
 
-	if params.Offset != nil {
-		a.Offset = *params.Offset
+	if p.Offset != nil {
+		a.Offset = *p.Offset
 	}
 
-	if params.Since != nil {
-		a.Since = *params.Since
+	if p.Since != nil {
+		a.Since = *p.Since
 	}
 
 	merged := s.service.Timeline(a)

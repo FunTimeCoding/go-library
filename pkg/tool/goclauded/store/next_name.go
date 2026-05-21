@@ -1,6 +1,7 @@
 package store
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
@@ -10,8 +11,10 @@ import (
 func (s *Store) NextName() string {
 	var taken []string
 	errors.PanicOnError(
-		s.database.Model(session.New()).Pluck(
-			constant.SessionName,
+		s.database.Model(session.Stub()).Where(
+			fmt.Sprintf("%s IS NOT NULL", constant.Callsign),
+		).Pluck(
+			constant.Callsign,
 			&taken,
 		).Error,
 	)

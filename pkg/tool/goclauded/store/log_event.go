@@ -23,5 +23,4 @@ func (s *Store) LogEvent(
 			),
 		).Error,
 	)
-	s.notify()
 }

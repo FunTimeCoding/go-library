@@ -31,7 +31,6 @@ func (s *Store) UpsertCompletion(
 					},
 				).Error,
 		)
-		s.notify()
 
 		return
 	}
@@ -41,5 +40,4 @@ func (s *Store) UpsertCompletion(
 			completion.New(sessionIdentifier, name, kind, topic, message),
 		).Error,
 	)
-	s.notify()
 }

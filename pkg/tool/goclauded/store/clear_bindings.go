@@ -7,7 +7,7 @@ import (
 
 func (s *Store) ClearBindings() {
 	errors.PanicOnError(
-		s.database.Model(session.New()).
+		s.database.Model(session.Stub()).
 			Where("model_context_session != ''").
 			Updates(
 				map[string]any{

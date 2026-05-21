@@ -2,28 +2,25 @@ package conversations
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/session"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/enriched_session"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
 
-func entry(
-	s *session.Session,
-	aliases map[string]string,
-) gomponents.Node {
+func entry(s *enriched_session.Session) gomponents.Node {
 	name := s.Slug
 
-	if a, okay := aliases[s.Identifier]; okay {
-		name = a
+	if s.Alias != "" {
+		name = s.Alias
 	}
 
 	if name == "" {
 		name = "unnamed"
 	}
 
-	return html.Div(
-		html.ID(fmt.Sprintf("entry-%s", s.Identifier)),
-		html.Class("sidebar-entry"),
+	var nodes []gomponents.Node
+	nodes = append(
+		nodes,
 		html.Div(
 			html.Class("entry-name"),
 			gomponents.Attr(
@@ -36,17 +33,33 @@ func entry(
 				html.Class("rename-icon"),
 				gomponents.Attr(
 					"hx-get",
-					fmt.Sprintf("/conversations/%s/rename", s.Identifier),
+					fmt.Sprintf("/conversations/%s/edit", s.Identifier),
 				),
-				gomponents.Attr(
-					"hx-target",
-					fmt.Sprintf("#entry-%s", s.Identifier),
-				),
-				gomponents.Attr("hx-swap", "innerHTML"),
+				gomponents.Attr("hx-target", "#panel"),
 				gomponents.Attr("onclick", "event.stopPropagation()"),
 				gomponents.Text("✎"),
 			),
 		),
+	)
+
+	if s.Description != "" {
+		nodes = append(
+			nodes,
+			html.Small(
+				html.Class("entry-description"),
+				gomponents.Text(s.Description),
+			),
+		)
+	}
+
+	nodes = append(
+		nodes,
 		html.Small(gomponents.Text(relativeTimestamp(s.Timestamp))),
+	)
+
+	return html.Div(
+		html.ID(fmt.Sprintf("entry-%s", s.Identifier)),
+		html.Class("sidebar-entry"),
+		gomponents.Group(nodes),
 	)
 }

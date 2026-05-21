@@ -4,13 +4,14 @@ import "time"
 
 func NewRegistered(
 	identifier string,
-	name string,
+	callsign string,
 ) *Session {
 	now := time.Now()
 
 	return &Session{
 		Identifier:  identifier,
-		Name:        name,
+		Name:        callsign,
+		Callsign:    &callsign,
 		NeedsRoster: true,
 		LastSeen:    now,
 		CreatedAt:   now,

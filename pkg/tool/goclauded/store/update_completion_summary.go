@@ -19,5 +19,4 @@ func (s *Store) UpdateCompletionSummary(
 			).
 			Update("summary", message).Error,
 	)
-	s.notify()
 }

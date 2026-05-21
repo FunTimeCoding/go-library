@@ -13,7 +13,7 @@ func (s *Server) historyCount(
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
 	s.resolveCaller(x, constant.HistoryCount)
-	count := s.service.Store.CountEvents()
+	count := s.service.CountEvents()
 
 	return response.Success(fmt.Sprintf("%d events", count))
 }

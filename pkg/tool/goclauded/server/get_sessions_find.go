@@ -8,18 +8,17 @@ import (
 
 func (s *Server) GetSessionsFind(
 	w http.ResponseWriter,
-	r *http.Request,
-	params server.GetSessionsFindParams,
+	_ *http.Request,
+	p server.GetSessionsFindParams,
 ) {
-	matches := s.claude.SessionsByTool(params.Tool)
 	var result []server.FindMatch
 
-	for _, m := range matches {
-		alias := s.service.Store.GetAlias(m.Session.Identifier)
+	for _, m := range s.service.SessionsByTool(p.Tool) {
 		name := m.Session.Slug
+		e := s.service.GetSession(m.Session.Identifier)
 
-		if alias != "" {
-			name = alias
+		if e != nil && e.Alias != nil {
+			name = *e.Alias
 		}
 
 		result = append(

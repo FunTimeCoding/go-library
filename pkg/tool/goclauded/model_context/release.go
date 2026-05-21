@@ -13,18 +13,11 @@ func (s *Server) release(
 ) (*mcp.CallToolResult, error) {
 	c := s.resolveCaller(x, constant.Release)
 
-	if c.Name == "" {
+	if c.Callsign == "" {
 		return response.Fail("unknown session - announce first to bind your identity")
 	}
 
-	s.service.Store.LogEvent(
-		c.SessionIdentifier,
-		constant.Release,
-		c.Name,
-		"",
-		"",
-	)
-	s.service.Store.ReleaseByName(c.Name)
+	s.service.Release(c.SessionIdentifier, c.Callsign)
 
 	return response.Success("Released")
 }

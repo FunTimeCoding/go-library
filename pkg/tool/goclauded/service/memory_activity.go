@@ -1,13 +1,15 @@
 package service
 
-func (s *Service) MemoryActivity(since string) []MemoryActivityEntry {
+import "github.com/funtimecoding/go-library/pkg/tool/goclauded/service/memory_activity"
+
+func (s *Service) MemoryActivity(since string) []memory_activity.Activity {
 	versions := s.memory.VersionsSince(since, 50)
-	var result []MemoryActivityEntry
+	var result []memory_activity.Activity
 
 	for _, v := range versions {
 		result = append(
 			result,
-			MemoryActivityEntry{
+			memory_activity.Activity{
 				MemoryIdentifier: v.MemoryIdentifier,
 				Name:             v.Name,
 				ChangeType:       v.ChangeType,

@@ -12,8 +12,7 @@ func (s *Server) page(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	sessions := s.claude.Sessions()
-	aliases := s.store.AllAliases()
+	sessions := s.service.EnrichedSessions(0, 0)
 	limit := 30
 	hasMore := len(sessions) > limit
 
@@ -23,8 +22,8 @@ func (s *Server) page(
 
 	var entries []gomponents.Node
 
-	for i := range sessions {
-		entries = append(entries, entry(sessions[i], aliases))
+	for _, e := range sessions {
+		entries = append(entries, entry(e))
 	}
 
 	if hasMore {
@@ -49,6 +48,15 @@ func (s *Server) page(
 					),
 					html.Div(
 						html.ID("sidebar-entries"),
+						gomponents.Attr(
+							"hx-get",
+							"/conversations/sidebar",
+						),
+						gomponents.Attr(
+							"hx-trigger",
+							"session-edited from:body",
+						),
+						gomponents.Attr("hx-swap", "innerHTML"),
 						gomponents.Group(entries),
 					),
 				),

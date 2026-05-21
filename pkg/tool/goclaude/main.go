@@ -25,7 +25,10 @@ func Main(
 		Use:     constant.Identity.Usage(),
 		Short:   constant.Identity.Description(),
 		Version: argument.CobraVersion(version, gitHash, buildDate),
-		PersistentPreRun: func(_ *cobra.Command, _ []string) {
+		PersistentPreRun: func(
+			_ *cobra.Command,
+			_ []string,
+		) {
 			c.Initialize(host, port)
 		},
 	}

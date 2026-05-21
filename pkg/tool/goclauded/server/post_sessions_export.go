@@ -13,7 +13,7 @@ func (s *Server) PostSessionsExport(
 	basePath := s.sessionExportPath
 	var paths []string
 
-	for _, session := range s.claude.Sessions() {
+	for _, session := range s.service.Sessions() {
 		path := s.exportSession(session, basePath)
 		paths = append(paths, path)
 	}

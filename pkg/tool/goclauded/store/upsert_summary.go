@@ -27,7 +27,6 @@ func (s *Store) UpsertSummary(
 					},
 				).Error,
 		)
-		s.notify()
 
 		return
 	}
@@ -35,5 +34,4 @@ func (s *Store) UpsertSummary(
 	errors.PanicOnError(
 		s.database.Create(summary.New(sessionIdentifier, name, body)).Error,
 	)
-	s.notify()
 }

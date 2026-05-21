@@ -37,7 +37,6 @@ func (s *Store) UpsertEvent(
 					},
 				).Error,
 		)
-		s.notify()
 
 		return
 	}

@@ -14,7 +14,7 @@ func (s *Server) send(
 ) (*mcp.CallToolResult, error) {
 	c := s.resolveCaller(x, constant.Send)
 
-	if c.Name == "" {
+	if c.Callsign == "" {
 		return response.Fail("unknown session - announce first to bind your identity")
 	}
 
@@ -25,14 +25,7 @@ func (s *Server) send(
 	}
 
 	to := q.GetString(constant.To, "")
-	s.service.Store.SendMessage(c.Name, to, body)
-	s.service.Store.LogEvent(
-		c.SessionIdentifier,
-		constant.Send,
-		c.Name,
-		to,
-		body,
-	)
+	s.service.Send(c.Callsign, to, body)
 
 	if to != "" {
 		return response.Success(fmt.Sprintf("Sent to %s", to))

@@ -1,9 +1,7 @@
 package web
 
 import (
-	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/notifier"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/web/conversations"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
@@ -17,13 +15,11 @@ import (
 
 func New(
 	s *service.Service,
-	n *notifier.Notifier,
-	c *claude.Client,
 ) *Server {
 	return &Server{
 		service:       s,
-		notifier:      n,
-		conversations: conversations.New(c, s.Store),
+		notifier:      s.Notifier(),
+		conversations: conversations.New(s),
 		view: view.New(
 			layout.New(constant.Identity).
 				WithTheme(theme.Hearth).

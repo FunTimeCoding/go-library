@@ -11,7 +11,7 @@ func (s *Server) GetSessionPeek(
 	r *http.Request,
 	identifier string,
 ) {
-	p := s.claude.Peek(identifier)
+	p := s.service.Peek(identifier)
 	web.EncodeNotation(
 		w,
 		server.PeekResponse{

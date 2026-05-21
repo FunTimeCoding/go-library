@@ -2,7 +2,8 @@ package conversations
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 	"net/http"
@@ -12,11 +13,11 @@ func (s *Server) panel(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	identifier := r.PathValue("id")
-	session := s.claude.Resolve(identifier)
+	identifier := r.PathValue(constant.Identifier)
+	session := s.service.Resolve(identifier)
 
 	if session.Identifier == "" {
-		w.Header().Set(constant.ContentType, "text/html; charset=utf-8")
+		w.Header().Set(web.ContentType, "text/html; charset=utf-8")
 		errors.PanicOnError(
 			html.P(gomponents.Text("Session not found.")).Render(w),
 		)
@@ -24,7 +25,7 @@ func (s *Server) panel(
 		return
 	}
 
-	messages := s.claude.Messages(session.Identifier)
+	messages := s.service.Messages(session.Identifier)
 	var nodes []gomponents.Node
 
 	for i := range messages {
@@ -35,6 +36,6 @@ func (s *Server) panel(
 		nodes = append(nodes, messageBlock(&messages[i]))
 	}
 
-	w.Header().Set(constant.ContentType, "text/html; charset=utf-8")
+	w.Header().Set(web.ContentType, "text/html; charset=utf-8")
 	errors.PanicOnError(gomponents.Group(nodes).Render(w))
 }

@@ -13,5 +13,5 @@ func (s *Store) ResolveModelContextSession(modelContextSessionIdentifier string)
 		return "", ""
 	}
 
-	return i.Name, i.Identifier
+	return i.CallsignValue(), i.Identifier
 }

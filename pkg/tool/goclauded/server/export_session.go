@@ -14,8 +14,14 @@ func (s *Server) exportSession(
 	i *session.Session,
 	basePath string,
 ) string {
-	alias := s.service.Store.GetAlias(i.Identifier)
-	messages := s.claude.Messages(i.Identifier)
+	o := s.service.GetSession(i.Identifier)
+	alias := ""
+
+	if o != nil {
+		alias = o.AliasValue()
+	}
+
+	messages := s.service.Messages(i.Identifier)
 	created := parseTimestamp(i.Timestamp)
 	d := filepath.Join(
 		basePath,

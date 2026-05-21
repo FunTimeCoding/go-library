@@ -10,7 +10,6 @@ import (
 type Server struct {
 	server    *server.MCPServer
 	service   *service.Service
-	indexer   face.Indexer
 	reporter  face.Reporter
 	logger    *logger.Logger
 	telemetry face.Recorder

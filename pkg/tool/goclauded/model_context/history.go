@@ -3,11 +3,11 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/timeline"
 	"github.com/mark3labs/mcp-go/mcp"
-	"strings"
 	"time"
 )
 
@@ -57,5 +57,5 @@ func (s *Server) history(
 		lines = append(lines, timeline.Format(e))
 	}
 
-	return response.Success(strings.Join(lines, "\n"))
+	return response.Success(join.NewLine(lines))
 }

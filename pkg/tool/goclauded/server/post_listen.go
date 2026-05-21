@@ -14,6 +14,6 @@ func (s *Server) PostListen(
 	var body server.ListenRequest
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
 	listening := body.Listening != nil && *body.Listening
-	s.service.Store.SetListening(body.Name, listening)
+	s.service.SetListening(body.Callsign, listening)
 	w.WriteHeader(http.StatusOK)
 }

@@ -1,6 +1,6 @@
 package model_context
 
 type caller struct {
-	Name              string
+	Callsign          string
 	SessionIdentifier string
 }

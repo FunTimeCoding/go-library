@@ -13,7 +13,7 @@ func (s *Server) moment(
 ) (*mcp.CallToolResult, error) {
 	c := s.resolveCaller(x, constant.Moment)
 
-	if c.Name == "" {
+	if c.Callsign == "" {
 		return response.Fail("unknown session - announce first to bind your identity")
 	}
 
@@ -23,14 +23,7 @@ func (s *Server) moment(
 		return response.Fail("line is required: %v", e)
 	}
 
-	s.service.Store.LogEvent(
-		c.SessionIdentifier,
-		constant.Moment,
-		c.Name,
-		"",
-		line,
-	)
-	s.service.ForwardImpression(line, c.Name)
+	s.service.Moment(c.SessionIdentifier, c.Callsign, line)
 
 	return response.Success("moment captured")
 }

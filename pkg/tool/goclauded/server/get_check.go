@@ -11,76 +11,66 @@ import (
 func (s *Server) GetCheck(
 	w http.ResponseWriter,
 	_ *http.Request,
-	params server.GetCheckParams,
+	p server.GetCheckParams,
 ) {
-	preview := params.Preview != nil && *params.Preview
+	preview := p.Preview != nil && *p.Preview
 
 	if preview {
-		s.checkPreview(w, params.Session)
+		s.checkPreview(w, p.Session)
 
 		return
 	}
 
-	result := s.service.Store.EnsureSession(params.Session)
-	changed := s.service.Store.HasChanges(result.Name, result.LastSeen)
+	r := s.service.Check(p.Session)
 	s.logger.Structured(
 		"hook_check",
 		"claude_session_identifier",
-		params.Session,
-		constant.SessionName,
-		result.Name,
-		"new",
-		result.New,
+		p.Session,
+		constant.Callsign,
+		r.Callsign,
 		"changed",
-		changed,
+		r.Changed,
 	)
 	var entries []server.SessionEntry
+
+	for _, e := range r.Sessions {
+		entry := server.SessionEntry{
+			Callsign: e.CallsignValue(),
+			Topic: e.Topic,
+		}
+
+		if e.Files != "" {
+			files := strings.Split(e.Files, "\n")
+			entry.Files = &files
+		}
+
+		entries = append(entries, entry)
+	}
+
 	var messages []server.Message
 
-	if changed {
-		sessions := s.service.Store.ListSessions()
-
-		for _, e := range sessions {
-			entry := server.SessionEntry{
-				Name:  e.Name,
-				Topic: e.Topic,
-			}
-
-			if e.Files != "" {
-				files := strings.Split(e.Files, "\n")
-				entry.Files = &files
-			}
-
-			entries = append(entries, entry)
-		}
-
-		pending := s.service.Store.PendingMessages(result.Name)
-
-		for _, m := range pending {
-			messages = append(
-				messages,
-				server.Message{
-					From:      m.FromName,
-					Body:      m.Body,
-					Timestamp: m.CreatedAt.Format("2006-01-02T15:04:05Z"),
-				},
-			)
-		}
+	for _, m := range r.Messages {
+		messages = append(
+			messages,
+			server.Message{
+				From:      m.FromName,
+				Body:      m.Body,
+				Timestamp: m.CreatedAt.Format("2006-01-02T15:04:05Z"),
+			},
+		)
 	}
 
 	var completions []server.CompletionEntry
 
-	if changed {
-		for _, c := range s.service.Store.RecentCompletions() {
-			completions = append(
-				completions,
-				server.CompletionEntry{
-					Name:  c.Name,
-					Topic: c.Topic,
-					Kind:  c.Kind,
-				},
-			)
-		}
+	for _, c := range r.Completions {
+		completions = append(
+			completions,
+			server.CompletionEntry{
+				Name:  c.Name,
+				Topic: c.Topic,
+				Kind:  c.Kind,
+			},
+		)
 	}
 
 	if messages == nil {
@@ -97,50 +87,39 @@ func (s *Server) GetCheck(
 
 	var memoryActivity *[]server.MemoryActivityEntry
 
-	if !result.LastSeen.IsZero() {
-		since := result.LastSeen.UTC().Format("2006-01-02T15:04:05Z")
-		activity := s.service.MemoryActivity(since)
+	if len(r.MemoryActivity) > 0 {
+		var ma []server.MemoryActivityEntry
 
-		if len(activity) > 0 {
-			var entries []server.MemoryActivityEntry
-
-			for _, a := range activity {
-				entries = append(
-					entries,
-					server.MemoryActivityEntry{
-						MemoryIdentifier: a.MemoryIdentifier,
-						Name:             a.Name,
-						ChangeType:       a.ChangeType,
-						Source:           a.Source,
-					},
-				)
-			}
-
-			memoryActivity = &entries
+		for _, a := range r.MemoryActivity {
+			ma = append(
+				ma,
+				server.MemoryActivityEntry{
+					MemoryIdentifier: a.MemoryIdentifier,
+					Name:             a.Name,
+					ChangeType:       a.ChangeType,
+					Source:           a.Source,
+				},
+			)
 		}
+
+		memoryActivity = &ma
 	}
 
 	response := server.CheckResponse{
-		Name:           result.Name,
-		Changed:        changed,
+		Callsign:       r.Callsign,
+		Changed:        r.Changed,
 		Sessions:       entries,
 		Messages:       messages,
 		Completions:    completions,
 		MemoryActivity: memoryActivity,
 	}
 
-	if memoryActivity != nil {
-		response.Changed = true
+	if r.TimeoutMessage != "" {
+		response.TimeoutMessage = &r.TimeoutMessage
 	}
 
-	if timeout := s.service.Store.ConsumeTimeout(result.Name); timeout != "" {
-		response.TimeoutMessage = &timeout
-		response.Changed = true
-	}
-
-	if s.service.Store.ConsumeReannounce(result.Name) {
+	if r.Reannounce {
 		response.Reannounce = new(true)
-		response.Changed = true
 	}
 
 	web.EncodeNotation(w, response)

@@ -1,14 +1,14 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/alias"
+import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
 
 func (s *Store) ResolveAlias(name string) string {
-	var a alias.Alias
-	result := s.database.Where("name = ?", name).Limit(1).Find(&a)
+	var i session.Session
+	result := s.database.Where("alias = ?", name).Limit(1).Find(&i)
 
 	if result.Error != nil || result.RowsAffected == 0 {
 		return ""
 	}
 
-	return a.SessionIdentifier
+	return i.Identifier
 }

@@ -19,6 +19,6 @@ func (s *Server) PostSend(
 		to = *body.To
 	}
 
-	s.service.Store.SendMessage(body.Name, to, body.Body)
+	s.service.Send(body.Callsign, to, body.Body)
 	w.WriteHeader(http.StatusOK)
 }

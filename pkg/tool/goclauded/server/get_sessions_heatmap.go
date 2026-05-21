@@ -9,11 +9,11 @@ import (
 
 func (s *Server) GetSessionsHeatmap(
 	w http.ResponseWriter,
-	r *http.Request,
-	params server.GetSessionsHeatmapParams,
+	_ *http.Request,
+	p server.GetSessionsHeatmapParams,
 ) {
-	sessions := s.claude.Sessions()
-	bash := params.Bash != nil && *params.Bash
+	sessions := s.service.Sessions()
+	bash := p.Bash != nil && *p.Bash
 	type stats struct {
 		Calls    int
 		Sessions int
@@ -23,7 +23,7 @@ func (s *Server) GetSessionsHeatmap(
 	sessionsWithCalls := 0
 
 	for _, session := range sessions {
-		calls := s.claude.ToolCalls(session.Identifier)
+		calls := s.service.ToolCalls(session.Identifier)
 
 		if len(calls) == 0 {
 			continue

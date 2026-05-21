@@ -11,52 +11,50 @@ func (s *Server) GetSessionDetail(
 	_ *http.Request,
 	identifier string,
 ) {
-	sessionIdentifier := s.service.Store.ResolveSessionIdentifier(identifier)
+	d := s.service.SessionDetail(identifier)
 
-	if sessionIdentifier == "" {
-		sessionIdentifier = identifier
-	}
-
-	cs := s.claude.Resolve(sessionIdentifier)
-
-	if cs.Identifier == "" {
+	if d == nil {
 		http.NotFound(w, nil)
 
 		return
 	}
 
-	result := server.SessionDetailResponse{Identifier: cs.Identifier}
+	result := server.SessionDetailResponse{Identifier: d.Identifier}
 
-	if cs.Slug != "" {
-		result.Slug = &cs.Slug
-	}
-
-	if cs.Timestamp != "" {
-		result.Created = &cs.Timestamp
-	}
-
-	if sess := s.service.Store.GetSession(cs.Identifier); sess != nil {
-		result.TurnCount = &sess.TurnCount
-	}
-
-	a := s.service.Store.GetAliasRecord(cs.Identifier)
-
-	if a != nil {
-		if a.Name != "" {
-			result.Alias = &a.Name
+	if d.Session != nil {
+		if d.Session.Name != "" {
+			result.Name = &d.Session.Name
 		}
 
-		if a.Description != "" {
-			result.Description = &a.Description
+		if d.Session.Callsign != nil {
+			result.Callsign = d.Session.Callsign
 		}
 	}
 
-	completions := s.service.Store.CompletionsBySession(cs.Identifier)
+	if d.Slug != "" {
+		result.Slug = &d.Slug
+	}
 
-	if len(completions) > 0 {
+	if d.Created != "" {
+		result.Created = &d.Created
+	}
+
+	if d.TurnCount > 0 {
+		result.TurnCount = &d.TurnCount
+	}
+
+	if d.Alias != "" {
+		result.Alias = &d.Alias
+	}
+
+	if d.Description != "" {
+		result.Description = &d.Description
+	}
+
+	if len(d.Completions) > 0 {
 		var entries []server.SessionDetailCompletion
 
-		for _, c := range completions {
+		for _, c := range d.Completions {
 			entry := server.SessionDetailCompletion{
 				Kind:  c.Kind,
 				Topic: c.Topic,
@@ -74,8 +72,8 @@ func (s *Server) GetSessionDetail(
 		result.Completions = &entries
 	}
 
-	if body := s.service.Store.SummaryBySession(cs.Identifier); body != "" {
-		result.Summary = &body
+	if d.Summary != "" {
+		result.Summary = &d.Summary
 	}
 
 	web.EncodeNotation(w, result)

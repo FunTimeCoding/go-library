@@ -16,24 +16,21 @@ func (s *Server) PostRegister(
 ) {
 	var body server.RegisterRequest
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	result := s.service.Store.EnsureSession(body.Session)
-	s.service.Store.MarkNeedsRoster(body.Session)
 	sweep.Run(s.harborPath)
-	s.service.Store.EnrichSession(body.Session, s.claude)
-	s.service.Store.LogEvent(body.Session, "register", result.Name, "", "")
+	result := s.service.Register(body.Session)
 	s.logger.Structured(
 		"register",
 		"claude_session_identifier",
 		body.Session,
 		constant.SessionName,
-		result.Name,
+		result.Callsign,
 		"new",
 		result.New,
 	)
 	web.EncodeNotation(
 		w,
 		server.RegisterResponse{
-			Name: result.Name,
+			Callsign: result.Callsign,
 		},
 	)
 }

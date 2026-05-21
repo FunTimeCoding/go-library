@@ -11,8 +11,8 @@ func (s *Store) Announce(
 	files string,
 ) {
 	errors.PanicOnError(
-		s.database.Model(session.New()).
-			Where("name = ?", name).
+		s.database.Model(session.Stub()).
+			Where("callsign = ?", name).
 			Updates(
 				map[string]any{
 					"topic":            topic,
@@ -21,5 +21,4 @@ func (s *Store) Announce(
 				},
 			).Error,
 	)
-	s.notify()
 }

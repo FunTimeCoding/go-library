@@ -77,11 +77,35 @@ paths:
       responses:
         "200":
           description: Session released.
+  /api/resolve:
+    get:
+      operationId: getResolve
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Resolved to single session.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResolveResponse"
+        "404":
+          description: No match.
+        "409":
+          description: Ambiguous.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResolveAmbiguousResponse"
   /api/wait:
     get:
       operationId: getWait
       parameters:
-      - name: name
+      - name: callsign
         in: query
         required: true
         schema:
@@ -110,11 +134,11 @@ paths:
       responses:
         "200":
           description: Listening state toggled.
-  /api/session/{name}:
+  /api/session/{callsign}:
     delete:
       operationId: deleteSession
       parameters:
-      - name: name
+      - name: callsign
         in: path
         required: true
         schema:
@@ -122,39 +146,18 @@ paths:
       responses:
         "200":
           description: Session deleted.
-  /api/alias:
-    get:
-      operationId: getAliases
-      responses:
-        "200":
-          description: All aliases.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AliasListResponse"
+  /api/sessions/edit:
     post:
-      operationId: postAlias
+      operationId: postEditSession
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AliasRequest"
+              $ref: "#/components/schemas/EditSessionRequest"
       responses:
         "200":
-          description: Alias set.
-  /api/alias/{session}:
-    delete:
-      operationId: deleteAlias
-      parameters:
-      - name: session
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Alias deleted.
+          description: Session updated.
   /api/sessions:
     get:
       operationId: getSessions
@@ -164,6 +167,16 @@ paths:
         required: false
         schema:
           type: boolean
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
       responses:
         "200":
           description: All sessions.
@@ -383,6 +396,32 @@ paths:
                   $ref: "#/components/schemas/TimelineEntry"
 components:
   schemas:
+    ResolveResponse:
+      type: object
+      required: [identifier]
+      properties:
+        identifier:
+          type: string
+    ResolveAmbiguousResponse:
+      type: object
+      required: [matches]
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResolveMatch"
+    ResolveMatch:
+      type: object
+      required: [identifier, field]
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+        alias:
+          type: string
+        field:
+          type: string
     TimelineEntry:
       type: object
       required: [timestamp, kind, actor, subject]
@@ -407,20 +446,20 @@ components:
     RegisterResponse:
       type: object
       required:
-      - name
+      - callsign
       properties:
-        name:
+        callsign:
           type: string
     CheckResponse:
       type: object
       required:
-      - name
+      - callsign
       - changed
       - sessions
       - messages
       - completions
       properties:
-        name:
+        callsign:
           type: string
         changed:
           type: boolean
@@ -476,10 +515,10 @@ components:
     SessionEntry:
       type: object
       required:
-      - name
+      - callsign
       - topic
       properties:
-        name:
+        callsign:
           type: string
         topic:
           type: string
@@ -511,10 +550,10 @@ components:
     AnnounceRequest:
       type: object
       required:
-      - name
+      - callsign
       - topic
       properties:
-        name:
+        callsign:
           type: string
         topic:
           type: string
@@ -525,10 +564,10 @@ components:
     SendRequest:
       type: object
       required:
-      - name
+      - callsign
       - body
       properties:
-        name:
+        callsign:
           type: string
         to:
           type: string
@@ -546,39 +585,20 @@ components:
     ListenRequest:
       type: object
       required:
-      - name
+      - callsign
       properties:
-        name:
+        callsign:
           type: string
         listening:
           type: boolean
     ReleaseRequest:
       type: object
       required:
-      - name
+      - callsign
       properties:
-        name:
+        callsign:
           type: string
-    AliasListResponse:
-      type: object
-      required:
-      - aliases
-      properties:
-        aliases:
-          type: array
-          items:
-            $ref: "#/components/schemas/AliasEntry"
-    AliasEntry:
-      type: object
-      required:
-      - session
-      - name
-      properties:
-        session:
-          type: string
-        name:
-          type: string
-    AliasRequest:
+    EditSessionRequest:
       type: object
       required:
       - session
@@ -588,6 +608,10 @@ components:
         name:
           type: string
         description:
+          type: string
+        topic:
+          type: string
+        files:
           type: string
     SessionListResponse:
       type: object
@@ -607,6 +631,8 @@ components:
       properties:
         identifier:
           type: string
+        name:
+          type: string
         slug:
           type: string
         timestamp:
@@ -616,6 +642,8 @@ components:
         branch:
           type: string
         alias:
+          type: string
+        description:
           type: string
         preview:
           type: string
@@ -799,6 +827,10 @@ components:
       - identifier
       properties:
         identifier:
+          type: string
+        name:
+          type: string
+        callsign:
           type: string
         alias:
           type: string

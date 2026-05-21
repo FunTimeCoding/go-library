@@ -29,7 +29,7 @@ func TestCompleteAmend(t *testing.T) {
 	)
 	var found int
 
-	for _, c := range s.Store().RecentCompletions() {
+	for _, c := range s.Store.RecentCompletions() {
 		if c.Topic == "search index" && c.Kind == constant.Complete {
 			found++
 			assert.String(
@@ -64,7 +64,7 @@ func TestCompleteAmendOneEvent(t *testing.T) {
 	)
 	var found int
 
-	for _, e := range s.Store().EventsSince(
+	for _, e := range s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
 		constant.Complete,
@@ -101,7 +101,7 @@ func TestCompleteDifferentTopics(t *testing.T) {
 	)
 	var count int
 
-	for _, c := range s.Store().RecentCompletions() {
+	for _, c := range s.Store.RecentCompletions() {
 		if c.Kind == constant.Complete {
 			count++
 		}

@@ -1,35 +1,47 @@
 package web
 
 import (
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/enriched_session"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
 
-func sessionRow(
-	s *session.Session,
-	activeNames map[string]bool,
-	aliases map[string]string,
-) gomponents.Node {
-	name := []gomponents.Node{
-		statusDot(s.LastSeen),
-		gomponents.Text(s.Name),
+func sessionRow(s *enriched_session.Session) gomponents.Node {
+	name := s.Slug
+
+	if s.Alias != "" {
+		name = s.Alias
 	}
 
-	if activeNames[s.Name] {
-		name = append(
-			name,
+	if name == "" {
+		name = s.Identifier[:8]
+	}
+
+	var label []gomponents.Node
+	label = append(label, gomponents.Text(name))
+
+	if s.Active {
+		label = append(
+			label,
 			gomponents.Text(" "),
 			html.Small(gomponents.Text("(active)")),
 		)
 	}
 
 	return html.Tr(
-		html.Td(gomponents.Group(name)),
-		html.Td(gomponents.Text(s.Topic)),
-		html.Td(html.Small(gomponents.Text(aliases[s.Name]))),
+		html.Td(
+			html.A(
+				gomponents.Attr(
+					"href",
+					fmt.Sprintf("/sessions/%s", s.Identifier),
+				),
+				gomponents.Group(label),
+			),
+		),
+		html.Td(html.Small(gomponents.Text(s.Alias))),
+		html.Td(html.Small(gomponents.Text(s.Description))),
+		html.Td(gomponents.Textf("%d", s.Lines)),
 		html.Td(gomponents.Textf("%d", s.TurnCount)),
-		html.Td(html.Small(gomponents.Text(relativeTime(s.LastSeen)))),
-		html.Td(html.Em(html.Small(gomponents.Text(s.FirstMessage)))),
 	)
 }

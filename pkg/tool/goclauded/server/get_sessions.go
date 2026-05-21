@@ -8,11 +8,23 @@ import (
 
 func (s *Server) GetSessions(
 	w http.ResponseWriter,
-	r *http.Request,
-	params server.GetSessionsParams,
+	_ *http.Request,
+	p server.GetSessionsParams,
 ) {
-	sessions := s.claude.Sessions()
-	peek := params.Peek != nil && *params.Peek
+	limit := 0
+
+	if p.Limit != nil {
+		limit = *p.Limit
+	}
+
+	offset := 0
+
+	if p.Offset != nil {
+		offset = *p.Offset
+	}
+
+	peek := p.Peek != nil && *p.Peek
+	sessions := s.service.EnrichedSessions(limit, offset)
 	var result []server.SessionDetail
 
 	for _, e := range sessions {
@@ -20,6 +32,10 @@ func (s *Server) GetSessions(
 			Identifier: e.Identifier,
 			Timestamp:  e.Timestamp,
 			Lines:      e.Lines,
+		}
+
+		if e.Name != "" {
+			d.Name = &e.Name
 		}
 
 		if e.Slug != "" {
@@ -34,14 +50,16 @@ func (s *Server) GetSessions(
 			d.Branch = &e.Branch
 		}
 
-		alias := s.service.Store.GetAlias(e.Identifier)
+		if e.Alias != "" {
+			d.Alias = &e.Alias
+		}
 
-		if alias != "" {
-			d.Alias = &alias
+		if e.Description != "" {
+			d.Description = &e.Description
 		}
 
 		if peek {
-			preview := s.claude.FirstUserMessage(e.Identifier)
+			preview := s.service.FirstUserMessage(e.Identifier)
 
 			if len(preview) > 60 {
 				preview = preview[:60]

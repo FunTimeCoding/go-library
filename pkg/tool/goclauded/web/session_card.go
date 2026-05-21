@@ -8,13 +8,32 @@ import (
 	"strings"
 )
 
-func sessionCard(s *session.Session) gomponents.Node {
+func sessionCard(
+	s *session.Session,
+	lines int,
+) gomponents.Node {
 	var details []gomponents.Node
+
+	if s.Alias != nil {
+		details = append(
+			details,
+			html.P(html.Strong(gomponents.Text(*s.Alias))),
+		)
+	}
 
 	if s.Topic != "" {
 		details = append(
 			details,
 			html.P(gomponents.Text(s.Topic)),
+		)
+	}
+
+	if s.Description != "" {
+		details = append(
+			details,
+			html.P(
+				html.Small(gomponents.Text(s.Description)),
+			),
 		)
 	}
 
@@ -33,6 +52,10 @@ func sessionCard(s *session.Session) gomponents.Node {
 		metadata = append(metadata, fmt.Sprintf("%d turns", s.TurnCount))
 	}
 
+	if lines > 0 {
+		metadata = append(metadata, fmt.Sprintf("%d lines", lines))
+	}
+
 	metadata = append(metadata, relativeTime(s.LastSeen))
 	details = append(
 		details,
@@ -41,20 +64,11 @@ func sessionCard(s *session.Session) gomponents.Node {
 		),
 	)
 
-	if s.FirstMessage != "" {
-		details = append(
-			details,
-			html.P(
-				html.Em(
-					html.Small(
-						gomponents.Textf("\"%s\"", s.FirstMessage),
-					),
-				),
-			),
-		)
-	}
-
-	return html.Div(
+	return html.A(
+		gomponents.Attr(
+			"href",
+			fmt.Sprintf("/sessions/%s", s.Identifier),
+		),
 		html.Class("session-card"),
 		html.H4(
 			statusDot(s.LastSeen),

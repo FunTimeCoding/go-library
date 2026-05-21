@@ -15,5 +15,4 @@ func (s *Store) UpdateSummaryBody(
 			Where("session_identifier = ?", sessionIdentifier).
 			Update(constant.Body, body).Error,
 	)
-	s.notify()
 }

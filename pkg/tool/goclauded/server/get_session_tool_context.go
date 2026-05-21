@@ -8,17 +8,17 @@ import (
 
 func (s *Server) GetSessionToolContext(
 	w http.ResponseWriter,
-	r *http.Request,
+	_ *http.Request,
 	identifier string,
-	params server.GetSessionToolContextParams,
+	p server.GetSessionToolContextParams,
 ) {
 	surround := 1
 
-	if params.Surround != nil {
-		surround = *params.Surround
+	if p.Surround != nil {
+		surround = *p.Surround
 	}
 
-	results := s.claude.ToolContext(identifier, params.Filter, surround)
+	results := s.service.ToolContext(identifier, p.Filter, surround)
 	var entries []server.ToolContextResult
 
 	for _, tc := range results {

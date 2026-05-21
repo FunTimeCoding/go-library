@@ -30,18 +30,23 @@ func Run(
 ) {
 	l := logger.New(context.Background())
 	n := notifier.New()
-	s := store.New(store.DefaultDatabasePath(), n, time.Now)
+	s := store.New(store.DefaultDatabasePath(), time.Now)
 	h := claude.New().Base()
 	sweep.Run(h)
-	c := claude.New()
-	y := memory.Wait(l)
-	q := connect.Wait(l)
 	s.ClearBindings()
-	v := service.New(s, y)
-	i := summary_indexer.New(q)
-	reconcileSummaries(s, i)
-	go s.RunCleanup()
-	go s.RunTimeoutLoop()
+	v := service.New(
+		s,
+		claude.New(),
+		memory.Wait(l),
+		summary_indexer.New(connect.Wait(l)),
+		n,
+		time.Now,
+		l,
+	)
+	v.ReconcileSummaries()
+	v.BackfillSessions()
+	v.CheckConsistency()
+	go v.RunTimeoutLoop()
 	go sweep.RunLoop(h)
 	lifecycle.New(
 		l,
@@ -49,18 +54,17 @@ func Run(
 			library.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
-					server.New(v, c, l, h, o.SessionExportPath),
+					server.New(v, l, h, o.SessionExportPath),
 					m,
 				)
 				model_context.New(
 					v,
-					i,
 					r,
 					l,
 					telemetry.NewEnvironment(),
 					o.Version,
 				).Mount(m)
-				web.New(v, n, c).Mount(m)
+				web.New(v).Mount(m)
 			},
 			library.RecoveryMiddleware(r),
 		),

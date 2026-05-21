@@ -27,7 +27,7 @@ func TestEventSessionID(t *testing.T) {
 		},
 	)
 
-	for _, e := range s.Store().EventsSince(
+	for _, e := range s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
 		"",
@@ -54,7 +54,7 @@ func TestSummarySessionID(t *testing.T) {
 			constant.Body: "session summary",
 		},
 	)
-	v := s.Store().ListSummaries()
+	v := s.Store.ListSummaries()
 	assert.Count(t, 1, v)
 	assert.True(t, v[0].SessionIdentifier != "")
 }
@@ -73,7 +73,7 @@ func TestCompletionSessionID(t *testing.T) {
 	)
 	var found bool
 
-	for _, c := range s.Store().RecentCompletions() {
+	for _, c := range s.Store.RecentCompletions() {
 		if c.Kind == constant.Complete {
 			assert.True(t, c.SessionIdentifier != "")
 			found = true

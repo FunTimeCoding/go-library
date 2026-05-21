@@ -10,7 +10,6 @@ import (
 
 func New(
 	s *service.Service,
-	i face.Indexer,
 	r face.Reporter,
 	l *logger.Logger,
 	t face.Recorder,
@@ -24,7 +23,6 @@ func New(
 			server.WithInstructions(constant.Identity.Instructions()),
 		),
 		service:   s,
-		indexer:   i,
 		reporter:  r,
 		logger:    l,
 		telemetry: t,

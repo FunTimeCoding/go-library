@@ -19,7 +19,7 @@ func (s *Server) resolveCaller(
 	}
 
 	modelContextSessionIdentifier := session.SessionID()
-	name, sessionIdentifier := s.service.Store.ResolveModelContextSession(modelContextSessionIdentifier)
+	name, sessionIdentifier := s.service.ResolveModelContextSession(modelContextSessionIdentifier)
 	s.logger.Structured(
 		"model_context_tool_call",
 		"tool",
@@ -38,5 +38,5 @@ func (s *Server) resolveCaller(
 		),
 	)
 
-	return &caller{Name: name, SessionIdentifier: sessionIdentifier}
+	return &caller{Callsign: name, SessionIdentifier: sessionIdentifier}
 }

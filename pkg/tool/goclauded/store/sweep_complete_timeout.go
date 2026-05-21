@@ -7,9 +7,8 @@ import (
 	"time"
 )
 
-func (s *Store) sweepCompleteTimeout() {
+func (s *Store) SweepCompleteTimeout(cutoff time.Time) []session.Session {
 	var sessions []session.Session
-	cutoff := s.clock().Add(-30 * time.Minute)
 	errors.PanicOnError(
 		s.database.
 			Where("last_seen < ? AND topic = '' AND timed_out = ''", cutoff).
@@ -18,14 +17,11 @@ func (s *Store) sweepCompleteTimeout() {
 
 	for _, e := range sessions {
 		errors.PanicOnError(
-			s.database.Model(session.New()).
-				Where("name = ?", e.Name).
+			s.database.Model(session.Stub()).
+				Where("callsign = ?", e.CallsignValue()).
 				Update("timed_out", constant.CompleteTimeout).Error,
 		)
-		s.LogEvent(e.Identifier, constant.CompleteTimeout, e.Name, "", "")
 	}
 
-	if len(sessions) > 0 {
-		s.notify()
-	}
+	return sessions
 }

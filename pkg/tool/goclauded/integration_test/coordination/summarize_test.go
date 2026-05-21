@@ -20,7 +20,7 @@ func TestSummarize(t *testing.T) {
 			constant.Body: "built the search index pipeline",
 		},
 	)
-	v := s.Store().ListSummaries()
+	v := s.Store.ListSummaries()
 	assert.Count(t, 1, v)
 	assert.String(t, a.Name(), v[0].Name)
 	assert.String(t, "built the search index pipeline", v[0].Body)
@@ -61,7 +61,7 @@ func TestSummarizeAmend(t *testing.T) {
 			constant.Body: "revised summary with more detail",
 		},
 	)
-	v := s.Store().ListSummaries()
+	v := s.Store.ListSummaries()
 	assert.Count(t, 1, v)
 	assert.String(t, "revised summary with more detail", v[0].Body)
 }
@@ -84,7 +84,7 @@ func TestSummarizeAmendOneEvent(t *testing.T) {
 			constant.Body: "revised",
 		},
 	)
-	v := s.Store().EventsSince(
+	v := s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
 		constant.Summarize,

@@ -9,7 +9,7 @@ func (s *Store) Status() (*status.Status, error) {
 	r := status.Stub()
 	rows, e := s.database.Query(
 		`
-		SELECT c.name, c.path, c.pattern,
+		SELECT c.name, c.path, c.pattern, c.type,
 			COUNT(d.identifier) AS document_count
 		FROM collection c
 		LEFT JOIN document d ON d.collection = c.name AND d.active = 1
@@ -30,6 +30,7 @@ func (s *Store) Status() (*status.Status, error) {
 			&c.Name,
 			&c.Path,
 			&c.Pattern,
+			&c.Type,
 			&c.DocumentCount,
 		); f != nil {
 			return nil, f

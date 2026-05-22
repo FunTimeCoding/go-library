@@ -12,6 +12,10 @@ func (s *Service) IndexCollections(collection string) ([]*index_result.IndexResu
 	var results []*index_result.IndexResult
 
 	for _, c := range status.Collections {
+		if c.Type == "push" {
+			continue
+		}
+
 		if collection != "" && c.Name != collection {
 			continue
 		}

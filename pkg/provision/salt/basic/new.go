@@ -13,10 +13,13 @@ func New(
 	eauth string,
 ) *Client {
 	result := &Client{
-		base:   locator.New(host).Port(port).Insecure().String(),
-		client: &http.Client{},
+		base:     locator.New(host).Port(port).Insecure().String(),
+		user:     user,
+		password: password,
+		eauth:    eauth,
+		client:   &http.Client{},
 	}
-	result.login(user, password, eauth)
+	result.login()
 
 	return result
 }

@@ -1,62 +1,26 @@
 package basic
 
-import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/provision/salt/constant"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
-	"io"
-	"net/http"
-)
+import "net/http"
 
-func (c *Client) Post(
-	path string,
-	body any,
-) ([]byte, error) {
-	b, e := json.Marshal(body)
+func (c *Client) Post(path string, body any) ([]byte, error) {
+	b, code, e := c.exchange(http.MethodPost, path, body)
 
 	if e != nil {
 		return nil, e
 	}
 
-	r, f := http.NewRequest(
-		http.MethodPost,
-		fmt.Sprintf("%s/%s", c.base, path),
-		bytes.NewReader(b),
-	)
+	if code == http.StatusUnauthorized {
+		c.login()
+		b, code, e = c.exchange(http.MethodPost, path, body)
 
-	if f != nil {
-		return nil, f
+		if e != nil {
+			return nil, e
+		}
 	}
 
-	r.Header.Set(web.Accept, web.Object)
-	r.Header.Set(web.ContentType, web.Object)
-
-	if c.token != "" {
-		r.Header.Set(constant.TokenHeader, c.token)
+	if code >= http.StatusBadRequest {
+		return nil, parseDetail(b, code)
 	}
 
-	s, g := c.client.Do(r)
-
-	if g != nil {
-		return nil, g
-	}
-
-	result, h := io.ReadAll(s.Body)
-	i := s.Body.Close()
-
-	if h != nil {
-		return nil, h
-	}
-
-	if i != nil {
-		return nil, i
-	}
-
-	if s.StatusCode >= http.StatusBadRequest {
-		return nil, parseDetail(result, s.Status)
-	}
-
-	return result, nil
+	return b, nil
 }

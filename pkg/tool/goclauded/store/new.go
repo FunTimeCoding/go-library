@@ -20,8 +20,6 @@ func New(
 	d, e := gorm.Open(sqlite.Open(path), &gorm.Config{})
 	errors.PanicOnError(e)
 	errors.PanicOnError(d.Exec("PRAGMA journal_mode = WAL").Error)
-	migrateNameToCallsign(d)
-	d.Exec("UPDATE session SET alias = NULL WHERE alias = ''")
 	errors.PanicOnError(
 		d.AutoMigrate(
 			session.Stub(),
@@ -32,8 +30,6 @@ func New(
 			pool_name.Stub(),
 		),
 	)
-	migrateAliasToSession(d)
-	backfillName(d)
 
 	return &Store{database: d, clock: clock}
 }

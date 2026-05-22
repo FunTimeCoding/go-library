@@ -1,45 +1,25 @@
 package basic
 
-import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/provision/salt/constant"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
-	"io"
-	"net/http"
-)
+import "net/http"
 
 func (c *Client) Get(path string) ([]byte, error) {
-	r, e := http.NewRequest(
-		http.MethodGet,
-		fmt.Sprintf("%s/%s", c.base, path),
-		nil,
-	)
+	b, code, e := c.exchange(http.MethodGet, path, nil)
 
 	if e != nil {
 		return nil, e
 	}
 
-	r.Header.Set(web.Accept, web.Object)
-	r.Header.Set(constant.TokenHeader, c.token)
-	s, f := c.client.Do(r)
+	if code == http.StatusUnauthorized {
+		c.login()
+		b, code, e = c.exchange(http.MethodGet, path, nil)
 
-	if f != nil {
-		return nil, f
+		if e != nil {
+			return nil, e
+		}
 	}
 
-	b, g := io.ReadAll(s.Body)
-	h := s.Body.Close()
-
-	if g != nil {
-		return nil, g
-	}
-
-	if h != nil {
-		return nil, h
-	}
-
-	if s.StatusCode >= http.StatusBadRequest {
-		return nil, parseDetail(b, s.Status)
+	if code >= http.StatusBadRequest {
+		return nil, parseDetail(b, code)
 	}
 
 	return b, nil

@@ -14,5 +14,6 @@ func (s *Server) Mount(m *http.ServeMux) {
 	m.HandleFunc("GET /history", s.historyPage)
 	m.HandleFunc("GET /history/{identifier}/edit", s.historyEditForm)
 	m.HandleFunc("POST /history/{identifier}/edit", s.historyEditSubmit)
+	m.HandleFunc("GET /favicon.ico", s.favicon)
 	s.conversations.Mount(m)
 }

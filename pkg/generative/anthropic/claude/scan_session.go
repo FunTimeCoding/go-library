@@ -50,12 +50,12 @@ func scanSession(path string) *session.Session {
 			s.Timestamp = line.Timestamp
 		}
 
-		if line.CWD != "" && s.CWD == "" {
-			s.CWD = line.CWD
+		if line.WorkDirectory != "" && s.WorkDirectory == "" {
+			s.WorkDirectory = line.WorkDirectory
 		}
 
-		if line.GitBranch != "" && s.Branch == "" {
-			s.Branch = line.GitBranch
+		if line.Branch != "" && s.Branch == "" {
+			s.Branch = line.Branch
 		}
 
 		if s.Slug != "" && s.Timestamp != "" {

@@ -33,7 +33,7 @@ func (c *Client) FirstUserMessage(sessionIdentifier string) string {
 			continue
 		}
 
-		if l.Type != "user" || l.IsMeta {
+		if l.Type != "user" || l.Meta {
 			continue
 		}
 

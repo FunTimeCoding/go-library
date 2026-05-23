@@ -11,7 +11,7 @@ import (
 )
 
 func Run(o *option.Bump) {
-	d := system.WorkingDirectory()
+	d := system.WorkDirectory()
 
 	if !git.IsCleanCommand() {
 		s := git.Status(d)

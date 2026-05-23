@@ -42,8 +42,8 @@ func (s *Server) GetSessions(
 			d.Slug = &e.Slug
 		}
 
-		if e.CWD != "" {
-			d.Cwd = &e.CWD
+		if e.WorkDirectory != "" {
+			d.WorkDirectory = &e.WorkDirectory
 		}
 
 		if e.Branch != "" {

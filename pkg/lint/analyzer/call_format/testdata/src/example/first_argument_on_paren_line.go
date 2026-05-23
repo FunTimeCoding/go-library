@@ -1,6 +1,6 @@
 package example
 
-func firstArgOnParenLine() {
+func firstArgumentOnParenLine() {
 	withStruct("name",
 		Options{Value: 1},
 	)

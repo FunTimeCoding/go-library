@@ -7,9 +7,7 @@ import (
 )
 
 func (c *Client) Sessions() []*session.Session {
-	files, e := filepath.Glob(
-		filepath.Join(c.base, "*.jsonl"),
-	)
+	files, e := filepath.Glob(filepath.Join(c.base, "*.jsonl"))
 
 	if e != nil {
 		return nil

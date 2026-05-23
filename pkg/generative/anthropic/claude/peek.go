@@ -24,19 +24,19 @@ func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
 	}
 
 	defer errors.PanicClose(f)
-	var result peek.Peek
-	scanner := bufio.NewScanner(f)
-	scanner.Buffer(make([]byte, 1024*1024), 1024*1024)
+	result := peek.Stub()
+	s := bufio.NewScanner(f)
+	s.Buffer(make([]byte, 1024*1024), 1024*1024)
 
-	for scanner.Scan() {
+	for s.Scan() {
 		result.LineCount++
 		var line notation.Line
 
-		if json.Unmarshal(scanner.Bytes(), &line) != nil {
+		if json.Unmarshal(s.Bytes(), &line) != nil {
 			continue
 		}
 
-		if line.Type != "user" || line.IsMeta {
+		if line.Type != "user" || line.Meta {
 			continue
 		}
 
@@ -63,12 +63,9 @@ func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
 				clean = clean[:100]
 			}
 
-			result.UserMessages = append(
-				result.UserMessages,
-				clean,
-			)
+			result.UserMessages = append(result.UserMessages, clean)
 		}
 	}
 
-	return &result
+	return result
 }

@@ -40,7 +40,10 @@ func (s *Server) roster(
 		}
 
 		if session.Alias != nil {
-			details = append(details, fmt.Sprintf("alias: %s", *session.Alias))
+			details = append(
+				details,
+				fmt.Sprintf("alias: %s", *session.Alias),
+			)
 		}
 
 		if session.Description != "" {
@@ -53,6 +56,25 @@ func (s *Server) roster(
 
 		if len(details) > 0 {
 			line = fmt.Sprintf("%s\n  %s", line, strings.Join(details, " · "))
+		}
+
+		labels := s.service.LabelsBySession(session.Identifier)
+
+		if len(labels) > 0 {
+			var pips []string
+
+			for _, l := range labels {
+				pips = append(
+					pips,
+					fmt.Sprintf("(%s:%s)", l.Key, l.Value),
+				)
+			}
+
+			line = fmt.Sprintf(
+				"%s\n  %s",
+				line,
+				strings.Join(pips, " "),
+			)
 		}
 
 		lines = append(lines, line)

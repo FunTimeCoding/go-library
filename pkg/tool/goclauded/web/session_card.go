@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/label"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -11,6 +12,7 @@ import (
 func sessionCard(
 	s *session.Session,
 	lines int,
+	labels []label.Label,
 ) gomponents.Node {
 	var details []gomponents.Node
 
@@ -63,6 +65,24 @@ func sessionCard(
 			html.Small(gomponents.Text(strings.Join(metadata, " · "))),
 		),
 	)
+
+	if len(labels) > 0 {
+		var pips []gomponents.Node
+
+		for _, l := range labels {
+			pips = append(
+				pips,
+				html.Span(
+					html.Class("label-pip"),
+					gomponents.Text(
+						fmt.Sprintf("(%s:%s)", l.Key, l.Value),
+					),
+				),
+			)
+		}
+
+		details = append(details, html.P(gomponents.Group(pips)))
+	}
 
 	return html.A(
 		gomponents.Attr(

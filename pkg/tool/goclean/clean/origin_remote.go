@@ -13,7 +13,7 @@ func originRemote(
 	o *option.Clean,
 	m *provider_map.Map,
 ) *remote.Remote {
-	result := git.Remote(system.WorkingDirectory(), m, constant.OriginRemote)
+	result := git.Remote(system.WorkDirectory(), m, constant.OriginRemote)
 
 	if result == nil {
 		system.Exitf(

@@ -9,5 +9,5 @@ func ParentDirectory(levels int) string {
 		dots = append(dots, "..")
 	}
 
-	return join.Absolute(append([]string{WorkingDirectory()}, dots...)...)
+	return join.Absolute(append([]string{WorkDirectory()}, dots...)...)
 }

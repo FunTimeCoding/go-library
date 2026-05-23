@@ -7,9 +7,9 @@ import (
 
 func (s *Server) pushSections(
 	w http.ResponseWriter,
-	flusher http.Flusher,
+	f http.Flusher,
 ) {
 	pushEvent(w, constant.Roster, s.rosterSection())
 	pushEvent(w, constant.Activity, s.activitySection())
-	flusher.Flush()
+	f.Flush()
 }

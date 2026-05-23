@@ -5,7 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
 )
 
-func matchFrom(s *session.Session, field string) *resolve_result.Match {
+func matchFrom(
+	s *session.Session,
+	field string,
+) *resolve_result.Match {
 	return resolve_result.NewMatch(
 		s.Identifier,
 		s.Name,

@@ -39,6 +39,22 @@ func formatCheckContext(body *client.CheckResponse) string {
 			}
 
 			parts = append(parts, line)
+
+			if s.Labels != nil && len(*s.Labels) > 0 {
+				var pips []string
+
+				for _, l := range *s.Labels {
+					pips = append(
+						pips,
+						fmt.Sprintf("(%s:%s)", l.Key, l.Value),
+					)
+				}
+
+				parts = append(
+					parts,
+					fmt.Sprintf("    %s", strings.Join(pips, " ")),
+				)
+			}
 		}
 	}
 

@@ -394,8 +394,58 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/TimelineEntry"
+  /api/usage:
+    get:
+      operationId: getUsage
+      responses:
+        "200":
+          description: Current Claude usage from browser monitoring.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageResponse"
+        "204":
+          description: Usage monitoring not enabled or no data yet.
 components:
   schemas:
+    UsageResponse:
+      type: object
+      required:
+      - sessionPercent
+      - sessionReset
+      - weeklyAllPercent
+      - weeklyAllReset
+      - weeklySonnetPercent
+      - weeklyDesignPercent
+      - routineRuns
+      - creditSpent
+      - creditReset
+      - creditPercent
+      - lastUpdated
+      properties:
+        sessionPercent:
+          type: integer
+        sessionReset:
+          type: string
+        weeklyAllPercent:
+          type: integer
+        weeklyAllReset:
+          type: string
+        weeklySonnetPercent:
+          type: integer
+        weeklyDesignPercent:
+          type: integer
+        routineRuns:
+          type: string
+        creditSpent:
+          type: string
+        creditReset:
+          type: string
+        creditPercent:
+          type: integer
+        lastUpdated:
+          type: string
+          format: date-time
     ResolveResponse:
       type: object
       required: [identifier]
@@ -534,6 +584,20 @@ components:
           type: array
           items:
             type: string
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/LabelEntry"
+    LabelEntry:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          type: string
+        value:
+          type: string
     Message:
       type: object
       required:
@@ -637,7 +701,7 @@ components:
           type: string
         timestamp:
           type: string
-        cwd:
+        workDirectory:
           type: string
         branch:
           type: string

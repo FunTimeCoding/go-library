@@ -11,7 +11,10 @@ func (s *Store) SweepInactivity(cutoff time.Time) []session.Session {
 	var sessions []session.Session
 	errors.PanicOnError(
 		s.database.
-			Where("callsign IS NOT NULL AND callsign != '' AND last_seen < ? AND topic != '' AND timed_out = ''", cutoff).
+			Where(
+				"callsign IS NOT NULL AND callsign != '' AND last_seen < ? AND topic != '' AND timed_out = ''",
+				cutoff,
+			).
 			Find(&sessions).Error,
 	)
 

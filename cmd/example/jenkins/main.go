@@ -33,7 +33,7 @@ func main() {
 
 	if true {
 		root := join.Absolute(
-			system.WorkingDirectory(),
+			system.WorkDirectory(),
 			constant.Temporary,
 			"jenkins",
 		)

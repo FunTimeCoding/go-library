@@ -1,0 +1,100 @@
+package usage
+
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude"
+	"sort"
+)
+
+func Usage() {
+	c := claude.New()
+	sessions := c.Sessions()
+	var all []*timestamped
+
+	for _, s := range sessions {
+		for _, entry := range c.UsageEntries(s.Identifier) {
+			t := parseTimestamp(entry.Timestamp)
+
+			if t.IsZero() {
+				continue
+			}
+
+			all = append(all, &timestamped{time: t, entry: entry})
+		}
+	}
+
+	sort.Slice(
+		all,
+		func(i, j int) bool {
+			return all[i].time.Before(all[j].time)
+		},
+	)
+	activeBlock := findActiveBlock(all)
+
+	if activeBlock == nil {
+		fmt.Println("no active 5h block")
+
+		return
+	}
+
+	type modelTotals struct {
+		inputTokens              int
+		outputTokens             int
+		cacheCreationInputTokens int
+		cacheReadInputTokens     int
+		count                    int
+	}
+	byModel := map[string]*modelTotals{}
+	var totalCost float64
+
+	for _, t := range activeBlock.entries {
+		key := normalizeModel(t.entry.Model)
+		m, okay := byModel[key]
+
+		if !okay {
+			m = &modelTotals{}
+			byModel[key] = m
+		}
+
+		m.inputTokens += t.entry.InputTokens
+		m.outputTokens += t.entry.OutputTokens
+		m.cacheCreationInputTokens += t.entry.CacheCreationInputTokens
+		m.cacheReadInputTokens += t.entry.CacheReadInputTokens
+		m.count++
+		totalCost += entryCost(key, t.entry)
+	}
+
+	costLimit := 140.0
+	percentage := (totalCost / costLimit) * 100
+	remaining := activeBlock.end.Sub(now())
+
+	if remaining < 0 {
+		remaining = 0
+	}
+
+	fmt.Printf(
+		"5h block: %s — %s  (%s remaining)\n\n",
+		activeBlock.start.Format("15:04"),
+		activeBlock.end.Format("15:04"),
+		formatDuration(remaining),
+	)
+
+	for model, m := range byModel {
+		fmt.Printf(
+			"  %-12s  %6d input, %6d output, %6d cache-create, %6d cache-read  (%d calls)\n",
+			model,
+			m.inputTokens,
+			m.outputTokens,
+			m.cacheCreationInputTokens,
+			m.cacheReadInputTokens,
+			m.count,
+		)
+	}
+
+	fmt.Printf(
+		"\nCost: $%.2f / $%.2f  (%.0f%%)\n",
+		totalCost,
+		costLimit,
+		percentage,
+	)
+}

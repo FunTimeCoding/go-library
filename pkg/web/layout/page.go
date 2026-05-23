@@ -18,4 +18,5 @@ type Page struct {
 	script     []string
 	footer     []gomponents.Node
 	content    []gomponents.Node
+	summary    []string
 }

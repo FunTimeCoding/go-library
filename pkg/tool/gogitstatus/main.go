@@ -25,7 +25,7 @@ func Main(
 	a.String(
 		argument.Path,
 		"",
-		"Path to scan for git repositories. If not set, the current working directory will be used.",
+		"Path to scan for git repositories. If not set, the current work directory will be used.",
 	)
 	a.Integer(
 		argument.Depth,

@@ -9,7 +9,7 @@ import (
 )
 
 func BuildInformation() {
-	p := system.WorkingDirectory()
+	p := system.WorkDirectory()
 	r := git.Open(p)
 	h := git.Head(r).Hash()
 	fmt.Printf("Short hash: %s\n", h.String()[:8])

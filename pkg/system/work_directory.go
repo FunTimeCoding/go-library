@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func WorkingDirectory() string {
+func WorkDirectory() string {
 	d, e := os.Getwd()
 	errors.PanicOnError(e)
 

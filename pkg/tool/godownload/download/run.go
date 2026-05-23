@@ -61,7 +61,7 @@ func Run(o *option.Download) {
 			)
 		}
 
-		system.ExtractZip(f.FileName, system.WorkingDirectory())
+		system.ExtractZip(f.FileName, system.WorkDirectory())
 		system.DeleteFile(f.FileName)
 	} else {
 		fmt.Printf("file already exists: %s\n", o.Package)

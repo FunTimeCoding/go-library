@@ -14,6 +14,7 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
@@ -91,6 +92,12 @@ type HeatmapResponse struct {
 	TotalCalls        int            `json:"totalCalls"`
 }
 
+// LabelEntry defines model for LabelEntry.
+type LabelEntry struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
 // ListenRequest defines model for ListenRequest.
 type ListenRequest struct {
 	Callsign  string `json:"callsign"`
@@ -165,16 +172,16 @@ type SendRequest struct {
 
 // SessionDetail defines model for SessionDetail.
 type SessionDetail struct {
-	Alias       *string `json:"alias,omitempty"`
-	Branch      *string `json:"branch,omitempty"`
-	Cwd         *string `json:"cwd,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Identifier  string  `json:"identifier"`
-	Lines       int     `json:"lines"`
-	Name        *string `json:"name,omitempty"`
-	Preview     *string `json:"preview,omitempty"`
-	Slug        *string `json:"slug,omitempty"`
-	Timestamp   string  `json:"timestamp"`
+	Alias         *string `json:"alias,omitempty"`
+	Branch        *string `json:"branch,omitempty"`
+	Description   *string `json:"description,omitempty"`
+	Identifier    string  `json:"identifier"`
+	Lines         int     `json:"lines"`
+	Name          *string `json:"name,omitempty"`
+	Preview       *string `json:"preview,omitempty"`
+	Slug          *string `json:"slug,omitempty"`
+	Timestamp     string  `json:"timestamp"`
+	WorkDirectory *string `json:"workDirectory,omitempty"`
 }
 
 // SessionDetailCompletion defines model for SessionDetailCompletion.
@@ -201,13 +208,14 @@ type SessionDetailResponse struct {
 
 // SessionEntry defines model for SessionEntry.
 type SessionEntry struct {
-	Alias        *string   `json:"alias,omitempty"`
-	Callsign     string    `json:"callsign"`
-	Files        *[]string `json:"files,omitempty"`
-	FirstMessage *string   `json:"firstMessage,omitempty"`
-	Slug         *string   `json:"slug,omitempty"`
-	Topic        string    `json:"topic"`
-	TurnCount    *int      `json:"turnCount,omitempty"`
+	Alias        *string       `json:"alias,omitempty"`
+	Callsign     string        `json:"callsign"`
+	Files        *[]string     `json:"files,omitempty"`
+	FirstMessage *string       `json:"firstMessage,omitempty"`
+	Labels       *[]LabelEntry `json:"labels,omitempty"`
+	Slug         *string       `json:"slug,omitempty"`
+	Topic        string        `json:"topic"`
+	TurnCount    *int          `json:"turnCount,omitempty"`
 }
 
 // SessionListResponse defines model for SessionListResponse.
@@ -270,6 +278,21 @@ type ToolsResponse struct {
 	Calls  []ToolCallEntry `json:"calls"`
 	Counts []ToolCount     `json:"counts"`
 	Total  int             `json:"total"`
+}
+
+// UsageResponse defines model for UsageResponse.
+type UsageResponse struct {
+	CreditPercent       int       `json:"creditPercent"`
+	CreditReset         string    `json:"creditReset"`
+	CreditSpent         string    `json:"creditSpent"`
+	LastUpdated         time.Time `json:"lastUpdated"`
+	RoutineRuns         string    `json:"routineRuns"`
+	SessionPercent      int       `json:"sessionPercent"`
+	SessionReset        string    `json:"sessionReset"`
+	WeeklyAllPercent    int       `json:"weeklyAllPercent"`
+	WeeklyAllReset      string    `json:"weeklyAllReset"`
+	WeeklyDesignPercent int       `json:"weeklyDesignPercent"`
+	WeeklySonnetPercent int       `json:"weeklySonnetPercent"`
 }
 
 // WaitResponse defines model for WaitResponse.
@@ -413,6 +436,9 @@ type ServerInterface interface {
 
 	// (GET /api/timeline)
 	GetTimeline(w http.ResponseWriter, r *http.Request, params GetTimelineParams)
+
+	// (GET /api/usage)
+	GetUsage(w http.ResponseWriter, r *http.Request)
 
 	// (GET /api/wait)
 	GetWait(w http.ResponseWriter, r *http.Request, params GetWaitParams)
@@ -1002,6 +1028,20 @@ func (siw *ServerInterfaceWrapper) GetTimeline(w http.ResponseWriter, r *http.Re
 	handler.ServeHTTP(w, r)
 }
 
+// GetUsage operation middleware
+func (siw *ServerInterfaceWrapper) GetUsage(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetUsage(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // GetWait operation middleware
 func (siw *ServerInterfaceWrapper) GetWait(w http.ResponseWriter, r *http.Request) {
 
@@ -1187,6 +1227,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("GET "+options.BaseURL+"/api/sessions/{identifier}/tools", wrapper.GetSessionTools)
 	m.HandleFunc("POST "+options.BaseURL+"/api/sweep", wrapper.PostSweep)
 	m.HandleFunc("GET "+options.BaseURL+"/api/timeline", wrapper.GetTimeline)
+	m.HandleFunc("GET "+options.BaseURL+"/api/usage", wrapper.GetUsage)
 	m.HandleFunc("GET "+options.BaseURL+"/api/wait", wrapper.GetWait)
 
 	return m
@@ -1195,42 +1236,46 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"AAD//0ntls20OQAA",
+	"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",
+	"/x6DbGg1PgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

@@ -11,10 +11,11 @@ func (s *Server) dashboard(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	s.view.RenderPage(
+	s.view.RenderPageWithSummary(
 		w,
 		constant.DashboardTitle,
 		constant.DashboardPath,
+		s.usageSummary(),
 		html.Div(
 			gomponents.Attr("hx-ext", "sse"),
 			gomponents.Attr("sse-connect", "/event"),

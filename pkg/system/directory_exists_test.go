@@ -6,6 +6,6 @@ import (
 )
 
 func TestDirectoryExists(t *testing.T) {
-	assert.True(t, DirectoryExists(WorkingDirectory()))
+	assert.True(t, DirectoryExists(WorkDirectory()))
 	assert.False(t, DirectoryExists("non-existent-directory"))
 }

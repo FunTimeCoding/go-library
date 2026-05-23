@@ -69,7 +69,7 @@ func (c *Client) ToolContext(
 				Role:      m.Role,
 				Text:      text,
 				Timestamp: line.Timestamp,
-				IsMeta:    line.IsMeta || isSystemNoise(text),
+				IsMeta:    line.Meta || isSystemNoise(text),
 			},
 		}
 

@@ -48,5 +48,6 @@ func Main(
 	o.AddCommand(register(c))
 	o.AddCommand(check(c))
 	o.AddCommand(wait(c))
+	o.AddCommand(usage(c))
 	errors.PanicOnError(o.Execute())
 }

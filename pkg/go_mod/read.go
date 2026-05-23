@@ -9,7 +9,7 @@ import (
 func Read() *modfile.File {
 	result, e := modfile.Parse(
 		ModFile,
-		system.ReadBytes(system.WorkingDirectory(), ModFile),
+		system.ReadBytes(system.WorkDirectory(), ModFile),
 		nil,
 	)
 	errors.PanicOnError(e)

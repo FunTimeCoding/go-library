@@ -1,5 +1,5 @@
 package example
 
 func shortCall() {
-	twoArgs("alpha", "bravo")
+	twoArguments("alpha", "bravo")
 }

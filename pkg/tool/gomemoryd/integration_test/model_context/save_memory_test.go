@@ -70,9 +70,9 @@ func TestUpdateMemoryWithWrongParamName(t *testing.T) {
 	)
 	result := s.MustCallToolError(
 		constant.UpdateMemory, map[string]any{
-			"id":                1,
-			constant.MemoryName: "test memory",
-			constant.Content:    "should fail",
+			"id":                 1,
+			constant.MemoryName:  "test memory",
+			constant.Content:     "should fail",
 			constant.Description: "a test",
 		},
 	)

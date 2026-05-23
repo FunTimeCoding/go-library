@@ -1,7 +1,7 @@
 package service
 
 func (s *Service) BackfillSessions() {
-	for _, e := range s.store.AllSessions(0, 0) {
+	for _, e := range s.store.UnenrichedSessions() {
 		s.EnrichSession(e.Identifier)
 	}
 }

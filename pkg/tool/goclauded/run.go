@@ -6,7 +6,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/notifier"
@@ -28,26 +30,52 @@ func Run(
 	o *option.Option,
 	r face.Reporter,
 ) {
+	start := time.Now()
+	elapsed := func() float64 { return time.Since(start).Seconds() }
 	l := logger.New(context.Background())
 	n := notifier.New()
 	s := store.New(store.DefaultDatabasePath(), time.Now)
+	l.Structured("store_ready", "elapsed", elapsed())
 	h := claude.New().Base()
-	sweep.Run(h)
+	result := sweep.Run(h)
+	l.Structured(
+		"sweep_complete",
+		"elapsed",
+		elapsed(),
+		"copied",
+		result.Copied,
+		"updated",
+		result.Updated,
+		"skipped",
+		result.Skipped,
+	)
 	s.ClearBindings()
+	memoryClient := memory.Wait(l)
+	l.Structured("gomemoryd_connected", "elapsed", elapsed())
+	queryClient := connect.Wait(l)
+	l.Structured("goqueryd_connected", "elapsed", elapsed())
 	v := service.New(
 		s,
 		claude.New(),
-		memory.Wait(l),
-		summary_indexer.New(connect.Wait(l)),
+		memoryClient,
+		summary_indexer.New(queryClient),
 		n,
 		time.Now,
 		l,
 	)
 	v.ReconcileSummaries()
+	l.Structured("summaries_reconciled", "elapsed", elapsed())
 	v.BackfillSessions()
+	l.Structured("sessions_backfilled", "elapsed", elapsed())
 	v.CheckConsistency()
+	l.Structured("consistency_checked", "elapsed", elapsed())
 	go v.RunTimeoutLoop()
 	go sweep.RunLoop(h)
+
+	if environment.Exists(constant.MonitorUsageEnvironment) {
+		go v.RunUsageLoop()
+	}
+
 	lifecycle.New(
 		l,
 		lifecycle.WithServerMiddleware(

@@ -10,7 +10,7 @@ import (
 
 func TestFindFilesByExtension(t *testing.T) {
 	fixture := join.Absolute(
-		FindDirectoryUp(WorkingDirectory(), git.Directory),
+		FindDirectoryUp(WorkDirectory(), git.Directory),
 		constant.FixturePath,
 	)
 	assert.Count(

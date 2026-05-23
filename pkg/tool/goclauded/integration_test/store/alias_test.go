@@ -21,7 +21,11 @@ func TestSetAndGetAlias(t *testing.T) {
 	s := store_tester.New(t)
 	s.Store.EnsureSession("session-1")
 	edit(s, "session-1", &argument.EditSession{Alias: new("my-project")})
-	assert.String(t, "my-project", s.Store.GetSession("session-1").AliasValue())
+	assert.String(
+		t,
+		"my-project",
+		s.Store.GetSession("session-1").AliasValue(),
+	)
 }
 
 func TestSetAliasOverwrite(t *testing.T) {

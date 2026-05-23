@@ -8,5 +8,5 @@ import (
 )
 
 func TestDiskUsage(t *testing.T) {
-	assert.NotNil(t, DiskUsage(WorkingDirectory()))
+	assert.NotNil(t, DiskUsage(WorkDirectory()))
 }

@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/oapi-codegen/runtime"
 )
@@ -88,6 +89,12 @@ type HeatmapResponse struct {
 	TotalCalls        int            `json:"totalCalls"`
 }
 
+// LabelEntry defines model for LabelEntry.
+type LabelEntry struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
 // ListenRequest defines model for ListenRequest.
 type ListenRequest struct {
 	Callsign  string `json:"callsign"`
@@ -162,16 +169,16 @@ type SendRequest struct {
 
 // SessionDetail defines model for SessionDetail.
 type SessionDetail struct {
-	Alias       *string `json:"alias,omitempty"`
-	Branch      *string `json:"branch,omitempty"`
-	Cwd         *string `json:"cwd,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Identifier  string  `json:"identifier"`
-	Lines       int     `json:"lines"`
-	Name        *string `json:"name,omitempty"`
-	Preview     *string `json:"preview,omitempty"`
-	Slug        *string `json:"slug,omitempty"`
-	Timestamp   string  `json:"timestamp"`
+	Alias         *string `json:"alias,omitempty"`
+	Branch        *string `json:"branch,omitempty"`
+	Description   *string `json:"description,omitempty"`
+	Identifier    string  `json:"identifier"`
+	Lines         int     `json:"lines"`
+	Name          *string `json:"name,omitempty"`
+	Preview       *string `json:"preview,omitempty"`
+	Slug          *string `json:"slug,omitempty"`
+	Timestamp     string  `json:"timestamp"`
+	WorkDirectory *string `json:"workDirectory,omitempty"`
 }
 
 // SessionDetailCompletion defines model for SessionDetailCompletion.
@@ -198,13 +205,14 @@ type SessionDetailResponse struct {
 
 // SessionEntry defines model for SessionEntry.
 type SessionEntry struct {
-	Alias        *string   `json:"alias,omitempty"`
-	Callsign     string    `json:"callsign"`
-	Files        *[]string `json:"files,omitempty"`
-	FirstMessage *string   `json:"firstMessage,omitempty"`
-	Slug         *string   `json:"slug,omitempty"`
-	Topic        string    `json:"topic"`
-	TurnCount    *int      `json:"turnCount,omitempty"`
+	Alias        *string       `json:"alias,omitempty"`
+	Callsign     string        `json:"callsign"`
+	Files        *[]string     `json:"files,omitempty"`
+	FirstMessage *string       `json:"firstMessage,omitempty"`
+	Labels       *[]LabelEntry `json:"labels,omitempty"`
+	Slug         *string       `json:"slug,omitempty"`
+	Topic        string        `json:"topic"`
+	TurnCount    *int          `json:"turnCount,omitempty"`
 }
 
 // SessionListResponse defines model for SessionListResponse.
@@ -267,6 +275,21 @@ type ToolsResponse struct {
 	Calls  []ToolCallEntry `json:"calls"`
 	Counts []ToolCount     `json:"counts"`
 	Total  int             `json:"total"`
+}
+
+// UsageResponse defines model for UsageResponse.
+type UsageResponse struct {
+	CreditPercent       int       `json:"creditPercent"`
+	CreditReset         string    `json:"creditReset"`
+	CreditSpent         string    `json:"creditSpent"`
+	LastUpdated         time.Time `json:"lastUpdated"`
+	RoutineRuns         string    `json:"routineRuns"`
+	SessionPercent      int       `json:"sessionPercent"`
+	SessionReset        string    `json:"sessionReset"`
+	WeeklyAllPercent    int       `json:"weeklyAllPercent"`
+	WeeklyAllReset      string    `json:"weeklyAllReset"`
+	WeeklyDesignPercent int       `json:"weeklyDesignPercent"`
+	WeeklySonnetPercent int       `json:"weeklySonnetPercent"`
 }
 
 // WaitResponse defines model for WaitResponse.
@@ -492,6 +515,9 @@ type ClientInterface interface {
 
 	// GetTimeline request
 	GetTimeline(ctx context.Context, params *GetTimelineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetUsage request
+	GetUsage(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetWait request
 	GetWait(ctx context.Context, params *GetWaitParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -835,6 +861,18 @@ func (c *Client) PostSweep(ctx context.Context, reqEditors ...RequestEditorFn) (
 
 func (c *Client) GetTimeline(ctx context.Context, params *GetTimelineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetTimelineRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetUsage(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUsageRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -1846,6 +1884,33 @@ func NewGetTimelineRequest(server string, params *GetTimelineParams) (*http.Requ
 	return req, nil
 }
 
+// NewGetUsageRequest generates requests for GetUsage
+func NewGetUsageRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/usage")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetWaitRequest generates requests for GetWait
 func NewGetWaitRequest(server string, params *GetWaitParams) (*http.Request, error) {
 	var err error
@@ -2030,6 +2095,9 @@ type ClientWithResponsesInterface interface {
 
 	// GetTimelineWithResponse request
 	GetTimelineWithResponse(ctx context.Context, params *GetTimelineParams, reqEditors ...RequestEditorFn) (*GetTimelineResponse, error)
+
+	// GetUsageWithResponse request
+	GetUsageWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUsageResponse, error)
 
 	// GetWaitWithResponse request
 	GetWaitWithResponse(ctx context.Context, params *GetWaitParams, reqEditors ...RequestEditorFn) (*GetWaitResponse, error)
@@ -2535,6 +2603,28 @@ func (r GetTimelineResponse) StatusCode() int {
 	return 0
 }
 
+type GetUsageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *UsageResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetUsageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetUsageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetWaitResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2810,6 +2900,15 @@ func (c *ClientWithResponses) GetTimelineWithResponse(ctx context.Context, param
 		return nil, err
 	}
 	return ParseGetTimelineResponse(rsp)
+}
+
+// GetUsageWithResponse request returning *GetUsageResponse
+func (c *ClientWithResponses) GetUsageWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUsageResponse, error) {
+	rsp, err := c.GetUsage(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetUsageResponse(rsp)
 }
 
 // GetWaitWithResponse request returning *GetWaitResponse
@@ -3346,6 +3445,32 @@ func ParseGetTimelineResponse(rsp *http.Response) (*GetTimelineResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []TimelineEntry
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetUsageResponse parses an HTTP response from a GetUsageWithResponse call
+func ParseGetUsageResponse(rsp *http.Response) (*GetUsageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetUsageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest UsageResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

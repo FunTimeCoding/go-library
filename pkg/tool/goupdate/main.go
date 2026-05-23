@@ -74,7 +74,7 @@ func Main(
 
 	if file := ContainerFileName(); file != "" {
 		d := project.ReplaceGoFromVersion(
-			system.ReadFile(system.WorkingDirectory(), file),
+			system.ReadFile(system.WorkDirectory(), file),
 			goString,
 		)
 
@@ -97,7 +97,7 @@ func Main(
 
 	if system.FileExists(project.GitLabFile) {
 		d := project.ReplaceGoImageVersion(
-			system.ReadFile(system.WorkingDirectory(), project.GitLabFile),
+			system.ReadFile(system.WorkDirectory(), project.GitLabFile),
 			goString,
 		)
 		system.SaveFile(project.GitLabFile, d)

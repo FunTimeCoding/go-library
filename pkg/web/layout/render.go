@@ -14,9 +14,9 @@ func (p *Page) Render() gomponents.Node {
 		title = fmt.Sprintf("%s - %s", title, p.title)
 	}
 
-	var headChildren []gomponents.Node
-	headChildren = append(
-		headChildren,
+	var head []gomponents.Node
+	head = append(
+		head,
 		html.Meta(html.Charset("utf-8")),
 		html.Meta(
 			html.Name("viewport"),
@@ -28,27 +28,24 @@ func (p *Page) Render() gomponents.Node {
 	)
 
 	for _, s := range p.script {
-		headChildren = append(
-			headChildren,
-			html.Script(html.Src(s)),
-		)
+		head = append(head, html.Script(html.Src(s)))
 	}
 
 	if p.theme != "" {
-		headChildren = append(
-			headChildren,
+		head = append(
+			head,
 			html.StyleEl(gomponents.Raw(p.theme)),
 		)
 	}
 
 	if p.style != "" {
-		headChildren = append(
-			headChildren,
+		head = append(
+			head,
 			html.StyleEl(gomponents.Raw(p.style)),
 		)
 	}
 
-	var bodyChildren []gomponents.Node
+	var body []gomponents.Node
 	brand := p.identity.Name()
 
 	if brand != "" || p.brandNode != nil {
@@ -61,38 +58,42 @@ func (p *Page) Render() gomponents.Node {
 			)
 		}
 
-		var navigationLinks []gomponents.Node
+		var navigation []gomponents.Node
 
 		for _, item := range p.items {
-			navigationLinks = append(navigationLinks, item.Render(p.path))
+			navigation = append(navigation, item.Render(p.path))
 		}
 
-		navigationLinks = append(navigationLinks, p.navigation...)
-		bodyChildren = append(
-			bodyChildren,
+		navigation = append(navigation, p.navigation...)
+		body = append(
+			body,
 			html.Nav(
 				html.Class("container"),
 				html.Ul(html.Li(node)),
-				html.Ul(navigationLinks...),
+				html.Ul(navigation...),
 			),
 		)
 	}
 
-	bodyChildren = append(
-		bodyChildren,
+	if len(p.summary) > 0 {
+		body = append(body, summaryStrip(p.summary))
+	}
+
+	body = append(
+		body,
 		html.Main(
 			html.Class("container"),
 			gomponents.Group(p.content),
 		),
 	)
-	bodyChildren = append(bodyChildren, p.footer...)
+	body = append(body, p.footer...)
 
 	return html.Doctype(
 		html.HTML(
 			html.Lang("en"),
 			gomponents.Attr("data-theme", "dark"),
-			html.Head(headChildren...),
-			html.Body(bodyChildren...),
+			html.Head(head...),
+			html.Body(body...),
 		),
 	)
 }

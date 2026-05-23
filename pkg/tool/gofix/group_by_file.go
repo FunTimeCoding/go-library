@@ -15,7 +15,7 @@ func groupByFile(
 	workingDirectory := directory
 
 	if workingDirectory == "" {
-		workingDirectory = system.WorkingDirectory()
+		workingDirectory = system.WorkDirectory()
 	}
 
 	for _, e := range edits {

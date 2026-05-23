@@ -12,6 +12,7 @@ var Identity = identity.New(
 
 const (
 	SessionExportPathEnvironment = "SESSION_EXPORT_PATH"
+	MonitorUsageEnvironment      = "CLAUDE_MONITOR_USAGE"
 
 	SessionName = "name"
 	Callsign    = "callsign"
@@ -35,12 +36,17 @@ const (
 	Listen       = "listen"
 	Summarize    = "summarize"
 	Moment       = "moment"
+	TokenUsage   = "token_usage"
 	Description  = "description"
 
+	Usage             = "usage"
 	Activity          = "activity"
 	InactivityTimeout = "inactivity_timeout"
 	CompleteTimeout   = "complete_timeout"
 
+	Label      = "label"
+	Key        = "key"
+	Value      = "value"
 	Target     = "target"
 	Alias      = "alias"
 	Slug       = "slug"

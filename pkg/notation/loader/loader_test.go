@@ -14,7 +14,7 @@ func TestLoader(t *testing.T) {
 	l.Load(
 		join.Absolute(
 			system.FindDirectoryUp(
-				system.WorkingDirectory(),
+				system.WorkDirectory(),
 				constant.Directory,
 			),
 			systemConstant.FixturePath,

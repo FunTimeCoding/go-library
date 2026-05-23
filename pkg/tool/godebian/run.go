@@ -18,7 +18,7 @@ func Run(o *option.Debian) {
 		1,
 		architecture,
 	)
-	packageDirectory := join.Absolute(system.WorkingDirectory(), packageName)
+	packageDirectory := join.Absolute(system.WorkDirectory(), packageName)
 	debianDirectory := join.Absolute(
 		packageDirectory,
 		debianConstant.PackageConfigurationDirectory,

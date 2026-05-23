@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/example/usage"
 	anthropic "github.com/funtimecoding/go-library/pkg/generative/anthropic/example"
 	gguf "github.com/funtimecoding/go-library/pkg/generative/gguf/example"
 	langchain "github.com/funtimecoding/go-library/pkg/generative/langchain/example"
@@ -13,9 +14,11 @@ import (
 )
 
 func main() {
-	mistral.Prompt()
+	usage.Debug()
 
 	if false {
+		usage.Usage()
+		mistral.Prompt()
 		ollama.Chat()
 		ollama.Benchmark()
 		ollama.ClassifyAlert()

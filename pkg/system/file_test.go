@@ -8,13 +8,13 @@ import (
 
 func TestFile(t *testing.T) {
 	SaveFile(
-		join.Absolute(WorkingDirectory(), "test.txt"),
+		join.Absolute(WorkDirectory(), "test.txt"),
 		"test content",
 	)
 	assert.String(
 		t,
 		"test content",
-		ReadFile(WorkingDirectory(), "test.txt"),
+		ReadFile(WorkDirectory(), "test.txt"),
 	)
 	DeleteFile("test.txt")
 }

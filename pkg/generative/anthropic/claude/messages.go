@@ -61,7 +61,7 @@ func (c *Client) Messages(sessionIdentifier string) []message.Message {
 				Role:      m.Role,
 				Text:      text,
 				Timestamp: line.Timestamp,
-				IsMeta:    line.IsMeta || isSystemNoise(text),
+				IsMeta:    line.Meta || isSystemNoise(text),
 			},
 		)
 	}

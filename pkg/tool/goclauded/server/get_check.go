@@ -36,12 +36,27 @@ func (s *Server) GetCheck(
 	for _, e := range r.Sessions {
 		entry := server.SessionEntry{
 			Callsign: e.CallsignValue(),
-			Topic: e.Topic,
+			Topic:    e.Topic,
 		}
 
 		if e.Files != "" {
 			files := strings.Split(e.Files, "\n")
 			entry.Files = &files
+		}
+
+		labels := s.service.LabelsBySession(e.Identifier)
+
+		if len(labels) > 0 {
+			var le []server.LabelEntry
+
+			for _, l := range labels {
+				le = append(
+					le,
+					server.LabelEntry{Key: l.Key, Value: l.Value},
+				)
+			}
+
+			entry.Labels = &le
 		}
 
 		entries = append(entries, entry)

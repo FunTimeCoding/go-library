@@ -2,7 +2,10 @@ package basic
 
 import "net/http"
 
-func (c *Client) Post(path string, body any) ([]byte, error) {
+func (c *Client) Post(
+	path string,
+	body any,
+) ([]byte, error) {
 	b, code, e := c.exchange(http.MethodPost, path, body)
 
 	if e != nil {

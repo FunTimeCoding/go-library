@@ -7,7 +7,7 @@ import (
 
 func FindDirectory() string {
 	return system.FindDirectoryUp(
-		system.WorkingDirectory(),
+		system.WorkDirectory(),
 		constant.Directory,
 	)
 }

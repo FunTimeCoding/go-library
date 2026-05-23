@@ -1,7 +1,7 @@
 package example
 
 func alreadySplit() {
-	twoArgs(
+	twoArguments(
 		"alpha",
 		"bravo",
 	)

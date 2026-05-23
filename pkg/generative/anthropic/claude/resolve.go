@@ -1,11 +1,26 @@
 package claude
 
 import (
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/session"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"path/filepath"
 	"strings"
 )
 
 func (c *Client) Resolve(query string) *session.Session {
+	if len(query) == 36 {
+		path := filepath.Join(
+			c.base,
+			join.Empty(query, constant.NotationLogExtension),
+		)
+		s := scanSession(path)
+
+		if s.Identifier != "" {
+			return s
+		}
+	}
+
 	for _, s := range c.Sessions() {
 		if s.Identifier == query {
 			return s

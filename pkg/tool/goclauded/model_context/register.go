@@ -286,4 +286,39 @@ func (s *Server) register() {
 		),
 		s.moment,
 	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.Label,
+			mcp.WithDescription(
+				"Set, get, or remove a session label. Pass value to set, empty string to remove, omit to get current value.",
+			),
+			mcp.WithString(
+				constant.Key,
+				mcp.Required(),
+				mcp.Description("Label key"),
+			),
+			mcp.WithString(
+				constant.Value,
+				mcp.Description(
+					"Label value. Pass to set, empty string to remove, omit to get.",
+				),
+			),
+			mcp.WithString(
+				constant.Target,
+				mcp.Description(
+					"Session to label (pool name, alias, or UUID). Omit for own session.",
+				),
+			),
+		),
+		s.label,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.TokenUsage,
+			mcp.WithDescription(
+				"Current Claude usage across session, weekly, and credit limits. Read from the claude.ai usage page.",
+			),
+		),
+		s.tokenUsage,
+	)
 }

@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-func TestWorkingDirectory(t *testing.T) {
+func TestWorkDirectory(t *testing.T) {
 	assert.True(
 		t,
-		strings.Contains(WorkingDirectory(), "system"),
+		strings.Contains(WorkDirectory(), "system"),
 	)
 }

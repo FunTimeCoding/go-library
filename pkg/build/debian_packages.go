@@ -9,7 +9,7 @@ import (
 func DebianPackages() []string {
 	var result []string
 
-	for _, d := range system.Files(system.WorkingDirectory()) {
+	for _, d := range system.Files(system.WorkDirectory()) {
 		if !strings.HasSuffix(d, constant.PackageExtension) {
 			continue
 		}

@@ -159,6 +159,12 @@ func New(s *store.Store) *Server {
 }
 ```
 
+**Summary strip** — `layout.WithSummary(items ...string)` renders
+a dot-separated muted line between nav and main. The view exposes
+`RenderPageWithSummary(w, title, path, summary, content...)` for
+pages that need dynamic summary values. The strip is absent when
+the summary slice is nil or empty.
+
 Handlers use the view directly — no `pageLayout`, `renderPage`,
 `renderFragment`, `isHTMX`, or `navigationLink` wrapper functions:
 

@@ -15,9 +15,10 @@ func (s *Server) rosterSection() gomponents.Node {
 	var cards []gomponents.Node
 
 	for i := range sessions {
+		labels := s.service.LabelsBySession(sessions[i].Identifier)
 		cards = append(
 			cards,
-			sessionCard(&sessions[i], sessions[i].Lines),
+			sessionCard(&sessions[i], sessions[i].Lines, labels),
 		)
 	}
 

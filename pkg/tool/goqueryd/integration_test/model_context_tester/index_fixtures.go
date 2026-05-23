@@ -10,7 +10,7 @@ func (t *Tester) IndexFixtures() {
 	t.MustCallTool(
 		constant.AddCollection,
 		map[string]any{
-			"name":       "test",
+			"name":        "test",
 			constant.Path: fixture.Path(system.SearchPath),
 		},
 	)

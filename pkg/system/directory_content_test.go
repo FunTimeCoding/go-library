@@ -11,10 +11,17 @@ import (
 func TestDirectoryContent(t *testing.T) {
 	assert.Strings(
 		t,
-		[]string{"hypertext", "markdown", "memory", "notation", "search", "wiki"},
+		[]string{
+			"hypertext",
+			"markdown",
+			"memory",
+			"notation",
+			"search",
+			"wiki",
+		},
 		DirectoryContent(
 			join.Absolute(
-				FindDirectoryUp(WorkingDirectory(), git.Directory),
+				FindDirectoryUp(WorkDirectory(), git.Directory),
 				constant.FixturePath,
 			),
 		),

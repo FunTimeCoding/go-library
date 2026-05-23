@@ -19,7 +19,7 @@ func CreateBundle(
 	identifier := fmt.Sprintf("%s.%s", vendor, lower)
 	content := join.Absolute(
 		join.Absolute(
-			system.WorkingDirectory(),
+			system.WorkDirectory(),
 			path,
 			fmt.Sprintf("%s.app", name),
 		),

@@ -15,12 +15,8 @@ func (s *Service) EnrichSession(identifier string) {
 		updates[constant.Slug] = e.Slug
 	}
 
-	if e.Lines > 0 {
-		updates["lines"] = e.Lines
-	}
-
-	if e.CWD != "" {
-		updates["cwd"] = e.CWD
+	if e.WorkDirectory != "" {
+		updates["work_directory"] = e.WorkDirectory
 	}
 
 	if e.Branch != "" {
@@ -31,20 +27,21 @@ func (s *Service) EnrichSession(identifier string) {
 		updates["session_timestamp"] = e.Timestamp
 	}
 
-	firstMessage := s.client.FirstUserMessage(identifier)
-
-	if firstMessage != "" {
-		if len(firstMessage) > 80 {
-			firstMessage = firstMessage[:80]
-		}
-
-		updates["first_message"] = firstMessage
+	if e.Lines > 0 {
+		updates["lines"] = e.Lines
 	}
 
 	peek := s.client.Peek(identifier)
 
 	if len(peek.UserMessages) > 0 {
 		updates["turn_count"] = len(peek.UserMessages)
+		firstMessage := peek.UserMessages[0]
+
+		if len(firstMessage) > 80 {
+			firstMessage = firstMessage[:80]
+		}
+
+		updates["first_message"] = firstMessage
 	}
 
 	if len(updates) > 0 {

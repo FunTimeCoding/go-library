@@ -16,7 +16,7 @@ func collect(
 	depth int,
 ) []*repository.Repository {
 	if root == "" {
-		root = system.WorkingDirectory()
+		root = system.WorkDirectory()
 	}
 
 	var result []*repository.Repository

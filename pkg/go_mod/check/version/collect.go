@@ -13,7 +13,7 @@ import (
 
 func collect(o *option.Version) []*project.Project {
 	if o.Path == "" {
-		o.Path = system.WorkingDirectory()
+		o.Path = system.WorkDirectory()
 	}
 
 	var result []*project.Project

@@ -27,7 +27,10 @@ func (s *Store) ResolveSessionIdentifier(query string) *resolve_result.Result {
 		query,
 	).Limit(1).Find(&byIdentifier); r.RowsAffected > 0 && !seen[byIdentifier.Identifier] {
 		seen[byIdentifier.Identifier] = true
-		matches = append(matches, matchFrom(&byIdentifier, constant.Identifier))
+		matches = append(
+			matches,
+			matchFrom(&byIdentifier, constant.Identifier),
+		)
 	}
 
 	var byAlias session.Session

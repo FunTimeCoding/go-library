@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	w := system.WorkingDirectory()
+	w := system.WorkDirectory()
 	fmt.Printf("Directory: %s\n", w)
 
 	if !runtime.RunningFromBinary() {

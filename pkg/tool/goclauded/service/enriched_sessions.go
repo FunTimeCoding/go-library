@@ -18,7 +18,7 @@ func (s *Service) EnrichedSessions(
 		e.Identifier = i.Identifier
 		e.Slug = i.Slug
 		e.Timestamp = i.SessionTimestamp
-		e.CWD = i.CWD
+		e.WorkDirectory = i.WorkDirectory
 		e.Branch = i.Branch
 		e.Lines = i.Lines
 		e.Name = i.Name

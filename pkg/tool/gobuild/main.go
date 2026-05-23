@@ -53,7 +53,7 @@ func Main(
 	if name == "" {
 		for _, n := range system.Directories(
 			join.Absolute(
-				system.WorkingDirectory(),
+				system.WorkDirectory(),
 				systemConstant.CommandPath,
 			),
 		) {

@@ -160,10 +160,17 @@ func New(s *store.Store) *Server {
 ```
 
 **Summary strip** — `layout.WithSummary(items ...string)` renders
-a dot-separated muted line between nav and main. The view exposes
+a dot-separated muted line inside main. The view exposes
 `RenderPageWithSummary(w, title, path, summary, content...)` for
 pages that need dynamic summary values. The strip is absent when
 the summary slice is nil or empty.
+
+**Live updates** — `layout.WithLiveEndpoint(path)` adds the htmx
+SSE extension script and `hx-ext="sse"` + `sse-connect` attributes
+to `main`. The summary strip gets `sse-swap="summary_strip"`
+automatically. Services push updates via `layout.SummaryStripContent`
+with event name `layout.SummaryStrip`. Replaces manual
+`WithScript(web.ServerSide)` + wrapper div pattern.
 
 Handlers use the view directly — no `pageLayout`, `renderPage`,
 `renderFragment`, `isHTMX`, or `navigationLink` wrapper functions:

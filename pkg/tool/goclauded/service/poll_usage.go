@@ -41,4 +41,5 @@ func (s *Service) pollUsage() {
 		result.CreditPercent,
 	)
 	s.store.TrimUsageSnapshots()
+	s.notifier.Notify()
 }

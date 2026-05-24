@@ -2,8 +2,10 @@ package web
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/split"
+	"github.com/funtimecoding/go-library/pkg/system/writer"
 	"maragu.dev/gomponents"
 	"net/http"
 )
@@ -11,10 +13,15 @@ import (
 func pushEvent(
 	w http.ResponseWriter,
 	name string,
-	node gomponents.Node,
+	n gomponents.Node,
 ) {
 	var b bytes.Buffer
-	errors.PanicOnError(node.Render(&b))
-	_, e := fmt.Fprintf(w, "event: %s\ndata: %s\n\n", name, b.String())
-	errors.PanicOnError(e)
+	errors.PanicOnError(n.Render(&b))
+	writer.Print(w, "event: %s\n", name)
+
+	for _, l := range split.NewLine(b.String()) {
+		writer.Print(w, "data: %s\n", l)
+	}
+
+	writer.Print(w, separator.Unix)
 }

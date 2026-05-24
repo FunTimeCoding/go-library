@@ -17,6 +17,7 @@ type Page struct {
 	navigation []gomponents.Node
 	script     []string
 	footer     []gomponents.Node
-	content    []gomponents.Node
-	summary    []string
+	content      []gomponents.Node
+	summary      []string
+	liveEndpoint string
 }

@@ -2,8 +2,8 @@ package goclaude
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system/writer"
 	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclaude/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
@@ -53,20 +53,18 @@ func register(c *command_context.Context) *cobra.Command {
 				)
 
 				if fe == nil {
-					_, e = fmt.Fprintf(
+					writer.Print(
 						f,
 						"export %s=%s\n",
 						constant.SessionIdentifierEnvironment,
 						sessionID,
 					)
-					errors.PanicOnError(e)
-					_, e = fmt.Fprintf(
+					writer.Print(
 						f,
 						"export %s=%s\n",
 						constant.NameEnvironment,
 						name,
 					)
-					errors.PanicOnError(e)
 					errors.PanicOnError(f.Close())
 				}
 			}

@@ -31,6 +31,13 @@ func (p *Page) Render() gomponents.Node {
 		head = append(head, html.Script(html.Src(s)))
 	}
 
+	if p.liveEndpoint != "" {
+		head = append(
+			head,
+			html.Script(html.Src(constant.ServerSide)),
+		)
+	}
+
 	if p.theme != "" {
 		head = append(
 			head,
@@ -75,17 +82,29 @@ func (p *Page) Render() gomponents.Node {
 		)
 	}
 
-	if len(p.summary) > 0 {
-		body = append(body, summaryStrip(p.summary))
+	var mainAttrs []gomponents.Node
+	mainAttrs = append(mainAttrs, html.Class("container"))
+
+	if p.liveEndpoint != "" {
+		mainAttrs = append(
+			mainAttrs,
+			gomponents.Attr("hx-ext", "sse"),
+			gomponents.Attr("sse-connect", p.liveEndpoint),
+		)
 	}
 
-	body = append(
-		body,
-		html.Main(
-			html.Class("container"),
-			gomponents.Group(p.content),
-		),
-	)
+	if len(p.summary) > 0 {
+		swap := summaryStrip(p.summary)
+
+		if p.liveEndpoint != "" {
+			swap = summaryStripLive(p.summary)
+		}
+
+		mainAttrs = append(mainAttrs, swap)
+	}
+
+	mainAttrs = append(mainAttrs, gomponents.Group(p.content))
+	body = append(body, html.Main(mainAttrs...))
 	body = append(body, p.footer...)
 
 	return html.Doctype(

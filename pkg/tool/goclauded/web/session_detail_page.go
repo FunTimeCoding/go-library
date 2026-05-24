@@ -129,6 +129,23 @@ func (s *Server) sessionDetailPage(
 		content,
 		html.Table(html.TBody(identity...)),
 	)
+	labels := s.service.LabelsBySession(d.Identifier)
+
+	if len(labels) > 0 {
+		var pips []gomponents.Node
+
+		for _, l := range labels {
+			pips = append(
+				pips,
+				html.Span(
+					html.Class("label-pip"),
+					gomponents.Textf("(%s:%s)", l.Key, l.Value),
+				),
+			)
+		}
+
+		content = append(content, html.P(gomponents.Group(pips)))
+	}
 
 	if len(d.Completions) > 0 {
 		content = append(

@@ -5,8 +5,9 @@ import (
 	"maragu.dev/gomponents/html"
 )
 
-func summaryStrip(items []string) gomponents.Node {
+func summaryStripLive(items []string) gomponents.Node {
 	return html.Div(
+		gomponents.Attr("sse-swap", SummaryStrip),
 		SummaryStripContent(items),
 	)
 }

@@ -76,5 +76,20 @@ func (s *Server) GetSessionDetail(
 		result.Summary = &d.Summary
 	}
 
+	labels := s.service.LabelsBySession(d.Identifier)
+
+	if len(labels) > 0 {
+		var le []server.LabelEntry
+
+		for _, l := range labels {
+			le = append(
+				le,
+				server.LabelEntry{Key: l.Key, Value: l.Value},
+			)
+		}
+
+		result.Labels = &le
+	}
+
 	web.EncodeNotation(w, result)
 }

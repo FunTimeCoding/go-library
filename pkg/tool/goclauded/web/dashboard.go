@@ -16,19 +16,15 @@ func (s *Server) dashboard(
 		constant.DashboardTitle,
 		constant.DashboardPath,
 		s.usageSummary(),
+		html.H3(gomponents.Text("Roster")),
 		html.Div(
-			gomponents.Attr("hx-ext", "sse"),
-			gomponents.Attr("sse-connect", "/event"),
-			html.H3(gomponents.Text("Roster")),
-			html.Div(
-				gomponents.Attr("sse-swap", constant.Roster),
-				s.rosterSection(),
-			),
-			html.H3(gomponents.Text("Recent Activity")),
-			html.Div(
-				gomponents.Attr("sse-swap", constant.Activity),
-				s.activitySection(),
-			),
+			gomponents.Attr("sse-swap", constant.Roster),
+			s.rosterSection(),
+		),
+		html.H3(gomponents.Text("Recent Activity")),
+		html.Div(
+			gomponents.Attr("sse-swap", constant.Activity),
+			s.activitySection(),
 		),
 	)
 }

@@ -8,7 +8,8 @@ func (p *Page) Clone() *Page {
 		brandNode:  p.brandNode,
 		items:      p.items,
 		navigation: p.navigation,
-		script:     p.script,
-		footer:     p.footer,
+		script:       p.script,
+		footer:       p.footer,
+		liveEndpoint: p.liveEndpoint,
 	}
 }

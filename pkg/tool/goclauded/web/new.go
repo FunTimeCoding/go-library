@@ -4,7 +4,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/web/conversations"
-	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/layout"
 	"github.com/funtimecoding/go-library/pkg/web/layout/navigation_item"
 	theme "github.com/funtimecoding/go-library/pkg/web/theme/constant"
@@ -24,7 +23,7 @@ func New(
 			layout.New(constant.Identity).
 				WithTheme(theme.Hearth).
 				WithStyle(inlineCSS).
-				WithScript(web.ServerSide).
+				WithLiveEndpoint("/event").
 				WithBrandNode(
 					html.Strong(
 						html.Span(

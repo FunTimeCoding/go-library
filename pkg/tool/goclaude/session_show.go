@@ -62,6 +62,14 @@ func sessionShow(c *command_context.Context) *cobra.Command {
 				fmt.Printf("Turns: %d\n", *d.TurnCount)
 			}
 
+			if d.Labels != nil && len(*d.Labels) > 0 {
+				fmt.Println("\nLabels:")
+
+				for _, l := range *d.Labels {
+					fmt.Printf("  %s: %s\n", l.Key, l.Value)
+				}
+			}
+
 			if d.Description != nil {
 				fmt.Printf("\n%s\n", *d.Description)
 			}

@@ -10,6 +10,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context/mock_recorder"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/web"
 	"net/http"
 	"testing"
 )
@@ -35,6 +36,7 @@ func New(t *testing.T) *Server {
 					mock_recorder.New(),
 					constant.DefaultVersion,
 				).Mount(m)
+				web.New(s.Service).Mount(m)
 			},
 		),
 	}

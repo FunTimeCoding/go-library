@@ -197,6 +197,7 @@ type SessionDetailResponse struct {
 	Created     *string                    `json:"created,omitempty"`
 	Description *string                    `json:"description,omitempty"`
 	Identifier  string                     `json:"identifier"`
+	Labels      *[]LabelEntry              `json:"labels,omitempty"`
 	Name        *string                    `json:"name,omitempty"`
 	Slug        *string                    `json:"slug,omitempty"`
 	Summary     *string                    `json:"summary,omitempty"`

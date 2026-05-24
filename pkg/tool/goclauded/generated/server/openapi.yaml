@@ -912,6 +912,10 @@ components:
             $ref: "#/components/schemas/SessionDetailCompletion"
         summary:
           type: string
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/LabelEntry"
     SessionDetailCompletion:
       type: object
       required:

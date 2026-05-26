@@ -40,6 +40,7 @@ func (s *Server) updateIssue(
 		fieldsRaw == "" {
 		return response.Fail("no fields to update")
 	}
+
 	before, g := s.jira.Issue(key)
 
 	if g != nil {

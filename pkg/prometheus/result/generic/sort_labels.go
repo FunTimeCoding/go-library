@@ -26,6 +26,7 @@ func sortLabels(s []string) []string {
 			e == constant.ContainerLabel {
 			continue
 		}
+
 		result = append(result, e)
 	}
 

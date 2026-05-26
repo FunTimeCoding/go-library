@@ -12,9 +12,7 @@ import (
 	"path/filepath"
 )
 
-func (c *Client) UsageEntries(
-	sessionIdentifier string,
-) []*usage_entry.Entry {
+func (c *Client) UsageEntries(sessionIdentifier string) []*usage_entry.Entry {
 	path := filepath.Join(
 		c.base,
 		join.Empty(sessionIdentifier, constant.NotationLogExtension),

@@ -12,9 +12,7 @@ import (
 	"maragu.dev/gomponents/html"
 )
 
-func New(
-	s *service.Service,
-) *Server {
+func New(s *service.Service) *Server {
 	return &Server{
 		service:       s,
 		notifier:      s.Notifier(),

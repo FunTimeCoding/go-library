@@ -7,3 +7,5 @@ var Identity = identity.New(
 	"Go source fixer",
 	"gofix [flags]",
 )
+
+const MaxSingleParameterLength = 80

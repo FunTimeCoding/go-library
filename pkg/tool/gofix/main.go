@@ -36,6 +36,7 @@ func Main(
 	} else {
 		runFix(patterns, diff, s)
 		runCallFormatFix(patterns, diff, s)
+		runSingleParameterFix(patterns, diff, s)
 		runImportAliasFix(patterns, diff, s)
 	}
 

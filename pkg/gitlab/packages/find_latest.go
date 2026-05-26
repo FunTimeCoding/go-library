@@ -6,9 +6,7 @@ import (
 	"log"
 )
 
-func FindLatest(
-	v []*gitlab.Package,
-) *gitlab.Package {
+func FindLatest(v []*gitlab.Package) *gitlab.Package {
 	if len(v) == 0 {
 		return nil
 	}

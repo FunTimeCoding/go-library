@@ -6,9 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
-func (c *Client) DeviceByNames(
-	n []string,
-) (*device.Device, error) {
+func (c *Client) DeviceByNames(n []string) (*device.Device, error) {
 	var result *device.Device
 
 	for _, name := range n {

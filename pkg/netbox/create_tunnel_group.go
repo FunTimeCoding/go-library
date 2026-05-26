@@ -5,9 +5,7 @@ import (
 	"github.com/netbox-community/go-netbox/v4"
 )
 
-func (c *Client) CreateTunnelGroup(
-	name string,
-) (*tunnel_group.Group, error) {
+func (c *Client) CreateTunnelGroup(name string) (*tunnel_group.Group, error) {
 	q := netbox.NewTunnelGroupRequest(name, slug(name))
 	result, _, e := c.client.VpnAPI.VpnTunnelGroupsCreate(
 		c.context,

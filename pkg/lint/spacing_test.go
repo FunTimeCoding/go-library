@@ -819,6 +819,12 @@ func TestSpacingMissingBlankBetweenTopLevelVariableAndConstantInserted(t *testin
 	)
 }
 
+func TestSpacingMultiLineConditionThreeLineBlankAfterControl(t *testing.T) {
+	input := "package example\n\nfunc Example() {\n\tif a == 0 &&\n\t\tb == 0 &&\n\t\tc == 0 {\n\t\treturn\n\t}\n\n\tx := 1\n\t_ = x\n}\n"
+	l := Spacing("multiline3", strings.NewReader(input))
+	assertReport(t, "multiline3", false, nil, input, l)
+}
+
 func TestSpacingDoubleBlankAfterClosingBrace(t *testing.T) {
 	l := Spacing(
 		library.India,

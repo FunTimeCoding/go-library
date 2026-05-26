@@ -103,5 +103,6 @@ func Go(o *option.Build) {
 		system.CopyFile(p.Output, destination)
 		system.Executable(destination)
 	}
+
 	fmt.Printf("Size: %dM\n", system.FileSize(p.Output)/1024/1024)
 }

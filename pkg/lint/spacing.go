@@ -105,7 +105,12 @@ func Spacing(
 		} else if isControlStart {
 			pendingControl = true
 		} else if !isBlank && !isClosingBrace && parenDepth == 0 {
-			pendingControl = false
+			pastContinues := strings.HasSuffix(pastTrimmed, "&&") ||
+				strings.HasSuffix(pastTrimmed, "||")
+
+			if !pendingControl || !pastContinues {
+				pendingControl = false
+			}
 		}
 
 		for _, c := range line {

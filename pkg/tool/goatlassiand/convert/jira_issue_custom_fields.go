@@ -41,6 +41,7 @@ func JiraIssueCustomFields(
 				value == issue.UnknownValue {
 				continue
 			}
+
 			fields[name] = value
 		}
 

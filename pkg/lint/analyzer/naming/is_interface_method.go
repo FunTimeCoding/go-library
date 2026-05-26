@@ -2,9 +2,7 @@ package naming
 
 import "go/types"
 
-func isInterfaceMethod(
-	o types.Object,
-) bool {
+func isInterfaceMethod(o types.Object) bool {
 	f, isFunction := o.(*types.Func)
 
 	if !isFunction {

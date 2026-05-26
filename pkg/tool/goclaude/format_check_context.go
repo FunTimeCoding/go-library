@@ -22,11 +22,9 @@ func formatCheckContext(r *client.CheckResponse) string {
 		return ""
 	}
 
-	var parts []string
-	parts = append(
-		parts,
+	parts := []string{
 		fmt.Sprintf("[goclauded] Called %s today.", r.Callsign),
-	)
+	}
 
 	if hasReannounce {
 		parts = append(

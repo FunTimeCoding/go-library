@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-func (s *Service) UsageHistory(
-	since time.Duration,
-) []usage_snapshot.Snapshot {
+func (s *Service) UsageHistory(since time.Duration) []usage_snapshot.Snapshot {
 	return s.store.UsageSnapshots(since)
 }

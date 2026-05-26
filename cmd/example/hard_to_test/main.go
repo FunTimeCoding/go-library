@@ -1,15 +1,12 @@
 package main
 
 import (
-	"context"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/brave"
 	"github.com/funtimecoding/go-library/pkg/build"
 	"github.com/funtimecoding/go-library/pkg/chromium"
-	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/errors/sentry"
 	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/request"
 	"github.com/funtimecoding/go-library/pkg/git"
@@ -24,7 +21,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/secure_shell"
-	"github.com/funtimecoding/go-library/pkg/system/writer"
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
@@ -33,18 +29,12 @@ func main() {
 		return
 	}
 
-	console.AskConfirmation("")
 	build.DebianPackages()
 	relational.FirstSkipNotFound(nil, nil, nil)
 	unexpected.Float(0)
-	sentry.Start("", "", "")
-	sentry.Flush(nil)
 	markup.ToNotation("")
-	system.CreateTarZip("", "")
-	system.ExtractTarZip("", "")
 	system.TransmissionSocket("")
 	system.SignalCancelContext(nil)
-	system.SaveBytes("", nil)
 	system.RunDirectory("", "")
 	system.OpenHome("")
 	system.ReadLink("")
@@ -59,8 +49,6 @@ func main() {
 	}
 
 	web.GetBytes(nil, "")
-	web.GetString(nil, "")
-	web.Serve(context.Background(), nil, 0, false)
 	web.Post(nil, "", "")
 	web.Patch(nil, "", "")
 	web.PostBytes(nil, "", nil)
@@ -74,13 +62,11 @@ func main() {
 	gitlab.NewGitLabCom("")
 	git.ModifiedFiles("")
 	metric.MiddlewareServer("", nil)
-	secure_shell.ParsePrivateKey([]byte{})
 	secure_shell.Listen(nil, "")
 	client.NewContextStrict("")
 	client.NewInCluster("")
 	chromium.NewCombined("")
 	brave.OpenProfileLink("", "")
-	writer.Print(nil, "")
 	page.PrintBody(response.Body{})
 	strings.PrintTrim("")
 	mattermost_notifier.New(nil, "", "")

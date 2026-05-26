@@ -16,9 +16,10 @@ func (s *Server) rosterSection() gomponents.Node {
 
 	for i := range sessions {
 		labels := s.service.LabelsBySession(sessions[i].Identifier)
+		latest := s.service.LatestPulse(sessions[i].Identifier)
 		cards = append(
 			cards,
-			sessionCard(&sessions[i], sessions[i].Lines, labels),
+			sessionCard(&sessions[i], sessions[i].Lines, labels, latest),
 		)
 	}
 

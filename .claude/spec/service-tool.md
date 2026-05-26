@@ -253,7 +253,8 @@ pkg/<domain>/
 ├── client.go                       # Client struct (raw HTTP or SDK wrapper)
 ├── new.go                          # New(host, token string) *Client
 ├── new_environment.go              # NewEnvironment() - reads env vars
-├── <operation>.go                  # One file per operation
+├── <operation>.go                  # Non-Must: returns (value, error)
+├── must_<operation>.go             # Must: panics on error
 └── constant/
     └── constant.go                 # HostEnvironment, TokenEnvironment
 ```
@@ -265,6 +266,34 @@ with REST import it into both `model_context/` and `server/`.
 **`pkg/<domain>/` is client-only.** All server-side concerns (store,
 domain types, `model_context/`) belong in `pkg/tool/go<tool>d/`, not
 in the shared library.
+
+### Must/non-Must Pattern
+
+External API client methods come in pairs:
+
+- `<operation>.go` — returns `(value, error)`. Used by daemon handlers
+  that need to propagate errors gracefully (MCP `captureFail`, REST
+  `http.Error`).
+- `must_<operation>.go` — panics on error. Used by CLI tools and
+  background workers running under lifecycle recovery.
+
+```go
+// links.go
+func (c *Client) Links(collection int32) ([]*link.Link, error) {
+    // ... returns error on failure
+}
+
+// must_links.go
+func (c *Client) MustLinks(collection int32) []*link.Link {
+    result, e := c.Links(collection)
+    errors.PanicOnError(e)
+    return result
+}
+```
+
+Helper methods that iterate over results (e.g. `CollectionByName`,
+`TagByName`) call the Must variants internally since their callers
+expect panics.
 
 ## Internal REST Client
 

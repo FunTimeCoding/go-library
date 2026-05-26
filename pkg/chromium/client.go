@@ -1,6 +1,9 @@
 package chromium
 
-import "context"
+import (
+	"context"
+	"sync"
+)
 
 type Client struct {
 	host            string
@@ -8,4 +11,6 @@ type Client struct {
 	context         context.Context
 	cancel          context.CancelFunc
 	allocatorCancel context.CancelFunc
+	targets         map[string]context.Context
+	mu              sync.Mutex
 }

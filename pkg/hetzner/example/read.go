@@ -1,0 +1,37 @@
+package example
+
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/hetzner"
+	"strings"
+)
+
+func Read() {
+	h := hetzner.NewEnvironment()
+
+	for _, z := range h.Zones() {
+		fmt.Printf(
+			"Zone: %s (ttl=%d, records=%d, status=%s)\n",
+			z.Name,
+			z.TTL,
+			z.RecordCount,
+			z.Status,
+		)
+
+		for _, r := range h.Records(z) {
+			values := strings.Join(r.Values, ", ")
+
+			if r.TTL != nil {
+				fmt.Printf(
+					"  %s %s %s (ttl=%d)\n",
+					r.Type,
+					r.Name,
+					values,
+					*r.TTL,
+				)
+			} else {
+				fmt.Printf("  %s %s %s\n", r.Type, r.Name, values)
+			}
+		}
+	}
+}

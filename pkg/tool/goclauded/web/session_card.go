@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/label"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/pulse"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -13,6 +14,7 @@ func sessionCard(
 	s *session.Session,
 	lines int,
 	labels []label.Label,
+	latestPulse *pulse.Pulse,
 ) gomponents.Node {
 	var details []gomponents.Node
 
@@ -82,6 +84,18 @@ func sessionCard(
 		}
 
 		details = append(details, html.P(gomponents.Group(pips)))
+	}
+
+	if latestPulse != nil {
+		details = append(
+			details,
+			html.P(
+				html.Em(
+					html.Class("pulse-line"),
+					gomponents.Text(latestPulse.Body),
+				),
+			),
+		)
 	}
 
 	return html.A(

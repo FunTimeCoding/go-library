@@ -314,6 +314,20 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.Pulse,
+			mcp.WithDescription(
+				"Send a pulse to the dashboard. Appears on the session card and detail page. Bidirectional — the dashboard can pulse back.",
+			),
+			mcp.WithString(
+				constant.Line,
+				mcp.Required(),
+				mcp.Description("The line to send"),
+			),
+		),
+		s.pulse,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.TokenUsage,
 			mcp.WithDescription(
 				"Current Claude usage across session, weekly, and credit limits. Read from the claude.ai usage page.",

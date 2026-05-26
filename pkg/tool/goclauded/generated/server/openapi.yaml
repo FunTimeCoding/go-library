@@ -357,6 +357,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExportResponse"
+  /api/sessions/{identifier}/pulse:
+    post:
+      operationId: postSessionPulse
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PulseRequest"
+      responses:
+        "200":
+          description: Pulse sent.
   /api/sweep:
     post:
       operationId: postSweep
@@ -533,6 +551,29 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/MemoryActivityEntry"
+        pulses:
+          type: array
+          items:
+            $ref: "#/components/schemas/PulseEntry"
+    PulseEntry:
+      type: object
+      required:
+      - body
+      - timestamp
+      properties:
+        from:
+          type: string
+        body:
+          type: string
+        timestamp:
+          type: string
+    PulseRequest:
+      type: object
+      required:
+      - body
+      properties:
+        body:
+          type: string
     MemoryActivityEntry:
       type: object
       required:
@@ -916,6 +957,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/LabelEntry"
+        pulses:
+          type: array
+          items:
+            $ref: "#/components/schemas/PulseEntry"
     SessionDetailCompletion:
       type: object
       required:

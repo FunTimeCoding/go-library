@@ -1,6 +1,6 @@
-package web
+package layout
 
-func (s *Server) drain(c chan struct{}) {
+func drain(c chan struct{}) {
 	for {
 		select {
 		case <-c:

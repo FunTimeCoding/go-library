@@ -6,19 +6,26 @@ import (
 	"strings"
 )
 
-func formatCheckContext(body *client.CheckResponse) string {
-	hasTimeout := body.TimeoutMessage != nil && *body.TimeoutMessage != ""
-	hasMemory := body.MemoryActivity != nil && len(*body.MemoryActivity) > 0
-	hasReannounce := body.Reannounce != nil && *body.Reannounce
+func formatCheckContext(r *client.CheckResponse) string {
+	hasTimeout := r.TimeoutMessage != nil && *r.TimeoutMessage != ""
+	hasMemory := r.MemoryActivity != nil && len(*r.MemoryActivity) > 0
+	hasReannounce := r.Reannounce != nil && *r.Reannounce
+	hasPulses := r.Pulses != nil && len(*r.Pulses) > 0
 
-	if len(body.Sessions) == 0 && len(body.Messages) == 0 && len(body.Completions) == 0 && !hasTimeout && !hasMemory && !hasReannounce {
+	if len(r.Sessions) == 0 &&
+		len(r.Messages) == 0 &&
+		len(r.Completions) == 0 &&
+		!hasTimeout &&
+		!hasMemory &&
+		!hasReannounce &&
+		!hasPulses {
 		return ""
 	}
 
 	var parts []string
 	parts = append(
 		parts,
-		fmt.Sprintf("[goclauded] Called %s today.", body.Callsign),
+		fmt.Sprintf("[goclauded] Called %s today.", r.Callsign),
 	)
 
 	if hasReannounce {
@@ -28,10 +35,19 @@ func formatCheckContext(body *client.CheckResponse) string {
 		)
 	}
 
-	if len(body.Sessions) > 0 {
+	if hasPulses {
+		for _, p := range *r.Pulses {
+			parts = append(
+				parts,
+				fmt.Sprintf("[pulse] %s", p.Body),
+			)
+		}
+	}
+
+	if len(r.Sessions) > 0 {
 		parts = append(parts, "Active sessions:")
 
-		for _, s := range body.Sessions {
+		for _, s := range r.Sessions {
 			line := fmt.Sprintf("  %s", s.Callsign)
 
 			if s.Topic != "" {
@@ -58,10 +74,10 @@ func formatCheckContext(body *client.CheckResponse) string {
 		}
 	}
 
-	if len(body.Completions) > 0 {
+	if len(r.Completions) > 0 {
 		parts = append(parts, "Recent activity:")
 
-		for _, c := range body.Completions {
+		for _, c := range r.Completions {
 			switch c.Kind {
 			case "complete":
 				parts = append(
@@ -71,7 +87,11 @@ func formatCheckContext(body *client.CheckResponse) string {
 			case "update":
 				parts = append(
 					parts,
-					fmt.Sprintf("  %s updated scope: %s", c.Name, c.Topic),
+					fmt.Sprintf(
+						"  %s updated scope: %s",
+						c.Name,
+						c.Topic,
+					),
 				)
 			}
 		}
@@ -80,14 +100,14 @@ func formatCheckContext(body *client.CheckResponse) string {
 	if hasTimeout {
 		parts = append(
 			parts,
-			fmt.Sprintf("Timeout: %s", *body.TimeoutMessage),
+			fmt.Sprintf("Timeout: %s", *r.TimeoutMessage),
 		)
 	}
 
 	if hasMemory {
 		parts = append(parts, "Memory activity:")
 
-		for _, a := range *body.MemoryActivity {
+		for _, a := range *r.MemoryActivity {
 			if a.Source != "" {
 				parts = append(
 					parts,
@@ -107,17 +127,13 @@ func formatCheckContext(body *client.CheckResponse) string {
 		}
 	}
 
-	if len(body.Messages) > 0 {
+	if len(r.Messages) > 0 {
 		parts = append(parts, "Messages:")
 
-		for _, m := range body.Messages {
+		for _, m := range r.Messages {
 			parts = append(
 				parts,
-				fmt.Sprintf(
-					"  %s: %s",
-					m.From,
-					m.Body,
-				),
+				fmt.Sprintf("  %s: %s", m.From, m.Body),
 			)
 		}
 	}

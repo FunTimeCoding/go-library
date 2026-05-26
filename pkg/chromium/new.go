@@ -16,12 +16,15 @@ func New(
 		locator.New(host).Port(port).Scheme(constant.Socket).String(),
 	)
 	c, cancel := chromedp.NewContext(allocator)
-
-	return &Client{
+	result := &Client{
 		host:            host,
 		port:            port,
 		context:         c,
 		cancel:          cancel,
 		allocatorCancel: allocatorCancel,
+		targets:         make(map[string]context.Context),
 	}
+	result.listenTargets()
+
+	return result
 }

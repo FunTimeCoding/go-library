@@ -89,6 +89,20 @@ func sessionShow(c *command_context.Context) *cobra.Command {
 			if d.Summary != nil {
 				fmt.Printf("\nSummary:\n%s\n", *d.Summary)
 			}
+
+			if d.Pulses != nil && len(*d.Pulses) > 0 {
+				fmt.Println("\nPulses:")
+
+				for _, p := range *d.Pulses {
+					from := "→"
+
+					if p.From != nil {
+						from = fmt.Sprintf("%s →", *p.From)
+					}
+
+					fmt.Printf("  %s %s\n", from, p.Body)
+				}
+			}
 		},
 	}
 }

@@ -129,6 +129,22 @@ func (s *Server) GetCheck(
 		MemoryActivity: memoryActivity,
 	}
 
+	if len(r.Pulses) > 0 {
+		var pe []server.PulseEntry
+
+		for _, p := range r.Pulses {
+			pe = append(
+				pe,
+				server.PulseEntry{
+					Body:      p.Body,
+					Timestamp: p.CreatedAt.Format("2006-01-02T15:04:05Z"),
+				},
+			)
+		}
+
+		response.Pulses = &pe
+	}
+
 	if r.TimeoutMessage != "" {
 		response.TimeoutMessage = &r.TimeoutMessage
 	}

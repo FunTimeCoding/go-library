@@ -91,5 +91,26 @@ func (s *Server) GetSessionDetail(
 		result.Labels = &le
 	}
 
+	pulses := s.service.PulsesBySession(d.Identifier)
+
+	if len(pulses) > 0 {
+		var pe []server.PulseEntry
+
+		for _, p := range pulses {
+			entry := server.PulseEntry{
+				Body:      p.Body,
+				Timestamp: p.CreatedAt.Format("2006-01-02T15:04:05Z"),
+			}
+
+			if p.FromName != "" {
+				entry.From = &p.FromName
+			}
+
+			pe = append(pe, entry)
+		}
+
+		result.Pulses = &pe
+	}
+
 	web.EncodeNotation(w, result)
 }

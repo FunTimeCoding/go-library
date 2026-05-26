@@ -8,6 +8,11 @@ func (s *Service) Check(sessionIdentifier string) *check_result.Result {
 		s.store.HasChanges(r.Callsign, r.LastSeen)
 	result := check_result.New()
 	result.Callsign = r.Callsign
+	result.Pulses = s.store.PendingPulses(sessionIdentifier)
+
+	if len(result.Pulses) > 0 {
+		result.Changed = true
+	}
 
 	if changed {
 		result.Changed = true

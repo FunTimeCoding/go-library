@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/label"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/message"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/pool_name"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/pulse"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/summary"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/usage_snapshot"
@@ -33,6 +34,7 @@ func New(
 			pool_name.Stub(),
 			usage_snapshot.Stub(),
 			label.Stub(),
+			pulse.Stub(),
 		),
 	)
 

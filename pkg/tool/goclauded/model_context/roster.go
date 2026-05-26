@@ -77,6 +77,16 @@ func (s *Server) roster(
 			)
 		}
 
+		latest := s.service.LatestPulse(session.Identifier)
+
+		if latest != nil {
+			line = fmt.Sprintf(
+				"%s\n  pulse: %s",
+				line,
+				latest.Body,
+			)
+		}
+
 		lines = append(lines, line)
 	}
 

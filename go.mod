@@ -232,6 +232,7 @@ require (
 	github.com/hashicorp/go-secure-stdlib/strutil v0.1.2 // indirect
 	github.com/hashicorp/yamux v0.1.2 // indirect
 	github.com/henvic/httpretty v0.1.4 // indirect
+	github.com/hetznercloud/hcloud-go/v2 v2.41.2 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/in-toto/attestation v1.2.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect

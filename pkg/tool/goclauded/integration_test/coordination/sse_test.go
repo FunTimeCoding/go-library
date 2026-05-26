@@ -70,7 +70,10 @@ type sseEvent struct {
 	payload string
 }
 
-func connectSSE(t *testing.T, s *base.Server) <-chan sseEvent {
+func connectSSE(
+	t *testing.T,
+	s *base.Server,
+) <-chan sseEvent {
 	t.Helper()
 	l := fmt.Sprintf(
 		"http://localhost:%d/event",

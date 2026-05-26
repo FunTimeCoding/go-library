@@ -198,6 +198,20 @@ func (s *Server) sessionDetailPage(
 
 	content = append(
 		content,
+		html.Div(
+			gomponents.Attr("hx-ext", "sse"),
+			gomponents.Attr(
+				"sse-connect",
+				fmt.Sprintf("/sessions/%s/event", d.Identifier),
+			),
+			html.Div(
+				gomponents.Attr("sse-swap", constant.Pulse),
+				s.pulseSection(d.Identifier),
+			),
+		),
+	)
+	content = append(
+		content,
 		html.P(
 			html.A(
 				gomponents.Attr(

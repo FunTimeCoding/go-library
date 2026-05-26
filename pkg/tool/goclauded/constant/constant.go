@@ -44,6 +44,7 @@ const (
 	InactivityTimeout = "inactivity_timeout"
 	CompleteTimeout   = "complete_timeout"
 
+	Pulse      = "pulse"
 	Label      = "label"
 	Key        = "key"
 	Value      = "value"

@@ -506,6 +506,8 @@ github.com/hashicorp/yamux v0.1.2 h1:XtB8kyFOyHXYVFnwT5C3+Bdo8gArse7j2AQ0DA0Uey8
 github.com/hashicorp/yamux v0.1.2/go.mod h1:C+zze2n6e/7wshOZep2A70/aQU6QBRWJO/G6FT1wIns=
 github.com/henvic/httpretty v0.1.4 h1:Jo7uwIRWVFxkqOnErcoYfH90o3ddQyVrSANeS4cxYmU=
 github.com/henvic/httpretty v0.1.4/go.mod h1:Dn60sQTZfbt2dYsdUSNsCljyF4AfdqnuJFDLJA1I4AM=
+github.com/hetznercloud/hcloud-go/v2 v2.41.2 h1:fO5zsMgp5oejrtnFj8mYuqlp+iMuirpaKv4b5FYNRdQ=
+github.com/hetznercloud/hcloud-go/v2 v2.41.2/go.mod h1:9OGvC//jbHE4sv2Oyo0bQ2vEWuUMKYoNMyj9Qxz2qcc=
 github.com/hupe1980/go-tiktoken v0.0.10 h1:m6phOJaGyctqWdGIgwn9X8AfJvaG74tnQoDL+ntOUEQ=
 github.com/hupe1980/go-tiktoken v0.0.10/go.mod h1:NME6d8hrE+Jo+kLUZHhXShYV8e40hYkm4BbSLQKtvAo=
 github.com/imdario/mergo v0.3.16 h1:wwQJbIsHYGMUyLSPrEq1CT16AhnhNJQ51+4fdHUnCl4=

@@ -36,6 +36,7 @@ type CheckResponse struct {
 	Completions    []CompletionEntry      `json:"completions"`
 	MemoryActivity *[]MemoryActivityEntry `json:"memoryActivity,omitempty"`
 	Messages       []Message              `json:"messages"`
+	Pulses         *[]PulseEntry          `json:"pulses,omitempty"`
 	Reannounce     *bool                  `json:"reannounce,omitempty"`
 	Sessions       []SessionEntry         `json:"sessions"`
 	TimeoutMessage *string                `json:"timeoutMessage,omitempty"`
@@ -127,6 +128,18 @@ type PeekResponse struct {
 	UserMessages []string `json:"userMessages"`
 }
 
+// PulseEntry defines model for PulseEntry.
+type PulseEntry struct {
+	Body      string  `json:"body"`
+	From      *string `json:"from,omitempty"`
+	Timestamp string  `json:"timestamp"`
+}
+
+// PulseRequest defines model for PulseRequest.
+type PulseRequest struct {
+	Body string `json:"body"`
+}
+
 // RegisterRequest defines model for RegisterRequest.
 type RegisterRequest struct {
 	Session string `json:"session"`
@@ -199,6 +212,7 @@ type SessionDetailResponse struct {
 	Identifier  string                     `json:"identifier"`
 	Labels      *[]LabelEntry              `json:"labels,omitempty"`
 	Name        *string                    `json:"name,omitempty"`
+	Pulses      *[]PulseEntry              `json:"pulses,omitempty"`
 	Slug        *string                    `json:"slug,omitempty"`
 	Summary     *string                    `json:"summary,omitempty"`
 	TurnCount   *int                       `json:"turnCount,omitempty"`
@@ -363,6 +377,9 @@ type PostSendJSONRequestBody = SendRequest
 // PostEditSessionJSONRequestBody defines body for PostEditSession for application/json ContentType.
 type PostEditSessionJSONRequestBody = EditSessionRequest
 
+// PostSessionPulseJSONRequestBody defines body for PostSessionPulse for application/json ContentType.
+type PostSessionPulseJSONRequestBody = PulseRequest
+
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
 
@@ -504,6 +521,11 @@ type ClientInterface interface {
 
 	// GetSessionPeek request
 	GetSessionPeek(ctx context.Context, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostSessionPulseWithBody request with any body
+	PostSessionPulseWithBody(ctx context.Context, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostSessionPulse(ctx context.Context, identifier string, body PostSessionPulseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSessionToolContext request
 	GetSessionToolContext(ctx context.Context, identifier string, params *GetSessionToolContextParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -814,6 +836,30 @@ func (c *Client) GetSessionMessages(ctx context.Context, identifier string, reqE
 
 func (c *Client) GetSessionPeek(ctx context.Context, identifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetSessionPeekRequest(c.Server, identifier)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostSessionPulseWithBody(ctx context.Context, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostSessionPulseRequestWithBody(c.Server, identifier, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostSessionPulse(ctx context.Context, identifier string, body PostSessionPulseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostSessionPulseRequest(c.Server, identifier, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1675,6 +1721,53 @@ func NewGetSessionPeekRequest(server string, identifier string) (*http.Request, 
 	return req, nil
 }
 
+// NewPostSessionPulseRequest calls the generic PostSessionPulse builder with application/json body
+func NewPostSessionPulseRequest(server string, identifier string, body PostSessionPulseJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostSessionPulseRequestWithBody(server, identifier, "application/json", bodyReader)
+}
+
+// NewPostSessionPulseRequestWithBody generates requests for PostSessionPulse with any type of body
+func NewPostSessionPulseRequestWithBody(server string, identifier string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/sessions/%s/pulse", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetSessionToolContextRequest generates requests for GetSessionToolContext
 func NewGetSessionToolContextRequest(server string, identifier string, params *GetSessionToolContextParams) (*http.Request, error) {
 	var err error
@@ -2084,6 +2177,11 @@ type ClientWithResponsesInterface interface {
 
 	// GetSessionPeekWithResponse request
 	GetSessionPeekWithResponse(ctx context.Context, identifier string, reqEditors ...RequestEditorFn) (*GetSessionPeekResponse, error)
+
+	// PostSessionPulseWithBodyWithResponse request with any body
+	PostSessionPulseWithBodyWithResponse(ctx context.Context, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSessionPulseResponse, error)
+
+	PostSessionPulseWithResponse(ctx context.Context, identifier string, body PostSessionPulseJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSessionPulseResponse, error)
 
 	// GetSessionToolContextWithResponse request
 	GetSessionToolContextWithResponse(ctx context.Context, identifier string, params *GetSessionToolContextParams, reqEditors ...RequestEditorFn) (*GetSessionToolContextResponse, error)
@@ -2516,6 +2614,27 @@ func (r GetSessionPeekResponse) StatusCode() int {
 	return 0
 }
 
+type PostSessionPulseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r PostSessionPulseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostSessionPulseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetSessionToolContextResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2865,6 +2984,23 @@ func (c *ClientWithResponses) GetSessionPeekWithResponse(ctx context.Context, id
 		return nil, err
 	}
 	return ParseGetSessionPeekResponse(rsp)
+}
+
+// PostSessionPulseWithBodyWithResponse request with arbitrary body returning *PostSessionPulseResponse
+func (c *ClientWithResponses) PostSessionPulseWithBodyWithResponse(ctx context.Context, identifier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostSessionPulseResponse, error) {
+	rsp, err := c.PostSessionPulseWithBody(ctx, identifier, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostSessionPulseResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostSessionPulseWithResponse(ctx context.Context, identifier string, body PostSessionPulseJSONRequestBody, reqEditors ...RequestEditorFn) (*PostSessionPulseResponse, error) {
+	rsp, err := c.PostSessionPulse(ctx, identifier, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostSessionPulseResponse(rsp)
 }
 
 // GetSessionToolContextWithResponse request returning *GetSessionToolContextResponse
@@ -3347,6 +3483,22 @@ func ParseGetSessionPeekResponse(rsp *http.Response) (*GetSessionPeekResponse, e
 		}
 		response.JSON200 = &dest
 
+	}
+
+	return response, nil
+}
+
+// ParsePostSessionPulseResponse parses an HTTP response from a PostSessionPulseWithResponse call
+func ParsePostSessionPulseResponse(rsp *http.Response) (*PostSessionPulseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostSessionPulseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
 	}
 
 	return response, nil

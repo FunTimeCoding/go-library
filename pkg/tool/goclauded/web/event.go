@@ -1,41 +1,29 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/web/layout"
 	"net/http"
-	"time"
 )
 
-func (s *Server) event(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	flusher, okay := w.(http.Flusher)
+func (s *Server) event() http.HandlerFunc {
+	return layout.HandleServerSideEvent(
+		s.notifier,
+		func(
+			w http.ResponseWriter,
+			f http.Flusher,
+		) {
+			if items := s.usageSummary(); len(items) > 0 {
+				layout.PushEvent(
+					w,
+					layout.SummaryStrip,
+					layout.SummaryStripContent(items),
+				)
+			}
 
-	if !okay {
-		http.Error(
-			w,
-			"streaming not supported",
-			http.StatusInternalServerError,
-		)
-
-		return
-	}
-
-	w.Header().Set("Content-Type", "text/event-stream")
-	w.Header().Set("Cache-Control", "no-cache")
-	w.Header().Set("Connection", "keep-alive")
-	subscription := s.notifier.Subscribe()
-	defer s.notifier.Unsubscribe(subscription)
-	s.pushSections(w, flusher)
-
-	for {
-		select {
-		case <-r.Context().Done():
-			return
-		case <-subscription:
-			time.Sleep(1 * time.Second)
-			s.drain(subscription)
-			s.pushSections(w, flusher)
-		}
-	}
+			layout.PushEvent(w, constant.Roster, s.rosterSection())
+			layout.PushEvent(w, constant.Activity, s.activitySection())
+			f.Flush()
+		},
+	)
 }

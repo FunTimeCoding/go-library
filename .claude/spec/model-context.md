@@ -32,7 +32,8 @@ domain operations - `server/` over REST, `model_context/` over MCP.
 
 ## Convert Package
 
-MCP tools must never serialize raw domain objects directly. Always convert through a `convert/` package that produces slim response types - the same types used by REST endpoints.
+When domain objects are complex (nested fields, changelogs, computed
+properties), use a `convert/` package to produce slim response types:
 
 ```
 pkg/tool/go<tool>d/convert/
@@ -41,9 +42,14 @@ pkg/tool/go<tool>d/convert/
 └── ...
 ```
 
-Converter functions are exported and shared by both `server/` and `model_context/`. This prevents MCP tools from leaking raw structs (with all nested fields, changelogs, custom fields, etc.) into the LLM context.
+Converter functions are exported and shared by both `server/` and
+`model_context/`. This prevents MCP tools from leaking raw structs
+into the LLM context.
 
-Even MCP-only daemons without REST endpoints should use a `convert/` package to sanitize outputs.
+For simple flat responses (3-5 fields), inline `map[string]any`
+construction in the handler is acceptable. The convert package adds
+value when types are nested, shared between REST and MCP, or when
+filtering out sensitive fields.
 
 ## Constants
 
@@ -103,44 +109,114 @@ func (s *Server) Mount(m *http.ServeMux) {
 
 ## Registering Tools
 
-`register.go` - one `AddTool` call per tool, function in its own file. Tool names and parameter names are constants, never string literals:
+`register.go` - one `AddTool` call per tool, function in its own file.
+Tool names are constants from the service's `constant/` package.
+Parameter names use string literals for clarity or shared constants
+from `pkg/generative/model_context/parameter/` when the name is
+reusable across services (query, limit, identifier, name, etc.):
+
 ```go
 func (s *Server) register() {
     s.server.AddTool(
         mcp.NewTool(
-            constant.GetAlerts,
-            mcp.WithDescription("..."),
-            mcp.WithString(parameter.Name, mcp.Required()),
+            constant.ListLinks,
+            mcp.WithDescription("List links."),
             mcp.WithNumber(
-                parameter.Limit,
-                mcp.Required(),
-                mcp.Description("Maximum number of results (e.g. 25)"),
+                "collection",
+                mcp.Description("Collection ID to filter by."),
+            ),
+            mcp.WithNumber(
+                "limit",
+                mcp.Description("Maximum number of results to return."),
             ),
         ),
-        s.getAlerts,
+        mcp.NewTypedToolHandler(s.ListLinks),
     )
 }
 ```
 
-Tool function files (`get_alerts.go`, etc.) use `response.Fail` for
-input validation, `captureFail` for infrastructure errors,
-`response.SuccessAny` for JSON results, and `response.Success` for
-plain text results:
+## Typed Tool Handlers
+
+The preferred pattern uses `mcp.NewTypedToolHandler` with an
+`argument/` struct. The struct's JSON tags must match the parameter
+names in the tool definition:
+
+```
+pkg/tool/go<tool>d/model_context/
+├── argument/
+│   ├── list_links.go          # type ListLinks struct
+│   ├── search_links.go        # type SearchLinks struct
+│   └── add_link.go            # type AddLink struct
+```
+
 ```go
-func (s *Server) getAlerts(
+package argument
+
+type ListLinks struct {
+    Collection float64 `json:"collection"`
+    Limit      float64 `json:"limit"`
+    Offset     float64 `json:"offset"`
+}
+```
+
+Handler signature with typed arguments:
+```go
+func (s *Server) ListLinks(
+    _ context.Context,
+    _ mcp.CallToolRequest,
+    a argument.ListLinks,
+) (*mcp.CallToolResult, error) {
+    links, e := s.client.Links(int32(a.Collection))
+
+    if e != nil {
+        return s.captureFail(e, "failed to list links")
+    }
+
+    return response.SuccessAny(map[string]any{"links": result})
+}
+```
+
+MCP numbers arrive as `float64`. Cast to `int32` or `int` at the
+call site. Tools without parameters use `struct{}` as the argument type.
+
+## Legacy Request Accessors
+
+Older services use the untyped pattern with request
+accessors and a validator:
+
+```go
+func (s *Server) ChangeField(
     _ context.Context,
     r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-    name, f := r.RequireString(parameter.Name)
+    v := validator.New(&r)
+    name := v.RequireString(constant.Name.Key)
 
-    if f != nil {
-        return response.Fail("name is required: %v", f)
+    if v.HasErrors() {
+        return response.Fail("%s", v.Error())
     }
+    // ...
+}
+```
 
-    result, g := s.store.ByName(name, int(limit))
+This works but the typed handler pattern is preferred for new tools.
 
-    if g != nil {
-        return s.captureFail(g, "get alerts failed")
+## Response Conventions
+
+Tool function files use `response.Fail` for input validation,
+`captureFail` for infrastructure errors, `response.SuccessAny` for
+JSON results, and `response.Success` for plain text results:
+
+```go
+func (s *Server) getAlerts(
+    _ context.Context,
+    _ mcp.CallToolRequest,
+    a argument.GetAlerts,
+) (*mcp.CallToolResult, error) {
+    result, e := s.store.ByName(a.Name, int(a.Limit))
+
+    if e != nil {
+        return s.captureFail(e, "get alerts failed")
     }
 
     return response.SuccessAny(convert.Alerts(result))

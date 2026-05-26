@@ -1,4 +1,4 @@
-package web
+package layout
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func pushEvent(
+func PushEvent(
 	w http.ResponseWriter,
 	name string,
 	n gomponents.Node,

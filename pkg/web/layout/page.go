@@ -7,16 +7,16 @@ import (
 )
 
 type Page struct {
-	identity   *identity.Tool
-	title      string
-	path       string
-	theme      string
-	style      string
-	brandNode  gomponents.Node
-	items      []*navigation_item.Item
-	navigation []gomponents.Node
-	script     []string
-	footer     []gomponents.Node
+	identity     *identity.Tool
+	title        string
+	path         string
+	theme        string
+	style        string
+	brandNode    gomponents.Node
+	items        []*navigation_item.Item
+	navigation   []gomponents.Node
+	script       []string
+	footer       []gomponents.Node
 	content      []gomponents.Node
 	summary      []string
 	liveEndpoint string

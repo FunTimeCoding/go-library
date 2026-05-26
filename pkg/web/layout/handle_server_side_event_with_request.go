@@ -9,7 +9,11 @@ import (
 
 func HandleServerSideEventWithRequest(
 	n face.EventNotifier,
-	render func(http.ResponseWriter, http.Flusher, *http.Request),
+	render func(
+		http.ResponseWriter,
+		http.Flusher,
+		*http.Request,
+	),
 ) http.HandlerFunc {
 	return func(
 		w http.ResponseWriter,

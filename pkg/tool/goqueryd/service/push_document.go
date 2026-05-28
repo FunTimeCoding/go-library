@@ -1,0 +1,50 @@
+package service
+
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/chunk"
+	"time"
+)
+
+func (s *Service) PushDocument(
+	collection string,
+	path string,
+	body string,
+	sourceType string,
+) error {
+	s.store.EnsurePushCollection(collection)
+	now := time.Now().UTC().Format(time.RFC3339)
+	hash := store.HashContent(body)
+	title := store.ExtractTitle(body, path)
+	s.store.InsertContent(hash, body, now)
+	s.store.InsertDocument(collection, path, title, hash, now)
+	chunks := chunk.Document(body, path)
+	texts := make([]string, len(chunks))
+
+	for i, c := range chunks {
+		texts[i] = c.Text
+	}
+
+	embeddings, e := s.ollama.Embed(constant.EmbedModel, texts)
+
+	if e != nil {
+		return e
+	}
+
+	for i, embedding := range embeddings {
+		s.store.InsertEmbedding(
+			hash,
+			i,
+			chunks[i].Position,
+			embedding,
+			now,
+		)
+	}
+
+	if sourceType != "" {
+		s.store.SetSourceType(collection, path, sourceType)
+	}
+
+	return nil
+}

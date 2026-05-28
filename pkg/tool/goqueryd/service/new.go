@@ -11,5 +11,5 @@ func New(
 	o *ollama.Client,
 	re *rerank.Reranker,
 ) *Service {
-	return &Service{Store: s, ollama: o, reranker: re}
+	return &Service{store: s, ollama: o, reranker: re}
 }

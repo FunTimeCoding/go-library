@@ -12,12 +12,12 @@ func TestDeleteDocument(t *testing.T) {
 	defer s.Close()
 	assert.FatalOnError(
 		t,
-		s.PushDocument(
+		pushTestDocument(
+			s, o,
 			"notes",
 			"doomed.md",
 			"# Doomed\n\nThis document will be deleted.\n",
 			"",
-			o,
 		),
 	)
 	deleted, e := s.DeleteDocument("notes", "doomed.md")
@@ -40,12 +40,12 @@ func TestDeleteDocumentCleansOrphanedContent(t *testing.T) {
 	defer s.Close()
 	assert.FatalOnError(
 		t,
-		s.PushDocument(
+		pushTestDocument(
+			s, o,
 			"notes",
 			"unique.md",
 			"# Unique\n\nOnly one document uses this content.\n",
 			"",
-			o,
 		),
 	)
 	_, e := s.DeleteDocument("notes", "unique.md")
@@ -57,8 +57,14 @@ func TestDeleteDocumentPreservesSharedContent(t *testing.T) {
 	s, o := openTestStore(t)
 	defer s.Close()
 	body := "# Shared\n\nTwo documents share this body.\n"
-	assert.FatalOnError(t, s.PushDocument("first", "shared.md", body, "", o))
-	assert.FatalOnError(t, s.PushDocument("second", "shared.md", body, "", o))
+	assert.FatalOnError(
+		t,
+		pushTestDocument(s, o, "first", "shared.md", body, ""),
+	)
+	assert.FatalOnError(
+		t,
+		pushTestDocument(s, o, "second", "shared.md", body, ""),
+	)
 	_, e := s.DeleteDocument("first", "shared.md")
 	assert.FatalOnError(t, e)
 	assert.Integer(t, 1, s.ContentCount())
@@ -71,12 +77,12 @@ func TestDeleteDocumentRemovesFromSearch(t *testing.T) {
 	defer s.Close()
 	assert.FatalOnError(
 		t,
-		s.PushDocument(
+		pushTestDocument(
+			s, o,
 			"notes",
 			"findable.md",
 			"# Findable\n\nContains the keyword wolverine.\n",
 			"",
-			o,
 		),
 	)
 	results := s.MustSearchKeyword("wolverine", 10, "", false)

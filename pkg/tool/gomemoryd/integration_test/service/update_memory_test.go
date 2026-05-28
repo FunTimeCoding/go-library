@@ -20,7 +20,7 @@ func TestServiceUpdateMemoryPreservesTags(t *testing.T) {
 	assert.FatalOnError(t, e)
 	assert.FatalOnError(
 		t,
-		o.Service.Store.AddTags(
+		o.Service.AddTags(
 			m.Identifier,
 			[]string{"always", "go-conventions"},
 		),

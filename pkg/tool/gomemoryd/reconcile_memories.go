@@ -6,14 +6,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/service"
 )
 
-func reconcileMemories(svc *service.Service) {
-	memories, e := svc.Store.ListMemories("", "", true)
+func reconcileMemories(s *service.Service) {
+	memories, e := s.ListMemories("", "", true)
 	errors.PanicOnError(e)
 
 	for _, m := range memories {
-		full, f := svc.Store.GetMemory(m.Identifier)
+		full, f := s.GetMemory(m.Identifier)
 		errors.PanicOnError(f)
-		svc.MustIndexMemory(
+		s.MustIndexMemory(
 			fmt.Sprintf("memory/%d", full.Identifier),
 			full.Content,
 		)

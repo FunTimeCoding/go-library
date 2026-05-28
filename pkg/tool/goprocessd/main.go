@@ -1,0 +1,39 @@
+package goprocessd
+
+import (
+	"github.com/funtimecoding/go-library/pkg/argument"
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/tool/goprocessd/constant"
+	"github.com/spf13/cobra"
+)
+
+func Main(
+	version string,
+	gitHash string,
+	buildDate string,
+) {
+	r := reporter.New(constant.Identity.Name(), version)
+	r.Start()
+	defer func() { r.RecoverFlush(recover()) }()
+	o := &cobra.Command{
+		Use:     constant.Identity.Usage(),
+		Short:   constant.Identity.Description(),
+		Version: argument.CobraVersion(version, gitHash, buildDate),
+	}
+	o.PersistentFlags().StringP(
+		"file",
+		"f",
+		"Procfile",
+		"path to Procfile",
+	)
+	o.PersistentFlags().String(
+		"envrc",
+		".envrc",
+		"path to .envrc file",
+	)
+	o.AddCommand(startCommand())
+	o.AddCommand(checkCommand())
+	o.AddCommand(runCommand())
+	errors.PanicOnError(o.Execute())
+}

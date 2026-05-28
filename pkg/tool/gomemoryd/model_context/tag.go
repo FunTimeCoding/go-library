@@ -27,7 +27,7 @@ func (s *Server) tag(
 	}
 
 	if replaceRaw != "" {
-		e := s.service.Store.ReplaceTags(identifier, splitTags(replaceRaw))
+		e := s.service.ReplaceTags(identifier, splitTags(replaceRaw))
 
 		if e != nil {
 			return s.captureFail(e, "failed to replace tags")
@@ -35,7 +35,7 @@ func (s *Server) tag(
 	}
 
 	if addRaw != "" {
-		e := s.service.Store.AddTags(identifier, splitTags(addRaw))
+		e := s.service.AddTags(identifier, splitTags(addRaw))
 
 		if e != nil {
 			return s.captureFail(e, "failed to add tags")
@@ -43,14 +43,14 @@ func (s *Server) tag(
 	}
 
 	if removeRaw != "" {
-		e := s.service.Store.RemoveTags(identifier, splitTags(removeRaw))
+		e := s.service.RemoveTags(identifier, splitTags(removeRaw))
 
 		if e != nil {
 			return s.captureFail(e, "failed to remove tags")
 		}
 	}
 
-	m, e := s.service.Store.GetMemory(identifier)
+	m, e := s.service.GetMemory(identifier)
 
 	if e != nil {
 		return s.captureFail(e, "failed to fetch memory")

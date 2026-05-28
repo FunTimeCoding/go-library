@@ -2,7 +2,7 @@ package store
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 
-func (s *Store) insertContent(
+func (s *Store) InsertContent(
 	hash string,
 	content string,
 	now string,

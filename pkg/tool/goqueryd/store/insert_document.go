@@ -2,7 +2,7 @@ package store
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 
-func (s *Store) insertDocument(
+func (s *Store) InsertDocument(
 	collection string,
 	path string,
 	title string,

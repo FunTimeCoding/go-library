@@ -18,9 +18,7 @@ func (s *Server) CloseTab(
 		return response.Fail(e.Error())
 	}
 
-	e = s.client.CloseTab(t.Identifier)
-
-	if e != nil {
+	if e = s.client.CloseTab(t.Identifier); e != nil {
 		return s.captureDetail(e)
 	}
 

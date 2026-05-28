@@ -23,7 +23,7 @@ func (s *Server) delete(
 		return response.Fail("path is required: %v", f)
 	}
 
-	deleted, g := s.store.DeleteDocument(collection, path)
+	deleted, g := s.service.DeleteDocument(collection, path)
 
 	if g != nil {
 		return s.captureFail(g, "delete failed")

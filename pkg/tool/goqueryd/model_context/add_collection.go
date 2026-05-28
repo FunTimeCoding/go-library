@@ -25,7 +25,7 @@ func (s *Server) addCollection(
 	}
 
 	pattern := q.GetString(constant.Pattern, "")
-	s.store.AddCollection(name, path, pattern)
+	s.service.AddCollection(name, path, pattern)
 
 	return response.Success("collection %s added", name)
 }

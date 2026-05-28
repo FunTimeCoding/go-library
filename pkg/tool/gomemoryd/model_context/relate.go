@@ -19,7 +19,7 @@ func (s *Server) relate(
 		return response.Fail("source_id and target_id are required")
 	}
 
-	e := s.service.Store.CreateRelation(sourceID, targetID)
+	e := s.service.CreateRelation(sourceID, targetID)
 
 	if e != nil {
 		return s.captureFail(e, "failed to create relation")

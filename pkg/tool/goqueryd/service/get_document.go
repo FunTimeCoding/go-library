@@ -3,7 +3,7 @@ package service
 import "github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/result"
 
 func (s *Service) GetDocument(path string) (*result.Document, []string, error) {
-	document, e := s.Store.GetDocument(path)
+	document, e := s.store.GetDocument(path)
 
 	if e != nil {
 		return nil, nil, e
@@ -13,7 +13,7 @@ func (s *Service) GetDocument(path string) (*result.Document, []string, error) {
 		return document, nil, nil
 	}
 
-	similar, e := s.Store.FindSimilarFiles(path, 5)
+	similar, e := s.store.FindSimilarFiles(path, 5)
 
 	if e != nil {
 		return nil, nil, e

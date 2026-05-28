@@ -8,7 +8,7 @@ import (
 
 var headingPattern = regexp.MustCompile(`(?m)^##?\s+(.+)$`)
 
-func extractTitle(
+func ExtractTitle(
 	content string,
 	filename string,
 ) string {

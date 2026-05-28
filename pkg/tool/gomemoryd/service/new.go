@@ -9,5 +9,5 @@ func New(
 	s *store.Store,
 	i face.Indexer,
 ) *Service {
-	return &Service{Store: s, indexer: i}
+	return &Service{store: s, indexer: i}
 }

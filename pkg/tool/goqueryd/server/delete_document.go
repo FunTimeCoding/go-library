@@ -12,7 +12,7 @@ func (s *Server) DeleteDocument(
 	_ *http.Request,
 	v server.DeleteDocumentParams,
 ) {
-	deleted, e := s.store.DeleteDocument(v.Collection, v.Path)
+	deleted, e := s.service.DeleteDocument(v.Collection, v.Path)
 	errors.PanicOnError(e)
 	web.EncodeNotation(w, map[string]bool{"deleted": deleted})
 }

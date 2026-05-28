@@ -10,7 +10,7 @@ func (s *Server) PostEmbed(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	result, e := s.store.Embed(s.ollama)
+	result, e := s.service.Embed()
 	errors.PanicOnError(e)
 	web.EncodeNotation(w, result)
 }

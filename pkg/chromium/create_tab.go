@@ -3,11 +3,15 @@ package chromium
 import (
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/target"
-	"github.com/chromedp/chromedp"
 )
 
 func (c *Client) CreateTab(l string) (string, error) {
-	b := chromedp.FromContext(c.context).Browser
+	b, e := c.browser()
+
+	if e != nil {
+		return "", e
+	}
+
 	identifier, e := target.CreateTarget(l).Do(
 		cdp.WithExecutor(c.context, b),
 	)

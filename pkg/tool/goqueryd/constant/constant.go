@@ -61,6 +61,14 @@ hyde: The authentication system uses JWT tokens issued on login. Sessions are st
 
 Query: `
 
+	DashboardTitle   = "Dashboard"
+	DashboardPath    = "/"
+	SearchTitle      = "Search"
+	SearchPath       = "/search"
+	CollectionsTitle = "Collections"
+	CollectionsPath  = "/collections"
+	Identifier       = "identifier"
+
 	TestBody = `# Search Pipeline
 
 This document describes the hybrid search pipeline.

@@ -1,50 +1,49 @@
 //go:build local
 
-package store
+package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/integration_test/service_tester"
 	"testing"
 )
 
 func TestEmbedCreatesEmbeddings(t *testing.T) {
-	s, o := indexedTestStore(t)
-	defer s.Close()
-	result, e := s.Embed(o)
+	s := service_tester.New(t)
+	s.IndexFixtures()
+	result, e := s.Service.Embed()
 	assert.FatalOnError(t, e)
 	assert.Greater(t, 0, float64(result.Documents))
 	assert.Greater(t, 0, float64(result.Chunks))
-	status := s.MustStatus()
+	status := s.Service.MustStatus()
 	assert.Greater(t, 0, float64(status.TotalEmbeddings))
 	assert.Integer(t, 0, status.PendingEmbeddings)
 }
 
 func TestEmbedIdempotent(t *testing.T) {
-	s, o := indexedTestStore(t)
-	defer s.Close()
-	first, e := s.Embed(o)
+	s := service_tester.New(t)
+	s.IndexFixtures()
+	first, e := s.Service.Embed()
 	assert.FatalOnError(t, e)
-	second, e := s.Embed(o)
+	second, e := s.Service.Embed()
 	assert.FatalOnError(t, e)
 	assert.Integer(t, 0, second.Documents)
 	assert.Integer(t, 0, second.Chunks)
-	status := s.MustStatus()
+	status := s.Service.MustStatus()
 	assert.Integer(t, first.Chunks, status.TotalEmbeddings)
 }
 
 func TestEmbedAfterPush(t *testing.T) {
-	s, o := openTestStore(t)
-	defer s.Close()
+	s := service_tester.New(t)
 	assert.FatalOnError(
 		t,
-		s.PushDocument(
+		s.Service.PushDocument(
 			"notes",
 			"embed-me.md",
 			"# Embed Test\n\nThis document should get embedded.\n",
 			"",
-			o,
 		),
 	)
-	status := s.MustStatus()
+	status := s.Service.MustStatus()
 	assert.Greater(t, 0, float64(status.TotalEmbeddings))
 }

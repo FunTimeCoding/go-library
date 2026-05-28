@@ -20,6 +20,6 @@ func (s *Server) PostCollection(
 		pattern = *body.Pattern
 	}
 
-	s.store.AddCollection(body.Name, body.Path, pattern)
+	s.service.AddCollection(body.Name, body.Path, pattern)
 	web.EncodeNotation(w, map[string]string{"status": "ok"})
 }

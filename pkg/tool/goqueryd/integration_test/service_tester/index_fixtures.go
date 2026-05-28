@@ -7,10 +7,10 @@ import (
 )
 
 func (t *Tester) IndexFixtures() {
-	t.Service.Store.AddCollection(
+	t.Service.AddCollection(
 		"test",
 		fixture.Path(constant.SearchPath),
 		goqueryd.DefaultGlob,
 	)
-	t.Service.Store.Index("test")
+	t.Service.Index("test")
 }

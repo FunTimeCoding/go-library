@@ -11,5 +11,5 @@ func (s *Server) listContexts(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	return response.Success(notation.MarshalIndent(s.store.ListContexts()))
+	return response.Success(notation.MarshalIndent(s.service.ListContexts()))
 }

@@ -16,7 +16,8 @@ func (c *Client) Activate(targetIdentifier string) {
 	fmt.Println("  Activate")
 	start := time.Now()
 	fmt.Printf("    Start %v\n", start.Format(library.Micro))
-	b := chromedp.FromContext(c.context).Browser
+	b, e := c.browser()
+	errors.PanicOnError(e)
 	t1 := time.Now()
 	errors.PanicOnError(
 		target.ActivateTarget(target.ID(targetIdentifier)).Do(
@@ -25,7 +26,7 @@ func (c *Client) Activate(targetIdentifier string) {
 	)
 	fmt.Printf("    ActivateTarget took %v\n", time.Since(t1))
 	t2 := time.Now()
-	e := chromedp.Run(
+	e = chromedp.Run(
 		c.TargetContext(targetIdentifier),
 		chromedp.ActionFunc(
 			func(x context.Context) error {

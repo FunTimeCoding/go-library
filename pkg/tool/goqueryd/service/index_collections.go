@@ -3,7 +3,7 @@ package service
 import "github.com/funtimecoding/go-library/pkg/tool/goqueryd/service/index_result"
 
 func (s *Service) IndexCollections(collection string) ([]*index_result.IndexResult, error) {
-	status, e := s.Store.Status()
+	status, e := s.store.Status()
 
 	if e != nil {
 		return nil, e
@@ -20,7 +20,7 @@ func (s *Service) IndexCollections(collection string) ([]*index_result.IndexResu
 			continue
 		}
 
-		r := s.Store.Index(c.Name)
+		r := s.store.Index(c.Name)
 		results = append(
 			results,
 			index_result.New(

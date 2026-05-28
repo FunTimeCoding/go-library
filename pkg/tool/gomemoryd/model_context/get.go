@@ -18,7 +18,7 @@ func (s *Server) get(
 		return response.Fail("memory_id is required")
 	}
 
-	m, e := s.service.Store.GetMemory(identifier)
+	m, e := s.service.GetMemory(identifier)
 
 	if e != nil {
 		return s.captureFail(e, "memory not found")
@@ -27,7 +27,7 @@ func (s *Server) get(
 	result := memoryWithHistory{Memory: *m}
 
 	if q.GetBool(constant.IncludeHistory, false) {
-		result.History, e = s.service.Store.GetMemoryHistory(identifier)
+		result.History, e = s.service.GetMemoryHistory(identifier)
 
 		if e != nil {
 			return s.captureFail(e, "failed to load history")

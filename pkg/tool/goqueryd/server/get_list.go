@@ -12,7 +12,7 @@ func (s *Server) GetList(
 	_ *http.Request,
 	v server.GetListParams,
 ) {
-	documents, e := s.store.ListDocuments(v.Collection)
+	documents, e := s.service.ListDocuments(v.Collection)
 	errors.PanicOnError(e)
 	web.EncodeNotation(w, documents)
 }

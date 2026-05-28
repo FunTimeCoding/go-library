@@ -9,5 +9,5 @@ func (s *Server) GetStatus(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, s.store.MustStatus())
+	web.EncodeNotation(w, s.service.MustStatus())
 }

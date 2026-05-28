@@ -12,7 +12,9 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/rerank"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/service"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store"
+	queryWeb "github.com/funtimecoding/go-library/pkg/tool/goqueryd/web"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -31,9 +33,10 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				l := ollama.NewEnvironment()
-				generated.HandlerFromMux(server.New(s, l, a), m)
-				model_context.New(s, l, a, r, o.Version).Mount(m)
+				v := service.New(s, ollama.NewEnvironment(), a)
+				generated.HandlerFromMux(server.New(v), m)
+				model_context.New(v, r, o.Version).Mount(m)
+				queryWeb.New(v).Mount(m)
 			},
 			web.RecoveryMiddleware(r),
 		),

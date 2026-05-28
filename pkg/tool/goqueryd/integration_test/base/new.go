@@ -12,6 +12,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/rerank"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/service"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store"
 	"net/http"
 	"path/filepath"
@@ -28,6 +29,7 @@ func New(t *testing.T) *Server {
 	)
 	errors.PanicOnError(e)
 	t.Cleanup(func() { errors.LogClose(a) })
+	v := service.New(s, l, a)
 
 	return &Server{
 		t:        t,
@@ -37,11 +39,9 @@ func New(t *testing.T) *Server {
 		server: model_context_server.New(
 			t,
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(server.New(s, l, a), m)
+				generated.HandlerFromMux(server.New(v), m)
 				model_context.New(
-					s,
-					l,
-					a,
+					v,
 					memory.New(),
 					constant.DefaultVersion,
 				).Mount(m)

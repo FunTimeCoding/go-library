@@ -28,4 +28,6 @@ const (
 	ReadBody   = "read_body"
 	Click      = "click"
 	Fill       = "fill"
+	Wake       = "wake"
+	TabHistory = "history"
 )

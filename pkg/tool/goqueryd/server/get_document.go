@@ -12,7 +12,7 @@ func (s *Server) GetDocument(
 	_ *http.Request,
 	v server.GetDocumentParams,
 ) {
-	document, e := s.store.GetDocument(v.Path)
+	document, _, e := s.service.GetDocument(v.Path)
 	errors.PanicOnError(e)
 	web.EncodeNotation(w, document)
 }

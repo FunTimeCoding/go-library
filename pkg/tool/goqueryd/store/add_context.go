@@ -3,6 +3,7 @@ package store
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"strings"
 )
 
@@ -11,12 +12,12 @@ func (s *Store) AddContext(
 	pathPrefix string,
 	description string,
 ) {
-	if !strings.HasPrefix(pathPrefix, "/") {
-		pathPrefix = join.Empty("/", pathPrefix)
+	if !strings.HasPrefix(pathPrefix, separator.Slash) {
+		pathPrefix = join.Empty(separator.Slash, pathPrefix)
 	}
 
-	if !strings.HasSuffix(pathPrefix, "/") {
-		pathPrefix = join.Empty(pathPrefix, "/")
+	if !strings.HasSuffix(pathPrefix, separator.Slash) {
+		pathPrefix = join.Empty(pathPrefix, separator.Slash)
 	}
 
 	_, e := s.database.Exec(

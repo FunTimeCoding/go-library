@@ -1,7 +1,7 @@
 package store
 
-type pendingDocument struct {
-	hash string
-	body string
-	path string
+type PendingDocument struct {
+	Hash string
+	Body string
+	Path string
 }

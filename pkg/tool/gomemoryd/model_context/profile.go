@@ -15,7 +15,7 @@ func (s *Server) profile(
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
 	topic := q.GetString(constant.Topic, "")
-	always, e := s.listMemoriesWithContent(constant.AlwaysTag)
+	always, e := s.service.ListMemoriesWithContent(constant.AlwaysTag)
 
 	if e != nil {
 		return s.captureFail(e, "failed to load always-tagged memories")
@@ -24,7 +24,7 @@ func (s *Server) profile(
 	var relevant []store.SearchResult
 
 	if topic != "" {
-		relevant, e = s.service.Store.SearchMemories(topic, 10, "", "")
+		relevant, e = s.service.SearchMemories(topic, 10, "", "")
 
 		if e != nil {
 			return s.captureFail(e, "failed to search for relevant memories")
@@ -43,7 +43,7 @@ func (s *Server) profile(
 		relevantIDs[r.Identifier] = true
 	}
 
-	allMemories, e := s.service.Store.ListMemories("", "", true)
+	allMemories, e := s.service.ListMemories("", "", true)
 
 	if e != nil {
 		return s.captureFail(e, "failed to list memories")
@@ -58,7 +58,7 @@ func (s *Server) profile(
 	}
 
 	since := time.Now().Add(-48 * time.Hour).UTC().Format(time.RFC3339)
-	impressions, e := s.service.Store.RecentImpressions(since)
+	impressions, e := s.service.RecentImpressions(since)
 
 	if e != nil {
 		impressions = nil

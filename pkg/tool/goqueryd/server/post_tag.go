@@ -20,6 +20,6 @@ func (s *Server) PostTag(
 		collection = *body.Collection
 	}
 
-	s.store.SetSourceType(collection, body.Path, body.SourceType)
+	s.service.SetSourceType(collection, body.Path, body.SourceType)
 	web.EncodeNotation(w, map[string]string{"status": "ok"})
 }

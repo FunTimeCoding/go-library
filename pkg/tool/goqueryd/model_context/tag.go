@@ -23,7 +23,7 @@ func (s *Server) tag(
 	sourceType, hasSourceType := arguments[constant.SourceType]
 
 	if !hasSourceType {
-		current := s.store.GetSourceType(collection, path)
+		current := s.service.GetSourceType(collection, path)
 
 		if current == "" {
 			return response.Success("no tag for %s", path)
@@ -41,7 +41,7 @@ func (s *Server) tag(
 	}
 
 	st, _ := sourceType.(string)
-	s.store.SetSourceType(collection, path, st)
+	s.service.SetSourceType(collection, path, st)
 
 	if st == "" {
 		return response.Success("removed tag for %s", path)

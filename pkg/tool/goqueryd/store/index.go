@@ -20,8 +20,8 @@ func (s *Store) Index(collection string) *index.Index {
 			continue
 		}
 
-		hash := hashContent(content)
-		title := extractTitle(content, relative)
+		hash := HashContent(content)
+		title := ExtractTitle(content, relative)
 		seen[relative] = true
 		existing := s.findActiveDocument(collection, relative)
 
@@ -34,13 +34,13 @@ func (s *Store) Index(collection string) *index.Index {
 					r.Unchanged++
 				}
 			} else {
-				s.insertContent(hash, content, now)
+				s.InsertContent(hash, content, now)
 				s.updateDocument(existing.identifier, title, hash, now)
 				r.Updated++
 			}
 		} else {
-			s.insertContent(hash, content, now)
-			s.insertDocument(collection, relative, title, hash, now)
+			s.InsertContent(hash, content, now)
+			s.InsertDocument(collection, relative, title, hash, now)
 			r.Indexed++
 		}
 	}

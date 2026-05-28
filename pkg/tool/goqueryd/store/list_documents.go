@@ -3,6 +3,7 @@ package store
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/result"
 )
 
@@ -33,7 +34,7 @@ func (s *Store) ListDocuments(collection string) ([]result.DocumentEntry, error)
 			r,
 			result.DocumentEntry{
 				VirtualPath: buildVirtualPath(c, p),
-				FilePath:    join.Empty(c, "/", p),
+				FilePath:    join.Empty(c, separator.Slash, p),
 				Title:       title,
 			},
 		)

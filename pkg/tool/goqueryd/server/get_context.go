@@ -9,5 +9,5 @@ func (s *Server) GetContext(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	web.EncodeNotation(w, s.store.ListContexts())
+	web.EncodeNotation(w, s.service.ListContexts())
 }

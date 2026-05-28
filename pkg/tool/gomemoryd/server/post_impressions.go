@@ -25,7 +25,7 @@ func (s *Server) PostImpressions(
 		source = *body.Source
 	}
 
-	identifier, e := s.store.CreateImpression(body.Content, source)
+	identifier, e := s.service.CreateImpression(body.Content, source)
 
 	if e != nil {
 		http.Error(w, e.Error(), http.StatusInternalServerError)

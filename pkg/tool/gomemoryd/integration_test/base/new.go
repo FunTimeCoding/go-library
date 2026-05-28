@@ -19,6 +19,7 @@ func New(t *testing.T) *Server {
 	t.Helper()
 	s := store.New(filepath.Join(t.TempDir(), constant.TestDatabase))
 	i := mock_indexer.New()
+	v := service.New(s, i)
 
 	return &Server{
 		t:       t,
@@ -27,9 +28,9 @@ func New(t *testing.T) *Server {
 		server: model_context_server.New(
 			t,
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(server.New(s), m)
+				generated.HandlerFromMux(server.New(v), m)
 				model_context.New(
-					service.New(s, i),
+					v,
 					memory.New(),
 					constant.DefaultVersion,
 				).Mount(m)

@@ -14,7 +14,7 @@ func (s *Server) DeleteContext(
 	web.EncodeNotation(
 		w,
 		map[string]bool{
-			"deleted": s.store.RemoveContext(v.Collection, v.PathPrefix),
+			"deleted": s.service.RemoveContext(v.Collection, v.PathPrefix),
 		},
 	)
 }

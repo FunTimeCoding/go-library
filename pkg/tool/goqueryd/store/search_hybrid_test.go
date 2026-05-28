@@ -10,7 +10,7 @@ import (
 func TestHybridSearchReturnsResults(t *testing.T) {
 	s, o := indexedTestStore(t)
 	defer s.Close()
-	_, e := s.Embed(o)
+	e := embedTestDocuments(s, o)
 	assert.FatalOnError(t, e)
 	option := NewSearchOption("search pipeline", 10)
 	option.Reranker = nil
@@ -22,7 +22,7 @@ func TestHybridSearchReturnsResults(t *testing.T) {
 func TestHybridSearchDiffersFromKeyword(t *testing.T) {
 	s, o := indexedTestStore(t)
 	defer s.Close()
-	_, e := s.Embed(o)
+	e := embedTestDocuments(s, o)
 	assert.FatalOnError(t, e)
 	keyword := s.MustSearchKeyword("context resolution", 5, "", false)
 	option := NewSearchOption("context resolution", 5)

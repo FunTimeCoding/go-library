@@ -14,6 +14,6 @@ func (s *Server) PostContext(
 ) {
 	var body server.PostContextJSONRequestBody
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	s.store.AddContext(body.Collection, body.PathPrefix, body.Description)
+	s.service.AddContext(body.Collection, body.PathPrefix, body.Description)
 	web.EncodeNotation(w, map[string]string{"status": "ok"})
 }

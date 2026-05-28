@@ -7,7 +7,7 @@ import (
 )
 
 type Service struct {
-	Store    *store.Store
+	store    *store.Store
 	ollama   *ollama.Client
 	reranker *rerank.Reranker
 }

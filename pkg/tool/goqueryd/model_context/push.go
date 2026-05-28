@@ -31,12 +31,11 @@ func (s *Server) push(
 
 	sourceType := q.GetString(constant.SourceType, "")
 
-	if h := s.store.PushDocument(
+	if h := s.service.PushDocument(
 		collection,
 		path,
 		body,
 		sourceType,
-		s.ollama,
 	); h != nil {
 		return s.captureFail(h, "push failed")
 	}

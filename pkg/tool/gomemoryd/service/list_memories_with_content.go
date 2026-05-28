@@ -1,9 +1,9 @@
-package model_context
+package service
 
 import "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
 
-func (s *Server) listMemoriesWithContent(tag string) ([]store.Memory, error) {
-	summaries, e := s.service.Store.ListMemories("", tag, true)
+func (s *Service) ListMemoriesWithContent(tag string) ([]store.Memory, error) {
+	summaries, e := s.store.ListMemories("", tag, true)
 
 	if e != nil {
 		return nil, e
@@ -12,7 +12,7 @@ func (s *Server) listMemoriesWithContent(tag string) ([]store.Memory, error) {
 	var result []store.Memory
 
 	for _, sum := range summaries {
-		m, e := s.service.Store.GetMemory(sum.Identifier)
+		m, e := s.store.GetMemory(sum.Identifier)
 
 		if e != nil {
 			continue

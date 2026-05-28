@@ -22,7 +22,7 @@ func (s *Server) search(
 	limit := int(q.GetFloat(parameter.Limit, 10))
 	memoryType := q.GetString(constant.Type, "")
 	tag := q.GetString(constant.Tag, "")
-	results, e := s.service.Store.SearchMemories(
+	results, e := s.service.SearchMemories(
 		query,
 		limit,
 		memoryType,

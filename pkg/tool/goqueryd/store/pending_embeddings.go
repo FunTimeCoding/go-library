@@ -2,7 +2,7 @@ package store
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 
-func (s *Store) pendingEmbeddings() []pendingDocument {
+func (s *Store) PendingEmbeddings() []PendingDocument {
 	rows, e := s.database.Query(
 		`
 		SELECT d.hash, c.body, MIN(d.path) AS path
@@ -15,11 +15,11 @@ func (s *Store) pendingEmbeddings() []pendingDocument {
 	)
 	errors.PanicOnError(e)
 	defer errors.PanicClose(rows)
-	var result []pendingDocument
+	var result []PendingDocument
 
 	for rows.Next() {
-		var p pendingDocument
-		errors.PanicOnError(rows.Scan(&p.hash, &p.body, &p.path))
+		var p PendingDocument
+		errors.PanicOnError(rows.Scan(&p.Hash, &p.Body, &p.Path))
 		result = append(result, p)
 	}
 

@@ -18,7 +18,7 @@ func (s *Server) list(
 		return response.Fail("collection is required: %v", e)
 	}
 
-	documents, f := s.store.ListDocuments(collection)
+	documents, f := s.service.ListDocuments(collection)
 
 	if f != nil {
 		return s.captureFail(f, "document listing failed")

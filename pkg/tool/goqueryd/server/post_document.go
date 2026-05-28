@@ -21,12 +21,11 @@ func (s *Server) PostDocument(
 	}
 
 	errors.PanicOnError(
-		s.store.PushDocument(
+		s.service.PushDocument(
 			body.Collection,
 			body.Path,
 			body.Body,
 			sourceType,
-			s.ollama,
 		),
 	)
 	web.EncodeNotation(w, map[string]string{"status": "ok"})

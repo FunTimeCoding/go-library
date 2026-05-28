@@ -39,4 +39,15 @@ const (
 	Add              = "add"
 	Remove           = "remove"
 	ReplaceAll       = "replace_all"
+
+	DashboardTitle   = "Dashboard"
+	DashboardPath    = "/"
+	MemoriesTitle    = "Memories"
+	MemoriesPath     = "/memories"
+	ImpressionsTitle = "Impressions"
+	ImpressionsPath  = "/impressions"
+	SearchTitle      = "Search"
+	SearchPath       = "/search"
+	Identifier       = "identifier"
+	Query            = "query"
 )

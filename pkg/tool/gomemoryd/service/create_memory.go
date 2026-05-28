@@ -22,13 +22,13 @@ func (s *Service) CreateMemory(
 	o.Description = description
 	o.Type = memoryType
 	o.Source = source
-	identifier, e := s.Store.CreateMemory(o)
+	identifier, e := s.store.CreateMemory(o)
 
 	if e != nil {
 		return nil, e
 	}
 
-	m, e := s.Store.GetMemory(identifier)
+	m, e := s.store.GetMemory(identifier)
 
 	if e != nil {
 		return nil, e

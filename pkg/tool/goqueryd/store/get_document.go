@@ -3,6 +3,7 @@ package store
 import (
 	"database/sql"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/result"
 	"strings"
 )
@@ -12,7 +13,7 @@ func (s *Store) GetDocument(reference string) (*result.Document, error) {
 
 	if strings.HasPrefix(reference, "qmd://") {
 		trimmed := strings.TrimPrefix(reference, "qmd://")
-		slash := strings.Index(trimmed, "/")
+		slash := strings.Index(trimmed, separator.Slash)
 
 		if slash == -1 {
 			return nil, nil
@@ -21,7 +22,7 @@ func (s *Store) GetDocument(reference string) (*result.Document, error) {
 		collection = trimmed[:slash]
 		path = trimmed[slash+1:]
 	} else {
-		slash := strings.Index(reference, "/")
+		slash := strings.Index(reference, separator.Slash)
 
 		if slash == -1 {
 			return nil, nil
@@ -51,7 +52,7 @@ func (s *Store) GetDocument(reference string) (*result.Document, error) {
 	}
 
 	d.VirtualPath = buildVirtualPath(d.Collection, d.Path)
-	d.FilePath = join.Empty(d.Collection, "/", d.Path)
+	d.FilePath = join.Empty(d.Collection, separator.Slash, d.Path)
 	d.Context = s.resolveContext(d.Collection, d.Path)
 
 	return &d, nil

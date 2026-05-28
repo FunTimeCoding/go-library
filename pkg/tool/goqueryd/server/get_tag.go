@@ -20,7 +20,7 @@ func (s *Server) GetTag(
 	web.EncodeNotation(
 		w,
 		map[string]string{
-			"source_type": s.store.GetSourceType(collection, v.Path),
+			"source_type": s.service.GetSourceType(collection, v.Path),
 		},
 	)
 }

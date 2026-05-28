@@ -21,7 +21,7 @@ func TestServiceForgetMemory(t *testing.T) {
 	assert.FatalOnError(t, o.Service.ForgetMemory(m.Identifier, "test"))
 	assert.Count(t, 1, o.Indexer.Deleted)
 	assert.String(t, "memory/1", o.Indexer.Deleted[0])
-	active, e := o.Service.Store.ListMemories(
+	active, e := o.Service.ListMemories(
 		"",
 		"",
 		true,

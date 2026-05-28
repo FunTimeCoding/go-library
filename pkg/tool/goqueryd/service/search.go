@@ -11,7 +11,7 @@ func (s *Service) Search(
 	mode string,
 ) *store.SearchOutcome {
 	if mode == "keyword" {
-		results, e := s.Store.SearchKeyword(
+		results, e := s.store.SearchKeyword(
 			query,
 			limit,
 			collection,
@@ -31,5 +31,5 @@ func (s *Service) Search(
 	o.SourceType = sourceType
 	o.Reranker = s.reranker
 
-	return s.Store.SearchWithFallback(o, s.ollama)
+	return s.store.SearchWithFallback(o, s.ollama)
 }

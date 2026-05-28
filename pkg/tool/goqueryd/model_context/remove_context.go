@@ -23,7 +23,7 @@ func (s *Server) removeContext(
 		return response.Fail("path_prefix is required: %v", f)
 	}
 
-	if s.store.RemoveContext(collection, pathPrefix) {
+	if s.service.RemoveContext(collection, pathPrefix) {
 		return response.Success(
 			"context removed: %s %s",
 			collection,

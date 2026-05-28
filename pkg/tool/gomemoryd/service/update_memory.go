@@ -12,7 +12,7 @@ func (s *Service) UpdateMemory(
 	description string,
 	source string,
 ) (*store.Memory, error) {
-	existing, e := s.Store.GetMemory(identifier)
+	existing, e := s.store.GetMemory(identifier)
 
 	if e != nil {
 		return nil, e
@@ -24,13 +24,13 @@ func (s *Service) UpdateMemory(
 	o.Description = description
 	o.Tags = existing.Tags
 	o.Source = source
-	e = s.Store.UpdateMemory(identifier, o)
+	e = s.store.UpdateMemory(identifier, o)
 
 	if e != nil {
 		return nil, e
 	}
 
-	m, e := s.Store.GetMemory(identifier)
+	m, e := s.store.GetMemory(identifier)
 
 	if e != nil {
 		return nil, e

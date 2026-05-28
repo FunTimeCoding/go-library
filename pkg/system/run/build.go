@@ -3,6 +3,7 @@ package run
 import (
 	"os"
 	"os/exec"
+	"syscall"
 )
 
 func (r *Run) build(s ...string) *exec.Cmd {
@@ -13,7 +14,23 @@ func (r *Run) build(s ...string) *exec.Cmd {
 	}
 
 	if len(r.environment) > 0 {
-		c.Env = append(os.Environ(), r.environment...)
+		if r.replaceEnviron {
+			c.Env = r.environment
+		} else {
+			c.Env = append(os.Environ(), r.environment...)
+		}
+	}
+
+	if r.processGroup {
+		c.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	}
+
+	if r.stdout != nil {
+		c.Stdout = r.stdout
+	}
+
+	if r.stderr != nil {
+		c.Stderr = r.stderr
 	}
 
 	return c

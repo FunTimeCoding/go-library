@@ -10,7 +10,7 @@ func (s *Server) embed(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	result, e := s.store.Embed(s.ollama)
+	result, e := s.service.Embed()
 
 	if e != nil {
 		return s.captureFail(e, "embed failed")

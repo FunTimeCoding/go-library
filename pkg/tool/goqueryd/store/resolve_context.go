@@ -3,6 +3,7 @@ package store
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"strings"
 )
 
@@ -10,7 +11,7 @@ func (s *Store) resolveContext(
 	collection string,
 	filePath string,
 ) string {
-	normalized := join.Empty("/", filePath)
+	normalized := join.Empty(separator.Slash, filePath)
 	prefixes := pathPrefixes(normalized)
 	rows, e := s.database.Query(
 		`SELECT path_prefix, description FROM context

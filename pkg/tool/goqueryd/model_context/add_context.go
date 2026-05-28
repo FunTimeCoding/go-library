@@ -29,7 +29,7 @@ func (s *Server) addContext(
 		return response.Fail("description is required: %v", g)
 	}
 
-	s.store.AddContext(collection, pathPrefix, description)
+	s.service.AddContext(collection, pathPrefix, description)
 
 	return response.Success("context added: %s %s", collection, pathPrefix)
 }

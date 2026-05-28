@@ -26,7 +26,7 @@ func TestSearchKeyword(t *testing.T) {
 func TestSearchHybrid(t *testing.T) {
 	s := service_tester.New(t)
 	s.IndexFixtures()
-	_, e := s.Service.Store.Embed(s.Service.Ollama())
+	_, e := s.Service.Embed()
 	assert.FatalOnError(t, e)
 	outcome := s.Service.Search(
 		"semantic meaning",

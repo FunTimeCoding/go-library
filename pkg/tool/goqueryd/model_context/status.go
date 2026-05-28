@@ -11,7 +11,7 @@ func (s *Server) status(
 	_ context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	result, e := s.store.Status()
+	result, e := s.service.Status()
 
 	if e != nil {
 		return s.captureDetail(e)

@@ -222,4 +222,46 @@ func (s *Server) register() {
 		),
 		mcp.NewTypedToolHandler(s.Fill),
 	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.Wake,
+			mcp.WithDescription(
+				"Wake a sleeping browser tab by activating it. Brings the tab to the foreground.",
+			),
+			mcp.WithString(
+				"tab_id",
+				mcp.Description("Target tab by ID"),
+			),
+			mcp.WithString(
+				"title",
+				mcp.Description("Target tab by title substring"),
+			),
+			mcp.WithString(
+				"url",
+				mcp.Description("Target tab by URL substring"),
+			),
+		),
+		mcp.NewTypedToolHandler(s.Wake),
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.TabHistory,
+			mcp.WithDescription(
+				"Read the navigation history (back/forward list) of a browser tab. Tab must be awake.",
+			),
+			mcp.WithString(
+				"tab_id",
+				mcp.Description("Target tab by ID"),
+			),
+			mcp.WithString(
+				"title",
+				mcp.Description("Target tab by title substring"),
+			),
+			mcp.WithString(
+				"url",
+				mcp.Description("Target tab by URL substring"),
+			),
+		),
+		mcp.NewTypedToolHandler(s.History),
+	)
 }

@@ -23,7 +23,7 @@ func (s *Server) GetVersions(
 		offset = *params.Offset
 	}
 
-	versions, e := s.store.VersionsSince(params.Since, limit, offset)
+	versions, e := s.service.VersionsSince(params.Since, limit, offset)
 
 	if e != nil {
 		http.Error(w, e.Error(), http.StatusInternalServerError)

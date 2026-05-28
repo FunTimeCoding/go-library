@@ -1,7 +1,7 @@
 package server
 
-import "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+import "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/service"
 
 type Server struct {
-	store *store.Store
+	service *service.Service
 }

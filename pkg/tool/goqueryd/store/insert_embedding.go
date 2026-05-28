@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 )
 
-func (s *Store) insertEmbedding(
+func (s *Store) InsertEmbedding(
 	hash string,
 	sequence int,
 	position int,

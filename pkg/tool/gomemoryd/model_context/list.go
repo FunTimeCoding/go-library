@@ -14,7 +14,7 @@ func (s *Server) list(
 ) (*mcp.CallToolResult, error) {
 	memoryType := q.GetString(constant.Type, "")
 	tag := q.GetString(constant.Tag, "")
-	memories, e := s.service.Store.ListMemories(memoryType, tag, true)
+	memories, e := s.service.ListMemories(memoryType, tag, true)
 
 	if e != nil {
 		return s.captureFail(e, "failed to list memories")

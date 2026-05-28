@@ -3,7 +3,7 @@ package code
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/strings"
-	"github.com/google/go-github/v87/github"
+	"github.com/google/go-github/v88/github"
 	"testing"
 )
 

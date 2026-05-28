@@ -1,7 +1,7 @@
 package image
 
 import (
-	"github.com/google/go-github/v87/github"
+	"github.com/google/go-github/v88/github"
 	"time"
 )
 

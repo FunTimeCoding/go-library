@@ -3,7 +3,7 @@ package github
 import (
 	"github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/github/container"
-	"github.com/google/go-github/v87/github"
+	"github.com/google/go-github/v88/github"
 )
 
 func (c *Client) Packages(user string) ([]*container.Container, error) {

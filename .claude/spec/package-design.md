@@ -20,12 +20,12 @@ self-contained.
 ## Bag Packages vs Own Packages
 
 Bag packages (`response/`, `request/`, `argument/`) hold pure data
-structs — no functions, no receivers. Typically shapes from external
+structs - no functions, no receivers. Typically shapes from external
 APIs (Habitica, Jira, Sentry, Salt, Loki, brew). The package groups
 by role (what came in, what goes out), not by type.
 
-When a type has distinct domain identity within our code — or gains
-behavior (formatters, receivers, helpers) — it moves to its own
+When a type has distinct domain identity within our code - or gains
+behavior (formatters, receivers, helpers) - it moves to its own
 package named after the type. Examples: `response.Task` → `task.Task`,
 `session.History` → `history.History`, `session.Screen` →
 `screen.Screen`.

@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func (s *Server) handleStatus() string {
@@ -18,5 +18,5 @@ func (s *Server) handleStatus() string {
 		lines = append(lines, fmt.Sprintf("%s%s", prefix, p.Name))
 	}
 
-	return strings.Join(lines, "\n")
+	return join.NewLine(lines)
 }

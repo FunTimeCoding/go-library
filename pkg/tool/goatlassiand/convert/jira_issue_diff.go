@@ -2,7 +2,7 @@ package convert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/issue"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func JiraIssueDiff(
@@ -75,8 +75,8 @@ func JiraIssueDiff(
 		)
 	}
 
-	beforeLabels := strings.Join(before.Labels, ", ")
-	afterLabels := strings.Join(after.Labels, ", ")
+	beforeLabels := join.CommaSpace(before.Labels)
+	afterLabels := join.CommaSpace(after.Labels)
 
 	if beforeLabels != afterLabels {
 		result.Changes = append(

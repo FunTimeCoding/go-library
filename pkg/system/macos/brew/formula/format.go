@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/console/status"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func (f *Formula) Format(o *option.Format) string {
@@ -12,7 +12,7 @@ func (f *Formula) Format(o *option.Format) string {
 		f.Name,
 		fmt.Sprintf(
 			"%s → %s",
-			strings.Join(f.InstalledVersions, ", "),
+			join.CommaSpace(f.InstalledVersions),
 			f.CurrentVersion,
 		),
 	)

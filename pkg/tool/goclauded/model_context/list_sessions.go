@@ -36,8 +36,9 @@ func (s *Server) listSessions(
 		}
 
 		line := fmt.Sprintf(
-			"%s  %s  %d lines",
+			"%s  %-7s  %s  %d lines",
 			e.Identifier[:8],
+			e.Name,
 			name,
 			e.Lines,
 		)

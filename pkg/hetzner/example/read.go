@@ -3,7 +3,7 @@ package example
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/hetzner"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func Read() {
@@ -19,7 +19,7 @@ func Read() {
 		)
 
 		for _, r := range h.Records(z) {
-			values := strings.Join(r.Values, ", ")
+			values := join.CommaSpace(r.Values)
 
 			if r.TTL != nil {
 				fmt.Printf(

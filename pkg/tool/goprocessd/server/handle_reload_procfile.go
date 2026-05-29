@@ -53,7 +53,7 @@ func (s *Server) handleReloadProcfile() string {
 				p.ColorIndex,
 				s.maxNameWidth,
 			)
-			replacement.Spawn(s.environment.Build(), nil, nil)
+			replacement.Spawn(s.environment.Build(), nil)
 			result = append(result, replacement)
 
 			continue
@@ -73,7 +73,7 @@ func (s *Server) handleReloadProcfile() string {
 			len(result),
 			s.maxNameWidth,
 		)
-		p.Spawn(s.environment.Build(), nil, nil)
+		p.Spawn(s.environment.Build(), nil)
 		result = append(result, p)
 	}
 

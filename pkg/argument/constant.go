@@ -81,6 +81,7 @@ const (
 	Playbook       = "playbook"
 	Pod            = "pod"
 	Port           = "port"
+	ReadOnly       = "read-only"
 	Pretend        = "pretend"
 	Process        = "process"
 	Project        = "project"

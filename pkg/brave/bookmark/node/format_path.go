@@ -1,9 +1,6 @@
 package node
 
-import (
-	"github.com/funtimecoding/go-library/pkg/strings/separator"
-	"strings"
-)
+import "github.com/funtimecoding/go-library/pkg/strings/join"
 
 func (n *Node) FormatPath() string {
 	var result []string
@@ -12,5 +9,5 @@ func (n *Node) FormatPath() string {
 		result = append(result, p.Name)
 	}
 
-	return strings.Join(result, separator.Slash)
+	return join.Slash(result)
 }

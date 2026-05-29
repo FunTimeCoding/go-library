@@ -1,6 +1,9 @@
 package store
 
-import "strings"
+import (
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"strings"
+)
 
 func parseQuotedPhrase(
 	s string,
@@ -30,5 +33,5 @@ func parseQuotedPhrase(
 		}
 	}
 
-	return strings.Join(sanitized, " ")
+	return join.Space(sanitized...)
 }

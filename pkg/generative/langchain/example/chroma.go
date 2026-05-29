@@ -152,7 +152,7 @@ func Chroma() {
 	   		}
 
 	   		fmt.Printf("%d. case: %s\n", ecI+1, ec.name)
-	   		fmt.Printf("    result: %s\n", strings.Join(texts, ", "))
+	   		fmt.Printf("    result: %s\n", join.CommaSpace(texts))
 	   	}
 	   }
 	*/

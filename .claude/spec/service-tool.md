@@ -123,7 +123,7 @@ under a `web/` package rather than `server/`. Use this pattern instead of
 ```
 pkg/tool/go<tool>d/web/
 ├── server.go           # type Server struct (dependencies + view)
-├── new.go              # New(deps) *Server — constructs view
+├── new.go              # New(deps) *Server - constructs view
 ├── mount.go            # (s *Server) Mount(m *http.ServeMux)
 ├── constant.go         # inlineCSS (component CSS specific to this service)
 ├── <route>.go          # handler method: dashboard(), alerts()
@@ -159,20 +159,20 @@ func New(s *store.Store) *Server {
 }
 ```
 
-**Summary strip** — `layout.WithSummary(items ...string)` renders
+**Summary strip** - `layout.WithSummary(items ...string)` renders
 a dot-separated muted line inside main. The view exposes
 `RenderPageWithSummary(w, title, path, summary, content...)` for
 pages that need dynamic summary values. The strip is absent when
 the summary slice is nil or empty.
 
-**Live updates** — `layout.WithLiveEndpoint(path)` adds the htmx
+**Live updates** - `layout.WithLiveEndpoint(path)` adds the htmx
 SSE extension script and `hx-ext="sse"` + `sse-connect` attributes
 to `main`. The summary strip gets `sse-swap="summary_strip"`
 automatically. Services push updates via `layout.SummaryStripContent`
 with event name `layout.SummaryStrip`. Replaces manual
 `WithScript(web.ServerSide)` + wrapper div pattern.
 
-Handlers use the view directly — no `pageLayout`, `renderPage`,
+Handlers use the view directly - no `pageLayout`, `renderPage`,
 `renderFragment`, `isHTMX`, or `navigationLink` wrapper functions:
 
 ```go
@@ -271,10 +271,10 @@ in the shared library.
 
 External API client methods come in pairs:
 
-- `<operation>.go` — returns `(value, error)`. Used by daemon handlers
+- `<operation>.go` - returns `(value, error)`. Used by daemon handlers
   that need to propagate errors gracefully (MCP `captureFail`, REST
   `http.Error`).
-- `must_<operation>.go` — panics on error. Used by CLI tools and
+- `must_<operation>.go` - panics on error. Used by CLI tools and
   background workers running under lifecycle recovery.
 
 ```go

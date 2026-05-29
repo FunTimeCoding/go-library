@@ -52,8 +52,14 @@ func TestPushDocumentAppearsInSearch(t *testing.T) {
 func TestPushDocumentDedup(t *testing.T) {
 	s := service_tester.New(t)
 	body := "# Identical\n\nSame content pushed twice.\n"
-	assert.FatalOnError(t, s.Service.PushDocument("notes", "first.md", body, ""))
-	assert.FatalOnError(t, s.Service.PushDocument("notes", "first.md", body, ""))
+	assert.FatalOnError(
+		t,
+		s.Service.PushDocument("notes", "first.md", body, ""),
+	)
+	assert.FatalOnError(
+		t,
+		s.Service.PushDocument("notes", "first.md", body, ""),
+	)
 	entries, e := s.Service.ListDocuments("notes")
 	assert.FatalOnError(t, e)
 	assert.Count(t, 1, entries)

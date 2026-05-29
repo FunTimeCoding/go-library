@@ -51,11 +51,18 @@ func (s *Server) roster(
 		}
 
 		if session.FirstMessage != "" {
-			details = append(details, fmt.Sprintf("%q", session.FirstMessage))
+			details = append(
+				details,
+				fmt.Sprintf("%q", session.FirstMessage),
+			)
 		}
 
 		if len(details) > 0 {
-			line = fmt.Sprintf("%s\n  %s", line, strings.Join(details, " · "))
+			line = fmt.Sprintf(
+				"%s\n  %s",
+				line,
+				strings.Join(details, " · "),
+			)
 		}
 
 		labels := s.service.LabelsBySession(session.Identifier)
@@ -70,20 +77,14 @@ func (s *Server) roster(
 				)
 			}
 
-			line = fmt.Sprintf(
-				"%s\n  %s",
-				line,
-				strings.Join(pips, " "),
-			)
+			line = fmt.Sprintf("%s\n  %s", line, join.Space(pips...))
 		}
 
-		latest := s.service.LatestPulse(session.Identifier)
-
-		if latest != nil {
+		if l := s.service.LatestPulse(session.Identifier); l != nil {
 			line = fmt.Sprintf(
 				"%s\n  pulse: %s",
 				line,
-				latest.Body,
+				l.Body,
 			)
 		}
 

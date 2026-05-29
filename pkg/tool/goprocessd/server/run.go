@@ -9,15 +9,15 @@ import (
 
 func (s *Server) Run() error {
 	var waitGroup sync.WaitGroup
-	processErrors := make(chan error, 1)
+	listenErrors := make(chan error, 1)
 
 	for _, p := range s.processes {
-		p.Spawn(s.environment.Build(), &waitGroup, processErrors)
+		p.Spawn(s.environment.Build(), &waitGroup)
 	}
 
 	go func() {
 		if e := s.Listen(); e != nil {
-			processErrors <- e
+			listenErrors <- e
 		}
 	}()
 	signals := make(chan os.Signal, 10)
@@ -33,7 +33,7 @@ func (s *Server) Run() error {
 		return s.stopAll()
 	case <-signals:
 		return s.stopAll()
-	case e := <-processErrors:
+	case e := <-listenErrors:
 		stopError := s.stopAll()
 
 		if stopError != nil {

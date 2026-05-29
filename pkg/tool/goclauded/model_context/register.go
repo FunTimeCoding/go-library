@@ -316,7 +316,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.Pulse,
 			mcp.WithDescription(
-				"Send a pulse to the dashboard. Appears on the session card and detail page. Bidirectional — the dashboard can pulse back.",
+				"Send a pulse to the dashboard. Appears on the session card and detail page. Bidirectional - the dashboard can pulse back.",
 			),
 			mcp.WithString(
 				constant.Line,

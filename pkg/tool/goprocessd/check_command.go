@@ -3,10 +3,10 @@ package goprocessd
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goprocessd/procfile"
 	"github.com/spf13/cobra"
 	"sort"
-	"strings"
 )
 
 func checkCommand() *cobra.Command {
@@ -34,7 +34,7 @@ func checkCommand() *cobra.Command {
 			sort.Strings(names)
 			fmt.Printf(
 				"valid procfile detected (%s)\n",
-				strings.Join(names, ", "),
+				join.CommaSpace(names),
 			)
 
 			return nil

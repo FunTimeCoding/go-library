@@ -14,7 +14,7 @@ func (s *Server) handleRestart(arguments []string) string {
 			return fmt.Sprintf("error: %s", e)
 		}
 
-		p.Spawn(s.environment.Build(), nil, nil)
+		p.Spawn(s.environment.Build(), nil)
 	}
 
 	return "ok"

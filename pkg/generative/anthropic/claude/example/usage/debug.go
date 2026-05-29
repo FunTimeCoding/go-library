@@ -69,7 +69,7 @@ func Debug() {
 	}
 
 	fmt.Printf(
-		"Active block: %s — %s (%d entries)\n",
+		"Active block: %s - %s (%d entries)\n",
 		block.start.Format("15:04"),
 		block.end.Format("15:04"),
 		len(block.entries),

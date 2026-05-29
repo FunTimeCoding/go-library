@@ -34,7 +34,10 @@ func TestParseSkipsCommentsAndBlankLines(t *testing.T) {
 }
 
 func TestParseTrimsWhitespace(t *testing.T) {
-	path := writeProcfile(t, "  goansibled  :  go run cmd/goansibled/main.go  \n")
+	path := writeProcfile(
+		t,
+		"  goansibled  :  go run cmd/goansibled/main.go  \n",
+	)
 	entries, e := Parse(path)
 	errors.PanicOnError(e)
 	assert.String(t, "goansibled", entries[0].Name)

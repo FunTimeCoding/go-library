@@ -3,7 +3,7 @@ package store
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func (s *Store) SearchMemories(
@@ -41,7 +41,7 @@ func (s *Store) SearchMemories(
 	}
 
 	parts = append(parts, fmt.Sprintf(`ORDER BY rank LIMIT %d`, limit))
-	rows, e := s.database.Query(strings.Join(parts, " "), arguments...)
+	rows, e := s.database.Query(join.Space(parts...), arguments...)
 
 	if e != nil {
 		return nil, e

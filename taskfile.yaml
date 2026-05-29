@@ -5,9 +5,9 @@ tasks:
   pre-push: {cmds: [{task: lint}, {task: test}], silent: true}
   lint:
     cmds:
-    - golint --fix --summary --build-tags local
+    - golint --fix --build-tags local
     - golangci-lint run --build-tags local
-    - gofix --summary ./...
+    - gofix ./...
     - goanalyze ./...
     silent: true
   test:

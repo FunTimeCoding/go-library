@@ -2,8 +2,8 @@ package goclaude
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
-	"strings"
 )
 
 func formatCheckContext(r *client.CheckResponse) string {
@@ -66,7 +66,7 @@ func formatCheckContext(r *client.CheckResponse) string {
 
 				parts = append(
 					parts,
-					fmt.Sprintf("    %s", strings.Join(pips, " ")),
+					fmt.Sprintf("    %s", join.Space(pips...)),
 				)
 			}
 		}
@@ -136,5 +136,5 @@ func formatCheckContext(r *client.CheckResponse) string {
 		}
 	}
 
-	return strings.Join(parts, "\n")
+	return join.NewLine(parts)
 }

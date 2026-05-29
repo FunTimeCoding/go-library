@@ -12,14 +12,13 @@ import (
 )
 
 type Service struct {
-	store         *store.Store
-	client        face.ClaudeSource
-	memory        client.Client
-	indexer       library.Indexer
-	notifier      face.Notifier
-	clock         func() time.Time
-	logger        *logger.Logger
-	usage         *usage_result.Result
-	usageMutex    sync.RWMutex
-	usageLastPoll time.Time
+	store      *store.Store
+	client     face.ClaudeSource
+	memory     client.Client
+	indexer    library.Indexer
+	notifier   face.Notifier
+	clock      func() time.Time
+	logger     *logger.Logger
+	usage      *usage_result.Result
+	usageMutex sync.RWMutex
 }

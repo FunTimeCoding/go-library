@@ -5,10 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/writer"
 )
 
-func (p *Process) run(
-	environment []string,
-	errors chan<- error,
-) {
+func (p *Process) run(environment []string) {
 	r := run.New()
 	r.Panic = false
 	r.SetEnvironment(environment)
@@ -17,11 +14,6 @@ func (p *Process) run(
 	handle, e := r.TryOpen("/bin/sh", "-c", p.Command)
 
 	if e != nil {
-		select {
-		case errors <- e:
-		default:
-		}
-
 		writer.Print(p.logger, "Failed to start %s: %s\n", p.Name, e)
 
 		return
@@ -33,14 +25,6 @@ func (p *Process) run(
 	e = handle.Wait()
 	p.mutex.Lock()
 	p.condition.Broadcast()
-
-	if e != nil && !p.stoppedBySupervisor {
-		select {
-		case errors <- e:
-		default:
-		}
-	}
-
 	p.waitError = e
 	p.handle = nil
 	writer.Print(p.logger, "Terminating %s\n", p.Name)

@@ -73,7 +73,7 @@ func Usage() {
 	}
 
 	fmt.Printf(
-		"5h block: %s — %s  (%s remaining)\n\n",
+		"5h block: %s - %s  (%s remaining)\n\n",
 		activeBlock.start.Format("15:04"),
 		activeBlock.end.Format("15:04"),
 		formatDuration(remaining),

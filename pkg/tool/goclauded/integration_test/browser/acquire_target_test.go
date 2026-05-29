@@ -21,7 +21,7 @@ func TestAcquireTargetDoesNotCloseTab(t *testing.T) {
 		"about:blank",
 	).Do(cdp.WithExecutor(b.Context, browser))
 	assert.FatalOnError(t, e)
-	// Cancel func discarded — calling it triggers chromedp cleanup that closes the tab
+	// Cancel func discarded - calling it triggers chromedp cleanup that closes the tab
 	cached, _ := chromedp.NewContext(
 		b.Context,
 		chromedp.WithTargetID(id),
@@ -100,7 +100,7 @@ func TestAcquireTargetDoesNotCloseTab(t *testing.T) {
 				)
 			}()
 
-			// Tab is either errored or unreachable — both confirm destruction
+			// Tab is either errored or unreachable - both confirm destruction
 			select {
 			case f := <-done:
 				assert.NotNil(t, f)

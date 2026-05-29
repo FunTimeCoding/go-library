@@ -2,8 +2,8 @@ package gofix
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"sort"
-	"strings"
 )
 
 func printSurvey(
@@ -32,7 +32,7 @@ func printSurvey(
 			"%4d  %-20s  %s\n",
 			e.count,
 			e.segment,
-			strings.Join(examples[e.segment], ", "),
+			join.CommaSpace(examples[e.segment]),
 		)
 	}
 }

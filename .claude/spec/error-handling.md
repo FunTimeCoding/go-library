@@ -284,18 +284,18 @@ and returns 500. Wired into lifecycle via `WithServerMiddleware` or
 
 `pkg/errors/sentry/start.go` installs a `BeforeSend` hook that
 checks every error for `face.BodyProvider` (an interface with
-`Body() []byte`). When present — e.g. `*netbox.GenericOpenAPIError`
-— the response body is attached as a `response` context on the
+`Body() []byte`). When present - e.g. `*netbox.GenericOpenAPIError`
+- the response body is attached as a `response` context on the
 Sentry event. This works for both `CaptureException` and `Recover`
 paths (via `OriginalException` and `RecoveredException` in the
-`EventHint`). No caller changes needed — any error satisfying
+`EventHint`). No caller changes needed - any error satisfying
 `BodyProvider` is automatically enriched.
 
 ### REST captureDetail variant (gonetboxd)
 
 When a REST API serves both CLI and MCP consumers and needs to surface
 meaningful error messages (not just 500), handlers use the non-Must
-client methods and call `captureDetail` on error — the same pattern
+client methods and call `captureDetail` on error - the same pattern
 as MCP handlers. The Server struct holds a `face.Reporter` for Sentry
 reporting. Shared error extraction logic lives in a `common/` package
 (e.g. `gonetboxd/common/ExtractMessage`). The recovery middleware

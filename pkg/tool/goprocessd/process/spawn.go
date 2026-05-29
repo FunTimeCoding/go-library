@@ -5,7 +5,6 @@ import "sync"
 func (p *Process) Spawn(
 	environment []string,
 	waitGroup *sync.WaitGroup,
-	errors chan<- error,
 ) {
 	p.mutex.Lock()
 
@@ -20,7 +19,7 @@ func (p *Process) Spawn(
 	}
 
 	go func() {
-		p.run(environment, errors)
+		p.run(environment)
 
 		if waitGroup != nil {
 			waitGroup.Done()

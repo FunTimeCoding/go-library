@@ -10,7 +10,7 @@ func (s *Server) handleStart(arguments []string) string {
 			return fmt.Sprintf("error: unknown process %s", name)
 		}
 
-		p.Spawn(s.environment.Build(), nil, nil)
+		p.Spawn(s.environment.Build(), nil)
 	}
 
 	return "ok"

@@ -8,7 +8,7 @@ func (s *Server) handleRestartAll() string {
 			return fmt.Sprintf("error: %s", e)
 		}
 
-		p.Spawn(s.environment.Build(), nil, nil)
+		p.Spawn(s.environment.Build(), nil)
 	}
 
 	return "ok"

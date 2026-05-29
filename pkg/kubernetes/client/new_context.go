@@ -24,6 +24,7 @@ func NewContext(cluster string) (*Client, error) {
 
 	result := Stub()
 	result.context = context.Background()
+	result.configuration = c
 	result.client = client.New(c)
 	result.metric = metrics.New(c)
 	result.cluster = cluster

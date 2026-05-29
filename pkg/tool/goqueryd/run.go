@@ -15,25 +15,31 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/service"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store"
 	queryWeb "github.com/funtimecoding/go-library/pkg/tool/goqueryd/web"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/worker"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
+	"time"
 )
 
 func Run(
 	o *option.Query,
 	r face.Reporter,
 ) {
+	l := logger.New(context.Background())
 	s := store.New(o.DatabasePath)
 	defer s.Close()
 	a, e := rerank.New(o.RerankModel, o.RerankTokenizer)
 	errors.PanicOnError(e)
 	defer errors.LogClose(a)
+	v := service.New(s, ollama.NewEnvironment(), a)
 	lifecycle.New(
-		logger.New(context.Background()),
+		l,
+		lifecycle.WithWorker(
+			worker.New(v, 10*time.Minute, l, r),
+		),
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				v := service.New(s, ollama.NewEnvironment(), a)
 				generated.HandlerFromMux(server.New(v), m)
 				model_context.New(v, r, o.Version).Mount(m)
 				queryWeb.New(v).Mount(m)

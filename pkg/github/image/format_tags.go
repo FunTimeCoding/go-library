@@ -3,7 +3,7 @@ package image
 import (
 	"github.com/funtimecoding/go-library/pkg/console"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func (i *Image) formatTags(f *option.Format) string {
@@ -15,5 +15,5 @@ func (i *Image) formatTags(f *option.Format) string {
 		return NoTags
 	}
 
-	return strings.Join(i.Tags, ", ")
+	return join.CommaSpace(i.Tags)
 }

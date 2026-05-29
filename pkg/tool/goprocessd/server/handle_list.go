@@ -1,6 +1,6 @@
 package server
 
-import "strings"
+import "github.com/funtimecoding/go-library/pkg/strings/join"
 
 func (s *Server) handleList() string {
 	names := make([]string, len(s.processes))
@@ -9,5 +9,5 @@ func (s *Server) handleList() string {
 		names[i] = p.Name
 	}
 
-	return strings.Join(names, "\n")
+	return join.NewLine(names)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/file_report"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"io"
 	"strings"
@@ -50,7 +51,7 @@ func Function(
 						constant.EmptyFunctionBodyText,
 						path,
 						functionStart,
-						strings.Join(functionLines, "\n"),
+						join.NewLine(functionLines),
 						true,
 					)
 				} else {

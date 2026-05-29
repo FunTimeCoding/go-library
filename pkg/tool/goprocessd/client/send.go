@@ -2,10 +2,12 @@ package client
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	panicErrors "github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"net"
-	"strings"
+	"syscall"
 )
 
 func Send(
@@ -16,18 +18,27 @@ func Send(
 	connection, e := net.Dial("unix", socketPath)
 
 	if e != nil {
+		if errors.Is(e, syscall.ENOENT) || errors.Is(
+			e,
+			syscall.ECONNREFUSED,
+		) {
+			return "", fmt.Errorf(
+				"no goprocessd instance running for this directory",
+			)
+		}
+
 		return "", fmt.Errorf("connect: %w", e)
 	}
 
-	defer errors.PanicClose(connection)
+	defer panicErrors.PanicClose(connection)
 	line := command
 
 	if len(arguments) > 0 {
-		line = fmt.Sprintf("%s %s", command, strings.Join(arguments, " "))
+		line = fmt.Sprintf("%s %s", command, join.Space(arguments...))
 	}
 
 	_, e = fmt.Fprintln(connection, line)
-	errors.PanicOnError(e)
+	panicErrors.PanicOnError(e)
 	scanner := bufio.NewScanner(connection)
 	var lines []string
 
@@ -45,5 +56,5 @@ func Send(
 		return "", fmt.Errorf("no response from server")
 	}
 
-	return strings.Join(lines, "\n"), nil
+	return join.NewLine(lines), nil
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/base"
 	"net/http"
@@ -102,7 +103,7 @@ func connectSSE(
 			} else if line == "" && name != "" {
 				events <- sseEvent{
 					name:    name,
-					payload: strings.Join(lines, "\n"),
+					payload: join.NewLine(lines),
 				}
 				name = ""
 				lines = nil

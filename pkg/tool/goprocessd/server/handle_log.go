@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func (s *Server) handleLog(arguments []string) string {
@@ -22,5 +22,5 @@ func (s *Server) handleLog(arguments []string) string {
 		return "ok"
 	}
 
-	return strings.Join(lines, "\n")
+	return join.NewLine(lines)
 }

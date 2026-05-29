@@ -2,7 +2,7 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"strings"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 )
 
 func (s *Store) ListMemories(
@@ -38,7 +38,7 @@ func (s *Store) ListMemories(
 	}
 
 	parts = append(parts, `ORDER BY m.updated_at DESC`)
-	rows, e := s.database.Query(strings.Join(parts, " "), arguments...)
+	rows, e := s.database.Query(join.Space(parts...), arguments...)
 
 	if e != nil {
 		return nil, e

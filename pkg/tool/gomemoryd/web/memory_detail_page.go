@@ -160,7 +160,7 @@ func (s *Server) memoryDetailPage(
 						),
 						gomponents.Text(related.Name),
 					),
-					gomponents.Textf(" — %s", related.Description),
+					gomponents.Textf(" - %s", related.Description),
 				),
 			)
 		}

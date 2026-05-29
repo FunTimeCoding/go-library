@@ -1,7 +1,7 @@
 package lint
 
 import (
-	"github.com/funtimecoding/go-library/pkg/strings/separator"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"strings"
 )
 
@@ -10,7 +10,7 @@ func emptyFunctionBody(lines []string) bool {
 		return false
 	}
 
-	text := strings.Join(lines, separator.Unix)
+	text := join.NewLine(lines)
 	openBrace := strings.Index(text, "{")
 	closeBrace := strings.LastIndex(text, "}")
 

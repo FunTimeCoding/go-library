@@ -1,18 +1,18 @@
 package store
 
-import "strings"
+import (
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/strings/split"
+)
 
 func sanitizeHyphenatedTerm(term string) string {
-	parts := strings.Split(term, "-")
-	var sanitized []string
+	var result []string
 
-	for _, p := range parts {
-		t := sanitizeTerm(p)
-
-		if t != "" {
-			sanitized = append(sanitized, t)
+	for _, p := range split.Dash(term) {
+		if t := sanitizeTerm(p); t != "" {
+			result = append(result, t)
 		}
 	}
 
-	return strings.Join(sanitized, " ")
+	return join.Space(result...)
 }

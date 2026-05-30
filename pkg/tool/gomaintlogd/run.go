@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/option"
@@ -29,7 +30,12 @@ func Run(
 			constant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s), m)
-				model_context.New(s, r, o.Version).Mount(m)
+				model_context.New(
+					s,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 				maintenanceWeb.New(s).Mount(m)
 			},
 			web.RecoveryMiddleware(r),

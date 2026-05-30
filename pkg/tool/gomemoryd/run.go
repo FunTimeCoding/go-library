@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/memory_indexer"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/model_context"
@@ -33,7 +34,12 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(v), m)
-				model_context.New(v, r, o.Version).Mount(m)
+				model_context.New(
+					v,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 				memoryWeb.New(v).Mount(m)
 			},
 			web.RecoveryMiddleware(r),

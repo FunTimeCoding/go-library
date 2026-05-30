@@ -2,23 +2,22 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gosublimed/constant"
 	sublime "github.com/funtimecoding/go-library/pkg/tool/gosublimed/face"
-	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
 	c sublime.SublimeSource,
 	r face.Reporter,
+	t face.Recorder,
 	version string,
 ) *Server {
 	result := &Server{
-		server: server.NewMCPServer(
-			constant.Identity.Name(),
+		server: server.New(
+			constant.Identity,
 			version,
-			server.WithToolCapabilities(true),
-			server.WithInstructions(constant.Identity.Instructions()),
-		),
+		).WithRecorder(t).Server(),
 		client:   c,
 		reporter: r,
 	}

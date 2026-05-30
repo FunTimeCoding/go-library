@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/relational"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/option"
@@ -28,7 +29,12 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s), m)
-				model_context.New(s, r, o.Version).Mount(m)
+				model_context.New(
+					s,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 				telemetryWeb.New(s).Mount(m)
 			},
 			web.RecoveryMiddleware(r),

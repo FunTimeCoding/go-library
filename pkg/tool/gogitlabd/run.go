@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gogitlabd/option"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -24,6 +25,7 @@ func Run(
 				model_context.New(
 					gitlab.NewEnvironment().Nested(),
 					r,
+					telemetry.NewEnvironment(),
 					o.Version,
 				).Mount(m)
 			},

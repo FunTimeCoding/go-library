@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/iterm"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/goitermd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goitermd/option"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -24,6 +25,7 @@ func Run(
 				model_context.New(
 					iterm.NewEnvironment(),
 					r,
+					telemetry.NewEnvironment(),
 					o.Version,
 				).Mount(m)
 			},

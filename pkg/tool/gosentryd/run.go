@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/gosentryd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gosentryd/option"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -26,6 +27,7 @@ func Run(
 					sentry.NewEnvironment(),
 					o.Organization,
 					r,
+					telemetry.NewEnvironment(),
 					o.Version,
 				).Mount(m)
 			},

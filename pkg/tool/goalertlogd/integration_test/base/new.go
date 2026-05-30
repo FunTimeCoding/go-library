@@ -14,6 +14,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/web"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/worker"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context/mock_recorder"
 	"net/http"
 	"path/filepath"
 	"testing"
@@ -48,7 +49,13 @@ func New(t *testing.T) *Server {
 		t,
 		func(m *http.ServeMux) {
 			generated.HandlerFromMux(server.New(s, w), m)
-			model_context.New(s, w, r, constant.DefaultVersion).Mount(m)
+			model_context.New(
+				s,
+				w,
+				r,
+				mock_recorder.New(),
+				constant.DefaultVersion,
+			).Mount(m)
 			web.New(s, w).Mount(m)
 		},
 	)

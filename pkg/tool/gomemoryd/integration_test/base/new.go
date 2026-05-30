@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter/memory"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context_server"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context/mock_recorder"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/server"
@@ -32,6 +33,7 @@ func New(t *testing.T) *Server {
 				model_context.New(
 					v,
 					memory.New(),
+					mock_recorder.New(),
 					constant.DefaultVersion,
 				).Mount(m)
 			},

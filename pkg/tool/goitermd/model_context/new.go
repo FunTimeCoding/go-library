@@ -2,23 +2,22 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goitermd/constant"
 	iterm "github.com/funtimecoding/go-library/pkg/tool/goitermd/face"
-	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
 	c iterm.ItermSource,
 	r face.Reporter,
+	t face.Recorder,
 	version string,
 ) *Server {
 	result := &Server{
-		server: server.NewMCPServer(
-			constant.Identity.Name(),
+		server: server.New(
+			constant.Identity,
 			version,
-			server.WithToolCapabilities(true),
-			server.WithInstructions(constant.Identity.Instructions()),
-		),
+		).WithRecorder(t).Server(),
 		client:   c,
 		reporter: r,
 	}

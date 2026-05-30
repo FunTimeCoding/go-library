@@ -3,6 +3,7 @@ package base
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context_server"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context/mock_recorder"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/server"
@@ -23,7 +24,12 @@ func New(t *testing.T) *Server {
 			t,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s), m)
-				model_context.New(s, nil, constant.DefaultVersion).Mount(m)
+				model_context.New(
+					s,
+					nil,
+					mock_recorder.New(),
+					constant.DefaultVersion,
+				).Mount(m)
 				web.New(s).Mount(m)
 			},
 		),

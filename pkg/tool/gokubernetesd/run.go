@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/gokubernetesd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gokubernetesd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gokubernetesd/service"
@@ -35,6 +36,7 @@ func Run(
 					svc,
 					o.ReadOnly,
 					r,
+					telemetry.NewEnvironment(),
 					o.Version,
 				).Mount(m)
 			},

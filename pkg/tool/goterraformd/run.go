@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/relational"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/runner"
@@ -27,7 +28,13 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				model_context.New(n, s, r, o.Version).Mount(m)
+				model_context.New(
+					n,
+					s,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 			},
 			web.RecoveryMiddleware(r),
 		),

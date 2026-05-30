@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/ollama"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/option"
@@ -41,7 +42,12 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(v), m)
-				model_context.New(v, r, o.Version).Mount(m)
+				model_context.New(
+					v,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 				queryWeb.New(v).Mount(m)
 			},
 			web.RecoveryMiddleware(r),

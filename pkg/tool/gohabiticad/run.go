@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/habitica"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/option"
@@ -25,7 +26,12 @@ func Run(
 			func(m *http.ServeMux) {
 				c := habitica.NewEnvironment()
 				generated.HandlerFromMux(server.New(c), m)
-				model_context.New(c, r, o.Version).Mount(m)
+				model_context.New(
+					c,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 			},
 			web.RecoveryMiddleware(r),
 		),

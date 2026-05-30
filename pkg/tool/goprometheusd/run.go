@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/service"
@@ -22,7 +23,12 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
-				model_context.New(v, r, o.Version).Mount(m)
+				model_context.New(
+					v,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 			},
 			web.RecoveryMiddleware(r),
 		),

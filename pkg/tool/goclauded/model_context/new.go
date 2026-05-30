@@ -2,10 +2,10 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service"
-	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
@@ -16,12 +16,10 @@ func New(
 	version string,
 ) *Server {
 	result := &Server{
-		server: server.NewMCPServer(
-			constant.Identity.Name(),
+		server: server.New(
+			constant.Identity,
 			version,
-			server.WithToolCapabilities(true),
-			server.WithInstructions(constant.Identity.Instructions()),
-		),
+		).WithRecorder(t).Server(),
 		service:   s,
 		reporter:  r,
 		logger:    l,

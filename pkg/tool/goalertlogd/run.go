@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/option"
@@ -44,7 +45,13 @@ func Run(
 			constant.ListenAddress,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s, w), m)
-				model_context.New(s, w, r, o.Version).Mount(m)
+				model_context.New(
+					s,
+					w,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 				alertWeb.New(s, w).Mount(m)
 			},
 			web.RecoveryMiddleware(r),

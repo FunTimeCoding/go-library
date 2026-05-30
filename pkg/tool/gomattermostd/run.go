@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/monitor"
 	"github.com/funtimecoding/go-library/pkg/tool/gomattermostd/option"
@@ -34,7 +35,13 @@ func Run(
 			lifecycle.WithServerMiddleware(
 				web.AddressPort(o.Port),
 				func(u *http.ServeMux) {
-					model_context.New(c, m, r, o.Version).Mount(u)
+					model_context.New(
+						c,
+						m,
+						r,
+						telemetry.NewEnvironment(),
+						o.Version,
+					).Mount(u)
 				},
 				web.RecoveryMiddleware(r),
 			),

@@ -2,23 +2,22 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/constant"
 	habitica "github.com/funtimecoding/go-library/pkg/tool/gohabiticad/face"
-	"github.com/mark3labs/mcp-go/server"
 )
 
 func New(
 	c habitica.HabiticaSource,
 	r face.Reporter,
+	t face.Recorder,
 	version string,
 ) *Server {
 	result := &Server{
-		server: server.NewMCPServer(
-			constant.Identity.Name(),
+		server: server.New(
+			constant.Identity,
 			version,
-			server.WithToolCapabilities(true),
-			server.WithInstructions(constant.Identity.Instructions()),
-		),
+		).WithRecorder(t).Server(),
 		habitica: c,
 		reporter: r,
 	}

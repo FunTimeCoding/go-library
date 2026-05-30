@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/option"
@@ -23,7 +24,12 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(o.Client, r), m)
-				model_context.New(o.Client, r, o.Version).Mount(m)
+				model_context.New(
+					o.Client,
+					r,
+					telemetry.NewEnvironment(),
+					o.Version,
+				).Mount(m)
 			},
 			web.RecoveryMiddleware(r),
 		),

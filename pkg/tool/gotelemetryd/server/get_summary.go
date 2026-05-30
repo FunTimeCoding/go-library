@@ -40,6 +40,10 @@ func (s *Server) GetSummary(
 			entry.Surface = &r.Surface
 		}
 
+		if r.Kind != "" {
+			entry.Kind = &r.Kind
+		}
+
 		entries = append(entries, entry)
 	}
 

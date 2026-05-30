@@ -5,14 +5,19 @@ import (
 	"github.com/funtimecoding/go-library/pkg/telemetry/constant"
 )
 
-func New(
+func newRecord(
 	tool string,
 	surface string,
 	actor string,
 	outcome string,
+	kind string,
 ) *Record {
 	if !constant.ValidSurface(surface) {
 		panic(fmt.Sprintf("invalid telemetry surface: %q", surface))
+	}
+
+	if !constant.ValidKind(kind) {
+		panic(fmt.Sprintf("invalid telemetry kind: %q", kind))
 	}
 
 	return &Record{
@@ -20,5 +25,6 @@ func New(
 		Surface: surface,
 		Actor:   actor,
 		Outcome: outcome,
+		Kind:    kind,
 	}
 }

@@ -13,6 +13,7 @@ func (c *Client) send(r *record.Record) {
 		"surface": r.Surface,
 		"actor":   r.Actor,
 		"outcome": r.Outcome,
+		"kind":    r.Kind,
 	}
 
 	if len(r.Detail) > 0 {

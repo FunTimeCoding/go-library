@@ -27,6 +27,7 @@ func (s *Server) heatmap(
 
 	rows := s.store.Summary(since, "", groupBy)
 	showSurface := groupBy == "surface"
+	showKind := groupBy == "kind"
 	var tableRows []gomponents.Node
 
 	for _, row := range rows {
@@ -36,6 +37,10 @@ func (s *Server) heatmap(
 
 		if showSurface {
 			cells = append(cells, html.Td(gomponents.Text(row.Surface)))
+		}
+
+		if showKind {
+			cells = append(cells, html.Td(gomponents.Text(row.Kind)))
 		}
 
 		cells = append(
@@ -51,6 +56,10 @@ func (s *Server) heatmap(
 
 	if showSurface {
 		headerCells = append(headerCells, html.Th(gomponents.Text("Surface")))
+	}
+
+	if showKind {
+		headerCells = append(headerCells, html.Th(gomponents.Text("Kind")))
 	}
 
 	headerCells = append(headerCells, html.Th(gomponents.Text("Count")))

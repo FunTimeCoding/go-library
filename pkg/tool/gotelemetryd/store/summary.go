@@ -18,6 +18,11 @@ func (s *Store) Summary(
 		groupClause = "tool, surface"
 	}
 
+	if groupBy == "kind" {
+		selectClause = "tool, kind, COUNT(*) as count"
+		groupClause = "tool, kind"
+	}
+
 	query := s.mapper.Model(&UsageEvent{}).
 		Select(selectClause).
 		Group(groupClause).

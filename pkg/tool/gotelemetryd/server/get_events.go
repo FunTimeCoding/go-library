@@ -27,6 +27,10 @@ func (s *Server) GetEvents(
 		o.Actor = *params.Actor
 	}
 
+	if params.Kind != nil {
+		o.Kind = *params.Kind
+	}
+
 	if params.Since != nil {
 		o.Since = *params.Since
 	}
@@ -53,6 +57,7 @@ func (s *Server) GetEvents(
 			Surface:   e.Surface,
 			Actor:     e.Actor,
 			Outcome:   e.Outcome,
+			Kind:      e.Kind,
 			CreatedAt: e.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
 		}
 

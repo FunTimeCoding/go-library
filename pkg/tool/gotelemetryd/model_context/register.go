@@ -27,6 +27,12 @@ func (s *Server) register() {
 				mcp.Description("Filter by actor name."),
 			),
 			mcp.WithString(
+				constant.Kind,
+				mcp.Description(
+					"Filter by kind: baseline or domain.",
+				),
+			),
+			mcp.WithString(
 				constant.Since,
 				mcp.Description("RFC3339 timestamp lower bound."),
 			),
@@ -60,7 +66,7 @@ func (s *Server) register() {
 			mcp.WithString(
 				constant.GroupBy,
 				mcp.Description(
-					"Group by: tool (default) or surface.",
+					"Group by: tool (default), surface, or kind.",
 				),
 			),
 		),

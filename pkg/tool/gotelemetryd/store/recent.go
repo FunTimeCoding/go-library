@@ -20,6 +20,10 @@ func (s *Store) Recent(o *QueryOption) []UsageEvent {
 		query = query.Where("actor = ?", o.Actor)
 	}
 
+	if o.Kind != "" {
+		query = query.Where("kind = ?", o.Kind)
+	}
+
 	if o.Since != "" {
 		t, e := time.Parse(time.RFC3339, o.Since)
 

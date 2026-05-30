@@ -17,6 +17,7 @@ const (
 	Tool    = "tool"
 	Surface = "surface"
 	Actor   = "actor"
+	Kind    = "kind"
 	Since   = "since"
 	Until   = "until"
 	Limit   = "limit"

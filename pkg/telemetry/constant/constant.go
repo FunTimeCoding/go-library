@@ -11,6 +11,9 @@ const (
 	Success = "success"
 	Error   = "error"
 
+	Baseline = "baseline"
+	Domain   = "domain"
+
 	HostEnvironment = "TELEMETRY_HOST"
 	PortEnvironment = "TELEMETRY_PORT"
 )

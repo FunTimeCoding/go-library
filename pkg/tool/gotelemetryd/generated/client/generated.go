@@ -18,6 +18,7 @@ import (
 
 // Defines values for GetSummaryParamsGroupBy.
 const (
+	Kind    GetSummaryParamsGroupBy = "kind"
 	Surface GetSummaryParamsGroupBy = "surface"
 	Tool    GetSummaryParamsGroupBy = "tool"
 )
@@ -25,6 +26,8 @@ const (
 // Valid indicates whether the value is a known member of the GetSummaryParamsGroupBy enum.
 func (e GetSummaryParamsGroupBy) Valid() bool {
 	switch e {
+	case Kind:
+		return true
 	case Surface:
 		return true
 	case Tool:
@@ -41,6 +44,7 @@ type EventEntry struct {
 	Detail     *map[string]string `json:"detail,omitempty"`
 	DurationMs *int               `json:"duration_ms,omitempty"`
 	Id         int                `json:"id"`
+	Kind       string             `json:"kind"`
 	Outcome    string             `json:"outcome"`
 	Surface    string             `json:"surface"`
 	Tool       string             `json:"tool"`
@@ -51,6 +55,7 @@ type EventRequest struct {
 	Actor      string             `json:"actor"`
 	Detail     *map[string]string `json:"detail,omitempty"`
 	DurationMs *int               `json:"duration_ms,omitempty"`
+	Kind       string             `json:"kind"`
 	Outcome    string             `json:"outcome"`
 	Surface    string             `json:"surface"`
 	Tool       string             `json:"tool"`
@@ -64,6 +69,7 @@ type EventResponse struct {
 // SummaryEntry defines model for SummaryEntry.
 type SummaryEntry struct {
 	Count   int     `json:"count"`
+	Kind    *string `json:"kind,omitempty"`
 	Surface *string `json:"surface,omitempty"`
 	Tool    string  `json:"tool"`
 }
@@ -73,6 +79,7 @@ type GetEventsParams struct {
 	Tool    *string `form:"tool,omitempty" json:"tool,omitempty"`
 	Surface *string `form:"surface,omitempty" json:"surface,omitempty"`
 	Actor   *string `form:"actor,omitempty" json:"actor,omitempty"`
+	Kind    *string `form:"kind,omitempty" json:"kind,omitempty"`
 	Since   *string `form:"since,omitempty" json:"since,omitempty"`
 	Until   *string `form:"until,omitempty" json:"until,omitempty"`
 	Limit   *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -282,6 +289,22 @@ func NewGetEventsRequest(server string, params *GetEventsParams) (*http.Request,
 		if params.Actor != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "actor", *params.Actor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err

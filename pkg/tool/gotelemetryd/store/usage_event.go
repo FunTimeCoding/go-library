@@ -8,6 +8,7 @@ type UsageEvent struct {
 	Surface             string `gorm:"not null;index"`
 	Actor               string `gorm:"not null;index"`
 	Outcome             string `gorm:"not null"`
+	Kind                string `gorm:"index"`
 	DurationMillisecond int64
 	Detail              *string   `gorm:"type:jsonb"`
 	CreatedAt           time.Time `gorm:"index"`

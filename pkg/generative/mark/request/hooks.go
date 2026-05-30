@@ -9,11 +9,11 @@ import (
 )
 
 func Hooks(
+	h *server.Hooks,
 	l util.Logger,
 	verbose bool,
-) *server.Hooks {
-	result := &server.Hooks{}
-	result.AddBeforeAny(
+) {
+	h.AddBeforeAny(
 		func(
 			_ context.Context,
 			identifier any,
@@ -68,7 +68,7 @@ func Hooks(
 	)
 
 	if verbose {
-		result.AddBeforeInitialize(
+		h.AddBeforeInitialize(
 			func(
 				_ context.Context,
 				identifier any,
@@ -77,7 +77,7 @@ func Hooks(
 				l.Infof("Before initialize: %+v %+v\n", identifier, q)
 			},
 		)
-		result.AddOnRegisterSession(
+		h.AddOnRegisterSession(
 			func(
 				_ context.Context,
 				s server.ClientSession,
@@ -85,7 +85,7 @@ func Hooks(
 				l.Infof("Session registered: %v\n", s.SessionID())
 			},
 		)
-		result.AddOnRequestInitialization(
+		h.AddOnRequestInitialization(
 			func(
 				_ context.Context,
 				identifier any,
@@ -107,6 +107,4 @@ func Hooks(
 			},
 		)
 	}
-
-	return result
 }

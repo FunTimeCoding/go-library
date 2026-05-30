@@ -25,6 +25,7 @@ func (s *Server) PostEvent(
 	e.Surface = request.Surface
 	e.Actor = request.Actor
 	e.Outcome = request.Outcome
+	e.Kind = request.Kind
 
 	if request.DurationMs != nil {
 		e.DurationMillisecond = int64(*request.DurationMs)

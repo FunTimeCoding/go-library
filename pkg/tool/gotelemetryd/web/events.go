@@ -28,6 +28,7 @@ func (s *Server) events(
 	o.Tool = r.URL.Query().Get(constant.Tool)
 	o.Surface = r.URL.Query().Get(constant.Surface)
 	o.Actor = r.URL.Query().Get(constant.Actor)
+	o.Kind = r.URL.Query().Get(constant.Kind)
 	o.Limit = limit + 1
 	o.Offset = offset
 	entries := s.store.Recent(o)
@@ -45,6 +46,7 @@ func (s *Server) events(
 			html.Td(gomponents.Text(e.Tool)),
 			html.Td(gomponents.Text(e.Surface)),
 			html.Td(gomponents.Text(e.Actor)),
+			html.Td(gomponents.Text(e.Kind)),
 			html.Td(gomponents.Text(e.Outcome)),
 		}
 
@@ -82,6 +84,7 @@ func (s *Server) events(
 						html.Th(gomponents.Text("Tool")),
 						html.Th(gomponents.Text("Surface")),
 						html.Th(gomponents.Text("Actor")),
+						html.Th(gomponents.Text("Kind")),
 						html.Th(gomponents.Text("Outcome")),
 						html.Th(gomponents.Text("Detail")),
 					),

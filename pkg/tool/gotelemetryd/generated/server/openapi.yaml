@@ -35,6 +35,10 @@ paths:
         in: query
         schema:
           type: string
+      - name: kind
+        in: query
+        schema:
+          type: string
       - name: since
         in: query
         schema:
@@ -78,7 +82,7 @@ paths:
         in: query
         schema:
           type: string
-          enum: [tool, surface]
+          enum: [tool, surface, kind]
           default: tool
       responses:
         "200":
@@ -93,7 +97,7 @@ components:
   schemas:
     EventRequest:
       type: object
-      required: [tool, surface, actor, outcome]
+      required: [tool, surface, actor, outcome, kind]
       properties:
         tool:
           type: string
@@ -102,6 +106,8 @@ components:
         actor:
           type: string
         outcome:
+          type: string
+        kind:
           type: string
         duration_ms:
           type: integer
@@ -117,7 +123,7 @@ components:
           type: integer
     EventEntry:
       type: object
-      required: [id, tool, surface, actor, outcome, created_at]
+      required: [id, tool, surface, actor, outcome, kind, created_at]
       properties:
         id:
           type: integer
@@ -128,6 +134,8 @@ components:
         actor:
           type: string
         outcome:
+          type: string
+        kind:
           type: string
         duration_ms:
           type: integer
@@ -144,6 +152,8 @@ components:
         tool:
           type: string
         surface:
+          type: string
+        kind:
           type: string
         count:
           type: integer

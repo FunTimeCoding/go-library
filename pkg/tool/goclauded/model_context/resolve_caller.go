@@ -30,7 +30,7 @@ func (s *Server) resolveCaller(
 		name,
 	)
 	s.telemetry.Record(
-		record.New(
+		record.NewDomain(
 			tool,
 			telemetry.ModelContext,
 			name,

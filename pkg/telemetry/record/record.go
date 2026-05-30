@@ -5,5 +5,6 @@ type Record struct {
 	Surface string
 	Actor   string
 	Outcome string
+	Kind    string
 	Detail  map[string]string
 }

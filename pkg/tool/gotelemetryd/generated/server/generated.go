@@ -21,6 +21,7 @@ import (
 
 // Defines values for GetSummaryParamsGroupBy.
 const (
+	Kind    GetSummaryParamsGroupBy = "kind"
 	Surface GetSummaryParamsGroupBy = "surface"
 	Tool    GetSummaryParamsGroupBy = "tool"
 )
@@ -28,6 +29,8 @@ const (
 // Valid indicates whether the value is a known member of the GetSummaryParamsGroupBy enum.
 func (e GetSummaryParamsGroupBy) Valid() bool {
 	switch e {
+	case Kind:
+		return true
 	case Surface:
 		return true
 	case Tool:
@@ -44,6 +47,7 @@ type EventEntry struct {
 	Detail     *map[string]string `json:"detail,omitempty"`
 	DurationMs *int               `json:"duration_ms,omitempty"`
 	Id         int                `json:"id"`
+	Kind       string             `json:"kind"`
 	Outcome    string             `json:"outcome"`
 	Surface    string             `json:"surface"`
 	Tool       string             `json:"tool"`
@@ -54,6 +58,7 @@ type EventRequest struct {
 	Actor      string             `json:"actor"`
 	Detail     *map[string]string `json:"detail,omitempty"`
 	DurationMs *int               `json:"duration_ms,omitempty"`
+	Kind       string             `json:"kind"`
 	Outcome    string             `json:"outcome"`
 	Surface    string             `json:"surface"`
 	Tool       string             `json:"tool"`
@@ -67,6 +72,7 @@ type EventResponse struct {
 // SummaryEntry defines model for SummaryEntry.
 type SummaryEntry struct {
 	Count   int     `json:"count"`
+	Kind    *string `json:"kind,omitempty"`
 	Surface *string `json:"surface,omitempty"`
 	Tool    string  `json:"tool"`
 }
@@ -76,6 +82,7 @@ type GetEventsParams struct {
 	Tool    *string `form:"tool,omitempty" json:"tool,omitempty"`
 	Surface *string `form:"surface,omitempty" json:"surface,omitempty"`
 	Actor   *string `form:"actor,omitempty" json:"actor,omitempty"`
+	Kind    *string `form:"kind,omitempty" json:"kind,omitempty"`
 	Since   *string `form:"since,omitempty" json:"since,omitempty"`
 	Until   *string `form:"until,omitempty" json:"until,omitempty"`
 	Limit   *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -146,6 +153,14 @@ func (siw *ServerInterfaceWrapper) GetEvents(w http.ResponseWriter, r *http.Requ
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "actor", r.URL.Query(), &params.Actor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
 	if err != nil {
 		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "actor", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "kind" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "kind", r.URL.Query(), &params.Kind, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "kind", Err: err})
 		return
 	}
 
@@ -379,16 +394,17 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/7xVT2/bPgz9KgV/v6MRZxt28W0DgmG3YsNORRGoFu2qsCWFogIYgb/7IMmpE0Rtk27L",
-	"zZb4R3x8fNxBbXprNGp2UO3A1Y/Yi/i52qLmlWYawp8lY5FYYbwTNRsKHzxYhAock9ItjAXUhIJRrgVn",
-	"ryWyUF0MIaViZbTobo9Cn7hMB+bhCWuOMTyJ4LnuDx2UZmyRgoGS+XPjuTY9ZrM4T42o83dsTJe5GAsg",
-	"3HhFKKG6C1kn0zlaMSE15z5C6D5TXYT9B248Or4E+Ksg+28RfBO8V/By1miHp4DluXDaulzon77vBQ0v",
-	"zEBtvOY8TH8NipTj9G3BXOnGxECKu3DXGsYOe2QaAhO3SE4ZDRV8WCwXy9g9i1pYBRV8ikcFWMGPsZhS",
-	"WFXidi8DLcbKQrmREN8lVPANeZUsgiOJHhnJQXW3AxXybDzSAAVoERjy3M2oKNmK835z+y923fPl8pxK",
-	"vy+j16zeVWWnesVHjhIb4TuG6vOyyBA2H8Y0jcMX4uTC3AeapVmJjf64XCYua8bEZmFtp+rY9fLJBQLt",
-	"DoIrxqQN/xM2UMF/5bw/yml5lAebY1YZQSSGxFyJriZlOdHzlxMt3iTuLZKBNS7Dv1vjEgEhzQo6/mrk",
-	"cNH733z2XnnH44lk8jj+IXZn5J5ULINSNLghrA1JlBGnsUhj65JMvTa3k5KdN7jXH4aWjLfrhyHP472S",
-	"oPZ9Zk3M6vic5iosP9oOZ/D8S9sStmH13/hI+alvqZfj+DsAAP//D4s7eosJAAA=",
+	"H4sIAAAAAAAC/8RW32/TMBD+V6aDx2gpIF7yBlKFeJtAPE1T5cWXzCOx3fO5UlTlf0e207Wl3mgGKm+p",
+	"fb/83ffddQu16a3RqNlBtQVXP2Av4udyg5qXmmkIvywZi8QK452o2VD44MEiVOCYlG5hLKAmFIxyJTh7",
+	"LZGF6mIIKRUro0V3cxT6xGU6MPePWHOM4UkEz1V/6KA0Y4sUDJTMn/9UWmZTGM+16TF75zw1os7fsTFd",
+	"5mIsgHDtFaGE6jaUM5nuoxUThPvcU3lHCN5lXh/b8g3XHh3PacxFkP9PCJ8L7gt4Omu0w1NA81w67XAu",
+	"9Hff94KGZzRUG695Joz/DKqU/LToYK50Y2IgxV24aw1jhz0yDYGfGySnjIYK3l0vrhexuxa1sAoq+BCP",
+	"CrCCH+IrS2FViZvdfGkxPjngEJn0VUIFX5CXySI4kuiRkRxUt1tQIc/aIw1QgBaBQU/djqMq++K8354e",
+	"s113fJrtOGl6fq1Kv65Sr1m9Cp1O9YqPHCU2wncM1cdFkVFAPoxpGofPxMmFuQv0TOKLBHm/WCRxaMYk",
+	"D2Ftp+rIlvLRBeJtD4IrxjSM3hI2UMGbcr/QymmblQerbD/WBJEYEuMlupqU5UTrH060eJU4e50MrHEZ",
+	"3t4Yl4gLSWPo+LORw6z6/1j2btSPx0pm8jj+JXZn5J7GYgalaHBFWBuSKCNOY5Hk7tLce0nv02g8T/CX",
+	"F0NLxtvV/ZDn8W4CofZ9dv38tmyesl2E7Edb5wy6f2pbwjb85bjykflT+1JLx/FXAAAA//8vEhDtIwoA",
+	"AA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

@@ -50,6 +50,19 @@ func filterBar(o *store.QueryOption) gomponents.Node {
 		)
 	}
 
+	if o.Kind != "" {
+		active = append(
+			active,
+			html.Span(
+				gomponents.Text(fmt.Sprintf("kind=%s ", o.Kind)),
+				html.A(
+					gomponents.Attr("href", constant.EventsPath),
+					gomponents.Text("×"),
+				),
+			),
+		)
+	}
+
 	if len(active) == 0 {
 		return gomponents.Text("")
 	}

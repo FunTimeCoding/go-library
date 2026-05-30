@@ -19,6 +19,7 @@ func windowSelector(
 	groups := []SelectorOption{
 		{"tool", "by tool"},
 		{"surface", "by tool + surface"},
+		{"kind", "by tool + kind"},
 	}
 	var windowLinks []gomponents.Node
 

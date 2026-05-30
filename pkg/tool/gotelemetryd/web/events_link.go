@@ -23,5 +23,9 @@ func eventsLink(
 		link = fmt.Sprintf("%s&actor=%s", link, o.Actor)
 	}
 
+	if o.Kind != "" {
+		link = fmt.Sprintf("%s&kind=%s", link, o.Kind)
+	}
+
 	return link
 }

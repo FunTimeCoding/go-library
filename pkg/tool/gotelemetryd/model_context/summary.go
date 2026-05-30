@@ -2,8 +2,9 @@ package model_context
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	markResponse "github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/model_context/response"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -15,20 +16,16 @@ func (s *Server) summary(
 	until := r.GetString(constant.Until, "")
 	groupBy := r.GetString(constant.GroupBy, constant.Tool)
 	rows := s.store.Summary(since, until, groupBy)
-	type entry struct {
-		Tool    string `json:"tool"`
-		Surface string `json:"surface,omitempty"`
-		Count   int64  `json:"count"`
-	}
-	entries := make([]entry, len(rows))
+	entries := make([]response.Summary, len(rows))
 
 	for i, row := range rows {
-		entries[i] = entry{
+		entries[i] = response.Summary{
 			Tool:    row.Tool,
 			Surface: row.Surface,
+			Kind:    row.Kind,
 			Count:   row.Count,
 		}
 	}
 
-	return response.SuccessAny(entries)
+	return markResponse.SuccessAny(entries)
 }

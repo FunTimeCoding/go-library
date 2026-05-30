@@ -8,7 +8,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/chromium"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/unexpected"
-	"github.com/funtimecoding/go-library/pkg/generative/mark/request"
 	"github.com/funtimecoding/go-library/pkg/git"
 	"github.com/funtimecoding/go-library/pkg/gitlab"
 	"github.com/funtimecoding/go-library/pkg/kubernetes/client"
@@ -71,5 +70,4 @@ func main() {
 	strings.PrintTrim("")
 	mattermost_notifier.New(nil, "", "")
 	project.TemporaryPath("")
-	request.Hooks(nil, false)
 }

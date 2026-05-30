@@ -1,22 +1,27 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetTasks(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.GetTasksParams,
-) {
+	_ context.Context,
+	r server.GetTasksRequestObject,
+) (server.GetTasksResponseObject, error) {
 	var taskType string
 
-	if p.Type != nil {
-		taskType = string(*p.Type)
+	if r.Params.Type != nil {
+		taskType = string(*r.Params.Type)
 	}
 
-	web.EncodeNotation(w, convert.Tasks(s.habitica.MustTasks(taskType)))
+	tasks := convert.Tasks(s.habitica.MustTasks(taskType))
+	result := make(server.GetTasks200JSONResponse, len(tasks))
+
+	for i, t := range tasks {
+		result[i] = *t
+	}
+
+	return result, nil
 }

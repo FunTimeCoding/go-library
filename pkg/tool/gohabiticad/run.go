@@ -25,13 +25,17 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				c := habitica.NewEnvironment()
-				generated.HandlerFromMux(server.New(c), m)
-				model_context.New(
-					c,
-					r,
-					telemetry.NewEnvironment(),
-					o.Version,
-				).Mount(m)
+				t := telemetry.NewEnvironment()
+				generated.HandlerFromMux(
+					generated.NewStrictHandler(
+						server.New(c),
+						[]generated.StrictMiddlewareFunc{
+							web.TelemetryMiddleware(t),
+						},
+					),
+					m,
+				)
+				model_context.New(c, r, t, o.Version).Mount(m)
 			},
 			web.RecoveryMiddleware(r),
 		),

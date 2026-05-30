@@ -1,22 +1,21 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ScoreTask(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier string,
-	direction server.ScoreTaskParamsDirection,
-) {
-	web.EncodeNotation(
-		w,
-		convert.ScoreResult(
-			s.habitica.MustScore(identifier, string(direction)),
+	_ context.Context,
+	r server.ScoreTaskRequestObject,
+) (server.ScoreTaskResponseObject, error) {
+	return server.ScoreTask200JSONResponse(
+		*convert.ScoreResult(
+			s.habitica.MustScore(
+				r.Identifier,
+				string(r.Direction),
+			),
 		),
-	)
+	), nil
 }

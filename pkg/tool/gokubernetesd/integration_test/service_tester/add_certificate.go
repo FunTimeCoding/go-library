@@ -21,41 +21,38 @@ func (t *Tester) AddCertificate(
 		readyStatus = "True"
 	}
 
-	var dnsNamesRaw []interface{}
+	var dnsNamesRaw []any
 
 	for _, d := range dnsNames {
 		dnsNamesRaw = append(dnsNamesRaw, d)
 	}
 
-	cert := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"apiVersion": "cert-manager.io/v1",
-			"kind":       "Certificate",
-			"metadata": map[string]interface{}{
-				"name":      name,
-				"namespace": namespace,
-			},
-			"spec": map[string]interface{}{
-				"dnsNames": dnsNamesRaw,
-			},
-			"status": map[string]interface{}{
-				"notAfter": notAfter.Format(time.RFC3339),
-				"conditions": []interface{}{
-					map[string]interface{}{
-						"type":   "Ready",
-						"status": readyStatus,
-					},
-				},
-			},
-		},
-	}
 	_, e := t.Dynamic.Resource(
 		schema.GroupVersionResource{
 			Group: "cert-manager.io", Version: "v1", Resource: "certificates",
 		},
 	).Namespace(namespace).Create(
 		t.context(),
-		cert,
+		&unstructured.Unstructured{
+			Object: map[string]any{
+				"apiVersion": "cert-manager.io/v1",
+				"kind":       "Certificate",
+				"metadata": map[string]any{
+					"name":      name,
+					"namespace": namespace,
+				},
+				"spec": map[string]any{"dnsNames": dnsNamesRaw},
+				"status": map[string]any{
+					"notAfter": notAfter.Format(time.RFC3339),
+					"conditions": []any{
+						map[string]any{
+							"type":   "Ready",
+							"status": readyStatus,
+						},
+					},
+				},
+			},
+		},
 		v1.CreateOptions{},
 	)
 	errors.PanicOnError(e)

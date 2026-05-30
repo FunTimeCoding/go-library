@@ -80,16 +80,11 @@ type Server struct {
 }
 ```
 
-`new.go` - create the MCPServer, register tools, return:
+`new.go` - create the MCPServer via the factory, register tools, return:
 ```go
-func New(s *store.Store, r face.Reporter, w *worker.Worker, version string) *Server {
+func New(s *store.Store, r face.Reporter, t face.Recorder, w *worker.Worker, version string) *Server {
     result := &Server{
-        server: server.NewMCPServer(
-            constant.Identity.Name(),
-            version,
-            server.WithToolCapabilities(true),
-            server.WithInstructions(constant.Identity.Instructions()),
-        ),
+        server: mark.New(constant.Identity, version).WithRecorder(t).Server(),
         store:    s,
         reporter: r,
         worker:   w,
@@ -98,6 +93,13 @@ func New(s *store.Store, r face.Reporter, w *worker.Worker, version string) *Ser
 
     return result
 }
+```
+
+The factory (`mark/server`) handles tool capabilities, instructions,
+and baseline telemetry hooks. `WithRecorder(t)` registers an
+AfterCallTool hook that records every MCP tool call as a baseline
+telemetry event. Import as
+`mark "github.com/funtimecoding/go-library/pkg/generative/mark/server"`.
 ```
 
 `mount.go` - wires the MCP server onto the HTTP mux:
@@ -250,6 +252,7 @@ MCP routes (`/mcp`, `/sse`, `/message`) don't conflict:
 
 ```go
 import (
+    "github.com/funtimecoding/go-library/pkg/telemetry"
     "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/model_context"
     generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/generated/server"
     "github.com/funtimecoding/go-library/pkg/web"
@@ -259,7 +262,7 @@ lifecycle.WithServerMiddleware(
     web.AddressPort(o.Port),
     func(m *http.ServeMux) {
         generated.HandlerFromMux(server.New(s, p), m)
-        model_context.New(s, r, p, o.Version).Mount(m)
+        model_context.New(s, r, telemetry.NewEnvironment(), p, o.Version).Mount(m)
     },
     web.RecoveryMiddleware(r),
 )

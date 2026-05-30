@@ -42,7 +42,7 @@ func (s *Server) Describe(
 		return s.captureFail(f, "describe resource")
 	}
 
-	m := map[string]interface{}{
+	m := map[string]any{
 		"resource": result.Resource,
 		"events":   result.Events,
 	}

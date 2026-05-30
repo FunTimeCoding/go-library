@@ -19,7 +19,7 @@ func (s *Service) ApplyResource(
 		return nil, e
 	}
 
-	var object map[string]interface{}
+	var object map[string]any
 	f := yaml.Unmarshal([]byte(q.Manifest), &object)
 
 	if f != nil {

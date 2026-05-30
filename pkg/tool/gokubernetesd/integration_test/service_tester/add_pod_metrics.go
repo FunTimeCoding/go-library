@@ -12,14 +12,14 @@ func (t *Tester) AddPodMetrics(
 	name string,
 	containers []map[string]string,
 ) {
-	var containerList []interface{}
+	var containerList []any
 
 	for _, c := range containers {
 		containerList = append(
 			containerList,
-			map[string]interface{}{
+			map[string]any{
 				"name": c["name"],
-				"usage": map[string]interface{}{
+				"usage": map[string]any{
 					"cpu":    c["cpu"],
 					"memory": c["memory"],
 				},
@@ -27,21 +27,26 @@ func (t *Tester) AddPodMetrics(
 		)
 	}
 
-	metrics := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"apiVersion": "metrics.k8s.io/v1beta1",
-			"kind":       "PodMetrics",
-			"metadata": map[string]interface{}{
-				"name":      name,
-				"namespace": namespace,
-			},
-			"containers": containerList,
-		},
-	}
 	_, e := t.Dynamic.Resource(
 		schema.GroupVersionResource{
-			Group: "metrics.k8s.io", Version: "v1beta1", Resource: "pods",
+			Group:    "metrics.k8s.io",
+			Version:  "v1beta1",
+			Resource: "pods",
 		},
-	).Namespace(namespace).Create(t.context(), metrics, v1.CreateOptions{})
+	).Namespace(namespace).Create(
+		t.context(),
+		&unstructured.Unstructured{
+			Object: map[string]any{
+				"apiVersion": "metrics.k8s.io/v1beta1",
+				"kind":       "PodMetrics",
+				"metadata": map[string]any{
+					"name":      name,
+					"namespace": namespace,
+				},
+				"containers": containerList,
+			},
+		},
+		v1.CreateOptions{},
+	)
 	errors.PanicOnError(e)
 }

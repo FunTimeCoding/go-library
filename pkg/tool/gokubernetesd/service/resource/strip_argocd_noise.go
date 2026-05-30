@@ -3,16 +3,16 @@ package resource
 import "fmt"
 
 func StripArgocdNoise(
-	object map[string]interface{},
+	object map[string]any,
 	filtered *[]string,
 ) {
-	status, okay := object["status"].(map[string]interface{})
+	status, okay := object["status"].(map[string]any)
 
 	if !okay {
 		return
 	}
 
-	if resources, okay := status["resources"].([]interface{}); okay {
+	if resources, okay := status["resources"].([]any); okay {
 		*filtered = append(
 			*filtered,
 			fmt.Sprintf(
@@ -23,7 +23,7 @@ func StripArgocdNoise(
 		delete(status, "resources")
 	}
 
-	if history, okay := status["history"].([]interface{}); okay {
+	if history, okay := status["history"].([]any); okay {
 		*filtered = append(
 			*filtered,
 			fmt.Sprintf("status.history (%d entries)", len(history)),
@@ -31,9 +31,9 @@ func StripArgocdNoise(
 		delete(status, "history")
 	}
 
-	if result, okay := status["operationState"].(map[string]interface{}); okay {
-		if syncResult, okay := result["syncResult"].(map[string]interface{}); okay {
-			if resources, okay := syncResult["resources"].([]interface{}); okay {
+	if result, okay := status["operationState"].(map[string]any); okay {
+		if syncResult, okay := result["syncResult"].(map[string]any); okay {
+			if resources, okay := syncResult["resources"].([]any); okay {
 				*filtered = append(
 					*filtered,
 					fmt.Sprintf(

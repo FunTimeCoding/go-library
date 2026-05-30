@@ -1,13 +1,13 @@
 package resource
 
-func ExtractDnsNames(object map[string]interface{}) []string {
-	raw, okay := object["spec"].(map[string]interface{})["dnsNames"]
+func ExtractDnsNames(object map[string]any) []string {
+	raw, okay := object["spec"].(map[string]any)["dnsNames"]
 
 	if !okay {
 		return nil
 	}
 
-	list, okay := raw.([]interface{})
+	list, okay := raw.([]any)
 
 	if !okay {
 		return nil

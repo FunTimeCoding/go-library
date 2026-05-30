@@ -1,31 +1,28 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
 )
 
 func (s *Server) EquipGear(
-	w http.ResponseWriter,
-	_ *http.Request,
-	key string,
-) {
-	e := s.habitica.Equip(key)
+	_ context.Context,
+	r server.EquipGearRequestObject,
+) (server.EquipGearResponseObject, error) {
+	e := s.habitica.Equip(r.Key)
 
 	if e != nil {
-		http.Error(w, e.Error(), http.StatusBadRequest)
-
-		return
+		return server.EquipGear400Response{}, nil
 	}
 
 	result, f := s.habitica.UserGear()
 
 	if f != nil {
-		http.Error(w, f.Error(), http.StatusInternalServerError)
-
-		return
+		return server.EquipGear500Response{}, nil
 	}
 
-	web.EncodeNotation(w, convert.Gear(result))
+	return server.EquipGear200JSONResponse(
+		*convert.Gear(result),
+	), nil
 }

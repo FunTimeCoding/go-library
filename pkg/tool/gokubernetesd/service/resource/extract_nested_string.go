@@ -6,7 +6,7 @@ import (
 )
 
 func ExtractNestedString(
-	object map[string]interface{},
+	object map[string]any,
 	fields ...string,
 ) string {
 	v, _, e := unstructured.NestedString(object, fields...)

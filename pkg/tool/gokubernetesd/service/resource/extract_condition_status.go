@@ -1,20 +1,20 @@
 package resource
 
-func ExtractConditionStatus(object map[string]interface{}) string {
-	status, okay := object["status"].(map[string]interface{})
+func ExtractConditionStatus(object map[string]any) string {
+	status, okay := object["status"].(map[string]any)
 
 	if !okay {
 		return "Unknown"
 	}
 
-	conditions, okay := status["conditions"].([]interface{})
+	conditions, okay := status["conditions"].([]any)
 
 	if !okay {
 		return "Unknown"
 	}
 
 	for _, raw := range conditions {
-		condition, okay := raw.(map[string]interface{})
+		condition, okay := raw.(map[string]any)
 
 		if !okay {
 			continue

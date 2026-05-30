@@ -122,7 +122,7 @@ func (s *Server) PortForward(
 	)
 
 	return response.SuccessAny(
-		map[string]interface{}{
+		map[string]any{
 			"id":         identifier,
 			"localPort":  a.LocalPort,
 			"targetPort": a.TargetPort,

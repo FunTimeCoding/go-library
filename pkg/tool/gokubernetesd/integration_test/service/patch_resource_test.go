@@ -33,7 +33,7 @@ func TestPatchResource(t *testing.T) {
 		},
 	)
 	assert.Nil(t, f)
-	metadata, _ := result.Object["metadata"].(map[string]interface{})
-	labels, _ := metadata["labels"].(map[string]interface{})
+	metadata, _ := result.Object["metadata"].(map[string]any)
+	labels, _ := metadata["labels"].(map[string]any)
 	assert.String(t, "true", labels["patched"].(string))
 }

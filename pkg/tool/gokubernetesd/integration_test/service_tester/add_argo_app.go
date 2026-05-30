@@ -8,35 +8,12 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func (t *Tester) AddArgocdApp(
+func (t *Tester) AddArgoApp(
 	name string,
 	namespace string,
 	syncStatus string,
 	healthStatus string,
 ) {
-	app := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"apiVersion": "argoproj.io/v1alpha1",
-			"kind":       "Application",
-			"metadata": map[string]interface{}{
-				"name":      name,
-				"namespace": constant.Argocd,
-			},
-			"spec": map[string]interface{}{
-				"destination": map[string]interface{}{
-					"namespace": namespace,
-				},
-			},
-			"status": map[string]interface{}{
-				"sync": map[string]interface{}{
-					"status": syncStatus,
-				},
-				"health": map[string]interface{}{
-					"status": healthStatus,
-				},
-			},
-		},
-	}
 	_, e := t.Dynamic.Resource(
 		schema.GroupVersionResource{
 			Group:    "argoproj.io",
@@ -45,7 +22,23 @@ func (t *Tester) AddArgocdApp(
 		},
 	).Namespace(constant.Argocd).Create(
 		t.context(),
-		app,
+		&unstructured.Unstructured{
+			Object: map[string]any{
+				"apiVersion": "argoproj.io/v1alpha1",
+				"kind":       "Application",
+				"metadata": map[string]any{
+					"name":      name,
+					"namespace": constant.Argocd,
+				},
+				"spec": map[string]any{
+					"destination": map[string]any{"namespace": namespace},
+				},
+				"status": map[string]any{
+					"sync":   map[string]any{"status": syncStatus},
+					"health": map[string]any{"status": healthStatus},
+				},
+			},
+		},
 		v1.CreateOptions{},
 	)
 	errors.PanicOnError(e)

@@ -63,18 +63,18 @@ func (s *Service) TopPods(
 	result := []response.PodMetrics{}
 
 	for _, item := range metrics.Items {
-		containers, _ := item.Object["containers"].([]interface{})
+		containers, _ := item.Object["containers"].([]any)
 		var totalCPU int64
 		var totalMem int64
 
 		for _, raw := range containers {
-			c, okay := raw.(map[string]interface{})
+			c, okay := raw.(map[string]any)
 
 			if !okay {
 				continue
 			}
 
-			usage, _ := c["usage"].(map[string]interface{})
+			usage, _ := c["usage"].(map[string]any)
 
 			if usage == nil {
 				continue

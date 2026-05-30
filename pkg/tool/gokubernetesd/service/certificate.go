@@ -31,7 +31,7 @@ func (s *Service) Certificate(
 	requests, g := c.Dynamic().Resource(certificateRequestGVR).Namespace(
 		namespace,
 	).List(x, v1.ListOptions{})
-	var latestRequest map[string]interface{}
+	var latestRequest map[string]any
 
 	if g == nil {
 		for _, q := range requests.Items {
@@ -42,7 +42,7 @@ func (s *Service) Certificate(
 	}
 
 	filtered := resource.FilterObject(cert.Object, unfiltered)
-	var requestObject map[string]interface{}
+	var requestObject map[string]any
 	allFiltered := filtered.Filtered
 
 	if latestRequest != nil {

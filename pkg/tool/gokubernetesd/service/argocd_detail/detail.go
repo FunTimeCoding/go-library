@@ -1,6 +1,6 @@
 package argocd_detail
 
 type Detail struct {
-	Application map[string]interface{}
+	Application map[string]any
 	Filtered    []string
 }

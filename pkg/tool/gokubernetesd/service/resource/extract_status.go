@@ -59,7 +59,7 @@ func ExtractStatus(u *unstructured.Unstructured) string {
 
 	if okay {
 		for _, raw := range conditions {
-			condition, okay := raw.(map[string]interface{})
+			condition, okay := raw.(map[string]any)
 
 			if !okay {
 				continue

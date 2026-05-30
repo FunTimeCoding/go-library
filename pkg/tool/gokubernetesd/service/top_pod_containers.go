@@ -56,17 +56,17 @@ func (s *Service) TopPodContainers(
 	result := []response.ContainerMetrics{}
 
 	for _, item := range metrics.Items {
-		containers, _ := item.Object["containers"].([]interface{})
+		containers, _ := item.Object["containers"].([]any)
 
 		for _, raw := range containers {
-			c, okay := raw.(map[string]interface{})
+			c, okay := raw.(map[string]any)
 
 			if !okay {
 				continue
 			}
 
 			containerName, _ := c["name"].(string)
-			usage, _ := c["usage"].(map[string]interface{})
+			usage, _ := c["usage"].(map[string]any)
 
 			if usage == nil {
 				continue

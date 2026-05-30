@@ -20,7 +20,7 @@ func ExtractRestarts(u *unstructured.Unstructured) int64 {
 	var total int64
 
 	for _, raw := range containers {
-		c, okay := raw.(map[string]interface{})
+		c, okay := raw.(map[string]any)
 
 		if !okay {
 			continue

@@ -65,7 +65,7 @@ func (s *Service) TopNodes(
 
 	for _, item := range metrics.Items {
 		name := item.GetName()
-		usage, _ := item.Object["usage"].(map[string]interface{})
+		usage, _ := item.Object["usage"].(map[string]any)
 
 		if usage == nil {
 			continue

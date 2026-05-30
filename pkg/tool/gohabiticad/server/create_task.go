@@ -1,30 +1,25 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/habitica/request"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateTask(
-	w http.ResponseWriter,
-	q *http.Request,
-) {
-	var b server.CreateTaskJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(q.Body).Decode(&b))
+	_ context.Context,
+	r server.CreateTaskRequestObject,
+) (server.CreateTaskResponseObject, error) {
 	c := request.New()
-	c.Type = string(b.Type)
-	c.Text = b.Text
+	c.Type = string(r.Body.Type)
+	c.Text = r.Body.Text
 
-	if b.Notes != nil {
-		c.Notes = *b.Notes
+	if r.Body.Notes != nil {
+		c.Notes = *r.Body.Notes
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, convert.Task(s.habitica.MustCreateTask(c)))
+	return server.CreateTask201JSONResponse(
+		*convert.Task(s.habitica.MustCreateTask(c)),
+	), nil
 }

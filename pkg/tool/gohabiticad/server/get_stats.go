@@ -1,14 +1,16 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
 )
 
 func (s *Server) GetStats(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
-	web.EncodeNotation(w, convert.Stats(s.habitica.MustUserStats()))
+	_ context.Context,
+	_ server.GetStatsRequestObject,
+) (server.GetStatsResponseObject, error) {
+	return server.GetStats200JSONResponse(
+		*convert.Stats(s.habitica.MustUserStats()),
+	), nil
 }

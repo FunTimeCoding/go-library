@@ -1,24 +1,22 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) AllocateStat(
-	w http.ResponseWriter,
-	_ *http.Request,
-	t server.AllocateStatParamsStat,
-) {
-	result, e := s.habitica.Allocate(string(t))
+	_ context.Context,
+	r server.AllocateStatRequestObject,
+) (server.AllocateStatResponseObject, error) {
+	result, e := s.habitica.Allocate(string(r.Stat))
 
 	if e != nil {
-		http.Error(w, e.Error(), http.StatusBadRequest)
-
-		return
+		return server.AllocateStat400Response{}, nil
 	}
 
-	web.EncodeNotation(w, convert.Stats(result))
+	return server.AllocateStat200JSONResponse(
+		*convert.Stats(result),
+	), nil
 }

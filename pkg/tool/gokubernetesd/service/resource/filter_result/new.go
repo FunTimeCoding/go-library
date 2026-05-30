@@ -1,7 +1,7 @@
 package filter_result
 
 func New(
-	object map[string]interface{},
+	object map[string]any,
 	filtered []string,
 ) *FilterResult {
 	return &FilterResult{

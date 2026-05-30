@@ -1,22 +1,22 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gohabiticad/generated/server"
 )
 
 func (s *Server) GetGear(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.GetGearRequestObject,
+) (server.GetGearResponseObject, error) {
 	result, e := s.habitica.UserGear()
 
 	if e != nil {
-		http.Error(w, e.Error(), http.StatusInternalServerError)
-
-		return
+		return server.GetGear500Response{}, nil
 	}
 
-	web.EncodeNotation(w, convert.Gear(result))
+	return server.GetGear200JSONResponse(
+		*convert.Gear(result),
+	), nil
 }

@@ -1,7 +1,7 @@
 package certificate_detail
 
 type Detail struct {
-	Certificate   map[string]interface{}
-	LatestRequest map[string]interface{}
+	Certificate   map[string]any
+	LatestRequest map[string]any
 	Filtered      []string
 }

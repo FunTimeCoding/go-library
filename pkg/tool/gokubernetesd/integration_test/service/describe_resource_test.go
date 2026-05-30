@@ -36,7 +36,7 @@ func TestDescribeResourceFiltered(t *testing.T) {
 		},
 	)
 	assert.Nil(t, e)
-	metadata, _ := result.Resource["metadata"].(map[string]interface{})
+	metadata, _ := result.Resource["metadata"].(map[string]any)
 	_, hasManagedFields := metadata["managedFields"]
 	assert.False(t, hasManagedFields)
 }

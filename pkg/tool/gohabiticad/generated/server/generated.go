@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,6 +19,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
 
 // Defines values for CreateTaskRequestType.
@@ -565,29 +568,512 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type AllocateStatRequestObject struct {
+	Stat AllocateStatParamsStat `json:"stat"`
+}
+
+type AllocateStatResponseObject interface {
+	VisitAllocateStatResponse(w http.ResponseWriter) error
+}
+
+type AllocateStat200JSONResponse Stats
+
+func (response AllocateStat200JSONResponse) VisitAllocateStatResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type AllocateStat400Response struct {
+}
+
+func (response AllocateStat400Response) VisitAllocateStatResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type RunCronRequestObject struct {
+}
+
+type RunCronResponseObject interface {
+	VisitRunCronResponse(w http.ResponseWriter) error
+}
+
+type RunCron200JSONResponse CronResult
+
+func (response RunCron200JSONResponse) VisitRunCronResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type EquipGearRequestObject struct {
+	Key string `json:"key"`
+}
+
+type EquipGearResponseObject interface {
+	VisitEquipGearResponse(w http.ResponseWriter) error
+}
+
+type EquipGear200JSONResponse GearResult
+
+func (response EquipGear200JSONResponse) VisitEquipGearResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type EquipGear400Response struct {
+}
+
+func (response EquipGear400Response) VisitEquipGearResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type EquipGear500Response struct {
+}
+
+func (response EquipGear500Response) VisitEquipGearResponse(w http.ResponseWriter) error {
+	w.WriteHeader(500)
+	return nil
+}
+
+type GetGearRequestObject struct {
+}
+
+type GetGearResponseObject interface {
+	VisitGetGearResponse(w http.ResponseWriter) error
+}
+
+type GetGear200JSONResponse GearResult
+
+func (response GetGear200JSONResponse) VisitGetGearResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetGear500Response struct {
+}
+
+func (response GetGear500Response) VisitGetGearResponse(w http.ResponseWriter) error {
+	w.WriteHeader(500)
+	return nil
+}
+
+type GetStatsRequestObject struct {
+}
+
+type GetStatsResponseObject interface {
+	VisitGetStatsResponse(w http.ResponseWriter) error
+}
+
+type GetStats200JSONResponse Stats
+
+func (response GetStats200JSONResponse) VisitGetStatsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetTagsRequestObject struct {
+}
+
+type GetTagsResponseObject interface {
+	VisitGetTagsResponse(w http.ResponseWriter) error
+}
+
+type GetTags200JSONResponse []Tag
+
+func (response GetTags200JSONResponse) VisitGetTagsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetTasksRequestObject struct {
+	Params GetTasksParams
+}
+
+type GetTasksResponseObject interface {
+	VisitGetTasksResponse(w http.ResponseWriter) error
+}
+
+type GetTasks200JSONResponse []Task
+
+func (response GetTasks200JSONResponse) VisitGetTasksResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateTaskRequestObject struct {
+	Body *CreateTaskJSONRequestBody
+}
+
+type CreateTaskResponseObject interface {
+	VisitCreateTaskResponse(w http.ResponseWriter) error
+}
+
+type CreateTask201JSONResponse Task
+
+func (response CreateTask201JSONResponse) VisitCreateTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateTask400Response struct {
+}
+
+func (response CreateTask400Response) VisitCreateTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type ScoreTaskRequestObject struct {
+	Identifier string                   `json:"identifier"`
+	Direction  ScoreTaskParamsDirection `json:"direction"`
+}
+
+type ScoreTaskResponseObject interface {
+	VisitScoreTaskResponse(w http.ResponseWriter) error
+}
+
+type ScoreTask200JSONResponse ScoreResult
+
+func (response ScoreTask200JSONResponse) VisitScoreTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (POST /api/allocate/{stat})
+	AllocateStat(ctx context.Context, request AllocateStatRequestObject) (AllocateStatResponseObject, error)
+
+	// (POST /api/cron)
+	RunCron(ctx context.Context, request RunCronRequestObject) (RunCronResponseObject, error)
+
+	// (POST /api/equip/{key})
+	EquipGear(ctx context.Context, request EquipGearRequestObject) (EquipGearResponseObject, error)
+
+	// (GET /api/gear)
+	GetGear(ctx context.Context, request GetGearRequestObject) (GetGearResponseObject, error)
+
+	// (GET /api/stats)
+	GetStats(ctx context.Context, request GetStatsRequestObject) (GetStatsResponseObject, error)
+
+	// (GET /api/tags)
+	GetTags(ctx context.Context, request GetTagsRequestObject) (GetTagsResponseObject, error)
+
+	// (GET /api/tasks)
+	GetTasks(ctx context.Context, request GetTasksRequestObject) (GetTasksResponseObject, error)
+
+	// (POST /api/tasks)
+	CreateTask(ctx context.Context, request CreateTaskRequestObject) (CreateTaskResponseObject, error)
+
+	// (POST /api/tasks/{identifier}/score/{direction})
+	ScoreTask(ctx context.Context, request ScoreTaskRequestObject) (ScoreTaskResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// AllocateStat operation middleware
+func (sh *strictHandler) AllocateStat(w http.ResponseWriter, r *http.Request, stat AllocateStatParamsStat) {
+	var request AllocateStatRequestObject
+
+	request.Stat = stat
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.AllocateStat(ctx, request.(AllocateStatRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "AllocateStat")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(AllocateStatResponseObject); ok {
+		if err := validResponse.VisitAllocateStatResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// RunCron operation middleware
+func (sh *strictHandler) RunCron(w http.ResponseWriter, r *http.Request) {
+	var request RunCronRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.RunCron(ctx, request.(RunCronRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "RunCron")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(RunCronResponseObject); ok {
+		if err := validResponse.VisitRunCronResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// EquipGear operation middleware
+func (sh *strictHandler) EquipGear(w http.ResponseWriter, r *http.Request, key string) {
+	var request EquipGearRequestObject
+
+	request.Key = key
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.EquipGear(ctx, request.(EquipGearRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "EquipGear")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(EquipGearResponseObject); ok {
+		if err := validResponse.VisitEquipGearResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetGear operation middleware
+func (sh *strictHandler) GetGear(w http.ResponseWriter, r *http.Request) {
+	var request GetGearRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetGear(ctx, request.(GetGearRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetGear")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetGearResponseObject); ok {
+		if err := validResponse.VisitGetGearResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetStats operation middleware
+func (sh *strictHandler) GetStats(w http.ResponseWriter, r *http.Request) {
+	var request GetStatsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetStats(ctx, request.(GetStatsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetStats")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetStatsResponseObject); ok {
+		if err := validResponse.VisitGetStatsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetTags operation middleware
+func (sh *strictHandler) GetTags(w http.ResponseWriter, r *http.Request) {
+	var request GetTagsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetTags(ctx, request.(GetTagsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetTags")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetTagsResponseObject); ok {
+		if err := validResponse.VisitGetTagsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetTasks operation middleware
+func (sh *strictHandler) GetTasks(w http.ResponseWriter, r *http.Request, params GetTasksParams) {
+	var request GetTasksRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetTasks(ctx, request.(GetTasksRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetTasks")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetTasksResponseObject); ok {
+		if err := validResponse.VisitGetTasksResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateTask operation middleware
+func (sh *strictHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
+	var request CreateTaskRequestObject
+
+	var body CreateTaskJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateTask(ctx, request.(CreateTaskRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateTask")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateTaskResponseObject); ok {
+		if err := validResponse.VisitCreateTaskResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ScoreTask operation middleware
+func (sh *strictHandler) ScoreTask(w http.ResponseWriter, r *http.Request, identifier string, direction ScoreTaskParamsDirection) {
+	var request ScoreTaskRequestObject
+
+	request.Identifier = identifier
+	request.Direction = direction
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ScoreTask(ctx, request.(ScoreTaskRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ScoreTask")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ScoreTaskResponseObject); ok {
+		if err := validResponse.VisitScoreTaskResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"/6CMGsg+FAAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

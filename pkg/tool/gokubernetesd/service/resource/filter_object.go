@@ -8,7 +8,7 @@ import (
 )
 
 func FilterObject(
-	object map[string]interface{},
+	object map[string]any,
 	unfiltered bool,
 ) *filter_result.FilterResult {
 	if unfiltered {
@@ -16,14 +16,14 @@ func FilterObject(
 	}
 
 	var filtered []string
-	metadata, okay := object["metadata"].(map[string]interface{})
+	metadata, okay := object["metadata"].(map[string]any)
 
 	if !okay {
 		return filter_result.New(object, nil)
 	}
 
 	if managed, okay := metadata["managedFields"]; okay {
-		if entries, okay := managed.([]interface{}); okay {
+		if entries, okay := managed.([]any); okay {
 			filtered = append(
 				filtered,
 				fmt.Sprintf(
@@ -36,7 +36,7 @@ func FilterObject(
 		delete(metadata, "managedFields")
 	}
 
-	annotations, okay := metadata["annotations"].(map[string]interface{})
+	annotations, okay := metadata["annotations"].(map[string]any)
 
 	if okay {
 		key := "kubectl.kubernetes.io/last-applied-configuration"

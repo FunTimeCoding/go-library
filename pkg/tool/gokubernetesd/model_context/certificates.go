@@ -35,7 +35,7 @@ func (s *Server) Certificates(
 			return s.captureFail(f, "get certificate")
 		}
 
-		m := map[string]interface{}{
+		m := map[string]any{
 			"certificate": result.Certificate,
 		}
 

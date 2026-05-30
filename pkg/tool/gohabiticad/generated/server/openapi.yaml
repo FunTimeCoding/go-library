@@ -116,6 +116,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GearResult"
+        "500":
+          description: Failed to fetch gear.
   /api/equip/{key}:
     post:
       operationId: equipGear
@@ -133,6 +135,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GearResult"
+        "400":
+          description: Failed to equip gear.
+        "500":
+          description: Failed to fetch gear after equip.
   /api/cron:
     post:
       operationId: runCron

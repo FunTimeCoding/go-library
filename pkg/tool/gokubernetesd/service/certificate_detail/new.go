@@ -1,8 +1,8 @@
 package certificate_detail
 
 func New(
-	certificate map[string]interface{},
-	latestRequest map[string]interface{},
+	certificate map[string]any,
+	latestRequest map[string]any,
 	filtered []string,
 ) *Detail {
 	return &Detail{

@@ -9,7 +9,7 @@ import (
 )
 
 func formatMarkup(
-	object map[string]interface{},
+	object map[string]any,
 	filtered []string,
 ) (*mcp.CallToolResult, error) {
 	b, e := yaml.Marshal(object)

@@ -16,36 +16,35 @@ func (t *Tester) AddDeployment(
 	replicas int64,
 ) {
 	r := int32(replicas)
-	deployment := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"apiVersion": "apps/v1",
-			"kind":       "Deployment",
-			"metadata": map[string]interface{}{
-				"name":              name,
-				"namespace":         namespace,
-				"creationTimestamp": time.Now().Format(time.RFC3339),
-			},
-			"spec": map[string]interface{}{
-				"replicas": replicas,
-				"selector": map[string]interface{}{
-					"matchLabels": map[string]interface{}{
-						"app": name,
-					},
-				},
-			},
-			"status": map[string]interface{}{
-				"readyReplicas": readyReplicas,
-				"replicas":      replicas,
-			},
-		},
-	}
 	_, e := t.Dynamic.Resource(
 		schema.GroupVersionResource{
 			Group: "apps", Version: "v1", Resource: "deployments",
 		},
 	).Namespace(namespace).Create(
 		t.context(),
-		deployment,
+		&unstructured.Unstructured{
+			Object: map[string]any{
+				"apiVersion": "apps/v1",
+				"kind":       "Deployment",
+				"metadata": map[string]any{
+					"name":              name,
+					"namespace":         namespace,
+					"creationTimestamp": time.Now().Format(time.RFC3339),
+				},
+				"spec": map[string]any{
+					"replicas": replicas,
+					"selector": map[string]any{
+						"matchLabels": map[string]any{
+							"app": name,
+						},
+					},
+				},
+				"status": map[string]any{
+					"readyReplicas": readyReplicas,
+					"replicas":      replicas,
+				},
+			},
+		},
 		v1.CreateOptions{},
 	)
 	errors.PanicOnError(e)

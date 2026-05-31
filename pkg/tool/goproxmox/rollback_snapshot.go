@@ -12,14 +12,14 @@ func rollbackSnapshot(c *client.Client) *cobra.Command {
 	var node string
 	var name string
 	result := &cobra.Command{
-		Use:   "rollback-snapshot [vmid]",
+		Use:   "rollback-snapshot [identifier]",
 		Short: "Rollback a virtual machine to a snapshot",
 		Args:  cobra.ExactArgs(1),
 		Run: func(
 			_ *cobra.Command,
 			a []string,
 		) {
-			vmid, e := strconv.ParseInt(a[0], 10, 64)
+			identifier, e := strconv.ParseInt(a[0], 10, 64)
 			errors.PanicOnError(e)
 			var n *string
 
@@ -27,7 +27,7 @@ func rollbackSnapshot(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.RollbackSnapshot(vmid, name, n))
+			fmt.Println(c.RollbackMachineSnapshot(identifier, name, n))
 		},
 	}
 	result.Flags().StringVar(

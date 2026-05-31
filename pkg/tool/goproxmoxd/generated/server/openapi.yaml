@@ -54,11 +54,11 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Machine"
-  /api/v1/machines/{vmid}:
+  /api/v1/machines/{identifier}:
     get:
       operationId: getMachine
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -80,11 +80,11 @@ paths:
                 $ref: "#/components/schemas/MachineDetail"
         "404":
           description: Machine not found.
-  /api/v1/machines/{vmid}/snapshots:
+  /api/v1/machines/{identifier}/snapshots:
     get:
-      operationId: listSnapshots
+      operationId: listMachineSnapshots
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -109,9 +109,9 @@ paths:
         "404":
           description: Machine not found.
     post:
-      operationId: createSnapshot
+      operationId: createMachineSnapshot
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -139,11 +139,11 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
-  /api/v1/machines/{vmid}/snapshots/{name}/rollback:
+  /api/v1/machines/{identifier}/snapshots/{name}/rollback:
     post:
-      operationId: rollbackSnapshot
+      operationId: rollbackMachineSnapshot
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -171,11 +171,11 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine or snapshot not found.
-  /api/v1/machines/{vmid}/snapshots/{name}:
+  /api/v1/machines/{identifier}/snapshots/{name}:
     delete:
-      operationId: deleteSnapshot
+      operationId: deleteMachineSnapshot
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -203,11 +203,11 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine or snapshot not found.
-  /api/v1/machines/{vmid}/start:
+  /api/v1/machines/{identifier}/start:
     post:
       operationId: startMachine
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -229,11 +229,11 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
-  /api/v1/machines/{vmid}/stop:
+  /api/v1/machines/{identifier}/stop:
     post:
       operationId: stopMachine
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -255,11 +255,11 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
-  /api/v1/machines/{vmid}/shutdown:
+  /api/v1/machines/{identifier}/shutdown:
     post:
       operationId: shutdownMachine
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -281,11 +281,11 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
-  /api/v1/machines/{vmid}/reset:
+  /api/v1/machines/{identifier}/reset:
     post:
       operationId: resetMachine
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
@@ -347,17 +347,17 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Container"
-  /api/v1/containers/{vmid}:
+  /api/v1/containers/{identifier}:
     get:
       operationId: getContainer
       parameters:
-      - name: vmid
+      - name: identifier
         in: path
         required: true
         schema:
           type: integer
           format: int64
-        description: Container VMID.
+        description: Container identifier.
       - name: node
         in: query
         required: false
@@ -373,6 +373,129 @@ paths:
                 $ref: "#/components/schemas/ContainerDetail"
         "404":
           description: Container not found.
+  /api/v1/containers/{identifier}/snapshots:
+    get:
+      operationId: listContainerSnapshots
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Container identifier.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Snapshots for the container.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Snapshot"
+        "404":
+          description: Container not found.
+    post:
+      operationId: createContainerSnapshot
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Container identifier.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotRequest"
+      responses:
+        "200":
+          description: Snapshot created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Container not found.
+  /api/v1/containers/{identifier}/snapshots/{name}/rollback:
+    post:
+      operationId: rollbackContainerSnapshot
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Container identifier.
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Snapshot name.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Rollback initiated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Container or snapshot not found.
+  /api/v1/containers/{identifier}/snapshots/{name}:
+    delete:
+      operationId: deleteContainerSnapshot
+      parameters:
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Container identifier.
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Snapshot name.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      responses:
+        "200":
+          description: Snapshot deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
+        "404":
+          description: Container or snapshot not found.
 components:
   schemas:
     Node:
@@ -442,10 +565,10 @@ components:
     Machine:
       type: object
       required:
-      - vmid
+      - identifier
       - name
       properties:
-        vmid:
+        identifier:
           type: integer
           format: int64
         name:
@@ -473,10 +596,10 @@ components:
     MachineDetail:
       type: object
       required:
-      - vmid
+      - identifier
       - name
       properties:
-        vmid:
+        identifier:
           type: integer
           format: int64
         name:
@@ -518,10 +641,10 @@ components:
     Container:
       type: object
       required:
-      - vmid
+      - identifier
       - name
       properties:
-        vmid:
+        identifier:
           type: integer
           format: int64
         name:
@@ -549,10 +672,10 @@ components:
     ContainerDetail:
       type: object
       required:
-      - vmid
+      - identifier
       - name
       properties:
-        vmid:
+        identifier:
           type: integer
           format: int64
         name:

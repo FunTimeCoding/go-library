@@ -3,7 +3,7 @@ package model_context
 import "github.com/luthermonson/go-proxmox"
 
 func (s *Server) findMachine(
-	vmid int,
+	identifier int,
 	nodeName string,
 ) (*proxmox.VirtualMachine, error) {
 	if nodeName != "" {
@@ -13,7 +13,7 @@ func (s *Server) findMachine(
 			return nil, e
 		}
 
-		return s.client.Machine(node, vmid)
+		return s.client.Machine(node, identifier)
 	}
 
 	nodes, e := s.client.Nodes()
@@ -22,22 +22,22 @@ func (s *Server) findMachine(
 		return nil, e
 	}
 
-	for _, ns := range nodes {
-		node, e := s.client.Node(ns.Node)
+	for _, n := range nodes {
+		node, f := s.client.Node(n.Node)
 
-		if e != nil {
+		if f != nil {
 			continue
 		}
 
-		machines, e := s.client.Machines(node)
+		machines, g := s.client.Machines(node)
 
-		if e != nil {
+		if g != nil {
 			continue
 		}
 
 		for _, listed := range machines {
-			if int(listed.VMID) == vmid {
-				return s.client.Machine(node, vmid)
+			if int(listed.VMID) == identifier {
+				return s.client.Machine(node, identifier)
 			}
 		}
 	}

@@ -12,8 +12,8 @@ func (s *Server) GetMachine(
 	_ mcp.CallToolRequest,
 	a argument.GetMachine,
 ) (*mcp.CallToolResult, error) {
-	if a.VMID == 0 {
-		return response.Fail("vmid is required")
+	if a.Identifier == 0 {
+		return response.Fail("identifier is required")
 	}
 
 	if a.Node != "" {
@@ -23,10 +23,10 @@ func (s *Server) GetMachine(
 			return s.captureFail(e, "node not found")
 		}
 
-		vm, e := s.client.Machine(node, a.VMID)
+		vm, f := s.client.Machine(node, a.Identifier)
 
-		if e != nil {
-			return s.captureDetail(e)
+		if f != nil {
+			return s.captureDetail(f)
 		}
 
 		return response.SuccessAny(machineDetail(vm))
@@ -38,31 +38,31 @@ func (s *Server) GetMachine(
 		return s.captureDetail(e)
 	}
 
-	for _, ns := range nodes {
-		node, e := s.client.Node(ns.Node)
+	for _, n := range nodes {
+		node, g := s.client.Node(n.Node)
 
-		if e != nil {
-			return s.captureFail(e, "node not found")
+		if g != nil {
+			return s.captureFail(g, "node not found")
 		}
 
-		machines, e := s.client.Machines(node)
+		machines, h := s.client.Machines(node)
 
-		if e != nil {
-			return s.captureDetail(e)
+		if h != nil {
+			return s.captureDetail(h)
 		}
 
 		for _, listed := range machines {
-			if uint64(listed.VMID) == uint64(a.VMID) {
-				vm, e := s.client.Machine(node, a.VMID)
+			if uint64(listed.VMID) == uint64(a.Identifier) {
+				m, i := s.client.Machine(node, a.Identifier)
 
-				if e != nil {
-					return s.captureDetail(e)
+				if i != nil {
+					return s.captureDetail(i)
 				}
 
-				return response.SuccessAny(machineDetail(vm))
+				return response.SuccessAny(machineDetail(m))
 			}
 		}
 	}
 
-	return response.Fail("vm %d not found", a.VMID)
+	return response.Fail("vm %d not found", a.Identifier)
 }

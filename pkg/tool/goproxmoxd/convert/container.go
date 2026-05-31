@@ -7,7 +7,7 @@ import (
 
 func Container(c proxmox.Container) *server.Container {
 	result := &server.Container{
-		Vmid:    int64(c.VMID),
+		Identifier: int64(c.VMID),
 		Name:    c.Name,
 		Node:    &c.Node,
 		Status:  &c.Status,

@@ -15,7 +15,7 @@ require (
 	github.com/amikos-tech/pure-tokenizers v0.1.5
 	github.com/andybrewer/mack v0.0.0-20251024001139-afd410b36447
 	github.com/andygrunwald/go-jira v1.17.0
-	github.com/anthropics/anthropic-sdk-go v1.45.0
+	github.com/anthropics/anthropic-sdk-go v1.46.0
 	github.com/apenella/go-ansible/v2 v2.4.1
 	github.com/bmatcuk/doublestar/v4 v4.10.0
 	github.com/bndr/gojenkins v1.2.0
@@ -41,7 +41,7 @@ require (
 	github.com/go-git/go-billy/v5 v5.9.0
 	github.com/go-git/go-git/v5 v5.19.1
 	github.com/go-openapi/runtime v0.32.2
-	github.com/go-openapi/strfmt v0.26.2
+	github.com/go-openapi/strfmt v0.26.3
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/go-test/deep v1.1.1
 	github.com/google/go-cmp v0.7.0
@@ -58,7 +58,7 @@ require (
 	github.com/jackc/pgx/v5 v5.9.2
 	github.com/kestra-io/client-sdk/go-sdk v1.0.1
 	github.com/liushuangls/go-anthropic/v2 v2.20.2
-	github.com/luthermonson/go-proxmox v0.5.1
+	github.com/luthermonson/go-proxmox v0.7.0
 	github.com/mark3labs/mcp-go v0.54.1
 	github.com/mattermost/mattermost/server/public v0.4.1
 	github.com/mitchellh/go-ps v1.0.0
@@ -75,7 +75,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.32.1
 	github.com/prometheus/client_golang v1.23.2
-	github.com/prometheus/common v0.67.5
+	github.com/prometheus/common v0.68.0
 	github.com/rivo/tview v0.42.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/samber/slog-loki/v3 v3.7.2
@@ -91,7 +91,7 @@ require (
 	github.com/trivago/tgo v1.0.7
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
-	gitlab.com/gitlab-org/api/client-go/v2 v2.34.0
+	gitlab.com/gitlab-org/api/client-go/v2 v2.36.0
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/crypto v0.52.0
 	golang.org/x/mod v0.36.0

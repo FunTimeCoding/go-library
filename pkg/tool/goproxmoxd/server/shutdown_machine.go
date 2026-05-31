@@ -9,17 +9,21 @@ import (
 func (s *Server) ShutdownMachine(
 	w http.ResponseWriter,
 	_ *http.Request,
-	vmid int64,
+	identifier int64,
 	v server.ShutdownMachineParams,
 ) {
-	vm := s.findMachine(vmid, v.Node)
+	m := s.findMachine(identifier, v.Node)
 
-	if vm == nil {
+	if m == nil {
 		w.WriteHeader(http.StatusNotFound)
 
 		return
 	}
 
-	task := s.client.MustShutdownMachine(vm)
-	web.EncodeNotation(w, server.TaskResult{TaskId: string(task.UPID)})
+	web.EncodeNotation(
+		w,
+		server.TaskResult{
+			TaskId: string(s.client.MustShutdownMachine(m).UPID),
+		},
+	)
 }

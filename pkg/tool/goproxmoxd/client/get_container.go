@@ -7,12 +7,12 @@ import (
 )
 
 func (c *Client) GetContainer(
-	vmid int64,
+	identifier int64,
 	node *string,
 ) string {
 	result, e := c.client.GetContainer(
 		c.context,
-		vmid,
+		identifier,
 		&client.GetContainerParams{Node: node},
 	)
 	errors.PanicOnError(e)

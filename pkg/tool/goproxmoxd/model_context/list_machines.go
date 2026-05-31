@@ -24,8 +24,8 @@ func (s *Server) ListMachines(
 			return s.captureDetail(e)
 		}
 
-		for _, ns := range nodes {
-			nodeNames = append(nodeNames, ns.Node)
+		for _, n := range nodes {
+			nodeNames = append(nodeNames, n.Node)
 		}
 	}
 
@@ -38,26 +38,26 @@ func (s *Server) ListMachines(
 			return s.captureFail(e, "node not found")
 		}
 
-		machines, e := s.client.Machines(node)
+		machines, f := s.client.Machines(node)
 
-		if e != nil {
-			return s.captureDetail(e)
+		if f != nil {
+			return s.captureDetail(f)
 		}
 
-		for _, vm := range machines {
+		for _, m := range machines {
 			rows = append(
 				rows,
 				proxResponse.Machine{
-					VMID:   uint64(vm.VMID),
-					Name:   vm.Name,
-					Node:   vm.Node,
-					Status: vm.Status,
-					CPU:    vm.CPU,
-					CPUs:   vm.CPUs,
-					Mem:    vm.Mem,
-					MaxMem: vm.MaxMem,
-					Uptime: vm.Uptime,
-					Tags:   vm.Tags,
+					Identifier: uint64(m.VMID),
+					Name:   m.Name,
+					Node:   m.Node,
+					Status: m.Status,
+					CPU:    m.CPU,
+					CPUs:   m.CPUs,
+					Mem:    m.Mem,
+					MaxMem: m.MaxMem,
+					Uptime: m.Uptime,
+					Tags:   m.Tags,
 				},
 			)
 		}

@@ -18,16 +18,16 @@ import (
 
 // Container defines model for Container.
 type Container struct {
-	Cpus    *int    `json:"cpus,omitempty"`
-	MaxDisk *int64  `json:"maxDisk,omitempty"`
-	MaxMem  *int64  `json:"maxMem,omitempty"`
-	MaxSwap *int64  `json:"maxSwap,omitempty"`
-	Name    string  `json:"name"`
-	Node    *string `json:"node,omitempty"`
-	Status  *string `json:"status,omitempty"`
-	Tags    *string `json:"tags,omitempty"`
-	Uptime  *int64  `json:"uptime,omitempty"`
-	Vmid    int64   `json:"vmid"`
+	Cpus       *int    `json:"cpus,omitempty"`
+	Identifier int64   `json:"identifier"`
+	MaxDisk    *int64  `json:"maxDisk,omitempty"`
+	MaxMem     *int64  `json:"maxMem,omitempty"`
+	MaxSwap    *int64  `json:"maxSwap,omitempty"`
+	Name       string  `json:"name"`
+	Node       *string `json:"node,omitempty"`
+	Status     *string `json:"status,omitempty"`
+	Tags       *string `json:"tags,omitempty"`
+	Uptime     *int64  `json:"uptime,omitempty"`
 }
 
 // ContainerDetail defines model for ContainerDetail.
@@ -37,6 +37,7 @@ type ContainerDetail struct {
 	Cpus        *int    `json:"cpus,omitempty"`
 	Description *string `json:"description,omitempty"`
 	Hostname    *string `json:"hostname,omitempty"`
+	Identifier  int64   `json:"identifier"`
 	MaxDisk     *int64  `json:"maxDisk,omitempty"`
 	MaxMem      *int64  `json:"maxMem,omitempty"`
 	MaxSwap     *int64  `json:"maxSwap,omitempty"`
@@ -46,21 +47,20 @@ type ContainerDetail struct {
 	Status      *string `json:"status,omitempty"`
 	Tags        *string `json:"tags,omitempty"`
 	Uptime      *int64  `json:"uptime,omitempty"`
-	Vmid        int64   `json:"vmid"`
 }
 
 // Machine defines model for Machine.
 type Machine struct {
-	Cpu    *float64 `json:"cpu,omitempty"`
-	Cpus   *int     `json:"cpus,omitempty"`
-	MaxMem *int64   `json:"maxMem,omitempty"`
-	Mem    *int64   `json:"mem,omitempty"`
-	Name   string   `json:"name"`
-	Node   *string  `json:"node,omitempty"`
-	Status *string  `json:"status,omitempty"`
-	Tags   *string  `json:"tags,omitempty"`
-	Uptime *int64   `json:"uptime,omitempty"`
-	Vmid   int64    `json:"vmid"`
+	Cpu        *float64 `json:"cpu,omitempty"`
+	Cpus       *int     `json:"cpus,omitempty"`
+	Identifier int64    `json:"identifier"`
+	MaxMem     *int64   `json:"maxMem,omitempty"`
+	Mem        *int64   `json:"mem,omitempty"`
+	Name       string   `json:"name"`
+	Node       *string  `json:"node,omitempty"`
+	Status     *string  `json:"status,omitempty"`
+	Tags       *string  `json:"tags,omitempty"`
+	Uptime     *int64   `json:"uptime,omitempty"`
 }
 
 // MachineDetail defines model for MachineDetail.
@@ -70,6 +70,7 @@ type MachineDetail struct {
 	Cpus        *int     `json:"cpus,omitempty"`
 	Description *string  `json:"description,omitempty"`
 	Disk        *int64   `json:"disk,omitempty"`
+	Identifier  int64    `json:"identifier"`
 	MaxDisk     *int64   `json:"maxDisk,omitempty"`
 	MaxMem      *int64   `json:"maxMem,omitempty"`
 	Mem         *int64   `json:"mem,omitempty"`
@@ -80,7 +81,6 @@ type MachineDetail struct {
 	Status      *string  `json:"status,omitempty"`
 	Tags        *string  `json:"tags,omitempty"`
 	Uptime      *int64   `json:"uptime,omitempty"`
-	Vmid        int64    `json:"vmid"`
 }
 
 // MemoryInfo defines model for MemoryInfo.
@@ -159,6 +159,30 @@ type GetContainerParams struct {
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
+// ListContainerSnapshotsParams defines parameters for ListContainerSnapshots.
+type ListContainerSnapshotsParams struct {
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// CreateContainerSnapshotParams defines parameters for CreateContainerSnapshot.
+type CreateContainerSnapshotParams struct {
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// DeleteContainerSnapshotParams defines parameters for DeleteContainerSnapshot.
+type DeleteContainerSnapshotParams struct {
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// RollbackContainerSnapshotParams defines parameters for RollbackContainerSnapshot.
+type RollbackContainerSnapshotParams struct {
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
 // ListMachinesParams defines parameters for ListMachines.
 type ListMachinesParams struct {
 	// Node Filter by node name. Omit for all nodes.
@@ -183,26 +207,26 @@ type ShutdownMachineParams struct {
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// ListSnapshotsParams defines parameters for ListSnapshots.
-type ListSnapshotsParams struct {
+// ListMachineSnapshotsParams defines parameters for ListMachineSnapshots.
+type ListMachineSnapshotsParams struct {
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// CreateSnapshotParams defines parameters for CreateSnapshot.
-type CreateSnapshotParams struct {
+// CreateMachineSnapshotParams defines parameters for CreateMachineSnapshot.
+type CreateMachineSnapshotParams struct {
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// DeleteSnapshotParams defines parameters for DeleteSnapshot.
-type DeleteSnapshotParams struct {
+// DeleteMachineSnapshotParams defines parameters for DeleteMachineSnapshot.
+type DeleteMachineSnapshotParams struct {
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// RollbackSnapshotParams defines parameters for RollbackSnapshot.
-type RollbackSnapshotParams struct {
+// RollbackMachineSnapshotParams defines parameters for RollbackMachineSnapshot.
+type RollbackMachineSnapshotParams struct {
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
@@ -219,8 +243,11 @@ type StopMachineParams struct {
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// CreateSnapshotJSONRequestBody defines body for CreateSnapshot for application/json ContentType.
-type CreateSnapshotJSONRequestBody = SnapshotRequest
+// CreateContainerSnapshotJSONRequestBody defines body for CreateContainerSnapshot for application/json ContentType.
+type CreateContainerSnapshotJSONRequestBody = SnapshotRequest
+
+// CreateMachineSnapshotJSONRequestBody defines body for CreateMachineSnapshot for application/json ContentType.
+type CreateMachineSnapshotJSONRequestBody = SnapshotRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -299,39 +326,53 @@ type ClientInterface interface {
 	ListContainers(ctx context.Context, params *ListContainersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetContainer request
-	GetContainer(ctx context.Context, vmid int64, params *GetContainerParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetContainer(ctx context.Context, identifier int64, params *GetContainerParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListContainerSnapshots request
+	ListContainerSnapshots(ctx context.Context, identifier int64, params *ListContainerSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateContainerSnapshotWithBody request with any body
+	CreateContainerSnapshotWithBody(ctx context.Context, identifier int64, params *CreateContainerSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateContainerSnapshot(ctx context.Context, identifier int64, params *CreateContainerSnapshotParams, body CreateContainerSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteContainerSnapshot request
+	DeleteContainerSnapshot(ctx context.Context, identifier int64, name string, params *DeleteContainerSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RollbackContainerSnapshot request
+	RollbackContainerSnapshot(ctx context.Context, identifier int64, name string, params *RollbackContainerSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListMachines request
 	ListMachines(ctx context.Context, params *ListMachinesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetMachine request
-	GetMachine(ctx context.Context, vmid int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetMachine(ctx context.Context, identifier int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ResetMachine request
-	ResetMachine(ctx context.Context, vmid int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ResetMachine(ctx context.Context, identifier int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ShutdownMachine request
-	ShutdownMachine(ctx context.Context, vmid int64, params *ShutdownMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ShutdownMachine(ctx context.Context, identifier int64, params *ShutdownMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListSnapshots request
-	ListSnapshots(ctx context.Context, vmid int64, params *ListSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListMachineSnapshots request
+	ListMachineSnapshots(ctx context.Context, identifier int64, params *ListMachineSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateSnapshotWithBody request with any body
-	CreateSnapshotWithBody(ctx context.Context, vmid int64, params *CreateSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateMachineSnapshotWithBody request with any body
+	CreateMachineSnapshotWithBody(ctx context.Context, identifier int64, params *CreateMachineSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateSnapshot(ctx context.Context, vmid int64, params *CreateSnapshotParams, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateMachineSnapshot(ctx context.Context, identifier int64, params *CreateMachineSnapshotParams, body CreateMachineSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteSnapshot request
-	DeleteSnapshot(ctx context.Context, vmid int64, name string, params *DeleteSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteMachineSnapshot request
+	DeleteMachineSnapshot(ctx context.Context, identifier int64, name string, params *DeleteMachineSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RollbackSnapshot request
-	RollbackSnapshot(ctx context.Context, vmid int64, name string, params *RollbackSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RollbackMachineSnapshot request
+	RollbackMachineSnapshot(ctx context.Context, identifier int64, name string, params *RollbackMachineSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// StartMachine request
-	StartMachine(ctx context.Context, vmid int64, params *StartMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	StartMachine(ctx context.Context, identifier int64, params *StartMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// StopMachine request
-	StopMachine(ctx context.Context, vmid int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	StopMachine(ctx context.Context, identifier int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListNodes request
 	ListNodes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -355,8 +396,68 @@ func (c *Client) ListContainers(ctx context.Context, params *ListContainersParam
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetContainer(ctx context.Context, vmid int64, params *GetContainerParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetContainerRequest(c.Server, vmid, params)
+func (c *Client) GetContainer(ctx context.Context, identifier int64, params *GetContainerParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetContainerRequest(c.Server, identifier, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListContainerSnapshots(ctx context.Context, identifier int64, params *ListContainerSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListContainerSnapshotsRequest(c.Server, identifier, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateContainerSnapshotWithBody(ctx context.Context, identifier int64, params *CreateContainerSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateContainerSnapshotRequestWithBody(c.Server, identifier, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateContainerSnapshot(ctx context.Context, identifier int64, params *CreateContainerSnapshotParams, body CreateContainerSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateContainerSnapshotRequest(c.Server, identifier, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteContainerSnapshot(ctx context.Context, identifier int64, name string, params *DeleteContainerSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteContainerSnapshotRequest(c.Server, identifier, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RollbackContainerSnapshot(ctx context.Context, identifier int64, name string, params *RollbackContainerSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRollbackContainerSnapshotRequest(c.Server, identifier, name, params)
 	if err != nil {
 		return nil, err
 	}
@@ -379,8 +480,8 @@ func (c *Client) ListMachines(ctx context.Context, params *ListMachinesParams, r
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetMachine(ctx context.Context, vmid int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetMachineRequest(c.Server, vmid, params)
+func (c *Client) GetMachine(ctx context.Context, identifier int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMachineRequest(c.Server, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -391,8 +492,8 @@ func (c *Client) GetMachine(ctx context.Context, vmid int64, params *GetMachineP
 	return c.Client.Do(req)
 }
 
-func (c *Client) ResetMachine(ctx context.Context, vmid int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewResetMachineRequest(c.Server, vmid, params)
+func (c *Client) ResetMachine(ctx context.Context, identifier int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResetMachineRequest(c.Server, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -403,8 +504,8 @@ func (c *Client) ResetMachine(ctx context.Context, vmid int64, params *ResetMach
 	return c.Client.Do(req)
 }
 
-func (c *Client) ShutdownMachine(ctx context.Context, vmid int64, params *ShutdownMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewShutdownMachineRequest(c.Server, vmid, params)
+func (c *Client) ShutdownMachine(ctx context.Context, identifier int64, params *ShutdownMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewShutdownMachineRequest(c.Server, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -415,8 +516,8 @@ func (c *Client) ShutdownMachine(ctx context.Context, vmid int64, params *Shutdo
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListSnapshots(ctx context.Context, vmid int64, params *ListSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListSnapshotsRequest(c.Server, vmid, params)
+func (c *Client) ListMachineSnapshots(ctx context.Context, identifier int64, params *ListMachineSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListMachineSnapshotsRequest(c.Server, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -427,8 +528,8 @@ func (c *Client) ListSnapshots(ctx context.Context, vmid int64, params *ListSnap
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateSnapshotWithBody(ctx context.Context, vmid int64, params *CreateSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateSnapshotRequestWithBody(c.Server, vmid, params, contentType, body)
+func (c *Client) CreateMachineSnapshotWithBody(ctx context.Context, identifier int64, params *CreateMachineSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMachineSnapshotRequestWithBody(c.Server, identifier, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -439,8 +540,8 @@ func (c *Client) CreateSnapshotWithBody(ctx context.Context, vmid int64, params 
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateSnapshot(ctx context.Context, vmid int64, params *CreateSnapshotParams, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateSnapshotRequest(c.Server, vmid, params, body)
+func (c *Client) CreateMachineSnapshot(ctx context.Context, identifier int64, params *CreateMachineSnapshotParams, body CreateMachineSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMachineSnapshotRequest(c.Server, identifier, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -451,8 +552,8 @@ func (c *Client) CreateSnapshot(ctx context.Context, vmid int64, params *CreateS
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSnapshot(ctx context.Context, vmid int64, name string, params *DeleteSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSnapshotRequest(c.Server, vmid, name, params)
+func (c *Client) DeleteMachineSnapshot(ctx context.Context, identifier int64, name string, params *DeleteMachineSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteMachineSnapshotRequest(c.Server, identifier, name, params)
 	if err != nil {
 		return nil, err
 	}
@@ -463,8 +564,8 @@ func (c *Client) DeleteSnapshot(ctx context.Context, vmid int64, name string, pa
 	return c.Client.Do(req)
 }
 
-func (c *Client) RollbackSnapshot(ctx context.Context, vmid int64, name string, params *RollbackSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRollbackSnapshotRequest(c.Server, vmid, name, params)
+func (c *Client) RollbackMachineSnapshot(ctx context.Context, identifier int64, name string, params *RollbackMachineSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRollbackMachineSnapshotRequest(c.Server, identifier, name, params)
 	if err != nil {
 		return nil, err
 	}
@@ -475,8 +576,8 @@ func (c *Client) RollbackSnapshot(ctx context.Context, vmid int64, name string, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) StartMachine(ctx context.Context, vmid int64, params *StartMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewStartMachineRequest(c.Server, vmid, params)
+func (c *Client) StartMachine(ctx context.Context, identifier int64, params *StartMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartMachineRequest(c.Server, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -487,8 +588,8 @@ func (c *Client) StartMachine(ctx context.Context, vmid int64, params *StartMach
 	return c.Client.Do(req)
 }
 
-func (c *Client) StopMachine(ctx context.Context, vmid int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewStopMachineRequest(c.Server, vmid, params)
+func (c *Client) StopMachine(ctx context.Context, identifier int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStopMachineRequest(c.Server, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -585,12 +686,12 @@ func NewListContainersRequest(server string, params *ListContainersParams) (*htt
 }
 
 // NewGetContainerRequest generates requests for GetContainer
-func NewGetContainerRequest(server string, vmid int64, params *GetContainerParams) (*http.Request, error) {
+func NewGetContainerRequest(server string, identifier int64, params *GetContainerParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -633,6 +734,257 @@ func NewGetContainerRequest(server string, vmid int64, params *GetContainerParam
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListContainerSnapshotsRequest generates requests for ListContainerSnapshots
+func NewListContainerSnapshotsRequest(server string, identifier int64, params *ListContainerSnapshotsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/containers/%s/snapshots", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Node != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateContainerSnapshotRequest calls the generic CreateContainerSnapshot builder with application/json body
+func NewCreateContainerSnapshotRequest(server string, identifier int64, params *CreateContainerSnapshotParams, body CreateContainerSnapshotJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateContainerSnapshotRequestWithBody(server, identifier, params, "application/json", bodyReader)
+}
+
+// NewCreateContainerSnapshotRequestWithBody generates requests for CreateContainerSnapshot with any type of body
+func NewCreateContainerSnapshotRequestWithBody(server string, identifier int64, params *CreateContainerSnapshotParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/containers/%s/snapshots", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Node != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteContainerSnapshotRequest generates requests for DeleteContainerSnapshot
+func NewDeleteContainerSnapshotRequest(server string, identifier int64, name string, params *DeleteContainerSnapshotParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/containers/%s/snapshots/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Node != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRollbackContainerSnapshotRequest generates requests for RollbackContainerSnapshot
+func NewRollbackContainerSnapshotRequest(server string, identifier int64, name string, params *RollbackContainerSnapshotParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/containers/%s/snapshots/%s/rollback", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Node != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -690,12 +1042,12 @@ func NewListMachinesRequest(server string, params *ListMachinesParams) (*http.Re
 }
 
 // NewGetMachineRequest generates requests for GetMachine
-func NewGetMachineRequest(server string, vmid int64, params *GetMachineParams) (*http.Request, error) {
+func NewGetMachineRequest(server string, identifier int64, params *GetMachineParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -746,12 +1098,12 @@ func NewGetMachineRequest(server string, vmid int64, params *GetMachineParams) (
 }
 
 // NewResetMachineRequest generates requests for ResetMachine
-func NewResetMachineRequest(server string, vmid int64, params *ResetMachineParams) (*http.Request, error) {
+func NewResetMachineRequest(server string, identifier int64, params *ResetMachineParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -802,12 +1154,12 @@ func NewResetMachineRequest(server string, vmid int64, params *ResetMachineParam
 }
 
 // NewShutdownMachineRequest generates requests for ShutdownMachine
-func NewShutdownMachineRequest(server string, vmid int64, params *ShutdownMachineParams) (*http.Request, error) {
+func NewShutdownMachineRequest(server string, identifier int64, params *ShutdownMachineParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -857,13 +1209,13 @@ func NewShutdownMachineRequest(server string, vmid int64, params *ShutdownMachin
 	return req, nil
 }
 
-// NewListSnapshotsRequest generates requests for ListSnapshots
-func NewListSnapshotsRequest(server string, vmid int64, params *ListSnapshotsParams) (*http.Request, error) {
+// NewListMachineSnapshotsRequest generates requests for ListMachineSnapshots
+func NewListMachineSnapshotsRequest(server string, identifier int64, params *ListMachineSnapshotsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -913,24 +1265,24 @@ func NewListSnapshotsRequest(server string, vmid int64, params *ListSnapshotsPar
 	return req, nil
 }
 
-// NewCreateSnapshotRequest calls the generic CreateSnapshot builder with application/json body
-func NewCreateSnapshotRequest(server string, vmid int64, params *CreateSnapshotParams, body CreateSnapshotJSONRequestBody) (*http.Request, error) {
+// NewCreateMachineSnapshotRequest calls the generic CreateMachineSnapshot builder with application/json body
+func NewCreateMachineSnapshotRequest(server string, identifier int64, params *CreateMachineSnapshotParams, body CreateMachineSnapshotJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateSnapshotRequestWithBody(server, vmid, params, "application/json", bodyReader)
+	return NewCreateMachineSnapshotRequestWithBody(server, identifier, params, "application/json", bodyReader)
 }
 
-// NewCreateSnapshotRequestWithBody generates requests for CreateSnapshot with any type of body
-func NewCreateSnapshotRequestWithBody(server string, vmid int64, params *CreateSnapshotParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateMachineSnapshotRequestWithBody generates requests for CreateMachineSnapshot with any type of body
+func NewCreateMachineSnapshotRequestWithBody(server string, identifier int64, params *CreateMachineSnapshotParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -982,13 +1334,13 @@ func NewCreateSnapshotRequestWithBody(server string, vmid int64, params *CreateS
 	return req, nil
 }
 
-// NewDeleteSnapshotRequest generates requests for DeleteSnapshot
-func NewDeleteSnapshotRequest(server string, vmid int64, name string, params *DeleteSnapshotParams) (*http.Request, error) {
+// NewDeleteMachineSnapshotRequest generates requests for DeleteMachineSnapshot
+func NewDeleteMachineSnapshotRequest(server string, identifier int64, name string, params *DeleteMachineSnapshotParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -1045,13 +1397,13 @@ func NewDeleteSnapshotRequest(server string, vmid int64, name string, params *De
 	return req, nil
 }
 
-// NewRollbackSnapshotRequest generates requests for RollbackSnapshot
-func NewRollbackSnapshotRequest(server string, vmid int64, name string, params *RollbackSnapshotParams) (*http.Request, error) {
+// NewRollbackMachineSnapshotRequest generates requests for RollbackMachineSnapshot
+func NewRollbackMachineSnapshotRequest(server string, identifier int64, name string, params *RollbackMachineSnapshotParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -1109,12 +1461,12 @@ func NewRollbackSnapshotRequest(server string, vmid int64, name string, params *
 }
 
 // NewStartMachineRequest generates requests for StartMachine
-func NewStartMachineRequest(server string, vmid int64, params *StartMachineParams) (*http.Request, error) {
+func NewStartMachineRequest(server string, identifier int64, params *StartMachineParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -1165,12 +1517,12 @@ func NewStartMachineRequest(server string, vmid int64, params *StartMachineParam
 }
 
 // NewStopMachineRequest generates requests for StopMachine
-func NewStopMachineRequest(server string, vmid int64, params *StopMachineParams) (*http.Request, error) {
+func NewStopMachineRequest(server string, identifier int64, params *StopMachineParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vmid", vmid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
 	if err != nil {
 		return nil, err
 	}
@@ -1362,39 +1714,53 @@ type ClientWithResponsesInterface interface {
 	ListContainersWithResponse(ctx context.Context, params *ListContainersParams, reqEditors ...RequestEditorFn) (*ListContainersResponse, error)
 
 	// GetContainerWithResponse request
-	GetContainerWithResponse(ctx context.Context, vmid int64, params *GetContainerParams, reqEditors ...RequestEditorFn) (*GetContainerResponse, error)
+	GetContainerWithResponse(ctx context.Context, identifier int64, params *GetContainerParams, reqEditors ...RequestEditorFn) (*GetContainerResponse, error)
+
+	// ListContainerSnapshotsWithResponse request
+	ListContainerSnapshotsWithResponse(ctx context.Context, identifier int64, params *ListContainerSnapshotsParams, reqEditors ...RequestEditorFn) (*ListContainerSnapshotsResponse, error)
+
+	// CreateContainerSnapshotWithBodyWithResponse request with any body
+	CreateContainerSnapshotWithBodyWithResponse(ctx context.Context, identifier int64, params *CreateContainerSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateContainerSnapshotResponse, error)
+
+	CreateContainerSnapshotWithResponse(ctx context.Context, identifier int64, params *CreateContainerSnapshotParams, body CreateContainerSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateContainerSnapshotResponse, error)
+
+	// DeleteContainerSnapshotWithResponse request
+	DeleteContainerSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *DeleteContainerSnapshotParams, reqEditors ...RequestEditorFn) (*DeleteContainerSnapshotResponse, error)
+
+	// RollbackContainerSnapshotWithResponse request
+	RollbackContainerSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *RollbackContainerSnapshotParams, reqEditors ...RequestEditorFn) (*RollbackContainerSnapshotResponse, error)
 
 	// ListMachinesWithResponse request
 	ListMachinesWithResponse(ctx context.Context, params *ListMachinesParams, reqEditors ...RequestEditorFn) (*ListMachinesResponse, error)
 
 	// GetMachineWithResponse request
-	GetMachineWithResponse(ctx context.Context, vmid int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*GetMachineResponse, error)
+	GetMachineWithResponse(ctx context.Context, identifier int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*GetMachineResponse, error)
 
 	// ResetMachineWithResponse request
-	ResetMachineWithResponse(ctx context.Context, vmid int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*ResetMachineResponse, error)
+	ResetMachineWithResponse(ctx context.Context, identifier int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*ResetMachineResponse, error)
 
 	// ShutdownMachineWithResponse request
-	ShutdownMachineWithResponse(ctx context.Context, vmid int64, params *ShutdownMachineParams, reqEditors ...RequestEditorFn) (*ShutdownMachineResponse, error)
+	ShutdownMachineWithResponse(ctx context.Context, identifier int64, params *ShutdownMachineParams, reqEditors ...RequestEditorFn) (*ShutdownMachineResponse, error)
 
-	// ListSnapshotsWithResponse request
-	ListSnapshotsWithResponse(ctx context.Context, vmid int64, params *ListSnapshotsParams, reqEditors ...RequestEditorFn) (*ListSnapshotsResponse, error)
+	// ListMachineSnapshotsWithResponse request
+	ListMachineSnapshotsWithResponse(ctx context.Context, identifier int64, params *ListMachineSnapshotsParams, reqEditors ...RequestEditorFn) (*ListMachineSnapshotsResponse, error)
 
-	// CreateSnapshotWithBodyWithResponse request with any body
-	CreateSnapshotWithBodyWithResponse(ctx context.Context, vmid int64, params *CreateSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error)
+	// CreateMachineSnapshotWithBodyWithResponse request with any body
+	CreateMachineSnapshotWithBodyWithResponse(ctx context.Context, identifier int64, params *CreateMachineSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMachineSnapshotResponse, error)
 
-	CreateSnapshotWithResponse(ctx context.Context, vmid int64, params *CreateSnapshotParams, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error)
+	CreateMachineSnapshotWithResponse(ctx context.Context, identifier int64, params *CreateMachineSnapshotParams, body CreateMachineSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMachineSnapshotResponse, error)
 
-	// DeleteSnapshotWithResponse request
-	DeleteSnapshotWithResponse(ctx context.Context, vmid int64, name string, params *DeleteSnapshotParams, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error)
+	// DeleteMachineSnapshotWithResponse request
+	DeleteMachineSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *DeleteMachineSnapshotParams, reqEditors ...RequestEditorFn) (*DeleteMachineSnapshotResponse, error)
 
-	// RollbackSnapshotWithResponse request
-	RollbackSnapshotWithResponse(ctx context.Context, vmid int64, name string, params *RollbackSnapshotParams, reqEditors ...RequestEditorFn) (*RollbackSnapshotResponse, error)
+	// RollbackMachineSnapshotWithResponse request
+	RollbackMachineSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *RollbackMachineSnapshotParams, reqEditors ...RequestEditorFn) (*RollbackMachineSnapshotResponse, error)
 
 	// StartMachineWithResponse request
-	StartMachineWithResponse(ctx context.Context, vmid int64, params *StartMachineParams, reqEditors ...RequestEditorFn) (*StartMachineResponse, error)
+	StartMachineWithResponse(ctx context.Context, identifier int64, params *StartMachineParams, reqEditors ...RequestEditorFn) (*StartMachineResponse, error)
 
 	// StopMachineWithResponse request
-	StopMachineWithResponse(ctx context.Context, vmid int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*StopMachineResponse, error)
+	StopMachineWithResponse(ctx context.Context, identifier int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*StopMachineResponse, error)
 
 	// ListNodesWithResponse request
 	ListNodesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListNodesResponse, error)
@@ -1444,6 +1810,94 @@ func (r GetContainerResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetContainerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListContainerSnapshotsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Snapshot
+}
+
+// Status returns HTTPResponse.Status
+func (r ListContainerSnapshotsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListContainerSnapshotsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateContainerSnapshotResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TaskResult
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateContainerSnapshotResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateContainerSnapshotResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteContainerSnapshotResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TaskResult
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteContainerSnapshotResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteContainerSnapshotResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RollbackContainerSnapshotResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TaskResult
+}
+
+// Status returns HTTPResponse.Status
+func (r RollbackContainerSnapshotResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RollbackContainerSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1538,14 +1992,14 @@ func (r ShutdownMachineResponse) StatusCode() int {
 	return 0
 }
 
-type ListSnapshotsResponse struct {
+type ListMachineSnapshotsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Snapshot
 }
 
 // Status returns HTTPResponse.Status
-func (r ListSnapshotsResponse) Status() string {
+func (r ListMachineSnapshotsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1553,21 +2007,21 @@ func (r ListSnapshotsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListSnapshotsResponse) StatusCode() int {
+func (r ListMachineSnapshotsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CreateSnapshotResponse struct {
+type CreateMachineSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateSnapshotResponse) Status() string {
+func (r CreateMachineSnapshotResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1575,21 +2029,21 @@ func (r CreateSnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateSnapshotResponse) StatusCode() int {
+func (r CreateMachineSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type DeleteSnapshotResponse struct {
+type DeleteMachineSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteSnapshotResponse) Status() string {
+func (r DeleteMachineSnapshotResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1597,21 +2051,21 @@ func (r DeleteSnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteSnapshotResponse) StatusCode() int {
+func (r DeleteMachineSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RollbackSnapshotResponse struct {
+type RollbackMachineSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
 }
 
 // Status returns HTTPResponse.Status
-func (r RollbackSnapshotResponse) Status() string {
+func (r RollbackMachineSnapshotResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1619,7 +2073,7 @@ func (r RollbackSnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RollbackSnapshotResponse) StatusCode() int {
+func (r RollbackMachineSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1746,12 +2200,56 @@ func (c *ClientWithResponses) ListContainersWithResponse(ctx context.Context, pa
 }
 
 // GetContainerWithResponse request returning *GetContainerResponse
-func (c *ClientWithResponses) GetContainerWithResponse(ctx context.Context, vmid int64, params *GetContainerParams, reqEditors ...RequestEditorFn) (*GetContainerResponse, error) {
-	rsp, err := c.GetContainer(ctx, vmid, params, reqEditors...)
+func (c *ClientWithResponses) GetContainerWithResponse(ctx context.Context, identifier int64, params *GetContainerParams, reqEditors ...RequestEditorFn) (*GetContainerResponse, error) {
+	rsp, err := c.GetContainer(ctx, identifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseGetContainerResponse(rsp)
+}
+
+// ListContainerSnapshotsWithResponse request returning *ListContainerSnapshotsResponse
+func (c *ClientWithResponses) ListContainerSnapshotsWithResponse(ctx context.Context, identifier int64, params *ListContainerSnapshotsParams, reqEditors ...RequestEditorFn) (*ListContainerSnapshotsResponse, error) {
+	rsp, err := c.ListContainerSnapshots(ctx, identifier, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListContainerSnapshotsResponse(rsp)
+}
+
+// CreateContainerSnapshotWithBodyWithResponse request with arbitrary body returning *CreateContainerSnapshotResponse
+func (c *ClientWithResponses) CreateContainerSnapshotWithBodyWithResponse(ctx context.Context, identifier int64, params *CreateContainerSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateContainerSnapshotResponse, error) {
+	rsp, err := c.CreateContainerSnapshotWithBody(ctx, identifier, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateContainerSnapshotResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateContainerSnapshotWithResponse(ctx context.Context, identifier int64, params *CreateContainerSnapshotParams, body CreateContainerSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateContainerSnapshotResponse, error) {
+	rsp, err := c.CreateContainerSnapshot(ctx, identifier, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateContainerSnapshotResponse(rsp)
+}
+
+// DeleteContainerSnapshotWithResponse request returning *DeleteContainerSnapshotResponse
+func (c *ClientWithResponses) DeleteContainerSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *DeleteContainerSnapshotParams, reqEditors ...RequestEditorFn) (*DeleteContainerSnapshotResponse, error) {
+	rsp, err := c.DeleteContainerSnapshot(ctx, identifier, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteContainerSnapshotResponse(rsp)
+}
+
+// RollbackContainerSnapshotWithResponse request returning *RollbackContainerSnapshotResponse
+func (c *ClientWithResponses) RollbackContainerSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *RollbackContainerSnapshotParams, reqEditors ...RequestEditorFn) (*RollbackContainerSnapshotResponse, error) {
+	rsp, err := c.RollbackContainerSnapshot(ctx, identifier, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRollbackContainerSnapshotResponse(rsp)
 }
 
 // ListMachinesWithResponse request returning *ListMachinesResponse
@@ -1764,8 +2262,8 @@ func (c *ClientWithResponses) ListMachinesWithResponse(ctx context.Context, para
 }
 
 // GetMachineWithResponse request returning *GetMachineResponse
-func (c *ClientWithResponses) GetMachineWithResponse(ctx context.Context, vmid int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*GetMachineResponse, error) {
-	rsp, err := c.GetMachine(ctx, vmid, params, reqEditors...)
+func (c *ClientWithResponses) GetMachineWithResponse(ctx context.Context, identifier int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*GetMachineResponse, error) {
+	rsp, err := c.GetMachine(ctx, identifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -1773,8 +2271,8 @@ func (c *ClientWithResponses) GetMachineWithResponse(ctx context.Context, vmid i
 }
 
 // ResetMachineWithResponse request returning *ResetMachineResponse
-func (c *ClientWithResponses) ResetMachineWithResponse(ctx context.Context, vmid int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*ResetMachineResponse, error) {
-	rsp, err := c.ResetMachine(ctx, vmid, params, reqEditors...)
+func (c *ClientWithResponses) ResetMachineWithResponse(ctx context.Context, identifier int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*ResetMachineResponse, error) {
+	rsp, err := c.ResetMachine(ctx, identifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -1782,61 +2280,61 @@ func (c *ClientWithResponses) ResetMachineWithResponse(ctx context.Context, vmid
 }
 
 // ShutdownMachineWithResponse request returning *ShutdownMachineResponse
-func (c *ClientWithResponses) ShutdownMachineWithResponse(ctx context.Context, vmid int64, params *ShutdownMachineParams, reqEditors ...RequestEditorFn) (*ShutdownMachineResponse, error) {
-	rsp, err := c.ShutdownMachine(ctx, vmid, params, reqEditors...)
+func (c *ClientWithResponses) ShutdownMachineWithResponse(ctx context.Context, identifier int64, params *ShutdownMachineParams, reqEditors ...RequestEditorFn) (*ShutdownMachineResponse, error) {
+	rsp, err := c.ShutdownMachine(ctx, identifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseShutdownMachineResponse(rsp)
 }
 
-// ListSnapshotsWithResponse request returning *ListSnapshotsResponse
-func (c *ClientWithResponses) ListSnapshotsWithResponse(ctx context.Context, vmid int64, params *ListSnapshotsParams, reqEditors ...RequestEditorFn) (*ListSnapshotsResponse, error) {
-	rsp, err := c.ListSnapshots(ctx, vmid, params, reqEditors...)
+// ListMachineSnapshotsWithResponse request returning *ListMachineSnapshotsResponse
+func (c *ClientWithResponses) ListMachineSnapshotsWithResponse(ctx context.Context, identifier int64, params *ListMachineSnapshotsParams, reqEditors ...RequestEditorFn) (*ListMachineSnapshotsResponse, error) {
+	rsp, err := c.ListMachineSnapshots(ctx, identifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListSnapshotsResponse(rsp)
+	return ParseListMachineSnapshotsResponse(rsp)
 }
 
-// CreateSnapshotWithBodyWithResponse request with arbitrary body returning *CreateSnapshotResponse
-func (c *ClientWithResponses) CreateSnapshotWithBodyWithResponse(ctx context.Context, vmid int64, params *CreateSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error) {
-	rsp, err := c.CreateSnapshotWithBody(ctx, vmid, params, contentType, body, reqEditors...)
+// CreateMachineSnapshotWithBodyWithResponse request with arbitrary body returning *CreateMachineSnapshotResponse
+func (c *ClientWithResponses) CreateMachineSnapshotWithBodyWithResponse(ctx context.Context, identifier int64, params *CreateMachineSnapshotParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMachineSnapshotResponse, error) {
+	rsp, err := c.CreateMachineSnapshotWithBody(ctx, identifier, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateSnapshotResponse(rsp)
+	return ParseCreateMachineSnapshotResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateSnapshotWithResponse(ctx context.Context, vmid int64, params *CreateSnapshotParams, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error) {
-	rsp, err := c.CreateSnapshot(ctx, vmid, params, body, reqEditors...)
+func (c *ClientWithResponses) CreateMachineSnapshotWithResponse(ctx context.Context, identifier int64, params *CreateMachineSnapshotParams, body CreateMachineSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMachineSnapshotResponse, error) {
+	rsp, err := c.CreateMachineSnapshot(ctx, identifier, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateSnapshotResponse(rsp)
+	return ParseCreateMachineSnapshotResponse(rsp)
 }
 
-// DeleteSnapshotWithResponse request returning *DeleteSnapshotResponse
-func (c *ClientWithResponses) DeleteSnapshotWithResponse(ctx context.Context, vmid int64, name string, params *DeleteSnapshotParams, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error) {
-	rsp, err := c.DeleteSnapshot(ctx, vmid, name, params, reqEditors...)
+// DeleteMachineSnapshotWithResponse request returning *DeleteMachineSnapshotResponse
+func (c *ClientWithResponses) DeleteMachineSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *DeleteMachineSnapshotParams, reqEditors ...RequestEditorFn) (*DeleteMachineSnapshotResponse, error) {
+	rsp, err := c.DeleteMachineSnapshot(ctx, identifier, name, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteSnapshotResponse(rsp)
+	return ParseDeleteMachineSnapshotResponse(rsp)
 }
 
-// RollbackSnapshotWithResponse request returning *RollbackSnapshotResponse
-func (c *ClientWithResponses) RollbackSnapshotWithResponse(ctx context.Context, vmid int64, name string, params *RollbackSnapshotParams, reqEditors ...RequestEditorFn) (*RollbackSnapshotResponse, error) {
-	rsp, err := c.RollbackSnapshot(ctx, vmid, name, params, reqEditors...)
+// RollbackMachineSnapshotWithResponse request returning *RollbackMachineSnapshotResponse
+func (c *ClientWithResponses) RollbackMachineSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *RollbackMachineSnapshotParams, reqEditors ...RequestEditorFn) (*RollbackMachineSnapshotResponse, error) {
+	rsp, err := c.RollbackMachineSnapshot(ctx, identifier, name, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRollbackSnapshotResponse(rsp)
+	return ParseRollbackMachineSnapshotResponse(rsp)
 }
 
 // StartMachineWithResponse request returning *StartMachineResponse
-func (c *ClientWithResponses) StartMachineWithResponse(ctx context.Context, vmid int64, params *StartMachineParams, reqEditors ...RequestEditorFn) (*StartMachineResponse, error) {
-	rsp, err := c.StartMachine(ctx, vmid, params, reqEditors...)
+func (c *ClientWithResponses) StartMachineWithResponse(ctx context.Context, identifier int64, params *StartMachineParams, reqEditors ...RequestEditorFn) (*StartMachineResponse, error) {
+	rsp, err := c.StartMachine(ctx, identifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -1844,8 +2342,8 @@ func (c *ClientWithResponses) StartMachineWithResponse(ctx context.Context, vmid
 }
 
 // StopMachineWithResponse request returning *StopMachineResponse
-func (c *ClientWithResponses) StopMachineWithResponse(ctx context.Context, vmid int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*StopMachineResponse, error) {
-	rsp, err := c.StopMachine(ctx, vmid, params, reqEditors...)
+func (c *ClientWithResponses) StopMachineWithResponse(ctx context.Context, identifier int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*StopMachineResponse, error) {
+	rsp, err := c.StopMachine(ctx, identifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -1921,6 +2419,110 @@ func ParseGetContainerResponse(rsp *http.Response) (*GetContainerResponse, error
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ContainerDetail
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListContainerSnapshotsResponse parses an HTTP response from a ListContainerSnapshotsWithResponse call
+func ParseListContainerSnapshotsResponse(rsp *http.Response) (*ListContainerSnapshotsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListContainerSnapshotsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Snapshot
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateContainerSnapshotResponse parses an HTTP response from a CreateContainerSnapshotWithResponse call
+func ParseCreateContainerSnapshotResponse(rsp *http.Response) (*CreateContainerSnapshotResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateContainerSnapshotResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TaskResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteContainerSnapshotResponse parses an HTTP response from a DeleteContainerSnapshotWithResponse call
+func ParseDeleteContainerSnapshotResponse(rsp *http.Response) (*DeleteContainerSnapshotResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteContainerSnapshotResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TaskResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRollbackContainerSnapshotResponse parses an HTTP response from a RollbackContainerSnapshotWithResponse call
+func ParseRollbackContainerSnapshotResponse(rsp *http.Response) (*RollbackContainerSnapshotResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RollbackContainerSnapshotResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TaskResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2035,15 +2637,15 @@ func ParseShutdownMachineResponse(rsp *http.Response) (*ShutdownMachineResponse,
 	return response, nil
 }
 
-// ParseListSnapshotsResponse parses an HTTP response from a ListSnapshotsWithResponse call
-func ParseListSnapshotsResponse(rsp *http.Response) (*ListSnapshotsResponse, error) {
+// ParseListMachineSnapshotsResponse parses an HTTP response from a ListMachineSnapshotsWithResponse call
+func ParseListMachineSnapshotsResponse(rsp *http.Response) (*ListMachineSnapshotsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListSnapshotsResponse{
+	response := &ListMachineSnapshotsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2061,15 +2663,15 @@ func ParseListSnapshotsResponse(rsp *http.Response) (*ListSnapshotsResponse, err
 	return response, nil
 }
 
-// ParseCreateSnapshotResponse parses an HTTP response from a CreateSnapshotWithResponse call
-func ParseCreateSnapshotResponse(rsp *http.Response) (*CreateSnapshotResponse, error) {
+// ParseCreateMachineSnapshotResponse parses an HTTP response from a CreateMachineSnapshotWithResponse call
+func ParseCreateMachineSnapshotResponse(rsp *http.Response) (*CreateMachineSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateSnapshotResponse{
+	response := &CreateMachineSnapshotResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2087,15 +2689,15 @@ func ParseCreateSnapshotResponse(rsp *http.Response) (*CreateSnapshotResponse, e
 	return response, nil
 }
 
-// ParseDeleteSnapshotResponse parses an HTTP response from a DeleteSnapshotWithResponse call
-func ParseDeleteSnapshotResponse(rsp *http.Response) (*DeleteSnapshotResponse, error) {
+// ParseDeleteMachineSnapshotResponse parses an HTTP response from a DeleteMachineSnapshotWithResponse call
+func ParseDeleteMachineSnapshotResponse(rsp *http.Response) (*DeleteMachineSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteSnapshotResponse{
+	response := &DeleteMachineSnapshotResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2113,15 +2715,15 @@ func ParseDeleteSnapshotResponse(rsp *http.Response) (*DeleteSnapshotResponse, e
 	return response, nil
 }
 
-// ParseRollbackSnapshotResponse parses an HTTP response from a RollbackSnapshotWithResponse call
-func ParseRollbackSnapshotResponse(rsp *http.Response) (*RollbackSnapshotResponse, error) {
+// ParseRollbackMachineSnapshotResponse parses an HTTP response from a RollbackMachineSnapshotWithResponse call
+func ParseRollbackMachineSnapshotResponse(rsp *http.Response) (*RollbackMachineSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RollbackSnapshotResponse{
+	response := &RollbackMachineSnapshotResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

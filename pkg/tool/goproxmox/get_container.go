@@ -11,14 +11,14 @@ import (
 func getContainer(c *client.Client) *cobra.Command {
 	var node string
 	result := &cobra.Command{
-		Use:   "get-container [vmid]",
+		Use:   "get-container [identifier]",
 		Short: "Get LXC container detail",
 		Args:  cobra.ExactArgs(1),
 		Run: func(
 			_ *cobra.Command,
 			a []string,
 		) {
-			vmid, e := strconv.ParseInt(a[0], 10, 64)
+			identifier, e := strconv.ParseInt(a[0], 10, 64)
 			errors.PanicOnError(e)
 			var n *string
 
@@ -26,7 +26,7 @@ func getContainer(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.GetContainer(vmid, n))
+			fmt.Println(c.GetContainer(identifier, n))
 		},
 	}
 	result.Flags().StringVar(

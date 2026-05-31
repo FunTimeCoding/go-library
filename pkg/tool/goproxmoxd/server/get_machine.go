@@ -10,24 +10,34 @@ import (
 func (s *Server) GetMachine(
 	w http.ResponseWriter,
 	_ *http.Request,
-	vmid int64,
+	identifier int64,
 	v server.GetMachineParams,
 ) {
 	if v.Node != nil && *v.Node != "" {
-		node := s.client.MustNode(*v.Node)
-		vm := s.client.MustMachine(node, int(vmid))
-		web.EncodeNotation(w, convert.MachineDetail(vm))
+		web.EncodeNotation(
+			w,
+			convert.MachineDetail(
+				s.client.MustMachine(
+					s.client.MustNode(*v.Node),
+					int(identifier),
+				),
+			),
+		)
 
 		return
 	}
 
-	for _, ns := range s.client.MustNodes() {
-		node := s.client.MustNode(ns.Node)
+	for _, n := range s.client.MustNodes() {
+		o := s.client.MustNode(n.Node)
 
-		for _, listed := range s.client.MustMachines(node) {
-			if int64(listed.VMID) == vmid {
-				vm := s.client.MustMachine(node, int(vmid))
-				web.EncodeNotation(w, convert.MachineDetail(vm))
+		for _, listed := range s.client.MustMachines(o) {
+			if int64(listed.VMID) == identifier {
+				web.EncodeNotation(
+					w,
+					convert.MachineDetail(
+						s.client.MustMachine(o, int(identifier)),
+					),
+				)
 
 				return
 			}

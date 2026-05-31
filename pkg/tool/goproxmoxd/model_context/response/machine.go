@@ -1,7 +1,7 @@
 package response
 
 type Machine struct {
-	VMID   uint64  `json:"vmid"`
+	Identifier uint64  `json:"identifier"`
 	Name   string  `json:"name"`
 	Node   string  `json:"node"`
 	Status string  `json:"status"`

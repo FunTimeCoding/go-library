@@ -12,14 +12,14 @@ func deleteSnapshot(c *client.Client) *cobra.Command {
 	var node string
 	var name string
 	result := &cobra.Command{
-		Use:   "delete-snapshot [vmid]",
+		Use:   "delete-snapshot [identifier]",
 		Short: "Delete a snapshot from a virtual machine",
 		Args:  cobra.ExactArgs(1),
 		Run: func(
 			_ *cobra.Command,
 			a []string,
 		) {
-			vmid, e := strconv.ParseInt(a[0], 10, 64)
+			identifier, e := strconv.ParseInt(a[0], 10, 64)
 			errors.PanicOnError(e)
 			var n *string
 
@@ -27,7 +27,7 @@ func deleteSnapshot(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.DeleteSnapshot(vmid, name, n))
+			fmt.Println(c.DeleteMachineSnapshot(identifier, name, n))
 		},
 	}
 	result.Flags().StringVar(

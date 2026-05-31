@@ -11,6 +11,5 @@ func (s *Server) GetNodeStatus(
 	_ *http.Request,
 	name string,
 ) {
-	result := s.client.MustNodeStatus(name)
-	web.EncodeNotation(w, convert.NodeStatus(result))
+	web.EncodeNotation(w, convert.NodeStatus(s.client.MustNodeStatus(name)))
 }

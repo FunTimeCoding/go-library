@@ -10,23 +10,29 @@ import (
 func (s *Server) GetContainer(
 	w http.ResponseWriter,
 	_ *http.Request,
-	vmid int64,
+	identifier int64,
 	v server.GetContainerParams,
 ) {
 	if v.Node != nil && *v.Node != "" {
-		node := s.client.MustNode(*v.Node)
-		c := s.client.MustContainer(node, int(vmid))
-		web.EncodeNotation(w, convert.ContainerDetail(c))
+		web.EncodeNotation(
+			w,
+			convert.ContainerDetail(
+				s.client.MustContainer(
+					s.client.MustNode(*v.Node),
+					int(identifier),
+				),
+			),
+		)
 
 		return
 	}
 
-	for _, ns := range s.client.MustNodes() {
-		node := s.client.MustNode(ns.Node)
+	for _, n := range s.client.MustNodes() {
+		o := s.client.MustNode(n.Node)
 
-		for _, listed := range s.client.MustContainers(node) {
-			if int64(listed.VMID) == vmid {
-				c := s.client.MustContainer(node, int(vmid))
+		for _, listed := range s.client.MustContainers(o) {
+			if int64(listed.VMID) == identifier {
+				c := s.client.MustContainer(o, int(identifier))
 				web.EncodeNotation(w, convert.ContainerDetail(c))
 
 				return

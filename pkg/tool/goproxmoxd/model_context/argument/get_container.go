@@ -1,6 +1,6 @@
 package argument
 
 type GetContainer struct {
-	VMID int    `json:"vmid"`
+	Identifier int    `json:"identifier"`
 	Node string `json:"node"`
 }

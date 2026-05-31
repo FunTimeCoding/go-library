@@ -7,12 +7,12 @@ import (
 )
 
 func (c *Client) StartMachine(
-	vmid int64,
+	identifier int64,
 	node *string,
 ) string {
 	result, e := c.client.StartMachine(
 		c.context,
-		vmid,
+		identifier,
 		&client.StartMachineParams{Node: node},
 	)
 	errors.PanicOnError(e)

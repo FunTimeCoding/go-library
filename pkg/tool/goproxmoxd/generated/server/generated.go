@@ -21,16 +21,16 @@ import (
 
 // Container defines model for Container.
 type Container struct {
-	Cpus    *int    `json:"cpus,omitempty"`
-	MaxDisk *int64  `json:"maxDisk,omitempty"`
-	MaxMem  *int64  `json:"maxMem,omitempty"`
-	MaxSwap *int64  `json:"maxSwap,omitempty"`
-	Name    string  `json:"name"`
-	Node    *string `json:"node,omitempty"`
-	Status  *string `json:"status,omitempty"`
-	Tags    *string `json:"tags,omitempty"`
-	Uptime  *int64  `json:"uptime,omitempty"`
-	Vmid    int64   `json:"vmid"`
+	Cpus       *int    `json:"cpus,omitempty"`
+	Identifier int64   `json:"identifier"`
+	MaxDisk    *int64  `json:"maxDisk,omitempty"`
+	MaxMem     *int64  `json:"maxMem,omitempty"`
+	MaxSwap    *int64  `json:"maxSwap,omitempty"`
+	Name       string  `json:"name"`
+	Node       *string `json:"node,omitempty"`
+	Status     *string `json:"status,omitempty"`
+	Tags       *string `json:"tags,omitempty"`
+	Uptime     *int64  `json:"uptime,omitempty"`
 }
 
 // ContainerDetail defines model for ContainerDetail.
@@ -40,6 +40,7 @@ type ContainerDetail struct {
 	Cpus        *int    `json:"cpus,omitempty"`
 	Description *string `json:"description,omitempty"`
 	Hostname    *string `json:"hostname,omitempty"`
+	Identifier  int64   `json:"identifier"`
 	MaxDisk     *int64  `json:"maxDisk,omitempty"`
 	MaxMem      *int64  `json:"maxMem,omitempty"`
 	MaxSwap     *int64  `json:"maxSwap,omitempty"`
@@ -49,21 +50,20 @@ type ContainerDetail struct {
 	Status      *string `json:"status,omitempty"`
 	Tags        *string `json:"tags,omitempty"`
 	Uptime      *int64  `json:"uptime,omitempty"`
-	Vmid        int64   `json:"vmid"`
 }
 
 // Machine defines model for Machine.
 type Machine struct {
-	Cpu    *float64 `json:"cpu,omitempty"`
-	Cpus   *int     `json:"cpus,omitempty"`
-	MaxMem *int64   `json:"maxMem,omitempty"`
-	Mem    *int64   `json:"mem,omitempty"`
-	Name   string   `json:"name"`
-	Node   *string  `json:"node,omitempty"`
-	Status *string  `json:"status,omitempty"`
-	Tags   *string  `json:"tags,omitempty"`
-	Uptime *int64   `json:"uptime,omitempty"`
-	Vmid   int64    `json:"vmid"`
+	Cpu        *float64 `json:"cpu,omitempty"`
+	Cpus       *int     `json:"cpus,omitempty"`
+	Identifier int64    `json:"identifier"`
+	MaxMem     *int64   `json:"maxMem,omitempty"`
+	Mem        *int64   `json:"mem,omitempty"`
+	Name       string   `json:"name"`
+	Node       *string  `json:"node,omitempty"`
+	Status     *string  `json:"status,omitempty"`
+	Tags       *string  `json:"tags,omitempty"`
+	Uptime     *int64   `json:"uptime,omitempty"`
 }
 
 // MachineDetail defines model for MachineDetail.
@@ -73,6 +73,7 @@ type MachineDetail struct {
 	Cpus        *int     `json:"cpus,omitempty"`
 	Description *string  `json:"description,omitempty"`
 	Disk        *int64   `json:"disk,omitempty"`
+	Identifier  int64    `json:"identifier"`
 	MaxDisk     *int64   `json:"maxDisk,omitempty"`
 	MaxMem      *int64   `json:"maxMem,omitempty"`
 	Mem         *int64   `json:"mem,omitempty"`
@@ -83,7 +84,6 @@ type MachineDetail struct {
 	Status      *string  `json:"status,omitempty"`
 	Tags        *string  `json:"tags,omitempty"`
 	Uptime      *int64   `json:"uptime,omitempty"`
-	Vmid        int64    `json:"vmid"`
 }
 
 // MemoryInfo defines model for MemoryInfo.
@@ -162,6 +162,30 @@ type GetContainerParams struct {
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
+// ListContainerSnapshotsParams defines parameters for ListContainerSnapshots.
+type ListContainerSnapshotsParams struct {
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// CreateContainerSnapshotParams defines parameters for CreateContainerSnapshot.
+type CreateContainerSnapshotParams struct {
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// DeleteContainerSnapshotParams defines parameters for DeleteContainerSnapshot.
+type DeleteContainerSnapshotParams struct {
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// RollbackContainerSnapshotParams defines parameters for RollbackContainerSnapshot.
+type RollbackContainerSnapshotParams struct {
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
 // ListMachinesParams defines parameters for ListMachines.
 type ListMachinesParams struct {
 	// Node Filter by node name. Omit for all nodes.
@@ -186,26 +210,26 @@ type ShutdownMachineParams struct {
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// ListSnapshotsParams defines parameters for ListSnapshots.
-type ListSnapshotsParams struct {
+// ListMachineSnapshotsParams defines parameters for ListMachineSnapshots.
+type ListMachineSnapshotsParams struct {
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// CreateSnapshotParams defines parameters for CreateSnapshot.
-type CreateSnapshotParams struct {
+// CreateMachineSnapshotParams defines parameters for CreateMachineSnapshot.
+type CreateMachineSnapshotParams struct {
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// DeleteSnapshotParams defines parameters for DeleteSnapshot.
-type DeleteSnapshotParams struct {
+// DeleteMachineSnapshotParams defines parameters for DeleteMachineSnapshot.
+type DeleteMachineSnapshotParams struct {
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// RollbackSnapshotParams defines parameters for RollbackSnapshot.
-type RollbackSnapshotParams struct {
+// RollbackMachineSnapshotParams defines parameters for RollbackMachineSnapshot.
+type RollbackMachineSnapshotParams struct {
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
@@ -222,8 +246,11 @@ type StopMachineParams struct {
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
-// CreateSnapshotJSONRequestBody defines body for CreateSnapshot for application/json ContentType.
-type CreateSnapshotJSONRequestBody = SnapshotRequest
+// CreateContainerSnapshotJSONRequestBody defines body for CreateContainerSnapshot for application/json ContentType.
+type CreateContainerSnapshotJSONRequestBody = SnapshotRequest
+
+// CreateMachineSnapshotJSONRequestBody defines body for CreateMachineSnapshot for application/json ContentType.
+type CreateMachineSnapshotJSONRequestBody = SnapshotRequest
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
@@ -231,38 +258,50 @@ type ServerInterface interface {
 	// (GET /api/v1/containers)
 	ListContainers(w http.ResponseWriter, r *http.Request, params ListContainersParams)
 
-	// (GET /api/v1/containers/{vmid})
-	GetContainer(w http.ResponseWriter, r *http.Request, vmid int64, params GetContainerParams)
+	// (GET /api/v1/containers/{identifier})
+	GetContainer(w http.ResponseWriter, r *http.Request, identifier int64, params GetContainerParams)
+
+	// (GET /api/v1/containers/{identifier}/snapshots)
+	ListContainerSnapshots(w http.ResponseWriter, r *http.Request, identifier int64, params ListContainerSnapshotsParams)
+
+	// (POST /api/v1/containers/{identifier}/snapshots)
+	CreateContainerSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, params CreateContainerSnapshotParams)
+
+	// (DELETE /api/v1/containers/{identifier}/snapshots/{name})
+	DeleteContainerSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params DeleteContainerSnapshotParams)
+
+	// (POST /api/v1/containers/{identifier}/snapshots/{name}/rollback)
+	RollbackContainerSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params RollbackContainerSnapshotParams)
 
 	// (GET /api/v1/machines)
 	ListMachines(w http.ResponseWriter, r *http.Request, params ListMachinesParams)
 
-	// (GET /api/v1/machines/{vmid})
-	GetMachine(w http.ResponseWriter, r *http.Request, vmid int64, params GetMachineParams)
+	// (GET /api/v1/machines/{identifier})
+	GetMachine(w http.ResponseWriter, r *http.Request, identifier int64, params GetMachineParams)
 
-	// (POST /api/v1/machines/{vmid}/reset)
-	ResetMachine(w http.ResponseWriter, r *http.Request, vmid int64, params ResetMachineParams)
+	// (POST /api/v1/machines/{identifier}/reset)
+	ResetMachine(w http.ResponseWriter, r *http.Request, identifier int64, params ResetMachineParams)
 
-	// (POST /api/v1/machines/{vmid}/shutdown)
-	ShutdownMachine(w http.ResponseWriter, r *http.Request, vmid int64, params ShutdownMachineParams)
+	// (POST /api/v1/machines/{identifier}/shutdown)
+	ShutdownMachine(w http.ResponseWriter, r *http.Request, identifier int64, params ShutdownMachineParams)
 
-	// (GET /api/v1/machines/{vmid}/snapshots)
-	ListSnapshots(w http.ResponseWriter, r *http.Request, vmid int64, params ListSnapshotsParams)
+	// (GET /api/v1/machines/{identifier}/snapshots)
+	ListMachineSnapshots(w http.ResponseWriter, r *http.Request, identifier int64, params ListMachineSnapshotsParams)
 
-	// (POST /api/v1/machines/{vmid}/snapshots)
-	CreateSnapshot(w http.ResponseWriter, r *http.Request, vmid int64, params CreateSnapshotParams)
+	// (POST /api/v1/machines/{identifier}/snapshots)
+	CreateMachineSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, params CreateMachineSnapshotParams)
 
-	// (DELETE /api/v1/machines/{vmid}/snapshots/{name})
-	DeleteSnapshot(w http.ResponseWriter, r *http.Request, vmid int64, name string, params DeleteSnapshotParams)
+	// (DELETE /api/v1/machines/{identifier}/snapshots/{name})
+	DeleteMachineSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params DeleteMachineSnapshotParams)
 
-	// (POST /api/v1/machines/{vmid}/snapshots/{name}/rollback)
-	RollbackSnapshot(w http.ResponseWriter, r *http.Request, vmid int64, name string, params RollbackSnapshotParams)
+	// (POST /api/v1/machines/{identifier}/snapshots/{name}/rollback)
+	RollbackMachineSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params RollbackMachineSnapshotParams)
 
-	// (POST /api/v1/machines/{vmid}/start)
-	StartMachine(w http.ResponseWriter, r *http.Request, vmid int64, params StartMachineParams)
+	// (POST /api/v1/machines/{identifier}/start)
+	StartMachine(w http.ResponseWriter, r *http.Request, identifier int64, params StartMachineParams)
 
-	// (POST /api/v1/machines/{vmid}/stop)
-	StopMachine(w http.ResponseWriter, r *http.Request, vmid int64, params StopMachineParams)
+	// (POST /api/v1/machines/{identifier}/stop)
+	StopMachine(w http.ResponseWriter, r *http.Request, identifier int64, params StopMachineParams)
 
 	// (GET /api/v1/nodes)
 	ListNodes(w http.ResponseWriter, r *http.Request)
@@ -315,12 +354,12 @@ func (siw *ServerInterfaceWrapper) GetContainer(w http.ResponseWriter, r *http.R
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
@@ -336,7 +375,169 @@ func (siw *ServerInterfaceWrapper) GetContainer(w http.ResponseWriter, r *http.R
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.GetContainer(w, r, vmid, params)
+		siw.Handler.GetContainer(w, r, identifier, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListContainerSnapshots operation middleware
+func (siw *ServerInterfaceWrapper) ListContainerSnapshots(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
+
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListContainerSnapshotsParams
+
+	// ------------- Optional query parameter "node" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "node", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListContainerSnapshots(w, r, identifier, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateContainerSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) CreateContainerSnapshot(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
+
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateContainerSnapshotParams
+
+	// ------------- Optional query parameter "node" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "node", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateContainerSnapshot(w, r, identifier, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteContainerSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) DeleteContainerSnapshot(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
+
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params DeleteContainerSnapshotParams
+
+	// ------------- Optional query parameter "node" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "node", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteContainerSnapshot(w, r, identifier, name, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// RollbackContainerSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) RollbackContainerSnapshot(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
+
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params RollbackContainerSnapshotParams
+
+	// ------------- Optional query parameter "node" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "node", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.RollbackContainerSnapshot(w, r, identifier, name, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -378,12 +579,12 @@ func (siw *ServerInterfaceWrapper) GetMachine(w http.ResponseWriter, r *http.Req
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
@@ -399,7 +600,7 @@ func (siw *ServerInterfaceWrapper) GetMachine(w http.ResponseWriter, r *http.Req
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.GetMachine(w, r, vmid, params)
+		siw.Handler.GetMachine(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -414,12 +615,12 @@ func (siw *ServerInterfaceWrapper) ResetMachine(w http.ResponseWriter, r *http.R
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
@@ -435,7 +636,7 @@ func (siw *ServerInterfaceWrapper) ResetMachine(w http.ResponseWriter, r *http.R
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.ResetMachine(w, r, vmid, params)
+		siw.Handler.ResetMachine(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -450,12 +651,12 @@ func (siw *ServerInterfaceWrapper) ShutdownMachine(w http.ResponseWriter, r *htt
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
@@ -471,7 +672,7 @@ func (siw *ServerInterfaceWrapper) ShutdownMachine(w http.ResponseWriter, r *htt
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.ShutdownMachine(w, r, vmid, params)
+		siw.Handler.ShutdownMachine(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -481,22 +682,22 @@ func (siw *ServerInterfaceWrapper) ShutdownMachine(w http.ResponseWriter, r *htt
 	handler.ServeHTTP(w, r)
 }
 
-// ListSnapshots operation middleware
-func (siw *ServerInterfaceWrapper) ListSnapshots(w http.ResponseWriter, r *http.Request) {
+// ListMachineSnapshots operation middleware
+func (siw *ServerInterfaceWrapper) ListMachineSnapshots(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params ListSnapshotsParams
+	var params ListMachineSnapshotsParams
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -507,7 +708,7 @@ func (siw *ServerInterfaceWrapper) ListSnapshots(w http.ResponseWriter, r *http.
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.ListSnapshots(w, r, vmid, params)
+		siw.Handler.ListMachineSnapshots(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -517,22 +718,22 @@ func (siw *ServerInterfaceWrapper) ListSnapshots(w http.ResponseWriter, r *http.
 	handler.ServeHTTP(w, r)
 }
 
-// CreateSnapshot operation middleware
-func (siw *ServerInterfaceWrapper) CreateSnapshot(w http.ResponseWriter, r *http.Request) {
+// CreateMachineSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) CreateMachineSnapshot(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params CreateSnapshotParams
+	var params CreateMachineSnapshotParams
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -543,7 +744,7 @@ func (siw *ServerInterfaceWrapper) CreateSnapshot(w http.ResponseWriter, r *http
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.CreateSnapshot(w, r, vmid, params)
+		siw.Handler.CreateMachineSnapshot(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -553,17 +754,17 @@ func (siw *ServerInterfaceWrapper) CreateSnapshot(w http.ResponseWriter, r *http
 	handler.ServeHTTP(w, r)
 }
 
-// DeleteSnapshot operation middleware
-func (siw *ServerInterfaceWrapper) DeleteSnapshot(w http.ResponseWriter, r *http.Request) {
+// DeleteMachineSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) DeleteMachineSnapshot(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
@@ -577,7 +778,7 @@ func (siw *ServerInterfaceWrapper) DeleteSnapshot(w http.ResponseWriter, r *http
 	}
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params DeleteSnapshotParams
+	var params DeleteMachineSnapshotParams
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -588,7 +789,7 @@ func (siw *ServerInterfaceWrapper) DeleteSnapshot(w http.ResponseWriter, r *http
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.DeleteSnapshot(w, r, vmid, name, params)
+		siw.Handler.DeleteMachineSnapshot(w, r, identifier, name, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -598,17 +799,17 @@ func (siw *ServerInterfaceWrapper) DeleteSnapshot(w http.ResponseWriter, r *http
 	handler.ServeHTTP(w, r)
 }
 
-// RollbackSnapshot operation middleware
-func (siw *ServerInterfaceWrapper) RollbackSnapshot(w http.ResponseWriter, r *http.Request) {
+// RollbackMachineSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) RollbackMachineSnapshot(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
@@ -622,7 +823,7 @@ func (siw *ServerInterfaceWrapper) RollbackSnapshot(w http.ResponseWriter, r *ht
 	}
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params RollbackSnapshotParams
+	var params RollbackMachineSnapshotParams
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -633,7 +834,7 @@ func (siw *ServerInterfaceWrapper) RollbackSnapshot(w http.ResponseWriter, r *ht
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.RollbackSnapshot(w, r, vmid, name, params)
+		siw.Handler.RollbackMachineSnapshot(w, r, identifier, name, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -648,12 +849,12 @@ func (siw *ServerInterfaceWrapper) StartMachine(w http.ResponseWriter, r *http.R
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
@@ -669,7 +870,7 @@ func (siw *ServerInterfaceWrapper) StartMachine(w http.ResponseWriter, r *http.R
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.StartMachine(w, r, vmid, params)
+		siw.Handler.StartMachine(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -684,12 +885,12 @@ func (siw *ServerInterfaceWrapper) StopMachine(w http.ResponseWriter, r *http.Re
 
 	var err error
 
-	// ------------- Path parameter "vmid" -------------
-	var vmid int64
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
 
-	err = runtime.BindStyledParameterWithOptions("simple", "vmid", r.PathValue("vmid"), &vmid, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "vmid", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
 		return
 	}
 
@@ -705,7 +906,7 @@ func (siw *ServerInterfaceWrapper) StopMachine(w http.ResponseWriter, r *http.Re
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.StopMachine(w, r, vmid, params)
+		siw.Handler.StopMachine(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -900,17 +1101,21 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	}
 
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/containers", wrapper.ListContainers)
-	m.HandleFunc("GET "+options.BaseURL+"/api/v1/containers/{vmid}", wrapper.GetContainer)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/containers/{identifier}", wrapper.GetContainer)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/containers/{identifier}/snapshots", wrapper.ListContainerSnapshots)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/containers/{identifier}/snapshots", wrapper.CreateContainerSnapshot)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/containers/{identifier}/snapshots/{name}", wrapper.DeleteContainerSnapshot)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/containers/{identifier}/snapshots/{name}/rollback", wrapper.RollbackContainerSnapshot)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines", wrapper.ListMachines)
-	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines/{vmid}", wrapper.GetMachine)
-	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{vmid}/reset", wrapper.ResetMachine)
-	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{vmid}/shutdown", wrapper.ShutdownMachine)
-	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines/{vmid}/snapshots", wrapper.ListSnapshots)
-	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{vmid}/snapshots", wrapper.CreateSnapshot)
-	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/machines/{vmid}/snapshots/{name}", wrapper.DeleteSnapshot)
-	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{vmid}/snapshots/{name}/rollback", wrapper.RollbackSnapshot)
-	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{vmid}/start", wrapper.StartMachine)
-	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{vmid}/stop", wrapper.StopMachine)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines/{identifier}", wrapper.GetMachine)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/reset", wrapper.ResetMachine)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/shutdown", wrapper.ShutdownMachine)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines/{identifier}/snapshots", wrapper.ListMachineSnapshots)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/snapshots", wrapper.CreateMachineSnapshot)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/machines/{identifier}/snapshots/{name}", wrapper.DeleteMachineSnapshot)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/snapshots/{name}/rollback", wrapper.RollbackMachineSnapshot)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/start", wrapper.StartMachine)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/stop", wrapper.StopMachine)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/nodes", wrapper.ListNodes)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/nodes/{name}/networks", wrapper.ListNetworks)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/nodes/{name}/status", wrapper.GetNodeStatus)
@@ -921,28 +1126,29 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+xa30/juBP/VyJ/v49Vw96he+jbHmhPSAu3oit00ooHN5m23ia2sSeUCuV/P9n5VRon",
-	"cVlYlmufgHhijz+fz3hmHB5JJFIpOHDUZPJIdLSElNpfzwRHyjgo84dUQoJCBnYokpn9iRsJZEIYR1iA",
-	"IvmIpPThnOmVGZwLlVIshv84JSO39SWk/sbTNZWe1pymsOWiRsX4wg6I2D2gkeKTbTVDSBfugUwiK9bx",
-	"cOk+ZbGXaT4iCu4ypiAmk2/Fe+WObmtrMfsOEZp5a6LOASlL2nRRFS2d7kdCQQeR3RTHoCPFJDLBnZMu",
-	"hcZO9H8ZfaSQCrVx7/CAtHNJoyXj4AzxJ+vFIpsl0CzIs3Q2pJT96PO2PDx6ugK7P35/mL+hSI/3iuRX",
-	"i/tXFI7QX+0jl6ZEtALsQO79Cs4eixd8LtpqmyvwdQ8F0sTTNtPgvZWWv1eAa6FWjpwXIbvfZm4mRAKU",
-	"m5doHCvQbhZohkIjVeh+daZYvIAvQqH79YjFqiPVpmlVZLUGFxRhTTfOMTanUYdqAVNaxFRbZW7Z7qih",
-	"mNulg6syIp6bFPY7Gs6Ked/bsdET5XsE8w4ndrV67i5upvXSz2VoBYpDcgNKdx3viaDxx3tQdGE3whBS",
-	"3SM2QpWim6e11f8VzMmE/C9suoywbDHCraMmH5ltPKTioc8fJQR+YgnojcaCPP/pdVkZ+r/RMOhzDk05",
-	"lXopsM3IUBLtVJekCji6AWcpaKSpfLbAbnv2cA13GWjHVjpc9Z3/K9Wra9BZ4pgaqV5dxMOTl3bt6Y0h",
-	"K9MWMkzM2EKUqjIp775SFvkwPhmf2OwugVPJyIT8bh8ZzHFp/QmpZOH9hzCqeiv7dAHWdeM4NYQaj8ln",
-	"pvGsMbPE0RTQvvNtRwDkE0sQVDDbBKboCAxY4+DvlGEwFyqgSWKf6zEx2yETcpeB2lQZe1JUKqOyTXfB",
-	"dWvw0lJwXQD728lJUSlyLNVEpUxYZP0Pv+tClc18dZT3RUpzNdCK/ny3biSf/zkLGhjHxiQfOQAOH01x",
-	"knfi/Bc0MA+hXBsGN5cX5zWYht4Gy7IWauSFKoNtbD0ia3fhq4bUqQSIdZDJIBFilclgvQQerLhY8zdj",
-	"14vUsttwUNnAGlubseH/9OS0dc5tWXJhpJ3xeJf5tOht+gPrsjI6hLCqmnGPoLphCjOaBBWIXeB6BFW1",
-	"6gDCpVlwDCe/cHraujsorAAdCqXKbjCQSq5DBbqgWgrtoPzaDB9JfxXSt0qcHsYtQS9IuF5mGIs17+Z8",
-	"WlocaX9D2iuaAsYZMooQv6QGyuK9P51Oa6ujAl4nh9eNoEcSr9mwRQouoUrn++pi1BH2ZwooQu3SoXJu",
-	"29k/Rbx5sYDfbZXzp32qwSV/s/Omci6ILP2vcsqEj4aBvJgyAYS2+M7t819afDVSVoDudcv7uO51WxcW",
-	"B5PYavgKCXgITahA15g/V3ShEkkyo9Gqp8YtLY7q+++qr+J4n3LqefqrPgd11NZm+FhYv2VhbRh42TyH",
-	"QvYxLuSR8DclXEj5Q4Tb28DeVunKWvyMlsF+a/VoFz4mSfCl+KBR3WY6NlUlSV58GR/YZGU0IONGUS+U",
-	"pn5KL1b9c4AHtqVpYKJKzWkEOhDctmQG1G6hFcD0qqwipPla3HUTu/Vh973xMaTvclsu5M1WCmwGr0Jd",
-	"aOf5vwEAAP//7zZW3sQqAAA=",
+	"H4sIAAAAAAAC/+xaW2/bNhT+KwK3R8NOt2IPfusSdCjQZEVcFAOKPNDSsc1aIhnyKI4R+L8PpG62RUmM",
+	"E+eqpzbiES/f9/HcrDsSikQKDhw1Gd8RHS4gofa/p4IjZRyU+UMqIUEhAzsUytT+i2sJZEwYR5iDIpsB",
+	"YRFwZDOWvTUTKqGYWfz1kQwcLyT09ozppb/1OST+xpMVlZ7WnCawdSaNivG5HRCRe0AjxR0cqiGkc/dA",
+	"KpFl63RuaTMgCq5TpiAi45/byOabvSrfEdNfEKKZvyTtDJCyuE4dVeHCubNQKGggtZnuCHSomEQmuHPS",
+	"hdDYCOzr1UoCiVBrNyRvQ0fnNFwwDs6rv7NqJNJpDNWyPE2mXao5hPh7UOlt+aaoarrw7ff6wVx2eYDI",
+	"/8K+KH9wRBEJ/d0+culLhEvABqhfpPisJ/zCZ6KuvJkC8AQRBdLY0zbVZoN+B6rt9wJwJdTSERdDZDfb",
+	"pEyFiIFy8xKNIgXaDTBNUWikCt2vThWL5vBNKHS/HrJINYTjJCmSstrgnCKs6NodVWc0bBAkYEKz61IX",
+	"kFuR+5qwc7t0cJGL/dBgEd3rHp9m8742j9BygQ+/p3a1cu4mbibl0ocytATFIf4BSje5+ljQ6NMNKDq3",
+	"B2EIiW4RG6FK0fVuOvW7ghkZk99GVVUyykuS0Zar2QzMMW4Tcdu2HyUEfmYx6LXGjDz/6XWeDPq/UTHo",
+	"44cmnEq9EFhnpCugNqpLUgUc3YCzBDTSRB4ssKuWM1zCdQracZSGrfrO/53q5SXoNHZMjVQvv0Tdk+d2",
+	"9emNIcvDFjKMzdhc5KqKyIDcFMoiH4YnwxMbuCVwKhkZkz/tI4M5Lux+RlSy0c2HUVjUX/bpHOzWzcap",
+	"IdTsmHxlGk8rM0scTQDtOz/3BEA+sxhBBdN1YPKJwIA1DP5NGAYzoQIax/a5HhJzHDIm1ymodRGxx1kS",
+	"MsjLehdcVwYvLQXXGbB/nJxkWSPHXE1UypiFdv+jXzpTZTVfecvbbkrVSqjd/s1+Dkm+/ncaVDAOjclm",
+	"4AB4dFelKJtGtP+BCuwurEvDoJq5BNZQXeG6kx1VgkOVwjbaHndtfxMXFc0TCRDpIJVBLMQylcFqATxY",
+	"crHiz8a3F815LeIgt4I4sjZDo4iPJx9rnm/Lkgsj9pRHnloY6dwxed7BSWne6+Np/EEZ/TzcQcmOdXi4",
+	"gMo53F88AyKFdujhVAFFqCmiF0QuCBvg/xbR+tF8xX7ysNmN3AaXzRFd1VZu0aK5ILS6iI7rpUZ3hotN",
+	"NnkMCHV9ntnnr1OfJZhWo+7V8yKmed1alveGwqanFjNteGlRqECXqD9UlyMl4nhKw6xp4nSfl7lFL9B3",
+	"KNCC/IBxhow+pkSTrLXdnsedF0bvoZIqfpfxSJx+MIUpjYMCxCZwveuoYu0OnHOz4MtZnxv737HdX3Ec",
+	"dBawdtVNhV3npdr1+gp0RnuDhzfDvQCezckWmFqaHp18vUgxEivezP8kt+gl8OwSKMjyibeH6sGrgZJP",
+	"7t0+6UXxjE2TnOj7SqW9YbKngHcugL5JciQv5N0geT167GvOJ2qKFBzfq958tIZIL8i+CXIUSRZfHDVk",
+	"62a4T9WfP1U3PBwjMqKQbewL2ZP/AsgXUj6IfNuPbC3BLqzFU1Qf9gM/j8rjUxwH37KvaIp+quNQRSTl",
+	"2eeYHYcsjDrEXCnqkcLXk5R1xRepHtjmpoG5VWpGQ9CB4La6M6A2Cy0DplVlBSHVJ4pNXeCtrwlfGx9d",
+	"+s6P5ULeHCXDprMB60J7s/k/AAD//51ra2ZpNQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

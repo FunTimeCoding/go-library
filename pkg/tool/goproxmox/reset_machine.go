@@ -11,14 +11,14 @@ import (
 func resetMachine(c *client.Client) *cobra.Command {
 	var node string
 	result := &cobra.Command{
-		Use:   "reset-machine [vmid]",
+		Use:   "reset-machine [identifier]",
 		Short: "Reset a virtual machine",
 		Args:  cobra.ExactArgs(1),
 		Run: func(
 			_ *cobra.Command,
 			a []string,
 		) {
-			vmid, e := strconv.ParseInt(a[0], 10, 64)
+			identifier, e := strconv.ParseInt(a[0], 10, 64)
 			errors.PanicOnError(e)
 			var n *string
 
@@ -26,7 +26,7 @@ func resetMachine(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.ResetMachine(vmid, n))
+			fmt.Println(c.ResetMachine(identifier, n))
 		},
 	}
 	result.Flags().StringVar(

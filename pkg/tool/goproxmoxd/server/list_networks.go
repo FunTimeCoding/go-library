@@ -11,7 +11,8 @@ func (s *Server) ListNetworks(
 	_ *http.Request,
 	name string,
 ) {
-	node := s.client.MustNode(name)
-	networks := s.client.MustNetworks(node)
-	web.EncodeNotation(w, convert.Networks(networks))
+	web.EncodeNotation(
+		w,
+		convert.Networks(s.client.MustNetworks(s.client.MustNode(name))),
+	)
 }

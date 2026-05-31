@@ -9,17 +9,19 @@ import (
 func (s *Server) StopMachine(
 	w http.ResponseWriter,
 	_ *http.Request,
-	vmid int64,
+	identifier int64,
 	v server.StopMachineParams,
 ) {
-	vm := s.findMachine(vmid, v.Node)
+	m := s.findMachine(identifier, v.Node)
 
-	if vm == nil {
+	if m == nil {
 		w.WriteHeader(http.StatusNotFound)
 
 		return
 	}
 
-	task := s.client.MustStopMachine(vm)
-	web.EncodeNotation(w, server.TaskResult{TaskId: string(task.UPID)})
+	web.EncodeNotation(
+		w,
+		server.TaskResult{TaskId: string(s.client.MustStopMachine(m).UPID)},
+	)
 }

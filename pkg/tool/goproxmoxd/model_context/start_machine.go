@@ -12,18 +12,18 @@ func (s *Server) StartMachine(
 	_ mcp.CallToolRequest,
 	a argument.StartMachine,
 ) (*mcp.CallToolResult, error) {
-	if a.VMID == 0 {
-		return response.Fail("vmid is required")
+	if a.Identifier == 0 {
+		return response.Fail("identifier is required")
 	}
 
-	vm, e := s.findMachine(a.VMID, a.Node)
+	vm, e := s.findMachine(a.Identifier, a.Node)
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
 	if vm == nil {
-		return response.Fail("vm %d not found", a.VMID)
+		return response.Fail("vm %d not found", a.Identifier)
 	}
 
 	task, e := s.client.StartMachine(vm)

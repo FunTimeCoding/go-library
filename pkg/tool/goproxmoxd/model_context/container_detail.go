@@ -21,9 +21,15 @@ func containerDetail(c *proxmox.Container) *container_detail.Detail {
 	if c.ContainerConfig != nil {
 		result.Hostname = c.ContainerConfig.Hostname
 		result.Description = c.ContainerConfig.Description
-		result.Arch = c.ContainerConfig.Arch
 		result.Cores = c.ContainerConfig.Cores
-		result.Memory = c.ContainerConfig.Memory
+
+		if c.ContainerConfig.Arch != nil {
+			result.Arch = *c.ContainerConfig.Arch
+		}
+
+		if c.ContainerConfig.Memory != nil {
+			result.Memory = *c.ContainerConfig.Memory
+		}
 	}
 
 	return result

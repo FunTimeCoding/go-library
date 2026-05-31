@@ -12,8 +12,8 @@ func (s *Server) GetContainer(
 	_ mcp.CallToolRequest,
 	a argument.GetContainer,
 ) (*mcp.CallToolResult, error) {
-	if a.VMID == 0 {
-		return response.Fail("vmid is required")
+	if a.Identifier == 0 {
+		return response.Fail("identifier is required")
 	}
 
 	if a.Node != "" {
@@ -23,10 +23,10 @@ func (s *Server) GetContainer(
 			return s.captureFail(e, "node not found")
 		}
 
-		c, e := s.client.Container(node, a.VMID)
+		c, f := s.client.Container(node, a.Identifier)
 
-		if e != nil {
-			return s.captureDetail(e)
+		if f != nil {
+			return s.captureDetail(f)
 		}
 
 		return response.SuccessAny(containerDetail(c))
@@ -38,25 +38,25 @@ func (s *Server) GetContainer(
 		return s.captureDetail(e)
 	}
 
-	for _, ns := range nodes {
-		node, e := s.client.Node(ns.Node)
+	for _, n := range nodes {
+		node, f := s.client.Node(n.Node)
 
-		if e != nil {
-			return s.captureFail(e, "node not found")
+		if f != nil {
+			return s.captureFail(f, "node not found")
 		}
 
-		containers, e := s.client.Containers(node)
+		containers, g := s.client.Containers(node)
 
-		if e != nil {
-			return s.captureDetail(e)
+		if g != nil {
+			return s.captureDetail(g)
 		}
 
 		for _, listed := range containers {
-			if uint64(listed.VMID) == uint64(a.VMID) {
-				c, e := s.client.Container(node, a.VMID)
+			if uint64(listed.VMID) == uint64(a.Identifier) {
+				c, h := s.client.Container(node, a.Identifier)
 
-				if e != nil {
-					return s.captureDetail(e)
+				if h != nil {
+					return s.captureDetail(h)
 				}
 
 				return response.SuccessAny(containerDetail(c))
@@ -64,5 +64,5 @@ func (s *Server) GetContainer(
 		}
 	}
 
-	return response.Fail("container %d not found", a.VMID)
+	return response.Fail("container %d not found", a.Identifier)
 }

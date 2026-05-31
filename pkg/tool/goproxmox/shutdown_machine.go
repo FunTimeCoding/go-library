@@ -11,14 +11,14 @@ import (
 func shutdownMachine(c *client.Client) *cobra.Command {
 	var node string
 	result := &cobra.Command{
-		Use:   "shutdown-machine [vmid]",
+		Use:   "shutdown-machine [identifier]",
 		Short: "Gracefully shutdown a virtual machine",
 		Args:  cobra.ExactArgs(1),
 		Run: func(
 			_ *cobra.Command,
 			a []string,
 		) {
-			vmid, e := strconv.ParseInt(a[0], 10, 64)
+			identifier, e := strconv.ParseInt(a[0], 10, 64)
 			errors.PanicOnError(e)
 			var n *string
 
@@ -26,7 +26,7 @@ func shutdownMachine(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.ShutdownMachine(vmid, n))
+			fmt.Println(c.ShutdownMachine(identifier, n))
 		},
 	}
 	result.Flags().StringVar(

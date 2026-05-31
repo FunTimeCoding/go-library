@@ -24,8 +24,8 @@ func (s *Server) ListContainers(
 			return s.captureDetail(e)
 		}
 
-		for _, ns := range nodes {
-			nodeNames = append(nodeNames, ns.Node)
+		for _, n := range nodes {
+			nodeNames = append(nodeNames, n.Node)
 		}
 	}
 
@@ -48,7 +48,7 @@ func (s *Server) ListContainers(
 			rows = append(
 				rows,
 				proxResponse.Container{
-					VMID:    uint64(c.VMID),
+					Identifier: uint64(c.VMID),
 					Name:    c.Name,
 					Node:    c.Node,
 					Status:  c.Status,

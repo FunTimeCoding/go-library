@@ -7,7 +7,7 @@ import (
 
 func Machine(v proxmox.VirtualMachine) *server.Machine {
 	result := &server.Machine{
-		Vmid:   int64(v.VMID),
+		Identifier: int64(v.VMID),
 		Name:   v.Name,
 		Node:   &v.Node,
 		Status: &v.Status,

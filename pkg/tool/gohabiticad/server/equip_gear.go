@@ -13,13 +13,17 @@ func (s *Server) EquipGear(
 	e := s.habitica.Equip(r.Key)
 
 	if e != nil {
-		return server.EquipGear400Response{}, nil
+		return server.EquipGear400JSONResponse(
+			*s.captureFail(e, "failed to equip gear"),
+		), nil
 	}
 
 	result, f := s.habitica.UserGear()
 
 	if f != nil {
-		return server.EquipGear500Response{}, nil
+		return server.EquipGear500JSONResponse(
+			*s.captureFail(f, "failed to fetch gear after equip"),
+		), nil
 	}
 
 	return server.EquipGear200JSONResponse(

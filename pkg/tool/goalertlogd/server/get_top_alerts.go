@@ -1,49 +1,54 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"time"
 )
 
 func (s *Server) GetTopAlerts(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.GetTopAlertsParams,
-) {
+	_ context.Context,
+	r server.GetTopAlertsRequestObject,
+) (server.GetTopAlertsResponseObject, error) {
 	n := 25
 	now := time.Now()
 	start := now.Add(-7 * 24 * time.Hour)
 	end := now
 
-	if v.N != nil {
-		n = *v.N
+	if r.Params.N != nil {
+		n = *r.Params.N
 	}
 
-	if v.Start != nil {
-		start = *v.Start
+	if r.Params.Start != nil {
+		start = *r.Params.Start
 	}
 
-	if v.End != nil {
-		end = *v.End
+	if r.Params.End != nil {
+		end = *r.Params.End
 	}
 
-	records := s.store.MustTop(n, start, end)
-	result := make([]server.TopAlertsResponse, 0, len(records))
+	records, e := s.store.Top(n, start, end)
 
-	for _, r := range records {
+	if e != nil {
+		return server.GetTopAlerts500JSONResponse(
+			*s.captureFail(e, "failed to query top alerts"),
+		), nil
+	}
+
+	result := make(server.GetTopAlerts200JSONResponse, 0, len(records))
+
+	for _, c := range records {
 		result = append(
 			result,
 			server.TopAlertsResponse{
-				Name:            r.Name,
-				Count:           r.Count,
-				AverageDuration: r.AverageDuration.String(),
-				CurrentlyFiring: r.CurrentlyFiring,
-				Severity:        r.Severity,
+				Name:            c.Name,
+				Count:           c.Count,
+				AverageDuration: c.AverageDuration.String(),
+				CurrentlyFiring: c.CurrentlyFiring,
+				Severity:        c.Severity,
 			},
 		)
 	}
 
-	web.EncodeNotation(w, result)
+	return result, nil
 }

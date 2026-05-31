@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/server"
@@ -23,12 +24,19 @@ func Run(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
-					server.New(
-						o.ParserPath,
-						o.TemplatePath,
-						o.OutputPath,
-						l,
-						r,
+					generated.NewStrictHandler(
+						server.New(
+							o.ParserPath,
+							o.TemplatePath,
+							o.OutputPath,
+							l,
+							r,
+						),
+						[]generated.StrictMiddlewareFunc{
+							web.TelemetryMiddleware(
+								telemetry.NewEnvironment(),
+							),
+						},
 					),
 					m,
 				)

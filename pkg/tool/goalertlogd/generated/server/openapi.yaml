@@ -24,6 +24,12 @@ paths:
                   $ref: "#/components/schemas/AlertsResponse"
         "400":
           description: Missing or invalid name parameter.
+        "500":
+          description: Failed to query alerts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/alerts/recent:
     get:
       operationId: getRecentAlerts
@@ -51,6 +57,12 @@ paths:
                   $ref: "#/components/schemas/AlertsResponse"
         "400":
           description: Invalid start or end parameter.
+        "500":
+          description: Failed to query alerts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/alerts/top:
     get:
       operationId: getTopAlerts
@@ -83,6 +95,12 @@ paths:
                   $ref: "#/components/schemas/TopAlertsResponse"
         "400":
           description: Invalid parameters.
+        "500":
+          description: Failed to query alerts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/status:
     get:
       operationId: getStatus
@@ -93,6 +111,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatusResponse"
+        "500":
+          description: Failed to query status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     AlertsResponse:
@@ -154,4 +178,12 @@ components:
         totalRecords:
           type: integer
         lastPoll:
+          type: string
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
           type: string

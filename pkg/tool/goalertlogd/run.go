@@ -44,14 +44,17 @@ func Run(
 		lifecycle.WithServerMiddleware(
 			constant.ListenAddress,
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(server.New(s, w), m)
-				model_context.New(
-					s,
-					w,
-					r,
-					telemetry.NewEnvironment(),
-					o.Version,
-				).Mount(m)
+				t := telemetry.NewEnvironment()
+				generated.HandlerFromMux(
+					generated.NewStrictHandler(
+						server.New(s, w, r),
+						[]generated.StrictMiddlewareFunc{
+							web.TelemetryMiddleware(t),
+						},
+					),
+					m,
+				)
+				model_context.New(s, w, r, t, o.Version).Mount(m)
 				alertWeb.New(s, w).Mount(m)
 			},
 			web.RecoveryMiddleware(r),

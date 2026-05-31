@@ -142,6 +142,12 @@ type CronResult struct {
 	RolledOver bool   `json:"rolled_over"`
 }
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // GearResult defines model for GearResult.
 type GearResult struct {
 	// Equipped Slot to gear key mapping.
@@ -585,12 +591,13 @@ func (response AllocateStat200JSONResponse) VisitAllocateStatResponse(w http.Res
 	return json.NewEncoder(w).Encode(response)
 }
 
-type AllocateStat400Response struct {
-}
+type AllocateStat400JSONResponse ErrorResponse
 
-func (response AllocateStat400Response) VisitAllocateStatResponse(w http.ResponseWriter) error {
+func (response AllocateStat400JSONResponse) VisitAllocateStatResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(400)
-	return nil
+
+	return json.NewEncoder(w).Encode(response)
 }
 
 type RunCronRequestObject struct {
@@ -626,20 +633,22 @@ func (response EquipGear200JSONResponse) VisitEquipGearResponse(w http.ResponseW
 	return json.NewEncoder(w).Encode(response)
 }
 
-type EquipGear400Response struct {
-}
+type EquipGear400JSONResponse ErrorResponse
 
-func (response EquipGear400Response) VisitEquipGearResponse(w http.ResponseWriter) error {
+func (response EquipGear400JSONResponse) VisitEquipGearResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(400)
-	return nil
+
+	return json.NewEncoder(w).Encode(response)
 }
 
-type EquipGear500Response struct {
-}
+type EquipGear500JSONResponse ErrorResponse
 
-func (response EquipGear500Response) VisitEquipGearResponse(w http.ResponseWriter) error {
+func (response EquipGear500JSONResponse) VisitEquipGearResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
-	return nil
+
+	return json.NewEncoder(w).Encode(response)
 }
 
 type GetGearRequestObject struct {
@@ -658,12 +667,13 @@ func (response GetGear200JSONResponse) VisitGetGearResponse(w http.ResponseWrite
 	return json.NewEncoder(w).Encode(response)
 }
 
-type GetGear500Response struct {
-}
+type GetGear500JSONResponse ErrorResponse
 
-func (response GetGear500Response) VisitGetGearResponse(w http.ResponseWriter) error {
+func (response GetGear500JSONResponse) VisitGetGearResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
-	return nil
+
+	return json.NewEncoder(w).Encode(response)
 }
 
 type GetStatsRequestObject struct {
@@ -732,12 +742,13 @@ func (response CreateTask201JSONResponse) VisitCreateTaskResponse(w http.Respons
 	return json.NewEncoder(w).Encode(response)
 }
 
-type CreateTask400Response struct {
-}
+type CreateTask400JSONResponse ErrorResponse
 
-func (response CreateTask400Response) VisitCreateTaskResponse(w http.ResponseWriter) error {
+func (response CreateTask400JSONResponse) VisitCreateTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(400)
-	return nil
+
+	return json.NewEncoder(w).Encode(response)
 }
 
 type ScoreTaskRequestObject struct {
@@ -1053,27 +1064,27 @@ func (sh *strictHandler) ScoreTask(w http.ResponseWriter, r *http.Request, ident
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/8RYS2/juA//KoL+/8MuYDSdfVxy252dLXrYB9rOaVAMFJtJNJElVaLTCQJ/9wUl27Fj",
-	"OUnRedxa8yHyx59IKnuem9IaDRo9n++5z9dQivDn2zXkGyU93iKU9ME6Y8GhhCAmOwUIBf2DOwt8zhfG",
-	"KBCa1xmXBWiUSwmuJ/fopF6RGOEzJgR1xh08VdKR2w99J41J1jv3MWvNzeIT5Eh+3zoQCA/Cb+7gqQKP",
-	"48C1wfhHAT530qI0ms852bAgu+LZdMAJI5SoIG0UPqSNdjbYgK5KSnUtFpLSK4RUO/JlCsMJjWfh+qlO",
-	"IBWkTZRpXIy+A1+pBCBiibFK/3ew5HP+v9mBE7OGELN7FOjJ0wKWxsHF6kp4/Jg7SjxBA2eUguKj2Q5o",
-	"0tHoKMm+dt9zKuEbEG4qYXJpbWSuKApJdRHq34HOKNRhDe+VQYaGrUA4toEdK4W1Uq96NDjEYp51PGzo",
-	"4zelWBB1XgL1JEKZDqH5IJwTuxE4XVLteSlU7nPjYAqWle2dqqtyAY5s1unPCragehKpEVZRVKYtPqc+",
-	"H2WxtjzYB+2MQmpPSqYTWDZuTUr4NIL5gIe9kF+Wu9SYdvNyUOyA+T19a2TTk4esea+9BY3Mo0AWlXqk",
-	"6znwOOH5dXXIGni7CONJEdsITcwqVbAHsRqX68yo0KKEF46KYJI+328SfGknXYimvX5CqX+WfP7hdKMb",
-	"Tsn6MeO6UkosFPA5ugpG1zZ75eTsxtdI4tGB2KRrjmLlB9mdaS6TE/ow1EaCrVAVnKdWaqgHi3HB6nDX",
-	"liY4pSnL53xlwqiUuaBWtwXn4714c3V9dR26rQUtrORz/nP4lHErcB2SngkrZ0IpkwuE2Z6uUB3oYGLt",
-	"iRSC7tltEftzUKQuE7w4UQKC84EUR/OAbiMa1jpnIt5Nhib0dNKhMFpyEm7B6wEZYkvWLGBhSjWbwbnb",
-	"1V2IR/LmrdE+EuSn6+u4qGmE2LCEtUrmIcPZJx974eHAC+Z5PRqE720hEIrQjjwLq0QLgjT6igryS4xj",
-	"aPe3aZoXE1shw4VhxjGpt0LJ6O6KzquzWLV2hUiX6q7StOHwr4hAb4NKwEBS5oKYPUtcM2PjVhH7dCGX",
-	"y0E6YVrP9hvYnSDgO1KiReYc+27aLQQNC54JykrHP39As1op8D9OEHEDu5M8/JY0621tJ7gW1iXCFab5",
-	"9aeQCooDIGQTtH89rb0EzNfxhEjmYD6oHQnDvgSJmt0ANhX7TiC9a/ZAJnTRWy9flvsgX99uWVMJx+bw",
-	"XbqPh8gEP4i4nXZTAT+Q/JXxdpP0VOC074wX91Ea9BKgmI+S8JszWZDCmdbQPTbZUioE1zWBpwrc7tAF",
-	"mgfkePyEaevbl6lvnqa+e5v6rzGKLgTXby5BN+DESoH5WuoVw/UBi6Cdbr6HXxKa7ggefzfF7gsOlOOf",
-	"KurhqtSsj0dAvvliAUT8UrMMQpslAk432L+k9wRnGy9bSlBFgsKz/WHjq2eeXqCzfSEd5OTpxPgLj9Wm",
-	"AOc5fvvHxHwb7JuXj7lstOJROKwLfOK0Tn7RblfRu6owz/qb73O9HwISFIi59veZqr/nxSLX9X8BAAD/",
-	"/6CMGsg+FAAA",
+	"H4sIAAAAAAAC/8xYTW/jNhD9KwTbQwsIcbYfF9/a7XaRQz+QZE+LIKClsc01TTLkyFnD0H8vhpRkyaJs",
+	"B8kmvSUacjjz+GbmmTuem7U1GjR6Pt1xny9hLcKf75eQr5T0eIWwpg/WGQsOJQQz7VOAUNA/uLXAp3xm",
+	"jAKheZVxWYBGOZfgOnaPTuoFmRG+YsJQZdzBQykduf3cdVJvyTrn3mXNdjP7AjmS3/cOBMKt8KtreCjB",
+	"4zBwbTD+UYDPnbQojeZTTntYsF3wbDzgxCaUqCC9KXxIb9rasAd0uaZUl2ImKb1CSLUlX6YwnNB4FK6b",
+	"6ghSwVpHmcbF6GvwpUoAIuYYb+l7B3M+5d9N9pyY1ISY3KBAT55mMDcOzl6uhMf73FHiCRo4oxQU92bT",
+	"o0lLo4Mku6u7nlMJf3DOuGvw1mgPw5yBzMmQYAMa74/S9yCs6CuxMxXXRxBu7CLIp7WxokRRSOKLUP/2",
+	"1gzi7XPrRhlkaNgChGMr2LK1sFbqRYee+1jMo46H9X38phQLptZLKAmJsE6HUH8QzontEJ0mqea8FCo3",
+	"uXEwBsvCdk7V5XoGjvYs058VbEB1LFIjLKJpnd7xNfX5IIul5WF/WJ1RSM1JyXQC+4ctUwmfRjDv1Ucn",
+	"5KflLjWm3TwdFNtjfme9NbKeFX3WfNLegkbmUSCLizqk6zjwOOL5efeQ1fC2EcaTIrYRmphV6sJuxWJ4",
+	"XSdGmBZreOIIC1vS5/tVgi/NBA7RNOUnlPpnzqefjzfg/vSu7jKuS6XETAGfoithULbZMyd6O1YHFo8O",
+	"xCp95ygWvpfdieYyqhz2w3Zg2AhVwmlqpcRG2DG8sCrU2twEpzT9+ZQvTBjhMhfU6jbgfKyLdxeXF5eh",
+	"21rQwko+5T+HTxm3Apch6YmwciKUMrlAmOyohKpABxPvnkghqM6uitifw0LqMsGLE2tAcD6Q4mAeUDWi",
+	"YY1zJmJtMjShp9MaCqMhJ+EWvO6RIbZktTAMU6pWLKeqqy2IO/IWB3HI9qfLyyggNUJsWMJaJfOQ4eSL",
+	"j71wf+AZOqMaDMJPthAIRWhHngWJ04Agjb6gC/nlBePoy41EPH+buikysREyFCIzjkm9EUrGMC9oX5VF",
+	"NjSSKU2B61KTouPfENmOYkykQ1bmgpk9SlwyY6Naif2/kPN5L52gAia7FWyPEPsDLSKBdIrVHxt1g4YF",
+	"zwRlqeOfP6BZLBT4H0cIvoLtUX6/Jn07avAIh4MMI1zh9Xn7p5AKij3QFEuI4te3iWIOmC8jIrGoQ1g9",
+	"rpEx6EZIcOwjYM2wN7rUD7UeZkIXHZn9/8C0h6NvVOwYkLH5vkl39xArwvcibtTEWMC3ZH9mvK1SORY4",
+	"6cnhD6NBGvRLi2I+SMKvTmRBC060yPaRgc2lQnBtM3wowW333bB+OBiO96BmfPMi4esnCd++SfhvMerP",
+	"BNevzkE34MTWAvOl1AuGyz0WYXV6CO1fkOopAR5/N8X2BQfr4RNV1ZeitTw/APLdiwUQ8UvNdAjjhgj4",
+	"+oPmL+k9XVODA5tLUEWiNCa7vVKvJj43Dia7QjrIydMReREeGeqLPV07V3+M6Ife74TzZUQ2kOYUDmsD",
+	"HzmttZ+lyUv6PVyYR/3qOrzzgJO43JhrVy+WXX0eL7mq/gsAAP//Urs8P44WAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

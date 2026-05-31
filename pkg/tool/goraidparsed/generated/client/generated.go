@@ -15,6 +15,12 @@ import (
 	"time"
 )
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // GenerateRequest defines model for GenerateRequest.
 type GenerateRequest struct {
 	Date  *time.Time `json:"date,omitempty"`
@@ -276,6 +282,7 @@ type PostGenerateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GenerateResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -362,6 +369,13 @@ func ParsePostGenerateResponse(rsp *http.Response) (*PostGenerateResponse, error
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

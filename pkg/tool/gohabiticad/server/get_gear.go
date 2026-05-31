@@ -13,7 +13,9 @@ func (s *Server) GetGear(
 	result, e := s.habitica.UserGear()
 
 	if e != nil {
-		return server.GetGear500Response{}, nil
+		return server.GetGear500JSONResponse(
+			*s.captureFail(e, "failed to fetch gear"),
+		), nil
 	}
 
 	return server.GetGear200JSONResponse(

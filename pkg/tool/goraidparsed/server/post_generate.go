@@ -1,15 +1,12 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -17,27 +14,41 @@ import (
 )
 
 func (s *Server) PostGenerate(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.PostGenerateJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostGenerateRequestObject,
+) (server.PostGenerateResponseObject, error) {
 	date := time.Now()
 
-	if body.Date != nil {
-		date = *body.Date
+	if r.Body.Date != nil {
+		date = *r.Body.Date
 	}
 
-	s.logger.Structured("generate_request", "files", body.Files)
+	s.logger.Structured("generate_request", "files", r.Body.Files)
 	workdir, e := os.MkdirTemp("", "goraidparsed-")
-	errors.PanicOnError(e)
-	defer func() { errors.PanicOnError(os.RemoveAll(workdir)) }()
 
-	for _, file := range body.Files {
+	if e != nil {
+		return server.PostGenerate500JSONResponse(
+			*s.captureFail(e, "failed to create temp directory"),
+		), nil
+	}
+
+	defer func() {
+		if f := os.RemoveAll(workdir); f != nil {
+			s.reporter.CaptureException(f)
+		}
+	}()
+
+	for _, file := range r.Body.Files {
 		system.Stat(file)
-		errors.PanicOnError(
-			os.Symlink(file, filepath.Join(workdir, filepath.Base(file))),
-		)
+
+		if f := os.Symlink(
+			file,
+			filepath.Join(workdir, filepath.Base(file)),
+		); f != nil {
+			return server.PostGenerate500JSONResponse(
+				*s.captureFail(f, "failed to symlink file"),
+			), nil
+		}
 	}
 
 	dateArgument := date.Format("2006-01-02T15:04:05")
@@ -50,15 +61,17 @@ func (s *Server) PostGenerate(
 	parser.Start("python", parserScript, workdir, "-d", dateArgument)
 
 	if parser.Error != nil {
-		s.reporter.CaptureWithContext(
-			parser.Error,
-			"parser",
-			map[string]any{
-				"output": parser.OutputString,
-				"stderr": parser.ErrorString,
-			},
-		)
-		errors.PanicOnError(parser.Error)
+		return server.PostGenerate500JSONResponse{
+			Error: "parser failed",
+			EventIdentifier: s.reporter.CaptureWithContext(
+				parser.Error,
+				"parser",
+				map[string]any{
+					"output": parser.OutputString,
+					"stderr": parser.ErrorString,
+				},
+			),
+		}, nil
 	}
 
 	tidCount := 0
@@ -88,15 +101,17 @@ func (s *Server) PostGenerate(
 	)
 
 	if t.Error != nil {
-		s.reporter.CaptureWithContext(
-			t.Error,
-			"tiddler_generator",
-			map[string]any{
-				"output": t.OutputString,
-				"stderr": t.ErrorString,
-			},
-		)
-		errors.PanicOnError(t.Error)
+		return server.PostGenerate500JSONResponse{
+			Error: "tiddler generator failed",
+			EventIdentifier: s.reporter.CaptureWithContext(
+				t.Error,
+				"tiddler_generator",
+				map[string]any{
+					"output": t.OutputString,
+					"stderr": t.ErrorString,
+				},
+			),
+		}, nil
 	}
 
 	reportName := fmt.Sprintf(
@@ -130,8 +145,9 @@ func (s *Server) PostGenerate(
 
 	reportPath := filepath.Join(s.outputPath, reportName)
 	system.Move(reportSource, reportPath)
-	web.EncodeNotation(
-		w,
-		server.GenerateResponse{Path: reportPath, TidCount: tidCount},
-	)
+
+	return server.PostGenerate200JSONResponse{
+		Path:     reportPath,
+		TidCount: tidCount,
+	}, nil
 }

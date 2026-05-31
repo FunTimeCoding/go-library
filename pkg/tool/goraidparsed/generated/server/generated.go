@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,7 +19,14 @@ import (
 	"time"
 
 	"github.com/getkin/kin-openapi/openapi3"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
 
 // GenerateRequest defines model for GenerateRequest.
 type GenerateRequest struct {
@@ -212,16 +221,153 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type PostGenerateRequestObject struct {
+	Body *PostGenerateJSONRequestBody
+}
+
+type PostGenerateResponseObject interface {
+	VisitPostGenerateResponse(w http.ResponseWriter) error
+}
+
+type PostGenerate200JSONResponse GenerateResponse
+
+func (response PostGenerate200JSONResponse) VisitPostGenerateResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostGenerate500JSONResponse ErrorResponse
+
+func (response PostGenerate500JSONResponse) VisitPostGenerateResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetStatusRequestObject struct {
+}
+
+type GetStatusResponseObject interface {
+	VisitGetStatusResponse(w http.ResponseWriter) error
+}
+
+type GetStatus200JSONResponse StatusResponse
+
+func (response GetStatus200JSONResponse) VisitGetStatusResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (POST /api/v1/generate)
+	PostGenerate(ctx context.Context, request PostGenerateRequestObject) (PostGenerateResponseObject, error)
+
+	// (GET /api/v1/status)
+	GetStatus(ctx context.Context, request GetStatusRequestObject) (GetStatusResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// PostGenerate operation middleware
+func (sh *strictHandler) PostGenerate(w http.ResponseWriter, r *http.Request) {
+	var request PostGenerateRequestObject
+
+	var body PostGenerateJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostGenerate(ctx, request.(PostGenerateRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostGenerate")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostGenerateResponseObject); ok {
+		if err := validResponse.VisitPostGenerateResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetStatus operation middleware
+func (sh *strictHandler) GetStatus(w http.ResponseWriter, r *http.Request) {
+	var request GetStatusRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetStatus(ctx, request.(GetStatusRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetStatus")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetStatusResponseObject); ok {
+		if err := validResponse.VisitGetStatusResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/7SSMW/bMBCF/0pw7ahaTrtpbIegW5GMRQdWfFYusHjM8WTACPTfC5JynNrKmEnE8Z3u",
-	"u8f3Qr2MUQKCJepeKPWPGF053iFAneEezxOS5VJUiVBjFIF3hvzdiY7OqCuFL8YjqCE7RlBHyZTDQHND",
-	"O97XNjaM5XAlWQpO1R1pnhtSPE+s8NT9Xvr/vKrk7xN6y21n0BQlJFyTRmeP6xPZ/5Ap2JtLDoYBejW/",
-	"/ONNxxrJgzmb0vscqdyvkFzMWnTXI7KQw07KL9j2+W4Qdeyj0wRPDR2giSVQR7eb7WabsSQiuMjU0bdS",
-	"asoyhaN1kdvDbTssHhZmqa+dyZ2xhJ+eOvolyU5OU8VFsu/ij1nbSzBUH12Me+5LY/uUMskpVvn0WbGj",
-	"jj6159y1S+jay8TN//tiOqEUqr2F/+t2+wHjl/cr8z1SrxytenqPKGo3J7v8Jovm5tXH8wsPWDHxDlYz",
-	"Qh+4x0UKV7Z4gB64x02lrTvM878AAAD///dQvN8MBAAA",
+	"H4sIAAAAAAAC/7SUTW/UMBCG/0o1cAybLYhLjiBUcUPbI0LIxG/SqTa2O56stKry35HtRP1ISi/0Fs3n",
+	"M++Mc0+tH4J3cBqpuafY3mAw+fObiJcDYvAuIhmC+ABRRnYjudOHngOooajCrqepIpzg9DdbOOWOsRU0",
+	"VSS4G1lgqfk519rI/FUtmf7PLVpN5a/gIEZxwN2IqGsyazTzdl4Go9RkwwflAVStaTs+ljRWDHFzoNlg",
+	"RMx5xV7y/w36kobB6M12R7Zf/ej0kZOdooes+ucajzK2SK7V6Bhf5ojZ//qe5rh1ixTIrvO5BOsx+Xov",
+	"hm0wEmGpohMksnfU0OVuv9snLB/gTGBq6FM2VXmYzFGbwPXpsu5nDTOzL9tO5EbZu++WGvrhoy5KU8FF",
+	"1C/enlNs652i6GhCOHKbE+vbmEiWc09f7wUdNfSufngP9fwY6ucXNz3VRWVENhR5M//H/f4N2s/7y/0t",
+	"YisctGh6QPCiF4tcdpf0/fwfIZ7+DV4lYO8uOsPHTJKjl40+3FqPjXVeQcu10hsq+uw9bExzDTlxi4tC",
+	"W2aYpr8BAAD//219LPguBQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

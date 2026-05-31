@@ -24,6 +24,12 @@ type AnnounceRequest struct {
 	Topic    string    `json:"topic"`
 }
 
+// BackfillResponse defines model for BackfillResponse.
+type BackfillResponse struct {
+	Enriched int `json:"enriched"`
+	Skipped  int `json:"skipped"`
+}
+
 // BashDumpResponse defines model for BashDumpResponse.
 type BashDumpResponse struct {
 	Commands []string `json:"commands"`
@@ -122,10 +128,19 @@ type MessagesResponse struct {
 	Messages []SessionMessage `json:"messages"`
 }
 
+// PeekEntry defines model for PeekEntry.
+type PeekEntry struct {
+	AssistantContext *string `json:"assistantContext,omitempty"`
+	UserText         string  `json:"userText"`
+}
+
 // PeekResponse defines model for PeekResponse.
 type PeekResponse struct {
-	LineCount    int      `json:"lineCount"`
-	UserMessages []string `json:"userMessages"`
+	Entries          []PeekEntry `json:"entries"`
+	LineCount        int         `json:"lineCount"`
+	ToolCounts       []ToolCount `json:"toolCounts"`
+	TotalToolCalls   int         `json:"totalToolCalls"`
+	UserMessageCount int         `json:"userMessageCount"`
 }
 
 // PulseEntry defines model for PulseEntry.
@@ -458,6 +473,9 @@ type ClientInterface interface {
 
 	PostAnnounce(ctx context.Context, body PostAnnounceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// PostBackfill request
+	PostBackfill(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetCheck request
 	GetCheck(ctx context.Context, params *GetCheckParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -560,6 +578,18 @@ func (c *Client) PostAnnounceWithBody(ctx context.Context, contentType string, b
 
 func (c *Client) PostAnnounce(ctx context.Context, body PostAnnounceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostAnnounceRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostBackfill(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostBackfillRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -978,6 +1008,33 @@ func NewPostAnnounceRequestWithBody(server string, contentType string, body io.R
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostBackfillRequest generates requests for PostBackfill
+func NewPostBackfillRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/backfill")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -2114,6 +2171,9 @@ type ClientWithResponsesInterface interface {
 
 	PostAnnounceWithResponse(ctx context.Context, body PostAnnounceJSONRequestBody, reqEditors ...RequestEditorFn) (*PostAnnounceResponse, error)
 
+	// PostBackfillWithResponse request
+	PostBackfillWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostBackfillResponse, error)
+
 	// GetCheckWithResponse request
 	GetCheckWithResponse(ctx context.Context, params *GetCheckParams, reqEditors ...RequestEditorFn) (*GetCheckResponse, error)
 
@@ -2217,6 +2277,28 @@ func (r PostAnnounceResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r PostAnnounceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostBackfillResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BackfillResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostBackfillResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostBackfillResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2784,6 +2866,15 @@ func (c *ClientWithResponses) PostAnnounceWithResponse(ctx context.Context, body
 	return ParsePostAnnounceResponse(rsp)
 }
 
+// PostBackfillWithResponse request returning *PostBackfillResponse
+func (c *ClientWithResponses) PostBackfillWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostBackfillResponse, error) {
+	rsp, err := c.PostBackfill(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostBackfillResponse(rsp)
+}
+
 // GetCheckWithResponse request returning *GetCheckResponse
 func (c *ClientWithResponses) GetCheckWithResponse(ctx context.Context, params *GetCheckParams, reqEditors ...RequestEditorFn) (*GetCheckResponse, error) {
 	rsp, err := c.GetCheck(ctx, params, reqEditors...)
@@ -3068,6 +3159,32 @@ func ParsePostAnnounceResponse(rsp *http.Response) (*PostAnnounceResponse, error
 	response := &PostAnnounceResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParsePostBackfillResponse parses an HTTP response from a PostBackfillWithResponse call
+func ParsePostBackfillResponse(rsp *http.Response) (*PostBackfillResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostBackfillResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BackfillResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	}
 
 	return response, nil

@@ -33,9 +33,9 @@ func (s *Service) EnrichSession(identifier string) {
 
 	peek := s.client.Peek(identifier)
 
-	if len(peek.UserMessages) > 0 {
-		updates["turn_count"] = len(peek.UserMessages)
-		firstMessage := peek.UserMessages[0]
+	if len(peek.Entries) > 0 {
+		updates["turn_count"] = peek.UserMessageCount
+		firstMessage := peek.Entries[0].UserText
 
 		if len(firstMessage) > 80 {
 			firstMessage = firstMessage[:80]

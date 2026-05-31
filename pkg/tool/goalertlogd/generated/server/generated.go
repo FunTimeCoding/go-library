@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -18,6 +20,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
 
 // Defines values for AlertsResponseStatus.
@@ -52,6 +55,12 @@ type AlertsResponse struct {
 
 // AlertsResponseStatus defines model for AlertsResponse.Status.
 type AlertsResponseStatus string
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
 
 // StatusResponse defines model for StatusResponse.
 type StatusResponse struct {
@@ -365,21 +374,296 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type GetAlertsRequestObject struct {
+	Params GetAlertsParams
+}
+
+type GetAlertsResponseObject interface {
+	VisitGetAlertsResponse(w http.ResponseWriter) error
+}
+
+type GetAlerts200JSONResponse []AlertsResponse
+
+func (response GetAlerts200JSONResponse) VisitGetAlertsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetAlerts400Response struct {
+}
+
+func (response GetAlerts400Response) VisitGetAlertsResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type GetAlerts500JSONResponse ErrorResponse
+
+func (response GetAlerts500JSONResponse) VisitGetAlertsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetRecentAlertsRequestObject struct {
+	Params GetRecentAlertsParams
+}
+
+type GetRecentAlertsResponseObject interface {
+	VisitGetRecentAlertsResponse(w http.ResponseWriter) error
+}
+
+type GetRecentAlerts200JSONResponse []AlertsResponse
+
+func (response GetRecentAlerts200JSONResponse) VisitGetRecentAlertsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetRecentAlerts400Response struct {
+}
+
+func (response GetRecentAlerts400Response) VisitGetRecentAlertsResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type GetRecentAlerts500JSONResponse ErrorResponse
+
+func (response GetRecentAlerts500JSONResponse) VisitGetRecentAlertsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetTopAlertsRequestObject struct {
+	Params GetTopAlertsParams
+}
+
+type GetTopAlertsResponseObject interface {
+	VisitGetTopAlertsResponse(w http.ResponseWriter) error
+}
+
+type GetTopAlerts200JSONResponse []TopAlertsResponse
+
+func (response GetTopAlerts200JSONResponse) VisitGetTopAlertsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetTopAlerts400Response struct {
+}
+
+func (response GetTopAlerts400Response) VisitGetTopAlertsResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type GetTopAlerts500JSONResponse ErrorResponse
+
+func (response GetTopAlerts500JSONResponse) VisitGetTopAlertsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetStatusRequestObject struct {
+}
+
+type GetStatusResponseObject interface {
+	VisitGetStatusResponse(w http.ResponseWriter) error
+}
+
+type GetStatus200JSONResponse StatusResponse
+
+func (response GetStatus200JSONResponse) VisitGetStatusResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetStatus500JSONResponse ErrorResponse
+
+func (response GetStatus500JSONResponse) VisitGetStatusResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (GET /api/v1/alerts)
+	GetAlerts(ctx context.Context, request GetAlertsRequestObject) (GetAlertsResponseObject, error)
+
+	// (GET /api/v1/alerts/recent)
+	GetRecentAlerts(ctx context.Context, request GetRecentAlertsRequestObject) (GetRecentAlertsResponseObject, error)
+
+	// (GET /api/v1/alerts/top)
+	GetTopAlerts(ctx context.Context, request GetTopAlertsRequestObject) (GetTopAlertsResponseObject, error)
+
+	// (GET /api/v1/status)
+	GetStatus(ctx context.Context, request GetStatusRequestObject) (GetStatusResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// GetAlerts operation middleware
+func (sh *strictHandler) GetAlerts(w http.ResponseWriter, r *http.Request, params GetAlertsParams) {
+	var request GetAlertsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetAlerts(ctx, request.(GetAlertsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetAlerts")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetAlertsResponseObject); ok {
+		if err := validResponse.VisitGetAlertsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetRecentAlerts operation middleware
+func (sh *strictHandler) GetRecentAlerts(w http.ResponseWriter, r *http.Request, params GetRecentAlertsParams) {
+	var request GetRecentAlertsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetRecentAlerts(ctx, request.(GetRecentAlertsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetRecentAlerts")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetRecentAlertsResponseObject); ok {
+		if err := validResponse.VisitGetRecentAlertsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetTopAlerts operation middleware
+func (sh *strictHandler) GetTopAlerts(w http.ResponseWriter, r *http.Request, params GetTopAlertsParams) {
+	var request GetTopAlertsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetTopAlerts(ctx, request.(GetTopAlertsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetTopAlerts")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetTopAlertsResponseObject); ok {
+		if err := validResponse.VisitGetTopAlertsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetStatus operation middleware
+func (sh *strictHandler) GetStatus(w http.ResponseWriter, r *http.Request) {
+	var request GetStatusRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetStatus(ctx, request.(GetStatusRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetStatus")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetStatusResponseObject); ok {
+		if err := validResponse.VisitGetStatusResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+RWTW/bOBD9K8LsHrWWs7sn3QoULXIoECS5BTkw1FhmQJHMcKTCCPzfC5KKZFt0PtpL",
-	"gZ5kcDjDN+89Dv0M0nbOGjTsoX4GL7fYifjzk0Zif43eWeMxrDiyDokVxjiaJnx45xBq8EzKtLAvYaNM",
-	"i+RIGc7GtXhAHSuIplGsrBH66qjyImVcsA+PKDksGNFhdqfHAUnxLh9kQXwuwv3YVd9BfQcbFWMlEHqr",
-	"B2zgvszk9V0nKHfaPmQ+9YqwSeVmUkb4B2DnQhM9L2gnbPcZGm5i6LxEWni+slrnSbUs9DVKS80h68ow",
-	"tkiLDo6258DcWveWZcSAJFr83JMIumdhSdsfGWfCU4LsidCw3n1J4mQ3/Yw1Tlod5UlIygXqJZCD4ktm",
-	"QnVlNjaeq1iHWGtFoErbtoESBiQf6YCL1Xq1DmCtQyOcghr+i0slOMHbSGIlnKqGiypWiCstRsIC0xHh",
-	"ZQM1fEVOcsRcEh0ykof67hlUOOqpx+i3xNdLzzMNTD2W4zzIUXYfr0YUOoL4d70OH2kNYxJQOKeVjIiq",
-	"R5/knuspxi4m/k24gRr+quZJVI1jqDox1DwKBJHYJW4b9JKUS4Yap1bRCZZbZdqCt1i0akBThA5XocT/",
-	"Celx3jflfdhvqVBmEFo1MaGYqFuF0/blCf0VoRzbPafCddzxES2mmz+RtbHUCYYaGsH4D6uo1cLE+Wph",
-	"Tn+41u+t7nfFW2UOtA1dFCRM+4rCl6Oskd2gM5rmTXnZute0nWbeOy8ZZG7UwcD9s+2wfEDe4Yhb64qk",
-	"VfGwK6xMo1liEaf3226YVTt1wPyf4Jz66fmFX+TmNUpOHvhM/zdIg5JYJLSph/3+RwAAAP//gye6htcJ",
-	"AAA=",
+	"H4sIAAAAAAAC/+RWwW7bOBD9FYG7R63lbNuLbgXaFDkUCJLcgqBgpLE8AUUyw5EKI8i/FyQVybZoJ2kP",
+	"TVFfZHA4o/fePA35ICrTWqNBsxPlg3DVGloZ/n5UQOwuwFmjHfgVS8YCMUKIg679gzcWRCkcE+pGPOZi",
+	"hboBsoSak3Elb0GFCrKukdFoqc53Ks9ShgVzewcV+wUtW0judNADIW/SQZbEhyLcDay6VpTXYoUhlgsC",
+	"Z1QPtbjJE3ld20pKve3RZ953SFDHcpMoA/wtsFOhUZ4ntCO2m4QMn4kMHemQDyf5Qg+av2ENmnGFQM8T",
+	"iLUSmSlclwHyYWBKOj43SqWbbViqC6gM1dtuQM3QAM2A7WxPgbky9jkryx5INvCpI+n9mIRVmW7H0COe",
+	"XFQdEWhWm9NomuSmn7HsHtXBNhFJPkM9B7JVfK6Mr456ZcJ7kZWPNUZ6qZRpapGLHsgFOcTJYrlYerDG",
+	"gpYWRSnehaVcWMnrIGIhLRb9SREqhJUGgmBe6YDwrBal+AIc2xFySbbAQE6U1w8C/avuOwjfQdTrifMk",
+	"A1MH+TCnUpLdhE82NDqA+H+59I/KaIbYQGmtwiogKu5cbPdUDxnakPgvwUqU4p9impDFMB6LPUNNI0oS",
+	"yU3UtgZXEdpoqGGaZq3kao26yXgNWYM96MwzXPgS7yPS3byv6JzfbyhD3UuFdUjIRulC6odXkjzGbXeo",
+	"JKicSlRQZ2yy0KssNnzhtz7mezYoCKoB0SE3XIQdr/HEOBlHPitDrWRRiloy/McYPDP7mNLV/Dn26lpv",
+	"22XfkdeotzzmWWQkdXPEaWeDvYK63m+g6z/GZmzsMY+NZ8ALh45ITJitA+jvtuX8QH2BM6+MHTqY3W4y",
+	"U8WjqoIsnGbPu3Lq2lt14nSHPOTCeC0Sv9ijY1T2Ll4JLpdAPVaQRbS/X8sRR/j9CAAA///iK03CjwwA",
+	"AA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

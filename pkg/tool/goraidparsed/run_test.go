@@ -21,7 +21,10 @@ func TestRunLifecycle(t *testing.T) {
 			n,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
-					server.New("", "", t.TempDir(), nil, nil),
+					generated.NewStrictHandler(
+						server.New("", "", t.TempDir(), nil, nil),
+						nil,
+					),
 					m,
 				)
 			},

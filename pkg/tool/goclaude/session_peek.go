@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
+	"github.com/funtimecoding/go-library/pkg/tool/goclaude/constant"
 	"github.com/spf13/cobra"
 )
 
@@ -34,23 +35,78 @@ func sessionPeek(c *command_context.Context) *cobra.Command {
 			)
 			errors.PanicOnError(e)
 			p := response.JSON200
+			lines := p.LineCount
+			total := len(p.Entries)
 			fmt.Printf(
-				"%d lines, %d user messages\n\n",
-				p.LineCount,
-				len(p.UserMessages),
+				"%d lines, %d user messages\n",
+				lines,
+				p.UserMessageCount,
 			)
-			limit := len(p.UserMessages) / 4
+			printToolSummary(p.TotalToolCalls, p.ToolCounts)
+			fmt.Println()
 
-			if limit < 10 {
-				limit = 10
+			if total == 0 {
+				return
 			}
 
-			if limit > len(p.UserMessages) {
-				limit = len(p.UserMessages)
+			n := peekBlockSize(lines)
+			m := peekContextDepth(lines)
+
+			if total*2 <= constant.PeekOutputBudget {
+				for _, entry := range p.Entries {
+					printPeekEntry(entry.UserText, entry.AssistantContext, m)
+				}
+
+				return
 			}
 
-			for _, m := range p.UserMessages[:limit] {
-				fmt.Println(m)
+			head := n
+
+			if head > total {
+				head = total
+			}
+
+			tail := n
+
+			if head+tail > total {
+				tail = total - head
+			}
+
+			middle := total - head - tail
+			budget := constant.PeekOutputBudget - (head+tail)*2
+			samples := 0
+
+			if budget > 0 && middle > 0 {
+				samples = budget / 2
+
+				if samples > middle {
+					samples = middle
+				}
+			}
+
+			for _, entry := range p.Entries[:head] {
+				printPeekEntry(entry.UserText, entry.AssistantContext, m)
+			}
+
+			if samples > 0 && middle > 0 {
+				step := middle / samples
+				fmt.Printf("--- (%d messages) ---\n", middle)
+
+				for i := 0; i < samples; i++ {
+					idx := head + i*step
+					entry := p.Entries[idx]
+					printPeekEntry(entry.UserText, entry.AssistantContext, m)
+				}
+			} else if middle > 0 {
+				fmt.Printf("--- (%d messages) ---\n", middle)
+			}
+
+			if tail > 0 {
+				fmt.Printf("---\n")
+
+				for _, entry := range p.Entries[total-tail:] {
+					printPeekEntry(entry.UserText, entry.AssistantContext, m)
+				}
 			}
 		},
 	}

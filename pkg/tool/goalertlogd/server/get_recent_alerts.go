@@ -1,28 +1,34 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"time"
 )
 
 func (s *Server) GetRecentAlerts(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.GetRecentAlertsParams,
-) {
+	_ context.Context,
+	r server.GetRecentAlertsRequestObject,
+) (server.GetRecentAlertsResponseObject, error) {
 	now := time.Now()
 	start := now.Add(-1 * time.Hour)
 	end := now
 
-	if v.Start != nil {
-		start = *v.Start
+	if r.Params.Start != nil {
+		start = *r.Params.Start
 	}
 
-	if v.End != nil {
-		end = *v.End
+	if r.Params.End != nil {
+		end = *r.Params.End
 	}
 
-	web.EncodeNotation(w, toResponse(s.store.MustByTimeRange(start, end)))
+	records, e := s.store.ByTimeRange(start, end)
+
+	if e != nil {
+		return server.GetRecentAlerts500JSONResponse(
+			*s.captureFail(e, "failed to query recent alerts"),
+		), nil
+	}
+
+	return server.GetRecentAlerts200JSONResponse(toResponse(records)), nil
 }

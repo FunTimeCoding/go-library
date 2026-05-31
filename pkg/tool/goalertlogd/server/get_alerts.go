@@ -1,15 +1,21 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetAlerts(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.GetAlertsParams,
-) {
-	web.EncodeNotation(w, toResponse(s.store.MustByName(v.Name)))
+	_ context.Context,
+	r server.GetAlertsRequestObject,
+) (server.GetAlertsResponseObject, error) {
+	records, e := s.store.ByName(r.Params.Name)
+
+	if e != nil {
+		return server.GetAlerts500JSONResponse(
+			*s.captureFail(e, "failed to query alerts"),
+		), nil
+	}
+
+	return server.GetAlerts200JSONResponse(toResponse(records)), nil
 }

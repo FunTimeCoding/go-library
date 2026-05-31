@@ -28,7 +28,7 @@ func Run(
 				t := telemetry.NewEnvironment()
 				generated.HandlerFromMux(
 					generated.NewStrictHandler(
-						server.New(c),
+						server.New(c, r),
 						[]generated.StrictMiddlewareFunc{
 							web.TelemetryMiddleware(t),
 						},

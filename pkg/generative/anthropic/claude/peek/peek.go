@@ -1,6 +1,9 @@
 package peek
 
 type Peek struct {
-	LineCount    int
-	UserMessages []string
+	LineCount        int
+	UserMessageCount int
+	Entries          []Entry
+	ToolCounts       []ToolCount
+	TotalToolCalls   int
 }

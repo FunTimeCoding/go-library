@@ -40,6 +40,10 @@ paths:
                 $ref: "#/components/schemas/Task"
         "400":
           description: Missing required fields.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/tasks/{identifier}/score/{direction}:
     post:
       operationId: scoreTask
@@ -106,6 +110,10 @@ paths:
                 $ref: "#/components/schemas/Stats"
         "400":
           description: No points available or invalid stat.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/gear:
     get:
       operationId: getGear
@@ -118,6 +126,10 @@ paths:
                 $ref: "#/components/schemas/GearResult"
         "500":
           description: Failed to fetch gear.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/equip/{key}:
     post:
       operationId: equipGear
@@ -137,8 +149,16 @@ paths:
                 $ref: "#/components/schemas/GearResult"
         "400":
           description: Failed to equip gear.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "500":
           description: Failed to fetch gear after equip.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/cron:
     post:
       operationId: runCron
@@ -279,3 +299,11 @@ components:
           $ref: "#/components/schemas/Stats"
         after:
           $ref: "#/components/schemas/Stats"
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
+          type: string

@@ -1,11 +1,13 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/store"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/worker"
 )
 
 type Server struct {
-	store  *store.Store
-	worker *worker.Worker
+	store    *store.Store
+	worker   *worker.Worker
+	reporter face.Reporter
 }

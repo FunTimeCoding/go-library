@@ -20,6 +20,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenerateResponse"
+        "500":
+          description: Report generation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/status:
     get:
       operationId: getStatus
@@ -60,4 +66,14 @@ components:
       - status
       properties:
         status:
+          type: string
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - event_identifier
+      properties:
+        error:
+          type: string
+        event_identifier:
           type: string

@@ -49,6 +49,12 @@ type AlertsResponse struct {
 // AlertsResponseStatus defines model for AlertsResponse.Status.
 type AlertsResponseStatus string
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // StatusResponse defines model for StatusResponse.
 type StatusResponse struct {
 	LastPoll     *string `json:"lastPoll,omitempty"`
@@ -494,6 +500,7 @@ type GetAlertsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]AlertsResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -516,6 +523,7 @@ type GetRecentAlertsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]AlertsResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -538,6 +546,7 @@ type GetTopAlertsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]TopAlertsResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -560,6 +569,7 @@ type GetStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *StatusResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -635,6 +645,13 @@ func ParseGetAlertsResponse(rsp *http.Response) (*GetAlertsResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -660,6 +677,13 @@ func ParseGetRecentAlertsResponse(rsp *http.Response) (*GetRecentAlertsResponse,
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -687,6 +711,13 @@ func ParseGetTopAlertsResponse(rsp *http.Response) (*GetTopAlertsResponse, error
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -712,6 +743,13 @@ func ParseGetStatusResponse(rsp *http.Response) (*GetStatusResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

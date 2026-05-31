@@ -13,4 +13,5 @@ const (
 	NameEnvironment              = "CLAUDE_NAME"
 	HostEnvironment              = "CLAUDE_HOST"
 	PortEnvironment              = "CLAUDE_PORT"
+	PeekOutputBudget             = 120
 )

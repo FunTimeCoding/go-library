@@ -375,6 +375,16 @@ paths:
       responses:
         "200":
           description: Pulse sent.
+  /api/backfill:
+    post:
+      operationId: postBackfill
+      responses:
+        "200":
+          description: Backfill completed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BackfillResponse"
   /api/sweep:
     post:
       operationId: postSweep
@@ -758,14 +768,34 @@ components:
       type: object
       required:
       - lineCount
-      - userMessages
+      - userMessageCount
+      - entries
+      - toolCounts
+      - totalToolCalls
       properties:
         lineCount:
           type: integer
-        userMessages:
+        userMessageCount:
+          type: integer
+        entries:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/PeekEntry"
+        toolCounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolCount"
+        totalToolCalls:
+          type: integer
+    PeekEntry:
+      type: object
+      required:
+      - userText
+      properties:
+        userText:
+          type: string
+        assistantContext:
+          type: string
     MessagesResponse:
       type: object
       required:
@@ -975,6 +1005,16 @@ components:
           type: string
         timestamp:
           type: string
+    BackfillResponse:
+      type: object
+      required:
+      - enriched
+      - skipped
+      properties:
+        enriched:
+          type: integer
+        skipped:
+          type: integer
     SweepResponse:
       type: object
       required:

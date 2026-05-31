@@ -301,6 +301,56 @@ reporting. Shared error extraction logic lives in a `common/` package
 (e.g. `gonetboxd/common/ExtractMessage`). The recovery middleware
 remains as a safety net for unexpected panics.
 
+### REST strict server error handling
+
+Services using oapi-codegen's strict server mode return typed error
+responses with Sentry event IDs. The OpenAPI spec defines an
+`ErrorResponse` schema with `error` and `event_identifier` fields,
+referenced from every error response code.
+
+Two tiers, same as MCP:
+
+**Tier 1 - Input validation**: oapi-codegen handles parameter
+validation automatically in strict mode. The strict handler
+wrapper returns 400 before the handler runs if parameters fail
+binding. For application-level validation, return the 400
+response type with `captureFail`.
+
+**Tier 2 - Infrastructure failure**: use non-Must store/client
+methods, check the error, return the 500 response type with
+`captureFail`:
+
+```go
+records, e := s.store.ByName(r.Params.Name)
+
+if e != nil {
+    return server.GetAlerts500JSONResponse(
+        *s.captureFail(e, "failed to query alerts"),
+    ), nil
+}
+```
+
+`captureFail` on REST servers returns `*server.ErrorResponse`
+(pointer — lint requires pointer returns for structs). Callers
+dereference with `*` inside the response type conversion.
+
+For external process failures with rich context (stdout, stderr),
+construct the response inline with `CaptureWithContext`:
+
+```go
+return server.PostGenerate500JSONResponse{
+    Error: "parser failed",
+    EventIdentifier: s.reporter.CaptureWithContext(
+        parser.Error,
+        "parser",
+        map[string]any{
+            "output": parser.OutputString,
+            "stderr": parser.ErrorString,
+        },
+    ),
+}, nil
+```
+
 ## External Process Failure
 
 When shelling out to an external process (terraform, git, ansible,

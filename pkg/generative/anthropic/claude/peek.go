@@ -10,6 +10,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"os"
 	"path/filepath"
+	"sort"
 )
 
 func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
@@ -24,19 +25,17 @@ func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
 	}
 
 	defer errors.PanicClose(f)
-	result := peek.Stub()
+	result := peek.New()
 	s := bufio.NewScanner(f)
 	s.Buffer(make([]byte, 1024*1024), 1024*1024)
+	toolCounts := map[string]int{}
+	var lastAssistantText string
 
 	for s.Scan() {
 		result.LineCount++
 		var line notation.Line
 
 		if json.Unmarshal(s.Bytes(), &line) != nil {
-			continue
-		}
-
-		if line.Type != "user" || line.Meta {
 			continue
 		}
 
@@ -50,6 +49,43 @@ func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
 			continue
 		}
 
+		if line.Type == "assistant" {
+			var blocks []json.RawMessage
+
+			if json.Unmarshal(m.Content, &blocks) == nil {
+				for _, raw := range blocks {
+					var b notation.ContentBlock
+
+					if json.Unmarshal(raw, &b) != nil {
+						continue
+					}
+
+					if b.Type == "tool_use" {
+						toolCounts[b.Name]++
+						result.TotalToolCalls++
+					}
+				}
+			}
+
+			text := extractText(m.Content)
+
+			if text != "" && !isSystemNoise(text) {
+				clean := cleanContent(text)
+
+				if len(clean) > 200 {
+					clean = clean[:200]
+				}
+
+				lastAssistantText = clean
+			}
+
+			continue
+		}
+
+		if line.Type != "user" || line.Meta {
+			continue
+		}
+
 		text := extractText(m.Content)
 
 		if isSystemNoise(text) {
@@ -58,14 +94,42 @@ func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
 
 		clean := cleanContent(text)
 
-		if len(clean) > 20 {
-			if len(clean) > 100 {
-				clean = clean[:100]
-			}
-
-			result.UserMessages = append(result.UserMessages, clean)
+		if len(clean) <= 20 {
+			continue
 		}
+
+		if len(clean) > 100 {
+			clean = clean[:100]
+		}
+
+		result.Entries = append(
+			result.Entries,
+			peek.Entry{
+				UserText:         clean,
+				AssistantContext: lastAssistantText,
+			},
+		)
+		result.UserMessageCount++
+		lastAssistantText = ""
 	}
+
+	var sorted []peek.ToolCount
+
+	for name, count := range toolCounts {
+		sorted = append(
+			sorted,
+			peek.ToolCount{
+			Name:  name,
+			Count: count,
+		})
+	}
+
+	sort.Slice(
+		sorted,
+		func(i, j int) bool {
+		return sorted[i].Count > sorted[j].Count
+	})
+	result.ToolCounts = sorted
 
 	return result
 }

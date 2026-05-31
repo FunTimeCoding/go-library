@@ -136,6 +136,12 @@ type CronResult struct {
 	RolledOver bool   `json:"rolled_over"`
 }
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // GearResult defines model for GearResult.
 type GearResult struct {
 	// Equipped Slot to gear key mapping.
@@ -814,6 +820,7 @@ type AllocateStatResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Stats
+	JSON400      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -858,6 +865,8 @@ type EquipGearResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GearResult
+	JSON400      *ErrorResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -880,6 +889,7 @@ type GetGearResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GearResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -968,6 +978,7 @@ type CreateTaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Task
+	JSON400      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1118,6 +1129,13 @@ func ParseAllocateStatResponse(rsp *http.Response) (*AllocateStatResponse, error
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
 	}
 
 	return response, nil
@@ -1170,6 +1188,20 @@ func ParseEquipGearResponse(rsp *http.Response) (*EquipGearResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1195,6 +1227,13 @@ func ParseGetGearResponse(rsp *http.Response) (*GetGearResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1299,6 +1338,13 @@ func ParseCreateTaskResponse(rsp *http.Response) (*CreateTaskResponse, error) {
 			return nil, err
 		}
 		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	}
 

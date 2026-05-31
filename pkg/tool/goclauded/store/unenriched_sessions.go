@@ -9,7 +9,7 @@ func (s *Store) UnenrichedSessions() []session.Session {
 	var result []session.Session
 	errors.PanicOnError(
 		s.database.
-			Where("slug = '' OR callsign IS NOT NULL").
+			Where("slug = '' OR slug IS NULL OR callsign IS NOT NULL").
 			Find(&result).Error,
 	)
 

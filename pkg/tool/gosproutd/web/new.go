@@ -11,7 +11,10 @@ import (
 	"maragu.dev/gomponents/html"
 )
 
-func New(s *store.Store, n face.EventNotifier) *Server {
+func New(
+	s *store.Store,
+	n face.EventNotifier,
+) *Server {
 	return &Server{
 		store:    s,
 		notifier: n,

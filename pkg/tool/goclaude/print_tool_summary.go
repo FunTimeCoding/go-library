@@ -6,7 +6,10 @@ import (
 	"strings"
 )
 
-func printToolSummary(total int, counts []client.ToolCount) {
+func printToolSummary(
+	total int,
+	counts []client.ToolCount,
+) {
 	if total == 0 {
 		return
 	}

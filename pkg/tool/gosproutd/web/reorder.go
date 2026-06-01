@@ -5,7 +5,10 @@ import (
 	"strconv"
 )
 
-func (s *Server) reorder(w http.ResponseWriter, r *http.Request) {
+func (s *Server) reorder(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
 	if e := r.ParseForm(); e != nil {
 		http.Error(w, "invalid form", http.StatusBadRequest)
 

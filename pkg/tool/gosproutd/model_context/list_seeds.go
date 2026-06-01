@@ -18,10 +18,11 @@ func (s *Server) listSeeds(
 		result = append(
 			result,
 			map[string]any{
-			"name":     v.Name,
-			"path":     v.Path,
-			"position": v.Position,
-		})
+				"name":     v.Name,
+				"path":     v.Path,
+				"position": v.Position,
+			},
+		)
 	}
 
 	return response.SuccessAny(result)

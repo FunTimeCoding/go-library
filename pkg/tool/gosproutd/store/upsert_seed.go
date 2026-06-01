@@ -29,11 +29,13 @@ func (s *Store) UpsertSeed(
 
 	if existing.ContentHash != contentHash {
 		errors.PanicOnError(
-			s.mapper.Model(&existing).Updates(map[string]any{
-				"name":         name,
-				"content_hash": contentHash,
-				"content":      content,
-			}).Error,
+			s.mapper.Model(&existing).Updates(
+				map[string]any{
+					"name":         name,
+					"content_hash": contentHash,
+					"content":      content,
+				},
+			).Error,
 		)
 	}
 }

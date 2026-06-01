@@ -5,7 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/usage_entry"
 )
 
-func modelCost(model string, m *modelTotals) float64 {
+func modelCost(
+	model string,
+	m *modelTotals,
+) float64 {
 	return common.EntryCost(
 		model,
 		usage_entry.New(

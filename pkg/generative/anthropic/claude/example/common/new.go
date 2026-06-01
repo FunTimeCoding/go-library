@@ -5,7 +5,10 @@ import (
 	"time"
 )
 
-func New(t time.Time, entry *usage_entry.Entry) *Timestamped {
+func New(
+	t time.Time,
+	entry *usage_entry.Entry,
+) *Timestamped {
 	return &Timestamped{
 		Time:  t,
 		Entry: entry,

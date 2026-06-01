@@ -7,7 +7,10 @@ import (
 	"net/http"
 )
 
-func (s *Server) dashboard(w http.ResponseWriter, _ *http.Request) {
+func (s *Server) dashboard(
+	w http.ResponseWriter,
+	_ *http.Request,
+) {
 	s.view.RenderPage(
 		w,
 		constant.DashboardTitle,

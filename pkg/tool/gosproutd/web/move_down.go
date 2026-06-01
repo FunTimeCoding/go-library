@@ -5,7 +5,10 @@ import (
 	"strconv"
 )
 
-func (s *Server) moveDown(w http.ResponseWriter, r *http.Request) {
+func (s *Server) moveDown(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
 	identifier, e := strconv.ParseUint(r.URL.Query().Get("id"), 10, 64)
 
 	if e != nil {

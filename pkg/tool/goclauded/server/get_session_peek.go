@@ -32,9 +32,10 @@ func (s *Server) GetSessionPeek(
 		toolCounts = append(
 			toolCounts,
 			server.ToolCount{
-			Name:  tc.Name,
-			Count: tc.Count,
-		})
+				Name:  tc.Name,
+				Count: tc.Count,
+			},
+		)
 	}
 
 	web.EncodeNotation(

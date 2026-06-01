@@ -8,16 +8,16 @@ import (
 func MachineDetail(v *proxmox.VirtualMachine) *server.MachineDetail {
 	result := &server.MachineDetail{
 		Identifier: int64(v.VMID),
-		Name:    v.Name,
-		Node:    &v.Node,
-		Status:  &v.Status,
-		Cpu:     new(v.CPU),
-		Cpus:    new(v.CPUs),
-		Mem:     new(int64(v.Mem)),
-		MaxMem:  new(int64(v.MaxMem)),
-		Disk:    new(int64(v.Disk)),
-		MaxDisk: new(int64(v.MaxDisk)),
-		Uptime:  new(int64(v.Uptime)),
+		Name:       v.Name,
+		Node:       &v.Node,
+		Status:     &v.Status,
+		Cpu:        new(v.CPU),
+		Cpus:       new(v.CPUs),
+		Mem:        new(int64(v.Mem)),
+		MaxMem:     new(int64(v.MaxMem)),
+		Disk:       new(int64(v.Disk)),
+		MaxDisk:    new(int64(v.MaxDisk)),
+		Uptime:     new(int64(v.Uptime)),
 	}
 
 	if v.Tags != "" {

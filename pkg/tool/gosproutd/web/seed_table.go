@@ -14,25 +14,26 @@ func (s *Server) seedTable() gomponents.Node {
 		rows = append(
 			rows,
 			html.Tr(
-			html.Td(
-				html.Class("drag-handle"),
-				gomponents.Text("⠿"),
+				html.Td(
+					html.Class("drag-handle"),
+					gomponents.Text("⠿"),
+				),
+				html.Td(
+					html.Class("position-cell"),
+					gomponents.Text(fmt.Sprintf("%d", v.Position)),
+				),
+				html.Td(gomponents.Text(v.Name)),
+				html.Td(
+					html.Style("color: var(--pico-muted-color);"),
+					gomponents.Text(v.Path),
+				),
+				html.Input(
+					html.Type("hidden"),
+					html.Name("item"),
+					html.Value(fmt.Sprintf("%d", v.Identifier)),
+				),
 			),
-			html.Td(
-				html.Class("position-cell"),
-				gomponents.Text(fmt.Sprintf("%d", v.Position)),
-			),
-			html.Td(gomponents.Text(v.Name)),
-			html.Td(
-				html.Style("color: var(--pico-muted-color);"),
-				gomponents.Text(v.Path),
-			),
-			html.Input(
-				html.Type("hidden"),
-				html.Name("item"),
-				html.Value(fmt.Sprintf("%d", v.Identifier)),
-			),
-		))
+		)
 	}
 
 	return html.Table(

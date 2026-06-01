@@ -21,10 +21,12 @@ func (w *Watcher) run() {
 		case <-w.stop:
 			return
 		case <-sweep.C:
-			w.recovery.Run(func() {
-				w.addDirectories(n)
-				w.scan()
-			})
+			w.recovery.Run(
+				func() {
+					w.addDirectories(n)
+					w.scan()
+				},
+			)
 		case v, okay := <-n.Events:
 			if !okay {
 				return
@@ -40,10 +42,12 @@ func (w *Watcher) run() {
 			}
 
 			lastScan = time.Now()
-			w.recovery.Run(func() {
-				w.addDirectories(n)
-				w.scan()
-			})
+			w.recovery.Run(
+				func() {
+					w.addDirectories(n)
+					w.scan()
+				},
+			)
 		case _, okay := <-n.Errors:
 			if !okay {
 				return

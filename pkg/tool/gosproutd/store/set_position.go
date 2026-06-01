@@ -6,7 +6,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func (s *Store) SetPosition(identifier uint, target int) {
+func (s *Store) SetPosition(
+	identifier uint,
+	target int,
+) {
 	var current seed.Seed
 	r := s.mapper.Limit(1).Find(&current, identifier)
 	errors.PanicOnError(r.Error)

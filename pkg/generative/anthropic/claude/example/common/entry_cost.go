@@ -1,8 +1,8 @@
-package usage
+package common
 
 import "github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/usage_entry"
 
-func entryCost(
+func EntryCost(
 	model string,
 	e *usage_entry.Entry,
 ) float64 {
@@ -13,20 +13,20 @@ func entryCost(
 
 	switch model {
 	case "opus":
-		inputRate = 15.0
-		outputRate = 75.0
-		cacheCreateRate = 18.75
-		cacheReadRate = 1.5
+		inputRate = 5.0
+		outputRate = 25.0
+		cacheCreateRate = 6.25
+		cacheReadRate = 0.5
 	case "sonnet":
 		inputRate = 3.0
 		outputRate = 15.0
 		cacheCreateRate = 3.75
 		cacheReadRate = 0.3
 	case "haiku":
-		inputRate = 0.25
-		outputRate = 1.25
-		cacheCreateRate = 0.3
-		cacheReadRate = 0.03
+		inputRate = 1.0
+		outputRate = 5.0
+		cacheCreateRate = 1.25
+		cacheReadRate = 0.1
 	default:
 		inputRate = 3.0
 		outputRate = 15.0

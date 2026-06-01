@@ -119,16 +119,18 @@ func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
 		sorted = append(
 			sorted,
 			peek.ToolCount{
-			Name:  name,
-			Count: count,
-		})
+				Name:  name,
+				Count: count,
+			},
+		)
 	}
 
 	sort.Slice(
 		sorted,
 		func(i, j int) bool {
-		return sorted[i].Count > sorted[j].Count
-	})
+			return sorted[i].Count > sorted[j].Count
+		},
+	)
 	result.ToolCounts = sorted
 
 	return result

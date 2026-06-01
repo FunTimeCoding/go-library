@@ -1,6 +1,9 @@
 package service
 
-import "time"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"time"
+)
 
 func (s *Service) sweepCallsignRelease() {
 	cutoff := s.clock().Add(-72 * time.Hour)
@@ -9,9 +12,9 @@ func (s *Service) sweepCallsignRelease() {
 	for _, e := range sessions {
 		s.logger.Structured(
 			"callsign_released",
-			"callsign",
+			constant.Callsign,
 			e.CallsignValue(),
-			"identifier",
+			constant.Identifier,
 			e.Identifier,
 		)
 	}

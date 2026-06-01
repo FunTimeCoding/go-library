@@ -15,7 +15,9 @@ func (s *Server) listSeeds(
 	var result []map[string]any
 
 	for _, v := range seeds {
-		result = append(result, map[string]any{
+		result = append(
+			result,
+			map[string]any{
 			"name":     v.Name,
 			"path":     v.Path,
 			"position": v.Position,

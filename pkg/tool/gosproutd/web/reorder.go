@@ -6,7 +6,12 @@ import (
 )
 
 func (s *Server) reorder(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
+	if e := r.ParseForm(); e != nil {
+		http.Error(w, "invalid form", http.StatusBadRequest)
+
+		return
+	}
+
 	values := r.Form["item"]
 	var identifiers []uint
 

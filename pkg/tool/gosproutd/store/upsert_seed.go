@@ -17,14 +17,12 @@ func (s *Store) UpsertSeed(
 
 	if result.RowsAffected == 0 {
 		var maxPosition int
-		s.mapper.Model(&seed.Seed{}).Select("COALESCE(MAX(position), 0)").Scan(&maxPosition)
-		errors.PanicOnError(s.mapper.Create(&seed.Seed{
-			Name:        name,
-			Path:        path,
-			ContentHash: contentHash,
-			Content:     content,
-			Position:    maxPosition + 1,
-		}).Error)
+		s.mapper.Model(seed.Stub()).Select("COALESCE(MAX(position), 0)").Scan(&maxPosition)
+		errors.PanicOnError(
+			s.mapper.Create(
+				seed.New(name, path, contentHash, content, maxPosition+1),
+			).Error,
+		)
 
 		return
 	}

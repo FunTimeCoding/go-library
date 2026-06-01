@@ -8,7 +8,8 @@ import (
 func (s *Store) Reorder(identifiers []uint) {
 	for i, v := range identifiers {
 		errors.PanicOnError(
-			s.mapper.Model(&seed.Seed{Identifier: v}).
+			s.mapper.Model(seed.Stub()).
+				Where("identifier = ?", v).
 				Update("position", i+1).Error,
 		)
 	}

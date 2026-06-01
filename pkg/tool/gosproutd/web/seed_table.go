@@ -8,11 +8,12 @@ import (
 
 func (s *Server) seedTable() gomponents.Node {
 	seeds := s.store.Seeds()
-
 	var rows []gomponents.Node
 
 	for _, v := range seeds {
-		rows = append(rows, html.Tr(
+		rows = append(
+			rows,
+			html.Tr(
 			html.Td(
 				html.Class("drag-handle"),
 				gomponents.Text("⠿"),

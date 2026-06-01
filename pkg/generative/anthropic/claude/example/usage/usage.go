@@ -3,30 +3,31 @@ package usage
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude"
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/example/common"
 	"sort"
 )
 
 func Usage() {
 	c := claude.New()
 	sessions := c.Sessions()
-	var all []*timestamped
+	var all []*common.Timestamped
 
 	for _, s := range sessions {
 		for _, entry := range c.UsageEntries(s.Identifier) {
-			t := parseTimestamp(entry.Timestamp)
+			t := common.ParseTimestamp(entry.Timestamp)
 
 			if t.IsZero() {
 				continue
 			}
 
-			all = append(all, &timestamped{time: t, entry: entry})
+			all = append(all, common.New(t, entry))
 		}
 	}
 
 	sort.Slice(
 		all,
 		func(i, j int) bool {
-			return all[i].time.Before(all[j].time)
+			return all[i].Time.Before(all[j].Time)
 		},
 	)
 	activeBlock := findActiveBlock(all)
@@ -48,7 +49,7 @@ func Usage() {
 	var totalCost float64
 
 	for _, t := range activeBlock.entries {
-		key := normalizeModel(t.entry.Model)
+		key := common.NormalizeModel(t.Entry.Model)
 		m, okay := byModel[key]
 
 		if !okay {
@@ -56,12 +57,12 @@ func Usage() {
 			byModel[key] = m
 		}
 
-		m.inputTokens += t.entry.InputTokens
-		m.outputTokens += t.entry.OutputTokens
-		m.cacheCreationInputTokens += t.entry.CacheCreationInputTokens
-		m.cacheReadInputTokens += t.entry.CacheReadInputTokens
+		m.inputTokens += t.Entry.InputTokens
+		m.outputTokens += t.Entry.OutputTokens
+		m.cacheCreationInputTokens += t.Entry.CacheCreationInputTokens
+		m.cacheReadInputTokens += t.Entry.CacheReadInputTokens
 		m.count++
-		totalCost += entryCost(key, t.entry)
+		totalCost += common.EntryCost(key, t.Entry)
 	}
 
 	costLimit := 140.0

@@ -3,6 +3,7 @@ package usage
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude"
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/example/common"
 	"sort"
 	"time"
 )
@@ -10,24 +11,24 @@ import (
 func Debug() {
 	c := claude.New()
 	sessions := c.Sessions()
-	var all []*timestamped
+	var all []*common.Timestamped
 
 	for _, s := range sessions {
 		for _, entry := range c.UsageEntries(s.Identifier) {
-			t := parseTimestamp(entry.Timestamp)
+			t := common.ParseTimestamp(entry.Timestamp)
 
 			if t.IsZero() {
 				continue
 			}
 
-			all = append(all, &timestamped{time: t, entry: entry})
+			all = append(all, common.New(t, entry))
 		}
 	}
 
 	sort.Slice(
 		all,
 		func(i, j int) bool {
-			return all[i].time.Before(all[j].time)
+			return all[i].Time.Before(all[j].Time)
 		},
 	)
 	fmt.Printf("Total entries across all sessions: %d\n\n", len(all))
@@ -36,11 +37,11 @@ func Debug() {
 	cutoff24 := now().Add(-24 * time.Hour)
 
 	for i := 1; i < len(all); i++ {
-		if all[i].time.Before(cutoff24) {
+		if all[i].Time.Before(cutoff24) {
 			continue
 		}
 
-		gap := all[i].time.Sub(all[i-1].time)
+		gap := all[i].Time.Sub(all[i-1].Time)
 
 		if gap >= time.Hour {
 			marker := ""
@@ -51,8 +52,8 @@ func Debug() {
 
 			fmt.Printf(
 				"  %s → %s  gap=%s%s\n",
-				all[i-1].time.Format("Jan 02 15:04"),
-				all[i].time.Format("15:04"),
+				all[i-1].Time.Format("Jan 02 15:04"),
+				all[i].Time.Format("15:04"),
 				gap.Truncate(time.Second),
 				marker,
 			)
@@ -77,9 +78,9 @@ func Debug() {
 	var totalCost float64
 
 	for _, ts := range block.entries {
-		totalCost += entryCost(
-			normalizeModel(ts.entry.Model),
-			ts.entry,
+		totalCost += common.EntryCost(
+			common.NormalizeModel(ts.Entry.Model),
+			ts.Entry,
 		)
 	}
 

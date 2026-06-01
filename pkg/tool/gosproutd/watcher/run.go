@@ -3,8 +3,6 @@ package watcher
 import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"os"
-	"path/filepath"
 	"time"
 )
 
@@ -52,22 +50,4 @@ func (w *Watcher) run() {
 			}
 		}
 	}
-}
-
-func (w *Watcher) addDirectories(n *fsnotify.Watcher) {
-	filepath.Walk(w.seedDirectory, func(
-		path string,
-		i os.FileInfo,
-		e error,
-	) error {
-		if e != nil {
-			return nil
-		}
-
-		if i.IsDir() {
-			n.Add(path)
-		}
-
-		return nil
-	})
 }

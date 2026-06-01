@@ -1,8 +1,11 @@
 package usage
 
-import "time"
+import (
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/example/common"
+	"time"
+)
 
-func findActiveBlock(all []*timestamped) *block {
+func findActiveBlock(all []*common.Timestamped) *block {
 	if len(all) == 0 {
 		return nil
 	}
@@ -15,17 +18,17 @@ func findActiveBlock(all []*timestamped) *block {
 		needNew := current == nil
 
 		if !needNew {
-			pastEnd := ts.time.Equal(current.end) ||
-				ts.time.After(current.end)
+			pastEnd := ts.Time.Equal(current.end) ||
+				ts.Time.After(current.end)
 			gap := len(current.entries) > 0 &&
-				ts.time.Sub(
-					current.entries[len(current.entries)-1].time,
+				ts.Time.Sub(
+					current.entries[len(current.entries)-1].Time,
 				) >= window
 			needNew = pastEnd || gap
 		}
 
 		if needNew {
-			start := ts.time.Truncate(time.Hour)
+			start := ts.Time.Truncate(time.Hour)
 			current = &block{
 				start: start,
 				end:   start.Add(window),

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/service_tester"
+	"sort"
 	"testing"
 	"time"
 )
@@ -34,6 +35,10 @@ func TestCallsignNotReleasedBeforeThreeDays(t *testing.T) {
 
 func TestCallsignRecycledAfterSweepRelease(t *testing.T) {
 	s := service_tester.New(t)
+	expected := []string{
+		"Ash", "Blair", "Cedar", "Dale", "Ellis",
+		"Frost", "Glen", "Harbor", "Jade", "Kent",
+	}
 	var callsigns []string
 
 	for i := 0; ; i++ {
@@ -44,6 +49,13 @@ func TestCallsignRecycledAfterSweepRelease(t *testing.T) {
 		}
 
 		callsigns = append(callsigns, r.Callsign)
+	}
+
+	sort.Strings(callsigns)
+	assert.Integer(t, len(expected), len(callsigns))
+
+	for i, v := range expected {
+		assert.String(t, v, callsigns[i])
 	}
 
 	s.Advance(73 * time.Hour)

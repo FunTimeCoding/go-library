@@ -7,12 +7,12 @@ import (
 
 func (s *Store) RemoveMissing(paths []string) {
 	if len(paths) == 0 {
-		errors.PanicOnError(s.mapper.Where("1 = 1").Delete(&seed.Seed{}).Error)
+		errors.PanicOnError(s.mapper.Where("1 = 1").Delete(seed.Stub()).Error)
 
 		return
 	}
 
 	errors.PanicOnError(
-		s.mapper.Where("path NOT IN ?", paths).Delete(&seed.Seed{}).Error,
+		s.mapper.Where("path NOT IN ?", paths).Delete(seed.Stub()).Error,
 	)
 }

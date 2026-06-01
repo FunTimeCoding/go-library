@@ -1,8 +1,8 @@
-package usage
+package common
 
 import "time"
 
-func parseTimestamp(s string) time.Time {
+func ParseTimestamp(s string) time.Time {
 	t, e := time.Parse(time.RFC3339Nano, s)
 
 	if e == nil {

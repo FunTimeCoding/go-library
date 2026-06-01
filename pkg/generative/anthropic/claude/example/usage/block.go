@@ -1,9 +1,12 @@
 package usage
 
-import "time"
+import (
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/example/common"
+	"time"
+)
 
 type block struct {
 	start   time.Time
 	end     time.Time
-	entries []*timestamped
+	entries []*common.Timestamped
 }

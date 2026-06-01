@@ -2,7 +2,7 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
-	mark "github.com/funtimecoding/go-library/pkg/generative/mark/server"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/store"
 )
@@ -15,7 +15,7 @@ func New(
 	version string,
 ) *Server {
 	result := &Server{
-		server: mark.New(
+		server: server.New(
 			constant.Identity,
 			version,
 		).WithRecorder(t).Server(),

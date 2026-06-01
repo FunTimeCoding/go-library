@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/example/token_usage"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/example/usage"
 	anthropic "github.com/funtimecoding/go-library/pkg/generative/anthropic/example"
 	gguf "github.com/funtimecoding/go-library/pkg/generative/gguf/example"
@@ -11,12 +12,18 @@ import (
 	ollama "github.com/funtimecoding/go-library/pkg/generative/ollama/example"
 	openWebUI "github.com/funtimecoding/go-library/pkg/generative/open_webui/example"
 	openai "github.com/funtimecoding/go-library/pkg/generative/openai/example"
+	"time"
 )
 
 func main() {
-	usage.Debug()
+	now := time.Now().UTC()
+	token_usage.TokenUsage(
+		now.Add(-24*time.Hour),
+		now,
+	)
 
 	if false {
+		usage.Debug()
 		usage.Usage()
 		mistral.Prompt()
 		ollama.Chat()

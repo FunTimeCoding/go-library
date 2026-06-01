@@ -1,8 +1,8 @@
-package usage
+package common
 
 import "strings"
 
-func normalizeModel(model string) string {
+func NormalizeModel(model string) string {
 	lower := strings.ToLower(model)
 
 	if strings.Contains(lower, "opus") {

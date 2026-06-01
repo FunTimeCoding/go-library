@@ -23,13 +23,13 @@ func (s *Store) SetPosition(identifier uint, target int) {
 
 	if target < origin {
 		errors.PanicOnError(
-			s.mapper.Model(&seed.Seed{}).
+			s.mapper.Model(seed.Stub()).
 				Where("position >= ? AND position < ?", target, origin).
 				Update("position", gorm.Expr("position + 1")).Error,
 		)
 	} else {
 		errors.PanicOnError(
-			s.mapper.Model(&seed.Seed{}).
+			s.mapper.Model(seed.Stub()).
 				Where("position > ? AND position <= ?", origin, target).
 				Update("position", gorm.Expr("position - 1")).Error,
 		)

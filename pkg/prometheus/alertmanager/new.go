@@ -10,20 +10,29 @@ import (
 
 func New(
 	host string,
+	secure bool,
 	user string,
 	password string,
 	p *prometheus.Client,
 ) *Client {
 	errors.FatalOnEmpty(host, "host")
-	errors.FatalOnEmpty(user, "user")
-	errors.FatalOnEmpty(password, "password")
+	scheme := constant.Insecure
+
+	if secure {
+		scheme = constant.Secure
+	}
+
 	c := client.NewHTTPClient(nil)
 	t := transport.New(
 		host,
 		client.DefaultBasePath,
-		[]string{constant.Secure},
+		[]string{scheme},
 	)
-	t.DefaultAuthentication = transport.BasicAuth(user, password)
+
+	if user != "" && password != "" {
+		t.DefaultAuthentication = transport.BasicAuth(user, password)
+	}
+
 	c.SetTransport(t)
 
 	return &Client{client: c, host: host, prometheus: p}

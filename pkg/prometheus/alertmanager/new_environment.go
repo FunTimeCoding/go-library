@@ -9,8 +9,9 @@ import (
 func NewEnvironment() *Client {
 	return New(
 		environment.Required(constant.HostEnvironment),
-		environment.Required(constant.UserEnvironment),
-		environment.Required(constant.PasswordEnvironment),
+		!environment.Exists(constant.InsecureEnvironment),
+		environment.Optional(constant.UserEnvironment),
+		environment.Optional(constant.PasswordEnvironment),
 		prometheus.NewEnvironment(),
 	)
 }

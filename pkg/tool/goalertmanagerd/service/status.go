@@ -1,0 +1,20 @@
+package service
+
+import "github.com/prometheus/alertmanager/api/v2/models"
+
+func (s *Service) Status(instance string) (*models.AlertmanagerStatus, error) {
+	c, e := s.Client(instance)
+
+	if e != nil {
+		return nil, e
+	}
+
+	var result *models.AlertmanagerStatus
+	e = safe(
+		func() {
+			result = c.Status()
+		},
+	)
+
+	return result, e
+}

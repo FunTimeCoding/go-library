@@ -17,6 +17,7 @@ const (
 	HostEnvironment     = "ALERTMANAGER_HOST"
 	UserEnvironment     = "ALERTMANAGER_USER"
 	PasswordEnvironment = "ALERTMANAGER_PASSWORD"
+	InsecureEnvironment = "ALERTMANAGER_INSECURE"
 
 	AmtoolCommand = "amtool"
 

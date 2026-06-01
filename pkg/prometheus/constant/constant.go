@@ -13,6 +13,7 @@ const (
 	PortEnvironment     = "PROMETHEUS_PORT"
 	UserEnvironment     = "PROMETHEUS_USER"
 	PasswordEnvironment = "PROMETHEUS_PASSWORD"
+	InsecureEnvironment = "PROMETHEUS_INSECURE"
 )
 
 // Metric

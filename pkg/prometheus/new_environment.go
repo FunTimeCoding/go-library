@@ -13,7 +13,7 @@ func NewEnvironment(o ...Option) *Client {
 			environment.Required(constant.PortEnvironment),
 			0,
 		),
-		true,
+		!environment.Exists(constant.InsecureEnvironment),
 		environment.Required(constant.UserEnvironment),
 		environment.Required(constant.PasswordEnvironment),
 		"",

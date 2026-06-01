@@ -9,9 +9,10 @@ var Identity = identity.New(
 )
 
 const (
+	NameEnvironment  = "CLAUDE_NAME"
+	HostEnvironment  = "CLAUDE_HOST"
+	PortEnvironment  = "CLAUDE_PORT"
+	PeekOutputBudget = 120
+
 	SessionIdentifierEnvironment = "CLAUDE_SESSION_ID"
-	NameEnvironment              = "CLAUDE_NAME"
-	HostEnvironment              = "CLAUDE_HOST"
-	PortEnvironment              = "CLAUDE_PORT"
-	PeekOutputBudget             = 120
 )

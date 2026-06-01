@@ -1,0 +1,18 @@
+package store
+
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/store/seed"
+)
+
+func (s *Store) RemoveMissing(paths []string) {
+	if len(paths) == 0 {
+		errors.PanicOnError(s.mapper.Where("1 = 1").Delete(&seed.Seed{}).Error)
+
+		return
+	}
+
+	errors.PanicOnError(
+		s.mapper.Where("path NOT IN ?", paths).Delete(&seed.Seed{}).Error,
+	)
+}

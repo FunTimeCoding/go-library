@@ -1,12 +1,16 @@
 package store
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"gorm.io/gorm"
-)
+func New(
+	postgresLocator string,
+	litePath string,
+) *Store {
+	if postgresLocator != "" {
+		return newPostgres(postgresLocator)
+	}
 
-func New(m *gorm.DB) *Store {
-	errors.PanicOnError(m.AutoMigrate(NewUsageEvent()))
+	if litePath != "" {
+		return newLite(litePath)
+	}
 
-	return &Store{mapper: m}
+	panic("set postgresLocator or litePath")
 }

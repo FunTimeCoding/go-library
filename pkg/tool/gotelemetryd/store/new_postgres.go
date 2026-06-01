@@ -2,7 +2,6 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -10,7 +9,7 @@ import (
 func newPostgres(dsn string) *Store {
 	database, e := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	errors.PanicOnError(e)
-	errors.PanicOnError(database.AutoMigrate(entry.New()))
+	errors.PanicOnError(database.AutoMigrate(NewUsageEvent()))
 
-	return &Store{database: database}
+	return &Store{mapper: database}
 }

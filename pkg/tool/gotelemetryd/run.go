@@ -5,7 +5,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/funtimecoding/go-library/pkg/relational"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/model_context"
@@ -22,7 +21,8 @@ func Run(
 	r face.Reporter,
 ) {
 	l := logger.New(context.Background())
-	s := store.New(relational.New(o.PostgresLocator).Mapper())
+	s := store.New(o.PostgresLocator, o.LitePath)
+	defer s.Close()
 	lifecycle.New(
 		l,
 		lifecycle.WithServerMiddleware(

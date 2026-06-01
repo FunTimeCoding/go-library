@@ -21,7 +21,7 @@ func Main(
 	a.Parse(version, gitHash, buildDate)
 	o := option.New()
 	o.PostgresLocator = environment.Optional(postgres.LocatorEnvironment)
-	o.SQLitePath = environment.Optional(store.PathEnvironment)
+	o.LitePath = environment.Optional(store.PathEnvironment)
 	o.Version = version
 	Run(o, r)
 }

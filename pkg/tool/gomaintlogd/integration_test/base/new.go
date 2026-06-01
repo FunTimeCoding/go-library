@@ -16,7 +16,7 @@ import (
 
 func New(t *testing.T) *Server {
 	t.Helper()
-	s := store.NewLite(filepath.Join(t.TempDir(), constant.TestDatabase))
+	s := store.New("", filepath.Join(t.TempDir(), constant.TestDatabase))
 
 	return &Server{
 		Store: s,

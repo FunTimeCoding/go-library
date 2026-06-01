@@ -22,7 +22,7 @@ func Run(
 	r face.Reporter,
 ) {
 	g := logger.New(context.Background())
-	s := store.New(o)
+	s := store.New(o.PostgresLocator, o.LitePath)
 	defer s.Close()
 	lifecycle.New(
 		g,

@@ -19,10 +19,12 @@ func Main(
 	defer func() { r.RecoverFlush(recover()) }()
 	a := argument.NewInstance(constant.Identity)
 	a.Integer(argument.Port, web.ListenPort, web.PortUsage)
+	a.String(argument.Path, "", "SQLite database path")
 	a.Parse(version, gitHash, buildDate)
 	o := option.New()
 	o.Port = a.RequiredInteger(argument.Port)
 	o.Version = version
-	o.PostgresLocator = environment.Required(postgres.LocatorEnvironment)
+	o.PostgresLocator = environment.Optional(postgres.LocatorEnvironment)
+	o.LitePath = a.GetString(argument.Path)
 	Run(o, r)
 }

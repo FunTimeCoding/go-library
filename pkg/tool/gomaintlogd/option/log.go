@@ -2,6 +2,6 @@ package option
 
 type Log struct {
 	PostgresLocator string
-	SQLitePath      string
+	LitePath        string
 	Version         string
 }

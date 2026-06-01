@@ -1,15 +1,16 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/option"
-
-func New(o *option.Log) *Store {
-	if o.PostgresLocator != "" {
-		return NewPostgres(o.PostgresLocator)
+func New(
+	postgresLocator string,
+	litePath string,
+) *Store {
+	if postgresLocator != "" {
+		return newPostgres(postgresLocator)
 	}
 
-	if o.SQLitePath != "" {
-		return NewLite(o.SQLitePath)
+	if litePath != "" {
+		return newLite(litePath)
 	}
 
-	panic("set POSTGRES_LOCATOR or SQLITE_PATH")
+	panic("set postgresLocator or litePath")
 }

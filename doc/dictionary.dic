@@ -102,6 +102,9 @@ golint
 goloki
 gomaintlog
 gomaintlogd
+goprometheus
+goalertmanager
+goalertmanagerd
 gomattermost
 gomattermostd
 gomemory

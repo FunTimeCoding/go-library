@@ -1,19 +1,19 @@
 package prometheus
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/prometheus/helper"
-	"github.com/prometheus/common/model"
+	"github.com/funtimecoding/go-library/pkg/prometheus/query_result"
 	"time"
 )
 
 func (c *Client) Query(
 	q string,
 	t time.Time,
-) model.Value {
-	results, w, e := c.client.Query(c.context, q, t)
-	errors.PanicOnError(e)
-	helper.PanicOnWarning(w)
+) (*query_result.Result, error) {
+	v, w, e := c.client.Query(c.context, q, t)
 
-	return results
+	if e != nil {
+		return nil, e
+	}
+
+	return query_result.New(v, w), nil
 }

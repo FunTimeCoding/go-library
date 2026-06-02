@@ -4,12 +4,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/service"
 )
 
 func New(
-	s *store.Store,
-	n face.EventNotifier,
+	s *service.Service,
 	r face.Reporter,
 	t face.Recorder,
 	version string,
@@ -19,8 +18,7 @@ func New(
 			constant.Identity,
 			version,
 		).WithRecorder(t).Server(),
-		store:    s,
-		notifier: n,
+		service:  s,
 		reporter: r,
 	}
 	result.register()

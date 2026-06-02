@@ -10,7 +10,7 @@ import (
 func Silence() {
 	f := option.Color.Copy().Tag(tag.State)
 
-	for _, a := range common.Alertmanager().Silences(true) {
+	for _, a := range common.Alertmanager().MustSilences(true) {
 		fmt.Println(a.Format(f))
 	}
 }

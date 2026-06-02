@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/prometheus/common/model"
+	"github.com/funtimecoding/go-library/pkg/prometheus/query_result"
 	"time"
 )
 
@@ -9,19 +9,12 @@ func (s *Service) Query(
 	instance string,
 	query string,
 	t time.Time,
-) (model.Value, error) {
+) (*query_result.Result, error) {
 	c, e := s.Client(instance)
 
 	if e != nil {
 		return nil, e
 	}
 
-	var result model.Value
-	e = safe(
-		func() {
-			result = c.Query(query, t)
-		},
-	)
-
-	return result, e
+	return c.Query(query, t)
 }

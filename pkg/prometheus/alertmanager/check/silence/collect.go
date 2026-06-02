@@ -6,5 +6,5 @@ import (
 )
 
 func collect(c *alertmanager.Client) []*silence.Silence {
-	return c.Silences(true)
+	return c.MustSilences(true)
 }

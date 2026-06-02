@@ -14,7 +14,7 @@ func printRules(
 ) {
 	f := option.ExtendedColor.Copy()
 
-	for _, r := range c.Rules().Alert() {
+	for _, r := range c.MustRules().Alert() {
 		if r.RawAlert != nil &&
 			time.Since(
 				r.RawAlert.LastEvaluation,

@@ -33,7 +33,39 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.ListAlerts,
 			mcp.WithDescription(
-				"List active alerts from the active Alertmanager instance.",
+				"List alerts from the active Alertmanager instance. By default returns all active, silenced, inhibited, and unprocessed alerts.",
+			),
+			mcp.WithString(
+				"filter",
+				mcp.Description("Comma-separated label matchers (e.g. alertname=\"FanFailure\",severity=\"warning\")"),
+			),
+			mcp.WithString(
+				"active",
+				mcp.Description("Include active alerts (true/false, default true)"),
+			),
+			mcp.WithString(
+				"silenced",
+				mcp.Description("Include silenced alerts (true/false, default true)"),
+			),
+			mcp.WithString(
+				"inhibited",
+				mcp.Description("Include inhibited alerts (true/false, default true)"),
+			),
+			mcp.WithString(
+				"unprocessed",
+				mcp.Description("Include unprocessed alerts (true/false, default true)"),
+			),
+			mcp.WithString(
+				"receiver",
+				mcp.Description("Regex to filter alerts by receiver"),
+			),
+			mcp.WithNumber(
+				"limit",
+				mcp.Description("Maximum number of alerts to return"),
+			),
+			mcp.WithNumber(
+				"offset",
+				mcp.Description("Number of alerts to skip"),
 			),
 		),
 		mcp.NewTypedToolHandler(s.listAlerts),
@@ -47,6 +79,18 @@ func (s *Server) register() {
 			mcp.WithBoolean(
 				"expired",
 				mcp.Description("Include expired silences"),
+			),
+			mcp.WithString(
+				"filter",
+				mcp.Description("Filter by rule name (substring match)"),
+			),
+			mcp.WithNumber(
+				"limit",
+				mcp.Description("Maximum number of silences to return"),
+			),
+			mcp.WithNumber(
+				"offset",
+				mcp.Description("Number of silences to skip"),
 			),
 		),
 		mcp.NewTypedToolHandler(s.listSilences),
@@ -92,6 +136,10 @@ func (s *Server) register() {
 			constant.GetStatus,
 			mcp.WithDescription(
 				"Get Alertmanager cluster status and version.",
+			),
+			mcp.WithBoolean(
+				"include_configuration",
+				mcp.Description("Include the full alertmanager routing configuration"),
 			),
 		),
 		mcp.NewTypedToolHandler(s.getStatus),

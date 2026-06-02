@@ -10,8 +10,8 @@ func NewEnvironment() *Client {
 	return New(
 		environment.Required(constant.HostEnvironment),
 		!environment.Exists(constant.InsecureEnvironment),
-		environment.Optional(constant.UserEnvironment),
-		environment.Optional(constant.PasswordEnvironment),
+		environment.Required(constant.UserEnvironment),
+		environment.Required(constant.PasswordEnvironment),
 		prometheus.NewEnvironment(),
 	)
 }

@@ -24,12 +24,12 @@ func Check(o *option.Silence) {
 	}
 
 	if o.Set != "" {
-		fmt.Printf("Set: %s\n", c.SimpleSilence(o.Set))
+		fmt.Printf("Set: %s\n", c.MustSimpleSilence(o.Set))
 	}
 
 	o2 := advanced_option.New()
 	o2.All = true
-	a, _ := c.Alerts(o2)
+	a, _ := c.MustAlerts(o2, nil)
 	fmt.Printf("Alerts: %d\n", len(a))
 
 	if !o.All {

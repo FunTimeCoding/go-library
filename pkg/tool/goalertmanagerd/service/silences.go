@@ -12,12 +12,5 @@ func (s *Service) Silences(
 		return nil, e
 	}
 
-	var result []*silence.Silence
-	e = safe(
-		func() {
-			result = c.Silences(expired)
-		},
-	)
-
-	return result, e
+	return c.Silences(expired)
 }

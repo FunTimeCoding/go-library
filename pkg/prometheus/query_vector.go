@@ -6,5 +6,5 @@ import (
 )
 
 func (c *Client) QueryVector(q string) float64 {
-	return parse.VectorFloatSingle(c.Query(q, time.Now().Add(-time.Hour)))
+	return parse.VectorFloatSingle(c.MustQuery(q, time.Now().Add(-time.Hour)).Value)
 }

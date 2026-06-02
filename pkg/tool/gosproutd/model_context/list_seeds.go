@@ -11,7 +11,7 @@ func (s *Server) listSeeds(
 	_ mcp.CallToolRequest,
 	_ struct{},
 ) (*mcp.CallToolResult, error) {
-	seeds := s.store.Seeds()
+	seeds := s.service.Seeds()
 	var result []map[string]any
 
 	for _, v := range seeds {

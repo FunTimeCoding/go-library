@@ -8,7 +8,7 @@ import (
 )
 
 func Alert() {
-	alerts, _ := common.Alertmanager().Alerts(advanced_option.New())
+	alerts, _ := common.Alertmanager().MustAlerts(advanced_option.New(), nil)
 	f := option.ExtendedColor.Copy()
 
 	for _, a := range alerts {

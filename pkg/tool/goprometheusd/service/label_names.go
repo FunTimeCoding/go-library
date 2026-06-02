@@ -1,24 +1,20 @@
 package service
 
-import "time"
+import (
+	"github.com/funtimecoding/go-library/pkg/prometheus/label_result"
+	"time"
+)
 
 func (s *Service) LabelNames(
 	instance string,
 	matches []string,
 	since time.Time,
-) ([]string, error) {
+) (*label_result.Result, error) {
 	c, e := s.Client(instance)
 
 	if e != nil {
 		return nil, e
 	}
 
-	var result []string
-	e = safe(
-		func() {
-			result = c.LabelNames(matches, since)
-		},
-	)
-
-	return result, e
+	return c.LabelNames(matches, since)
 }

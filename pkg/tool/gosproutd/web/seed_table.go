@@ -7,7 +7,7 @@ import (
 )
 
 func (s *Server) seedTable() gomponents.Node {
-	seeds := s.store.Seeds()
+	seeds := s.service.Seeds()
 	var rows []gomponents.Node
 
 	for _, v := range seeds {
@@ -25,7 +25,7 @@ func (s *Server) seedTable() gomponents.Node {
 				html.Td(gomponents.Text(v.Name)),
 				html.Td(
 					html.Style("color: var(--pico-muted-color);"),
-					gomponents.Text(v.Path),
+					gomponents.Text(seedDirectory(v.Path)),
 				),
 				html.Input(
 					html.Type("hidden"),

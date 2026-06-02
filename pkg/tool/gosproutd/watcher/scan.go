@@ -1,14 +1,21 @@
 package watcher
 
-func (w *Watcher) scan() {
-	files := w.walkDirectory()
-	var paths []string
+import "github.com/funtimecoding/go-library/pkg/tool/gosproutd/service"
 
-	for _, f := range files {
-		paths = append(paths, f.path)
-		w.store.UpsertSeed(f.name, f.path, f.contentHash, f.content)
+func (w *Watcher) scan() {
+	walked := w.walkDirectory()
+	var files []service.DiscoveredFile
+
+	for _, f := range walked {
+		files = append(
+			files,
+			service.DiscoveredFile{
+			Name:        f.name,
+			Path:        f.path,
+			ContentHash: f.contentHash,
+			Content:     f.content,
+		})
 	}
 
-	w.store.RemoveMissing(paths)
-	w.notifier.Notify()
+	w.service.Sync(files)
 }

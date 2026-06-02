@@ -8,7 +8,7 @@ import (
 
 func (s *Server) event() http.HandlerFunc {
 	return layout.HandleServerSideEvent(
-		s.notifier,
+		s.service.Notifier(),
 		func(
 			w http.ResponseWriter,
 			f http.Flusher,

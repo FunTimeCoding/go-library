@@ -9,12 +9,5 @@ func (s *Service) Status(instance string) (*models.AlertmanagerStatus, error) {
 		return nil, e
 	}
 
-	var result *models.AlertmanagerStatus
-	e = safe(
-		func() {
-			result = c.Status()
-		},
-	)
-
-	return result, e
+	return c.Status()
 }

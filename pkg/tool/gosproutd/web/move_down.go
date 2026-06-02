@@ -17,7 +17,6 @@ func (s *Server) moveDown(
 		return
 	}
 
-	s.store.MoveDown(uint(identifier))
-	s.notifier.Notify()
+	s.service.MoveDown(uint(identifier))
 	w.WriteHeader(http.StatusNoContent)
 }

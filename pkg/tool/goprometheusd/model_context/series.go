@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -24,11 +24,8 @@ func (s *Server) series(
 	v, e := s.service.Series(instance)
 
 	if e != nil {
-		return s.captureFail(
-			e,
-			fmt.Sprintf("series failed on %s", instance),
-		)
+		return s.captureDetail(e)
 	}
 
-	return response.SuccessAny(v)
+	return response.SuccessAny(convert.TSDB(v))
 }

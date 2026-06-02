@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"time"
@@ -29,11 +29,8 @@ func (s *Server) query(
 	v, e := s.service.Query(instance, a.Query, time.Now())
 
 	if e != nil {
-		return s.captureFail(
-			e,
-			fmt.Sprintf("query failed on %s", instance),
-		)
+		return s.captureDetail(e)
 	}
 
-	return response.SuccessAny(v)
+	return response.SuccessAny(convert.QueryResult(v))
 }

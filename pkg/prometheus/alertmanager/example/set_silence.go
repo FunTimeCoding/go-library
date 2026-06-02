@@ -6,5 +6,5 @@ import (
 )
 
 func SetSilence() {
-	common.Alertmanager().SimpleSilence(constant.NodeNotReady)
+	common.Alertmanager().MustSimpleSilence(constant.NodeNotReady)
 }

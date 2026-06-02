@@ -1,7 +1,6 @@
 package alertmanager
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
 	library "github.com/funtimecoding/go-library/pkg/time"
@@ -16,7 +15,7 @@ func (c *Client) PostSilence(
 	comment string,
 	start time.Time,
 	end time.Time,
-) string {
+) (string, error) {
 	if comment == "" {
 		comment = constant.NoComment
 	}
@@ -39,7 +38,10 @@ func (c *Client) PostSilence(
 		},
 	}
 	r, e := c.client.Silence.PostSilences(p)
-	errors.PanicOnError(e)
 
-	return r.Payload.SilenceID
+	if e != nil {
+		return "", e
+	}
+
+	return r.Payload.SilenceID, nil
 }

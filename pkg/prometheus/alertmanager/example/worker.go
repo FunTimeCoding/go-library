@@ -22,7 +22,7 @@ func worker(
 
 			return
 		default:
-			alerts, _ := c.Alerts(advanced_option.New())
+			alerts, _ := c.MustAlerts(advanced_option.New(), nil)
 			now := alerts
 			add, stay, remove := difference(s.Alerts, now)
 			s.Alerts = now

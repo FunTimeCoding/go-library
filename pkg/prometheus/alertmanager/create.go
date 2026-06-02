@@ -1,14 +1,13 @@
 package alertmanager
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	prometheus "github.com/funtimecoding/go-library/pkg/prometheus/constant"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/go-openapi/strfmt"
 	"github.com/prometheus/alertmanager/api/v2/client/alert"
 	"github.com/prometheus/alertmanager/api/v2/models"
-	"log"
 	"time"
 )
 
@@ -18,7 +17,7 @@ func (c *Client) Create(
 	summary string,
 	description string,
 	expression string,
-) {
+) error {
 	start := time.Now()
 	end := start.Add(3 * time.Minute)
 	p := alert.NewPostAlertsParams()
@@ -49,9 +48,14 @@ func (c *Client) Create(
 		},
 	)
 	result, e := c.client.Alert.PostAlerts(p)
-	errors.PanicOnError(e)
+
+	if e != nil {
+		return e
+	}
 
 	if !result.IsSuccess() {
-		log.Panicf("unexpected status code: %+v", result)
+		return fmt.Errorf("unexpected status code: %+v", result)
 	}
+
+	return nil
 }

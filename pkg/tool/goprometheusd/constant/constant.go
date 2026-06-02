@@ -18,4 +18,5 @@ const (
 	Series        = "series"
 	LabelValues   = "label_values"
 	LabelNames    = "label_names"
+	QueryRules    = "query_rules"
 )

@@ -2,6 +2,7 @@ package goclauded
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/event/notifier"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
@@ -11,7 +12,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/notifier"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service"

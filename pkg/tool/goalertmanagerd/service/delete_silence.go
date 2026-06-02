@@ -10,9 +10,5 @@ func (s *Service) DeleteSilence(
 		return e
 	}
 
-	return safe(
-		func() {
-			c.DeleteSilence(identifier)
-		},
-	)
+	return c.DeleteSilence(identifier)
 }

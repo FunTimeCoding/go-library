@@ -30,7 +30,6 @@ func (s *Server) reorder(
 		identifiers = append(identifiers, uint(n))
 	}
 
-	s.store.Reorder(identifiers)
-	s.notifier.Notify()
+	s.service.Reorder(identifiers)
 	w.WriteHeader(http.StatusNoContent)
 }

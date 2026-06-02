@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/prometheus/client_golang/api/prometheus/v1"
@@ -53,18 +53,15 @@ func (s *Server) queryRange(
 		step = time.Duration(a.Step) * time.Second
 	}
 
-	v, e := s.service.QueryRange(
+	v, f := s.service.QueryRange(
 		instance,
 		a.Query,
 		v1.Range{Start: start, End: end, Step: step},
 	)
 
-	if e != nil {
-		return s.captureFail(
-			e,
-			fmt.Sprintf("query_range failed on %s", instance),
-		)
+	if f != nil {
+		return s.captureDetail(f)
 	}
 
-	return response.SuccessAny(v)
+	return response.SuccessAny(convert.QueryResult(v))
 }

@@ -1,20 +1,23 @@
 package alertmanager
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"fmt"
 	"github.com/go-openapi/strfmt"
 	"github.com/prometheus/alertmanager/api/v2/client/silence"
-	"log"
 )
 
-func (c *Client) DeleteSilence(identifier string) {
-	// Does not delete: https://github.com/prometheus/alertmanager/issues/3614
+func (c *Client) DeleteSilence(identifier string) error {
 	p := silence.NewDeleteSilenceParams()
 	p.SilenceID = strfmt.UUID(identifier)
 	result, e := c.client.Silence.DeleteSilence(p)
-	errors.PanicOnError(e)
+
+	if e != nil {
+		return e
+	}
 
 	if !result.IsSuccess() {
-		log.Panicf("unexpected status code: %+v", result)
+		return fmt.Errorf("unexpected status code: %+v", result)
 	}
+
+	return nil
 }

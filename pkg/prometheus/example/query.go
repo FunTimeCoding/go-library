@@ -51,7 +51,7 @@ func Query() {
 		c.QueryFloat(constant.Load15, t),
 	)
 
-	for _, r := range parse.Generic(c.Query(constant.Load1, t)) {
+	for _, r := range parse.Generic(c.MustQuery(constant.Load1, t).Value) {
 		fmt.Printf("  %s %s %s\n", r.Metric, r.Time, r.Value)
 	}
 }

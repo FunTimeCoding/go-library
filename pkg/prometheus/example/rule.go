@@ -13,7 +13,7 @@ func Rule() {
 	var severities []string
 	fmt.Println("Rules")
 
-	for _, r := range prometheus.NewEnvironment().Rules().Alert() {
+	for _, r := range prometheus.NewEnvironment().MustRules().Alert() {
 		if r.RawAlert != nil {
 			fmt.Printf("Alert: %s\n", r.Format(f))
 

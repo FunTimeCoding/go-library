@@ -14,7 +14,7 @@ func (s *Server) reorderSeed(
 	_ mcp.CallToolRequest,
 	a argument.ReorderSeed,
 ) (*mcp.CallToolResult, error) {
-	seeds := s.store.Seeds()
+	seeds := s.service.Seeds()
 	var target *seed.Seed
 
 	for _, v := range seeds {
@@ -40,8 +40,7 @@ func (s *Server) reorderSeed(
 		position = len(seeds)
 	}
 
-	s.store.SetPosition(target.Identifier, position)
-	s.notifier.Notify()
+	s.service.SetPosition(target.Identifier, position)
 
 	return response.Success(
 		fmt.Sprintf("moved %s to position %d", a.Name, position),

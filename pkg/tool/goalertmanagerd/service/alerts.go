@@ -1,20 +1,20 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
+import (
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert/statistic"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert_filter"
+)
 
-func (s *Service) Alerts(instance string) ([]*alert.Alert, error) {
+func (s *Service) Alerts(
+	instance string,
+	f *alert_filter.Filter,
+) ([]*alert.Alert, *statistic.Statistic, error) {
 	c, e := s.Client(instance)
 
 	if e != nil {
-		return nil, e
+		return nil, nil, e
 	}
 
-	var result []*alert.Alert
-	e = safe(
-		func() {
-			result, _ = c.Alerts(nil)
-		},
-	)
-
-	return result, e
+	return c.Alerts(nil, f)
 }

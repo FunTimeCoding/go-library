@@ -19,5 +19,5 @@ func collect(
 	d.InformationOnly = o.Information
 	d.Suppressed = o.Suppressed
 
-	return c.Alerts(d)
+	return c.MustAlerts(d, nil)
 }

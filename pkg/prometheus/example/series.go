@@ -7,7 +7,7 @@ import (
 
 func Series() {
 	c := prometheus.NewEnvironment()
-	r := c.Series()
+	r := c.MustSeries()
 	fmt.Printf("Statistics: %+v\n", r.HeadStats)
 	fmt.Printf(
 		"SeriesCountByLabelValuePair: %d\n",

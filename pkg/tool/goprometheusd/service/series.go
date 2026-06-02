@@ -9,12 +9,5 @@ func (s *Service) Series(instance string) (v1.TSDBResult, error) {
 		return v1.TSDBResult{}, e
 	}
 
-	var result v1.TSDBResult
-	e = safe(
-		func() {
-			result = c.Series()
-		},
-	)
-
-	return result, e
+	return c.Series()
 }

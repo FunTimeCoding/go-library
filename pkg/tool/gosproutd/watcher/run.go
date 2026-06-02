@@ -14,7 +14,9 @@ func (w *Watcher) run() {
 	w.addDirectories(n)
 	sweep := time.NewTicker(10 * time.Minute)
 	defer sweep.Stop()
-	var lastScan time.Time
+	debounce := time.NewTimer(0)
+	<-debounce.C
+	var dirty bool
 
 	for {
 		select {
@@ -37,17 +39,18 @@ func (w *Watcher) run() {
 				continue
 			}
 
-			if time.Since(lastScan) < 1*time.Second {
-				continue
+			dirty = true
+			debounce.Reset(1 * time.Second)
+		case <-debounce.C:
+			if dirty {
+				w.recovery.Run(
+					func() {
+						w.addDirectories(n)
+						w.scan()
+					},
+				)
+				dirty = false
 			}
-
-			lastScan = time.Now()
-			w.recovery.Run(
-				func() {
-					w.addDirectories(n)
-					w.scan()
-				},
-			)
 		case _, okay := <-n.Errors:
 			if !okay {
 				return

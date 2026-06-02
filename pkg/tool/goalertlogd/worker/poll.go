@@ -31,7 +31,7 @@ func (w *Worker) Poll() {
 			)
 		}
 	}()
-	alerts, _ := w.client.Alerts(advanced_option.New())
+	alerts, _ := w.client.MustAlerts(advanced_option.New(), nil)
 	current := make(map[string]bool)
 
 	for _, a := range alerts {

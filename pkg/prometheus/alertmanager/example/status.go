@@ -6,7 +6,7 @@ import (
 )
 
 func Status() {
-	s := common.Alertmanager().Status()
+	s := common.Alertmanager().MustStatus()
 	fmt.Printf("Status: %+v\n", s)
 	fmt.Printf("  Cluster: %+v\n", s.Cluster)
 	fmt.Printf("    Status: %s\n", *s.Cluster.Status)

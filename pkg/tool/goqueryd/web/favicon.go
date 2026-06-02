@@ -8,12 +8,12 @@ import (
 )
 
 //go:embed favicon.png
-var faviconImage []byte
+var favicon []byte
 
 func (*Server) favicon(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
 	w.Header().Set(constant.ContentType, constant.Graphic)
-	web.WriteBytes(w, http.StatusOK, faviconImage)
+	web.WriteBytes(w, http.StatusOK, favicon)
 }

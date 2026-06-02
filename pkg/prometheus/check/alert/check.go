@@ -44,7 +44,7 @@ func Check(o *option.Alert) {
 		f.Extended()
 	}
 
-	m := c.Rules()
+	m := c.MustRules()
 
 	for _, a := range alerts {
 		// TODO: Rule details

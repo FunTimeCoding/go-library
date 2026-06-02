@@ -12,7 +12,7 @@ func (c *Client) QueryStructInteger(
 	fallback int,
 	t time.Time,
 ) *integer.Result {
-	result := parse.Generic(c.Query(q, t))
+	result := parse.Generic(c.MustQuery(q, t).Value)
 
 	if len(result) == 0 {
 		r := integer.New()

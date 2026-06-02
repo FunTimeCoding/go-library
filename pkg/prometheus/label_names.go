@@ -1,23 +1,24 @@
 package prometheus
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/prometheus/helper"
+	"github.com/funtimecoding/go-library/pkg/prometheus/label_result"
 	"time"
 )
 
 func (c *Client) LabelNames(
 	matches []string,
 	since time.Time,
-) []string {
-	result, w, e := c.client.LabelNames(
+) (*label_result.Result, error) {
+	v, w, e := c.client.LabelNames(
 		c.context,
 		matches,
 		since,
 		time.Now(),
 	)
-	errors.PanicOnError(e)
-	helper.PanicOnWarning(w)
 
-	return result
+	if e != nil {
+		return nil, e
+	}
+
+	return label_result.New(v, w), nil
 }

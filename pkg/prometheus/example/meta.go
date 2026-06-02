@@ -30,7 +30,7 @@ func Meta() {
 	m := make(map[string][]string)
 
 	for _, n := range c.AllMetrics() {
-		for k, elements := range c.Metadata(n) {
+		for k, elements := range c.MustMetadata(n) {
 			fmt.Printf("  %s\n", k)
 			prefix, _ := key_value.Underscore(k)
 

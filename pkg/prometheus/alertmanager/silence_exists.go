@@ -1,11 +1,11 @@
 package alertmanager
 
-func (c *Client) SilenceExists(name string) bool {
-	for _, s := range c.Silences(false) {
-		if s.Rule == name {
-			return true
-		}
+func (c *Client) SilenceExists(name string) (bool, error) {
+	v, e := c.SilenceByRule(name)
+
+	if e != nil {
+		return false, e
 	}
 
-	return false
+	return v != nil, nil
 }

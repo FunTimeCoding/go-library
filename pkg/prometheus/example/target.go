@@ -8,7 +8,7 @@ import (
 
 func Target() {
 	c := prometheus.NewEnvironment()
-	r := c.Targets()
+	r := c.MustTargets()
 
 	for _, t := range r.Active {
 		fmt.Printf("Active: %+v\n", t.ScrapePool)

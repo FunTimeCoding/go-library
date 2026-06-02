@@ -1,3 +1,5 @@
 package argument
 
-type GetStatus struct{}
+type GetStatus struct {
+	IncludeConfiguration bool `json:"include_configuration"`
+}

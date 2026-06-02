@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"context"
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goprometheusd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
 	"strings"
@@ -44,11 +44,8 @@ func (s *Server) labelNames(
 	v, e := s.service.LabelNames(instance, matches, since)
 
 	if e != nil {
-		return s.captureFail(
-			e,
-			fmt.Sprintf("label_names failed on %s", instance),
-		)
+		return s.captureDetail(e)
 	}
 
-	return response.SuccessAny(v)
+	return response.SuccessAny(convert.LabelResult(v))
 }

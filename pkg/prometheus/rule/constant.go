@@ -13,6 +13,7 @@ const (
 
 	AlertType   = "alert"
 	RecordType  = "record"
+	AllType     = "all"
 	UnknownType = "unknown"
 )
 
@@ -20,6 +21,7 @@ const (
 	HealthOkay v1.RuleHealth = "ok"
 
 	InactiveState = "inactive"
+	PendingState  = "pending"
 	FiringState   = "firing"
 )
 
@@ -29,6 +31,7 @@ var (
 	}
 	States = []string{
 		InactiveState,
+		PendingState,
 		FiringState,
 	}
 )

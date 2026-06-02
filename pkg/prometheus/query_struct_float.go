@@ -12,7 +12,7 @@ func (c *Client) QueryStructFloat(
 	fallback float64,
 	t time.Time,
 ) *float.Result {
-	result := parse.Generic(c.Query(q, t))
+	result := parse.Generic(c.MustQuery(q, t).Value)
 
 	if len(result) == 0 {
 		r := float.New()

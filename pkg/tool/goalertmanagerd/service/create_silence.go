@@ -14,12 +14,5 @@ func (s *Service) CreateSilence(
 		return "", e
 	}
 
-	var result string
-	e = safe(
-		func() {
-			result = c.SetSilence(alert, comment, d)
-		},
-	)
-
-	return result, e
+	return c.SetSilence(alert, comment, d)
 }

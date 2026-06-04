@@ -204,6 +204,54 @@ func NewSlice(v []*gitlab.Job) []*Job {
 }
 ```
 
+### Daemon Bridge Factory (`<entity>/from_daemon.go`)
+
+When a CLI calls a daemon's REST API instead of the upstream
+directly, the generated client returns its own types (e.g.
+`client.Link`). A `FromDaemon()` constructor maps these back
+to domain types so `Format()` stays available:
+
+```go
+package link
+
+import "path/to/generated/client"
+
+func FromDaemon(v client.Link, host string) *Link {
+    return &Link{
+        Identifier: int(v.Identifier),
+        Title:      v.Name,
+        Link:       v.Link,
+        Host:       host,
+    }
+}
+```
+
+`FromDaemonSlice()` follows the same pattern as `NewSlice()`.
+The `host` parameter enables `Format()` to build clickable URLs.
+
+### Page Type (`page/page.go`)
+
+When an upstream API paginates, expose page-level access via a
+generic page type alongside the fetch-all methods:
+
+```go
+package page
+
+type Page[T any] struct {
+    Items       []T
+    Total       int
+    CurrentPage int
+    LastPage    int
+    PerPage     int
+}
+```
+
+Client methods come in pairs: `Links()` fetches all (loops
+internally), `LinksPage(page)` returns one page. The fetch-all
+method calls the page method in a loop. MCP tools use page
+methods with offset-to-page conversion. REST endpoints pass
+the page number through directly.
+
 ### Client Method (`gitlab/project_jobs.go`)
 
 Client handles the library call, delegates parsing to the entity package:

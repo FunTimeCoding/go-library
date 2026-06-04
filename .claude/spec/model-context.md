@@ -51,6 +51,36 @@ construction in the handler is acceptable. The convert package adds
 value when types are nested, shared between REST and MCP, or when
 filtering out sensitive fields.
 
+## Service Layer
+
+When a daemon has compound operations (fetch-then-merge edits,
+name resolution, multi-step deletes), extract a `service/` package
+that both `model_context/` and `server/` call through:
+
+```
+pkg/tool/go<tool>d/
+├── service/
+│   ├── service.go              # holds the upstream client
+│   ├── edit_link.go            # fetch existing, merge, update
+│   ├── search.go               # cross-entity search
+│   └── resolve_list.go         # name-or-ID resolution
+├── model_context/              # MCP handlers call service
+└── server/                     # REST handlers call service
+```
+
+The service accepts domain language (names, not IDs) and resolves
+internally. Both surfaces stay thin — they parse input, call the
+service, format the response. The service owns the business logic.
+
+Use a service layer when:
+- An operation requires multiple upstream calls (fetch + modify)
+- Name-to-ID resolution is needed by both MCP and REST
+- The upstream API has quirks that callers shouldn't know about
+  (e.g. PATCH requires fields that aren't changing)
+
+Don't add a service layer for simple CRUD — direct client calls
+from handlers are fine until compound logic appears.
+
 ## Constants
 
 Tool name and tool-specific parameter constants live in `pkg/tool/go<tool>d/constant/constant.go`:

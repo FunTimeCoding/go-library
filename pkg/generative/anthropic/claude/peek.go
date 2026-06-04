@@ -67,10 +67,10 @@ func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
 				}
 			}
 
-			text := extractText(m.Content)
+			text := ExtractText(m.Content)
 
-			if text != "" && !isSystemNoise(text) {
-				clean := cleanContent(text)
+			if text != "" && !IsSystemNoise(text) {
+				clean := CleanContent(text)
 
 				if len(clean) > 200 {
 					clean = clean[:200]
@@ -86,13 +86,13 @@ func (c *Client) Peek(sessionIdentifier string) *peek.Peek {
 			continue
 		}
 
-		text := extractText(m.Content)
+		text := ExtractText(m.Content)
 
-		if isSystemNoise(text) {
+		if IsSystemNoise(text) {
 			continue
 		}
 
-		clean := cleanContent(text)
+		clean := CleanContent(text)
 
 		if len(clean) <= 20 {
 			continue

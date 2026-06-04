@@ -39,6 +39,10 @@ func (s *Service) UpdateMemory(
 	if e = s.indexer.Push(
 		fmt.Sprintf("memory/%d", m.Identifier),
 		m.Content,
+		map[string]string{
+			"memory_id": fmt.Sprintf("%d", m.Identifier),
+			"type":      m.Type,
+		},
 	); e != nil {
 		return nil, e
 	}

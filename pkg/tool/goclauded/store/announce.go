@@ -18,6 +18,7 @@ func (s *Store) Announce(
 					"topic":            topic,
 					"files":            files,
 					"needs_reannounce": false,
+					"last_seen":        s.clock(),
 				},
 			).Error,
 	)

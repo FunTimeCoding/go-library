@@ -139,17 +139,26 @@ and `s.view.RenderFragment` for HTMX partials.
 
 ```go
 type Server struct {
-    store *store.Store
-    view  *view.View
+    store    *store.Store
+    view     *view.View
+    registry *palette.Registry
 }
 
 func New(s *store.Store) *Server {
+    registry := palette.NewRegistry()
+    registry.Register(
+        palette.Command{Label: constant.DashboardTitle, Path: constant.DashboardPath, Category: "navigate"},
+        palette.Command{Label: constant.EntriesTitle, Path: constant.EntriesPath, Category: "navigate"},
+    )
+
     return &Server{
-        store: s,
+        store:    s,
+        registry: registry,
         view: view.New(
             layout.New(constant.Identity).
                 WithTheme(theme.Archive).
                 WithStyle(inlineCSS).
+                WithCommandPalette("/palette").
                 WithItems(
                     navigation_item.New(constant.DashboardPath, constant.DashboardTitle),
                     navigation_item.New(constant.EntriesPath, constant.EntriesTitle),
@@ -194,6 +203,7 @@ func (s *Server) dashboard(w http.ResponseWriter, r *http.Request) {
 |---------|----------|------|
 | `layout` | `pkg/web/layout/` | Fluent HTML page builder. `New(identity)` + `With*` methods + `Render()`. Owns the full page skeleton (head, nav, main, footer). |
 | `layout/navigation_item` | `pkg/web/layout/navigation_item/` | `New(path, label)` / `NewExternal(path, label)` for nav links. Renders with active-state highlighting. |
+| `palette` | `pkg/web/palette/` | Command palette framework. `NewRegistry()`, `Register()`, `NewServe(registry)` handler. fzf-style fuzzy matching, highlighted results. Layout adds `⌘K` nav hint and `<dialog>` automatically via `WithCommandPalette`. |
 | `view` | `pkg/web/view/` | HTTP layer wrapping layout. `RenderPage`, `RenderFragment`, `IsExtendedRequest`. Clones the layout template per request. |
 | `theme/constant` | `pkg/web/theme/constant/` | CSS palette constants (pico.css custom property overrides). |
 

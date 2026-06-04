@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -29,10 +30,10 @@ func (s *Server) GetSearch(
 		mode = string(*v.Mode)
 	}
 
-	sourceType := ""
+	var metadata map[string]string
 
-	if v.SourceType != nil {
-		sourceType = *v.SourceType
+	if v.SourceType != nil && *v.SourceType != "" {
+		metadata = map[string]string{constant.SourceType: *v.SourceType}
 	}
 
 	outcome := s.service.Search(
@@ -40,8 +41,8 @@ func (s *Server) GetSearch(
 		limit,
 		collection,
 		v.Full != nil && *v.Full,
-		sourceType,
 		mode,
+		metadata,
 	)
 	web.EncodeNotation(w, outcome.Results)
 }

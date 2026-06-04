@@ -38,6 +38,10 @@ func (s *Server) register() {
 				constant.SourceType,
 				mcp.Description("Filter results by source type"),
 			),
+			mcp.WithObject(
+				constant.Metadata,
+				mcp.Description("Filter results by metadata key-value pairs (exact match)"),
+			),
 		),
 		s.search,
 	)
@@ -125,6 +129,20 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.DeleteCollection,
+			mcp.WithDescription(
+				"Delete a collection and all its documents, embeddings, contexts, and source type tags.",
+			),
+			mcp.WithString(
+				parameter.Name,
+				mcp.Required(),
+				mcp.Description("Collection name"),
+			),
+		),
+		s.deleteCollection,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.AddContext,
 			mcp.WithDescription(
 				"Add a description for a path prefix within a collection. Attached to search results as hierarchical context.",
@@ -198,7 +216,11 @@ func (s *Server) register() {
 			),
 			mcp.WithString(
 				constant.SourceType,
-				mcp.Description("Source type tag for this document"),
+				mcp.Description("Source type tag (convenience alias for metadata.source_type)"),
+			),
+			mcp.WithObject(
+				constant.Metadata,
+				mcp.Description("Key-value metadata pairs for this document"),
 			),
 		),
 		s.push,
@@ -243,5 +265,14 @@ func (s *Server) register() {
 			),
 		),
 		s.tag,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.ListTags,
+			mcp.WithDescription(
+				"List all configured source type tags.",
+			),
+		),
+		s.listTags,
 	)
 }

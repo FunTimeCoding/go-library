@@ -27,6 +27,7 @@ direction, and the criteria for introducing them.
 |---------|------|
 | `web/layout/` | Fluent HTML page builder. `New(identity)` + `With*` + `Clone()` + `Render()`. |
 | `web/layout/navigation_item/` | `New(path, label)` / `NewExternal(path, label)` for nav links. |
+| `web/palette/` | Command palette. `NewRegistry()`, `Register()`, `NewServe(registry)`. fzf-style fuzzy matching. |
 | `web/view/` | HTTP layer wrapping layout. `RenderPage`, `RenderFragment`, `IsExtendedRequest`. |
 | `web/theme/constant/` | CSS palette constants (pico.css overrides). Downstream repos can define additional palettes. |
 

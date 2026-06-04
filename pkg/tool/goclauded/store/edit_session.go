@@ -37,6 +37,7 @@ func (s *Store) EditSession(
 		return
 	}
 
+	updates["last_seen"] = s.clock()
 	errors.PanicOnError(
 		s.database.Model(session.Stub()).
 			Where("identifier = ?", identifier).

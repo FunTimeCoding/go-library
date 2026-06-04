@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func extractText(raw json.RawMessage) string {
+func ExtractText(raw json.RawMessage) string {
 	var s string
 
 	if json.Unmarshal(raw, &s) == nil {

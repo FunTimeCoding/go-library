@@ -106,6 +106,11 @@ type Status struct {
 	TotalEmbeddings   int                `json:"total_embeddings"`
 }
 
+// DeleteCollectionParams defines parameters for DeleteCollection.
+type DeleteCollectionParams struct {
+	Name string `form:"name" json:"name"`
+}
+
 // PostCollectionJSONBody defines parameters for PostCollection.
 type PostCollectionJSONBody struct {
 	Name    string  `json:"name"`
@@ -139,10 +144,11 @@ type GetDocumentParams struct {
 
 // PostDocumentJSONBody defines parameters for PostDocument.
 type PostDocumentJSONBody struct {
-	Body       string  `json:"body"`
-	Collection string  `json:"collection"`
-	Path       string  `json:"path"`
-	SourceType *string `json:"source_type,omitempty"`
+	Body       string             `json:"body"`
+	Collection string             `json:"collection"`
+	Metadata   *map[string]string `json:"metadata,omitempty"`
+	Path       string             `json:"path"`
+	SourceType *string            `json:"source_type,omitempty"`
 }
 
 // PostIndexJSONBody defines parameters for PostIndex.
@@ -199,6 +205,9 @@ type PostTagJSONRequestBody PostTagJSONBody
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
+	// (DELETE /api/collection)
+	DeleteCollection(w http.ResponseWriter, r *http.Request, params DeleteCollectionParams)
+
 	// (POST /api/collection)
 	PostCollection(w http.ResponseWriter, r *http.Request)
 
@@ -240,6 +249,9 @@ type ServerInterface interface {
 
 	// (POST /api/tag)
 	PostTag(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/tags)
+	GetTags(w http.ResponseWriter, r *http.Request)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -250,6 +262,40 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
+
+// DeleteCollection operation middleware
+func (siw *ServerInterfaceWrapper) DeleteCollection(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params DeleteCollectionParams
+
+	// ------------- Required query parameter "name" -------------
+
+	if paramValue := r.URL.Query().Get("name"); paramValue != "" {
+
+	} else {
+		siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "name"})
+		return
+	}
+
+	err = runtime.BindQueryParameterWithOptions("form", true, true, "name", r.URL.Query(), &params.Name, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteCollection(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
 
 // PostCollection operation middleware
 func (siw *ServerInterfaceWrapper) PostCollection(w http.ResponseWriter, r *http.Request) {
@@ -645,6 +691,20 @@ func (siw *ServerInterfaceWrapper) PostTag(w http.ResponseWriter, r *http.Reques
 	handler.ServeHTTP(w, r)
 }
 
+// GetTags operation middleware
+func (siw *ServerInterfaceWrapper) GetTags(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetTags(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 type UnescapedCookieParamError struct {
 	ParamName string
 	Err       error
@@ -765,6 +825,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/collection", wrapper.DeleteCollection)
 	m.HandleFunc("POST "+options.BaseURL+"/api/collection", wrapper.PostCollection)
 	m.HandleFunc("DELETE "+options.BaseURL+"/api/context", wrapper.DeleteContext)
 	m.HandleFunc("GET "+options.BaseURL+"/api/context", wrapper.GetContext)
@@ -779,6 +840,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("GET "+options.BaseURL+"/api/status", wrapper.GetStatus)
 	m.HandleFunc("GET "+options.BaseURL+"/api/tag", wrapper.GetTag)
 	m.HandleFunc("POST "+options.BaseURL+"/api/tag", wrapper.PostTag)
+	m.HandleFunc("GET "+options.BaseURL+"/api/tags", wrapper.GetTags)
 
 	return m
 }
@@ -786,25 +848,26 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/9RYUW/jNgz+K4a2R6PpbW9523rFcMAehrVvhyJQbMbWnS3pJLnXoPB/HyRZsR1TdtpL",
-	"091bIkoU+ZH8SPmZZKKWggM3mqyfic5KqKn7eSOqCjLDBL8z1DRuTSohQRkG7l8usqYGbjaZaLixK2Yv",
-	"gawJ4wYKUKRNCac1DCTaKMYLK5DUlDGBAcURWZsSBd8apiAn689edaeoP5Yem/WQBj1i+wUyY++4EdzA",
-	"k7nlRu2nfmUHz1EDc9CZYjIqtwZtpIIde1p2YnDX+OT4HsyJj52fES92rIJNFGXDTIUH5pEp09AqdvTI",
-	"/tHudHBpuAKz/LbeQv4v6KYyCPplw79qPJtCaFHxkWX93jToxGz5xHN4itoynwnMnrW3YbYqqMVjTNjw",
-	"rKS8iIplTg0unMufYE+vYHhTbxKGwx1QlZUxILYi36MQLCCU+UJDZfMJWlJdvow4dCbUMKV5U289nJoz",
-	"KQG3opNtKsYBD4YWjcrwWvGijV9/nyqbEMih8joMAzAHR9DoO9H9XsI9LV5cB/OMtwRTi9kTaTm9Ie4v",
-	"M1C7H78q2JE1+WXVt7NV18tWk0bWX0iVonvnAfCc8WIDlpnsrwgBGWFotZmlobBpXlW0jC1dHd+CqERN",
-	"nka2dSy1E84En4ykEN8aUHtLCI+gtAsq+XB1fXVtjRcSOJWMrMnvbslH1/mwopKtxqkghXZlZWNE7eKn",
-	"nKzJP0Kbm2FeWldBmz87FnGs4CcGKmXFMnd09UV7pT5w0+BfaJbAUex3G9WAW9BScO1N++362k1Ew9Fg",
-	"MEElNM8hv7Ka2jTgeGDGHCowMIXxo1vvZhVnnaI1GFCarD8/E2bvcKEkYc4as8HY5HSA6wQMXNt4Hjld",
-	"3QOOzivD7uEZNsOtEBVQjlFHezyghVkv6Zrfld9TAJK3f4Hp0f4hD04kpsEUOiGlqSd/VFXSpY3u3Jir",
-	"v96RcxTfTzEUv7pQfYpMqzRw8HKZhmn8ver05y3QgFzS6Vmo0JcBfXFo5gp+NGMjSNwxXlSQhKRLvjNT",
-	"JrsmlD03i1U/AOc8Zf/awT8+pS/NgrNEQFJv0dlK/5B8stHlUfG7yWp+ynEvWfKGKTN8KiMZcxuGv0S5",
-	"PXrkgHsPzjvgnr+XaRIYF7SX6LPDJ/4JbdZtD3gmElTSuzWCt2Ie1RhT/W3lb9kOHi6B3vgz0wn4hQM6",
-	"YTwGnXZMOAee58rT4At/f7iRjuLw4tMVq5kZHcxhR933lA/XKfIExNXUIgdcCyn3W8Us3wBvakuQh4Wv",
-	"sP8u1PDTzpK1tq/g1+xopSFFejmuaMjo756t4xa7nKx+P8qe+vANIpqjfsdbTgzdF4sYS3kbR2Yb/wEn",
-	"ZvM9LV7BSf//kXQWxdHXLSwL3IbE2pQYWiyOWR7EizyszjNIdeEYnjnbCHVPi0SDSYQavbHbtv0vAAD/",
-	"/3Xe7e1eGgAA",
+	"H4sIAAAAAAAC/9RYzW7bOBB+FYG7RyFOd2++7abBosAeik1uRWDQ0lhiK5EsOUpjBHr3BUnJEmVSctLE",
+	"aW62hhzOfPPND/lIMlFLwYGjJutHorMSamp/XomqggyZ4DdIsbHfpBISFDKw/3KRNTVw3GSi4Wi+4F4C",
+	"WRPGEQpQpE0JpzWMJBoV44URSIplTICgeEDWpkTB94YpyMn6i1PdKRq2pVOz7tJej9h+hQzNGVeCIzzg",
+	"NUe1P/YrO3geNDAHnSkmo3Jj0EYq2LGHZSdGZ/k7/XNCTnzs/Ix4sWMVbKIoI8MqHJh7prChVWzrxH5v",
+	"dTo6tD8iZPl1vYX8P9BNhQH0y4Z/02E29aENiieWDWvTXmfIlk88h4eoLfNMYGavOS1kq4Ja3MeEDc9K",
+	"youoWOYUw8I5/vT2DArGJw0mhXC4AaqyMgbEVuT7IAQLCGUu0YKyeYKWVJdPKxw6E2pMad7UWwen5kxK",
+	"CFvRyTYV4xAOhhaNysK54kQb9/1tsuyogBwyr8OwB+bgSDD6VnS7l3BLiyfnwXzFW4KpDdkTaTmDIfYv",
+	"Q6jtj98V7Mia/LYa2tmq62Wro0Y2HEiVonvrAfCc8WIDpjKZX5EChAJptZktQ/2ieVXRNDblanpKQGXQ",
+	"5OPItrZK7YQ1wZGRFOJ7A2pvCsI9KG2DSj5cXF5cGuOFBE4lI2vyp/3komt9WFHJVj4VcqgAbVBNlKj5",
+	"/Ckna/LRfr/yualoDQhKk/WXR8LMqdYQ0k8JfUcfgEHVQNoNJSHm3JnFWgquHT3+uLx0LOEIbiKhUlYs",
+	"s4atvmpn9KBvMs9Yo8dVdytEBZSHONpOJ4HRwJR0mi7cMik0HkP0WWj0ADJug8a/u1L7TCfONHCFqeZH",
+	"rg1HJ4oazfMOszbtyXZoH0tMcwtPolk2Rf00sqVhbf7Q9m65a/FLugmhI24BAd7+Azig/VMenFi9R6P6",
+	"UeU+9uSvqko62ugT8m9w5CWS713cHJ6dqI4ix1naN6rlNO2vLG+Vp+83QXvkJq0llqFPA/rs0MwlvHcR",
+	"CSBxw3hRQdKTLvnBsEx2TZ/2HBezfgTOy6T9c29HNSDNKVqNNM+ZWUirz57u4zvFdFaOX4iWxu7ZckJS",
+	"59eLFZADhWWjy0kJsUOsBTYaNftoQF6ReONXiQDvrvs5O1F2jfYcsFfveQfsS8N5Wk2oorTn6Nbj15QT",
+	"mrVd3uOZSFDJ4JYHb8UcqrF696+Rv2ZTuTsHev6L3gn49Rt0wngMOm3r6Rx4ruKeBl//96fbsReHJ++u",
+	"WM3Q25jDjtqnqw+XaeC2HVZTixzCWki53ypm6g3wpjYF8vDhG+x/CDV+RVuy1nSn8DE7WmlIAxNBWNG4",
+	"or85W/1GvUxWtz5YPfXhuSfKUbfiNeeO7nEoVqWcjZ7Z6N7KYjbf0uIZNenXH2xnUfQeEkMssAsSY1OC",
+	"tFgc1hyIZ7mevcwg1YVjvOfFRqhbWiQaMBHKu6mP+KgXCKnPcmmfsOC0W7v2mdGlWtv+HwAA//8woR9N",
+	"pBwAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

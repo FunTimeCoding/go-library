@@ -17,5 +17,9 @@ func (s *Service) Summarize(
 	)
 	s.notify()
 
-	return s.pushSummary(name, body)
+	return s.pushSummary(
+		name,
+		body,
+		s.summaryMetadata(sessionIdentifier, name),
+	)
 }

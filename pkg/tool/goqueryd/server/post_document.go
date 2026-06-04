@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -14,10 +15,16 @@ func (s *Server) PostDocument(
 ) {
 	var body server.PostDocumentJSONRequestBody
 	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	sourceType := ""
+	metadata := map[string]string{}
 
-	if body.SourceType != nil {
-		sourceType = *body.SourceType
+	if body.Metadata != nil {
+		for key, value := range *body.Metadata {
+			metadata[key] = value
+		}
+	}
+
+	if body.SourceType != nil && *body.SourceType != "" {
+		metadata[constant.SourceType] = *body.SourceType
 	}
 
 	errors.PanicOnError(
@@ -25,7 +32,7 @@ func (s *Server) PostDocument(
 			body.Collection,
 			body.Path,
 			body.Body,
-			sourceType,
+			metadata,
 		),
 	)
 	web.EncodeNotation(w, map[string]string{"status": "ok"})

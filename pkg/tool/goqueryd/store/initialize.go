@@ -60,6 +60,14 @@ func initialize(database *sql.DB) {
 				(SELECT body FROM content WHERE hash = new.hash)
 			WHERE new.active = 1;
 		END`,
+		`CREATE TABLE IF NOT EXISTS document_metadata (
+			document_identifier INTEGER NOT NULL
+				REFERENCES document(identifier) ON DELETE CASCADE,
+			key   TEXT NOT NULL,
+			value TEXT NOT NULL,
+			PRIMARY KEY (document_identifier, key)
+		)`,
+		"CREATE INDEX IF NOT EXISTS idx_document_metadata_key_value ON document_metadata(key, value)",
 		`CREATE TABLE IF NOT EXISTS context (
 			collection  TEXT NOT NULL,
 			path_prefix TEXT NOT NULL,

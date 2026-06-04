@@ -7,8 +7,8 @@ func (s *Service) Search(
 	limit int,
 	collection string,
 	full bool,
-	sourceType string,
 	mode string,
+	metadata map[string]string,
 ) *store.SearchOutcome {
 	if mode == "keyword" {
 		results, e := s.store.SearchKeyword(
@@ -22,13 +22,15 @@ func (s *Service) Search(
 			return store.NewDegradedSearchOutcome(e)
 		}
 
-		return store.NewSearchOutcome(results)
+		return store.NewSearchOutcome(
+			s.store.EnrichResults(results, metadata),
+		)
 	}
 
 	o := store.NewSearchOption(query, limit)
 	o.Collection = collection
 	o.Full = full
-	o.SourceType = sourceType
+	o.Metadata = metadata
 	o.Reranker = s.reranker
 
 	return s.store.SearchWithFallback(o, s.ollama)

@@ -124,6 +124,24 @@ paths:
       responses:
         "200":
           description: Collection added.
+    delete:
+      operationId: deleteCollection
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Collection deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
   /api/context:
     get:
       operationId: getContext
@@ -212,6 +230,10 @@ paths:
                   type: string
                 source_type:
                   type: string
+                metadata:
+                  type: object
+                  additionalProperties:
+                    type: string
       responses:
         "200":
           description: Document pushed.
@@ -238,6 +260,18 @@ paths:
                 properties:
                   deleted:
                     type: boolean
+  /api/tags:
+    get:
+      operationId: getTags
+      responses:
+        "200":
+          description: All source type tags.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SourceTypeTag"
   /api/tag:
     get:
       operationId: getTag

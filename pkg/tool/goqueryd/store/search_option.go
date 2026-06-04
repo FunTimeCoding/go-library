@@ -7,6 +7,6 @@ type SearchOption struct {
 	Limit      int
 	Collection string
 	Full       bool
-	SourceType string
+	Metadata   map[string]string
 	Reranker   *rerank.Reranker
 }

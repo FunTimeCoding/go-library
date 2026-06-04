@@ -12,6 +12,11 @@ func (s *Store) SetListening(
 	errors.PanicOnError(
 		s.database.Model(session.Stub()).
 			Where("callsign = ?", name).
-			Update("listening", listening).Error,
+			Updates(
+				map[string]any{
+					"listening": listening,
+					"last_seen": s.clock(),
+				},
+			).Error,
 	)
 }

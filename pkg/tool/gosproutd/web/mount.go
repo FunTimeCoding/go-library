@@ -1,8 +1,12 @@
 package web
 
-import "net/http"
+import (
+	"github.com/funtimecoding/go-library/pkg/web/palette"
+	"net/http"
+)
 
 func (s *Server) Mount(m *http.ServeMux) {
+	m.HandleFunc("GET /palette", palette.NewServe(s.registry))
 	m.HandleFunc("GET /{$}", s.dashboard)
 	m.Handle("GET /event", s.event())
 	m.HandleFunc("POST /move-up", s.moveUp)

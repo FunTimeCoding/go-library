@@ -41,7 +41,7 @@ func TestEmbedAfterPush(t *testing.T) {
 			"notes",
 			"embed-me.md",
 			"# Embed Test\n\nThis document should get embedded.\n",
-			"",
+			nil,
 		),
 	)
 	status := s.Service.MustStatus()

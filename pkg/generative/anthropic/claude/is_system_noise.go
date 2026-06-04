@@ -2,7 +2,7 @@ package claude
 
 import "strings"
 
-func isSystemNoise(text string) bool {
+func IsSystemNoise(text string) bool {
 	trimmed := strings.TrimSpace(text)
 
 	return strings.HasPrefix(trimmed, "<command-name>") ||

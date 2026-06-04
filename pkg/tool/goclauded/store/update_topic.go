@@ -13,6 +13,12 @@ func (s *Store) UpdateTopic(
 	errors.PanicOnError(
 		s.database.Model(session.Stub()).
 			Where("callsign = ?", name).
-			Updates(map[string]any{"topic": topic, "files": files}).Error,
+			Updates(
+				map[string]any{
+					"topic":     topic,
+					"files":     files,
+					"last_seen": s.clock(),
+				},
+			).Error,
 	)
 }

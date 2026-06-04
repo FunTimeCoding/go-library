@@ -11,7 +11,11 @@ func (c *Client) AcquireTarget(identifier string) context.Context {
 	defer c.mu.Unlock()
 
 	if x, okay := c.targets[identifier]; okay {
-		return x
+		if x.Err() == nil {
+			return x
+		}
+
+		delete(c.targets, identifier)
 	}
 
 	x, _ := chromedp.NewContext(

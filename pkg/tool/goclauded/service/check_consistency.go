@@ -10,29 +10,29 @@ func (s *Service) CheckConsistency() {
 		databaseSet[e.Identifier] = true
 	}
 
-	fileSessions := s.client.Sessions()
-	fileSet := make(map[string]bool, len(fileSessions))
+	s.statesMu.Lock()
+	cacheSet := make(map[string]bool, len(s.states))
 
-	for _, e := range fileSessions {
-		fileSet[e.Identifier] = true
+	for identifier := range s.states {
+		cacheSet[identifier] = true
 	}
 
-	for _, e := range fileSessions {
-		if !databaseSet[e.Identifier] {
-			s.store.CreateDiscovered(e.Identifier)
-			s.EnrichSession(e.Identifier)
+	s.statesMu.Unlock()
+
+	for identifier := range cacheSet {
+		if !databaseSet[identifier] {
+			s.store.CreateDiscovered(identifier)
+			s.RefreshFromCache(identifier)
 			s.logger.Structured(
 				"consistency_discovered",
 				constant.Identifier,
-				e.Identifier,
-				constant.Slug,
-				e.Slug,
+				identifier,
 			)
 		}
 	}
 
 	for _, e := range databaseSessions {
-		if !fileSet[e.Identifier] {
+		if !cacheSet[e.Identifier] {
 			s.logger.Structured(
 				"consistency_missing_jsonl",
 				constant.Identifier,

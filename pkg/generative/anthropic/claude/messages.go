@@ -49,7 +49,7 @@ func (c *Client) Messages(sessionIdentifier string) []message.Message {
 			continue
 		}
 
-		text := extractText(m.Content)
+		text := ExtractText(m.Content)
 
 		if text == "" {
 			continue
@@ -61,7 +61,7 @@ func (c *Client) Messages(sessionIdentifier string) []message.Message {
 				Role:      m.Role,
 				Text:      text,
 				Timestamp: line.Timestamp,
-				IsMeta:    line.Meta || isSystemNoise(text),
+				IsMeta:    line.Meta || IsSystemNoise(text),
 			},
 		)
 	}

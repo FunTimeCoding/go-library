@@ -103,6 +103,11 @@ type Status struct {
 	TotalEmbeddings   int                `json:"total_embeddings"`
 }
 
+// DeleteCollectionParams defines parameters for DeleteCollection.
+type DeleteCollectionParams struct {
+	Name string `form:"name" json:"name"`
+}
+
 // PostCollectionJSONBody defines parameters for PostCollection.
 type PostCollectionJSONBody struct {
 	Name    string  `json:"name"`
@@ -136,10 +141,11 @@ type GetDocumentParams struct {
 
 // PostDocumentJSONBody defines parameters for PostDocument.
 type PostDocumentJSONBody struct {
-	Body       string  `json:"body"`
-	Collection string  `json:"collection"`
-	Path       string  `json:"path"`
-	SourceType *string `json:"source_type,omitempty"`
+	Body       string             `json:"body"`
+	Collection string             `json:"collection"`
+	Metadata   *map[string]string `json:"metadata,omitempty"`
+	Path       string             `json:"path"`
+	SourceType *string            `json:"source_type,omitempty"`
 }
 
 // PostIndexJSONBody defines parameters for PostIndex.
@@ -266,6 +272,9 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// DeleteCollection request
+	DeleteCollection(ctx context.Context, params *DeleteCollectionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PostCollectionWithBody request with any body
 	PostCollectionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -317,6 +326,21 @@ type ClientInterface interface {
 	PostTagWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostTag(ctx context.Context, body PostTagJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTags request
+	GetTags(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) DeleteCollection(ctx context.Context, params *DeleteCollectionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteCollectionRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) PostCollectionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -545,6 +569,63 @@ func (c *Client) PostTag(ctx context.Context, body PostTagJSONRequestBody, reqEd
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+func (c *Client) GetTags(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTagsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NewDeleteCollectionRequest generates requests for DeleteCollection
+func NewDeleteCollectionRequest(server string, params *DeleteCollectionParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/collection")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "name", params.Name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }
 
 // NewPostCollectionRequest calls the generic PostCollection builder with application/json body
@@ -1218,6 +1299,33 @@ func NewPostTagRequestWithBody(server string, contentType string, body io.Reader
 	return req, nil
 }
 
+// NewGetTagsRequest generates requests for GetTags
+func NewGetTagsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/tags")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -1261,6 +1369,9 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// DeleteCollectionWithResponse request
+	DeleteCollectionWithResponse(ctx context.Context, params *DeleteCollectionParams, reqEditors ...RequestEditorFn) (*DeleteCollectionResponse, error)
+
 	// PostCollectionWithBodyWithResponse request with any body
 	PostCollectionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostCollectionResponse, error)
 
@@ -1312,6 +1423,33 @@ type ClientWithResponsesInterface interface {
 	PostTagWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostTagResponse, error)
 
 	PostTagWithResponse(ctx context.Context, body PostTagJSONRequestBody, reqEditors ...RequestEditorFn) (*PostTagResponse, error)
+
+	// GetTagsWithResponse request
+	GetTagsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTagsResponse, error)
+}
+
+type DeleteCollectionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Deleted *bool `json:"deleted,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteCollectionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteCollectionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type PostCollectionResponse struct {
@@ -1622,6 +1760,37 @@ func (r PostTagResponse) StatusCode() int {
 	return 0
 }
 
+type GetTagsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]SourceTypeTag
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTagsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTagsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// DeleteCollectionWithResponse request returning *DeleteCollectionResponse
+func (c *ClientWithResponses) DeleteCollectionWithResponse(ctx context.Context, params *DeleteCollectionParams, reqEditors ...RequestEditorFn) (*DeleteCollectionResponse, error) {
+	rsp, err := c.DeleteCollection(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteCollectionResponse(rsp)
+}
+
 // PostCollectionWithBodyWithResponse request with arbitrary body returning *PostCollectionResponse
 func (c *ClientWithResponses) PostCollectionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostCollectionResponse, error) {
 	rsp, err := c.PostCollectionWithBody(ctx, contentType, body, reqEditors...)
@@ -1786,6 +1955,43 @@ func (c *ClientWithResponses) PostTagWithResponse(ctx context.Context, body Post
 		return nil, err
 	}
 	return ParsePostTagResponse(rsp)
+}
+
+// GetTagsWithResponse request returning *GetTagsResponse
+func (c *ClientWithResponses) GetTagsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTagsResponse, error) {
+	rsp, err := c.GetTags(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTagsResponse(rsp)
+}
+
+// ParseDeleteCollectionResponse parses an HTTP response from a DeleteCollectionWithResponse call
+func ParseDeleteCollectionResponse(rsp *http.Response) (*DeleteCollectionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteCollectionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Deleted *bool `json:"deleted,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParsePostCollectionResponse parses an HTTP response from a PostCollectionWithResponse call
@@ -2111,6 +2317,32 @@ func ParsePostTagResponse(rsp *http.Response) (*PostTagResponse, error) {
 	response := &PostTagResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetTagsResponse parses an HTTP response from a GetTagsWithResponse call
+func ParseGetTagsResponse(rsp *http.Response) (*GetTagsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTagsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []SourceTypeTag
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	}
 
 	return response, nil

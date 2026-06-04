@@ -19,13 +19,24 @@ func (s *Server) search(
 		return response.Fail("query is required: %v", e)
 	}
 
+	metadata := extractMetadata(q)
+	sourceType := q.GetString(constant.SourceType, "")
+
+	if sourceType != "" {
+		if metadata == nil {
+			metadata = map[string]string{}
+		}
+
+		metadata[constant.SourceType] = sourceType
+	}
+
 	outcome := s.service.Search(
 		query,
 		int(q.GetFloat(parameter.Limit, 10)),
 		q.GetString(constant.Collection, ""),
 		q.GetBool(constant.Full, false),
-		q.GetString(constant.SourceType, ""),
 		q.GetString(constant.Mode, "hybrid"),
+		metadata,
 	)
 
 	if outcome.Cause != nil {

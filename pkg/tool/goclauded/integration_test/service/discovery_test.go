@@ -4,25 +4,22 @@ package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/session"
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/service_tester"
+	"path/filepath"
 	"testing"
 )
 
 func TestCheckConsistencyDiscoversUnregistered(t *testing.T) {
 	s := service_tester.New(t)
-	s.Client.AddSession(
-		&session.Session{
-			Identifier: "jsonl-only",
-			Slug:       "test-session",
-			Lines:      42,
-		},
-	)
+	writeSessionFile(s.Harbor, "jsonl-only", "test-session")
+	s.Service.PopulateCache()
 	s.Service.CheckConsistency()
 	e := s.Store.GetSession("jsonl-only")
 	assert.True(t, e != nil)
 	assert.String(t, "test-session", e.Slug)
-	assert.True(t, e.Lines == 42)
+	assert.True(t, e.Lines == 2)
 	assert.True(t, e.Callsign == nil)
 	assert.String(t, "", e.Name)
 }
@@ -30,12 +27,8 @@ func TestCheckConsistencyDiscoversUnregistered(t *testing.T) {
 func TestCheckConsistencySkipsExisting(t *testing.T) {
 	s := service_tester.New(t)
 	s.Store.EnsureSession("registered")
-	s.Client.AddSession(
-		&session.Session{
-			Identifier: "registered",
-			Slug:       "already-known",
-		},
-	)
+	writeSessionFile(s.Harbor, "registered", "already-known")
+	s.Service.PopulateCache()
 	s.Service.CheckConsistency()
 	e := s.Store.GetSession("registered")
 	assert.True(t, e.Callsign != nil)
@@ -44,27 +37,29 @@ func TestCheckConsistencySkipsExisting(t *testing.T) {
 func TestBackfillSessionsEnriches(t *testing.T) {
 	s := service_tester.New(t)
 	s.Store.EnsureSession("session-1")
-	s.Client.AddSession(
-		&session.Session{
-			Identifier:    "session-1",
-			Slug:          "my-slug",
-			Lines:         100,
-			WorkDirectory: "/home/user",
-			Branch:        "main",
-			Timestamp:     "2026-05-21T10:00:00Z",
-		},
-	)
-	s.Client.FirstMessages["session-1"] = "hello world"
-	s.Client.UserMessages["session-1"] = []string{
-		"hello world",
-		"fix the bug",
-	}
+	writeSessionFile(s.Harbor, "session-1", "my-slug")
+	s.Service.PopulateCache()
 	s.Service.BackfillSessions()
 	e := s.Store.GetSession("session-1")
 	assert.String(t, "my-slug", e.Slug)
-	assert.True(t, e.Lines == 100)
+	assert.True(t, e.Lines == 2)
 	assert.String(t, "/home/user", e.WorkDirectory)
 	assert.String(t, "main", e.Branch)
-	assert.String(t, "hello world", e.FirstMessage)
+	assert.String(t, "can you help me fix the login bug", e.FirstMessage)
 	assert.True(t, e.TurnCount == 2)
+}
+
+func writeSessionFile(
+	harbor string,
+	identifier string,
+	slug string,
+) {
+	path := filepath.Join(harbor, identifier+".jsonl")
+	f := system.Create(path)
+	_, e := f.WriteString(
+		`{"type":"user","timestamp":"2026-05-21T10:00:00Z","sessionId":"` + identifier + `","slug":"` + slug + `","cwd":"/home/user","gitBranch":"main","message":{"role":"user","content":"can you help me fix the login bug"}}` + "\n" +
+			`{"type":"user","timestamp":"2026-05-21T10:02:00Z","sessionId":"` + identifier + `","message":{"role":"user","content":"now update the tests to match"}}` + "\n",
+	)
+	errors.PanicOnError(e)
+	errors.PanicClose(f)
 }

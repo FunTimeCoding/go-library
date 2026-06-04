@@ -13,7 +13,7 @@ func (s *Store) HasChanges(
 ) bool {
 	var rosterCount int64
 	s.database.Model(session.Stub()).
-		Where("name != ? AND updated_at > ?", name, lastSeen).
+		Where("name != ? AND last_seen > ?", name, lastSeen).
 		Count(&rosterCount)
 
 	if rosterCount > 0 {

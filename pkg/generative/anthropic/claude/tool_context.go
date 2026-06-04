@@ -58,7 +58,7 @@ func (c *Client) ToolContext(
 			continue
 		}
 
-		text := extractText(m.Content)
+		text := ExtractText(m.Content)
 
 		if text == "" && line.Type == "user" {
 			continue
@@ -69,7 +69,7 @@ func (c *Client) ToolContext(
 				Role:      m.Role,
 				Text:      text,
 				Timestamp: line.Timestamp,
-				IsMeta:    line.Meta || isSystemNoise(text),
+				IsMeta:    line.Meta || IsSystemNoise(text),
 			},
 		}
 

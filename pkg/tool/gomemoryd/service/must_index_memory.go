@@ -5,6 +5,7 @@ import "github.com/funtimecoding/go-library/pkg/errors"
 func (s *Service) MustIndexMemory(
 	path string,
 	content string,
+	metadata map[string]string,
 ) {
-	errors.PanicOnError(s.IndexMemory(path, content))
+	errors.PanicOnError(s.IndexMemory(path, content, metadata))
 }

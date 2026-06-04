@@ -13,14 +13,21 @@ type Indexer struct {
 func (i *Indexer) Push(
 	path string,
 	body string,
+	metadata map[string]string,
 ) error {
+	merged := map[string]string{"source_type": "memory"}
+
+	for key, value := range metadata {
+		merged[key] = value
+	}
+
 	r, e := i.client.PostDocument(
 		context.Background(),
 		client.PostDocumentJSONRequestBody{
 			Collection: "memories",
 			Path:       path,
 			Body:       body,
-			SourceType: new("memory"),
+			Metadata:   &merged,
 		},
 	)
 
@@ -34,8 +41,9 @@ func (i *Indexer) Push(
 func (i *Indexer) MustPush(
 	path string,
 	body string,
+	metadata map[string]string,
 ) {
-	errors.PanicOnError(i.Push(path, body))
+	errors.PanicOnError(i.Push(path, body, metadata))
 }
 
 func (i *Indexer) Delete(path string) error {

@@ -16,7 +16,7 @@ func TestPushDocumentAppearsInList(t *testing.T) {
 			"notes",
 			"first.md",
 			"# First Note\n\nPushed directly via API.\n",
-			"",
+			nil,
 		),
 	)
 	entries, e := s.Service.ListDocuments("notes")
@@ -34,7 +34,7 @@ func TestPushDocumentAppearsInSearch(t *testing.T) {
 			"notes",
 			"searchable.md",
 			"# Searchable\n\nThis document contains a unique keyword: platypus.\n",
-			"",
+			nil,
 		),
 	)
 	outcome := s.Service.Search(
@@ -42,8 +42,8 @@ func TestPushDocumentAppearsInSearch(t *testing.T) {
 		10,
 		"",
 		false,
-		"",
 		"keyword",
+		nil,
 	)
 	assert.Count(t, 1, outcome.Results)
 	assert.String(t, "Searchable", outcome.Results[0].Title)
@@ -54,11 +54,11 @@ func TestPushDocumentDedup(t *testing.T) {
 	body := "# Identical\n\nSame content pushed twice.\n"
 	assert.FatalOnError(
 		t,
-		s.Service.PushDocument("notes", "first.md", body, ""),
+		s.Service.PushDocument("notes", "first.md", body, nil),
 	)
 	assert.FatalOnError(
 		t,
-		s.Service.PushDocument("notes", "first.md", body, ""),
+		s.Service.PushDocument("notes", "first.md", body, nil),
 	)
 	entries, e := s.Service.ListDocuments("notes")
 	assert.FatalOnError(t, e)
@@ -75,7 +75,7 @@ func TestPushDocumentUpdate(t *testing.T) {
 			"notes",
 			"evolving.md",
 			"# Original\n\nFirst version.\n",
-			"",
+			nil,
 		),
 	)
 	assert.FatalOnError(
@@ -84,7 +84,7 @@ func TestPushDocumentUpdate(t *testing.T) {
 			"notes",
 			"evolving.md",
 			"# Updated\n\nSecond version with revised content.\n",
-			"",
+			nil,
 		),
 	)
 	d, _, e := s.Service.GetDocument("notes/evolving.md")
@@ -102,7 +102,7 @@ func TestPushDocumentCreatesCollection(t *testing.T) {
 			"dynamic",
 			"auto.md",
 			"# Auto\n\nCollection created on first push.\n",
-			"",
+			nil,
 		),
 	)
 	status := s.Service.MustStatus()

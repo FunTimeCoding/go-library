@@ -16,8 +16,8 @@ func TestSearchKeyword(t *testing.T) {
 		10,
 		"",
 		false,
-		"",
 		"keyword",
+		nil,
 	)
 	assert.Greater(t, 0, float64(len(outcome.Results)))
 	assert.String(t, "Search Pipeline", outcome.Results[0].Title)
@@ -33,8 +33,8 @@ func TestSearchHybrid(t *testing.T) {
 		10,
 		"",
 		false,
-		"",
 		"hybrid",
+		nil,
 	)
 	assert.Greater(t, 0, float64(len(outcome.Results)))
 }
@@ -47,8 +47,8 @@ func TestSearchCollectionFilter(t *testing.T) {
 		10,
 		"test",
 		false,
-		"",
 		"keyword",
+		nil,
 	)
 	assert.Greater(t, 0, float64(len(outcome.Results)))
 	assert.String(t, "test", outcome.Results[0].Collection)
@@ -62,8 +62,8 @@ func TestSearchDegradedWithoutEmbeddings(t *testing.T) {
 		10,
 		"",
 		false,
-		"",
 		"hybrid",
+		nil,
 	)
 	assert.True(t, outcome.Degraded)
 	assert.Greater(t, 0, float64(len(outcome.Results)))

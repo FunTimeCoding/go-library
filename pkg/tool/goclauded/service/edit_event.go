@@ -15,7 +15,11 @@ func (s *Service) EditEvent(
 	case constant.Summarize:
 		s.store.UpdateSummaryBody(edited.SessionIdentifier, message)
 
-		if e := s.pushSummary(edited.Name, message); e != nil {
+		if e := s.pushSummary(
+			edited.Name,
+			message,
+			s.summaryMetadata(edited.SessionIdentifier, edited.Name),
+		); e != nil {
 			return edited, e
 		}
 	case constant.Complete:

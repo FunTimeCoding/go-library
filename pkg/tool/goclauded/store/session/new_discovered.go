@@ -9,6 +9,6 @@ func NewDiscovered(
 	return &Session{
 		Identifier: identifier,
 		LastSeen:   now,
-		CreatedAt:  now,
+		StartedAt:  now,
 	}
 }

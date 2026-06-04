@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/web/conversations"
 	"github.com/funtimecoding/go-library/pkg/web/layout"
 	"github.com/funtimecoding/go-library/pkg/web/layout/navigation_item"
+	"github.com/funtimecoding/go-library/pkg/web/palette"
 	theme "github.com/funtimecoding/go-library/pkg/web/theme/constant"
 	"github.com/funtimecoding/go-library/pkg/web/view"
 	"maragu.dev/gomponents"
@@ -13,14 +14,45 @@ import (
 )
 
 func New(s *service.Service) *Server {
+	registry := palette.NewRegistry()
+	registry.Register(
+		palette.Command{
+			Label:    constant.DashboardTitle,
+			Path:     constant.DashboardPath,
+			Category: "navigate",
+		},
+		palette.Command{
+			Label:    constant.SessionsTitle,
+			Path:     constant.SessionsPath,
+			Category: "navigate",
+		},
+		palette.Command{
+			Label:    constant.MessagesTitle,
+			Path:     constant.MessagesPath,
+			Category: "navigate",
+		},
+		palette.Command{
+			Label:    constant.HistoryTitle,
+			Path:     constant.HistoryPath,
+			Category: "navigate",
+		},
+		palette.Command{
+			Label:    constant.ConversationsTitle,
+			Path:     constant.ConversationsPath,
+			Category: "navigate",
+		},
+	)
+
 	return &Server{
 		service:       s,
 		notifier:      s.Notifier(),
 		conversations: conversations.New(s),
+		registry:      registry,
 		view: view.New(
 			layout.New(constant.Identity).
 				WithTheme(theme.Hearth).
 				WithStyle(inlineCSS).
+				WithCommandPalette("/palette").
 				WithLiveEndpoint("/event").
 				WithBrandNode(
 					html.Strong(

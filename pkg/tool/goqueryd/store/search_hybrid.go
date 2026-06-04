@@ -176,28 +176,21 @@ func (s *Store) SearchHybrid(
 		}
 	}
 
-	var result []SearchResult
+	unenriched := make([]SearchResult, 0, len(candidates))
 
 	for _, m := range candidates {
 		if !o.Full {
 			m.result.Body = ""
 		}
 
-		m.result.SourceType = s.ResolveSourceType(
-			m.result.Collection,
-			m.result.Path,
-		)
-
-		if o.SourceType != "" && m.result.SourceType != o.SourceType {
-			continue
-		}
-
-		result = append(result, m.result)
-
-		if len(result) >= o.Limit {
-			break
-		}
+		unenriched = append(unenriched, m.result)
 	}
 
-	return result, nil
+	enriched := s.EnrichResults(unenriched, o.Metadata)
+
+	if len(enriched) > o.Limit {
+		enriched = enriched[:o.Limit]
+	}
+
+	return enriched, nil
 }

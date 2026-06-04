@@ -18,6 +18,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/summary_indexer"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/sweep"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/watcher"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/web"
 	memory "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/connect"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/connect"
@@ -60,17 +61,21 @@ func Run(
 		memoryClient,
 		summary_indexer.New(queryClient),
 		n,
+		r,
+		h,
 		time.Now,
 		l,
 	)
 	v.ReconcileSummaries()
 	l.Structured("summaries_reconciled", "elapsed", elapsed())
+	v.PopulateCache()
+	l.Structured("cache_populated", "elapsed", elapsed())
 	v.BackfillSessions()
 	l.Structured("sessions_backfilled", "elapsed", elapsed())
 	v.CheckConsistency()
 	l.Structured("consistency_checked", "elapsed", elapsed())
 	go v.RunTimeoutLoop()
-	go sweep.RunLoop(h)
+	w := watcher.New(v, l, r, h)
 
 	if environment.Exists(constant.MonitorUsageEnvironment) {
 		go v.RunUsageLoop()
@@ -78,6 +83,7 @@ func Run(
 
 	lifecycle.New(
 		l,
+		lifecycle.WithWorker(w),
 		lifecycle.WithServerMiddleware(
 			library.AddressPort(o.Port),
 			func(m *http.ServeMux) {

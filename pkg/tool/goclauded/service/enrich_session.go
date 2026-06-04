@@ -1,50 +1,34 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+import (
+	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/tracker"
+	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"path/filepath"
+)
 
 func (s *Service) EnrichSession(identifier string) {
-	e := s.client.Resolve(identifier)
+	path := filepath.Join(
+		s.harbor,
+		join.Empty(identifier, constant.NotationLogExtension),
+	)
+	s.statesMu.Lock()
+	state, exists := s.states[identifier]
 
-	if e.Identifier == "" {
+	if !exists {
+		state = tracker.New()
+	}
+
+	s.statesMu.Unlock()
+
+	if e := tracker.Read(path, state); e != nil {
+		s.reporter.CaptureException(e)
+
 		return
 	}
 
-	updates := map[string]any{}
-
-	if e.Slug != "" {
-		updates[constant.Slug] = e.Slug
-	}
-
-	if e.WorkDirectory != "" {
-		updates["work_directory"] = e.WorkDirectory
-	}
-
-	if e.Branch != "" {
-		updates["branch"] = e.Branch
-	}
-
-	if e.Timestamp != "" {
-		updates["session_timestamp"] = e.Timestamp
-	}
-
-	if e.Lines > 0 {
-		updates["lines"] = e.Lines
-	}
-
-	peek := s.client.Peek(identifier)
-
-	if len(peek.Entries) > 0 {
-		updates["turn_count"] = peek.UserMessageCount
-		firstMessage := peek.Entries[0].UserText
-
-		if len(firstMessage) > 80 {
-			firstMessage = firstMessage[:80]
-		}
-
-		updates["first_message"] = firstMessage
-	}
-
-	if len(updates) > 0 {
-		s.store.UpdateFields(identifier, updates)
-	}
+	s.RefreshSession(identifier, state)
+	s.statesMu.Lock()
+	s.states[identifier] = state
+	s.statesMu.Unlock()
 }

@@ -14,6 +14,6 @@ func NewRegistered(
 		Callsign:    &callsign,
 		NeedsRoster: true,
 		LastSeen:    now,
-		CreatedAt:   now,
+		StartedAt:   now,
 	}
 }

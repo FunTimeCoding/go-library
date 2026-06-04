@@ -47,13 +47,13 @@ func (c *Client) FirstUserMessage(sessionIdentifier string) string {
 			continue
 		}
 
-		text := extractText(m.Content)
+		text := ExtractText(m.Content)
 
-		if isSystemNoise(text) {
+		if IsSystemNoise(text) {
 			continue
 		}
 
-		clean := cleanContent(text)
+		clean := CleanContent(text)
 
 		if len(clean) > 30 {
 			return clean

@@ -20,8 +20,9 @@ func (s *Store) CompleteTask(name string) string {
 			Where("callsign = ?", name).
 			Updates(
 				map[string]any{
-					"topic": "",
-					"files": "",
+					"topic":     "",
+					"files":     "",
+					"last_seen": s.clock(),
 				},
 			).Error,
 	)

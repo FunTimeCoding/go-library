@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func cleanContent(s string) string {
+func CleanContent(s string) string {
 	s = ansiPattern.ReplaceAllString(s, "")
 	s = markupTagPattern.ReplaceAllString(s, " ")
 	s = join.Space(strings.Fields(s)...)

@@ -14,4 +14,5 @@ type Tester struct {
 	Client   *mock_client.Client
 	Indexer  *mock_indexer.Indexer
 	Notifier *mock_notifier.Notifier
+	Harbor   string
 }

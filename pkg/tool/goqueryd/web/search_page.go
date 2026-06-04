@@ -47,8 +47,8 @@ func (s *Server) searchPage(
 			20,
 			collection,
 			false,
-			"",
 			mode,
+			nil,
 		)
 
 		if outcome.Degraded {

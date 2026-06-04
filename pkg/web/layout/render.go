@@ -45,6 +45,13 @@ func (p *Page) Render() gomponents.Node {
 		)
 	}
 
+	if p.paletteEndpoint != "" {
+		head = append(
+			head,
+			html.StyleEl(gomponents.Raw(paletteStyle)),
+		)
+	}
+
 	if p.style != "" {
 		head = append(
 			head,
@@ -72,6 +79,23 @@ func (p *Page) Render() gomponents.Node {
 		}
 
 		navigation = append(navigation, p.navigation...)
+
+		if p.paletteEndpoint != "" {
+			navigation = append(
+				navigation,
+				html.Li(
+					html.A(
+						gomponents.Attr("href", "#"),
+						gomponents.Attr(
+							"onclick",
+							"document.getElementById('palette').showModal(); return false",
+						),
+						gomponents.Text("⌘K"),
+					),
+				),
+			)
+		}
+
 		body = append(
 			body,
 			html.Nav(
@@ -105,6 +129,15 @@ func (p *Page) Render() gomponents.Node {
 
 	mainAttrs = append(mainAttrs, gomponents.Group(p.content))
 	body = append(body, html.Main(mainAttrs...))
+
+	if p.paletteEndpoint != "" {
+		body = append(
+			body,
+			commandPalette(p.paletteEndpoint),
+			html.Script(gomponents.Raw(paletteScript)),
+		)
+	}
+
 	body = append(body, p.footer...)
 
 	return html.Doctype(

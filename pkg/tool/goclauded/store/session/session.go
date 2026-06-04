@@ -23,6 +23,6 @@ type Session struct {
 	NeedsRoster         bool      `gorm:"column:needs_roster"`
 	NeedsReannounce     bool      `gorm:"column:needs_reannounce"`
 	LastSeen            time.Time `gorm:"column:last_seen"`
-	CreatedAt           time.Time `gorm:"column:created_at"`
-	UpdatedAt           time.Time `gorm:"column:updated_at"`
+	StartedAt           time.Time `gorm:"column:started_at"`
+	LastActiveAt        time.Time `gorm:"column:last_active_at"`
 }

@@ -31,14 +31,17 @@ func scanSession(path string) *session.Session {
 
 	for scanner.Scan() {
 		s.Lines++
-
-		if filled {
-			continue
-		}
-
 		var line notation.Line
 
 		if json.Unmarshal(scanner.Bytes(), &line) != nil {
+			continue
+		}
+
+		if line.Timestamp != "" {
+			s.LastTimestamp = line.Timestamp
+		}
+
+		if filled {
 			continue
 		}
 

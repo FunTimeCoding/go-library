@@ -7,13 +7,13 @@ import (
 )
 
 type Client struct {
-	issuer       string
-	identifier   string
-	secret       string
-	signInPath   string
-	callbackLocator  string
-	seal         cipher.AEAD
-	provider     *oidc.Provider
-	verifier     *oidc.IDTokenVerifier
-	providerOnce sync.Once
+	issuer          string
+	identifier      string
+	secret          string
+	signInPath      string
+	callbackLocator string
+	seal            cipher.AEAD
+	provider        *oidc.Provider
+	verifier        *oidc.IDTokenVerifier
+	providerOnce    sync.Once
 }

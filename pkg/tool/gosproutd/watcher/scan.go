@@ -10,11 +10,12 @@ func (w *Watcher) scan() {
 		files = append(
 			files,
 			service.DiscoveredFile{
-			Name:        f.name,
-			Path:        f.path,
-			ContentHash: f.contentHash,
-			Content:     f.content,
-		})
+				Name:        f.name,
+				Path:        f.path,
+				ContentHash: f.contentHash,
+				Content:     f.content,
+			},
+		)
 	}
 
 	w.service.Sync(files)

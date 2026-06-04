@@ -19,11 +19,11 @@ func New(
 	errors.PanicOnError(e)
 
 	return &Client{
-		issuer:      issuer,
-		identifier:  identifier,
-		secret:      secret,
-		signInPath:  signInPath,
+		issuer:          issuer,
+		identifier:      identifier,
+		secret:          secret,
+		signInPath:      signInPath,
 		callbackLocator: callbackLocator,
-		seal:         seal,
+		seal:            seal,
 	}
 }

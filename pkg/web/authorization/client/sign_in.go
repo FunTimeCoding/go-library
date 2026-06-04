@@ -24,9 +24,9 @@ func (c *Client) SignIn(
 
 	b, e := json.Marshal(
 		&FlowState{
-			Verifier:    verifier,
-			State:       state,
-			ReturnPath:  returnPath,
+			Verifier:        verifier,
+			State:           state,
+			ReturnPath:      returnPath,
 			CallbackLocator: c.callbackLocator,
 		},
 	)

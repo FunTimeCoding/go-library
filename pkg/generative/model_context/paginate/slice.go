@@ -1,6 +1,10 @@
 package paginate
 
-func Slice[T any](v []T, limit int, offset int) []T {
+func Slice[T any](
+	v []T,
+	limit int,
+	offset int,
+) []T {
 	if offset > 0 && offset < len(v) {
 		v = v[offset:]
 	} else if offset >= len(v) {

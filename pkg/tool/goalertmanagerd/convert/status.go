@@ -2,7 +2,10 @@ package convert
 
 import "github.com/prometheus/alertmanager/api/v2/models"
 
-func Status(v *models.AlertmanagerStatus, includeConfiguration bool) *SlimStatus {
+func Status(
+	v *models.AlertmanagerStatus,
+	includeConfiguration bool,
+) *SlimStatus {
 	result := &SlimStatus{}
 
 	if v.Cluster != nil {

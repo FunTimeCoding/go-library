@@ -11,10 +11,12 @@ import (
 
 func TestMoveUpNotifies(t *testing.T) {
 	s := service_tester.New(t)
-	s.Service.Sync([]service.DiscoveredFile{
-		{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
-		{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
-	})
+	s.Service.Sync(
+		[]service.DiscoveredFile{
+			{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
+			{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
+		},
+	)
 	s.Notifier.Reset()
 	s.Service.MoveUp(s.Service.Seeds()[1].Identifier)
 	assert.True(t, s.Notifier.Notified > 0)
@@ -23,11 +25,18 @@ func TestMoveUpNotifies(t *testing.T) {
 
 func TestSetPositionNotifies(t *testing.T) {
 	s := service_tester.New(t)
-	s.Service.Sync([]service.DiscoveredFile{
-		{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
-		{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
-		{Name: "charlie", Path: "charlie.md", ContentHash: "c", Content: "c"},
-	})
+	s.Service.Sync(
+		[]service.DiscoveredFile{
+			{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
+			{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
+			{
+				Name:        "charlie",
+				Path:        "charlie.md",
+				ContentHash: "c",
+				Content:     "c",
+			},
+		},
+	)
 	s.Notifier.Reset()
 	s.Service.SetPosition(s.Service.Seeds()[2].Identifier, 1)
 	assert.True(t, s.Notifier.Notified > 0)
@@ -36,10 +45,12 @@ func TestSetPositionNotifies(t *testing.T) {
 
 func TestReorderNotifies(t *testing.T) {
 	s := service_tester.New(t)
-	s.Service.Sync([]service.DiscoveredFile{
-		{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
-		{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
-	})
+	s.Service.Sync(
+		[]service.DiscoveredFile{
+			{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
+			{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
+		},
+	)
 	seeds := s.Service.Seeds()
 	s.Notifier.Reset()
 	s.Service.Reorder([]uint{seeds[1].Identifier, seeds[0].Identifier})

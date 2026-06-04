@@ -50,7 +50,11 @@ func (c *Client) Callback(
 	identifierToken := tokens.IdentifierToken
 
 	if identifierToken == "" {
-		http.Error(w, "missing identifier token", http.StatusInternalServerError)
+		http.Error(
+			w,
+			"missing identifier token",
+			http.StatusInternalServerError,
+		)
 
 		return
 	}

@@ -2,7 +2,10 @@ package convert
 
 import "github.com/funtimecoding/go-library/pkg/tool/goalertmanagerd/inventory"
 
-func Instances(v []inventory.Instance, active string) []*SlimInstance {
+func Instances(
+	v []inventory.Instance,
+	active string,
+) []*SlimInstance {
 	var result []*SlimInstance
 
 	for i := range v {

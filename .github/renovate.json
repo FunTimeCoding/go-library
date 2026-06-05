@@ -25,6 +25,12 @@
       "matchPackageNames": ["github.com/kestra-io/client-sdk/go-sdk"],
       "matchUpdateTypes": ["digest"],
       "automerge": true
+    },
+    {
+      "matchDatasources": ["go"],
+      "matchPackageNames": ["github.com/grafana/loki-client-go"],
+      "enabled": false,
+      "description": "broken upstream: new digest references removed parser.ParseMetric"
     }
   ]
 }

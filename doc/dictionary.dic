@@ -22,8 +22,8 @@ coolify
 funtimecoding
 gdamore
 grafana
-hetzner
 habitica
+hetzner
 homeassistant
 jdoe
 jellyfin
@@ -67,17 +67,19 @@ ghpr
 goalert
 goalertlog
 goalertlogd
+goalertmanager
+goalertmanagerd
 goansibled
 goatlassian
 goatlassiand
 gobuild
 gochk
 gochroma
+gochromed
 goclaude
 goclauded
 goclean
 gocontainer
-gochromed
 godebian
 godockerhub
 godownload
@@ -91,7 +93,6 @@ gogithub
 gogitlab
 gogitlabd
 gogitstatus
-goprometheusd
 gohabitica
 gohabiticad
 goimage
@@ -102,9 +103,6 @@ golint
 goloki
 gomaintlog
 gomaintlogd
-goprometheus
-goalertmanager
-goalertmanagerd
 gomattermost
 gomattermostd
 gomemory
@@ -115,6 +113,8 @@ gonetbox
 gonetboxd
 gopostgres
 gopostgresd
+goprometheus
+goprometheusd
 goproxmox
 goproxmoxd
 goqueryd

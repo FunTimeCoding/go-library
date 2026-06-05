@@ -1,7 +1,7 @@
 # Context Resolution
 
 Path prefix contexts attach descriptions to search results.
-Contexts are hierarchical — a root context applies to all
+Contexts are hierarchical - a root context applies to all
 documents, and more specific prefixes add detail.
 
 When a document matches a search, all contexts whose prefix

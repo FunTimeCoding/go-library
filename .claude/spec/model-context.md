@@ -69,7 +69,7 @@ pkg/tool/go<tool>d/
 ```
 
 The service accepts domain language (names, not IDs) and resolves
-internally. Both surfaces stay thin — they parse input, call the
+internally. Both surfaces stay thin - they parse input, call the
 service, format the response. The service owns the business logic.
 
 Use a service layer when:
@@ -78,7 +78,7 @@ Use a service layer when:
 - The upstream API has quirks that callers shouldn't know about
   (e.g. PATCH requires fields that aren't changing)
 
-Don't add a service layer for simple CRUD — direct client calls
+Don't add a service layer for simple CRUD - direct client calls
 from handlers are fine until compound logic appears.
 
 ## Constants
@@ -308,7 +308,7 @@ ErrorResponse:
 
 ### Strict handler pattern
 
-Handlers implement `StrictServerInterface` — typed request objects
+Handlers implement `StrictServerInterface` - typed request objects
 in, typed response objects out, no `http.ResponseWriter`:
 
 ```go
@@ -366,7 +366,7 @@ generated.HandlerFromMux(
 
 ## Wiring into run.go
 
-Mount MCP and REST on the same mux — REST routes (`/api/...`) and
+Mount MCP and REST on the same mux - REST routes (`/api/...`) and
 MCP routes (`/mcp`, `/sse`, `/message`) don't conflict:
 
 ```go

@@ -331,7 +331,7 @@ if e != nil {
 ```
 
 `captureFail` on REST servers returns `*server.ErrorResponse`
-(pointer — lint requires pointer returns for structs). Callers
+(pointer - lint requires pointer returns for structs). Callers
 dereference with `*` inside the response type conversion.
 
 For external process failures with rich context (stdout, stderr),

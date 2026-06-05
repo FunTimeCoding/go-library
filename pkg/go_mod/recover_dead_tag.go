@@ -17,7 +17,7 @@ func recoverDeadTag(
 		return nil
 	}
 
-	fmt.Printf("Dead tag: %s@%s — recovering\n", mod, version)
+	fmt.Printf("Dead tag: %s@%s - recovering\n", mod, version)
 	dropRequire(mod)
 	cleanSum(mod, version)
 	r := run.New()

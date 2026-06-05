@@ -157,6 +157,7 @@ vmlinuz
 # macOS
 APPL
 afplay
+bootout
 catalina
 icns
 iterm

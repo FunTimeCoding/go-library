@@ -29,6 +29,8 @@ const (
 
 	Direct = "direct"
 
+	HomeEnvironment = "HOME"
+
 	CurrentDirectory = "."
 
 	GoExtension          = ".go"

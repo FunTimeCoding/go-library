@@ -45,6 +45,7 @@ const (
 	Host           = "host"
 	Image          = "image"
 	Information    = "information"
+	Install        = "install"
 	Interactive    = "interactive"
 	Interval       = "interval"
 	Inventory      = "inventory"

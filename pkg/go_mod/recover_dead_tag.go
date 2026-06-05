@@ -6,12 +6,20 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/run"
 )
 
-func Update(
+func recoverDeadTag(
 	name string,
+	stderr string,
 	skipProxy bool,
-	continueOnError bool,
-) {
-	fmt.Printf("%s\n", name)
+) *run.Run {
+	mod, version := parseDeadTag(stderr)
+
+	if mod == "" {
+		return nil
+	}
+
+	fmt.Printf("Dead tag: %s@%s — recovering\n", mod, version)
+	dropRequire(mod)
+	cleanSum(mod, version)
 	r := run.New()
 	r.Panic = false
 
@@ -21,15 +29,5 @@ func Update(
 
 	r.Start(constant.Go, constant.Get, name)
 
-	if r.Error != nil && isDeadTag(r.ErrorString) {
-		if recovered := recoverDeadTag(name, r.ErrorString, skipProxy); recovered != nil {
-			r = recovered
-		}
-	}
-
-	r.Print()
-
-	if !continueOnError {
-		r.PanicOnError()
-	}
+	return r
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func TestConstant(t *testing.T) {
-	assert.String(t, "boostrap", Bootstrap)
+	assert.String(t, "bootstrap", Bootstrap)
 	assert.String(t, "bootout", Bootout)
 	assert.String(t, "codesign", Codesign)
 	assert.String(t, "launchctl", Launchctl)

@@ -14,7 +14,7 @@ jobs:
     - name: Parser
       run: |
         git clone https://github.com/Drevarr/arcdps_top_stats_parser.git container/raidparse/parser
-        cp container/raidparse/parser/example_output/TW5_Top_Stat_Parse.html container/goraidparse/TW5_Top_Stat_Parse.html
+        cp container/raidparse/parser/example_output/TW5_Top_Stat_Parse.html container/raidparse/TW5_Top_Stat_Parse.html
     - name: Lowercase image
       run: echo "IMAGE_LC=${GITHUB_REPOSITORY_OWNER@L}/raidparse" >> $GITHUB_ENV
     - name: Login

@@ -1,5 +1,5 @@
 ---
-name: goansible
+name: kubernetes
 on: {push: {tags: ['v*']}}
 env: {REGISTRY: ghcr.io}
 jobs:
@@ -10,9 +10,9 @@ jobs:
     - {name: Repository, uses: actions/checkout@v4, with: {fetch-depth: 0}}
     - {name: Go, uses: actions/setup-go@v5, with: {go-version-file: go.mod}}
     - name: Build
-      run: go run cmd/gobuild/main.go --linux-amd64 goansibled
+      run: go run cmd/gobuild/main.go --linux-amd64 gokubernetesd
     - name: Lowercase image
-      run: echo "IMAGE_LC=${GITHUB_REPOSITORY_OWNER@L}/goansible" >> $GITHUB_ENV
+      run: echo "IMAGE_LC=${GITHUB_REPOSITORY_OWNER@L}/kubernetes" >> $GITHUB_ENV
     - name: Login
       uses: docker/login-action@v4
       with:
@@ -23,6 +23,6 @@ jobs:
       uses: docker/build-push-action@v7
       with:
         context: .
-        file: container/goansible/Containerfile
+        file: container/kubernetes/Containerfile
         push: true
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_LC }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE_LC }}:${{ github.ref_name }}

@@ -1,5 +1,5 @@
 ---
-name: gosentry
+name: maintlog
 on: {push: {tags: ['v*']}}
 env: {REGISTRY: ghcr.io}
 jobs:
@@ -9,9 +9,10 @@ jobs:
     steps:
     - {name: Repository, uses: actions/checkout@v4, with: {fetch-depth: 0}}
     - {name: Go, uses: actions/setup-go@v5, with: {go-version-file: go.mod}}
-    - {name: Build, run: 'go run cmd/gobuild/main.go --linux-amd64 gosentryd'}
+    - name: Build
+      run: go run cmd/gobuild/main.go --linux-amd64 --native gomaintlogd
     - name: Lowercase image
-      run: echo "IMAGE_LC=${GITHUB_REPOSITORY_OWNER@L}/gosentry" >> $GITHUB_ENV
+      run: echo "IMAGE_LC=${GITHUB_REPOSITORY_OWNER@L}/maintlog" >> $GITHUB_ENV
     - name: Login
       uses: docker/login-action@v4
       with:
@@ -22,6 +23,6 @@ jobs:
       uses: docker/build-push-action@v7
       with:
         context: .
-        file: container/gosentry/Containerfile
+        file: container/maintlog/Containerfile
         push: true
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_LC }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE_LC }}:${{ github.ref_name }}

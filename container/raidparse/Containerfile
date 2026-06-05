@@ -3,6 +3,6 @@ RUN pip install --no-cache-dir playwright xlrd xlutils xlwt xlsxwriter jsons req
     playwright install --with-deps chromium
 COPY tmp/goraidparsed/linux-amd64/goraidparsed /usr/local/bin
 COPY container/raidparse/parser/ /opt/parser/
-COPY container/raidparse/tiddler_import.py /opt/parser/tiddler_import.py
-COPY container/raidparse/TW5_Top_Stat_Parse.html /opt/template/TW5_Top_Stat_Parse.html
+COPY container/raidparse/tiddler_import.py /opt/parser
+COPY container/raidparse/TW5_Top_Stat_Parse.html /opt/template
 ENTRYPOINT ["goraidparsed"]

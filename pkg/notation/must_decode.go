@@ -5,12 +5,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 )
 
-func DecodeBytesStrict(
-	value []byte,
+func MustDecode(
+	value string,
 	a any,
 	verbose bool,
 ) {
-	e := DecodeBytes(value, a)
+	e := Decode(value, a)
 
 	if verbose && e != nil {
 		fmt.Printf("Could not decode: %s\n", value)

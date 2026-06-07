@@ -28,7 +28,7 @@ func (c *Client) Search(
 	}
 
 	var result *response.Search
-	notation.DecodeStrict(body, &result, false)
+	notation.MustDecode(body, &result, false)
 
 	return search_result.NewSlice(result.Results), nil
 }

@@ -31,7 +31,7 @@ func (c *Client) searchV3Page(
 		return nil, e
 	}
 
-	notation.DecodeStrict(r, &result, true)
+	notation.MustDecode(r, &result, true)
 
 	if false {
 		fmt.Printf("Response: %d %s\n", status, r)

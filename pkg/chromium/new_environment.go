@@ -9,6 +9,6 @@ import (
 func NewEnvironment() *Client {
 	return New(
 		environment.Required(constant.HostEnvironment),
-		strings.ToIntegerStrict(environment.Required(constant.PortEnvironment)),
+		strings.MustToInteger(environment.Required(constant.PortEnvironment)),
 	)
 }

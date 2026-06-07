@@ -17,7 +17,7 @@ func Parse(
 		fmt.Printf("Parsing: %s\n", s)
 	}
 
-	notation.DecodeStrict(s, &result, false)
+	notation.MustDecode(s, &result, false)
 
 	return result
 }

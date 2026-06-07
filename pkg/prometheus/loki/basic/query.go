@@ -12,7 +12,7 @@ import (
 
 func (c *Client) Query(q string) *query_result.Result {
 	r := query.New()
-	notation.DecodeStrict(
+	notation.MustDecode(
 		c.Get(
 			c.base.Copy().Path(constant.Query).SetInteger64(
 				parameter.Time,

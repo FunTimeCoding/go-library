@@ -7,7 +7,7 @@ import (
 
 func (p *Prompt) ParseResponse(s string) string {
 	var result *Response
-	notation.DecodeStrict(s, &result, true)
+	notation.MustDecode(s, &result, true)
 	result.Classified = p.toClassify
 
 	return fmt.Sprintf("%s\n", notation.Encode(result, true))

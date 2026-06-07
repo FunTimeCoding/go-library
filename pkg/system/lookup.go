@@ -7,7 +7,7 @@ import (
 )
 
 func Lookup(address string) []string {
-	result, e := net.LookupAddr(CleanAddressStrict(address))
+	result, e := net.LookupAddr(MustCleanAddress(address))
 
 	if e != nil {
 		return []string{}

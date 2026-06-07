@@ -1,6 +1,7 @@
 package netbox
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 	"github.com/funtimecoding/go-library/pkg/netbox/network"
 )
@@ -21,5 +22,9 @@ func (c *Client) DeviceInterfaceByName(
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf(
+		"interface %s not found for device %s",
+		name,
+		d.Name,
+	)
 }

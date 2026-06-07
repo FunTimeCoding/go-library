@@ -1,10 +1,10 @@
 package strings
 
-func ToIntegersStrict(s []string) []int {
+func MustToIntegers(s []string) []int {
 	result := make([]int, len(s))
 
 	for i, l := range s {
-		result[i] = ToIntegerStrict(l)
+		result[i] = MustToInteger(l)
 	}
 
 	return result

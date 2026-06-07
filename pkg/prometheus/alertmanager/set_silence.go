@@ -31,20 +31,22 @@ func (c *Client) SetSilence(
 		d = constant.DefaultDuration
 	}
 
-	s, e := c.SilenceByRule(alert)
+	silences, f := c.Silences(false)
 
-	if e != nil {
-		return "", e
+	if f != nil {
+		return "", f
 	}
 
-	if s != nil {
-		return c.PostSilence(
-			s.Identifier,
-			alert,
-			comment,
-			*s.Start,
-			t.Add(d),
-		)
+	for _, s := range silences {
+		if s.Rule == alert {
+			return c.PostSilence(
+				s.Identifier,
+				alert,
+				comment,
+				*s.Start,
+				t.Add(d),
+			)
+		}
 	}
 
 	return c.PostSilence("", alert, comment, t, t.Add(d))

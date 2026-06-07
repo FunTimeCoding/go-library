@@ -21,7 +21,7 @@ func (s *Server) CreateInterface(
 		return
 	}
 
-	d, e := s.client.DeviceByNameStrict(name)
+	d, e := s.client.DeviceByName(name)
 
 	if e != nil {
 		s.captureDetail(w, e)

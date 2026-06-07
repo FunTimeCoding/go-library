@@ -15,7 +15,7 @@ func (c *Client) User() (*user.User, error) {
 	}
 
 	var result *response.User
-	notation.DecodeStrict(r, &result, false)
+	notation.MustDecode(r, &result, false)
 
 	return user.New(result), nil
 }

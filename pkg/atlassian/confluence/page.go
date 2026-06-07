@@ -21,7 +21,7 @@ func (c *Client) Page(identifier string) (*page.Page, error) {
 	}
 
 	var result *response.Page
-	notation.DecodeStrict(body, &result, false)
+	notation.MustDecode(body, &result, false)
 
 	return page.New(result, c.host), nil
 }

@@ -2,7 +2,7 @@ package system
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 
-func CleanAddressStrict(s string) string {
+func MustCleanAddress(s string) string {
 	clean, e := CleanAddress(s)
 	errors.PanicOnError(e)
 

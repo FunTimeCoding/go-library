@@ -21,7 +21,7 @@ func (s *Store) Prune(cutoff time.Time) (int, error) {
 
 			for k, v := c.First(); k != nil; k, v = c.Next() {
 				var r Record
-				notation.DecodeBytesStrict(v, &r, false)
+				notation.MustDecodeBytes(v, &r, false)
 
 				if r.Start.Before(cutoff) {
 					keys = append(keys, k)

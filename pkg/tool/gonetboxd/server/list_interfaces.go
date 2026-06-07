@@ -11,7 +11,7 @@ func (s *Server) ListInterfaces(
 	_ *http.Request,
 	name string,
 ) {
-	d, e := s.client.DeviceByNameStrict(name)
+	d, e := s.client.DeviceByName(name)
 
 	if e != nil {
 		s.captureDetail(w, e)

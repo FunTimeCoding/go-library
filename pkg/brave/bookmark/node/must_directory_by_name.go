@@ -2,7 +2,7 @@ package node
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 
-func DirectoryByNameStrict(
+func MustDirectoryByName(
 	n *Node,
 	name string,
 ) *Node {

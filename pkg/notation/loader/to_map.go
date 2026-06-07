@@ -7,7 +7,7 @@ func (l *Loader) ToMap() map[string]map[string]string {
 
 	for k, v := range l.contents {
 		var e = map[string]string{}
-		notation.DecodeStrict(v, &e, false)
+		notation.MustDecode(v, &e, false)
 		result[k] = e
 	}
 

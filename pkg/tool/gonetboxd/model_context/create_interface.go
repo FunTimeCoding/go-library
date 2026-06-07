@@ -32,7 +32,7 @@ func (s *Server) createInterface(
 		return response.Fail("type is required: %v", h)
 	}
 
-	d, i := s.client.DeviceByNameStrict(device)
+	d, i := s.client.DeviceByName(device)
 
 	if i != nil {
 		return s.captureFail(i, "device not found")

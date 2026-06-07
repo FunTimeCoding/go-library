@@ -1,6 +1,9 @@
 package alertmanager
 
-import "github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/silence"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/silence"
+)
 
 func (c *Client) SilenceByRule(name string) (*silence.Silence, error) {
 	v, e := c.Silences(false)
@@ -15,5 +18,5 @@ func (c *Client) SilenceByRule(name string) (*silence.Silence, error) {
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf("silence not found: %s", name)
 }

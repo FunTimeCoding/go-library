@@ -16,7 +16,7 @@ func Netstat(verbose bool) []*jc.Output {
 	}
 
 	var result []*jc.Output
-	notation.DecodeStrict(
+	notation.MustDecode(
 		Pipe(
 			Pipe(output, verbose, linux.Awk, "!seen[$4]++"),
 			verbose,

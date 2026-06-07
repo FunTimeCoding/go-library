@@ -12,7 +12,7 @@ func Parse(profile string) *Preference {
 	var result Preference
 	p := join.Absolute(helper.SettingsPath(), profile)
 	b := system.ReadBytes(p, constant.PreferencesFile)
-	notation.DecodeBytesStrict(b, &result, false)
+	notation.MustDecodeBytes(b, &result, false)
 
 	return &result
 }

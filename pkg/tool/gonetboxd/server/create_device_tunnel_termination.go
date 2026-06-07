@@ -30,7 +30,7 @@ func (s *Server) CreateDeviceTunnelTermination(
 		return
 	}
 
-	d, f := s.client.DeviceByNameStrict(name)
+	d, f := s.client.DeviceByName(name)
 
 	if f != nil {
 		s.captureDetail(w, f)
@@ -38,7 +38,7 @@ func (s *Server) CreateDeviceTunnelTermination(
 		return
 	}
 
-	i, g := s.client.DeviceInterfaceByNameStrict(d, body.Interface)
+	i, g := s.client.DeviceInterfaceByName(d, body.Interface)
 
 	if g != nil {
 		s.captureDetail(w, g)

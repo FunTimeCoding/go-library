@@ -10,7 +10,7 @@ import (
 
 func (c *Client) Tabs() []*tab.Tab {
 	var result []*tab.Tab
-	notation.DecodeStrict(
+	notation.MustDecode(
 		web.GetString(
 			web.InsecureClient(),
 			locator.New(

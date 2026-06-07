@@ -18,7 +18,7 @@ func (s *Server) listInterfaces(
 		return response.Fail("name is required: %v", f)
 	}
 
-	d, g := s.client.DeviceByNameStrict(name)
+	d, g := s.client.DeviceByName(name)
 
 	if g != nil {
 		return s.captureFail(g, "device not found")

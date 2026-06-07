@@ -9,7 +9,7 @@ func (c *Client) RemoveTag(
 	deviceName string,
 	tag string,
 ) (*device.Device, error) {
-	d, e := c.DeviceByNameStrict(deviceName)
+	d, e := c.DeviceByName(deviceName)
 
 	if e != nil {
 		return nil, e

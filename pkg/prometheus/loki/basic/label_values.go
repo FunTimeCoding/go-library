@@ -15,7 +15,7 @@ func (c *Client) LabelValues(
 	label string,
 ) []string {
 	r := response.NewList()
-	notation.DecodeStrict(
+	notation.MustDecode(
 		c.Get(
 			c.base.Copy().Path(
 				"%s/%s%s",

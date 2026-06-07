@@ -24,7 +24,7 @@ func (s *Store) Unresolved() ([]UnresolvedRecord, error) {
 					v []byte,
 				) {
 					var r Record
-					notation.DecodeBytesStrict(v, &r, false)
+					notation.MustDecodeBytes(v, &r, false)
 
 					if r.End == nil {
 						result = append(

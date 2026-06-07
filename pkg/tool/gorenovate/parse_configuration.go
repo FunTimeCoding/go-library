@@ -11,7 +11,7 @@ func parseConfiguration() *Configuration {
 	}
 
 	var result Configuration
-	notation.DecodeBytesStrict(
+	notation.MustDecodeBytes(
 		system.ReadBytesUnsafe(RenovateFile),
 		&result,
 		false,

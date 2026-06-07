@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func ToFloatStrict(s string) float64 {
+func MustToFloat(s string) float64 {
 	result, e := strconv.ParseFloat(strings.TrimSpace(s), 64)
 
 	if e != nil {

@@ -17,7 +17,7 @@ func NewEnvironment() *Client {
 
 	return New(
 		environment.Required(constant.HostEnvironment),
-		strings.ToIntegerStrict(
+		strings.MustToInteger(
 			environment.Fallback(constant.PortEnvironment, "8000"),
 		),
 		environment.Required(constant.UserEnvironment),

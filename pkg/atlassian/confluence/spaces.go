@@ -23,7 +23,7 @@ func (c *Client) Spaces() ([]*space.Space, error) {
 		}
 
 		var s *response.Spaces
-		notation.DecodeStrict(body, &s, false)
+		notation.MustDecode(body, &s, false)
 		result = append(result, s.Results...)
 
 		if s.Links.Next == "" {

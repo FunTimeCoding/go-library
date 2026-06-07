@@ -34,7 +34,7 @@ func (c *Client) IssueByShortIdentifier(
 	}
 
 	if len(result) == 0 {
-		return nil, nil
+		return nil, fmt.Errorf("issue not found: %s", identifier)
 	}
 
 	return issue.New(&result[0]), nil

@@ -22,7 +22,7 @@ func Customer() {
 
 		for _, e := range desks.Values {
 			fmt.Printf("Desk: %+v\n", e)
-			types := j.MustRequestTypes(strings.ToIntegerStrict(e.ID), 0)
+			types := j.MustRequestTypes(strings.MustToInteger(e.ID), 0)
 
 			for _, t := range types.Values {
 				fmt.Printf("  Type: %+v\n", t)

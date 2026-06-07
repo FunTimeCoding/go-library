@@ -17,10 +17,6 @@ func (c *Client) ChildPages(
 		return nil, e
 	}
 
-	if parent == nil {
-		return nil, nil
-	}
-
 	body, f := c.basic.GetV2(
 		c.basic.Base().Copy().Path(
 			"%s/%s%s",
@@ -35,7 +31,7 @@ func (c *Client) ChildPages(
 	}
 
 	var children *response.Pages
-	notation.DecodeStrict(body, &children, false)
+	notation.MustDecode(body, &children, false)
 	var result []*page.Page
 
 	for _, p := range children.Results {

@@ -8,7 +8,7 @@ import (
 
 func ParseGuilds(s string) []*log_manager.Guild {
 	var guilds map[string]any
-	notation.DecodeStrict(s, &guilds, false)
+	notation.MustDecode(s, &guilds, false)
 	var result []*log_manager.Guild
 
 	for k, v := range guilds {

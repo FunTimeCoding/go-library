@@ -11,7 +11,7 @@ func Read(
 ) *Option {
 	c := &Option{}
 	content := system.ReadFile(base, name)
-	markup.DecodeStrict(content, &c)
+	markup.MustDecode(content, &c)
 
 	return c
 }

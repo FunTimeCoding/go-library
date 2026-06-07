@@ -10,7 +10,7 @@ import (
 
 func (s *Server) entryFromQuery(r *http.Request) *entry.Entry {
 	result, f := s.store.Get(
-		strings.ToUnsignedIntegerStrict(
+		strings.MustToUnsignedInteger(
 			r.URL.Query().Get(constant.Identifier),
 		),
 	)

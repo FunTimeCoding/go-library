@@ -17,7 +17,7 @@ func (c *Client) QueryRange(
 	limit int,
 ) *query_result.Result {
 	r := query.New()
-	notation.DecodeStrict(
+	notation.MustDecode(
 		c.Get(
 			c.base.Copy().Path(constant.QueryRange).SetInteger64(
 				parameter.Start,

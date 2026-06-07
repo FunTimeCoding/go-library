@@ -1,6 +1,9 @@
 package jira
 
-import "github.com/andygrunwald/go-jira"
+import (
+	"fmt"
+	"github.com/andygrunwald/go-jira"
+)
 
 func (c *Client) BoardByName(name string) (*jira.Board, error) {
 	boards, e := c.Boards()
@@ -15,5 +18,5 @@ func (c *Client) BoardByName(name string) (*jira.Board, error) {
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf("board not found: %s", name)
 }

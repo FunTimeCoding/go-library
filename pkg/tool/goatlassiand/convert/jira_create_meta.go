@@ -55,7 +55,7 @@ func JiraCreateMeta(
 				}
 
 				var v custom_field_value.Value
-				notation.DecodeStrict(
+				notation.MustDecode(
 					notation.Encode(m, false),
 					&v,
 					true,
@@ -86,8 +86,8 @@ func JiraCreateMeta(
 			sort.Slice(
 				f.AllowedValues,
 				func(a, b int) bool {
-					return strings.ToIntegerStrict(f.AllowedValues[a].Identifier) >
-						strings.ToIntegerStrict(f.AllowedValues[b].Identifier)
+					return strings.MustToInteger(f.AllowedValues[a].Identifier) >
+						strings.MustToInteger(f.AllowedValues[b].Identifier)
 				},
 			)
 			f.AllowedValues = f.AllowedValues[:constant.AllowedValueLimit]

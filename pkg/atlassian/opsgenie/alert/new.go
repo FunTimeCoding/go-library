@@ -14,7 +14,7 @@ func New(
 ) *Alert {
 	result := &Alert{
 		Identifier:      v.Id,
-		SmallIdentifier: strings.ToIntegerStrict(v.TinyID),
+		SmallIdentifier: strings.MustToInteger(v.TinyID),
 		Status:          v.Status,
 		Priority:        v.Priority,
 		Seen:            v.Seen,

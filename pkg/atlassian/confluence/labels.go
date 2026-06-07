@@ -14,7 +14,7 @@ func (c *Client) Labels() ([]*response.LabelResult, error) {
 	}
 
 	var r *response.Labels
-	notation.DecodeStrict(body, &r, false)
+	notation.MustDecode(body, &r, false)
 
 	return r.Results, nil
 }

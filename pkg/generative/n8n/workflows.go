@@ -8,7 +8,7 @@ import (
 
 func (c *Client) Workflows() []*response.Workflow {
 	var r *response.Workflows
-	notation.DecodeStrict(c.Get(constant.Workflows), &r, false)
+	notation.MustDecode(c.Get(constant.Workflows), &r, false)
 
 	return r.Payload
 }

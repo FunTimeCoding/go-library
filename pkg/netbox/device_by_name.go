@@ -1,6 +1,9 @@
 package netbox
 
-import "github.com/funtimecoding/go-library/pkg/netbox/device"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/netbox/device"
+)
 
 func (c *Client) DeviceByName(n string) (*device.Device, error) {
 	result, e := c.DevicesByName(n)
@@ -15,9 +18,15 @@ func (c *Client) DeviceByName(n string) (*device.Device, error) {
 				return r, nil
 			}
 		}
-	} else if o == 1 {
-		return result[0], nil
 	}
 
-	return nil, nil
+	if len(result) != 1 {
+		return nil, fmt.Errorf(
+			"expected 1 device named %s, got %d",
+			n,
+			len(result),
+		)
+	}
+
+	return result[0], nil
 }

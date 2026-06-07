@@ -1,6 +1,7 @@
 package netbox
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/netbox/physical_address"
 	"net"
 )
@@ -18,9 +19,15 @@ func (c *Client) PhysicalAddress(a net.HardwareAddr) (*physical_address.Address,
 				return r, nil
 			}
 		}
-	} else if o == 1 {
-		return result[0], nil
 	}
 
-	return nil, nil
+	if len(result) != 1 {
+		return nil, fmt.Errorf(
+			"expected 1 physical address %s, got %d",
+			a,
+			len(result),
+		)
+	}
+
+	return result[0], nil
 }

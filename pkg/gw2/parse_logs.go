@@ -21,7 +21,7 @@ func ParseLogs(
 	}
 
 	var f log_manager.LogFile
-	notation.DecodeStrict(string(system.ReadAll(reader)), &f, true)
+	notation.MustDecode(string(system.ReadAll(reader)), &f, true)
 	var result []*log_manager.Log
 
 	for k, v := range f.LogsByFilename {

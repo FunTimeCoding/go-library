@@ -18,7 +18,7 @@ func (s *Server) getDevice(
 		return response.Fail("name is required: %v", f)
 	}
 
-	result, g := s.client.DeviceByNameStrict(name)
+	result, g := s.client.DeviceByName(name)
 
 	if g != nil {
 		return s.captureFail(g, "device not found")

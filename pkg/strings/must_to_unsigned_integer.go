@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func ToUnsignedIntegerStrict(i string) uint {
+func MustToUnsignedInteger(i string) uint {
 	result, e := strconv.ParseUint(
 		strings.TrimSpace(i),
 		10,

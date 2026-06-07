@@ -21,7 +21,7 @@ func Decode(v *model.WebSocketEvent) *model.Post {
 	}
 
 	var result *model.Post
-	notation.DecodeStrict(post, &result, false)
+	notation.MustDecode(post, &result, false)
 
 	return result
 }

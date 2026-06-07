@@ -36,7 +36,7 @@ func New(a *netbox.MACAddress) *Address {
 
 	if r := a.AssignedObjectType.Get(); r != nil {
 		if *r == constant.InterfaceAddress {
-			notation.DecodeStrict(
+			notation.MustDecode(
 				notation.Encode(a.AssignedObject, false),
 				&d,
 				false,

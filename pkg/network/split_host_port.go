@@ -10,5 +10,5 @@ func SplitHostPort(s string) (string, int) {
 	host, port, e := net.SplitHostPort(s)
 	errors.PanicOnError(e)
 
-	return host, strings.ToIntegerStrict(port)
+	return host, strings.MustToInteger(port)
 }

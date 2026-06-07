@@ -9,7 +9,7 @@ import (
 func Bookmark(profile string) *file.Bookmark {
 	return file.Parse(
 		system.ReadFile(
-			ProfileByNameStrict(profile).Path,
+			MustProfileByName(profile).Path,
 			constant.BookmarksFile,
 		),
 	)

@@ -9,7 +9,7 @@ func (c *Client) UpdateSerial(
 	device string,
 	serial string,
 ) (*device.Device, error) {
-	d, e := c.DeviceByNameStrict(device)
+	d, e := c.DeviceByName(device)
 
 	if e != nil {
 		return nil, e

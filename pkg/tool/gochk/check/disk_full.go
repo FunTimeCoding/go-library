@@ -16,7 +16,7 @@ func diskFull() {
 			continue
 		}
 
-		u := stringLibrary.ToIntegerStrict(
+		u := stringLibrary.MustToInteger(
 			strings.TrimSuffix(p[len(p)-2], "%"),
 		)
 		point := p[0]

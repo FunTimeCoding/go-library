@@ -17,21 +17,13 @@ func (c *Client) UpdateInterface(
 	t netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
 ) (*network.Interface, error) {
-	p, e := c.PhysicalAddress(h)
+	p, e := c.EnsurePhysical(h)
 
 	if e != nil {
 		return nil, e
 	}
 
-	if p == nil {
-		p, e = c.CreatePhysical(h, "")
-
-		if e != nil {
-			return nil, e
-		}
-	}
-
-	i, f := c.DeviceInterfaceByNameStrict(d, name)
+	i, f := c.DeviceInterfaceByName(d, name)
 
 	if f != nil {
 		return nil, f
@@ -65,7 +57,7 @@ func (c *Client) UpdateInterface(
 			netbox.NewBriefMACAddressRequest(h.String()),
 		),
 	)
-	j, h2 := c.DeviceInterfaceByNameStrict(d, name)
+	j, h2 := c.DeviceInterfaceByName(d, name)
 
 	if h2 != nil {
 		return nil, h2

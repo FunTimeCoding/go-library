@@ -43,13 +43,13 @@ func (s *Server) createDeviceTunnelTermination(
 		return s.captureDetail(i)
 	}
 
-	d, j := s.client.DeviceByNameStrict(deviceName)
+	d, j := s.client.DeviceByName(deviceName)
 
 	if j != nil {
 		return s.captureDetail(j)
 	}
 
-	iface, k := s.client.DeviceInterfaceByNameStrict(d, interfaceName)
+	iface, k := s.client.DeviceInterfaceByName(d, interfaceName)
 
 	if k != nil {
 		return s.captureDetail(k)

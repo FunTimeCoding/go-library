@@ -15,18 +15,10 @@ func (c *Client) CreateInterfacePhysical(
 	t netbox.InterfaceTypeValue,
 	h net.HardwareAddr,
 ) (*network.Interface, error) {
-	p, e := c.PhysicalAddress(h)
+	p, e := c.EnsurePhysical(h)
 
 	if e != nil {
 		return nil, e
-	}
-
-	if p == nil {
-		p, e = c.CreatePhysical(h, "")
-
-		if e != nil {
-			return nil, e
-		}
 	}
 
 	v := netbox.NewBriefDeviceRequest()

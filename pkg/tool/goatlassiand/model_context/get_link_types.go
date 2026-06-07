@@ -20,7 +20,7 @@ func (s *Server) getLinkTypes(
 	}
 
 	var parsed linkTypeResponse
-	notation.DecodeStrict(body, &parsed, true)
+	notation.MustDecode(body, &parsed, true)
 
 	return response.SuccessAny(parsed.IssueLinkTypes)
 }

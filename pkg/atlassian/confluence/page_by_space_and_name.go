@@ -1,6 +1,7 @@
 package confluence
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
@@ -15,10 +16,6 @@ func (c *Client) PageBySpaceAndName(
 
 	if e != nil {
 		return nil, e
-	}
-
-	if s == nil {
-		return nil, nil
 	}
 
 	body, f := c.basic.GetV2(
@@ -36,11 +33,16 @@ func (c *Client) PageBySpaceAndName(
 	}
 
 	var result *response.Pages
-	notation.DecodeStrict(body, &result, false)
+	notation.MustDecode(body, &result, false)
 
-	if len(result.Results) == 1 {
-		return page.New(result.Results[0], c.host), nil
+	if len(result.Results) != 1 {
+		return nil, fmt.Errorf(
+			"expected 1 page named %s in space %s, got %d",
+			name,
+			spaceName,
+			len(result.Results),
+		)
 	}
 
-	return nil, nil
+	return page.New(result.Results[0], c.host), nil
 }

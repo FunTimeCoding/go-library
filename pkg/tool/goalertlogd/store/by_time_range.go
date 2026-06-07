@@ -28,7 +28,7 @@ func (s *Store) ByTimeRange(
 					v []byte,
 				) {
 					var r Record
-					notation.DecodeBytesStrict(v, &r, false)
+					notation.MustDecodeBytes(v, &r, false)
 
 					if !r.Start.Before(start) && r.Start.Before(end) {
 						result = append(result, r)

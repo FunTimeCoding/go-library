@@ -13,7 +13,7 @@ func (c *Client) QueryFloats(
 	result := make(map[string]float64)
 
 	for _, r := range parse.Generic(c.MustQuery(q, t).Value) {
-		result[r.Metric] = strings.ToFloatStrict(r.Value)
+		result[r.Metric] = strings.MustToFloat(r.Value)
 	}
 
 	return result

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func ToIntegerStrict(s string) int {
+func MustToInteger(s string) int {
 	result, e := strconv.ParseInt(strings.TrimSpace(s), 10, 32)
 
 	if e != nil {

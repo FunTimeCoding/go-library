@@ -30,13 +30,13 @@ func (s *Server) createAddress(
 		return response.Fail("address is required: %v", h)
 	}
 
-	d, i := s.client.DeviceByNameStrict(device)
+	d, i := s.client.DeviceByName(device)
 
 	if i != nil {
 		return s.captureFail(i, "device not found")
 	}
 
-	iface, j := s.client.DeviceInterfaceByNameStrict(d, interfaceName)
+	iface, j := s.client.DeviceInterfaceByName(d, interfaceName)
 
 	if j != nil {
 		return s.captureFail(j, "interface not found on device")

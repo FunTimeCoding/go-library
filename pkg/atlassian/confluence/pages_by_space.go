@@ -28,7 +28,7 @@ func (c *Client) PagesBySpace(identifier string) ([]*page.Page, error) {
 		}
 
 		var s *response.Pages
-		notation.DecodeStrict(body, &s, false)
+		notation.MustDecode(body, &s, false)
 		result = append(result, s.Results...)
 
 		if s.Links.Next == "" {

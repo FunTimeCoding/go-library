@@ -20,7 +20,7 @@ func (s *Server) CreateAddress(
 		return
 	}
 
-	d, e := s.client.DeviceByNameStrict(name)
+	d, e := s.client.DeviceByName(name)
 
 	if e != nil {
 		s.captureDetail(w, e)
@@ -28,7 +28,7 @@ func (s *Server) CreateAddress(
 		return
 	}
 
-	i, f := s.client.DeviceInterfaceByNameStrict(d, body.Interface)
+	i, f := s.client.DeviceInterfaceByName(d, body.Interface)
 
 	if f != nil {
 		s.captureDetail(w, f)

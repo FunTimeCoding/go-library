@@ -13,7 +13,7 @@ func (c *Client) QueryIntegers(
 	result := make(map[string]int)
 
 	for _, r := range parse.Generic(c.MustQuery(q, t).Value) {
-		result[r.Metric] = strings.ToIntegerStrict(r.Value)
+		result[r.Metric] = strings.MustToInteger(r.Value)
 	}
 
 	return result

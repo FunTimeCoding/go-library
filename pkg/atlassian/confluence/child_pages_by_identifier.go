@@ -24,7 +24,7 @@ func (c *Client) ChildPagesByIdentifier(
 	}
 
 	var children *response.Pages
-	notation.DecodeStrict(body, &children, false)
+	notation.MustDecode(body, &children, false)
 	var result []*page.Page
 
 	for _, p := range children.Results {

@@ -23,7 +23,7 @@ func (c *Client) AddTag(
 		)
 	}
 
-	d, f := c.DeviceByNameStrict(deviceName)
+	d, f := c.DeviceByName(deviceName)
 
 	if f != nil {
 		return nil, f

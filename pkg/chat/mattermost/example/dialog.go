@@ -29,7 +29,7 @@ func Dialog() {
 			l := multi_line.New()
 			request_context.AppendDetail(l, c)
 			r := &model.PostActionIntegrationRequest{}
-			notation.DecodeStrict(c.Body(), r, false)
+			notation.MustDecode(c.Body(), r, false)
 			l.Format("Decoded request: %+v", r)
 			response := &model.PostActionIntegrationResponse{
 				EphemeralText: "You updated the post!",

@@ -24,7 +24,7 @@ func (r *Rule) parse() *Rule {
 		case DescriptionKey:
 			r.Description = strings.TrimSpace(string(v))
 		case DurationKey:
-			r.Duration = stringLibrary.ToIntegerStrict(string(v))
+			r.Duration = stringLibrary.MustToInteger(string(v))
 		case RunbookKey:
 			r.Runbook = string(v)
 		case DocumentationKey:

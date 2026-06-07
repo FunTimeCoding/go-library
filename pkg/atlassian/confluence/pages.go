@@ -20,7 +20,7 @@ func (c *Client) Pages() ([]*page.Page, error) {
 	}
 
 	var result *response.Pages
-	notation.DecodeStrict(body, &result, false)
+	notation.MustDecode(body, &result, false)
 
 	return page.NewSlice(result.Results, c.host), nil
 }

@@ -2,7 +2,7 @@ package markup
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 
-func DecodeStrict(
+func MustDecode(
 	value string,
 	structure any,
 ) {

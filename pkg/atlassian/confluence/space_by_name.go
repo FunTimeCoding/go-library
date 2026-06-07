@@ -1,6 +1,9 @@
 package confluence
 
-import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/space"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/space"
+)
 
 func (c *Client) SpaceByName(name string) (*space.Space, error) {
 	spaces, e := c.Spaces()
@@ -15,5 +18,5 @@ func (c *Client) SpaceByName(name string) (*space.Space, error) {
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf("space not found: %s", name)
 }

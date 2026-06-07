@@ -36,7 +36,7 @@ func (c *Client) CustomFieldValues(
 			}
 
 			var result []custom_field_value.Value
-			notation.DecodeStrict(
+			notation.MustDecode(
 				notation.Encode(
 					t.Fields[f.ID].(map[string]any)[constant.AllowedValuesKey],
 					false,

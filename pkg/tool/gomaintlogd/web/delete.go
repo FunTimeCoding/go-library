@@ -14,7 +14,7 @@ func (s *Server) delete(
 ) {
 	errors.PanicOnError(
 		s.store.Delete(
-			strings.ToUnsignedIntegerStrict(
+			strings.MustToUnsignedInteger(
 				r.URL.Query().Get(constant.Identifier),
 			),
 		),

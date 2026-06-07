@@ -12,7 +12,7 @@ func NewEnvironment(o ...Option) *Client {
 	}
 
 	if s := environment.Optional(constant.PortEnvironment); s != "" {
-		o = append(o, WithPort(strings.ToIntegerStrict(s)))
+		o = append(o, WithPort(strings.MustToInteger(s)))
 	}
 
 	return New(o...)

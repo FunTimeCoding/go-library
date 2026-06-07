@@ -7,8 +7,8 @@ import (
 	"net"
 )
 
-func LookupStrict(address string) []string {
-	result, e := net.LookupAddr(CleanAddressStrict(address))
+func MustLookup(address string) []string {
+	result, e := net.LookupAddr(MustCleanAddress(address))
 	errors.PanicOnError(e)
 
 	return slice.TrimSuffix(result, separator.Dot)

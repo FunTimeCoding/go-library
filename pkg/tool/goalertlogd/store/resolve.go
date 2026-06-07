@@ -17,7 +17,7 @@ func (s *Store) Resolve(key string) error {
 			}
 
 			var r Record
-			notation.DecodeBytesStrict(v, &r, false)
+			notation.MustDecodeBytes(v, &r, false)
 			r.End = new(time.Now())
 
 			return s.client.PutBytes(b, key, notation.Marshal(r))

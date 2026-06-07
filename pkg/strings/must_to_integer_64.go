@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func ToInteger64Strict(s string) int64 {
+func MustToInteger64(s string) int64 {
 	result, e := strconv.ParseInt(strings.TrimSpace(s), 10, 64)
 
 	if e != nil {

@@ -23,7 +23,7 @@ func (s *Store) enrichFile(
 
 	b := system.ReadBytes(base, name)
 	var fight elite.Fight
-	notation.DecodeBytesStrict(b, &fight, false)
+	notation.MustDecodeBytes(b, &fight, false)
 	timestamp := time.Parse(
 		"2006-01-02 15:04:05 -07:00",
 		fight.TimeStartStd,

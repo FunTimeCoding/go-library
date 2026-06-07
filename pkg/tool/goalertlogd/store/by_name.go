@@ -24,7 +24,7 @@ func (s *Store) ByName(name string) ([]Record, error) {
 					v []byte,
 				) {
 					var r Record
-					notation.DecodeBytesStrict(v, &r, false)
+					notation.MustDecodeBytes(v, &r, false)
 
 					if r.Name == name {
 						result = append(result, r)

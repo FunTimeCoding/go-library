@@ -14,7 +14,7 @@ func (c *Client) Labels(
 	end time.Time,
 ) []string {
 	r := response.NewList()
-	notation.DecodeStrict(
+	notation.MustDecode(
 		c.Get(
 			c.base.Copy().Path(constant.Labels).SetInteger64(
 				parameter.Start,

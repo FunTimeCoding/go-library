@@ -2,7 +2,7 @@ package ssh
 
 import "github.com/funtimecoding/go-library/pkg/errors"
 
-func (c *Client) RunStrict(command string) string {
+func (c *Client) MustRun(command string) string {
 	r := c.Run(command)
 	errors.PanicOnError(r.Error)
 

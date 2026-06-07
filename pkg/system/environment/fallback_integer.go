@@ -15,5 +15,5 @@ func FallbackInteger(
 		return fallback
 	}
 
-	return strings.ToIntegerStrict(result)
+	return strings.MustToInteger(result)
 }

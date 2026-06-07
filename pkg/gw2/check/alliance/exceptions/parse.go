@@ -15,7 +15,7 @@ func Parse(path string) []*Exception {
 		fmt.Printf("Parsing: %s\n", s)
 	}
 
-	notation.DecodeStrict(s, &result, true)
+	notation.MustDecode(s, &result, true)
 
 	return result
 }

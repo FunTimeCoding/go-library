@@ -28,7 +28,7 @@ func (c *Client) commentPage(
 		return nil, e
 	}
 
-	notation.DecodeStrict(r, &result, true)
+	notation.MustDecode(r, &result, true)
 
 	return &result, nil
 }

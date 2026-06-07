@@ -222,7 +222,7 @@ Three caller categories determine how store methods handle errors:
 | Web handler (HTML, recovery middleware) | `error` | `PanicOnError` — recovery middleware catches, returns 500 |
 | Worker / sweep | void, `PanicOnError` inside | `withRecovery` catches, worker continues |
 | MCP handler | `error` | `captureFail` / `captureDetail` → structured tool result |
-| REST handler (manual or strict) | `error` | `captureFail` → structured JSON error with Sentry event ID |
+| REST handler (strict server) | `error` | `captureFail` → typed 500 response with Sentry event ID |
 
 The default direction is: store methods return `error`. Web callers wrap
 with `PanicOnError`; MCP and REST callers handle explicitly. Worker-only
@@ -245,10 +245,11 @@ if e := s.store.UpdateStatus(id, status); e != nil {
     return s.captureFail(e, "update status failed")
 }
 
-// REST caller — captures to Sentry, writes JSON error response
+// REST caller (strict server) — returns typed error response
 if e := s.service.UpdateStatus(id, status); e != nil {
-    s.captureFail(w, e, constant.UnexpectedError)
-    return
+    return server.PostUpdate500JSONResponse(
+        *s.captureFail(e, constant.UnexpectedError),
+    ), nil
 }
 ```
 

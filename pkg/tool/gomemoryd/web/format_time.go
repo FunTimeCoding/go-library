@@ -1,6 +1,9 @@
 package web
 
-import "time"
+import (
+	library "github.com/funtimecoding/go-library/pkg/time"
+	"time"
+)
 
 func formatTime(raw string) string {
 	t, e := time.Parse(time.RFC3339, raw)
@@ -9,5 +12,5 @@ func formatTime(raw string) string {
 		return raw
 	}
 
-	return t.Local().Format("2006-01-02 15:04")
+	return t.Local().Format(library.DateMinute)
 }

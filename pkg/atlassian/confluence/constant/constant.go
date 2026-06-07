@@ -1,6 +1,7 @@
 package constant
 
 import (
+	"errors"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 )
@@ -47,6 +48,7 @@ const (
 )
 
 var (
-	Format = option.ExtendedColor.Copy()
-	Dense  = option.Color.Copy().Tag(tag.Dense)
+	ErrorNotFound = errors.New("not found")
+	Format        = option.ExtendedColor.Copy()
+	Dense         = option.Color.Copy().Tag(tag.Dense)
 )

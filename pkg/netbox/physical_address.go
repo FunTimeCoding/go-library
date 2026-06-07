@@ -2,6 +2,7 @@ package netbox
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/physical_address"
 	"net"
 )
@@ -13,19 +14,26 @@ func (c *Client) PhysicalAddress(a net.HardwareAddr) (*physical_address.Address,
 		return nil, e
 	}
 
-	if o := len(result); o > 1 {
+	if len(result) > 1 {
 		for _, r := range result {
 			if r.Address.String() == a.String() {
 				return r, nil
 			}
 		}
-	}
 
-	if len(result) != 1 {
 		return nil, fmt.Errorf(
-			"expected 1 physical address %s, got %d",
+			"no exact match for physical address %s among %d results: %w",
 			a,
 			len(result),
+			constant.ErrorNotFound,
+		)
+	}
+
+	if len(result) == 0 {
+		return nil, fmt.Errorf(
+			"physical address not found: %s: %w",
+			a,
+			constant.ErrorNotFound,
 		)
 	}
 

@@ -2,6 +2,7 @@ package netbox
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 )
 
@@ -12,19 +13,26 @@ func (c *Client) DeviceByName(n string) (*device.Device, error) {
 		return nil, e
 	}
 
-	if o := len(result); o > 1 {
+	if len(result) > 1 {
 		for _, r := range result {
 			if r.Name == n {
 				return r, nil
 			}
 		}
-	}
 
-	if len(result) != 1 {
 		return nil, fmt.Errorf(
-			"expected 1 device named %s, got %d",
+			"no exact match for device %s among %d results: %w",
 			n,
 			len(result),
+			constant.ErrorNotFound,
+		)
+	}
+
+	if len(result) == 0 {
+		return nil, fmt.Errorf(
+			"device not found: %s: %w",
+			n,
+			constant.ErrorNotFound,
 		)
 	}
 

@@ -2,6 +2,7 @@ package confluence
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/space"
 )
 
@@ -18,5 +19,5 @@ func (c *Client) SpaceByName(name string) (*space.Space, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("space not found: %s", name)
+	return nil, fmt.Errorf("space not found: %s: %w", name, constant.ErrorNotFound)
 }

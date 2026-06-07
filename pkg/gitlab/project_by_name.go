@@ -2,6 +2,7 @@ package gitlab
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/project"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
@@ -22,9 +23,10 @@ func (c *Client) ProjectByName(
 
 	if count == 0 {
 		return nil, fmt.Errorf(
-			"project not found: %s/%s",
+			"project not found: %s/%s: %w",
 			namespace,
 			name,
+			constant.ErrorNotFound,
 		)
 	}
 
@@ -34,9 +36,10 @@ func (c *Client) ProjectByName(
 		}
 
 		return nil, fmt.Errorf(
-			"project not found: %s/%s",
+			"project not found: %s/%s: %w",
 			namespace,
 			name,
+			constant.ErrorNotFound,
 		)
 	}
 
@@ -47,9 +50,10 @@ func (c *Client) ProjectByName(
 	}
 
 	return nil, fmt.Errorf(
-		"ambiguous project: %d results for %s/%s",
-		count,
+		"no exact match for project %s/%s among %d results: %w",
 		namespace,
 		name,
+		count,
+		constant.ErrorNotFound,
 	)
 }

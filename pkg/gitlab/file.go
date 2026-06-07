@@ -1,6 +1,10 @@
 package gitlab
 
-import "gitlab.com/gitlab-org/api/client-go/v2"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
+	"gitlab.com/gitlab-org/api/client-go/v2"
+)
 
 func (c *Client) File(
 	project int64,
@@ -14,8 +18,13 @@ func (c *Client) File(
 	)
 
 	if r != nil && r.StatusCode == 404 {
-		// Do not panic
-		return nil, nil
+		return nil, fmt.Errorf(
+			"file not found: %s (branch %s, project %d): %w",
+			name,
+			branch,
+			project,
+			constant.ErrorNotFound,
+		)
 	}
 
 	return result, e

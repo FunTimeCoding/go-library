@@ -1,6 +1,9 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/console/status/option"
+import (
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
 const (
 	Base = "/api/0"
@@ -35,5 +38,6 @@ var (
 
 	UnresolvedFilter = "is:unresolved"
 
-	Format = option.Color.Copy()
+	ErrorNotFound = errors.New("not found")
+	Format        = option.Color.Copy()
 )

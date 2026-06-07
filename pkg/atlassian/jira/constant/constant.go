@@ -1,6 +1,9 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/console/status/option"
+import (
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
 const (
 	DefaultProjectKeyEnvironment  = "JIRA_DEFAULT_PROJECT_KEY"
@@ -78,7 +81,10 @@ const (
 	Done = "Done"
 )
 
-var Format = option.ExtendedColor.Copy()
+var (
+	ErrorNotFound = errors.New("not found")
+	Format        = option.ExtendedColor.Copy()
+)
 
 const (
 	ServiceDeskCanceled = "Canceled"

@@ -1,6 +1,7 @@
 package github
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/github/constant"
 	"github.com/funtimecoding/go-library/pkg/github/pull_request"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
@@ -24,8 +25,12 @@ func (c *Client) BranchRequest(
 	)
 
 	if r != nil && r.StatusCode == 404 {
-		// Repository not found, do not panic
-		return nil, nil
+		return nil, fmt.Errorf(
+			"repository not found: %s/%s: %w",
+			owner,
+			repository,
+			constant.ErrorNotFound,
+		)
 	}
 
 	if e != nil {
@@ -33,8 +38,13 @@ func (c *Client) BranchRequest(
 	}
 
 	if len(result) == 0 {
-		// Branch not found, do not panic
-		return nil, nil
+		return nil, fmt.Errorf(
+			"no pull request for branch %s in %s/%s: %w",
+			branch,
+			owner,
+			repository,
+			constant.ErrorNotFound,
+		)
 	}
 
 	return pull_request.New(result[0]), nil

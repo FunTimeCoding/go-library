@@ -1,6 +1,7 @@
 package alertmanager
 
 import (
+	"errors"
 	"github.com/funtimecoding/go-library/pkg/errors/validation"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"time"
@@ -31,23 +32,21 @@ func (c *Client) SetSilence(
 		d = constant.DefaultDuration
 	}
 
-	silences, f := c.Silences(false)
+	s, f := c.SilenceByRule(alert)
 
 	if f != nil {
+		if errors.Is(f, constant.ErrorNotFound) {
+			return c.PostSilence("", alert, comment, t, t.Add(d))
+		}
+
 		return "", f
 	}
 
-	for _, s := range silences {
-		if s.Rule == alert {
-			return c.PostSilence(
-				s.Identifier,
-				alert,
-				comment,
-				*s.Start,
-				t.Add(d),
-			)
-		}
-	}
-
-	return c.PostSilence("", alert, comment, t, t.Add(d))
+	return c.PostSilence(
+		s.Identifier,
+		alert,
+		comment,
+		*s.Start,
+		t.Add(d),
+	)
 }

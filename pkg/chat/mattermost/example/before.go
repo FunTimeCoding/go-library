@@ -18,9 +18,15 @@ func Before() {
 	f := constant.Format
 	fmt.Printf("Channel: %s\n", c.Name)
 	t := time.Now().Add(-30 * 24 * time.Hour)
-	reference := m.MustPostBefore(c, t)
+	reference, found, e := m.FindPostBefore(c, t)
 
-	if reference == nil {
+	if e != nil {
+		fmt.Printf("Error: %s\n", e)
+
+		return
+	}
+
+	if !found {
 		fmt.Printf("No post before %s\n", t.Format(library.DateMinute))
 
 		return

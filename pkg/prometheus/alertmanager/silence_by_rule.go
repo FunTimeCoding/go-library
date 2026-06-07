@@ -2,6 +2,7 @@ package alertmanager
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/silence"
 )
 
@@ -18,5 +19,9 @@ func (c *Client) SilenceByRule(name string) (*silence.Silence, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("silence not found: %s", name)
+	return nil, fmt.Errorf(
+		"silence not found: %s: %w",
+		name,
+		constant.ErrorNotFound,
+	)
 }

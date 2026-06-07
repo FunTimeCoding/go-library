@@ -1,17 +1,20 @@
 package alertmanager
 
+import (
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
+)
+
 func (c *Client) SilenceExists(name string) (bool, error) {
-	v, e := c.Silences(false)
+	_, e := c.SilenceByRule(name)
 
 	if e != nil {
+		if errors.Is(e, constant.ErrorNotFound) {
+			return false, nil
+		}
+
 		return false, e
 	}
 
-	for _, s := range v {
-		if s.Rule == name {
-			return true, nil
-		}
-	}
-
-	return false, nil
+	return true, nil
 }

@@ -1,6 +1,9 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/console/status/option"
+import (
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
 const (
 	HostEnvironment  = "NET_BOX_HOST"
@@ -22,4 +25,7 @@ const (
 	SignatureHeader = "X-Hook-Signature"
 )
 
-var Format = option.Color.Copy()
+var (
+	Format         = option.Color.Copy()
+	ErrorNotFound  = errors.New("not found")
+)

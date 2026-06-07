@@ -2,6 +2,7 @@ package netbox
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/netbox/device"
 	"github.com/funtimecoding/go-library/pkg/netbox/network"
 )
@@ -23,8 +24,9 @@ func (c *Client) DeviceInterfaceByName(
 	}
 
 	return nil, fmt.Errorf(
-		"interface %s not found for device %s",
+		"interface %s not found for device %s: %w",
 		name,
 		d.Name,
+		constant.ErrorNotFound,
 	)
 }

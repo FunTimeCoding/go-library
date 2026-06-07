@@ -1,6 +1,9 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/console/status/option"
+import (
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
 const (
 	HostEnvironment    = "MATTERMOST_HOST"
@@ -24,4 +27,8 @@ const (
 	Thread       = "thread"                 // belongs to above thread
 )
 
-var Format = option.ExtendedColor.Copy()
+var (
+	ErrorNotConfigured = errors.New("not configured")
+	ErrorNotFound      = errors.New("not found")
+	Format             = option.ExtendedColor.Copy()
+)

@@ -1,6 +1,9 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/console/status/option"
+import (
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/console/status/option"
+)
 
 const (
 	TokenEnvironment     = "GITHUB_TOKEN" // #nosec G101 not a hardcoded secret
@@ -19,7 +22,10 @@ const (
 	ContainerPackageType = "container"
 )
 
-var Format = option.ExtendedColor.Copy()
+var (
+	ErrorNotFound = errors.New("not found")
+	Format        = option.ExtendedColor.Copy()
+)
 
 // Pull request state
 const (

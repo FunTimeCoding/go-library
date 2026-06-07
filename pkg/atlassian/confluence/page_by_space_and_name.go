@@ -37,10 +37,11 @@ func (c *Client) PageBySpaceAndName(
 
 	if len(result.Results) != 1 {
 		return nil, fmt.Errorf(
-			"expected 1 page named %s in space %s, got %d",
+			"expected 1 page named %s in space %s, got %d: %w",
 			name,
 			spaceName,
 			len(result.Results),
+			constant.ErrorNotFound,
 		)
 	}
 

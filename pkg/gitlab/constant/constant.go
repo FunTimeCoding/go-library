@@ -1,6 +1,7 @@
 package constant
 
 import (
+	"errors"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"gitlab.com/gitlab-org/api/client-go/v2"
@@ -64,6 +65,7 @@ const (
 )
 
 var (
-	Format      = option.Color.Copy()
-	CheckFormat = Format.Copy().Tag(tag.Project)
+	ErrorNotFound = errors.New("not found")
+	Format        = option.Color.Copy()
+	CheckFormat   = Format.Copy().Tag(tag.Project)
 )

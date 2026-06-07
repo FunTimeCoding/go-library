@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
+	"github.com/funtimecoding/go-library/pkg/time"
 )
 
 func showIssue(shortIdentifier string) {
@@ -30,14 +31,14 @@ func showIssue(shortIdentifier string) {
 	if r.FirstSeen != nil {
 		fmt.Printf(
 			"First:    %s\n",
-			r.FirstSeen.Format("2006-01-02 15:04"),
+			r.FirstSeen.Format(time.DateMinute),
 		)
 	}
 
 	if r.LastSeen != nil {
 		fmt.Printf(
 			"Last:     %s\n",
-			r.LastSeen.Format("2006-01-02 15:04"),
+			r.LastSeen.Format(time.DateMinute),
 		)
 	}
 
@@ -52,7 +53,7 @@ func showIssue(shortIdentifier string) {
 	if e.DateCreated != nil {
 		fmt.Printf(
 			"Date:     %s\n",
-			e.DateCreated.Format("2006-01-02 15:04"),
+			e.DateCreated.Format(time.DateMinute),
 		)
 	}
 

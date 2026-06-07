@@ -1,8 +1,10 @@
 package mattermost
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/constant"
 	"github.com/funtimecoding/go-library/pkg/chat/mattermost/post"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/mattermost/mattermost/server/public/model"
 	"time"
 )
@@ -29,7 +31,12 @@ func (c *Client) PostBefore(
 		}
 
 		if len(page.Order) == 0 {
-			return nil, nil
+			return nil, fmt.Errorf(
+				"no post before %s in channel %s: %w",
+				t.Format(library.DateMinute),
+				h.Id,
+				constant.ErrorNotFound,
+			)
 		}
 
 		wrapped := post.NewSlice(post.FromList(page, false))

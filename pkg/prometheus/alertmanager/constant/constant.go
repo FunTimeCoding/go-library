@@ -1,6 +1,7 @@
 package constant
 
 import (
+	"errors"
 	"github.com/funtimecoding/go-library/pkg/console/status/option"
 	"github.com/funtimecoding/go-library/pkg/console/status/tag"
 	"github.com/prometheus/common/model"
@@ -65,7 +66,8 @@ const ExpiredState = "expired"          // Silence state
 const NodeNotReady = "KubeNodeNotReady" // Alert name
 
 var (
-	Format = option.Color.Copy().Tag(tag.Comment)
+	ErrorNotFound = errors.New("not found")
+	Format        = option.Color.Copy().Tag(tag.Comment)
 
 	AlertStates = []string{
 		ActiveState,

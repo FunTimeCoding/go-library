@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/example/common"
+	library "github.com/funtimecoding/go-library/pkg/time"
 	"sort"
 	"time"
 )
@@ -70,8 +71,8 @@ func TokenUsage(
 
 	fmt.Printf(
 		"Token usage: %s → %s\n",
-		from.Format("2006-01-02 15:04"),
-		to.Format("2006-01-02 15:04"),
+		from.Format(library.DateMinute),
+		to.Format(library.DateMinute),
 	)
 	fmt.Printf("Entries: %d\n\n", len(all))
 

@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -164,7 +165,7 @@ func (s *Server) sessionDetailPage(
 					html.Td(
 						html.Small(
 							gomponents.Text(
-								c.CreatedAt.Format("2006-01-02 15:04"),
+								c.CreatedAt.Format(time.DateMinute),
 							),
 						),
 					),

@@ -1,6 +1,7 @@
 package jira
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/jira/custom_field_value"
 	"github.com/funtimecoding/go-library/pkg/notation"
@@ -20,7 +21,11 @@ func (c *Client) CustomFieldValues(
 	f := m.ByName(fieldName)
 
 	if f == nil {
-		return nil, nil
+		return nil, fmt.Errorf(
+			"field not found: %s: %w",
+			fieldName,
+			constant.ErrorNotFound,
+		)
 	}
 
 	meta, g := c.CreateMeta(key)
@@ -49,5 +54,9 @@ func (c *Client) CustomFieldValues(
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf(
+		"issue type not found: %s: %w",
+		issueType,
+		constant.ErrorNotFound,
+	)
 }

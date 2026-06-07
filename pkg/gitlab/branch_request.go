@@ -1,6 +1,8 @@
 package gitlab
 
 import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/gitlab/constant"
 	"github.com/funtimecoding/go-library/pkg/gitlab/merge_request"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 )
@@ -18,8 +20,11 @@ func (c *Client) BranchRequest(
 	)
 
 	if r != nil && r.StatusCode == 404 {
-		// Project not found, do not panic
-		return nil, nil
+		return nil, fmt.Errorf(
+			"project not found: %d: %w",
+			project,
+			constant.ErrorNotFound,
+		)
 	}
 
 	if e != nil {
@@ -27,8 +32,12 @@ func (c *Client) BranchRequest(
 	}
 
 	if len(result) == 0 {
-		// Branch not found, do not panic
-		return nil, nil
+		return nil, fmt.Errorf(
+			"no merge request for branch %s in project %d: %w",
+			branch,
+			project,
+			constant.ErrorNotFound,
+		)
 	}
 
 	return merge_request.New(result[0]), nil

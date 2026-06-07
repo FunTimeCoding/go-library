@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/issue"
 	"strings"
 )
@@ -34,7 +35,11 @@ func (c *Client) IssueByShortIdentifier(
 	}
 
 	if len(result) == 0 {
-		return nil, fmt.Errorf("issue not found: %s", identifier)
+		return nil, fmt.Errorf(
+			"issue not found: %s: %w",
+			identifier,
+			constant.ErrorNotFound,
+		)
 	}
 
 	return issue.New(&result[0]), nil

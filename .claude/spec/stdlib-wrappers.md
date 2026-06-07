@@ -28,16 +28,16 @@ the wrapper is not appropriate - the caller needs the error.
 |---------|-------|-------|
 | `notation.Marshal(v)` | `json.Marshal` | Returns `[]byte` |
 | `notation.Decode(s, &v)` | `json.Unmarshal` via string | Returns `error` |
-| `notation.DecodeStrict(s, &v, verbose)` | Same + PanicOnError | For trusted input (DB columns, config) |
+| `notation.MustDecode(s, &v, verbose)` | Same + PanicOnError | For trusted input (DB columns, config) |
 | `notation.DecodeBytes(b, &v)` | `json.Unmarshal` | Returns `error` |
-| `notation.DecodeBytesStrict(b, &v, verbose)` | Same + PanicOnError | For trusted input |
+| `notation.MustDecodeBytes(b, &v, verbose)` | Same + PanicOnError | For trusted input |
 
-Use `DecodeStrict` / `DecodeBytesStrict` for data from your own
+Use `MustDecode` / `MustDecodeBytes` for data from your own
 systems (database columns, API responses from your own services).
-Use the non-strict variants when the error outcome changes control
+Use the non-Must variants when the error outcome changes control
 flow (try-parse patterns, validating external input).
 
-For HTTP response bodies: `notation.DecodeBytesStrict(system.ReadAll(resp.Body), &v, false)`.
+For HTTP response bodies: `notation.MustDecodeBytes(system.ReadAll(resp.Body), &v, false)`.
 
 ## Time - `pkg/time/`
 

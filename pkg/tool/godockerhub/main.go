@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/docker/hub"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/godockerhub/constant"
 )
 
@@ -42,7 +43,7 @@ func Main(
 		updated := ""
 
 		if t.LastUpdated != nil {
-			updated = t.LastUpdated.Format("2006-01-02 15:04")
+			updated = t.LastUpdated.Format(time.DateMinute)
 		}
 
 		fmt.Printf("%-40s %s\n", t.Name, updated)

@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/raid"
+	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -54,7 +55,7 @@ func logsTable(
 							),
 							html.Td(
 								gomponents.Text(
-									f.Timestamp.Format("2006-01-02 15:04"),
+									f.Timestamp.Format(time.DateMinute),
 								),
 							),
 							html.Td(gomponents.Text(fightDuration(f))),

@@ -1,6 +1,7 @@
 package model_context_tester
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 )
@@ -15,5 +16,5 @@ func (o *Tester) Seed(
 	e.Surface = surface
 	e.Actor = actor
 	e.Outcome = constant.OutcomeSuccess
-	o.Store.Create(e)
+	errors.PanicOnError(o.Store.Create(e))
 }

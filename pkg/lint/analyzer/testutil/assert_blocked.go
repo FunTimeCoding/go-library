@@ -16,9 +16,9 @@ func AssertBlocked(
 	if blocked != count {
 		t.Errorf("expected %d blocked, got %d", count, blocked)
 
-		for _, e := range results.Entries {
-			if e.Blocked {
-				t.Logf("  blocked: %s: %s", e.Path, e.Message)
+		for _, c := range results.Entries {
+			if !c.Fixed {
+				t.Logf("  blocked: %s: %s", c.Path, c.Text)
 			}
 		}
 	}

@@ -36,7 +36,7 @@ func TestEditEventCompletionCascade(t *testing.T) {
 	r := s.Store.EnsureSession("session-1")
 	s.Store.Announce(r.Callsign, "fixing auth", "")
 	topic := s.Store.CompleteTask(r.Callsign)
-	s.Service.Complete("session-1", r.Callsign, topic, "original message")
+	s.Complete("session-1", r.Callsign, topic, "original message")
 	events := s.Store.EventsSince(
 		time.Time{},
 		time.Time{},
@@ -45,8 +45,8 @@ func TestEditEventCompletionCascade(t *testing.T) {
 		0,
 	)
 	assert.Count(t, 1, events)
-	_, e := s.Service.EditEvent(events[0].Identifier, "corrected message")
-	assert.FatalOnError(t, e)
+	_, f := s.Service.EditEvent(events[0].Identifier, "corrected message")
+	assert.FatalOnError(t, f)
 	completions := s.Store.CompletionsBySession("session-1")
 	assert.Count(t, 1, completions)
 	assert.String(t, "corrected message", completions[0].Summary)

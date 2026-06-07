@@ -1,36 +1,37 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/sweep"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostRegister(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.RegisterRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostRegisterRequestObject,
+) (server.PostRegisterResponseObject, error) {
 	sweep.Run(s.harborPath)
-	result := s.service.Register(body.Session)
+	result, e := s.service.Register(r.Body.Session)
+
+	if e != nil {
+		return server.PostRegister500JSONResponse(
+			*s.captureFail(e, library.UnexpectedError),
+		), nil
+	}
+
 	s.logger.Structured(
 		"register",
 		"claude_session_identifier",
-		body.Session,
+		r.Body.Session,
 		constant.SessionName,
 		result.Callsign,
 		"new",
 		result.New,
 	)
-	web.EncodeNotation(
-		w,
-		server.RegisterResponse{
-			Callsign: result.Callsign,
-		},
-	)
+
+	return server.PostRegister200JSONResponse{
+		Callsign: result.Callsign,
+	}, nil
 }

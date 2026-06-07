@@ -6,6 +6,12 @@ import (
 )
 
 func (c *Client) browser() (*chromedp.Browser, error) {
+	if c.context.Err() != nil {
+		if e := c.reconnect(); e != nil {
+			return nil, e
+		}
+	}
+
 	x := chromedp.FromContext(c.context)
 
 	if x == nil {

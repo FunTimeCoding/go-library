@@ -1,65 +1,71 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSessions(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.GetSessionsParams,
-) {
+	_ context.Context,
+	r server.GetSessionsRequestObject,
+) (server.GetSessionsResponseObject, error) {
 	limit := 0
 
-	if p.Limit != nil {
-		limit = *p.Limit
+	if r.Params.Limit != nil {
+		limit = *r.Params.Limit
 	}
 
 	offset := 0
 
-	if p.Offset != nil {
-		offset = *p.Offset
+	if r.Params.Offset != nil {
+		offset = *r.Params.Offset
 	}
 
-	peek := p.Peek != nil && *p.Peek
-	sessions := s.service.EnrichedSessions(limit, offset)
+	peek := r.Params.Peek != nil && *r.Params.Peek
+	sessions, e := s.service.EnrichedSessions(limit, offset)
+
+	if e != nil {
+		return server.GetSessions500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
 	var result []server.SessionDetail
 
-	for _, e := range sessions {
+	for _, i := range sessions {
 		d := server.SessionDetail{
-			Identifier: e.Identifier,
-			Timestamp:  e.Timestamp,
-			Lines:      e.Lines,
+			Identifier: i.Identifier,
+			Timestamp:  i.Timestamp,
+			Lines:      i.Lines,
 		}
 
-		if e.Name != "" {
-			d.Name = &e.Name
+		if i.Name != "" {
+			d.Name = &i.Name
 		}
 
-		if e.Slug != "" {
-			d.Slug = &e.Slug
+		if i.Slug != "" {
+			d.Slug = &i.Slug
 		}
 
-		if e.WorkDirectory != "" {
-			d.WorkDirectory = &e.WorkDirectory
+		if i.WorkDirectory != "" {
+			d.WorkDirectory = &i.WorkDirectory
 		}
 
-		if e.Branch != "" {
-			d.Branch = &e.Branch
+		if i.Branch != "" {
+			d.Branch = &i.Branch
 		}
 
-		if e.Alias != "" {
-			d.Alias = &e.Alias
+		if i.Alias != "" {
+			d.Alias = &i.Alias
 		}
 
-		if e.Description != "" {
-			d.Description = &e.Description
+		if i.Description != "" {
+			d.Description = &i.Description
 		}
 
 		if peek {
-			preview := s.service.FirstUserMessage(e.Identifier)
+			preview := s.service.FirstUserMessage(i.Identifier)
 
 			if len(preview) > 60 {
 				preview = preview[:60]
@@ -73,8 +79,5 @@ func (s *Server) GetSessions(
 		result = append(result, d)
 	}
 
-	web.EncodeNotation(
-		w,
-		server.SessionListResponse{Sessions: result},
-	)
+	return server.GetSessions200JSONResponse{Sessions: result}, nil
 }

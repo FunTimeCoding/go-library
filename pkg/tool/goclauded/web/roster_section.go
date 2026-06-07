@@ -1,12 +1,14 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
 
 func (s *Server) rosterSection() gomponents.Node {
-	sessions := s.service.ListSessions()
+	sessions, e := s.service.ListSessions()
+	errors.PanicOnError(e)
 
 	if len(sessions) == 0 {
 		return html.P(gomponents.Text("No active sessions."))
@@ -15,8 +17,10 @@ func (s *Server) rosterSection() gomponents.Node {
 	var cards []gomponents.Node
 
 	for i := range sessions {
-		labels := s.service.LabelsBySession(sessions[i].Identifier)
-		latest := s.service.LatestPulse(sessions[i].Identifier)
+		labels, f := s.service.LabelsBySession(sessions[i].Identifier)
+		errors.PanicOnError(f)
+		latest, g := s.service.LatestPulse(sessions[i].Identifier)
+		errors.PanicOnError(g)
 		cards = append(
 			cards,
 			sessionCard(&sessions[i], sessions[i].Lines, labels, latest),

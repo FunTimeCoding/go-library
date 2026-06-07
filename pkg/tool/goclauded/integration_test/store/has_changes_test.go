@@ -11,32 +11,42 @@ import (
 
 func TestConsumeRoster(t *testing.T) {
 	s := store_tester.New(t)
-	r := s.Store.EnsureSession("session-1")
-	s.Store.MarkNeedsRoster("session-1")
-	assert.True(t, s.Store.ConsumeRoster(r.Callsign))
-	assert.False(t, s.Store.ConsumeRoster(r.Callsign))
+	r := s.EnsureSession("session-1")
+	assert.FatalOnError(t, s.Store.MarkNeedsRoster("session-1"))
+	first, e := s.Store.ConsumeRoster(r.Callsign)
+	assert.FatalOnError(t, e)
+	assert.True(t, first)
+	second, e := s.Store.ConsumeRoster(r.Callsign)
+	assert.FatalOnError(t, e)
+	assert.False(t, second)
 }
 
 func TestHasChangesOtherSessionUpdated(t *testing.T) {
 	s := store_tester.New(t)
-	r1 := s.Store.EnsureSession("session-1")
-	r2 := s.Store.EnsureSession("session-2")
+	r1 := s.EnsureSession("session-1")
+	r2 := s.EnsureSession("session-2")
 	before := time.Now()
 	s.Advance(time.Second)
-	s.Store.Announce(r2.Callsign, "new topic", "")
-	assert.True(t, s.Store.HasChanges(r1.Callsign, before))
+	s.Announce(r2.Callsign, "new topic", "")
+	changed, e := s.Store.HasChanges(r1.Callsign, before)
+	assert.FatalOnError(t, e)
+	assert.True(t, changed)
 }
 
 func TestHasChangesUnreadMessage(t *testing.T) {
 	s := store_tester.New(t)
-	r1 := s.Store.EnsureSession("session-1")
-	r2 := s.Store.EnsureSession("session-2")
-	s.Store.SendMessage(r2.Callsign, r1.Callsign, "hello")
-	assert.True(t, s.Store.HasChanges(r1.Callsign, time.Time{}))
+	r1 := s.EnsureSession("session-1")
+	r2 := s.EnsureSession("session-2")
+	s.SendMessage(r2.Callsign, r1.Callsign, "hello")
+	changed, e := s.Store.HasChanges(r1.Callsign, time.Time{})
+	assert.FatalOnError(t, e)
+	assert.True(t, changed)
 }
 
 func TestHasChangesNoChanges(t *testing.T) {
 	s := store_tester.New(t)
-	r := s.Store.EnsureSession("session-1")
-	assert.False(t, s.Store.HasChanges(r.Callsign, time.Now()))
+	r := s.EnsureSession("session-1")
+	changed, e := s.Store.HasChanges(r.Callsign, time.Now())
+	assert.FatalOnError(t, e)
+	assert.False(t, changed)
 }

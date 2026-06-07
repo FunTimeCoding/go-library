@@ -13,7 +13,7 @@ import (
 func TestMoment(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Store.EnsureSession("session-1")
-	s.Service.Moment("session-1", r.Callsign, "figured out the root cause")
+	s.Moment("session-1", r.Callsign, "figured out the root cause")
 	events := s.Store.EventsSince(
 		time.Time{},
 		time.Time{},

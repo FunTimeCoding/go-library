@@ -1,12 +1,12 @@
 package constant
 
 const (
-	Codesign    = "codesign"
+	Codesign = "codesign"
 
-	Launchctl   = "launchctl"
-	Bootout     = "bootout"
-	Bootstrap   = "bootstrap"
-	Print       = "print"
+	Launchctl = "launchctl"
+	Bootout   = "bootout"
+	Bootstrap = "bootstrap"
+	Print     = "print"
 
 	Wdutil      = "wdutil"
 	Information = "info"

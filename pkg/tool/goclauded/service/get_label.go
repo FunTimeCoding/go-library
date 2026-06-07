@@ -3,6 +3,6 @@ package service
 func (s *Service) GetLabel(
 	sessionIdentifier string,
 	key string,
-) string {
+) (string, error) {
 	return s.store.GetLabel(sessionIdentifier, key)
 }

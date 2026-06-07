@@ -42,6 +42,7 @@ and `server/` are hand-written code that consumes the generated types.
 package: server
 generate:
   std-http-server: true
+  strict-server: true
   models: true
   embedded-spec: true
 output: generated.go
@@ -77,31 +78,48 @@ lint:
 `server/server.go` - plain struct, no embedding:
 ```go
 type Server struct {
-    store *store.Store
+    store    *store.Store
+    reporter face.Reporter
 }
 ```
 
-`server/<operation>.go` - implements the generated `ServerInterface`
-method:
+`server/<operation>.go` - implements the generated
+`StrictServerInterface` method. Typed request objects in, typed
+response objects out, no `http.ResponseWriter`:
+
 ```go
-func (s *Server) PostDeploy(w http.ResponseWriter, q *http.Request) {
-    var body generated.PostDeployJSONRequestBody
-    errors.PanicOnError(json.NewDecoder(q.Body).Decode(&body))
-    web.EncodeNotation(w, generated.DeployResponse{
-        Tag: s.store.TriggerTargets(body.Targets),
-    })
+func (s *Server) PostDeploy(
+    _ context.Context,
+    r server.PostDeployRequestObject,
+) (server.PostDeployResponseObject, error) {
+    result, e := s.store.TriggerTargets(r.Body.Targets)
+
+    if e != nil {
+        return server.PostDeploy500JSONResponse(
+            *s.captureFail(e, constant.UnexpectedError),
+        ), nil
+    }
+
+    return server.PostDeploy200JSONResponse{
+        Tag: result,
+    }, nil
 }
 ```
 
-Use `web.EncodeNotation(w, result)` for the common case (200 + JSON).
-For non-200 status codes, use `web.ObjectHeader(w)` +
-`w.WriteHeader(...)` + `web.Encode(w, result)` separately.
+The framework handles Content-Type headers, status codes, and JSON
+serialization. No `web.EncodeNotation` or manual `w.WriteHeader`
+needed.
 
 When a server operation uses converters shared with `model_context/`,
 import the `convert/` package:
 ```go
-func (s *Server) GetIssue(w http.ResponseWriter, _ *http.Request, key string) {
-    web.EncodeNotation(w, convert.JiraIssue(s.store.Issue(key)))
+func (s *Server) GetIssue(
+    _ context.Context,
+    r server.GetIssueRequestObject,
+) (server.GetIssueResponseObject, error) {
+    return server.GetIssue200JSONResponse(
+        convert.JiraIssue(s.store.Issue(r.Key)),
+    ), nil
 }
 ```
 
@@ -145,19 +163,23 @@ MCP-only services) talking to the upstream.
 
 ## Wiring into run.go
 
-The generated server package is aliased `generated`. Call
-`generated.HandlerFromMux` inside `lifecycle.WithServer`:
+The generated server package is aliased `generated`. Wrap the
+server in `NewStrictHandler` and pass to `HandlerFromMux`:
 
 ```go
 import (
     generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/generated/server"
 )
 
-lifecycle.WithServer(
-    web.Listen,
+lifecycle.WithServerMiddleware(
+    web.AddressPort(o.Port),
     func(m *http.ServeMux) {
-        generated.HandlerFromMux(server.New(dep), m)
+        generated.HandlerFromMux(
+            generated.NewStrictHandler(server.New(dep, r), nil),
+            m,
+        )
     },
+    web.RecoveryMiddleware(r),
 )
 ```
 
@@ -173,7 +195,10 @@ import (
 lifecycle.WithServerMiddleware(
     web.AddressPort(o.Port),
     func(m *http.ServeMux) {
-        generated.HandlerFromMux(server.New(dep), m)
+        generated.HandlerFromMux(
+            generated.NewStrictHandler(server.New(dep, r), nil),
+            m,
+        )
         model_context.New(dep, r).Mount(m)
     },
     web.RecoveryMiddleware(r),

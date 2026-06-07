@@ -6,7 +6,10 @@ import (
 	"strings"
 )
 
-func cleanSum(mod string, version string) {
+func cleanSum(
+	mod string,
+	version string,
+) {
 	path := "go.sum"
 
 	if !system.FileExists(path) {

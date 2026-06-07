@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -12,7 +13,8 @@ func (s *Server) sessionDetailPage(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	d := s.service.SessionDetail(r.PathValue(constant.Identifier))
+	d, e := s.service.SessionDetail(r.PathValue(constant.Identifier))
+	errors.PanicOnError(e)
 
 	if d == nil {
 		s.view.RenderPage(
@@ -129,7 +131,8 @@ func (s *Server) sessionDetailPage(
 		content,
 		html.Table(html.TBody(identity...)),
 	)
-	labels := s.service.LabelsBySession(d.Identifier)
+	labels, labelError := s.service.LabelsBySession(d.Identifier)
+	errors.PanicOnError(labelError)
 
 	if len(labels) > 0 {
 		var pips []gomponents.Node

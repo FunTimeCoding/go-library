@@ -6,10 +6,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/store_tester"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/mock_indexer"
+	"testing"
 )
 
 type Tester struct {
-	*store_tester.Tester
+	Store    *store_tester.Tester
+	t        *testing.T
 	Service  *service.Service
 	Client   *mock_client.Client
 	Indexer  *mock_indexer.Indexer

@@ -2,10 +2,9 @@ package goprocessd
 
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
 	"github.com/funtimecoding/go-library/pkg/tool/goprocessd/constant"
-	"github.com/spf13/cobra"
+	"github.com/funtimecoding/go-library/pkg/tool/goprocessd/option"
 )
 
 func Main(
@@ -16,24 +15,20 @@ func Main(
 	r := reporter.New(constant.Identity.Name(), version)
 	r.Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	o := &cobra.Command{
-		Use:     constant.Identity.Usage(),
-		Short:   constant.Identity.Description(),
-		Version: argument.CobraVersion(version, gitHash, buildDate),
-	}
-	o.PersistentFlags().StringP(
-		"file",
-		"f",
+	a := argument.NewInstance(constant.Identity)
+	a.String(
+		argument.File,
 		"Procfile",
-		"path to Procfile",
+		"Path to Procfile",
 	)
-	o.PersistentFlags().String(
+	a.String(
 		"envrc",
 		".envrc",
-		"path to .envrc file",
+		"Path to .envrc file",
 	)
-	o.AddCommand(startCommand())
-	o.AddCommand(checkCommand())
-	o.AddCommand(runCommand())
-	errors.PanicOnError(o.Execute())
+	a.Parse(version, gitHash, buildDate)
+	o := option.New()
+	o.ProcfilePath = a.GetString(argument.File)
+	o.EnvrcPath = a.GetString("envrc")
+	Run(o)
 }

@@ -28,7 +28,7 @@ func (s *Server) editSubmit(
 	a := argument.NewEditSession()
 	a.Alias = &alias
 	a.Description = &description
-	s.service.EditSession(session.Identifier, a)
+	errors.PanicOnError(s.service.EditSession(session.Identifier, a))
 	w.Header().Set(web.ContentType, "text/html; charset=utf-8")
 	w.Header().Set("HX-Trigger", "session-edited")
 	errors.PanicOnError(

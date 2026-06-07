@@ -64,6 +64,12 @@ type EditSessionRequest struct {
 	Topic       *string `json:"topic,omitempty"`
 }
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // ExportResponse defines model for ExportResponse.
 type ExportResponse struct {
 	Paths []string `json:"paths"`
@@ -2265,6 +2271,7 @@ type ClientWithResponsesInterface interface {
 type PostAnnounceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2287,6 +2294,7 @@ type PostBackfillResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *BackfillResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2309,6 +2317,7 @@ type GetCheckResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CheckResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2330,6 +2339,7 @@ func (r GetCheckResponse) StatusCode() int {
 type PostListenResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2352,6 +2362,7 @@ type PostRegisterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *RegisterResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2373,6 +2384,7 @@ func (r PostRegisterResponse) StatusCode() int {
 type PostReleaseResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2396,6 +2408,7 @@ type GetResolveResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *ResolveResponse
 	JSON409      *ResolveAmbiguousResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2417,6 +2430,7 @@ func (r GetResolveResponse) StatusCode() int {
 type PostSendResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2438,6 +2452,7 @@ func (r PostSendResponse) StatusCode() int {
 type DeleteSessionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2460,6 +2475,7 @@ type GetSessionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SessionListResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2482,6 +2498,7 @@ type GetSessionsBashDumpResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *BashDumpResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2503,6 +2520,7 @@ func (r GetSessionsBashDumpResponse) StatusCode() int {
 type PostEditSessionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2525,6 +2543,7 @@ type PostSessionsExportResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ExportResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2547,6 +2566,7 @@ type GetSessionsFindResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *FindResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2569,6 +2589,7 @@ type GetSessionsHeatmapResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *HeatmapResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2590,6 +2611,7 @@ func (r GetSessionsHeatmapResponse) StatusCode() int {
 type DeleteSessionByIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2612,6 +2634,7 @@ type GetSessionDetailResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SessionDetailResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2634,6 +2657,7 @@ type PostSessionExportResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ExportResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2656,6 +2680,7 @@ type GetSessionMessagesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *MessagesResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2678,6 +2703,7 @@ type GetSessionPeekResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PeekResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2699,6 +2725,7 @@ func (r GetSessionPeekResponse) StatusCode() int {
 type PostSessionPulseResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2721,6 +2748,7 @@ type GetSessionToolContextResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ToolContextResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2743,6 +2771,7 @@ type GetSessionToolsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ToolsResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2765,6 +2794,7 @@ type PostSweepResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SweepResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2787,6 +2817,7 @@ type GetTimelineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]TimelineEntry
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2809,6 +2840,7 @@ type GetUsageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *UsageResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2831,6 +2863,7 @@ type GetWaitResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *WaitResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3161,6 +3194,16 @@ func ParsePostAnnounceResponse(rsp *http.Response) (*PostAnnounceResponse, error
 		HTTPResponse: rsp,
 	}
 
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
 	return response, nil
 }
 
@@ -3184,6 +3227,13 @@ func ParsePostBackfillResponse(rsp *http.Response) (*PostBackfillResponse, error
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -3211,6 +3261,13 @@ func ParseGetCheckResponse(rsp *http.Response) (*GetCheckResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3227,6 +3284,16 @@ func ParsePostListenResponse(rsp *http.Response) (*PostListenResponse, error) {
 	response := &PostListenResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3253,6 +3320,13 @@ func ParsePostRegisterResponse(rsp *http.Response) (*PostRegisterResponse, error
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3269,6 +3343,16 @@ func ParsePostReleaseResponse(rsp *http.Response) (*PostReleaseResponse, error) 
 	response := &PostReleaseResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3302,6 +3386,13 @@ func ParseGetResolveResponse(rsp *http.Response) (*GetResolveResponse, error) {
 		}
 		response.JSON409 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3320,6 +3411,16 @@ func ParsePostSendResponse(rsp *http.Response) (*PostSendResponse, error) {
 		HTTPResponse: rsp,
 	}
 
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
 	return response, nil
 }
 
@@ -3334,6 +3435,16 @@ func ParseDeleteSessionResponse(rsp *http.Response) (*DeleteSessionResponse, err
 	response := &DeleteSessionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3359,6 +3470,13 @@ func ParseGetSessionsResponse(rsp *http.Response) (*GetSessionsResponse, error) 
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -3386,6 +3504,13 @@ func ParseGetSessionsBashDumpResponse(rsp *http.Response) (*GetSessionsBashDumpR
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3402,6 +3527,16 @@ func ParsePostEditSessionResponse(rsp *http.Response) (*PostEditSessionResponse,
 	response := &PostEditSessionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3427,6 +3562,13 @@ func ParsePostSessionsExportResponse(rsp *http.Response) (*PostSessionsExportRes
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -3454,6 +3596,13 @@ func ParseGetSessionsFindResponse(rsp *http.Response) (*GetSessionsFindResponse,
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3480,6 +3629,13 @@ func ParseGetSessionsHeatmapResponse(rsp *http.Response) (*GetSessionsHeatmapRes
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3496,6 +3652,16 @@ func ParseDeleteSessionByIdResponse(rsp *http.Response) (*DeleteSessionByIdRespo
 	response := &DeleteSessionByIdResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3521,6 +3687,13 @@ func ParseGetSessionDetailResponse(rsp *http.Response) (*GetSessionDetailRespons
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -3548,6 +3721,13 @@ func ParsePostSessionExportResponse(rsp *http.Response) (*PostSessionExportRespo
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3573,6 +3753,13 @@ func ParseGetSessionMessagesResponse(rsp *http.Response) (*GetSessionMessagesRes
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -3600,6 +3787,13 @@ func ParseGetSessionPeekResponse(rsp *http.Response) (*GetSessionPeekResponse, e
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3616,6 +3810,16 @@ func ParsePostSessionPulseResponse(rsp *http.Response) (*PostSessionPulseRespons
 	response := &PostSessionPulseResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3641,6 +3845,13 @@ func ParseGetSessionToolContextResponse(rsp *http.Response) (*GetSessionToolCont
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -3668,6 +3879,13 @@ func ParseGetSessionToolsResponse(rsp *http.Response) (*GetSessionToolsResponse,
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3693,6 +3911,13 @@ func ParsePostSweepResponse(rsp *http.Response) (*PostSweepResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -3720,6 +3945,13 @@ func ParseGetTimelineResponse(rsp *http.Response) (*GetTimelineResponse, error) 
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3746,6 +3978,13 @@ func ParseGetUsageResponse(rsp *http.Response) (*GetUsageResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -3771,6 +4010,13 @@ func ParseGetWaitResponse(rsp *http.Response) (*GetWaitResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

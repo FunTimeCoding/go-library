@@ -1,26 +1,34 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"net/http"
 )
 
 func (s *Server) PostAnnounce(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.AnnounceRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostAnnounceRequestObject,
+) (server.PostAnnounceResponseObject, error) {
 	var files string
 
-	if body.Files != nil {
-		files = join.NewLine(*body.Files)
+	if r.Body.Files != nil {
+		files = join.NewLine(*r.Body.Files)
 	}
 
-	identifier := s.service.ResolveByCallsign(body.Callsign)
-	s.service.Announce(identifier, body.Callsign, body.Topic, files)
-	w.WriteHeader(http.StatusOK)
+	identifier := s.service.ResolveByCallsign(r.Body.Callsign)
+
+	if e := s.service.Announce(
+		identifier,
+		r.Body.Callsign,
+		r.Body.Topic,
+		files,
+	); e != nil {
+		return server.PostAnnounce500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.PostAnnounce200Response{}, nil
 }

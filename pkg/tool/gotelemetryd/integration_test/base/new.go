@@ -8,6 +8,7 @@ import (
 	generated "github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/service"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/web"
 	"net/http"
@@ -23,7 +24,7 @@ func New(t *testing.T) *Server {
 		func(m *http.ServeMux) {
 			generated.HandlerFromMux(server.New(s), m)
 			model_context.New(
-				s,
+				service.New(s),
 				memory.New(),
 				mock_recorder.New(),
 				constant.DefaultVersion,

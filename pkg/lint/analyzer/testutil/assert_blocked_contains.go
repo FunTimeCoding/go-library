@@ -13,17 +13,17 @@ func AssertBlockedContains(
 ) {
 	t.Helper()
 
-	for _, e := range results.Entries {
-		if e.Blocked && strings.Contains(e.Message, substring) {
+	for _, c := range results.Entries {
+		if !c.Fixed && strings.Contains(c.Text, substring) {
 			return
 		}
 	}
 
 	t.Errorf("no blocked result containing %q", substring)
 
-	for _, e := range results.Entries {
-		if e.Blocked {
-			t.Logf("  blocked: %s: %s", e.Path, e.Message)
+	for _, c := range results.Entries {
+		if !c.Fixed {
+			t.Logf("  blocked: %s: %s", c.Path, c.Text)
 		}
 	}
 }

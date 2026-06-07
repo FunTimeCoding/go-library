@@ -2,6 +2,7 @@ package variable_naming
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -46,13 +47,17 @@ func checkFunction(
 			continue
 		}
 
-		results.AddBlocked(
-			p.Fset.Position(v.ident.Pos()).Filename,
-			fmt.Sprintf(
-				"variable %s of type %s should be named %s",
-				v.ident.Name,
-				v.typ.String(),
-				ideal,
+		results.AddConcern(
+			concern.NewFile(
+				"variable_naming",
+				fmt.Sprintf(
+					"variable %s of type %s should be named %s",
+					v.ident.Name,
+					v.typ.String(),
+					ideal,
+				),
+				p.Fset.Position(v.ident.Pos()).Filename,
+				false,
 			),
 		)
 	}

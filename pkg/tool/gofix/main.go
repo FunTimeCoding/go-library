@@ -3,6 +3,7 @@ package gofix
 import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/tool/gofix/constant"
 	"os"
 )
@@ -29,7 +30,7 @@ func Main(
 	}
 
 	diff := a.GetBoolean("diff")
-	s := newResults()
+	s := output.NewResults()
 
 	if a.GetBoolean("rename") {
 		runVariableNamingFix(patterns, diff, s)
@@ -40,7 +41,7 @@ func Main(
 		runImportAliasFix(patterns, diff, s)
 	}
 
-	hasBlocked := printResults(s.Entries, a.GetBoolean("summary"))
+	hasBlocked := output.PrintResults(s.Entries, a.GetBoolean("summary"))
 
 	if hasBlocked {
 		os.Exit(1)

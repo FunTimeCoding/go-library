@@ -1,22 +1,21 @@
 package store
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/pulse"
-)
+import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/pulse"
 
-func (s *Store) LatestPulse(sessionIdentifier string) *pulse.Pulse {
+func (s *Store) LatestPulse(sessionIdentifier string) (*pulse.Pulse, error) {
 	var result pulse.Pulse
-	r := s.database.
-		Where("session_identifier = ?", sessionIdentifier).
-		Order("created_at DESC").
-		Limit(1).
-		Find(&result)
-	errors.PanicOnError(r.Error)
+	r := s.database.Where(
+		"session_identifier = ?",
+		sessionIdentifier,
+	).Order("created_at DESC").Limit(1).Find(&result)
 
-	if r.RowsAffected == 0 {
-		return nil
+	if r.Error != nil {
+		return nil, r.Error
 	}
 
-	return &result
+	if r.RowsAffected == 0 {
+		return nil, nil
+	}
+
+	return &result, nil
 }

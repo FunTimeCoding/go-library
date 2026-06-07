@@ -1,21 +1,18 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostBackfill(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
+	_ context.Context,
+	_ server.PostBackfillRequestObject,
+) (server.PostBackfillResponseObject, error) {
 	result := s.service.BackfillAllSessions()
-	web.EncodeNotation(
-		w,
-		server.BackfillResponse{
-			Enriched: result.Enriched,
-			Skipped:  result.Skipped,
-		},
-	)
+
+	return server.PostBackfill200JSONResponse{
+		Enriched: result.Enriched,
+		Skipped:  result.Skipped,
+	}, nil
 }

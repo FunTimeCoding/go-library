@@ -3,6 +3,7 @@ package gofix
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/lint/segment"
 	"go/ast"
 	"os"
@@ -14,7 +15,7 @@ func fixUnloadedReferences(
 	violations []violation,
 	loadedFiles map[string]bool,
 	directory string,
-	r *results,
+	r *output.Results,
 ) {
 	var renames []exportedRename
 

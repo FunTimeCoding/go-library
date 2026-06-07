@@ -1,0 +1,51 @@
+package scan
+
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
+	"testing"
+)
+
+func TestClientsDiscovered(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write("pkg/gitlab/client.go", "package gitlab\n")
+	v.Write("pkg/gitlab/constant/constant.go", "package constant\n")
+	c := Clients(v, "test", &Configuration{})
+	assert.Integer(t, 1, len(c))
+	assert.String(t, "pkg/gitlab", c[0].Path)
+	assert.Boolean(t, true, c[0].Constant)
+}
+
+func TestClientsExcludesTool(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write("pkg/tool/gotestd/client.go", "package gotestd\n")
+	assert.Integer(
+		t,
+		0,
+		len(Clients(v, "test", &Configuration{})),
+	)
+}
+
+func TestClientsExcludesConfiguration(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write("pkg/bolt/client.go", "package bolt\n")
+	assert.Integer(
+		t,
+		0,
+		len(
+			Clients(
+				v,
+				"test",
+				&Configuration{Exclude: []string{"pkg/bolt"}},
+			),
+		),
+	)
+}
+
+func TestClientsNested(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write("pkg/chat/mattermost/client.go", "package mattermost\n")
+	c := Clients(v, "test", &Configuration{})
+	assert.Integer(t, 1, len(c))
+	assert.String(t, "pkg/chat/mattermost", c[0].Path)
+}

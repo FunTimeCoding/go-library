@@ -1,7 +1,6 @@
 package store
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
@@ -10,7 +9,7 @@ import (
 func (s *Store) EditSession(
 	identifier string,
 	a *argument.EditSession,
-) {
+) error {
 	updates := map[string]any{}
 
 	if a.Alias != nil {
@@ -34,13 +33,13 @@ func (s *Store) EditSession(
 	}
 
 	if len(updates) == 0 {
-		return
+		return nil
 	}
 
 	updates["last_seen"] = s.clock()
-	errors.PanicOnError(
-		s.database.Model(session.Stub()).
-			Where("identifier = ?", identifier).
-			Updates(updates).Error,
-	)
+
+	return s.database.Model(session.Stub()).Where(
+		"identifier = ?",
+		identifier,
+	).Updates(updates).Error
 }

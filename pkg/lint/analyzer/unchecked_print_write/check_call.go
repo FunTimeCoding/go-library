@@ -2,6 +2,7 @@ package unchecked_print_write
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
@@ -46,8 +47,12 @@ func checkCall(
 		return
 	}
 
-	results.AddBlocked(
-		p.Fset.Position(call.Pos()).Filename,
-		"use writer.Print, errors.Printf, or check the error from fmt.Fprintf",
+	results.AddConcern(
+		concern.NewFile(
+			"unchecked_print_write",
+			"use writer.Print, errors.Printf, or check the error from fmt.Fprintf",
+			p.Fset.Position(call.Pos()).Filename,
+			false,
+		),
 	)
 }

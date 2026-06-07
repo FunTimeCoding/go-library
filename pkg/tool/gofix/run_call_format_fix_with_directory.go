@@ -1,11 +1,14 @@
 package gofix
 
-import "go/token"
+import (
+	"github.com/funtimecoding/go-library/pkg/lint/output"
+	"go/token"
+)
 
 func runCallFormatFixWithDirectory(
 	patterns []string,
 	directory string,
-	r *results,
+	r *output.Results,
 ) {
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}

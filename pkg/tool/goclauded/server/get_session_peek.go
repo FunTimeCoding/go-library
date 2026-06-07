@@ -1,17 +1,15 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSessionPeek(
-	w http.ResponseWriter,
-	r *http.Request,
-	identifier string,
-) {
-	p := s.service.Peek(identifier)
+	_ context.Context,
+	r server.GetSessionPeekRequestObject,
+) (server.GetSessionPeekResponseObject, error) {
+	p := s.service.Peek(r.Identifier)
 	var entries []server.PeekEntry
 
 	for _, entry := range p.Entries {
@@ -38,14 +36,11 @@ func (s *Server) GetSessionPeek(
 		)
 	}
 
-	web.EncodeNotation(
-		w,
-		server.PeekResponse{
-			LineCount:        p.LineCount,
-			UserMessageCount: p.UserMessageCount,
-			Entries:          entries,
-			ToolCounts:       toolCounts,
-			TotalToolCalls:   p.TotalToolCalls,
-		},
-	)
+	return server.GetSessionPeek200JSONResponse{
+		LineCount:        p.LineCount,
+		UserMessageCount: p.UserMessageCount,
+		Entries:          entries,
+		ToolCounts:       toolCounts,
+		TotalToolCalls:   p.TotalToolCalls,
+	}, nil
 }

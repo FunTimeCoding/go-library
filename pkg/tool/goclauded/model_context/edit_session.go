@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
@@ -17,7 +18,11 @@ func (s *Server) editSession(
 	var sessionIdentifier string
 
 	if target != "" {
-		r := s.service.ResolveSessionIdentifier(target)
+		r, f := s.service.ResolveSessionIdentifier(target)
+
+		if f != nil {
+			return s.captureFail(f, library.UnexpectedError)
+		}
 
 		if r.Ambiguous() {
 			return response.Fail(
@@ -69,7 +74,9 @@ func (s *Server) editSession(
 		return response.Fail("at least one field required")
 	}
 
-	s.service.EditSession(sessionIdentifier, a)
+	if e := s.service.EditSession(sessionIdentifier, a); e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
 
 	return response.Success("Session updated")
 }

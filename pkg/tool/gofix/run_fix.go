@@ -1,11 +1,14 @@
 package gofix
 
-import "go/token"
+import (
+	"github.com/funtimecoding/go-library/pkg/lint/output"
+	"go/token"
+)
 
 func runFix(
 	patterns []string,
 	diff bool,
-	r *results,
+	r *output.Results,
 ) {
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}

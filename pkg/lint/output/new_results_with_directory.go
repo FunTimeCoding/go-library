@@ -11,5 +11,5 @@ func NewResultsWithDirectory(directory string) *Results {
 		directory = fmt.Sprintf("%s/", directory)
 	}
 
-	return &Results{workingDirectory: directory}
+	return &Results{workDirectory: directory}
 }

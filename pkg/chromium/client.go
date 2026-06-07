@@ -8,9 +8,10 @@ import (
 type Client struct {
 	host            string
 	port            int
+	allocator       context.Context
+	allocatorCancel context.CancelFunc
 	context         context.Context
 	cancel          context.CancelFunc
-	allocatorCancel context.CancelFunc
 	targets         map[string]context.Context
 	mu              sync.Mutex
 }

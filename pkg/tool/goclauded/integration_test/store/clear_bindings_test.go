@@ -10,12 +10,12 @@ import (
 
 func TestClearBindings(t *testing.T) {
 	s := store_tester.New(t)
-	r := s.Store.EnsureSession("session-1")
-	s.Store.BindModelContextSession(r.Callsign, "mcp-session-abc")
-	e := s.Store.GetSession("session-1")
+	r := s.EnsureSession("session-1")
+	s.BindModelContextSession(r.Callsign, "mcp-session-abc")
+	e := s.GetSession("session-1")
 	assert.String(t, "mcp-session-abc", e.ModelContextSession)
 	s.Store.ClearBindings()
-	e = s.Store.GetSession("session-1")
+	e = s.GetSession("session-1")
 	assert.String(t, "", e.ModelContextSession)
 	assert.True(t, e.NeedsReannounce)
 }

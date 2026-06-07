@@ -8,12 +8,5 @@ func New(
 	lineText string,
 	fixed bool,
 ) *Concern {
-	return &Concern{
-		Key:      key,
-		Text:     text,
-		Path:     path,
-		Line:     line,
-		LineText: lineText,
-		Fixed:    fixed,
-	}
+	return NewLine(key, text, path, line, lineText, fixed)
 }

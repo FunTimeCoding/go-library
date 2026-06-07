@@ -3,6 +3,7 @@ package file_identity
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
@@ -72,12 +73,16 @@ func checkFile(
 	filename := p.Fset.Position(file.Pos()).Filename
 
 	if len(identities) > 1 {
-		results.AddBlocked(
-			filename,
-			fmt.Sprintf(
-				"multiple identities in one file: %s and %s",
-				identities[0].name,
-				identities[1].name,
+		results.AddConcern(
+			concern.NewFile(
+				"file_identity",
+				fmt.Sprintf(
+					"multiple identities in one file: %s and %s",
+					identities[0].name,
+					identities[1].name,
+				),
+				filename,
+				false,
 			),
 		)
 
@@ -102,13 +107,17 @@ func checkFile(
 	expected := toSnakeCase(sole.name)
 
 	if stem != expected {
-		results.AddBlocked(
-			filename,
-			fmt.Sprintf(
-				"filename %s does not match identity %s (expected %s.go)",
-				name,
-				sole.name,
-				expected,
+		results.AddConcern(
+			concern.NewFile(
+				"file_identity",
+				fmt.Sprintf(
+					"filename %s does not match identity %s (expected %s.go)",
+					name,
+					sole.name,
+					expected,
+				),
+				filename,
+				false,
 			),
 		)
 	}

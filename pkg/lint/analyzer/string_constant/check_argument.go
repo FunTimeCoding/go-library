@@ -2,6 +2,7 @@ package string_constant
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/token"
@@ -33,13 +34,17 @@ func checkArgument(
 		return
 	}
 
-	results.AddBlocked(
-		p.Fset.Position(l.Pos()).Filename,
-		fmt.Sprintf(
-			"string literal %q has constant %s.%s",
-			value,
-			c.packageName,
-			c.name,
+	results.AddConcern(
+		concern.NewFile(
+			"string_constant",
+			fmt.Sprintf(
+				"string literal %q has constant %s.%s",
+				value,
+				c.packageName,
+				c.name,
+			),
+			p.Fset.Position(l.Pos()).Filename,
+			false,
 		),
 	)
 }

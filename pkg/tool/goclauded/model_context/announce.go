@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
@@ -39,16 +40,24 @@ func (s *Server) announce(
 	}
 
 	if cs := server.ClientSessionFromContext(x); cs != nil {
-		s.service.BindModelContextSession(name, cs.SessionID())
+		if f := s.service.BindModelContextSession(
+			name,
+			cs.SessionID(),
+		); f != nil {
+			return s.captureFail(f, library.UnexpectedError)
+		}
 	}
 
 	c := s.resolveCaller(x, constant.Announce)
-	s.service.Announce(
+
+	if f := s.service.Announce(
 		c.SessionIdentifier,
 		name,
 		topic,
 		join.NewLine(files),
-	)
+	); f != nil {
+		return s.captureFail(f, library.UnexpectedError)
+	}
 
 	return response.Success(
 		fmt.Sprintf(

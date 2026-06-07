@@ -21,6 +21,7 @@ func TestPackageNameBlacklisted(t *testing.T) {
 				Key:      "package_name",
 				Text:     "Blacklisted package name",
 				Path:     "Alfa",
+				Type:     concern.Line,
 				Line:     1,
 				LineText: "package api",
 			},

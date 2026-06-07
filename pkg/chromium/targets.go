@@ -7,6 +7,7 @@ import (
 )
 
 func (c *Client) Targets() []*target.Info {
+	c.reconnectIfNeeded()
 	result, e := chromedp.Targets(c.context)
 	errors.PanicOnError(e)
 

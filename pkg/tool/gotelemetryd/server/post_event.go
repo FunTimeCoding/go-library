@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -39,6 +40,6 @@ func (s *Server) PostEvent(
 		}
 	}
 
-	s.store.Create(e)
+	errors.PanicOnError(s.store.Create(e))
 	web.EncodeNotation(w, server.EventResponse{Id: int(e.ID)})
 }

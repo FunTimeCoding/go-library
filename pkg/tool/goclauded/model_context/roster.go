@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
@@ -15,7 +16,11 @@ func (s *Server) roster(
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
 	s.resolveCaller(x, constant.Roster)
-	sessions := s.service.ListSessions()
+	sessions, e := s.service.ListSessions()
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
 
 	if len(sessions) == 0 {
 		return response.Success("No active sessions.")
@@ -65,7 +70,11 @@ func (s *Server) roster(
 			)
 		}
 
-		labels := s.service.LabelsBySession(session.Identifier)
+		labels, f := s.service.LabelsBySession(session.Identifier)
+
+		if f != nil {
+			return s.captureFail(f, library.UnexpectedError)
+		}
 
 		if len(labels) > 0 {
 			var pips []string
@@ -80,7 +89,13 @@ func (s *Server) roster(
 			line = fmt.Sprintf("%s\n  %s", line, join.Space(pips...))
 		}
 
-		if l := s.service.LatestPulse(session.Identifier); l != nil {
+		l, g := s.service.LatestPulse(session.Identifier)
+
+		if g != nil {
+			return s.captureFail(g, library.UnexpectedError)
+		}
+
+		if l != nil {
 			line = fmt.Sprintf(
 				"%s\n  pulse: %s",
 				line,

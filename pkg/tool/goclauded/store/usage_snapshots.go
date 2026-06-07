@@ -5,12 +5,11 @@ import (
 	"time"
 )
 
-func (s *Store) UsageSnapshots(since time.Duration) []usage_snapshot.Snapshot {
+func (s *Store) UsageSnapshots(since time.Duration) ([]usage_snapshot.Snapshot, error) {
 	var result []usage_snapshot.Snapshot
-	s.database.
-		Where("created_at > ?", s.clock().Add(-since)).
-		Order("created_at ASC").
-		Find(&result)
 
-	return result
+	return result, s.database.Where(
+		"created_at > ?",
+		s.clock().Add(-since),
+	).Order("created_at ASC").Find(&result).Error
 }

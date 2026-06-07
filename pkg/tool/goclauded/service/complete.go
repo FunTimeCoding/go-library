@@ -7,20 +7,28 @@ func (s *Service) Complete(
 	name string,
 	topic string,
 	message string,
-) {
-	s.store.UpsertCompletion(
+) error {
+	if e := s.store.UpsertCompletion(
 		sessionIdentifier,
 		name,
 		constant.Complete,
 		topic,
 		message,
-	)
-	s.store.UpsertEvent(
+	); e != nil {
+		return e
+	}
+
+	if e := s.store.UpsertEvent(
 		sessionIdentifier,
 		constant.Complete,
 		name,
 		topic,
 		message,
-	)
+	); e != nil {
+		return e
+	}
+
 	s.notify()
+
+	return nil
 }

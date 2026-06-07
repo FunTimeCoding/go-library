@@ -105,6 +105,7 @@ const (
 	Summary        = "summary"
 	Suppressed     = "suppressed"
 	SystemdUnit    = "systemd-unit"
+	Table          = "table"
 	Tag            = "tag"
 	Team           = "team"
 	Template       = "template"

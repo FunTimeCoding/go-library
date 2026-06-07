@@ -1,24 +1,27 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
-	"net/http"
 )
 
 func (s *Server) PostEditSession(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var b server.EditSessionRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&b))
+	_ context.Context,
+	r server.PostEditSessionRequestObject,
+) (server.PostEditSessionResponseObject, error) {
 	a := argument.NewEditSession()
-	a.Alias = b.Name
-	a.Description = b.Description
-	a.Topic = b.Topic
-	a.Files = b.Files
-	s.service.EditSession(b.Session, a)
-	w.WriteHeader(http.StatusOK)
+	a.Alias = r.Body.Name
+	a.Description = r.Body.Description
+	a.Topic = r.Body.Topic
+	a.Files = r.Body.Files
+
+	if e := s.service.EditSession(r.Body.Session, a); e != nil {
+		return server.PostEditSession500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.PostEditSession200Response{}, nil
 }

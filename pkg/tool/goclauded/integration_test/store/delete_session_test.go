@@ -10,8 +10,8 @@ import (
 
 func TestDeleteSession(t *testing.T) {
 	s := store_tester.New(t)
-	s.Store.EnsureSession("session-1")
-	assert.True(t, s.Store.GetSession("session-1") != nil)
-	s.Store.DeleteSession("session-1")
-	assert.True(t, s.Store.GetSession("session-1") == nil)
+	s.EnsureSession("session-1")
+	assert.True(t, s.GetSession("session-1") != nil)
+	assert.FatalOnError(t, s.Store.DeleteSession("session-1"))
+	assert.True(t, s.GetSession("session-1") == nil)
 }

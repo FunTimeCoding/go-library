@@ -3,6 +3,7 @@ package struct_literal
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -40,12 +41,16 @@ func checkNew(
 		return
 	}
 
-	results.AddBlocked(
-		p.Fset.Position(call.Pos()).Filename,
-		fmt.Sprintf(
-			"use a constructor function instead of new(%s.%s)",
-			t.Pkg().Name(),
-			t.Name(),
+	results.AddConcern(
+		concern.NewFile(
+			"struct_literal",
+			fmt.Sprintf(
+				"use a constructor function instead of new(%s.%s)",
+				t.Pkg().Name(),
+				t.Name(),
+			),
+			p.Fset.Position(call.Pos()).Filename,
+			false,
 		),
 	)
 }

@@ -1,0 +1,42 @@
+package output
+
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"github.com/funtimecoding/go-library/pkg/lint/constant"
+	"testing"
+)
+
+func TestAddConcernRelativizesPath(t *testing.T) {
+	r := NewResultsWithDirectory("/Users/example/src/go-library/")
+	r.AddConcern(
+		concern.NewFile(
+			"test",
+			"finding",
+			"/Users/example/src/go-library/pkg/foo/bar.go",
+			false,
+		),
+	)
+	assert.Integer(t, 1, len(r.Entries))
+	assert.String(t, "pkg/foo/bar.go", r.Entries[0].Path)
+}
+
+func TestAddConcernPreservesFields(t *testing.T) {
+	r := NewResults()
+	r.AddConcern(
+		concern.NewLine(
+			constant.BlankInsideFunctionKey,
+			"Blank line",
+			"pkg/foo.go",
+			5,
+			"original line",
+			true,
+		),
+	)
+	assert.Integer(t, 1, len(r.Entries))
+	assert.String(t, constant.BlankInsideFunctionKey, r.Entries[0].Key)
+	assert.String(t, "Blank line", r.Entries[0].Text)
+	assert.String(t, concern.Line, r.Entries[0].Type)
+	assert.Integer(t, 5, r.Entries[0].Line)
+	assert.Boolean(t, true, r.Entries[0].Fixed)
+}

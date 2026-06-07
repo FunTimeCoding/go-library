@@ -1,22 +1,25 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSessionDetail(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier string,
-) {
-	d := s.service.SessionDetail(identifier)
+	_ context.Context,
+	r server.GetSessionDetailRequestObject,
+) (server.GetSessionDetailResponseObject, error) {
+	d, e := s.service.SessionDetail(r.Identifier)
+
+	if e != nil {
+		return server.GetSessionDetail500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
 
 	if d == nil {
-		http.NotFound(w, nil)
-
-		return
+		return server.GetSessionDetail404Response{}, nil
 	}
 
 	result := server.SessionDetailResponse{Identifier: d.Identifier}
@@ -76,7 +79,13 @@ func (s *Server) GetSessionDetail(
 		result.Summary = &d.Summary
 	}
 
-	labels := s.service.LabelsBySession(d.Identifier)
+	labels, labelError := s.service.LabelsBySession(d.Identifier)
+
+	if labelError != nil {
+		return server.GetSessionDetail500JSONResponse(
+			*s.captureFail(labelError, constant.UnexpectedError),
+		), nil
+	}
 
 	if len(labels) > 0 {
 		var le []server.LabelEntry
@@ -91,7 +100,13 @@ func (s *Server) GetSessionDetail(
 		result.Labels = &le
 	}
 
-	pulses := s.service.PulsesBySession(d.Identifier)
+	pulses, pulseError := s.service.PulsesBySession(d.Identifier)
+
+	if pulseError != nil {
+		return server.GetSessionDetail500JSONResponse(
+			*s.captureFail(pulseError, constant.UnexpectedError),
+		), nil
+	}
 
 	if len(pulses) > 0 {
 		var pe []server.PulseEntry
@@ -112,5 +127,5 @@ func (s *Server) GetSessionDetail(
 		result.Pulses = &pe
 	}
 
-	web.EncodeNotation(w, result)
+	return server.GetSessionDetail200JSONResponse(result), nil
 }

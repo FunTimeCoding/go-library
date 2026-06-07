@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
@@ -16,7 +17,11 @@ func (s *Server) listSessions(
 	s.resolveCaller(x, constant.ListSessions)
 	limit := int(q.GetFloat(constant.Limit, 20))
 	offset := int(q.GetFloat(constant.Offset, 0))
-	sessions := s.service.EnrichedSessions(limit, offset)
+	sessions, e := s.service.EnrichedSessions(limit, offset)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
 
 	if len(sessions) == 0 {
 		return response.Success("No sessions found.")

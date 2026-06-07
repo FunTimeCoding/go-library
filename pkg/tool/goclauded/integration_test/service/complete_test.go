@@ -15,12 +15,7 @@ func TestComplete(t *testing.T) {
 	r := s.Store.EnsureSession("session-1")
 	s.Store.Announce(r.Callsign, "fixing auth", "")
 	topic := s.Store.CompleteTask(r.Callsign)
-	s.Service.Complete(
-		"session-1",
-		r.Callsign,
-		topic,
-		"auth bug resolved",
-	)
+	s.Complete("session-1", r.Callsign, topic, "auth bug resolved")
 	assert.String(
 		t,
 		"",

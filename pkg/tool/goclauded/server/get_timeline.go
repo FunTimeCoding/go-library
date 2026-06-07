@@ -1,32 +1,38 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetTimeline(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.GetTimelineParams,
-) {
+	_ context.Context,
+	r server.GetTimelineRequestObject,
+) (server.GetTimelineResponseObject, error) {
 	a := argument.Timeline{Limit: 50}
 
-	if p.Limit != nil {
-		a.Limit = *p.Limit
+	if r.Params.Limit != nil {
+		a.Limit = *r.Params.Limit
 	}
 
-	if p.Offset != nil {
-		a.Offset = *p.Offset
+	if r.Params.Offset != nil {
+		a.Offset = *r.Params.Offset
 	}
 
-	if p.Since != nil {
-		a.Since = *p.Since
+	if r.Params.Since != nil {
+		a.Since = *r.Params.Since
 	}
 
-	merged := s.service.Timeline(a)
+	merged, timelineError := s.service.Timeline(a)
+
+	if timelineError != nil {
+		return server.GetTimeline500JSONResponse(
+			*s.captureFail(timelineError, constant.UnexpectedError),
+		), nil
+	}
+
 	var result []server.TimelineEntry
 
 	for _, e := range merged {
@@ -48,5 +54,5 @@ func (s *Server) GetTimeline(
 		result = []server.TimelineEntry{}
 	}
 
-	web.EncodeNotation(w, result)
+	return server.GetTimeline200JSONResponse(result), nil
 }

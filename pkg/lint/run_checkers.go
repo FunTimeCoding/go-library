@@ -29,9 +29,9 @@ func runCheckers(
 
 			for _, c := range result.Concerns {
 				if c.Fixed && fix {
-					r.Add(p, concernMessage(c))
+					r.AddConcern(c)
 				} else if !c.Fixed {
-					r.AddBlocked(p, c.Text)
+					r.AddConcern(c)
 				}
 			}
 

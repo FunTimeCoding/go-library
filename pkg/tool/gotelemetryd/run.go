@@ -10,6 +10,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/server"
+	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/service"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 	telemetryWeb "github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/web"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -20,17 +21,16 @@ func Run(
 	o *option.Telemetry,
 	r face.Reporter,
 ) {
-	l := logger.New(context.Background())
 	s := store.New(o.PostgresLocator, o.LitePath)
 	defer s.Close()
 	lifecycle.New(
-		l,
+		logger.New(context.Background()),
 		lifecycle.WithServerMiddleware(
 			web.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(server.New(s), m)
 				model_context.New(
-					s,
+					service.New(s),
 					r,
 					telemetry.NewEnvironment(),
 					o.Version,

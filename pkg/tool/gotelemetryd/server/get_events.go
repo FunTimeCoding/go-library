@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 	"github.com/funtimecoding/go-library/pkg/web"
@@ -47,7 +48,8 @@ func (s *Server) GetEvents(
 		o.Offset = *params.Offset
 	}
 
-	events := s.store.Recent(o)
+	events, queryError := s.store.Recent(o)
+	errors.PanicOnError(queryError)
 	var entries []server.EventEntry
 
 	for _, e := range events {

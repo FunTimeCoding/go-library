@@ -1,18 +1,16 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"sort"
 )
 
 func (s *Server) GetSessionTools(
-	w http.ResponseWriter,
-	r *http.Request,
-	identifier string,
-) {
-	calls := s.service.ToolCalls(identifier)
+	_ context.Context,
+	r server.GetSessionToolsRequestObject,
+) (server.GetSessionToolsResponseObject, error) {
+	calls := s.service.ToolCalls(r.Identifier)
 	var entries []server.ToolCallEntry
 
 	for _, c := range calls {
@@ -51,12 +49,10 @@ func (s *Server) GetSessionTools(
 			return sorted[i].Count > sorted[j].Count
 		},
 	)
-	web.EncodeNotation(
-		w,
-		server.ToolsResponse{
-			Calls:  entries,
-			Counts: sorted,
-			Total:  len(calls),
-		},
-	)
+
+	return server.GetSessionTools200JSONResponse{
+		Calls:  entries,
+		Counts: sorted,
+		Total:  len(calls),
+	}, nil
 }

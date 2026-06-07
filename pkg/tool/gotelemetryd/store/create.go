@@ -1,7 +1,5 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/errors"
-
-func (s *Store) Create(e *UsageEvent) {
-	errors.PanicOnError(s.mapper.Create(e).Error)
+func (s *Store) Create(e *UsageEvent) error {
+	return s.mapper.Create(e).Error
 }

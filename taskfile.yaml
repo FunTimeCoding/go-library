@@ -9,6 +9,7 @@ tasks:
     - golangci-lint run --build-tags local
     - gofix ./...
     - goanalyze ./...
+    - goaudit .
     silent: true
   test:
     cmds: ['gotestsum --format dots -- --tags local ./...']
@@ -64,6 +65,7 @@ tasks:
       go install github.com/funtimecoding/go-library/cmd/golint@latest
       go install github.com/funtimecoding/go-library/cmd/goanalyze@latest
       go install github.com/funtimecoding/go-library/cmd/gofix@latest
+      go install github.com/funtimecoding/go-library/cmd/goaudit@latest
       go install github.com/funtimecoding/go-library/cmd/gobuild@latest
       curl -sSfL \
         https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \

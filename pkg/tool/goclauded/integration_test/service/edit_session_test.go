@@ -15,7 +15,7 @@ func TestEditSession(t *testing.T) {
 	a := argument.NewEditSession()
 	a.Alias = new("my-project")
 	a.Description = new("Refactored the CLI")
-	s.Service.EditSession("session-1", a)
+	s.EditSession("session-1", a)
 	e := s.Store.GetSession("session-1")
 	assert.String(t, "my-project", e.AliasValue())
 	assert.String(t, "Refactored the CLI", e.Description)

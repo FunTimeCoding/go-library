@@ -1,37 +1,31 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetUsage(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.GetUsageRequestObject,
+) (server.GetUsageResponseObject, error) {
 	result := s.service.Usage()
 
 	if result == nil {
-		w.WriteHeader(http.StatusNoContent)
-
-		return
+		return server.GetUsage204Response{}, nil
 	}
 
-	web.EncodeNotation(
-		w,
-		server.UsageResponse{
-			SessionPercent:      result.SessionPercent,
-			SessionReset:        result.SessionReset,
-			WeeklyAllPercent:    result.WeeklyAllPercent,
-			WeeklyAllReset:      result.WeeklyAllReset,
-			WeeklySonnetPercent: result.WeeklySonnetPercent,
-			WeeklyDesignPercent: result.WeeklyDesignPercent,
-			RoutineRuns:         result.RoutineRuns,
-			CreditSpent:         result.CreditSpent,
-			CreditReset:         result.CreditReset,
-			CreditPercent:       result.CreditPercent,
-			LastUpdated:         result.LastUpdated,
-		},
-	)
+	return server.GetUsage200JSONResponse{
+		SessionPercent:      result.SessionPercent,
+		SessionReset:        result.SessionReset,
+		WeeklyAllPercent:    result.WeeklyAllPercent,
+		WeeklyAllReset:      result.WeeklyAllReset,
+		WeeklySonnetPercent: result.WeeklySonnetPercent,
+		WeeklyDesignPercent: result.WeeklyDesignPercent,
+		RoutineRuns:         result.RoutineRuns,
+		CreditSpent:         result.CreditSpent,
+		CreditReset:         result.CreditReset,
+		CreditPercent:       result.CreditPercent,
+		LastUpdated:         result.LastUpdated,
+	}, nil
 }

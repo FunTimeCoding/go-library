@@ -72,6 +72,7 @@ goalertmanagerd
 goansibled
 goatlassian
 goatlassiand
+goaudit
 gobuild
 gochk
 gochroma
@@ -86,7 +87,7 @@ godownload
 gofile
 gofix
 gogenie
-goghexporter
+gogithubd
 goghjob
 goghpr
 gogithub

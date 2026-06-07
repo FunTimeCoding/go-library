@@ -1,31 +1,30 @@
 package store
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
-)
+import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
 
-func (s *Store) CompleteTask(name string) string {
+func (s *Store) CompleteTask(name string) (string, error) {
 	var i session.Session
-	result := s.database.Where("callsign = ?", name).Limit(1).Find(&i)
-	errors.PanicOnError(result.Error)
+	result := s.database.Where(
+		"callsign = ?",
+		name,
+	).Limit(1).Find(&i)
 
-	if result.RowsAffected == 0 {
-		return ""
+	if result.Error != nil {
+		return "", result.Error
 	}
 
-	topic := i.Topic
-	errors.PanicOnError(
-		s.database.Model(session.Stub()).
-			Where("callsign = ?", name).
-			Updates(
-				map[string]any{
-					"topic":     "",
-					"files":     "",
-					"last_seen": s.clock(),
-				},
-			).Error,
-	)
+	if result.RowsAffected == 0 {
+		return "", nil
+	}
 
-	return topic
+	return i.Topic, s.database.Model(session.Stub()).Where(
+		"callsign = ?",
+		name,
+	).Updates(
+		map[string]any{
+			"topic":     "",
+			"files":     "",
+			"last_seen": s.clock(),
+		},
+	).Error
 }

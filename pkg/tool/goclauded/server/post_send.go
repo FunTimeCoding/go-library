@@ -1,24 +1,26 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"net/http"
 )
 
 func (s *Server) PostSend(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.SendRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostSendRequestObject,
+) (server.PostSendResponseObject, error) {
 	var to string
 
-	if body.To != nil {
-		to = *body.To
+	if r.Body.To != nil {
+		to = *r.Body.To
 	}
 
-	s.service.Send(body.Callsign, to, body.Body)
-	w.WriteHeader(http.StatusOK)
+	if e := s.service.Send(r.Body.Callsign, to, r.Body.Body); e != nil {
+		return server.PostSend500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.PostSend200Response{}, nil
 }

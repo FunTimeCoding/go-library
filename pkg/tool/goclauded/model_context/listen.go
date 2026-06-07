@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -17,7 +18,9 @@ func (s *Server) listen(
 		return response.Fail("unknown session - announce first to bind your identity")
 	}
 
-	s.service.SetListening(c.Callsign, true)
+	if e := s.service.SetListening(c.Callsign, true); e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
 
 	return response.Success("Listening for messages. You will be woken when a message arrives.")
 }

@@ -2,6 +2,7 @@ package naming
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/lint/segment"
 	"go/ast"
@@ -28,23 +29,31 @@ func checkIdent(
 	}
 
 	if r.Banned {
-		results.AddBlocked(
-			p.Fset.Position(ident.Pos()).Filename,
-			fmt.Sprintf(
-				"avoid %q in name, use a more specific term",
-				r.Segment,
+		results.AddConcern(
+			concern.NewFile(
+				"naming",
+				fmt.Sprintf(
+					"avoid %q in name, use a more specific term",
+					r.Segment,
+				),
+				p.Fset.Position(ident.Pos()).Filename,
+				false,
 			),
 		)
 
 		return
 	}
 
-	results.AddBlocked(
-		p.Fset.Position(ident.Pos()).Filename,
-		segment.FormatMessage(
-			r.Applicable,
-			r.Segment,
-			ident.Name,
+	results.AddConcern(
+		concern.NewFile(
+			"naming",
+			segment.FormatMessage(
+				r.Applicable,
+				r.Segment,
+				ident.Name,
+			),
+			p.Fset.Position(ident.Pos()).Filename,
+			false,
 		),
 	)
 }

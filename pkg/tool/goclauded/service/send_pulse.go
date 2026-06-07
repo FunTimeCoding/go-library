@@ -4,7 +4,12 @@ func (s *Service) SendPulse(
 	sessionIdentifier string,
 	fromName string,
 	body string,
-) {
-	s.store.SendPulse(sessionIdentifier, fromName, body)
+) error {
+	if e := s.store.SendPulse(sessionIdentifier, fromName, body); e != nil {
+		return e
+	}
+
 	s.notify()
+
+	return nil
 }

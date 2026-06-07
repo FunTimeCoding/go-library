@@ -13,10 +13,10 @@ import (
 
 func TestCallsignReleasedAfterThreeDays(t *testing.T) {
 	s := service_tester.New(t)
-	r := s.Service.Register("session-1")
+	r := s.Register("session-1")
 	assert.True(t, r.Callsign != "")
 	callsign := r.Callsign
-	s.Advance(73 * time.Hour)
+	s.Store.Advance(73 * time.Hour)
 	s.Service.RunTimeoutSweep()
 	e := s.Store.GetSession("session-1")
 	assert.True(t, e.Callsign == nil)
@@ -25,9 +25,9 @@ func TestCallsignReleasedAfterThreeDays(t *testing.T) {
 
 func TestCallsignNotReleasedBeforeThreeDays(t *testing.T) {
 	s := service_tester.New(t)
-	r := s.Service.Register("session-1")
+	r := s.Register("session-1")
 	assert.True(t, r.Callsign != "")
-	s.Advance(71 * time.Hour)
+	s.Store.Advance(71 * time.Hour)
 	s.Service.RunTimeoutSweep()
 	e := s.Store.GetSession("session-1")
 	assert.True(t, e.Callsign != nil)
@@ -42,7 +42,7 @@ func TestCallsignRecycledAfterSweepRelease(t *testing.T) {
 	var callsigns []string
 
 	for i := 0; ; i++ {
-		r := s.Service.Register(fmt.Sprintf("fill-%d", i))
+		r := s.Register(fmt.Sprintf("fill-%d", i))
 
 		if r.Callsign == "" {
 			break
@@ -58,8 +58,8 @@ func TestCallsignRecycledAfterSweepRelease(t *testing.T) {
 		assert.String(t, v, callsigns[i])
 	}
 
-	s.Advance(73 * time.Hour)
+	s.Store.Advance(73 * time.Hour)
 	s.Service.RunTimeoutSweep()
-	r := s.Service.Register("after-sweep")
+	r := s.Register("after-sweep")
 	assert.True(t, r.Callsign != "")
 }

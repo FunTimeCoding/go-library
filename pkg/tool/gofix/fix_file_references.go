@@ -3,6 +3,8 @@ package gofix
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -12,7 +14,7 @@ import (
 func fixFileReferences(
 	path string,
 	renames []exportedRename,
-	r *results,
+	r *output.Results,
 ) {
 	content, e := os.ReadFile(path)
 
@@ -63,9 +65,17 @@ func fixFileReferences(
 				append([]byte(newName), modified[end:]...)...,
 			)
 			offset += len(newName) - len(i.Name)
-			r.Add(
-				path,
-				fmt.Sprintf("renamed %s → %s (unloaded)", i.Name, newName),
+			r.AddConcern(
+				concern.NewFile(
+					"renamed",
+					fmt.Sprintf(
+						"renamed %s → %s (unloaded)",
+						i.Name,
+						newName,
+					),
+					path,
+					true,
+				),
 			)
 
 			return true

@@ -22,7 +22,8 @@ func New(t *testing.T) *Tester {
 	harbor := t.TempDir()
 
 	return &Tester{
-		Tester: s,
+		Store: s,
+		t:     t,
 		Service: service.New(
 			s.Store,
 			c,

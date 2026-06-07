@@ -14,6 +14,7 @@ func (c *Client) NeedReload(
 	identifier string,
 	locator string,
 ) bool {
+	c.reconnectIfNeeded()
 	var found bool
 
 	for _, g := range c.Targets() {

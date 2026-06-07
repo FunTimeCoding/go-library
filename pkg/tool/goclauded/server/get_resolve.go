@@ -1,22 +1,27 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetResolve(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.GetResolveParams,
-) {
-	r := s.service.ResolveSessionIdentifier(p.Query)
+	_ context.Context,
+	r server.GetResolveRequestObject,
+) (server.GetResolveResponseObject, error) {
+	result, e := s.service.ResolveSessionIdentifier(r.Params.Query)
 
-	if r.Ambiguous() {
+	if e != nil {
+		return server.GetResolve500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	if result.Ambiguous() {
 		var matches []server.ResolveMatch
 
-		for _, m := range r.Matches {
+		for _, m := range result.Matches {
 			entry := server.ResolveMatch{
 				Identifier: m.Identifier,
 				Field:      m.Field,
@@ -33,23 +38,14 @@ func (s *Server) GetResolve(
 			matches = append(matches, entry)
 		}
 
-		w.WriteHeader(http.StatusConflict)
-		web.EncodeNotation(
-			w,
-			server.ResolveAmbiguousResponse{Matches: matches},
-		)
-
-		return
+		return server.GetResolve409JSONResponse{Matches: matches}, nil
 	}
 
-	if !r.Found() {
-		w.WriteHeader(http.StatusNotFound)
-
-		return
+	if !result.Found() {
+		return server.GetResolve404Response{}, nil
 	}
 
-	web.EncodeNotation(
-		w,
-		server.ResolveResponse{Identifier: r.Identifier()},
-	)
+	return server.GetResolve200JSONResponse{
+		Identifier: result.Identifier(),
+	}, nil
 }

@@ -1,21 +1,26 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSessionsFind(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.GetSessionsFindParams,
-) {
+	_ context.Context,
+	r server.GetSessionsFindRequestObject,
+) (server.GetSessionsFindResponseObject, error) {
 	var result []server.FindMatch
 
-	for _, m := range s.service.SessionsByTool(p.Tool) {
+	for _, m := range s.service.SessionsByTool(r.Params.Tool) {
 		name := m.Session.Slug
-		e := s.service.GetSession(m.Session.Identifier)
+		e, f := s.service.GetSession(m.Session.Identifier)
+
+		if f != nil {
+			return server.GetSessionsFind500JSONResponse(
+				*s.captureFail(f, constant.UnexpectedError),
+			), nil
+		}
 
 		if e != nil && e.Alias != nil {
 			name = *e.Alias
@@ -31,8 +36,7 @@ func (s *Server) GetSessionsFind(
 		)
 	}
 
-	web.EncodeNotation(
-		w,
-		server.FindResponse{Matches: result},
-	)
+	return server.GetSessionsFind200JSONResponse{
+		Matches: result,
+	}, nil
 }

@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -25,7 +26,8 @@ func (s *Server) heatmap(
 		groupBy = "tool"
 	}
 
-	rows := s.store.Summary(since, "", groupBy)
+	rows, queryError := s.store.Summary(since, "", groupBy)
+	errors.PanicOnError(queryError)
 	showSurface := groupBy == "surface"
 	showKind := groupBy == "kind"
 	var tableRows []gomponents.Node

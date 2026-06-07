@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/json"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
 	"maragu.dev/gomponents"
@@ -31,7 +32,8 @@ func (s *Server) events(
 	o.Kind = r.URL.Query().Get(constant.Kind)
 	o.Limit = limit + 1
 	o.Offset = offset
-	entries := s.store.Recent(o)
+	entries, queryError := s.store.Recent(o)
+	errors.PanicOnError(queryError)
 	hasMore := len(entries) > limit
 
 	if hasMore {

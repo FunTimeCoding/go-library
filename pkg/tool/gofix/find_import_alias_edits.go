@@ -2,6 +2,8 @@ package gofix
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/token"
 	"golang.org/x/tools/go/packages"
 	"strings"
@@ -10,7 +12,7 @@ import (
 func findImportAliasEdits(
 	fileSet *token.FileSet,
 	all []*packages.Package,
-	r *results,
+	r *output.Results,
 ) []edit {
 	var result []edit
 	seen := make(map[token.Pos]bool)
@@ -48,9 +50,13 @@ func findImportAliasEdits(
 				filePath := fileSet.File(spec.Pos()).Name()
 
 				if alias == declaredName {
-					r.Add(
-						filePath,
-						fmt.Sprintf("de-aliased %s (redundant)", alias),
+					r.AddConcern(
+						concern.NewFile(
+							"import_alias",
+							fmt.Sprintf("de-aliased %s (redundant)", alias),
+							filePath,
+							true,
+						),
 					)
 					result = append(
 						result,
@@ -71,22 +77,34 @@ func findImportAliasEdits(
 				}
 
 				if hasLocalCollision(p, file, declaredName) {
-					r.AddBlocked(
-						filePath,
-						fmt.Sprintf(
-							"cannot de-alias %s → %s (local collision with %q)",
-							alias,
-							declaredName,
-							declaredName,
+					r.AddConcern(
+						concern.NewFile(
+							"import_alias",
+							fmt.Sprintf(
+								"cannot de-alias %s → %s (local collision with %q)",
+								alias,
+								declaredName,
+								declaredName,
+							),
+							filePath,
+							false,
 						),
 					)
 
 					continue
 				}
 
-				r.Add(
-					filePath,
-					fmt.Sprintf("de-aliased %s → %s", alias, declaredName),
+				r.AddConcern(
+					concern.NewFile(
+						"import_alias",
+						fmt.Sprintf(
+							"de-aliased %s → %s",
+							alias,
+							declaredName,
+						),
+						filePath,
+						true,
+					),
 				)
 				result = append(
 					result,

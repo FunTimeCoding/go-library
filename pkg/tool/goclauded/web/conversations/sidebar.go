@@ -21,7 +21,8 @@ func (s *Server) sidebar(
 		}
 	}
 
-	sessions := s.service.EnrichedSessions(0, 0)
+	sessions, e := s.service.EnrichedSessions(0, 0)
+	errors.PanicOnError(e)
 	limit := 30
 
 	if skip >= len(sessions) {

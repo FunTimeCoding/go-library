@@ -1,6 +1,11 @@
 package service
 
-func (s *Service) ReleaseByCallsign(c string) {
-	s.store.ReleaseByCallsign(c)
+func (s *Service) ReleaseByCallsign(c string) error {
+	if e := s.store.ReleaseByCallsign(c); e != nil {
+		return e
+	}
+
 	s.notify()
+
+	return nil
 }

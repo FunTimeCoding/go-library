@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/session"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/writer"
@@ -14,7 +15,8 @@ func (s *Server) exportSession(
 	i *session.Session,
 	basePath string,
 ) string {
-	o := s.service.GetSession(i.Identifier)
+	o, f := s.service.GetSession(i.Identifier)
+	errors.PanicOnError(f)
 	alias := ""
 
 	if o != nil {

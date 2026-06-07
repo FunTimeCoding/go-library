@@ -1,19 +1,22 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"net/http"
 )
 
 func (s *Server) PostListen(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.ListenRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	listening := body.Listening != nil && *body.Listening
-	s.service.SetListening(body.Callsign, listening)
-	w.WriteHeader(http.StatusOK)
+	_ context.Context,
+	r server.PostListenRequestObject,
+) (server.PostListenResponseObject, error) {
+	listening := r.Body.Listening != nil && *r.Body.Listening
+
+	if e := s.service.SetListening(r.Body.Callsign, listening); e != nil {
+		return server.PostListen500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.PostListen200Response{}, nil
 }

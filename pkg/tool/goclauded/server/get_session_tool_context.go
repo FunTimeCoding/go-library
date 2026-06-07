@@ -1,41 +1,40 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSessionToolContext(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier string,
-	p server.GetSessionToolContextParams,
-) {
+	_ context.Context,
+	r server.GetSessionToolContextRequestObject,
+) (server.GetSessionToolContextResponseObject, error) {
 	surround := 1
 
-	if p.Surround != nil {
-		surround = *p.Surround
+	if r.Params.Surround != nil {
+		surround = *r.Params.Surround
 	}
 
-	results := s.service.ToolContext(identifier, p.Filter, surround)
-	var entries []server.ToolContextResult
+	var result []server.ToolContextResult
 
-	for _, tc := range results {
+	for _, c := range s.service.ToolContext(
+		r.Identifier,
+		r.Params.Filter,
+		surround,
+	) {
 		entry := server.ToolContextResult{
-			ToolName: tc.ToolName,
+			ToolName: c.ToolName,
 		}
 		var before []server.SessionMessage
 
-		for _, m := range tc.Before {
-			meta := m.IsMeta
+		for _, m := range c.Before {
 			before = append(
 				before,
 				server.SessionMessage{
 					Role:      m.Role,
 					Text:      m.Text,
 					Timestamp: m.Timestamp,
-					IsMeta:    &meta,
+					IsMeta:    new(m.IsMeta),
 				},
 			)
 		}
@@ -46,15 +45,14 @@ func (s *Server) GetSessionToolContext(
 
 		var after []server.SessionMessage
 
-		for _, m := range tc.After {
-			meta := m.IsMeta
+		for _, m := range c.After {
 			after = append(
 				after,
 				server.SessionMessage{
 					Role:      m.Role,
 					Text:      m.Text,
 					Timestamp: m.Timestamp,
-					IsMeta:    &meta,
+					IsMeta:    new(m.IsMeta),
 				},
 			)
 		}
@@ -63,11 +61,8 @@ func (s *Server) GetSessionToolContext(
 			entry.After = &after
 		}
 
-		entries = append(entries, entry)
+		result = append(result, entry)
 	}
 
-	web.EncodeNotation(
-		w,
-		server.ToolContextResponse{Results: entries},
-	)
+	return server.GetSessionToolContext200JSONResponse{Results: result}, nil
 }

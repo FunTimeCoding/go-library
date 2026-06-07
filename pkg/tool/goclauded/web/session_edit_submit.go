@@ -19,7 +19,7 @@ func (s *Server) sessionEditSubmit(
 	a := argument.NewEditSession()
 	a.Alias = &alias
 	a.Description = &description
-	s.service.EditSession(identifier, a)
+	errors.PanicOnError(s.service.EditSession(identifier, a))
 	http.Redirect(
 		w,
 		r,

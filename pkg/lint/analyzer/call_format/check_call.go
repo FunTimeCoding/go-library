@@ -3,6 +3,7 @@ package call_format
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -29,11 +30,15 @@ func checkCall(
 	closeLine := p.Fset.Position(call.Rparen).Line
 
 	if openLine == closeLine {
-		results.AddBlocked(
-			p.Fset.Position(call.Pos()).Filename,
-			fmt.Sprintf(
-				"call exceeds %d characters; split arguments to separate lines",
-				maxLineLength,
+		results.AddConcern(
+			concern.NewFile(
+				"call_format",
+				fmt.Sprintf(
+					"call exceeds %d characters; split arguments to separate lines",
+					maxLineLength,
+				),
+				p.Fset.Position(call.Pos()).Filename,
+				false,
 			),
 		)
 	} else {

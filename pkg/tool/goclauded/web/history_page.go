@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
 	"maragu.dev/gomponents"
@@ -23,12 +24,13 @@ func (s *Server) historyPage(
 
 	limit := 10
 	offset := (page - 1) * limit
-	entries := s.service.Timeline(
+	entries, e := s.service.Timeline(
 		argument.Timeline{
 			Limit:  limit + 1,
 			Offset: offset,
 		},
 	)
+	errors.PanicOnError(e)
 	hasMore := len(entries) > limit
 
 	if hasMore {

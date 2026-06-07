@@ -3,6 +3,8 @@ package gofix
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/token"
 	"golang.org/x/tools/go/packages"
@@ -12,7 +14,7 @@ import (
 
 func findSingleParameterEdits(
 	all []*packages.Package,
-	r *results,
+	r *output.Results,
 ) []edit {
 	var result []edit
 	sourceCache := make(map[string][]byte)
@@ -76,11 +78,15 @@ func findSingleParameterEdits(
 
 				seen[f.Type.Params.Opening] = true
 				line := p.Fset.Position(f.Pos()).Line
-				r.Add(
-					name,
-					fmt.Sprintf(
-						"collapsed single parameter (line %d)",
-						line,
+				r.AddConcern(
+					concern.NewFile(
+						"single_parameter",
+						fmt.Sprintf(
+							"collapsed single parameter (line %d)",
+							line,
+						),
+						name,
+						true,
 					),
 				)
 				result = append(result, edits...)

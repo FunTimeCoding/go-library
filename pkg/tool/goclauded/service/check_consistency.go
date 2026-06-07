@@ -1,9 +1,13 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+)
 
 func (s *Service) CheckConsistency() {
-	databaseSessions := s.store.AllSessions(0, 0)
+	databaseSessions, e := s.store.AllSessions(0, 0)
+	errors.PanicOnError(e)
 	databaseSet := make(map[string]bool, len(databaseSessions))
 
 	for _, e := range databaseSessions {

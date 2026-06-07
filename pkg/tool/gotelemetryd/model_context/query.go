@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	markResponse "github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/model_context/response"
@@ -22,18 +23,23 @@ func (s *Server) query(
 	o.Since = r.GetString(constant.Since, "")
 	o.Until = r.GetString(constant.Until, "")
 	o.Limit = r.GetInt(constant.Limit, 50)
-	events := s.store.Recent(o)
+	events, e := s.service.Query(o)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	entries := make([]response.Event, len(events))
 
-	for i, e := range events {
+	for i, v := range events {
 		entries[i] = response.Event{
-			Tool:      e.Tool,
-			Surface:   e.Surface,
-			Actor:     e.Actor,
-			Outcome:   e.Outcome,
-			Kind:      e.Kind,
-			Duration:  e.DurationMillisecond,
-			CreatedAt: e.CreatedAt.Format(time.RFC3339),
+			Tool:      v.Tool,
+			Surface:   v.Surface,
+			Actor:     v.Actor,
+			Outcome:   v.Outcome,
+			Kind:      v.Kind,
+			Duration:  v.DurationMillisecond,
+			CreatedAt: v.CreatedAt.Format(time.RFC3339),
 		}
 	}
 

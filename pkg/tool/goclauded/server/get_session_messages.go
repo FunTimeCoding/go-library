@@ -1,35 +1,29 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSessionMessages(
-	w http.ResponseWriter,
-	r *http.Request,
-	identifier string,
-) {
-	messages := s.service.Messages(identifier)
+	_ context.Context,
+	r server.GetSessionMessagesRequestObject,
+) (server.GetSessionMessagesResponseObject, error) {
 	var result []server.SessionMessage
 
-	for _, m := range messages {
-		entry := server.SessionMessage{
+	for _, m := range s.service.Messages(r.Identifier) {
+		e := server.SessionMessage{
 			Role:      m.Role,
 			Text:      m.Text,
 			Timestamp: m.Timestamp,
 		}
 
 		if m.IsMeta {
-			entry.IsMeta = &m.IsMeta
+			e.IsMeta = &m.IsMeta
 		}
 
-		result = append(result, entry)
+		result = append(result, e)
 	}
 
-	web.EncodeNotation(
-		w,
-		server.MessagesResponse{Messages: result},
-	)
+	return server.GetSessionMessages200JSONResponse{Messages: result}, nil
 }

@@ -1,35 +1,35 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"strings"
 )
 
 func (s *Server) checkPreview(
-	w http.ResponseWriter,
 	sessionIdentifier string,
-) {
+) (server.GetCheckResponseObject, error) {
 	name := s.service.CallsignBySessionIdentifier(sessionIdentifier)
 
 	if name == "" {
-		web.EncodeNotation(
-			w,
-			server.CheckResponse{
-				Changed:     false,
-				Sessions:    []server.SessionEntry{},
-				Messages:    []server.Message{},
-				Completions: []server.CompletionEntry{},
-			},
-		)
-
-		return
+		return server.GetCheck200JSONResponse{
+			Changed:     false,
+			Sessions:    []server.SessionEntry{},
+			Messages:    []server.Message{},
+			Completions: []server.CompletionEntry{},
+		}, nil
 	}
 
 	var entries []server.SessionEntry
+	sessions, listError := s.service.ListSessions()
 
-	for _, e := range s.service.ListSessions() {
+	if listError != nil {
+		return server.GetCheck500JSONResponse(
+			*s.captureFail(listError, constant.UnexpectedError),
+		), nil
+	}
+
+	for _, e := range sessions {
 		entry := server.SessionEntry{
 			Callsign: e.CallsignValue(),
 			Topic:    e.Topic,
@@ -44,8 +44,15 @@ func (s *Server) checkPreview(
 	}
 
 	var completions []server.CompletionEntry
+	recent, completionError := s.service.RecentCompletions()
 
-	for _, c := range s.service.RecentCompletions() {
+	if completionError != nil {
+		return server.GetCheck500JSONResponse(
+			*s.captureFail(completionError, constant.UnexpectedError),
+		), nil
+	}
+
+	for _, c := range recent {
 		completions = append(
 			completions,
 			server.CompletionEntry{
@@ -64,14 +71,11 @@ func (s *Server) checkPreview(
 		completions = []server.CompletionEntry{}
 	}
 
-	web.EncodeNotation(
-		w,
-		server.CheckResponse{
-			Callsign:    name,
-			Changed:     true,
-			Sessions:    entries,
-			Messages:    []server.Message{},
-			Completions: completions,
-		},
-	)
+	return server.GetCheck200JSONResponse{
+		Callsign:    name,
+		Changed:     true,
+		Sessions:    entries,
+		Messages:    []server.Message{},
+		Completions: completions,
+	}, nil
 }

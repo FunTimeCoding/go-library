@@ -1,21 +1,21 @@
 package store
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/summary"
-)
+import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/summary"
 
-func (s *Store) SummaryBySession(sessionIdentifier string) string {
+func (s *Store) SummaryBySession(sessionIdentifier string) (string, error) {
 	var i summary.Summary
 	result := s.database.Where(
 		"session_identifier = ?",
 		sessionIdentifier,
 	).Limit(1).Find(&i)
-	errors.PanicOnError(result.Error)
 
-	if result.RowsAffected == 0 {
-		return ""
+	if result.Error != nil {
+		return "", result.Error
 	}
 
-	return i.Body
+	if result.RowsAffected == 0 {
+		return "", nil
+	}
+
+	return i.Body, nil
 }

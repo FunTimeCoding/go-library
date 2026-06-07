@@ -2,6 +2,7 @@ package anonymous_struct
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -24,8 +25,12 @@ func checkStruct(
 		return
 	}
 
-	results.AddBlocked(
-		p.Fset.Position(s.Pos()).Filename,
-		"anonymous struct; extract a named type",
+	results.AddConcern(
+		concern.NewFile(
+			"anonymous_struct",
+			"anonymous struct; extract a named type",
+			p.Fset.Position(s.Pos()).Filename,
+			false,
+		),
 	)
 }

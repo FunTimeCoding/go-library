@@ -1,11 +1,8 @@
 package store
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"time"
-)
+import "time"
 
-func (s *Store) Recent(o *QueryOption) []UsageEvent {
+func (s *Store) Recent(o *QueryOption) ([]UsageEvent, error) {
 	query := s.mapper.Order("created_at DESC")
 
 	if o.Tool != "" {
@@ -49,7 +46,6 @@ func (s *Store) Recent(o *QueryOption) []UsageEvent {
 	}
 
 	var result []UsageEvent
-	errors.PanicOnError(query.Find(&result).Error)
 
-	return result
+	return result, query.Find(&result).Error
 }

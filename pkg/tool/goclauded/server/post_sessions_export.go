@@ -1,25 +1,22 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostSessionsExport(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
-	basePath := s.sessionExportPath
+	_ context.Context,
+	_ server.PostSessionsExportRequestObject,
+) (server.PostSessionsExportResponseObject, error) {
 	var paths []string
 
-	for _, session := range s.service.Sessions() {
-		path := s.exportSession(session, basePath)
-		paths = append(paths, path)
+	for _, e := range s.service.Sessions() {
+		paths = append(
+			paths,
+			s.exportSession(e, s.sessionExportPath),
+		)
 	}
 
-	web.EncodeNotation(
-		w,
-		server.ExportResponse{Paths: paths},
-	)
+	return server.PostSessionsExport200JSONResponse{Paths: paths}, nil
 }

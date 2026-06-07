@@ -10,15 +10,21 @@ import (
 
 func TestConsumeReannounceWhenSet(t *testing.T) {
 	s := store_tester.New(t)
-	r := s.Store.EnsureSession("session-1")
-	s.Store.BindModelContextSession(r.Callsign, "mcp-session-abc")
-	s.Store.ClearBindings()
-	assert.True(t, s.Store.ConsumeReannounce(r.Callsign))
-	assert.False(t, s.Store.ConsumeReannounce(r.Callsign))
+	r := s.EnsureSession("session-1")
+	s.BindModelContextSession(r.Callsign, "mcp-session-abc")
+	s.ClearBindings()
+	first, e := s.Store.ConsumeReannounce(r.Callsign)
+	assert.FatalOnError(t, e)
+	assert.True(t, first)
+	second, e := s.Store.ConsumeReannounce(r.Callsign)
+	assert.FatalOnError(t, e)
+	assert.False(t, second)
 }
 
 func TestConsumeReannounceWhenNotSet(t *testing.T) {
 	s := store_tester.New(t)
-	r := s.Store.EnsureSession("session-1")
-	assert.False(t, s.Store.ConsumeReannounce(r.Callsign))
+	r := s.EnsureSession("session-1")
+	result, e := s.Store.ConsumeReannounce(r.Callsign)
+	assert.FatalOnError(t, e)
+	assert.False(t, result)
 }

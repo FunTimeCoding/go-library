@@ -11,7 +11,7 @@ import (
 
 func TestResolveByName(t *testing.T) {
 	s := store_tester.New(t)
-	r := s.Store.EnsureSession("session-1")
+	r := s.EnsureSession("session-1")
 	resolved := s.Store.ResolveByCallsign(r.Callsign)
 	assert.String(t, "session-1", resolved)
 }
@@ -23,7 +23,7 @@ func TestResolveByNameNotFound(t *testing.T) {
 
 func TestResolveAlias(t *testing.T) {
 	s := store_tester.New(t)
-	s.Store.EnsureSession("session-1")
+	s.EnsureSession("session-1")
 	edit(s, "session-1", &argument.EditSession{Alias: new("my-alias")})
 	resolved := s.Store.ResolveAlias("my-alias")
 	assert.String(t, "session-1", resolved)
@@ -36,7 +36,7 @@ func TestResolveAliasNotFound(t *testing.T) {
 
 func TestSessionByName(t *testing.T) {
 	s := store_tester.New(t)
-	r := s.Store.EnsureSession("session-1")
+	r := s.EnsureSession("session-1")
 	e := s.Store.SessionByCallsign(r.Callsign)
 	assert.String(t, "session-1", e.Identifier)
 }

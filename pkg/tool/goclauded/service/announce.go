@@ -7,14 +7,22 @@ func (s *Service) Announce(
 	name string,
 	topic string,
 	files string,
-) {
-	s.store.Announce(name, topic, files)
-	s.store.LogEvent(
+) error {
+	if e := s.store.Announce(name, topic, files); e != nil {
+		return e
+	}
+
+	if e := s.store.LogEvent(
 		sessionIdentifier,
 		constant.Announce,
 		name,
 		"",
 		topic,
-	)
+	); e != nil {
+		return e
+	}
+
 	s.notify()
+
+	return nil
 }

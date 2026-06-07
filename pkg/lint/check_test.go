@@ -2,6 +2,8 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
@@ -262,7 +264,7 @@ func TestCheckResultImportCollapsed(t *testing.T) {
 		t,
 		r.Entries,
 		"pkg/foo/foo.go",
-		"collapsed single multi-import",
+		constant.SingleMultiImportText,
 	)
 }
 
@@ -285,7 +287,7 @@ func TestCheckResultBlankLineRemoved(t *testing.T) {
 		t,
 		r.Entries,
 		"pkg/foo/foo.go",
-		"removed blank line (line 5)",
+		constant.BlankInsideFunctionText,
 	)
 }
 
@@ -308,70 +310,26 @@ func TestCheckResultBlankLineInserted(t *testing.T) {
 		t,
 		r.Entries,
 		"pkg/foo/foo.go",
-		"inserted blank line (line 5)",
-	)
-}
-
-func TestCheckResultMissingSentry(t *testing.T) {
-	v := virtual_file_system.New()
-	v.Write(
-		"cmd/gofoo/main.go",
-		"package main\n\nfunc main() {}\n",
-	)
-	var r output.Results
-	Check(
-		v,
-		option.New("", false),
-		true,
-		false,
-		false,
-		&r,
-	)
-	assertBlocked(
-		t,
-		r.Entries,
-		"cmd/gofoo",
-		"missing sentry reporter",
+		constant.MissingBlankBeforeControlText,
 	)
 }
 
 func assertApplied(
 	t *testing.T,
-	entries []output.Result,
+	entries []*concern.Concern,
 	path string,
 	message string,
 ) {
 	t.Helper()
 
-	for _, e := range entries {
-		if e.Path == path && e.Message == message && !e.Blocked {
+	for _, c := range entries {
+		if c.Path == path && c.Text == message && c.Fixed {
 			return
 		}
 	}
 
 	t.Errorf(
-		"expected applied result {path: %q, message: %q} not found",
-		path,
-		message,
-	)
-}
-
-func assertBlocked(
-	t *testing.T,
-	entries []output.Result,
-	path string,
-	message string,
-) {
-	t.Helper()
-
-	for _, e := range entries {
-		if e.Path == path && e.Message == message && e.Blocked {
-			return
-		}
-	}
-
-	t.Errorf(
-		"expected blocked result {path: %q, message: %q} not found",
+		"expected applied concern {path: %q, text: %q} not found",
 		path,
 		message,
 	)

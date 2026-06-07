@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
@@ -45,7 +46,11 @@ func (s *Server) history(
 		a.Before = time.Now().Add(-beforeDuration).UTC().Format(time.RFC3339)
 	}
 
-	merged := s.service.Timeline(a)
+	merged, f := s.service.Timeline(a)
+
+	if f != nil {
+		return s.captureFail(f, library.UnexpectedError)
+	}
 
 	if len(merged) == 0 {
 		return response.Success("No events recorded.")

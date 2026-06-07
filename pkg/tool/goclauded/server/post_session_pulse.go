@@ -1,19 +1,20 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"net/http"
 )
 
 func (s *Server) PostSessionPulse(
-	w http.ResponseWriter,
-	r *http.Request,
-	identifier string,
-) {
-	var body server.PulseRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	s.service.SendPulse(identifier, "", body.Body)
-	w.WriteHeader(http.StatusOK)
+	_ context.Context,
+	r server.PostSessionPulseRequestObject,
+) (server.PostSessionPulseResponseObject, error) {
+	if e := s.service.SendPulse(r.Identifier, "", r.Body.Body); e != nil {
+		return server.PostSessionPulse500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.PostSessionPulse200Response{}, nil
 }

@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -18,6 +20,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
 
 // AnnounceRequest defines model for AnnounceRequest.
@@ -65,6 +68,12 @@ type EditSessionRequest struct {
 	Name        *string `json:"name,omitempty"`
 	Session     string  `json:"session"`
 	Topic       *string `json:"topic,omitempty"`
+}
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
 }
 
 // ExportResponse defines model for ExportResponse.
@@ -1313,51 +1322,1629 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type PostAnnounceRequestObject struct {
+	Body *PostAnnounceJSONRequestBody
+}
+
+type PostAnnounceResponseObject interface {
+	VisitPostAnnounceResponse(w http.ResponseWriter) error
+}
+
+type PostAnnounce200Response struct {
+}
+
+func (response PostAnnounce200Response) VisitPostAnnounceResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostAnnounce500JSONResponse ErrorResponse
+
+func (response PostAnnounce500JSONResponse) VisitPostAnnounceResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostBackfillRequestObject struct {
+}
+
+type PostBackfillResponseObject interface {
+	VisitPostBackfillResponse(w http.ResponseWriter) error
+}
+
+type PostBackfill200JSONResponse BackfillResponse
+
+func (response PostBackfill200JSONResponse) VisitPostBackfillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostBackfill500JSONResponse ErrorResponse
+
+func (response PostBackfill500JSONResponse) VisitPostBackfillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetCheckRequestObject struct {
+	Params GetCheckParams
+}
+
+type GetCheckResponseObject interface {
+	VisitGetCheckResponse(w http.ResponseWriter) error
+}
+
+type GetCheck200JSONResponse CheckResponse
+
+func (response GetCheck200JSONResponse) VisitGetCheckResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetCheck500JSONResponse ErrorResponse
+
+func (response GetCheck500JSONResponse) VisitGetCheckResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostListenRequestObject struct {
+	Body *PostListenJSONRequestBody
+}
+
+type PostListenResponseObject interface {
+	VisitPostListenResponse(w http.ResponseWriter) error
+}
+
+type PostListen200Response struct {
+}
+
+func (response PostListen200Response) VisitPostListenResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostListen500JSONResponse ErrorResponse
+
+func (response PostListen500JSONResponse) VisitPostListenResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostRegisterRequestObject struct {
+	Body *PostRegisterJSONRequestBody
+}
+
+type PostRegisterResponseObject interface {
+	VisitPostRegisterResponse(w http.ResponseWriter) error
+}
+
+type PostRegister200JSONResponse RegisterResponse
+
+func (response PostRegister200JSONResponse) VisitPostRegisterResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostRegister500JSONResponse ErrorResponse
+
+func (response PostRegister500JSONResponse) VisitPostRegisterResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostReleaseRequestObject struct {
+	Body *PostReleaseJSONRequestBody
+}
+
+type PostReleaseResponseObject interface {
+	VisitPostReleaseResponse(w http.ResponseWriter) error
+}
+
+type PostRelease200Response struct {
+}
+
+func (response PostRelease200Response) VisitPostReleaseResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostRelease500JSONResponse ErrorResponse
+
+func (response PostRelease500JSONResponse) VisitPostReleaseResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetResolveRequestObject struct {
+	Params GetResolveParams
+}
+
+type GetResolveResponseObject interface {
+	VisitGetResolveResponse(w http.ResponseWriter) error
+}
+
+type GetResolve200JSONResponse ResolveResponse
+
+func (response GetResolve200JSONResponse) VisitGetResolveResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetResolve404Response struct {
+}
+
+func (response GetResolve404Response) VisitGetResolveResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type GetResolve409JSONResponse ResolveAmbiguousResponse
+
+func (response GetResolve409JSONResponse) VisitGetResolveResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(409)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetResolve500JSONResponse ErrorResponse
+
+func (response GetResolve500JSONResponse) VisitGetResolveResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSendRequestObject struct {
+	Body *PostSendJSONRequestBody
+}
+
+type PostSendResponseObject interface {
+	VisitPostSendResponse(w http.ResponseWriter) error
+}
+
+type PostSend200Response struct {
+}
+
+func (response PostSend200Response) VisitPostSendResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostSend500JSONResponse ErrorResponse
+
+func (response PostSend500JSONResponse) VisitPostSendResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteSessionRequestObject struct {
+	Callsign string `json:"callsign"`
+}
+
+type DeleteSessionResponseObject interface {
+	VisitDeleteSessionResponse(w http.ResponseWriter) error
+}
+
+type DeleteSession200Response struct {
+}
+
+func (response DeleteSession200Response) VisitDeleteSessionResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type DeleteSession500JSONResponse ErrorResponse
+
+func (response DeleteSession500JSONResponse) VisitDeleteSessionResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionsRequestObject struct {
+	Params GetSessionsParams
+}
+
+type GetSessionsResponseObject interface {
+	VisitGetSessionsResponse(w http.ResponseWriter) error
+}
+
+type GetSessions200JSONResponse SessionListResponse
+
+func (response GetSessions200JSONResponse) VisitGetSessionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessions500JSONResponse ErrorResponse
+
+func (response GetSessions500JSONResponse) VisitGetSessionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionsBashDumpRequestObject struct {
+}
+
+type GetSessionsBashDumpResponseObject interface {
+	VisitGetSessionsBashDumpResponse(w http.ResponseWriter) error
+}
+
+type GetSessionsBashDump200JSONResponse BashDumpResponse
+
+func (response GetSessionsBashDump200JSONResponse) VisitGetSessionsBashDumpResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionsBashDump500JSONResponse ErrorResponse
+
+func (response GetSessionsBashDump500JSONResponse) VisitGetSessionsBashDumpResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostEditSessionRequestObject struct {
+	Body *PostEditSessionJSONRequestBody
+}
+
+type PostEditSessionResponseObject interface {
+	VisitPostEditSessionResponse(w http.ResponseWriter) error
+}
+
+type PostEditSession200Response struct {
+}
+
+func (response PostEditSession200Response) VisitPostEditSessionResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostEditSession500JSONResponse ErrorResponse
+
+func (response PostEditSession500JSONResponse) VisitPostEditSessionResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSessionsExportRequestObject struct {
+}
+
+type PostSessionsExportResponseObject interface {
+	VisitPostSessionsExportResponse(w http.ResponseWriter) error
+}
+
+type PostSessionsExport200JSONResponse ExportResponse
+
+func (response PostSessionsExport200JSONResponse) VisitPostSessionsExportResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSessionsExport500JSONResponse ErrorResponse
+
+func (response PostSessionsExport500JSONResponse) VisitPostSessionsExportResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionsFindRequestObject struct {
+	Params GetSessionsFindParams
+}
+
+type GetSessionsFindResponseObject interface {
+	VisitGetSessionsFindResponse(w http.ResponseWriter) error
+}
+
+type GetSessionsFind200JSONResponse FindResponse
+
+func (response GetSessionsFind200JSONResponse) VisitGetSessionsFindResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionsFind500JSONResponse ErrorResponse
+
+func (response GetSessionsFind500JSONResponse) VisitGetSessionsFindResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionsHeatmapRequestObject struct {
+	Params GetSessionsHeatmapParams
+}
+
+type GetSessionsHeatmapResponseObject interface {
+	VisitGetSessionsHeatmapResponse(w http.ResponseWriter) error
+}
+
+type GetSessionsHeatmap200JSONResponse HeatmapResponse
+
+func (response GetSessionsHeatmap200JSONResponse) VisitGetSessionsHeatmapResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionsHeatmap500JSONResponse ErrorResponse
+
+func (response GetSessionsHeatmap500JSONResponse) VisitGetSessionsHeatmapResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteSessionByIdRequestObject struct {
+	Identifier string `json:"identifier"`
+}
+
+type DeleteSessionByIdResponseObject interface {
+	VisitDeleteSessionByIdResponse(w http.ResponseWriter) error
+}
+
+type DeleteSessionById200Response struct {
+}
+
+func (response DeleteSessionById200Response) VisitDeleteSessionByIdResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type DeleteSessionById500JSONResponse ErrorResponse
+
+func (response DeleteSessionById500JSONResponse) VisitDeleteSessionByIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionDetailRequestObject struct {
+	Identifier string `json:"identifier"`
+}
+
+type GetSessionDetailResponseObject interface {
+	VisitGetSessionDetailResponse(w http.ResponseWriter) error
+}
+
+type GetSessionDetail200JSONResponse SessionDetailResponse
+
+func (response GetSessionDetail200JSONResponse) VisitGetSessionDetailResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionDetail404Response struct {
+}
+
+func (response GetSessionDetail404Response) VisitGetSessionDetailResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type GetSessionDetail500JSONResponse ErrorResponse
+
+func (response GetSessionDetail500JSONResponse) VisitGetSessionDetailResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSessionExportRequestObject struct {
+	Identifier string `json:"identifier"`
+}
+
+type PostSessionExportResponseObject interface {
+	VisitPostSessionExportResponse(w http.ResponseWriter) error
+}
+
+type PostSessionExport200JSONResponse ExportResponse
+
+func (response PostSessionExport200JSONResponse) VisitPostSessionExportResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSessionExport404Response struct {
+}
+
+func (response PostSessionExport404Response) VisitPostSessionExportResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type PostSessionExport500JSONResponse ErrorResponse
+
+func (response PostSessionExport500JSONResponse) VisitPostSessionExportResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionMessagesRequestObject struct {
+	Identifier string `json:"identifier"`
+}
+
+type GetSessionMessagesResponseObject interface {
+	VisitGetSessionMessagesResponse(w http.ResponseWriter) error
+}
+
+type GetSessionMessages200JSONResponse MessagesResponse
+
+func (response GetSessionMessages200JSONResponse) VisitGetSessionMessagesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionMessages500JSONResponse ErrorResponse
+
+func (response GetSessionMessages500JSONResponse) VisitGetSessionMessagesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionPeekRequestObject struct {
+	Identifier string `json:"identifier"`
+}
+
+type GetSessionPeekResponseObject interface {
+	VisitGetSessionPeekResponse(w http.ResponseWriter) error
+}
+
+type GetSessionPeek200JSONResponse PeekResponse
+
+func (response GetSessionPeek200JSONResponse) VisitGetSessionPeekResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionPeek500JSONResponse ErrorResponse
+
+func (response GetSessionPeek500JSONResponse) VisitGetSessionPeekResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSessionPulseRequestObject struct {
+	Identifier string `json:"identifier"`
+	Body       *PostSessionPulseJSONRequestBody
+}
+
+type PostSessionPulseResponseObject interface {
+	VisitPostSessionPulseResponse(w http.ResponseWriter) error
+}
+
+type PostSessionPulse200Response struct {
+}
+
+func (response PostSessionPulse200Response) VisitPostSessionPulseResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostSessionPulse500JSONResponse ErrorResponse
+
+func (response PostSessionPulse500JSONResponse) VisitPostSessionPulseResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionToolContextRequestObject struct {
+	Identifier string `json:"identifier"`
+	Params     GetSessionToolContextParams
+}
+
+type GetSessionToolContextResponseObject interface {
+	VisitGetSessionToolContextResponse(w http.ResponseWriter) error
+}
+
+type GetSessionToolContext200JSONResponse ToolContextResponse
+
+func (response GetSessionToolContext200JSONResponse) VisitGetSessionToolContextResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionToolContext500JSONResponse ErrorResponse
+
+func (response GetSessionToolContext500JSONResponse) VisitGetSessionToolContextResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionToolsRequestObject struct {
+	Identifier string `json:"identifier"`
+}
+
+type GetSessionToolsResponseObject interface {
+	VisitGetSessionToolsResponse(w http.ResponseWriter) error
+}
+
+type GetSessionTools200JSONResponse ToolsResponse
+
+func (response GetSessionTools200JSONResponse) VisitGetSessionToolsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSessionTools500JSONResponse ErrorResponse
+
+func (response GetSessionTools500JSONResponse) VisitGetSessionToolsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSweepRequestObject struct {
+}
+
+type PostSweepResponseObject interface {
+	VisitPostSweepResponse(w http.ResponseWriter) error
+}
+
+type PostSweep200JSONResponse SweepResponse
+
+func (response PostSweep200JSONResponse) VisitPostSweepResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSweep500JSONResponse ErrorResponse
+
+func (response PostSweep500JSONResponse) VisitPostSweepResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetTimelineRequestObject struct {
+	Params GetTimelineParams
+}
+
+type GetTimelineResponseObject interface {
+	VisitGetTimelineResponse(w http.ResponseWriter) error
+}
+
+type GetTimeline200JSONResponse []TimelineEntry
+
+func (response GetTimeline200JSONResponse) VisitGetTimelineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetTimeline500JSONResponse ErrorResponse
+
+func (response GetTimeline500JSONResponse) VisitGetTimelineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsageRequestObject struct {
+}
+
+type GetUsageResponseObject interface {
+	VisitGetUsageResponse(w http.ResponseWriter) error
+}
+
+type GetUsage200JSONResponse UsageResponse
+
+func (response GetUsage200JSONResponse) VisitGetUsageResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsage204Response struct {
+}
+
+func (response GetUsage204Response) VisitGetUsageResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type GetUsage500JSONResponse ErrorResponse
+
+func (response GetUsage500JSONResponse) VisitGetUsageResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetWaitRequestObject struct {
+	Params GetWaitParams
+}
+
+type GetWaitResponseObject interface {
+	VisitGetWaitResponse(w http.ResponseWriter) error
+}
+
+type GetWait200JSONResponse WaitResponse
+
+func (response GetWait200JSONResponse) VisitGetWaitResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetWait500JSONResponse ErrorResponse
+
+func (response GetWait500JSONResponse) VisitGetWaitResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (POST /api/announce)
+	PostAnnounce(ctx context.Context, request PostAnnounceRequestObject) (PostAnnounceResponseObject, error)
+
+	// (POST /api/backfill)
+	PostBackfill(ctx context.Context, request PostBackfillRequestObject) (PostBackfillResponseObject, error)
+
+	// (GET /api/check)
+	GetCheck(ctx context.Context, request GetCheckRequestObject) (GetCheckResponseObject, error)
+
+	// (POST /api/listen)
+	PostListen(ctx context.Context, request PostListenRequestObject) (PostListenResponseObject, error)
+
+	// (POST /api/register)
+	PostRegister(ctx context.Context, request PostRegisterRequestObject) (PostRegisterResponseObject, error)
+
+	// (POST /api/release)
+	PostRelease(ctx context.Context, request PostReleaseRequestObject) (PostReleaseResponseObject, error)
+
+	// (GET /api/resolve)
+	GetResolve(ctx context.Context, request GetResolveRequestObject) (GetResolveResponseObject, error)
+
+	// (POST /api/send)
+	PostSend(ctx context.Context, request PostSendRequestObject) (PostSendResponseObject, error)
+
+	// (DELETE /api/session/{callsign})
+	DeleteSession(ctx context.Context, request DeleteSessionRequestObject) (DeleteSessionResponseObject, error)
+
+	// (GET /api/sessions)
+	GetSessions(ctx context.Context, request GetSessionsRequestObject) (GetSessionsResponseObject, error)
+
+	// (GET /api/sessions/bash-dump)
+	GetSessionsBashDump(ctx context.Context, request GetSessionsBashDumpRequestObject) (GetSessionsBashDumpResponseObject, error)
+
+	// (POST /api/sessions/edit)
+	PostEditSession(ctx context.Context, request PostEditSessionRequestObject) (PostEditSessionResponseObject, error)
+
+	// (POST /api/sessions/export)
+	PostSessionsExport(ctx context.Context, request PostSessionsExportRequestObject) (PostSessionsExportResponseObject, error)
+
+	// (GET /api/sessions/find)
+	GetSessionsFind(ctx context.Context, request GetSessionsFindRequestObject) (GetSessionsFindResponseObject, error)
+
+	// (GET /api/sessions/heatmap)
+	GetSessionsHeatmap(ctx context.Context, request GetSessionsHeatmapRequestObject) (GetSessionsHeatmapResponseObject, error)
+
+	// (DELETE /api/sessions/{identifier})
+	DeleteSessionById(ctx context.Context, request DeleteSessionByIdRequestObject) (DeleteSessionByIdResponseObject, error)
+
+	// (GET /api/sessions/{identifier}/detail)
+	GetSessionDetail(ctx context.Context, request GetSessionDetailRequestObject) (GetSessionDetailResponseObject, error)
+
+	// (POST /api/sessions/{identifier}/export)
+	PostSessionExport(ctx context.Context, request PostSessionExportRequestObject) (PostSessionExportResponseObject, error)
+
+	// (GET /api/sessions/{identifier}/messages)
+	GetSessionMessages(ctx context.Context, request GetSessionMessagesRequestObject) (GetSessionMessagesResponseObject, error)
+
+	// (GET /api/sessions/{identifier}/peek)
+	GetSessionPeek(ctx context.Context, request GetSessionPeekRequestObject) (GetSessionPeekResponseObject, error)
+
+	// (POST /api/sessions/{identifier}/pulse)
+	PostSessionPulse(ctx context.Context, request PostSessionPulseRequestObject) (PostSessionPulseResponseObject, error)
+
+	// (GET /api/sessions/{identifier}/tool-context)
+	GetSessionToolContext(ctx context.Context, request GetSessionToolContextRequestObject) (GetSessionToolContextResponseObject, error)
+
+	// (GET /api/sessions/{identifier}/tools)
+	GetSessionTools(ctx context.Context, request GetSessionToolsRequestObject) (GetSessionToolsResponseObject, error)
+
+	// (POST /api/sweep)
+	PostSweep(ctx context.Context, request PostSweepRequestObject) (PostSweepResponseObject, error)
+
+	// (GET /api/timeline)
+	GetTimeline(ctx context.Context, request GetTimelineRequestObject) (GetTimelineResponseObject, error)
+
+	// (GET /api/usage)
+	GetUsage(ctx context.Context, request GetUsageRequestObject) (GetUsageResponseObject, error)
+
+	// (GET /api/wait)
+	GetWait(ctx context.Context, request GetWaitRequestObject) (GetWaitResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// PostAnnounce operation middleware
+func (sh *strictHandler) PostAnnounce(w http.ResponseWriter, r *http.Request) {
+	var request PostAnnounceRequestObject
+
+	var body PostAnnounceJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostAnnounce(ctx, request.(PostAnnounceRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostAnnounce")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostAnnounceResponseObject); ok {
+		if err := validResponse.VisitPostAnnounceResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostBackfill operation middleware
+func (sh *strictHandler) PostBackfill(w http.ResponseWriter, r *http.Request) {
+	var request PostBackfillRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostBackfill(ctx, request.(PostBackfillRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostBackfill")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostBackfillResponseObject); ok {
+		if err := validResponse.VisitPostBackfillResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetCheck operation middleware
+func (sh *strictHandler) GetCheck(w http.ResponseWriter, r *http.Request, params GetCheckParams) {
+	var request GetCheckRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetCheck(ctx, request.(GetCheckRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetCheck")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetCheckResponseObject); ok {
+		if err := validResponse.VisitGetCheckResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostListen operation middleware
+func (sh *strictHandler) PostListen(w http.ResponseWriter, r *http.Request) {
+	var request PostListenRequestObject
+
+	var body PostListenJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostListen(ctx, request.(PostListenRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostListen")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostListenResponseObject); ok {
+		if err := validResponse.VisitPostListenResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostRegister operation middleware
+func (sh *strictHandler) PostRegister(w http.ResponseWriter, r *http.Request) {
+	var request PostRegisterRequestObject
+
+	var body PostRegisterJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostRegister(ctx, request.(PostRegisterRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostRegister")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostRegisterResponseObject); ok {
+		if err := validResponse.VisitPostRegisterResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostRelease operation middleware
+func (sh *strictHandler) PostRelease(w http.ResponseWriter, r *http.Request) {
+	var request PostReleaseRequestObject
+
+	var body PostReleaseJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostRelease(ctx, request.(PostReleaseRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostRelease")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostReleaseResponseObject); ok {
+		if err := validResponse.VisitPostReleaseResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetResolve operation middleware
+func (sh *strictHandler) GetResolve(w http.ResponseWriter, r *http.Request, params GetResolveParams) {
+	var request GetResolveRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetResolve(ctx, request.(GetResolveRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetResolve")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetResolveResponseObject); ok {
+		if err := validResponse.VisitGetResolveResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostSend operation middleware
+func (sh *strictHandler) PostSend(w http.ResponseWriter, r *http.Request) {
+	var request PostSendRequestObject
+
+	var body PostSendJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostSend(ctx, request.(PostSendRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostSend")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostSendResponseObject); ok {
+		if err := validResponse.VisitPostSendResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteSession operation middleware
+func (sh *strictHandler) DeleteSession(w http.ResponseWriter, r *http.Request, callsign string) {
+	var request DeleteSessionRequestObject
+
+	request.Callsign = callsign
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteSession(ctx, request.(DeleteSessionRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteSession")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteSessionResponseObject); ok {
+		if err := validResponse.VisitDeleteSessionResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessions operation middleware
+func (sh *strictHandler) GetSessions(w http.ResponseWriter, r *http.Request, params GetSessionsParams) {
+	var request GetSessionsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessions(ctx, request.(GetSessionsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessions")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionsResponseObject); ok {
+		if err := validResponse.VisitGetSessionsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessionsBashDump operation middleware
+func (sh *strictHandler) GetSessionsBashDump(w http.ResponseWriter, r *http.Request) {
+	var request GetSessionsBashDumpRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessionsBashDump(ctx, request.(GetSessionsBashDumpRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessionsBashDump")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionsBashDumpResponseObject); ok {
+		if err := validResponse.VisitGetSessionsBashDumpResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostEditSession operation middleware
+func (sh *strictHandler) PostEditSession(w http.ResponseWriter, r *http.Request) {
+	var request PostEditSessionRequestObject
+
+	var body PostEditSessionJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostEditSession(ctx, request.(PostEditSessionRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostEditSession")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostEditSessionResponseObject); ok {
+		if err := validResponse.VisitPostEditSessionResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostSessionsExport operation middleware
+func (sh *strictHandler) PostSessionsExport(w http.ResponseWriter, r *http.Request) {
+	var request PostSessionsExportRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostSessionsExport(ctx, request.(PostSessionsExportRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostSessionsExport")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostSessionsExportResponseObject); ok {
+		if err := validResponse.VisitPostSessionsExportResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessionsFind operation middleware
+func (sh *strictHandler) GetSessionsFind(w http.ResponseWriter, r *http.Request, params GetSessionsFindParams) {
+	var request GetSessionsFindRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessionsFind(ctx, request.(GetSessionsFindRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessionsFind")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionsFindResponseObject); ok {
+		if err := validResponse.VisitGetSessionsFindResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessionsHeatmap operation middleware
+func (sh *strictHandler) GetSessionsHeatmap(w http.ResponseWriter, r *http.Request, params GetSessionsHeatmapParams) {
+	var request GetSessionsHeatmapRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessionsHeatmap(ctx, request.(GetSessionsHeatmapRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessionsHeatmap")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionsHeatmapResponseObject); ok {
+		if err := validResponse.VisitGetSessionsHeatmapResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteSessionById operation middleware
+func (sh *strictHandler) DeleteSessionById(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request DeleteSessionByIdRequestObject
+
+	request.Identifier = identifier
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteSessionById(ctx, request.(DeleteSessionByIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteSessionById")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteSessionByIdResponseObject); ok {
+		if err := validResponse.VisitDeleteSessionByIdResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessionDetail operation middleware
+func (sh *strictHandler) GetSessionDetail(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request GetSessionDetailRequestObject
+
+	request.Identifier = identifier
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessionDetail(ctx, request.(GetSessionDetailRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessionDetail")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionDetailResponseObject); ok {
+		if err := validResponse.VisitGetSessionDetailResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostSessionExport operation middleware
+func (sh *strictHandler) PostSessionExport(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request PostSessionExportRequestObject
+
+	request.Identifier = identifier
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostSessionExport(ctx, request.(PostSessionExportRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostSessionExport")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostSessionExportResponseObject); ok {
+		if err := validResponse.VisitPostSessionExportResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessionMessages operation middleware
+func (sh *strictHandler) GetSessionMessages(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request GetSessionMessagesRequestObject
+
+	request.Identifier = identifier
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessionMessages(ctx, request.(GetSessionMessagesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessionMessages")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionMessagesResponseObject); ok {
+		if err := validResponse.VisitGetSessionMessagesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessionPeek operation middleware
+func (sh *strictHandler) GetSessionPeek(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request GetSessionPeekRequestObject
+
+	request.Identifier = identifier
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessionPeek(ctx, request.(GetSessionPeekRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessionPeek")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionPeekResponseObject); ok {
+		if err := validResponse.VisitGetSessionPeekResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostSessionPulse operation middleware
+func (sh *strictHandler) PostSessionPulse(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request PostSessionPulseRequestObject
+
+	request.Identifier = identifier
+
+	var body PostSessionPulseJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostSessionPulse(ctx, request.(PostSessionPulseRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostSessionPulse")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostSessionPulseResponseObject); ok {
+		if err := validResponse.VisitPostSessionPulseResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessionToolContext operation middleware
+func (sh *strictHandler) GetSessionToolContext(w http.ResponseWriter, r *http.Request, identifier string, params GetSessionToolContextParams) {
+	var request GetSessionToolContextRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessionToolContext(ctx, request.(GetSessionToolContextRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessionToolContext")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionToolContextResponseObject); ok {
+		if err := validResponse.VisitGetSessionToolContextResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSessionTools operation middleware
+func (sh *strictHandler) GetSessionTools(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request GetSessionToolsRequestObject
+
+	request.Identifier = identifier
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSessionTools(ctx, request.(GetSessionToolsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSessionTools")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSessionToolsResponseObject); ok {
+		if err := validResponse.VisitGetSessionToolsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostSweep operation middleware
+func (sh *strictHandler) PostSweep(w http.ResponseWriter, r *http.Request) {
+	var request PostSweepRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostSweep(ctx, request.(PostSweepRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostSweep")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostSweepResponseObject); ok {
+		if err := validResponse.VisitPostSweepResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetTimeline operation middleware
+func (sh *strictHandler) GetTimeline(w http.ResponseWriter, r *http.Request, params GetTimelineParams) {
+	var request GetTimelineRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetTimeline(ctx, request.(GetTimelineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetTimeline")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetTimelineResponseObject); ok {
+		if err := validResponse.VisitGetTimelineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetUsage operation middleware
+func (sh *strictHandler) GetUsage(w http.ResponseWriter, r *http.Request) {
+	var request GetUsageRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsage(ctx, request.(GetUsageRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsage")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetUsageResponseObject); ok {
+		if err := validResponse.VisitGetUsageResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetWait operation middleware
+func (sh *strictHandler) GetWait(w http.ResponseWriter, r *http.Request, params GetWaitParams) {
+	var request GetWaitRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetWait(ctx, request.(GetWaitRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetWait")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetWaitResponseObject); ok {
+		if err := validResponse.VisitGetWaitResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"UgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

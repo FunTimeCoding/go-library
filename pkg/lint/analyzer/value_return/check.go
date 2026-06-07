@@ -3,6 +3,7 @@ package value_return
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
@@ -75,13 +76,17 @@ func Check(
 						continue
 					}
 
-					results.AddBlocked(
-						p.Fset.Position(f.Pos()).Filename,
-						fmt.Sprintf(
-							"%s returns %s.%s by value",
-							f.Name.Name,
-							a.Name(),
-							named.Obj().Name(),
+					results.AddConcern(
+						concern.NewFile(
+							"value_return",
+							fmt.Sprintf(
+								"%s returns %s.%s by value",
+								f.Name.Name,
+								a.Name(),
+								named.Obj().Name(),
+							),
+							p.Fset.Position(f.Pos()).Filename,
+							false,
 						),
 					)
 				}

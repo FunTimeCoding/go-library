@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -23,7 +24,13 @@ func (s *Server) moment(
 		return response.Fail("line is required: %v", e)
 	}
 
-	s.service.Moment(c.SessionIdentifier, c.Callsign, line)
+	if f := s.service.Moment(
+		c.SessionIdentifier,
+		c.Callsign,
+		line,
+	); f != nil {
+		return s.captureFail(f, library.UnexpectedError)
+	}
 
 	return response.Success("moment captured")
 }

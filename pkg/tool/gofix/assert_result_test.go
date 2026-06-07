@@ -1,25 +1,28 @@
 package gofix
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"testing"
+)
 
-func filterApplied(entries []result) []result {
-	var r []result
+func filterApplied(entries []*concern.Concern) []*concern.Concern {
+	var r []*concern.Concern
 
-	for _, e := range entries {
-		if !e.Blocked {
-			r = append(r, e)
+	for _, c := range entries {
+		if c.Fixed {
+			r = append(r, c)
 		}
 	}
 
 	return r
 }
 
-func filterBlocked(entries []result) []result {
-	var r []result
+func filterBlocked(entries []*concern.Concern) []*concern.Concern {
+	var r []*concern.Concern
 
-	for _, e := range entries {
-		if e.Blocked {
-			r = append(r, e)
+	for _, c := range entries {
+		if !c.Fixed {
+			r = append(r, c)
 		}
 	}
 
@@ -28,20 +31,20 @@ func filterBlocked(entries []result) []result {
 
 func assertResult(
 	t *testing.T,
-	entries []result,
+	entries []*concern.Concern,
 	path string,
 	message string,
 ) {
 	t.Helper()
 
-	for _, e := range entries {
-		if e.Path == path && e.Message == message {
+	for _, c := range entries {
+		if c.Path == path && c.Text == message {
 			return
 		}
 	}
 
 	t.Errorf(
-		"expected result {path: %q, message: %q} not found",
+		"expected concern {path: %q, text: %q} not found",
 		path,
 		message,
 	)

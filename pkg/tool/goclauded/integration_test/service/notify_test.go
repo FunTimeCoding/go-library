@@ -13,7 +13,7 @@ func TestAnnounceNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Store.EnsureSession("session-1")
 	s.Notifier.Reset()
-	s.Service.Announce("session-1", r.Callsign, "working", "")
+	s.Announce("session-1", r.Callsign, "working", "")
 	assert.True(t, s.Notifier.Notified == 1)
 }
 
@@ -22,7 +22,7 @@ func TestCompleteNotifies(t *testing.T) {
 	r := s.Store.EnsureSession("session-1")
 	s.Store.Announce(r.Callsign, "topic", "")
 	s.Notifier.Reset()
-	s.Service.Complete("session-1", r.Callsign, "topic", "done")
+	s.Complete("session-1", r.Callsign, "topic", "done")
 	assert.True(t, s.Notifier.Notified == 1)
 }
 
@@ -30,7 +30,7 @@ func TestReleaseNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Store.EnsureSession("session-1")
 	s.Notifier.Reset()
-	s.Service.Release("session-1", r.Callsign)
+	s.Release("session-1", r.Callsign)
 	assert.True(t, s.Notifier.Notified == 1)
 }
 
@@ -38,7 +38,7 @@ func TestSendNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Store.EnsureSession("session-1")
 	s.Notifier.Reset()
-	s.Service.Send(r.Callsign, "", "hello")
+	s.Send(r.Callsign, "", "hello")
 	assert.True(t, s.Notifier.Notified == 1)
 }
 
@@ -47,6 +47,6 @@ func TestEditSessionNotifies(t *testing.T) {
 	s.Store.EnsureSession("session-1")
 	s.Notifier.Reset()
 	alias := "my-project"
-	s.Service.EditSession("session-1", &argument.EditSession{Alias: &alias})
+	s.EditSession("session-1", &argument.EditSession{Alias: &alias})
 	assert.True(t, s.Notifier.Notified == 1)
 }

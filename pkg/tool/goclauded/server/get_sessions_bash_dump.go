@@ -1,27 +1,23 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSessionsBashDump(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var commands []string
+	_ context.Context,
+	_ server.GetSessionsBashDumpRequestObject,
+) (server.GetSessionsBashDumpResponseObject, error) {
+	var result []string
 
-	for _, session := range s.service.Sessions() {
-		for _, call := range s.service.ToolCalls(session.Identifier) {
-			if call.Name == "Bash" && call.Detail != "" {
-				commands = append(commands, call.Detail)
+	for _, e := range s.service.Sessions() {
+		for _, c := range s.service.ToolCalls(e.Identifier) {
+			if c.Name == "Bash" && c.Detail != "" {
+				result = append(result, c.Detail)
 			}
 		}
 	}
 
-	web.EncodeNotation(
-		w,
-		server.BashDumpResponse{Commands: commands},
-	)
+	return server.GetSessionsBashDump200JSONResponse{Commands: result}, nil
 }

@@ -1,15 +1,12 @@
 package store
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"time"
-)
+import "time"
 
 func (s *Store) Summary(
 	since string,
 	until string,
 	groupBy string,
-) []SummaryRow {
+) ([]SummaryRow, error) {
 	selectClause := "tool, COUNT(*) as count"
 	groupClause := "tool"
 
@@ -45,7 +42,6 @@ func (s *Store) Summary(
 	}
 
 	var result []SummaryRow
-	errors.PanicOnError(query.Find(&result).Error)
 
-	return result
+	return result, query.Find(&result).Error
 }

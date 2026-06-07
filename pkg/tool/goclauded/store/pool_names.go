@@ -5,12 +5,15 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/pool_name"
 )
 
-func (s *Store) poolNames() []string {
+func (s *Store) poolNames() ([]string, error) {
 	var entries []pool_name.PoolName
-	s.database.Order(constant.Identifier).Find(&entries)
+
+	if e := s.database.Order(constant.Identifier).Find(&entries).Error; e != nil {
+		return nil, e
+	}
 
 	if len(entries) == 0 {
-		return defaultNames
+		return defaultNames, nil
 	}
 
 	result := make([]string, len(entries))
@@ -19,5 +22,5 @@ func (s *Store) poolNames() []string {
 		result[i] = e.Name
 	}
 
-	return result
+	return result, nil
 }

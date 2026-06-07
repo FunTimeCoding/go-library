@@ -1,19 +1,17 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"sort"
 )
 
 func (s *Server) GetSessionsHeatmap(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.GetSessionsHeatmapParams,
-) {
+	_ context.Context,
+	r server.GetSessionsHeatmapRequestObject,
+) (server.GetSessionsHeatmapResponseObject, error) {
 	sessions := s.service.Sessions()
-	bash := p.Bash != nil && *p.Bash
+	bash := r.Params.Bash != nil && *r.Params.Bash
 	type stats struct {
 		Calls    int
 		Sessions int
@@ -81,13 +79,11 @@ func (s *Server) GetSessionsHeatmap(
 			return entries[i].Calls > entries[j].Calls
 		},
 	)
-	web.EncodeNotation(
-		w,
-		server.HeatmapResponse{
-			SessionCount:      len(sessions),
-			SessionsWithCalls: sessionsWithCalls,
-			TotalCalls:        totalCalls,
-			Entries:           entries,
-		},
-	)
+
+	return server.GetSessionsHeatmap200JSONResponse{
+		SessionCount:      len(sessions),
+		SessionsWithCalls: sessionsWithCalls,
+		TotalCalls:        totalCalls,
+		Entries:           entries,
+	}, nil
 }

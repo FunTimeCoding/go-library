@@ -8,6 +8,6 @@ import (
 func (s *Service) WaitMessage(
 	name string,
 	timeout time.Duration,
-) []message.Message {
+) ([]message.Message, error) {
 	return s.store.WaitMessage(name, timeout)
 }

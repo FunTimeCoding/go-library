@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"time"
 )
@@ -10,12 +11,14 @@ func (s *Service) sweepInactivity() {
 	sessions := s.store.SweepInactivity(cutoff)
 
 	for _, e := range sessions {
-		s.store.LogEvent(
-			e.Identifier,
-			constant.InactivityTimeout,
-			e.CallsignValue(),
-			e.Topic,
-			"",
+		errors.PanicOnError(
+			s.store.LogEvent(
+				e.Identifier,
+				constant.InactivityTimeout,
+				e.CallsignValue(),
+				e.Topic,
+				"",
+			),
 		)
 	}
 

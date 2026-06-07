@@ -1,6 +1,7 @@
 package forbidden_import
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -30,9 +31,13 @@ func Check(
 					}
 				}
 
-				results.AddBlocked(
-					p.Fset.Position(i.Pos()).Filename,
-					b.message,
+				results.AddConcern(
+					concern.NewFile(
+						"forbidden_import",
+						b.message,
+						p.Fset.Position(i.Pos()).Filename,
+						false,
+					),
 				)
 			}
 		}

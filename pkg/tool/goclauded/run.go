@@ -88,7 +88,10 @@ func Run(
 			library.AddressPort(o.Port),
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
-					server.New(v, l, h, o.SessionExportPath),
+					generated.NewStrictHandler(
+						server.New(v, l, r, h, o.SessionExportPath),
+						nil,
+					),
 					m,
 				)
 				model_context.New(

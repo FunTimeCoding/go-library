@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -25,7 +26,10 @@ func (s *Server) send(
 	}
 
 	to := q.GetString(constant.To, "")
-	s.service.Send(c.Callsign, to, body)
+
+	if f := s.service.Send(c.Callsign, to, body); f != nil {
+		return s.captureFail(f, library.UnexpectedError)
+	}
 
 	if to != "" {
 		return response.Success(fmt.Sprintf("Sent to %s", to))

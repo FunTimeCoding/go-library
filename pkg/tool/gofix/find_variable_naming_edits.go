@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/variable_naming"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/token"
 	"golang.org/x/tools/go/packages"
@@ -13,7 +15,7 @@ import (
 func findVariableNamingEdits(
 	fileSet *token.FileSet,
 	all []*packages.Package,
-	r *results,
+	r *output.Results,
 ) []edit {
 	var result []edit
 	seen := make(map[token.Pos]bool)
@@ -46,12 +48,16 @@ func findVariableNamingEdits(
 
 						seen[rename.Object.Pos()] = true
 						path := fileSet.File(rename.Object.Pos()).Name()
-						r.Add(
-							path,
-							fmt.Sprintf(
-								"renamed %s → %s",
-								rename.Object.Name(),
-								rename.NewName,
+						r.AddConcern(
+							concern.NewFile(
+								"variable_naming",
+								fmt.Sprintf(
+									"renamed %s → %s",
+									rename.Object.Name(),
+									rename.NewName,
+								),
+								path,
+								true,
 							),
 						)
 						references := findAllReferences(

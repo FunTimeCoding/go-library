@@ -1,13 +1,15 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
 
 func (s *Server) activitySection() gomponents.Node {
-	entries := s.service.Timeline(argument.Timeline{Limit: 10})
+	entries, e := s.service.Timeline(argument.Timeline{Limit: 10})
+	errors.PanicOnError(e)
 
 	if len(entries) == 0 {
 		return html.P(gomponents.Text("No recent activity."))

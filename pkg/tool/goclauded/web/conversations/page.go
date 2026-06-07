@@ -12,7 +12,8 @@ func (s *Server) page(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	sessions := s.service.EnrichedSessions(0, 0)
+	sessions, e := s.service.EnrichedSessions(0, 0)
+	errors.PanicOnError(e)
 	limit := 30
 	hasMore := len(sessions) > limit
 

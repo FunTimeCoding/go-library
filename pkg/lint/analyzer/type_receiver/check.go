@@ -2,6 +2,7 @@ package type_receiver
 
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -75,9 +76,13 @@ func Check(
 					return true
 				}
 
-				results.AddBlocked(
-					p.Fset.Position(s.Pos()).Filename,
-					"multiple types with receivers in one package; extract to subpackage",
+				results.AddConcern(
+					concern.NewFile(
+						"type_receiver",
+						"multiple types with receivers in one package; extract to subpackage",
+						p.Fset.Position(s.Pos()).Filename,
+						false,
+					),
 				)
 				reported = true
 

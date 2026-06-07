@@ -3,6 +3,7 @@ package forbidden_call
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
@@ -46,11 +47,15 @@ func checkCall(
 		return
 	}
 
-	results.AddBlocked(
-		p.Fset.Position(call.Pos()).Filename,
-		fmt.Sprintf(
-			"use pkg/system/run instead of exec.%s",
-			f.Name(),
+	results.AddConcern(
+		concern.NewFile(
+			"forbidden_call",
+			fmt.Sprintf(
+				"use pkg/system/run instead of exec.%s",
+				f.Name(),
+			),
+			p.Fset.Position(call.Pos()).Filename,
+			false,
 		),
 	)
 }

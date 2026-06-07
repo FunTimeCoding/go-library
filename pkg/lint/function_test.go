@@ -23,6 +23,7 @@ func TestFunctionEmptyBody(t *testing.T) {
 				Key:      "empty-function-body",
 				Text:     "Function body with only whitespace",
 				Path:     "Bravo",
+				Type:     concern.Line,
 				Line:     3,
 				LineText: "func main() {\n}",
 				Fixed:    true,

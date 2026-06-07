@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -13,7 +14,8 @@ func (s *Server) sessionEditForm(
 	r *http.Request,
 ) {
 	identifier := r.PathValue(constant.Identifier)
-	e := s.service.GetSession(identifier)
+	e, f := s.service.GetSession(identifier)
+	errors.PanicOnError(f)
 
 	if e == nil {
 		s.view.RenderPage(

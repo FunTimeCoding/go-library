@@ -7,6 +7,7 @@ import (
 )
 
 func (c *Client) AcquireTarget(identifier string) context.Context {
+	c.reconnectIfNeeded()
 	c.mu.Lock()
 	defer c.mu.Unlock()
 

@@ -1,32 +1,37 @@
 package output
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+)
 
 func PrintResults(
-	entries []Result,
+	entries []*concern.Concern,
 	summary bool,
 ) bool {
 	var hasBlocked bool
 	seen := make(map[string]bool)
 
-	for _, e := range entries {
-		if e.Blocked {
+	for _, c := range entries {
+		line := formatConcern(c)
+
+		if !c.Fixed {
 			hasBlocked = true
-			fmt.Printf("%s: %s\n", e.Path, e.Message)
+			fmt.Println(line)
 
 			continue
 		}
 
 		if summary {
-			if !seen[e.Path] {
-				seen[e.Path] = true
-				fmt.Println(e.Path)
+			if !seen[c.Path] {
+				seen[c.Path] = true
+				fmt.Println(c.Path)
 			}
 
 			continue
 		}
 
-		fmt.Printf("%s: %s\n", e.Path, e.Message)
+		fmt.Println(line)
 	}
 
 	return hasBlocked

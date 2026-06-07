@@ -1,39 +1,43 @@
 package server
 
 import (
+	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"strings"
 )
 
 func (s *Server) GetCheck(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.GetCheckParams,
-) {
-	preview := p.Preview != nil && *p.Preview
+	_ context.Context,
+	r server.GetCheckRequestObject,
+) (server.GetCheckResponseObject, error) {
+	preview := r.Params.Preview != nil && *r.Params.Preview
 
 	if preview {
-		s.checkPreview(w, p.Session)
-
-		return
+		return s.checkPreview(r.Params.Session)
 	}
 
-	r := s.service.Check(p.Session)
+	result, checkError := s.service.Check(r.Params.Session)
+
+	if checkError != nil {
+		return server.GetCheck500JSONResponse(
+			*s.captureFail(checkError, library.UnexpectedError),
+		), nil
+	}
+
 	s.logger.Structured(
 		"hook_check",
 		"claude_session_identifier",
-		p.Session,
+		r.Params.Session,
 		constant.Callsign,
-		r.Callsign,
+		result.Callsign,
 		"changed",
-		r.Changed,
+		result.Changed,
 	)
 	var entries []server.SessionEntry
 
-	for _, e := range r.Sessions {
+	for _, e := range result.Sessions {
 		entry := server.SessionEntry{
 			Callsign: e.CallsignValue(),
 			Topic:    e.Topic,
@@ -44,7 +48,13 @@ func (s *Server) GetCheck(
 			entry.Files = &files
 		}
 
-		labels := s.service.LabelsBySession(e.Identifier)
+		labels, labelError := s.service.LabelsBySession(e.Identifier)
+
+		if labelError != nil {
+			return server.GetCheck500JSONResponse(
+				*s.captureFail(labelError, library.UnexpectedError),
+			), nil
+		}
 
 		if len(labels) > 0 {
 			var le []server.LabelEntry
@@ -64,7 +74,7 @@ func (s *Server) GetCheck(
 
 	var messages []server.Message
 
-	for _, m := range r.Messages {
+	for _, m := range result.Messages {
 		messages = append(
 			messages,
 			server.Message{
@@ -77,7 +87,7 @@ func (s *Server) GetCheck(
 
 	var completions []server.CompletionEntry
 
-	for _, c := range r.Completions {
+	for _, c := range result.Completions {
 		completions = append(
 			completions,
 			server.CompletionEntry{
@@ -102,10 +112,10 @@ func (s *Server) GetCheck(
 
 	var memoryActivity *[]server.MemoryActivityEntry
 
-	if len(r.MemoryActivity) > 0 {
+	if len(result.MemoryActivity) > 0 {
 		var ma []server.MemoryActivityEntry
 
-		for _, a := range r.MemoryActivity {
+		for _, a := range result.MemoryActivity {
 			ma = append(
 				ma,
 				server.MemoryActivityEntry{
@@ -121,18 +131,18 @@ func (s *Server) GetCheck(
 	}
 
 	response := server.CheckResponse{
-		Callsign:       r.Callsign,
-		Changed:        r.Changed,
+		Callsign:       result.Callsign,
+		Changed:        result.Changed,
 		Sessions:       entries,
 		Messages:       messages,
 		Completions:    completions,
 		MemoryActivity: memoryActivity,
 	}
 
-	if len(r.Pulses) > 0 {
+	if len(result.Pulses) > 0 {
 		var pe []server.PulseEntry
 
-		for _, p := range r.Pulses {
+		for _, p := range result.Pulses {
 			pe = append(
 				pe,
 				server.PulseEntry{
@@ -145,13 +155,13 @@ func (s *Server) GetCheck(
 		response.Pulses = &pe
 	}
 
-	if r.TimeoutMessage != "" {
-		response.TimeoutMessage = &r.TimeoutMessage
+	if result.TimeoutMessage != "" {
+		response.TimeoutMessage = &result.TimeoutMessage
 	}
 
-	if r.Reannounce {
+	if result.Reannounce {
 		response.Reannounce = new(true)
 	}
 
-	web.EncodeNotation(w, response)
+	return server.GetCheck200JSONResponse(response), nil
 }

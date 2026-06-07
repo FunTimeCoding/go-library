@@ -3,6 +3,8 @@ package gofix
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"io"
 	"os"
 	"testing"
@@ -12,115 +14,145 @@ func TestPrintResults(t *testing.T) {
 	t.Run(
 		"VerboseApplied",
 		func(t *testing.T) {
-			entries := []result{
-				{
-					Path:    "pkg/foo/bar.go",
-					Message: "de-aliased sentry → constant",
-				},
-				{
-					Path:    "pkg/foo/baz.go",
-					Message: "renamed dirName → directoryName (4 references)",
-				},
-				{Path: "pkg/foo/baz.go", Message: "formatted call (line 42)"},
+			entries := []*concern.Concern{
+				concern.NewFile(
+					"import_alias",
+					"de-aliased sentry → constant",
+					"pkg/foo/bar.go",
+					true,
+				),
+				concern.NewFile(
+					"renamed",
+					"renamed dirName → directoryName (4 references)",
+					"pkg/foo/baz.go",
+					true,
+				),
+				concern.NewFile(
+					"call_format",
+					"formatted call (line 42)",
+					"pkg/foo/baz.go",
+					true,
+				),
 			}
-			output := captureStdout(
+			captured := captureStdout(
 				func() {
-					hasBlocked := printResults(entries, false)
+					hasBlocked := output.PrintResults(entries, false)
 					assert.False(t, hasBlocked)
 				},
 			)
 			assert.String(
 				t,
-				"pkg/foo/bar.go: de-aliased sentry → constant\npkg/foo/baz.go: renamed dirName → directoryName (4 references)\npkg/foo/baz.go: formatted call (line 42)\n",
-				output,
+				"pkg/foo/bar.go: de-aliased sentry → constant (auto-fixed)\npkg/foo/baz.go: renamed dirName → directoryName (4 references) (auto-fixed)\npkg/foo/baz.go: formatted call (line 42) (auto-fixed)\n",
+				captured,
 			)
 		},
 	)
 	t.Run(
 		"SummaryDeduplicates",
 		func(t *testing.T) {
-			entries := []result{
-				{
-					Path:    "pkg/foo/bar.go",
-					Message: "de-aliased sentry → constant",
-				},
-				{
-					Path:    "pkg/foo/baz.go",
-					Message: "renamed dirName → directoryName (4 references)",
-				},
-				{Path: "pkg/foo/baz.go", Message: "formatted call (line 42)"},
+			entries := []*concern.Concern{
+				concern.NewFile(
+					"import_alias",
+					"de-aliased sentry → constant",
+					"pkg/foo/bar.go",
+					true,
+				),
+				concern.NewFile(
+					"renamed",
+					"renamed dirName → directoryName (4 references)",
+					"pkg/foo/baz.go",
+					true,
+				),
+				concern.NewFile(
+					"call_format",
+					"formatted call (line 42)",
+					"pkg/foo/baz.go",
+					true,
+				),
 			}
-			output := captureStdout(
+			captured := captureStdout(
 				func() {
-					hasBlocked := printResults(entries, true)
+					hasBlocked := output.PrintResults(entries, true)
 					assert.False(t, hasBlocked)
 				},
 			)
 			assert.String(
 				t,
 				"pkg/foo/bar.go\npkg/foo/baz.go\n",
-				output,
+				captured,
 			)
 		},
 	)
 	t.Run(
 		"BlockedAlwaysDetailed",
 		func(t *testing.T) {
-			entries := []result{
-				{Path: "pkg/foo/bar.go", Message: "de-aliased h → helper"},
-				{
-					Path:    "pkg/foo/baz.go",
-					Message: "cannot de-alias mark → server (local collision with \"server\")",
-					Blocked: true,
-				},
+			entries := []*concern.Concern{
+				concern.NewFile(
+					"import_alias",
+					"de-aliased h → helper",
+					"pkg/foo/bar.go",
+					true,
+				),
+				concern.NewFile(
+					"import_alias",
+					"cannot de-alias mark → server (local collision with \"server\")",
+					"pkg/foo/baz.go",
+					false,
+				),
 			}
-			output := captureStdout(
+			captured := captureStdout(
 				func() {
-					hasBlocked := printResults(entries, true)
+					hasBlocked := output.PrintResults(entries, true)
 					assert.True(t, hasBlocked)
 				},
 			)
 			assert.String(
 				t,
 				"pkg/foo/bar.go\npkg/foo/baz.go: cannot de-alias mark → server (local collision with \"server\")\n",
-				output,
+				captured,
 			)
 		},
 	)
 	t.Run(
 		"BlockedVerbose",
 		func(t *testing.T) {
-			entries := []result{
-				{Path: "pkg/foo/bar.go", Message: "de-aliased h → helper"},
-				{
-					Path:    "pkg/foo/baz.go",
-					Message: "cannot rename dirName (collision)",
-					Blocked: true,
-				},
+			entries := []*concern.Concern{
+				concern.NewFile(
+					"import_alias",
+					"de-aliased h → helper",
+					"pkg/foo/bar.go",
+					true,
+				),
+				concern.NewFile(
+					"collision",
+					"cannot rename dirName (collision)",
+					"pkg/foo/baz.go",
+					false,
+				),
 			}
-			output := captureStdout(
+			captured := captureStdout(
 				func() {
-					hasBlocked := printResults(entries, false)
+					hasBlocked := output.PrintResults(entries, false)
 					assert.True(t, hasBlocked)
 				},
 			)
 			assert.String(
 				t,
-				"pkg/foo/bar.go: de-aliased h → helper\npkg/foo/baz.go: cannot rename dirName (collision)\n",
-				output,
+				"pkg/foo/bar.go: de-aliased h → helper (auto-fixed)\npkg/foo/baz.go: cannot rename dirName (collision)\n",
+				captured,
 			)
 		},
 	)
 	t.Run(
 		"EmptyNoOutput",
 		func(t *testing.T) {
-			output := captureStdout(
+			captured := captureStdout(
 				func() {
-					hasBlocked := printResults(nil, false)
+					hasBlocked := output.PrintResults(nil, false)
 					assert.False(t, hasBlocked)
 				},
 			)
-			assert.String(t, "", output)
+			assert.String(t, "", captured)
 		},
 	)
 }

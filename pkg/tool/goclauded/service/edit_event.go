@@ -9,7 +9,11 @@ func (s *Service) EditEvent(
 	identifier uint,
 	message string,
 ) (*event.Event, error) {
-	edited := s.store.EditEvent(identifier, message)
+	edited, e := s.store.EditEvent(identifier, message)
+
+	if e != nil {
+		return nil, e
+	}
 
 	switch edited.Kind {
 	case constant.Summarize:

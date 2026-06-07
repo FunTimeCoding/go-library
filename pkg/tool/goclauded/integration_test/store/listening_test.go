@@ -10,11 +10,11 @@ import (
 
 func TestSetListening(t *testing.T) {
 	s := store_tester.New(t)
-	r := s.Store.EnsureSession("session-1")
-	s.Store.SetListening(r.Callsign, true)
-	e := s.Store.GetSession("session-1")
+	r := s.EnsureSession("session-1")
+	assert.FatalOnError(t, s.Store.SetListening(r.Callsign, true))
+	e := s.GetSession("session-1")
 	assert.True(t, e.Listening)
-	s.Store.SetListening(r.Callsign, false)
-	e = s.Store.GetSession("session-1")
+	assert.FatalOnError(t, s.Store.SetListening(r.Callsign, false))
+	e = s.GetSession("session-1")
 	assert.False(t, e.Listening)
 }

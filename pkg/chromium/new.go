@@ -24,9 +24,10 @@ func New(
 	result := &Client{
 		host:            host,
 		port:            port,
+		allocator:       allocator,
+		allocatorCancel: allocatorCancel,
 		context:         c,
 		cancel:          cancel,
-		allocatorCancel: allocatorCancel,
 		targets:         make(map[string]context.Context),
 	}
 	result.listenTargets()

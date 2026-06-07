@@ -1,12 +1,20 @@
 package server
 
-import "net/http"
+import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
+)
 
 func (s *Server) DeleteSessionById(
-	w http.ResponseWriter,
-	r *http.Request,
-	identifier string,
-) {
-	s.service.DeleteSession(identifier)
-	w.WriteHeader(http.StatusOK)
+	_ context.Context,
+	r server.DeleteSessionByIdRequestObject,
+) (server.DeleteSessionByIdResponseObject, error) {
+	if e := s.service.DeleteSession(r.Identifier); e != nil {
+		return server.DeleteSessionById500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.DeleteSessionById200Response{}, nil
 }

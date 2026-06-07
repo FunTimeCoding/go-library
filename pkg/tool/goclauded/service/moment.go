@@ -6,14 +6,19 @@ func (s *Service) Moment(
 	sessionIdentifier string,
 	name string,
 	line string,
-) {
-	s.store.LogEvent(
+) error {
+	if e := s.store.LogEvent(
 		sessionIdentifier,
 		constant.Moment,
 		name,
 		"",
 		line,
-	)
+	); e != nil {
+		return e
+	}
+
 	s.ForwardImpression(line, name)
 	s.notify()
+
+	return nil
 }

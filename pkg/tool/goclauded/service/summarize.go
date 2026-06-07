@@ -7,14 +7,20 @@ func (s *Service) Summarize(
 	name string,
 	body string,
 ) error {
-	s.store.UpsertSummary(sessionIdentifier, name, body)
-	s.store.UpsertEvent(
+	if e := s.store.UpsertSummary(sessionIdentifier, name, body); e != nil {
+		return e
+	}
+
+	if e := s.store.UpsertEvent(
 		sessionIdentifier,
 		constant.Summarize,
 		name,
 		"",
 		body,
-	)
+	); e != nil {
+		return e
+	}
+
 	s.notify()
 
 	return s.pushSummary(

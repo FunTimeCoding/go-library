@@ -2,6 +2,7 @@ package string_concatenation
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/suppress"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
@@ -29,8 +30,12 @@ func checkAssign(
 		return
 	}
 
-	results.AddBlocked(
-		p.Fset.Position(s.Pos()).Filename,
-		"use fmt.Sprintf instead of string concatenation",
+	results.AddConcern(
+		concern.NewFile(
+			"string_concatenation",
+			"use fmt.Sprintf instead of string concatenation",
+			p.Fset.Position(s.Pos()).Filename,
+			false,
+		),
 	)
 }

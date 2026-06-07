@@ -1,33 +1,21 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostSessionExport(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier string,
-) {
-	session := s.service.Resolve(identifier)
+	_ context.Context,
+	r server.PostSessionExportRequestObject,
+) (server.PostSessionExportResponseObject, error) {
+	e := s.service.Resolve(r.Identifier)
 
-	if session.Identifier == "" {
-		w.WriteHeader(http.StatusNotFound)
-
-		return
+	if e.Identifier == "" {
+		return server.PostSessionExport404Response{}, nil
 	}
 
-	web.EncodeNotation(
-		w,
-		server.ExportResponse{
-			Paths: []string{
-				s.exportSession(
-					session,
-					s.sessionExportPath,
-				),
-			},
-		},
-	)
+	return server.PostSessionExport200JSONResponse{
+		Paths: []string{s.exportSession(e, s.sessionExportPath)},
+	}, nil
 }

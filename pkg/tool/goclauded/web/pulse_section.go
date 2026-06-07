@@ -2,13 +2,15 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
 
 func (s *Server) pulseSection(identifier string) gomponents.Node {
-	pulses := s.service.PulsesBySession(identifier)
+	pulses, e := s.service.PulsesBySession(identifier)
+	errors.PanicOnError(e)
 	var nodes []gomponents.Node
 
 	if len(pulses) > 0 {

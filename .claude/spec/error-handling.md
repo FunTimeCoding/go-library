@@ -215,28 +215,47 @@ the error message itself (e.g. "service is required").
 
 ## Store Method Rule
 
-Store methods called only from web handlers or workers must use `PanicOnError`
-internally and return nothing. Store methods called from MCP handlers must return
-`error` so the caller can translate it.
+Three caller categories determine how store methods handle errors:
+
+| Caller | Store returns | Caller handles |
+|--------|-------------|----------------|
+| Web handler (HTML, recovery middleware) | `error` | `PanicOnError` — recovery middleware catches, returns 500 |
+| Worker / sweep | void, `PanicOnError` inside | `withRecovery` catches, worker continues |
+| MCP handler | `error` | `captureFail` / `captureDetail` → structured tool result |
+| REST handler (manual or strict) | `error` | `captureFail` → structured JSON error with Sentry event ID |
+
+The default direction is: store methods return `error`. Web callers wrap
+with `PanicOnError`; MCP and REST callers handle explicitly. Worker-only
+store methods may `PanicOnError` internally when they have no other
+callers.
 
 ```go
-// Only called from web/worker → panic inside, void return
-func (s *Store) CreateIfAbsent(v *Record) {
-    errors.PanicOnError(
-        s.database.Clauses(clause.OnConflict{DoNothing: true}).Create(v).Error,
-    )
-}
-
-// Called from MCP handler → return error
+// Returns error — called from MCP, REST, and web
 func (s *Store) UpdateStatus(identifier string, status string) error {
     return s.database.Model(&Record{}).
         Where("identifier = ?", identifier).
         Update("status", status).Error
 }
+
+// Web caller — panics, caught by recovery middleware
+errors.PanicOnError(s.store.UpdateStatus(id, status))
+
+// MCP caller — captures to Sentry, returns structured error
+if e := s.store.UpdateStatus(id, status); e != nil {
+    return s.captureFail(e, "update status failed")
+}
+
+// REST caller — captures to Sentry, writes JSON error response
+if e := s.service.UpdateStatus(id, status); e != nil {
+    s.captureFail(w, e, constant.UnexpectedError)
+    return
+}
 ```
 
-Methods called from both web and MCP return `error`. The web caller wraps with
-`PanicOnError`; the MCP caller handles explicitly.
+Web handlers rely on panic + recovery middleware because there is no
+structured error rendering in the web UI yet. This is intentional —
+the panic path is correct and visible via Sentry until a proper error
+display mechanism (toast/notification) is built into `pkg/web/layout`.
 
 ## Worker Recovery Pattern
 

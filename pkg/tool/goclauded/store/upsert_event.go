@@ -1,9 +1,6 @@
 package store
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
-)
+import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
 
 func (s *Store) UpsertEvent(
 	sessionIdentifier string,
@@ -11,7 +8,7 @@ func (s *Store) UpsertEvent(
 	name string,
 	target string,
 	body string,
-) {
+) error {
 	var existing event.Event
 	query := s.database.Where(
 		"session_identifier = ? AND kind = ?",
@@ -24,22 +21,20 @@ func (s *Store) UpsertEvent(
 	}
 
 	result := query.Limit(1).Find(&existing)
-	errors.PanicOnError(result.Error)
 
-	if result.RowsAffected > 0 {
-		errors.PanicOnError(
-			s.database.Model(&existing).
-				Updates(
-					map[string]any{
-						"name":   name,
-						"target": target,
-						"body":   body,
-					},
-				).Error,
-		)
-
-		return
+	if result.Error != nil {
+		return result.Error
 	}
 
-	s.LogEvent(sessionIdentifier, kind, name, target, body)
+	if result.RowsAffected > 0 {
+		return s.database.Model(&existing).Updates(
+			map[string]any{
+				"name":   name,
+				"target": target,
+				"body":   body,
+			},
+		).Error
+	}
+
+	return s.LogEvent(sessionIdentifier, kind, name, target, body)
 }

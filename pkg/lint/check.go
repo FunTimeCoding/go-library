@@ -1,7 +1,6 @@
 package lint
 
 import (
-	"fmt"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
@@ -37,13 +36,6 @@ func Check(
 
 	if stubTest {
 		generateStubTests(v, fixes, paths, fix)
-	}
-
-	for _, name := range missingSentryPrograms(v) {
-		r.AddBlocked(
-			fmt.Sprintf("cmd/%s", name),
-			"missing sentry reporter",
-		)
 	}
 
 	runCheckers(

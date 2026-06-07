@@ -26,7 +26,16 @@ func New(t *testing.T) *Server {
 			t,
 			func(m *http.ServeMux) {
 				generated.HandlerFromMux(
-					server.New(s.Service, l, t.TempDir(), t.TempDir()),
+					generated.NewStrictHandler(
+						server.New(
+							s.Service,
+							l,
+							memory.New(),
+							t.TempDir(),
+							t.TempDir(),
+						),
+						nil,
+					),
 					m,
 				)
 				model_context.New(

@@ -8,22 +8,26 @@ import (
 func (s *Store) WaitMessage(
 	name string,
 	timeout time.Duration,
-) []message.Message {
+) ([]message.Message, error) {
 	if !s.isListening(name) {
-		return nil
+		return nil, nil
 	}
 
 	deadline := time.Now().Add(timeout)
 
 	for time.Now().Before(deadline) {
-		messages := s.PendingMessages(name)
+		messages, e := s.PendingMessages(name)
+
+		if e != nil {
+			return nil, e
+		}
 
 		if len(messages) > 0 {
-			return messages
+			return messages, nil
 		}
 
 		time.Sleep(2 * time.Second)
 	}
 
-	return nil
+	return nil, nil
 }

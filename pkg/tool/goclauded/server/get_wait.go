@@ -1,32 +1,38 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"time"
 )
 
 func (s *Server) GetWait(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.GetWaitParams,
-) {
+	_ context.Context,
+	r server.GetWaitRequestObject,
+) (server.GetWaitResponseObject, error) {
 	timeout := 30
 
-	if p.Timeout != nil {
-		timeout = *p.Timeout
+	if r.Params.Timeout != nil {
+		timeout = *r.Params.Timeout
 	}
 
-	pending := s.service.WaitMessage(
-		p.Callsign,
+	pending, e := s.service.WaitMessage(
+		r.Params.Callsign,
 		time.Duration(timeout)*time.Second,
 	)
-	var messages []server.Message
+
+	if e != nil {
+		return server.GetWait500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	var result []server.Message
 
 	for _, m := range pending {
-		messages = append(
-			messages,
+		result = append(
+			result,
 			server.Message{
 				From:      m.FromName,
 				Body:      m.Body,
@@ -35,14 +41,9 @@ func (s *Server) GetWait(
 		)
 	}
 
-	if messages == nil {
-		messages = []server.Message{}
+	if result == nil {
+		result = []server.Message{}
 	}
 
-	web.EncodeNotation(
-		w,
-		server.WaitResponse{
-			Messages: messages,
-		},
-	)
+	return server.GetWait200JSONResponse{Messages: result}, nil
 }

@@ -3,6 +3,8 @@ package lint
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	lintConstant "github.com/funtimecoding/go-library/pkg/lint/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/option"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -33,9 +35,23 @@ func Lint(
 
 		if fix {
 			system.Remove(p)
-			r.Add(p, "removed empty directory")
+			r.AddConcern(
+				concern.NewFile(
+					"empty_directory",
+					"removed empty directory",
+					p,
+					true,
+				),
+			)
 		} else {
-			r.AddBlocked(p, "empty directory")
+			r.AddConcern(
+				concern.NewFile(
+					"empty_directory",
+					"empty directory",
+					p,
+					false,
+				),
+			)
 		}
 	}
 
@@ -61,9 +77,23 @@ func Lint(
 
 		if fix {
 			system.Remove(p)
-			r.Add(p, "removed empty file")
+			r.AddConcern(
+				concern.NewFile(
+					"empty_file",
+					"removed empty file",
+					p,
+					true,
+				),
+			)
 		} else {
-			r.AddBlocked(p, "empty file")
+			r.AddConcern(
+				concern.NewFile(
+					"empty_file",
+					"empty file",
+					p,
+					false,
+				),
+			)
 		}
 	}
 
@@ -81,9 +111,23 @@ func Lint(
 		if isExecutable(v.Read(p)) {
 			if fix {
 				system.Remove(p)
-				r.Add(p, "removed stray binary")
+				r.AddConcern(
+					concern.NewFile(
+						lintConstant.StrayBinaryKey,
+						"removed stray binary",
+						p,
+						true,
+					),
+				)
 			} else {
-				r.AddBlocked(p, "stray binary")
+				r.AddConcern(
+					concern.NewFile(
+						lintConstant.StrayBinaryKey,
+						lintConstant.StrayBinaryText,
+						p,
+						false,
+					),
+				)
 			}
 		}
 	}

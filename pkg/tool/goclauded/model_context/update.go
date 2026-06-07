@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
@@ -37,12 +38,14 @@ func (s *Server) update(
 		}
 	}
 
-	s.service.Update(
+	if f := s.service.Update(
 		c.SessionIdentifier,
 		c.Callsign,
 		topic,
 		join.NewLine(files),
-	)
+	); f != nil {
+		return s.captureFail(f, library.UnexpectedError)
+	}
 
 	return response.Success(
 		fmt.Sprintf("Updated scope: %s", topic),

@@ -1,7 +1,6 @@
 package store
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
 	"time"
 )
@@ -12,29 +11,24 @@ func (s *Store) EventsSince(
 	kind string,
 	limit int,
 	offset int,
-) []event.Event {
-	query := s.database.Model(event.Stub())
+) ([]event.Event, error) {
+	q := s.database.Model(event.Stub())
 
 	if !since.IsZero() {
-		query = query.Where("created_at >= ?", since)
+		q = q.Where("created_at >= ?", since)
 	}
 
 	if !before.IsZero() {
-		query = query.Where("created_at <= ?", before)
+		q = q.Where("created_at <= ?", before)
 	}
 
 	if kind != "" {
-		query = query.Where("kind = ?", kind)
+		q = q.Where("kind = ?", kind)
 	}
 
 	var result []event.Event
-	errors.PanicOnError(
-		query.
-			Order("created_at DESC").
-			Limit(limit).
-			Offset(offset).
-			Find(&result).Error,
-	)
 
-	return result
+	return result, q.Order(
+		"created_at DESC",
+	).Limit(limit).Offset(offset).Find(&result).Error
 }

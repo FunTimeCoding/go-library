@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -24,7 +25,11 @@ func (s *Server) complete(
 		return response.Fail("message is required: %v", e)
 	}
 
-	topic := s.service.CompleteTask(c.Callsign)
+	topic, f := s.service.CompleteTask(c.Callsign)
+
+	if f != nil {
+		return s.captureFail(f, library.UnexpectedError)
+	}
 
 	if topic == "" {
 		topic = q.GetString(constant.Topic, "")
@@ -34,7 +39,14 @@ func (s *Server) complete(
 		return response.Fail("no active topic - provide a topic parameter or announce first")
 	}
 
-	s.service.Complete(c.SessionIdentifier, c.Callsign, topic, message)
+	if f := s.service.Complete(
+		c.SessionIdentifier,
+		c.Callsign,
+		topic,
+		message,
+	); f != nil {
+		return s.captureFail(f, library.UnexpectedError)
+	}
 
 	return response.Success(
 		fmt.Sprintf("Completed %s: %s", topic, message),

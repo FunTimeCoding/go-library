@@ -2,6 +2,7 @@ package defer_close
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/types"
@@ -33,12 +34,16 @@ func checkDefer(
 		return
 	}
 
-	results.AddBlocked(
-		p.Fset.Position(d.Pos()).Filename,
-		fmt.Sprintf(
-			"use defer errors.PanicClose(%s) instead of defer %s.Close()",
-			types.ExprString(call.X),
-			types.ExprString(call.X),
+	results.AddConcern(
+		concern.NewFile(
+			"defer_close",
+			fmt.Sprintf(
+				"use defer errors.PanicClose(%s) instead of defer %s.Close()",
+				types.ExprString(call.X),
+				types.ExprString(call.X),
+			),
+			p.Fset.Position(d.Pos()).Filename,
+			false,
 		),
 	)
 }

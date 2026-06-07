@@ -14,7 +14,7 @@ func TestUpdate(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Store.EnsureSession("session-1")
 	s.Store.Announce(r.Callsign, "initial topic", "")
-	s.Service.Update("session-1", r.Callsign, "new scope", "pkg/tool")
+	s.Update("session-1", r.Callsign, "new scope", "pkg/tool")
 	e := s.Store.GetSession("session-1")
 	assert.String(t, "new scope", e.Topic)
 	assert.String(t, "pkg/tool", e.Files)

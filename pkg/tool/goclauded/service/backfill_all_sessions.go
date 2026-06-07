@@ -1,9 +1,13 @@
 package service
 
+import "github.com/funtimecoding/go-library/pkg/errors"
+
 func (s *Service) BackfillAllSessions() *BackfillResult {
 	r := &BackfillResult{}
+	sessions, e := s.store.AllSessions(0, 0)
+	errors.PanicOnError(e)
 
-	for _, e := range s.store.AllSessions(0, 0) {
+	for _, e := range sessions {
 		resolved := s.client.Resolve(e.Identifier)
 
 		if resolved.Identifier == "" {

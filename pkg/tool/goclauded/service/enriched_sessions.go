@@ -8,8 +8,13 @@ import (
 func (s *Service) EnrichedSessions(
 	limit int,
 	offset int,
-) []*enriched_session.Session {
-	sessions := s.store.AllSessions(limit, offset)
+) ([]*enriched_session.Session, error) {
+	sessions, e := s.store.AllSessions(limit, offset)
+
+	if e != nil {
+		return nil, e
+	}
+
 	cutoff := s.clock().Add(-1 * time.Hour)
 	result := make([]*enriched_session.Session, 0, len(sessions))
 
@@ -29,5 +34,5 @@ func (s *Service) EnrichedSessions(
 		result = append(result, e)
 	}
 
-	return result
+	return result, nil
 }

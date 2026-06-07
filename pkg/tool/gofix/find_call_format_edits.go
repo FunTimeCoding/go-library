@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/call_format"
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
+	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/token"
 	"golang.org/x/tools/go/packages"
@@ -13,7 +15,7 @@ import (
 
 func findCallFormatEdits(
 	all []*packages.Package,
-	r *results,
+	r *output.Results,
 ) []edit {
 	var result []edit
 	sourceCache := make(map[string][]byte)
@@ -77,9 +79,13 @@ func findCallFormatEdits(
 
 					seen[call.Lparen] = true
 					line := p.Fset.Position(call.Lparen).Line
-					r.Add(
-						name,
-						fmt.Sprintf("formatted call (line %d)", line),
+					r.AddConcern(
+						concern.NewFile(
+							"call_format",
+							fmt.Sprintf("formatted call (line %d)", line),
+							name,
+							true,
+						),
 					)
 					fixes := call_format.BuildFixes(
 						p.Fset,

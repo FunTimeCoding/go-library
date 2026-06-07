@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -24,7 +25,11 @@ func (s *Server) label(
 	var targetName string
 
 	if target != "" {
-		r := s.service.ResolveSessionIdentifier(target)
+		r, f := s.service.ResolveSessionIdentifier(target)
+
+		if f != nil {
+			return s.captureFail(f, library.UnexpectedError)
+		}
 
 		if r.Ambiguous() {
 			return response.Fail(
@@ -54,7 +59,11 @@ func (s *Server) label(
 	raw, hasValue := arguments[constant.Value]
 
 	if !hasValue {
-		value := s.service.GetLabel(sessionIdentifier, key)
+		value, f := s.service.GetLabel(sessionIdentifier, key)
+
+		if f != nil {
+			return s.captureFail(f, library.UnexpectedError)
+		}
 
 		if value == "" {
 			return response.Success("no label %s", key)
@@ -66,23 +75,31 @@ func (s *Server) label(
 	value, _ := raw.(string)
 
 	if value == "" {
-		change := s.service.DeleteLabel(
+		change, g := s.service.DeleteLabel(
 			sessionIdentifier,
 			c.Callsign,
 			targetName,
 			key,
 		)
 
+		if g != nil {
+			return s.captureFail(g, library.UnexpectedError)
+		}
+
 		return response.Success(change)
 	}
 
-	change := s.service.SetLabel(
+	change, h := s.service.SetLabel(
 		sessionIdentifier,
 		c.Callsign,
 		targetName,
 		key,
 		value,
 	)
+
+	if h != nil {
+		return s.captureFail(h, library.UnexpectedError)
+	}
 
 	return response.Success(
 		fmt.Sprintf("%s on %s", change, displayName(c, target)),

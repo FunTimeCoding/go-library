@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
@@ -27,7 +28,8 @@ func (s *Server) GetSummary(
 		groupBy = string(*params.GroupBy)
 	}
 
-	rows := s.store.Summary(since, until, groupBy)
+	rows, queryError := s.store.Summary(since, until, groupBy)
+	errors.PanicOnError(queryError)
 	var entries []server.SummaryEntry
 
 	for _, r := range rows {

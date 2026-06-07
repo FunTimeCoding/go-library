@@ -1,0 +1,40 @@
+package scan
+
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/system/virtual_file_system"
+	"testing"
+)
+
+func TestIdentityWarningsForCliTool(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write(
+		"pkg/tool/gotest/constant/constant.go",
+		"package constant\n\nimport \"github.com/funtimecoding/go-library/pkg/identity\"\n\nvar Identity = identity.New(\"wrong\", \"test\", \"wrong\")\n",
+	)
+	w := IdentityWarnings(v, nil)
+	assert.Integer(t, 1, len(w))
+	assert.String(t, IdentityMismatchKey, w[0].Key)
+}
+
+func TestIdentityWarningsSkipsServices(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write("pkg/tool/gotestd/server/r.go", "package server\n")
+	v.Write(
+		"pkg/tool/gotestd/constant/constant.go",
+		"package constant\n\nimport \"github.com/funtimecoding/go-library/pkg/identity\"\n\nvar Identity = identity.New(\"wrong\", \"test\", \"wrong\")\n",
+	)
+	v.Write("pkg/tool/gotestd/option/o.go", "package option\n")
+	v.Write("pkg/tool/gotestd/run.go", "package gotestd\n")
+	assert.Integer(
+		t,
+		0,
+		len(IdentityWarnings(v, Services(v, "test"))),
+	)
+}
+
+func TestIdentityWarningsSkipsNoConstant(t *testing.T) {
+	v := virtual_file_system.New()
+	v.Write("pkg/tool/gotest/main.go", "package gotest\n")
+	assert.Integer(t, 0, len(IdentityWarnings(v, nil)))
+}

@@ -1,7 +1,6 @@
 package store
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
 )
@@ -9,16 +8,24 @@ import (
 func (s *Store) EditEvent(
 	identifier uint,
 	body string,
-) *event.Event {
+) (*event.Event, error) {
 	var existing event.Event
-	errors.PanicOnError(
-		s.database.Where("identifier = ?", identifier).First(&existing).Error,
-	)
-	errors.PanicOnError(
-		s.database.Model(&existing).
-			Update(constant.Body, body).Error,
-	)
+
+	if e := s.database.Where(
+		"identifier = ?",
+		identifier,
+	).First(&existing).Error; e != nil {
+		return nil, e
+	}
+
+	if e := s.database.Model(&existing).Update(
+		constant.Body,
+		body,
+	).Error; e != nil {
+		return nil, e
+	}
+
 	existing.Body = body
 
-	return &existing
+	return &existing, nil
 }

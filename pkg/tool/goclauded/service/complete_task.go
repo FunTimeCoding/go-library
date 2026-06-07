@@ -1,11 +1,15 @@
 package service
 
-func (s *Service) CompleteTask(name string) string {
-	topic := s.store.CompleteTask(name)
+func (s *Service) CompleteTask(name string) (string, error) {
+	topic, e := s.store.CompleteTask(name)
+
+	if e != nil {
+		return "", e
+	}
 
 	if topic != "" {
 		s.notify()
 	}
 
-	return topic
+	return topic, nil
 }

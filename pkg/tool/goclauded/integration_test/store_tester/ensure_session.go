@@ -1,0 +1,13 @@
+package store_tester
+
+import (
+	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/ensure_result"
+)
+
+func (o *Tester) EnsureSession(sessionIdentifier string) *ensure_result.Result {
+	result, e := o.Store.EnsureSession(sessionIdentifier)
+	assert.FatalOnError(o.t, e)
+
+	return result
+}

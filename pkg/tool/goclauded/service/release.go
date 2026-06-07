@@ -5,14 +5,22 @@ import "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 func (s *Service) Release(
 	sessionIdentifier string,
 	name string,
-) {
-	s.store.LogEvent(
+) error {
+	if e := s.store.LogEvent(
 		sessionIdentifier,
 		constant.Release,
 		name,
 		"",
 		"",
-	)
-	s.store.ReleaseByCallsign(name)
+	); e != nil {
+		return e
+	}
+
+	if e := s.store.ReleaseByCallsign(name); e != nil {
+		return e
+	}
+
 	s.notify()
+
+	return nil
 }

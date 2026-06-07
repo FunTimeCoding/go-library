@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (s *Service) Timeline(q argument.Timeline) []*timeline.Entry {
+func (s *Service) Timeline(q argument.Timeline) ([]*timeline.Entry, error) {
 	fetch := q.Limit + q.Offset
 	var since, before time.Time
 
@@ -27,24 +27,30 @@ func (s *Service) Timeline(q argument.Timeline) []*timeline.Entry {
 		}
 	}
 
-	var entries []*timeline.Entry
-
-	for _, e := range s.store.EventsSince(
+	events, e := s.store.EventsSince(
 		since,
 		before,
 		q.Kind,
 		fetch,
 		0,
-	) {
+	)
+
+	if e != nil {
+		return nil, e
+	}
+
+	var entries []*timeline.Entry
+
+	for _, v := range events {
 		entries = append(
 			entries,
 			timeline.FromEvent(
-				e.Identifier,
-				e.Kind,
-				e.Name,
-				e.Body,
-				e.Target,
-				e.CreatedAt,
+				v.Identifier,
+				v.Kind,
+				v.Name,
+				v.Body,
+				v.Target,
+				v.CreatedAt,
 				q.Full,
 			),
 		)
@@ -54,5 +60,5 @@ func (s *Service) Timeline(q argument.Timeline) []*timeline.Entry {
 		entries = append(entries, s.FetchVersions(q.Since, fetch)...)
 	}
 
-	return timeline.Merge(entries, q.Limit, q.Offset)
+	return timeline.Merge(entries, q.Limit, q.Offset), nil
 }

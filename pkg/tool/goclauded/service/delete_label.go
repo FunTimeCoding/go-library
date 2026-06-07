@@ -10,16 +10,30 @@ func (s *Service) DeleteLabel(
 	name string,
 	target string,
 	key string,
-) string {
-	old := s.store.DeleteLabel(sessionIdentifier, key)
+) (string, error) {
+	old, e := s.store.DeleteLabel(sessionIdentifier, key)
+
+	if e != nil {
+		return "", e
+	}
 
 	if old == "" {
-		return fmt.Sprintf("%s (not set)", key)
+		return fmt.Sprintf("%s (not set)", key), nil
 	}
 
 	change := fmt.Sprintf("%s %s→ (unset)", key, old)
-	s.store.LogEvent(sessionIdentifier, constant.Label, name, target, change)
+
+	if e := s.store.LogEvent(
+		sessionIdentifier,
+		constant.Label,
+		name,
+		target,
+		change,
+	); e != nil {
+		return "", e
+	}
+
 	s.notify()
 
-	return change
+	return change, nil
 }

@@ -16,7 +16,7 @@ func TestRelease(t *testing.T) {
 	s.Store.Announce(r.Callsign, "working", "")
 	sessions := s.Store.ListSessions()
 	assert.Count(t, 1, sessions)
-	s.Service.Release("session-1", r.Callsign)
+	s.Release("session-1", r.Callsign)
 	sessions = s.Store.ListSessions()
 	assert.Count(t, 0, sessions)
 	events := s.Store.EventsSince(

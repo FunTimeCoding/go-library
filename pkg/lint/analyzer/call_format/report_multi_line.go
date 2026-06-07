@@ -1,6 +1,7 @@
 package call_format
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -15,9 +16,13 @@ func reportMultiLine(
 	firstArgLine := p.Fset.Position(call.Args[0].Pos()).Line
 
 	if openParenLine == firstArgLine {
-		results.AddBlocked(
-			p.Fset.Position(call.Args[0].Pos()).Filename,
-			"each argument should be on its own line",
+		results.AddConcern(
+			concern.NewFile(
+				"call_format",
+				"each argument should be on its own line",
+				p.Fset.Position(call.Args[0].Pos()).Filename,
+				false,
+			),
 		)
 
 		return
@@ -28,9 +33,13 @@ func reportMultiLine(
 		currentStart := p.Fset.Position(call.Args[i].Pos()).Line
 
 		if previousEnd == currentStart {
-			results.AddBlocked(
-				p.Fset.Position(call.Args[i].Pos()).Filename,
-				"each argument should be on its own line",
+			results.AddConcern(
+				concern.NewFile(
+					"call_format",
+					"each argument should be on its own line",
+					p.Fset.Position(call.Args[i].Pos()).Filename,
+					false,
+				),
 			)
 
 			return

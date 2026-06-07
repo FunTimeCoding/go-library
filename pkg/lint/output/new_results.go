@@ -7,7 +7,7 @@ import (
 
 func NewResults() *Results {
 	return &Results{
-		workingDirectory: fmt.Sprintf(
+		workDirectory: fmt.Sprintf(
 			"%s/",
 			system.WorkDirectory(),
 		),

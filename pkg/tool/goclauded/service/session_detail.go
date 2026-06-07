@@ -2,29 +2,49 @@ package service
 
 import "github.com/funtimecoding/go-library/pkg/tool/goclauded/service/session_detail"
 
-func (s *Service) SessionDetail(query string) *session_detail.Detail {
-	r := s.store.ResolveSessionIdentifier(query)
+func (s *Service) SessionDetail(query string) (*session_detail.Detail, error) {
+	r, e := s.store.ResolveSessionIdentifier(query)
 
-	if !r.Found() {
-		return nil
+	if e != nil {
+		return nil, e
 	}
 
-	e := s.store.GetSession(r.Identifier())
+	if !r.Found() {
+		return nil, nil
+	}
 
-	if e == nil {
-		return nil
+	v, f := s.store.GetSession(r.Identifier())
+
+	if f != nil {
+		return nil, f
+	}
+
+	if v == nil {
+		return nil, nil
+	}
+
+	completions, f := s.store.CompletionsBySession(v.Identifier)
+
+	if f != nil {
+		return nil, f
+	}
+
+	body, f := s.store.SummaryBySession(v.Identifier)
+
+	if f != nil {
+		return nil, f
 	}
 
 	result := session_detail.New()
-	result.Identifier = e.Identifier
-	result.Slug = e.Slug
-	result.Created = e.SessionTimestamp
-	result.Session = e
-	result.Alias = e.AliasValue()
-	result.Description = e.Description
-	result.TurnCount = e.TurnCount
-	result.Completions = s.store.CompletionsBySession(e.Identifier)
-	result.Summary = s.store.SummaryBySession(e.Identifier)
+	result.Identifier = v.Identifier
+	result.Slug = v.Slug
+	result.Created = v.SessionTimestamp
+	result.Session = v
+	result.Alias = v.AliasValue()
+	result.Description = v.Description
+	result.TurnCount = v.TurnCount
+	result.Completions = completions
+	result.Summary = body
 
-	return result
+	return result, nil
 }

@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	markResponse "github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/model_context/response"
@@ -15,7 +16,12 @@ func (s *Server) summary(
 	since := r.GetString(constant.Since, "")
 	until := r.GetString(constant.Until, "")
 	groupBy := r.GetString(constant.GroupBy, constant.Tool)
-	rows := s.store.Summary(since, until, groupBy)
+	rows, e := s.service.Summary(since, until, groupBy)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	entries := make([]response.Summary, len(rows))
 
 	for i, row := range rows {

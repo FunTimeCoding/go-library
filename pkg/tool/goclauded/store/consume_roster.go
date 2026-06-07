@@ -2,15 +2,24 @@ package store
 
 import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
 
-func (s *Store) ConsumeRoster(name string) bool {
+func (s *Store) ConsumeRoster(name string) (bool, error) {
 	var i session.Session
-	s.database.Where("callsign = ?", name).Limit(1).Find(&i)
+	result := s.database.Where("callsign = ?", name).Limit(1).Find(&i)
 
-	if !i.NeedsRoster {
-		return false
+	if result.Error != nil {
+		return false, result.Error
 	}
 
-	s.database.Model(&i).UpdateColumn("needs_roster", false)
+	if result.RowsAffected == 0 || !i.NeedsRoster {
+		return false, nil
+	}
 
-	return true
+	if e := s.database.Model(&i).UpdateColumn(
+		"needs_roster",
+		false,
+	).Error; e != nil {
+		return false, e
+	}
+
+	return true, nil
 }

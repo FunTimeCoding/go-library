@@ -7,21 +7,32 @@ func (s *Service) Update(
 	name string,
 	topic string,
 	files string,
-) {
-	s.store.UpdateTopic(name, topic, files)
-	s.store.CreateCompletion(
+) error {
+	if e := s.store.UpdateTopic(name, topic, files); e != nil {
+		return e
+	}
+
+	if e := s.store.CreateCompletion(
 		sessionIdentifier,
 		name,
 		constant.Update,
 		topic,
 		"",
-	)
-	s.store.LogEvent(
+	); e != nil {
+		return e
+	}
+
+	if e := s.store.LogEvent(
 		sessionIdentifier,
 		constant.Update,
 		name,
 		"",
 		topic,
-	)
+	); e != nil {
+		return e
+	}
+
 	s.notify()
+
+	return nil
 }

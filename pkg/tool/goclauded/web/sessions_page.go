@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/enriched_session"
 	"maragu.dev/gomponents"
@@ -22,7 +23,8 @@ func (s *Server) sessionsPage(
 	}
 
 	activeOnly := r.URL.Query().Get("active") == "true"
-	all := s.service.EnrichedSessions(0, 0)
+	all, e := s.service.EnrichedSessions(0, 0)
+	errors.PanicOnError(e)
 	var sessions []*enriched_session.Session
 
 	if activeOnly {

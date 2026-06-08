@@ -9,7 +9,7 @@ func packageNameOf(
 	v *virtual_file_system.System,
 	path string,
 ) string {
-	for _, line := range strings.Split(v.Read(path), "\n") {
+	for _, line := range strings.Split(v.ReadString(path), "\n") {
 		if strings.HasPrefix(line, "package ") {
 			return strings.TrimPrefix(line, "package ")
 		}

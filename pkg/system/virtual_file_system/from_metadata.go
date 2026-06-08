@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func From(directory string) *System {
+func FromMetadata(directory string) *System {
 	result := New()
 	errors.PanicOnError(
 		filepath.Walk(
@@ -26,8 +26,6 @@ func From(directory string) *System {
 					return nil
 				}
 
-				content, e := os.ReadFile(path)
-				errors.PanicOnError(e)
 				relative := strings.TrimPrefix(
 					path,
 					fmt.Sprintf(
@@ -37,10 +35,8 @@ func From(directory string) *System {
 					),
 				)
 				result.files[relative] = &File{
-					Content: content,
 					Size:    i.Size(),
 					ModTime: i.ModTime(),
-					Loaded:  true,
 				}
 
 				return nil

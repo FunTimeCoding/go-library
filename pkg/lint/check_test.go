@@ -12,7 +12,7 @@ import (
 
 func TestCheckImportFix(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
 	)
@@ -28,17 +28,17 @@ func TestCheckImportFix(t *testing.T) {
 	assert.String(
 		t,
 		"package foo\n\nimport \"fmt\"\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
-		fixes.Read("pkg/foo/foo.go"),
+		fixes.ReadString("pkg/foo/foo.go"),
 	)
 }
 
 func TestCheckCleanNoFixes(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport \"fmt\"\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
 	)
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo_test.go",
 		"package foo\n\nimport \"testing\"\n\nfunc TestFoo(t *testing.T) {\n\tt.Parallel()\n}\n",
 	)
@@ -57,7 +57,7 @@ func TestCheckCleanNoFixes(t *testing.T) {
 
 func TestCheckSkipsGeneratedFile(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/foo/generated.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Generated() {\n\tfmt.Println(\"hello\")\n}\n",
 	)
@@ -75,11 +75,11 @@ func TestCheckSkipsGeneratedFile(t *testing.T) {
 
 func TestCheckVariableFlaggedNoFix(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport \"fmt\"\n\nfunc Foo() {\n\terr := fmt.Errorf(\"oops\")\n\t_ = err\n}\n",
 	)
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo_test.go",
 		"package foo\n\nimport \"testing\"\n\nfunc TestFoo(t *testing.T) {\n}\n",
 	)
@@ -97,15 +97,15 @@ func TestCheckVariableFlaggedNoFix(t *testing.T) {
 
 func TestCheckMultipleFilesOnlyBrokenFixed(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
 	)
-	v.Write(
+	v.WriteString(
 		"pkg/foo/bar.go",
 		"package foo\n\nimport \"fmt\"\n\nfunc Bar() {\n\tfmt.Println(\"world\")\n}\n",
 	)
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo_test.go",
 		"package foo\n\nimport \"testing\"\n\nfunc TestFoo(t *testing.T) {\n}\n",
 	)
@@ -124,11 +124,11 @@ func TestCheckMultipleFilesOnlyBrokenFixed(t *testing.T) {
 
 func TestCheckStubCreated(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"go.mod",
 		"module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n",
 	)
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nfunc Foo() {}\n",
 	)
@@ -144,17 +144,17 @@ func TestCheckStubCreated(t *testing.T) {
 	assert.String(
 		t,
 		"package foo\n\nimport (\n\t\"github.com/funtimecoding/go-library/pkg/assert\"\n\t\"testing\"\n)\n\nfunc TestFoo(t *testing.T) {\n\tassert.Stub(t)\n}\n",
-		fixes.Read("pkg/foo/foo_test.go"),
+		fixes.ReadString("pkg/foo/foo_test.go"),
 	)
 }
 
 func TestCheckStubMainPackage(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"go.mod",
 		"module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n",
 	)
-	v.Write(
+	v.WriteString(
 		"cmd/foo/main.go",
 		"package main\n\nfunc main() {}\n",
 	)
@@ -170,17 +170,17 @@ func TestCheckStubMainPackage(t *testing.T) {
 	assert.String(
 		t,
 		"package main\n\nimport (\n\t\"github.com/funtimecoding/go-library/pkg/assert\"\n\t\"testing\"\n)\n\nfunc TestStub(t *testing.T) {\n\tassert.Stub(t)\n}\n",
-		fixes.Read("cmd/foo/main_test.go"),
+		fixes.ReadString("cmd/foo/main_test.go"),
 	)
 }
 
 func TestCheckStubToolPackage(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"go.mod",
 		"module example\n\nrequire github.com/funtimecoding/go-library v0.0.1\n",
 	)
-	v.Write(
+	v.WriteString(
 		"pkg/tool/gofoo/main.go",
 		"package gofoo\n\nfunc Main() {}\n",
 	)
@@ -196,14 +196,14 @@ func TestCheckStubToolPackage(t *testing.T) {
 	assert.String(
 		t,
 		"package gofoo\n\nimport (\n\t\"github.com/funtimecoding/go-library/pkg/assert\"\n\t\"testing\"\n)\n\nfunc TestStub(t *testing.T) {\n\tassert.Stub(t)\n}\n",
-		fixes.Read("pkg/tool/gofoo/main_test.go"),
+		fixes.ReadString("pkg/tool/gofoo/main_test.go"),
 	)
 }
 
 func TestCheckStubWithoutGoLibrary(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("go.mod", "module example\n")
-	v.Write(
+	v.WriteString("go.mod", "module example\n")
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nfunc Foo() {}\n",
 	)
@@ -219,13 +219,13 @@ func TestCheckStubWithoutGoLibrary(t *testing.T) {
 	assert.String(
 		t,
 		"package foo\n\nimport \"testing\"\n\nfunc TestFoo(t *testing.T) {\n\tt.Helper()\n}\n",
-		fixes.Read("pkg/foo/foo_test.go"),
+		fixes.ReadString("pkg/foo/foo_test.go"),
 	)
 }
 
 func TestCheckStubTestdata(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/lint/analyzer/naming/testdata/src/example/example.go",
 		"package example\n\ntype Example struct{}\n",
 	)
@@ -241,13 +241,13 @@ func TestCheckStubTestdata(t *testing.T) {
 	assert.String(
 		t,
 		"package example\n\nimport \"testing\"\n\nfunc TestExample(t *testing.T) {\n\tt.Helper()\n}\n",
-		fixes.Read("pkg/lint/analyzer/naming/testdata/src/example/example_test.go"),
+		fixes.ReadString("pkg/lint/analyzer/naming/testdata/src/example/example_test.go"),
 	)
 }
 
 func TestCheckResultImportCollapsed(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nimport (\n\t\"fmt\"\n)\n\nfunc Foo() {\n\tfmt.Println(\"hello\")\n}\n",
 	)
@@ -270,7 +270,7 @@ func TestCheckResultImportCollapsed(t *testing.T) {
 
 func TestCheckResultBlankLineRemoved(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nfunc Foo() {\n\ta := 1\n\n\t_ = a\n}\n",
 	)
@@ -293,7 +293,7 @@ func TestCheckResultBlankLineRemoved(t *testing.T) {
 
 func TestCheckResultBlankLineInserted(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/foo/foo.go",
 		"package foo\n\nfunc Foo() {\n\ta := 1\n\tif a > 0 {\n\t\t_ = a\n\t}\n}\n",
 	)

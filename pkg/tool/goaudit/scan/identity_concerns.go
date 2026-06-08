@@ -23,5 +23,5 @@ func identityConcerns(
 		}
 	}
 
-	return checkIdentitySource(v.Read(file), file, path, name)
+	return checkIdentitySource(v.ReadString(file), file, path, name)
 }

@@ -8,8 +8,8 @@ import (
 
 func TestClientsDiscovered(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("pkg/gitlab/client.go", "package gitlab\n")
-	v.Write("pkg/gitlab/constant/constant.go", "package constant\n")
+	v.WriteString("pkg/gitlab/client.go", "package gitlab\n")
+	v.WriteString("pkg/gitlab/constant/constant.go", "package constant\n")
 	c := Clients(v, "test", &Configuration{})
 	assert.Integer(t, 1, len(c))
 	assert.String(t, "pkg/gitlab", c[0].Path)
@@ -18,7 +18,7 @@ func TestClientsDiscovered(t *testing.T) {
 
 func TestClientsExcludesTool(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("pkg/tool/gotestd/client.go", "package gotestd\n")
+	v.WriteString("pkg/tool/gotestd/client.go", "package gotestd\n")
 	assert.Integer(
 		t,
 		0,
@@ -28,7 +28,7 @@ func TestClientsExcludesTool(t *testing.T) {
 
 func TestClientsExcludesConfiguration(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("pkg/bolt/client.go", "package bolt\n")
+	v.WriteString("pkg/bolt/client.go", "package bolt\n")
 	assert.Integer(
 		t,
 		0,
@@ -44,7 +44,7 @@ func TestClientsExcludesConfiguration(t *testing.T) {
 
 func TestClientsNested(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("pkg/chat/mattermost/client.go", "package mattermost\n")
+	v.WriteString("pkg/chat/mattermost/client.go", "package mattermost\n")
 	c := Clients(v, "test", &Configuration{})
 	assert.Integer(t, 1, len(c))
 	assert.String(t, "pkg/chat/mattermost", c[0].Path)

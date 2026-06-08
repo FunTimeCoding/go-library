@@ -8,7 +8,7 @@ import (
 
 func TestIdentityWarningsForCliTool(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/tool/gotest/constant/constant.go",
 		"package constant\n\nimport \"github.com/funtimecoding/go-library/pkg/identity\"\n\nvar Identity = identity.New(\"wrong\", \"test\", \"wrong\")\n",
 	)
@@ -19,13 +19,13 @@ func TestIdentityWarningsForCliTool(t *testing.T) {
 
 func TestIdentityWarningsSkipsServices(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("pkg/tool/gotestd/server/r.go", "package server\n")
-	v.Write(
+	v.WriteString("pkg/tool/gotestd/server/r.go", "package server\n")
+	v.WriteString(
 		"pkg/tool/gotestd/constant/constant.go",
 		"package constant\n\nimport \"github.com/funtimecoding/go-library/pkg/identity\"\n\nvar Identity = identity.New(\"wrong\", \"test\", \"wrong\")\n",
 	)
-	v.Write("pkg/tool/gotestd/option/o.go", "package option\n")
-	v.Write("pkg/tool/gotestd/run.go", "package gotestd\n")
+	v.WriteString("pkg/tool/gotestd/option/o.go", "package option\n")
+	v.WriteString("pkg/tool/gotestd/run.go", "package gotestd\n")
 	assert.Integer(
 		t,
 		0,
@@ -35,6 +35,6 @@ func TestIdentityWarningsSkipsServices(t *testing.T) {
 
 func TestIdentityWarningsSkipsNoConstant(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("pkg/tool/gotest/main.go", "package gotest\n")
+	v.WriteString("pkg/tool/gotest/main.go", "package gotest\n")
 	assert.Integer(t, 0, len(IdentityWarnings(v, nil)))
 }

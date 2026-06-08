@@ -21,7 +21,7 @@ func runCheckers(
 			fmt.Printf("Process: %s\n", p)
 		}
 
-		original := v.Read(p)
+		original := v.ReadString(p)
 		content := original
 
 		for _, check := range checkers {
@@ -41,7 +41,7 @@ func runCheckers(
 		}
 
 		if content != original {
-			fixes.Write(p, content)
+			fixes.WriteString(p, content)
 		}
 	}
 }

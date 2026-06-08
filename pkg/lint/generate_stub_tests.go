@@ -33,7 +33,7 @@ func generateStubTests(
 
 	sort.Strings(directories)
 	useAssert := strings.Contains(
-		v.Read("go.mod"),
+		v.ReadString("go.mod"),
 		library.GoLibraryModule,
 	)
 
@@ -61,7 +61,7 @@ func generateStubTests(
 			filename = "main_test.go"
 		}
 
-		fixes.Write(
+		fixes.WriteString(
 			filepath.Join(d, filename),
 			stubTestContent(
 				name,

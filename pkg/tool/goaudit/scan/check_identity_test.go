@@ -8,7 +8,7 @@ import (
 
 func TestCheckIdentityValid(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/tool/gotestd/constant/constant.go",
 		"package constant\n\nimport \"github.com/funtimecoding/go-library/pkg/identity\"\n\nvar Identity = identity.New(\"gotestd\", \"test\", \"gotestd\")\n",
 	)
@@ -21,7 +21,7 @@ func TestCheckIdentityValid(t *testing.T) {
 
 func TestCheckIdentityMismatch(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/tool/gotestd/constant/constant.go",
 		"package constant\n\nimport \"github.com/funtimecoding/go-library/pkg/identity\"\n\nvar Identity = identity.New(\"wrong\", \"test\", \"wrong\")\n",
 	)
@@ -42,7 +42,7 @@ func TestCheckIdentityMissingFile(t *testing.T) {
 
 func TestCheckIdentityMissingVariable(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write(
+	v.WriteString(
 		"pkg/tool/gotestd/constant/constant.go",
 		"package constant\n\nvar Name = \"test\"\n",
 	)

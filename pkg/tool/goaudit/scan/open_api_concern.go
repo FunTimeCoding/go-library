@@ -21,7 +21,7 @@ func openAPIConcern(
 
 	var s openAPISpec
 
-	if yaml.Unmarshal([]byte(v.Read(file)), &s) != nil {
+	if yaml.Unmarshal(v.Read(file), &s) != nil {
 		return nil
 	}
 

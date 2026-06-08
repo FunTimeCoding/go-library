@@ -8,8 +8,8 @@ import (
 
 func TestMissingSentryFlagged(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("cmd/gotest/main.go", "package main\n")
-	v.Write(
+	v.WriteString("cmd/gotest/main.go", "package main\n")
+	v.WriteString(
 		"pkg/tool/gotest/main.go",
 		"package gotest\n\nfunc Main() {}\n",
 	)
@@ -21,8 +21,8 @@ func TestMissingSentryFlagged(t *testing.T) {
 
 func TestMissingSentryWithReporter(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("cmd/gotest/main.go", "package main\n")
-	v.Write(
+	v.WriteString("cmd/gotest/main.go", "package main\n")
+	v.WriteString(
 		"pkg/tool/gotest/run.go",
 		"package gotest\n\nimport \"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter\"\n\nfunc Run() {\n\tr := reporter.New(\"gotest\")\n}\n",
 	)
@@ -32,17 +32,17 @@ func TestMissingSentryWithReporter(t *testing.T) {
 
 func TestMissingSentrySkipsExample(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("cmd/example/main.go", "package main\n")
+	v.WriteString("cmd/example/main.go", "package main\n")
 	result := MissingSentry(v)
 	assert.Integer(t, 0, len(result))
 }
 
 func TestMissingSentrySorted(t *testing.T) {
 	v := virtual_file_system.New()
-	v.Write("cmd/gobravo/main.go", "package main\n")
-	v.Write("pkg/tool/gobravo/main.go", "package gobravo\n")
-	v.Write("cmd/goalfa/main.go", "package main\n")
-	v.Write("pkg/tool/goalfa/main.go", "package goalfa\n")
+	v.WriteString("cmd/gobravo/main.go", "package main\n")
+	v.WriteString("pkg/tool/gobravo/main.go", "package gobravo\n")
+	v.WriteString("cmd/goalfa/main.go", "package main\n")
+	v.WriteString("pkg/tool/goalfa/main.go", "package goalfa\n")
 	result := MissingSentry(v)
 	assert.Integer(t, 2, len(result))
 	assert.String(t, "cmd/goalfa", result[0].Path)

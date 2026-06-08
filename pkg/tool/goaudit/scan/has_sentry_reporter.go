@@ -19,7 +19,7 @@ func hasSentryReporter(
 
 		f, _, e := parse.Source(
 			name,
-			v.Read(filepath.Join(directory, name)),
+			v.ReadString(filepath.Join(directory, name)),
 		)
 
 		if e != nil {

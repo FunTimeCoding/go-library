@@ -1,9 +1,5 @@
 package validation
 
-type Error struct {
-	Message string
-}
-
-func (e *Error) Error() string {
-	return e.Message
+func (d *Detail) Error() string {
+	return d.Message
 }

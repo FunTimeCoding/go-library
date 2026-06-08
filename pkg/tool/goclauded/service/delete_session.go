@@ -10,6 +10,7 @@ func (s *Service) DeleteSession(identifier string) error {
 		return e
 	}
 
+	s.cache.Delete(identifier)
 	s.notify()
 
 	return nil

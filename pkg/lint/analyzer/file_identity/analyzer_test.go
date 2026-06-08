@@ -14,7 +14,7 @@ func TestClean(t *testing.T) {
 func TestMultipleIdentities(t *testing.T) {
 	p, results := testutil.LoadTestPackage(t, "testdata/src/multi")
 	Check(p, results)
-	testutil.AssertBlocked(t, results, 2)
+	testutil.AssertBlocked(t, results, 4)
 }
 
 func TestMismatch(t *testing.T) {
@@ -26,7 +26,7 @@ func TestMismatch(t *testing.T) {
 func TestMethods(t *testing.T) {
 	p, results := testutil.LoadTestPackage(t, "testdata/src/methods")
 	Check(p, results)
-	testutil.AssertBlocked(t, results, 1)
+	testutil.AssertBlocked(t, results, 2)
 }
 
 func TestInterfaceMethod(t *testing.T) {

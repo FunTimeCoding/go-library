@@ -17,9 +17,6 @@ func (s *Service) PopulateCache() {
 		return
 	}
 
-	s.statesMu.Lock()
-	defer s.statesMu.Unlock()
-
 	for _, entry := range entries {
 		if entry.IsDir() || !strings.HasSuffix(
 			entry.Name(),
@@ -32,18 +29,11 @@ func (s *Service) PopulateCache() {
 			entry.Name(),
 			constant.NotationLogExtension,
 		)
-		state, exists := s.states[identifier]
-
-		if !exists {
-			state = tracker.New()
-		}
-
+		state := s.cache.GetOrCreate(identifier)
 		path := filepath.Join(s.harbor, entry.Name())
 
 		if tracker.Read(path, state) != nil {
 			continue
 		}
-
-		s.states[identifier] = state
 	}
 }

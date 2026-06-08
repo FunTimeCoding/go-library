@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) captureDetail(e error) (*mcp.CallToolResult, error) {
-	if v, okay := errors.AsType[*validation.Error](e); okay {
+	if v, okay := errors.AsType[*validation.Detail](e); okay {
 		return response.Fail("%s", v.Message)
 	}
 

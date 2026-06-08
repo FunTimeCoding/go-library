@@ -10,18 +10,16 @@ func (s *Service) CheckConsistency() {
 	errors.PanicOnError(e)
 	databaseSet := make(map[string]bool, len(databaseSessions))
 
-	for _, e := range databaseSessions {
-		databaseSet[e.Identifier] = true
+	for _, i := range databaseSessions {
+		databaseSet[i.Identifier] = true
 	}
 
-	s.statesMu.Lock()
-	cacheSet := make(map[string]bool, len(s.states))
+	cacheKeys := s.cache.Keys()
+	cacheSet := make(map[string]bool, len(cacheKeys))
 
-	for identifier := range s.states {
+	for _, identifier := range cacheKeys {
 		cacheSet[identifier] = true
 	}
-
-	s.statesMu.Unlock()
 
 	for identifier := range cacheSet {
 		if !databaseSet[identifier] {
@@ -35,16 +33,16 @@ func (s *Service) CheckConsistency() {
 		}
 	}
 
-	for _, e := range databaseSessions {
-		if !cacheSet[e.Identifier] {
+	for _, i := range databaseSessions {
+		if !cacheSet[i.Identifier] {
 			s.logger.Structured(
 				"consistency_missing_jsonl",
 				constant.Identifier,
-				e.Identifier,
+				i.Identifier,
 				constant.SessionName,
-				e.Name,
+				i.Name,
 				constant.Alias,
-				e.Alias,
+				i.Alias,
 			)
 		}
 	}

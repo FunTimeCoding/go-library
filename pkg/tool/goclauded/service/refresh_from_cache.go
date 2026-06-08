@@ -1,9 +1,7 @@
 package service
 
 func (s *Service) RefreshFromCache(identifier string) {
-	s.statesMu.Lock()
-	state, exists := s.states[identifier]
-	s.statesMu.Unlock()
+	state, exists := s.cache.Get(identifier)
 
 	if !exists {
 		return

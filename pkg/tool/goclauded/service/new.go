@@ -2,9 +2,9 @@ package service
 
 import (
 	library "github.com/funtimecoding/go-library/pkg/face"
-	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/tracker"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/face"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/session_cache"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/client"
 	"time"
@@ -29,7 +29,7 @@ func New(
 		notifier: n,
 		reporter: r,
 		harbor:   harbor,
-		states:   make(map[string]*tracker.State),
+		cache:    session_cache.New(),
 		clock:    clock,
 		logger:   l,
 	}

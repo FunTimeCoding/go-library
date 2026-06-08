@@ -17,7 +17,6 @@ func checkFile(
 	file *ast.File,
 	name string,
 ) {
-	typeMap := map[string]bool{}
 	var identities []identity
 
 	for _, d := range file.Decls {
@@ -34,7 +33,6 @@ func checkFile(
 				continue
 			}
 
-			typeMap[t.Name.Name] = true
 			identities = append(
 				identities,
 				identity{name: t.Name.Name, position: t.Pos()},
@@ -55,12 +53,6 @@ func checkFile(
 				identity{name: f.Name.Name, position: f.Pos()},
 			)
 
-			continue
-		}
-
-		receiverName := receiverTypeName(f.Recv.List[0].Type)
-
-		if typeMap[receiverName] {
 			continue
 		}
 

@@ -3,12 +3,12 @@ package model_context
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
-	"github.com/funtimecoding/go-library/pkg/proxmox"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/service"
 )
 
 func New(
-	c *proxmox.Client,
+	v *service.Service,
 	r face.Reporter,
 	t face.Recorder,
 	version string,
@@ -18,7 +18,7 @@ func New(
 			constant.Identity,
 			version,
 		).WithRecorder(t).Server(),
-		client:   c,
+		service:  v,
 		reporter: r,
 	}
 	result.register()

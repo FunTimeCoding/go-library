@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) ListContainerSnapshots(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.ListContainerSnapshots,
 ) (*mcp.CallToolResult, error) {
@@ -16,17 +16,29 @@ func (s *Server) ListContainerSnapshots(
 		return response.Fail("identifier is required")
 	}
 
-	c, e := s.findContainer(a.Identifier, a.Node)
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	p, e := s.service.Client(instance)
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
-	if c == nil {
+	ct, e := findContainer(p, a.Identifier, a.Node)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	if ct == nil {
 		return response.Fail("container %d not found", a.Identifier)
 	}
 
-	snapshots, e := s.client.ContainerSnapshots(c)
+	snapshots, e := p.ContainerSnapshots(ct)
 
 	if e != nil {
 		return s.captureDetail(e)

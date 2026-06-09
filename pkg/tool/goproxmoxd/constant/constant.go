@@ -7,10 +7,12 @@ var Identity = identity.New(
 	"Proxmox hypervisor bridge for node and VM inspection",
 	"goproxmoxd",
 ).WithInstructions(
-	"Proxmox hypervisor - list and inspect nodes, virtual machines, and LXC containers.",
+	"Proxmox hypervisor bridge. Multi-instance - call list_instances and use_instance before querying.",
 )
 
 const (
+	ListInstances             = "list_instances"
+	UseInstance               = "use_instance"
 	ListNodes                 = "list_nodes"
 	GetNodeStatus             = "get_node_status"
 	ListMachines              = "list_machines"

@@ -15,7 +15,7 @@ func (c *Client) DeleteMachineSnapshot(
 		c.context,
 		identifier,
 		name,
-		&client.DeleteMachineSnapshotParams{Node: node},
+		&client.DeleteMachineSnapshotParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

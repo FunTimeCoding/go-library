@@ -15,7 +15,7 @@ func (c *Client) RollbackMachineSnapshot(
 		c.context,
 		identifier,
 		name,
-		&client.RollbackMachineSnapshotParams{Node: node},
+		&client.RollbackMachineSnapshotParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

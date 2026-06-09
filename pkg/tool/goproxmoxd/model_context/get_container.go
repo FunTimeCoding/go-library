@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) GetContainer(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.GetContainer,
 ) (*mcp.CallToolResult, error) {
@@ -16,36 +16,48 @@ func (s *Server) GetContainer(
 		return response.Fail("identifier is required")
 	}
 
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
 	if a.Node != "" {
-		node, e := s.client.Node(a.Node)
+		node, e := c.Node(a.Node)
 
 		if e != nil {
 			return s.captureFail(e, "node not found")
 		}
 
-		c, f := s.client.Container(node, a.Identifier)
+		ct, f := c.Container(node, a.Identifier)
 
 		if f != nil {
 			return s.captureDetail(f)
 		}
 
-		return response.SuccessAny(containerDetail(c))
+		return response.SuccessAny(containerDetail(ct))
 	}
 
-	nodes, e := s.client.Nodes()
+	nodes, e := c.Nodes()
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
 	for _, n := range nodes {
-		node, f := s.client.Node(n.Node)
+		node, f := c.Node(n.Node)
 
 		if f != nil {
 			return s.captureFail(f, "node not found")
 		}
 
-		containers, g := s.client.Containers(node)
+		containers, g := c.Containers(node)
 
 		if g != nil {
 			return s.captureDetail(g)
@@ -53,13 +65,13 @@ func (s *Server) GetContainer(
 
 		for _, listed := range containers {
 			if uint64(listed.VMID) == uint64(a.Identifier) {
-				c, h := s.client.Container(node, a.Identifier)
+				ct, h := c.Container(node, a.Identifier)
 
 				if h != nil {
 					return s.captureDetail(h)
 				}
 
-				return response.SuccessAny(containerDetail(c))
+				return response.SuccessAny(containerDetail(ct))
 			}
 		}
 	}

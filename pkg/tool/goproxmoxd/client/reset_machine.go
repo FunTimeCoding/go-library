@@ -13,7 +13,7 @@ func (c *Client) ResetMachine(
 	result, e := c.client.ResetMachine(
 		c.context,
 		identifier,
-		&client.ResetMachineParams{Node: node},
+		&client.ResetMachineParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

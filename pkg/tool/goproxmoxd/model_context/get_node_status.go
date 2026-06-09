@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) GetNodeStatus(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.GetNodeStatus,
 ) (*mcp.CallToolResult, error) {
@@ -16,7 +16,19 @@ func (s *Server) GetNodeStatus(
 		return response.Fail("node is required")
 	}
 
-	result, e := s.client.NodeStatus(a.Node)
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	result, e := c.NodeStatus(a.Node)
 
 	if e != nil {
 		return s.captureDetail(e)

@@ -15,7 +15,7 @@ func (c *Client) CreateMachineSnapshot(
 	result, e := c.client.CreateMachineSnapshot(
 		c.context,
 		identifier,
-		&client.CreateMachineSnapshotParams{Node: node},
+		&client.CreateMachineSnapshotParams{Instance: &c.instance, Node: node},
 		body,
 	)
 	errors.PanicOnError(e)

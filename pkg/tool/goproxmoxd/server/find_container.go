@@ -1,26 +1,50 @@
 package server
 
-import "github.com/luthermonson/go-proxmox"
+import (
+	"github.com/funtimecoding/go-library/pkg/proxmox"
+	upstream "github.com/luthermonson/go-proxmox"
+)
 
-func (s *Server) findContainer(
+func findContainer(
+	c *proxmox.Client,
 	identifier int64,
 	node *string,
-) *proxmox.Container {
+) (*upstream.Container, error) {
 	if node != nil && *node != "" {
-		n := s.client.MustNode(*node)
+		n, e := c.Node(*node)
 
-		return s.client.MustContainer(n, int(identifier))
+		if e != nil {
+			return nil, e
+		}
+
+		return c.Container(n, int(identifier))
 	}
 
-	for _, ns := range s.client.MustNodes() {
-		n := s.client.MustNode(ns.Node)
+	nodes, e := c.Nodes()
 
-		for _, listed := range s.client.MustContainers(n) {
+	if e != nil {
+		return nil, e
+	}
+
+	for _, ns := range nodes {
+		n, e := c.Node(ns.Node)
+
+		if e != nil {
+			continue
+		}
+
+		containers, e := c.Containers(n)
+
+		if e != nil {
+			continue
+		}
+
+		for _, listed := range containers {
 			if int64(listed.VMID) == identifier {
-				return s.client.MustContainer(n, int(identifier))
+				return c.Container(n, int(identifier))
 			}
 		}
 	}
 
-	return nil
+	return nil, nil
 }

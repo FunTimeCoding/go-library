@@ -9,7 +9,7 @@ import (
 func (c *Client) ListMachines(node *string) string {
 	result, e := c.client.ListMachines(
 		c.context,
-		&client.ListMachinesParams{Node: node},
+		&client.ListMachinesParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

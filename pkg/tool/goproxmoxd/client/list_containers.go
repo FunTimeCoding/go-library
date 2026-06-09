@@ -9,7 +9,7 @@ import (
 func (c *Client) ListContainers(node *string) string {
 	result, e := c.client.ListContainers(
 		c.context,
-		&client.ListContainersParams{Node: node},
+		&client.ListContainersParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

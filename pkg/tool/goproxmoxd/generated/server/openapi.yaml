@@ -2,11 +2,25 @@
 openapi: "3.0.0"
 info:
   title: goproxmoxd
-  version: 1.0.0
+  version: 2.0.0
 paths:
+  /api/v1/instances:
+    get:
+      operationId: listInstances
+      responses:
+        "200":
+          description: All configured Proxmox instances.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InstanceDetail"
   /api/v1/nodes:
     get:
       operationId: listNodes
+      parameters:
+      - $ref: "#/components/parameters/Instance"
       responses:
         "200":
           description: All Proxmox nodes.
@@ -16,10 +30,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Node"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/nodes/{name}/status:
     get:
       operationId: getNodeStatus
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: name
         in: path
         required: true
@@ -35,10 +54,15 @@ paths:
                 $ref: "#/components/schemas/NodeStatus"
         "404":
           description: Node not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines:
     get:
       operationId: listMachines
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: node
         in: query
         required: false
@@ -54,10 +78,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Machine"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}:
     get:
       operationId: getMachine
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -80,10 +109,15 @@ paths:
                 $ref: "#/components/schemas/MachineDetail"
         "404":
           description: Machine not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}/snapshots:
     get:
       operationId: listMachineSnapshots
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -108,9 +142,14 @@ paths:
                   $ref: "#/components/schemas/Snapshot"
         "404":
           description: Machine not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
     post:
       operationId: createMachineSnapshot
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -139,10 +178,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}/snapshots/{name}/rollback:
     post:
       operationId: rollbackMachineSnapshot
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -171,10 +215,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine or snapshot not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}/snapshots/{name}:
     delete:
       operationId: deleteMachineSnapshot
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -203,10 +252,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine or snapshot not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}/start:
     post:
       operationId: startMachine
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -229,10 +283,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}/stop:
     post:
       operationId: stopMachine
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -255,10 +314,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}/shutdown:
     post:
       operationId: shutdownMachine
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -281,10 +345,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}/reset:
     post:
       operationId: resetMachine
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -307,10 +376,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/nodes/{name}/networks:
     get:
       operationId: listNetworks
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: name
         in: path
         required: true
@@ -328,10 +402,15 @@ paths:
                   $ref: "#/components/schemas/Network"
         "404":
           description: Node not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/containers:
     get:
       operationId: listContainers
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: node
         in: query
         required: false
@@ -347,10 +426,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Container"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/containers/{identifier}:
     get:
       operationId: getContainer
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -373,10 +457,15 @@ paths:
                 $ref: "#/components/schemas/ContainerDetail"
         "404":
           description: Container not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/containers/{identifier}/snapshots:
     get:
       operationId: listContainerSnapshots
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -401,9 +490,14 @@ paths:
                   $ref: "#/components/schemas/Snapshot"
         "404":
           description: Container not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
     post:
       operationId: createContainerSnapshot
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -432,10 +526,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Container not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/containers/{identifier}/snapshots/{name}/rollback:
     post:
       operationId: rollbackContainerSnapshot
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -464,10 +563,15 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Container or snapshot not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/containers/{identifier}/snapshots/{name}:
     delete:
       operationId: deleteContainerSnapshot
       parameters:
+      - $ref: "#/components/parameters/Instance"
       - name: identifier
         in: path
         required: true
@@ -496,8 +600,55 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Container or snapshot not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
 components:
+  parameters:
+    Instance:
+      name: instance
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Proxmox instance name. Optional when only one instance is configured.
+  responses:
+    ClientError:
+      description: Invalid or missing parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ClientError"
+    Error:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
   schemas:
+    ClientError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+    InstanceDetail:
+      type: object
+      required: [name, host]
+      properties:
+        name:
+          type: string
+        host:
+          type: string
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
+          type: string
     Node:
       type: object
       required:

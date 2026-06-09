@@ -9,11 +9,23 @@ import (
 )
 
 func (s *Server) ListNodes(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	_ argument.ListNodes,
 ) (*mcp.CallToolResult, error) {
-	nodes, e := s.client.Nodes()
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	nodes, e := c.Nodes()
 
 	if e != nil {
 		return s.captureDetail(e)

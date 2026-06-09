@@ -1,35 +1,50 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateMachineSnapshot(
-	w http.ResponseWriter,
-	r *http.Request,
-	identifier int64,
-	v server.CreateMachineSnapshotParams,
-) {
-	m := s.findMachine(identifier, v.Node)
+	_ context.Context,
+	r server.CreateMachineSnapshotRequestObject,
+) (server.CreateMachineSnapshotResponseObject, error) {
+	instance, e := s.resolveInstance(r.Params.Instance)
 
-	if m == nil {
-		w.WriteHeader(http.StatusNotFound)
-
-		return
+	if e != nil {
+		return server.CreateMachineSnapshot400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
 	}
 
-	var b server.SnapshotRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&b))
-	web.EncodeNotation(
-		w,
-		server.TaskResult{
-			TaskId: string(
-				s.client.MustCreateMachineSnapshot(m, b.Name).UPID,
-			),
-		},
-	)
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return server.CreateMachineSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	vm, e := findMachine(c, r.Identifier, r.Params.Node)
+
+	if e != nil {
+		return server.CreateMachineSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	if vm == nil {
+		return nil, nil
+	}
+
+	task, e := c.CreateMachineSnapshot(vm, r.Body.Name)
+
+	if e != nil {
+		return server.CreateMachineSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	return server.CreateMachineSnapshot200JSONResponse{
+		TaskId: string(task.UPID),
+	}, nil
 }

@@ -1,33 +1,81 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListMachines(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.ListMachinesParams,
-) {
-	var result []*server.Machine
+	_ context.Context,
+	r server.ListMachinesRequestObject,
+) (server.ListMachinesResponseObject, error) {
+	instance, e := s.resolveInstance(r.Params.Instance)
 
-	if v.Node != nil && *v.Node != "" {
-		result = convert.Machines(
-			s.client.MustMachines(s.client.MustNode(*v.Node)),
-		)
+	if e != nil {
+		return server.ListMachines400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return server.ListMachines500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	var pointers []*server.Machine
+
+	if r.Params.Node != nil && *r.Params.Node != "" {
+		node, e := c.Node(*r.Params.Node)
+
+		if e != nil {
+			return server.ListMachines500JSONResponse{
+				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+			}, nil
+		}
+
+		machines, e := c.Machines(node)
+
+		if e != nil {
+			return server.ListMachines500JSONResponse{
+				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+			}, nil
+		}
+
+		pointers = convert.Machines(machines)
 	} else {
-		for _, ns := range s.client.MustNodes() {
-			result = append(
-				result,
-				convert.Machines(
-					s.client.MustMachines(s.client.MustNode(ns.Node)),
-				)...,
-			)
+		nodes, e := c.Nodes()
+
+		if e != nil {
+			return server.ListMachines500JSONResponse{
+				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+			}, nil
+		}
+
+		for _, ns := range nodes {
+			node, e := c.Node(ns.Node)
+
+			if e != nil {
+				continue
+			}
+
+			machines, e := c.Machines(node)
+
+			if e != nil {
+				continue
+			}
+
+			pointers = append(pointers, convert.Machines(machines)...)
 		}
 	}
 
-	web.EncodeNotation(w, result)
+	result := make(server.ListMachines200JSONResponse, len(pointers))
+
+	for i, m := range pointers {
+		result[i] = *m
+	}
+
+	return result, nil
 }

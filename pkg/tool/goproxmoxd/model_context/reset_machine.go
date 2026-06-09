@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) ResetMachine(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.ResetMachine,
 ) (*mcp.CallToolResult, error) {
@@ -16,7 +16,19 @@ func (s *Server) ResetMachine(
 		return response.Fail("identifier is required")
 	}
 
-	vm, e := s.findMachine(a.Identifier, a.Node)
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	vm, e := findMachine(c, a.Identifier, a.Node)
 
 	if e != nil {
 		return s.captureDetail(e)
@@ -26,7 +38,7 @@ func (s *Server) ResetMachine(
 		return response.Fail("vm %d not found", a.Identifier)
 	}
 
-	task, e := s.client.ResetMachine(vm)
+	task, e := c.ResetMachine(vm)
 
 	if e != nil {
 		return s.captureDetail(e)

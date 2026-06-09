@@ -3,12 +3,12 @@ package goproxmox
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/spf13/cobra"
 	"strconv"
 )
 
-func stopMachine(c *client.Client) *cobra.Command {
+func stopMachine(c *command_context.Context) *cobra.Command {
 	var node string
 	result := &cobra.Command{
 		Use:   "stop-machine [identifier]",
@@ -26,7 +26,7 @@ func stopMachine(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.StopMachine(identifier, n))
+			fmt.Println(c.Client().StopMachine(identifier, n))
 		},
 	}
 	result.Flags().StringVar(

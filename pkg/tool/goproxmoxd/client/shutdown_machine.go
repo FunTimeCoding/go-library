@@ -13,7 +13,7 @@ func (c *Client) ShutdownMachine(
 	result, e := c.client.ShutdownMachine(
 		c.context,
 		identifier,
-		&client.ShutdownMachineParams{Node: node},
+		&client.ShutdownMachineParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

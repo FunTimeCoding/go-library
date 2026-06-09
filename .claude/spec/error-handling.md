@@ -324,17 +324,34 @@ remains as a safety net for unexpected panics.
 ### REST strict server error handling
 
 Services using oapi-codegen's strict server mode return typed error
-responses with Sentry event IDs. The OpenAPI spec defines an
-`ErrorResponse` schema with `error` and `event_identifier` fields,
-referenced from every error response code.
+responses. The OpenAPI spec defines two error schemas:
+
+- `ClientError` — tier 1 (400), just an `error` string, no Sentry
+- `ErrorResponse` — tier 2 (500), `error` + `event_identifier`
 
 Two tiers, same as MCP:
 
 **Tier 1 - Input validation**: oapi-codegen handles parameter
-validation automatically in strict mode. The strict handler
-wrapper returns 400 before the handler runs if parameters fail
-binding. For application-level validation, return the 400
-response type with `captureFail`.
+binding validation automatically — the strict handler wrapper
+returns 400 before the handler runs if parameters fail binding.
+For application-level validation (e.g. instance resolution in
+multi-instance services), return the 400 response type with
+`clientError`. No Sentry capture — these are caller mistakes,
+not infrastructure failures.
+
+```go
+instance, e := s.resolveInstance(r.Params.Instance)
+
+if e != nil {
+    return server.ListNodes400JSONResponse{
+        ClientErrorJSONResponse: *clientError(e),
+    }, nil
+}
+```
+
+`clientError` returns `*server.ClientErrorJSONResponse` (pointer —
+lint requires pointer returns for structs). Callers dereference
+with `*` inside the response type.
 
 **Tier 2 - Infrastructure failure**: use non-Must store/client
 methods, check the error, return the 500 response type with
@@ -344,15 +361,15 @@ methods, check the error, return the 500 response type with
 records, e := s.store.ByName(r.Params.Name)
 
 if e != nil {
-    return server.GetAlerts500JSONResponse(
-        *s.captureFail(e, "failed to query alerts"),
-    ), nil
+    return server.GetAlerts500JSONResponse{
+        ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+    }, nil
 }
 ```
 
-`captureFail` on REST servers returns `*server.ErrorResponse`
-(pointer - lint requires pointer returns for structs). Callers
-dereference with `*` inside the response type conversion.
+`captureFail` on REST servers returns `*server.ErrorJSONResponse`
+(pointer — lint requires pointer returns for structs). Callers
+dereference with `*` inside the response type.
 
 For external process failures with rich context (stdout, stderr),
 construct the response inline with `CaptureWithContext`:

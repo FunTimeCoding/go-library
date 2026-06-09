@@ -3,12 +3,12 @@ package goproxmox
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/spf13/cobra"
 	"strconv"
 )
 
-func rollbackSnapshot(c *client.Client) *cobra.Command {
+func rollbackSnapshot(c *command_context.Context) *cobra.Command {
 	var node string
 	var name string
 	result := &cobra.Command{
@@ -27,7 +27,7 @@ func rollbackSnapshot(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.RollbackMachineSnapshot(identifier, name, n))
+			fmt.Println(c.Client().RollbackMachineSnapshot(identifier, name, n))
 		},
 	}
 	result.Flags().StringVar(

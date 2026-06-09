@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,7 +19,13 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
+
+// ClientError defines model for ClientError.
+type ClientError struct {
+	Error string `json:"error"`
+}
 
 // Container defines model for Container.
 type Container struct {
@@ -50,6 +58,18 @@ type ContainerDetail struct {
 	Status      *string `json:"status,omitempty"`
 	Tags        *string `json:"tags,omitempty"`
 	Uptime      *int64  `json:"uptime,omitempty"`
+}
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
+// InstanceDetail defines model for InstanceDetail.
+type InstanceDetail struct {
+	Host string `json:"host"`
+	Name string `json:"name"`
 }
 
 // Machine defines model for Machine.
@@ -150,100 +170,172 @@ type TaskResult struct {
 	TaskId string `json:"taskId"`
 }
 
+// Instance defines model for Instance.
+type Instance = string
+
+// Error defines model for Error.
+type Error = ErrorResponse
+
 // ListContainersParams defines parameters for ListContainers.
 type ListContainersParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Filter by node name. Omit for all nodes.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // GetContainerParams defines parameters for GetContainer.
 type GetContainerParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ListContainerSnapshotsParams defines parameters for ListContainerSnapshots.
 type ListContainerSnapshotsParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // CreateContainerSnapshotParams defines parameters for CreateContainerSnapshot.
 type CreateContainerSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // DeleteContainerSnapshotParams defines parameters for DeleteContainerSnapshot.
 type DeleteContainerSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // RollbackContainerSnapshotParams defines parameters for RollbackContainerSnapshot.
 type RollbackContainerSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ListMachinesParams defines parameters for ListMachines.
 type ListMachinesParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Filter by node name. Omit for all nodes.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // GetMachineParams defines parameters for GetMachine.
 type GetMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ResetMachineParams defines parameters for ResetMachine.
 type ResetMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ShutdownMachineParams defines parameters for ShutdownMachine.
 type ShutdownMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ListMachineSnapshotsParams defines parameters for ListMachineSnapshots.
 type ListMachineSnapshotsParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // CreateMachineSnapshotParams defines parameters for CreateMachineSnapshot.
 type CreateMachineSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // DeleteMachineSnapshotParams defines parameters for DeleteMachineSnapshot.
 type DeleteMachineSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // RollbackMachineSnapshotParams defines parameters for RollbackMachineSnapshot.
 type RollbackMachineSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // StartMachineParams defines parameters for StartMachine.
 type StartMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // StopMachineParams defines parameters for StopMachine.
 type StopMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// ListNodesParams defines parameters for ListNodes.
+type ListNodesParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// ListNetworksParams defines parameters for ListNetworks.
+type ListNetworksParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// GetNodeStatusParams defines parameters for GetNodeStatus.
+type GetNodeStatusParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
 }
 
 // CreateContainerSnapshotJSONRequestBody defines body for CreateContainerSnapshot for application/json ContentType.
@@ -272,6 +364,9 @@ type ServerInterface interface {
 
 	// (POST /api/v1/containers/{identifier}/snapshots/{name}/rollback)
 	RollbackContainerSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params RollbackContainerSnapshotParams)
+
+	// (GET /api/v1/instances)
+	ListInstances(w http.ResponseWriter, r *http.Request)
 
 	// (GET /api/v1/machines)
 	ListMachines(w http.ResponseWriter, r *http.Request, params ListMachinesParams)
@@ -304,13 +399,13 @@ type ServerInterface interface {
 	StopMachine(w http.ResponseWriter, r *http.Request, identifier int64, params StopMachineParams)
 
 	// (GET /api/v1/nodes)
-	ListNodes(w http.ResponseWriter, r *http.Request)
+	ListNodes(w http.ResponseWriter, r *http.Request, params ListNodesParams)
 
 	// (GET /api/v1/nodes/{name}/networks)
-	ListNetworks(w http.ResponseWriter, r *http.Request, name string)
+	ListNetworks(w http.ResponseWriter, r *http.Request, name string, params ListNetworksParams)
 
 	// (GET /api/v1/nodes/{name}/status)
-	GetNodeStatus(w http.ResponseWriter, r *http.Request, name string)
+	GetNodeStatus(w http.ResponseWriter, r *http.Request, name string, params GetNodeStatusParams)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -329,6 +424,14 @@ func (siw *ServerInterfaceWrapper) ListContainers(w http.ResponseWriter, r *http
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params ListContainersParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -366,6 +469,14 @@ func (siw *ServerInterfaceWrapper) GetContainer(w http.ResponseWriter, r *http.R
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetContainerParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -402,6 +513,14 @@ func (siw *ServerInterfaceWrapper) ListContainerSnapshots(w http.ResponseWriter,
 	// Parameter object where we will unmarshal all parameters from the context
 	var params ListContainerSnapshotsParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -437,6 +556,14 @@ func (siw *ServerInterfaceWrapper) CreateContainerSnapshot(w http.ResponseWriter
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params CreateContainerSnapshotParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -483,6 +610,14 @@ func (siw *ServerInterfaceWrapper) DeleteContainerSnapshot(w http.ResponseWriter
 	// Parameter object where we will unmarshal all parameters from the context
 	var params DeleteContainerSnapshotParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -528,6 +663,14 @@ func (siw *ServerInterfaceWrapper) RollbackContainerSnapshot(w http.ResponseWrit
 	// Parameter object where we will unmarshal all parameters from the context
 	var params RollbackContainerSnapshotParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -547,6 +690,20 @@ func (siw *ServerInterfaceWrapper) RollbackContainerSnapshot(w http.ResponseWrit
 	handler.ServeHTTP(w, r)
 }
 
+// ListInstances operation middleware
+func (siw *ServerInterfaceWrapper) ListInstances(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListInstances(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListMachines operation middleware
 func (siw *ServerInterfaceWrapper) ListMachines(w http.ResponseWriter, r *http.Request) {
 
@@ -554,6 +711,14 @@ func (siw *ServerInterfaceWrapper) ListMachines(w http.ResponseWriter, r *http.R
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params ListMachinesParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -591,6 +756,14 @@ func (siw *ServerInterfaceWrapper) GetMachine(w http.ResponseWriter, r *http.Req
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetMachineParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -626,6 +799,14 @@ func (siw *ServerInterfaceWrapper) ResetMachine(w http.ResponseWriter, r *http.R
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params ResetMachineParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -663,6 +844,14 @@ func (siw *ServerInterfaceWrapper) ShutdownMachine(w http.ResponseWriter, r *htt
 	// Parameter object where we will unmarshal all parameters from the context
 	var params ShutdownMachineParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -699,6 +888,14 @@ func (siw *ServerInterfaceWrapper) ListMachineSnapshots(w http.ResponseWriter, r
 	// Parameter object where we will unmarshal all parameters from the context
 	var params ListMachineSnapshotsParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -734,6 +931,14 @@ func (siw *ServerInterfaceWrapper) CreateMachineSnapshot(w http.ResponseWriter, 
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params CreateMachineSnapshotParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -780,6 +985,14 @@ func (siw *ServerInterfaceWrapper) DeleteMachineSnapshot(w http.ResponseWriter, 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params DeleteMachineSnapshotParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -825,6 +1038,14 @@ func (siw *ServerInterfaceWrapper) RollbackMachineSnapshot(w http.ResponseWriter
 	// Parameter object where we will unmarshal all parameters from the context
 	var params RollbackMachineSnapshotParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -860,6 +1081,14 @@ func (siw *ServerInterfaceWrapper) StartMachine(w http.ResponseWriter, r *http.R
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params StartMachineParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
 
 	// ------------- Optional query parameter "node" -------------
 
@@ -897,6 +1126,14 @@ func (siw *ServerInterfaceWrapper) StopMachine(w http.ResponseWriter, r *http.Re
 	// Parameter object where we will unmarshal all parameters from the context
 	var params StopMachineParams
 
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	// ------------- Optional query parameter "node" -------------
 
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
@@ -919,8 +1156,21 @@ func (siw *ServerInterfaceWrapper) StopMachine(w http.ResponseWriter, r *http.Re
 // ListNodes operation middleware
 func (siw *ServerInterfaceWrapper) ListNodes(w http.ResponseWriter, r *http.Request) {
 
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListNodesParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.ListNodes(w, r)
+		siw.Handler.ListNodes(w, r, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -944,8 +1194,19 @@ func (siw *ServerInterfaceWrapper) ListNetworks(w http.ResponseWriter, r *http.R
 		return
 	}
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListNetworksParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.ListNetworks(w, r, name)
+		siw.Handler.ListNetworks(w, r, name, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -969,8 +1230,19 @@ func (siw *ServerInterfaceWrapper) GetNodeStatus(w http.ResponseWriter, r *http.
 		return
 	}
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetNodeStatusParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.GetNodeStatus(w, r, name)
+		siw.Handler.GetNodeStatus(w, r, name, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -1106,6 +1378,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/containers/{identifier}/snapshots", wrapper.CreateContainerSnapshot)
 	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/containers/{identifier}/snapshots/{name}", wrapper.DeleteContainerSnapshot)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/containers/{identifier}/snapshots/{name}/rollback", wrapper.RollbackContainerSnapshot)
+	m.HandleFunc("GET "+options.BaseURL+"/api/v1/instances", wrapper.ListInstances)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines", wrapper.ListMachines)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines/{identifier}", wrapper.GetMachine)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/reset", wrapper.ResetMachine)
@@ -1123,32 +1396,1517 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type ClientErrorJSONResponse ClientError
+
+type ErrorJSONResponse ErrorResponse
+
+type ListContainersRequestObject struct {
+	Params ListContainersParams
+}
+
+type ListContainersResponseObject interface {
+	VisitListContainersResponse(w http.ResponseWriter) error
+}
+
+type ListContainers200JSONResponse []Container
+
+func (response ListContainers200JSONResponse) VisitListContainersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListContainers400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response ListContainers400JSONResponse) VisitListContainersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListContainers500JSONResponse struct{ ErrorJSONResponse }
+
+func (response ListContainers500JSONResponse) VisitListContainersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetContainerRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     GetContainerParams
+}
+
+type GetContainerResponseObject interface {
+	VisitGetContainerResponse(w http.ResponseWriter) error
+}
+
+type GetContainer200JSONResponse ContainerDetail
+
+func (response GetContainer200JSONResponse) VisitGetContainerResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetContainer400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response GetContainer400JSONResponse) VisitGetContainerResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetContainer404Response struct {
+}
+
+func (response GetContainer404Response) VisitGetContainerResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type GetContainer500JSONResponse struct{ ErrorJSONResponse }
+
+func (response GetContainer500JSONResponse) VisitGetContainerResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListContainerSnapshotsRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     ListContainerSnapshotsParams
+}
+
+type ListContainerSnapshotsResponseObject interface {
+	VisitListContainerSnapshotsResponse(w http.ResponseWriter) error
+}
+
+type ListContainerSnapshots200JSONResponse []Snapshot
+
+func (response ListContainerSnapshots200JSONResponse) VisitListContainerSnapshotsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListContainerSnapshots400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response ListContainerSnapshots400JSONResponse) VisitListContainerSnapshotsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListContainerSnapshots404Response struct {
+}
+
+func (response ListContainerSnapshots404Response) VisitListContainerSnapshotsResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type ListContainerSnapshots500JSONResponse struct{ ErrorJSONResponse }
+
+func (response ListContainerSnapshots500JSONResponse) VisitListContainerSnapshotsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateContainerSnapshotRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     CreateContainerSnapshotParams
+	Body       *CreateContainerSnapshotJSONRequestBody
+}
+
+type CreateContainerSnapshotResponseObject interface {
+	VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error
+}
+
+type CreateContainerSnapshot200JSONResponse TaskResult
+
+func (response CreateContainerSnapshot200JSONResponse) VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateContainerSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response CreateContainerSnapshot400JSONResponse) VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateContainerSnapshot404Response struct {
+}
+
+func (response CreateContainerSnapshot404Response) VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type CreateContainerSnapshot500JSONResponse struct{ ErrorJSONResponse }
+
+func (response CreateContainerSnapshot500JSONResponse) VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteContainerSnapshotRequestObject struct {
+	Identifier int64  `json:"identifier"`
+	Name       string `json:"name"`
+	Params     DeleteContainerSnapshotParams
+}
+
+type DeleteContainerSnapshotResponseObject interface {
+	VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error
+}
+
+type DeleteContainerSnapshot200JSONResponse TaskResult
+
+func (response DeleteContainerSnapshot200JSONResponse) VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteContainerSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response DeleteContainerSnapshot400JSONResponse) VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteContainerSnapshot404Response struct {
+}
+
+func (response DeleteContainerSnapshot404Response) VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteContainerSnapshot500JSONResponse struct{ ErrorJSONResponse }
+
+func (response DeleteContainerSnapshot500JSONResponse) VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type RollbackContainerSnapshotRequestObject struct {
+	Identifier int64  `json:"identifier"`
+	Name       string `json:"name"`
+	Params     RollbackContainerSnapshotParams
+}
+
+type RollbackContainerSnapshotResponseObject interface {
+	VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error
+}
+
+type RollbackContainerSnapshot200JSONResponse TaskResult
+
+func (response RollbackContainerSnapshot200JSONResponse) VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type RollbackContainerSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response RollbackContainerSnapshot400JSONResponse) VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type RollbackContainerSnapshot404Response struct {
+}
+
+func (response RollbackContainerSnapshot404Response) VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type RollbackContainerSnapshot500JSONResponse struct{ ErrorJSONResponse }
+
+func (response RollbackContainerSnapshot500JSONResponse) VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListInstancesRequestObject struct {
+}
+
+type ListInstancesResponseObject interface {
+	VisitListInstancesResponse(w http.ResponseWriter) error
+}
+
+type ListInstances200JSONResponse []InstanceDetail
+
+func (response ListInstances200JSONResponse) VisitListInstancesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListMachinesRequestObject struct {
+	Params ListMachinesParams
+}
+
+type ListMachinesResponseObject interface {
+	VisitListMachinesResponse(w http.ResponseWriter) error
+}
+
+type ListMachines200JSONResponse []Machine
+
+func (response ListMachines200JSONResponse) VisitListMachinesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListMachines400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response ListMachines400JSONResponse) VisitListMachinesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListMachines500JSONResponse struct{ ErrorJSONResponse }
+
+func (response ListMachines500JSONResponse) VisitListMachinesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetMachineRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     GetMachineParams
+}
+
+type GetMachineResponseObject interface {
+	VisitGetMachineResponse(w http.ResponseWriter) error
+}
+
+type GetMachine200JSONResponse MachineDetail
+
+func (response GetMachine200JSONResponse) VisitGetMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetMachine400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response GetMachine400JSONResponse) VisitGetMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetMachine404Response struct {
+}
+
+func (response GetMachine404Response) VisitGetMachineResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type GetMachine500JSONResponse struct{ ErrorJSONResponse }
+
+func (response GetMachine500JSONResponse) VisitGetMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ResetMachineRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     ResetMachineParams
+}
+
+type ResetMachineResponseObject interface {
+	VisitResetMachineResponse(w http.ResponseWriter) error
+}
+
+type ResetMachine200JSONResponse TaskResult
+
+func (response ResetMachine200JSONResponse) VisitResetMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ResetMachine400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response ResetMachine400JSONResponse) VisitResetMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ResetMachine404Response struct {
+}
+
+func (response ResetMachine404Response) VisitResetMachineResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type ResetMachine500JSONResponse struct{ ErrorJSONResponse }
+
+func (response ResetMachine500JSONResponse) VisitResetMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ShutdownMachineRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     ShutdownMachineParams
+}
+
+type ShutdownMachineResponseObject interface {
+	VisitShutdownMachineResponse(w http.ResponseWriter) error
+}
+
+type ShutdownMachine200JSONResponse TaskResult
+
+func (response ShutdownMachine200JSONResponse) VisitShutdownMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ShutdownMachine400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response ShutdownMachine400JSONResponse) VisitShutdownMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ShutdownMachine404Response struct {
+}
+
+func (response ShutdownMachine404Response) VisitShutdownMachineResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type ShutdownMachine500JSONResponse struct{ ErrorJSONResponse }
+
+func (response ShutdownMachine500JSONResponse) VisitShutdownMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListMachineSnapshotsRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     ListMachineSnapshotsParams
+}
+
+type ListMachineSnapshotsResponseObject interface {
+	VisitListMachineSnapshotsResponse(w http.ResponseWriter) error
+}
+
+type ListMachineSnapshots200JSONResponse []Snapshot
+
+func (response ListMachineSnapshots200JSONResponse) VisitListMachineSnapshotsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListMachineSnapshots400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response ListMachineSnapshots400JSONResponse) VisitListMachineSnapshotsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListMachineSnapshots404Response struct {
+}
+
+func (response ListMachineSnapshots404Response) VisitListMachineSnapshotsResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type ListMachineSnapshots500JSONResponse struct{ ErrorJSONResponse }
+
+func (response ListMachineSnapshots500JSONResponse) VisitListMachineSnapshotsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateMachineSnapshotRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     CreateMachineSnapshotParams
+	Body       *CreateMachineSnapshotJSONRequestBody
+}
+
+type CreateMachineSnapshotResponseObject interface {
+	VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error
+}
+
+type CreateMachineSnapshot200JSONResponse TaskResult
+
+func (response CreateMachineSnapshot200JSONResponse) VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateMachineSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response CreateMachineSnapshot400JSONResponse) VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateMachineSnapshot404Response struct {
+}
+
+func (response CreateMachineSnapshot404Response) VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type CreateMachineSnapshot500JSONResponse struct{ ErrorJSONResponse }
+
+func (response CreateMachineSnapshot500JSONResponse) VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteMachineSnapshotRequestObject struct {
+	Identifier int64  `json:"identifier"`
+	Name       string `json:"name"`
+	Params     DeleteMachineSnapshotParams
+}
+
+type DeleteMachineSnapshotResponseObject interface {
+	VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error
+}
+
+type DeleteMachineSnapshot200JSONResponse TaskResult
+
+func (response DeleteMachineSnapshot200JSONResponse) VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteMachineSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response DeleteMachineSnapshot400JSONResponse) VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteMachineSnapshot404Response struct {
+}
+
+func (response DeleteMachineSnapshot404Response) VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteMachineSnapshot500JSONResponse struct{ ErrorJSONResponse }
+
+func (response DeleteMachineSnapshot500JSONResponse) VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type RollbackMachineSnapshotRequestObject struct {
+	Identifier int64  `json:"identifier"`
+	Name       string `json:"name"`
+	Params     RollbackMachineSnapshotParams
+}
+
+type RollbackMachineSnapshotResponseObject interface {
+	VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error
+}
+
+type RollbackMachineSnapshot200JSONResponse TaskResult
+
+func (response RollbackMachineSnapshot200JSONResponse) VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type RollbackMachineSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response RollbackMachineSnapshot400JSONResponse) VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type RollbackMachineSnapshot404Response struct {
+}
+
+func (response RollbackMachineSnapshot404Response) VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type RollbackMachineSnapshot500JSONResponse struct{ ErrorJSONResponse }
+
+func (response RollbackMachineSnapshot500JSONResponse) VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type StartMachineRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     StartMachineParams
+}
+
+type StartMachineResponseObject interface {
+	VisitStartMachineResponse(w http.ResponseWriter) error
+}
+
+type StartMachine200JSONResponse TaskResult
+
+func (response StartMachine200JSONResponse) VisitStartMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type StartMachine400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response StartMachine400JSONResponse) VisitStartMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type StartMachine404Response struct {
+}
+
+func (response StartMachine404Response) VisitStartMachineResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type StartMachine500JSONResponse struct{ ErrorJSONResponse }
+
+func (response StartMachine500JSONResponse) VisitStartMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type StopMachineRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     StopMachineParams
+}
+
+type StopMachineResponseObject interface {
+	VisitStopMachineResponse(w http.ResponseWriter) error
+}
+
+type StopMachine200JSONResponse TaskResult
+
+func (response StopMachine200JSONResponse) VisitStopMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type StopMachine400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response StopMachine400JSONResponse) VisitStopMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type StopMachine404Response struct {
+}
+
+func (response StopMachine404Response) VisitStopMachineResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type StopMachine500JSONResponse struct{ ErrorJSONResponse }
+
+func (response StopMachine500JSONResponse) VisitStopMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListNodesRequestObject struct {
+	Params ListNodesParams
+}
+
+type ListNodesResponseObject interface {
+	VisitListNodesResponse(w http.ResponseWriter) error
+}
+
+type ListNodes200JSONResponse []Node
+
+func (response ListNodes200JSONResponse) VisitListNodesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListNodes400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response ListNodes400JSONResponse) VisitListNodesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListNodes500JSONResponse struct{ ErrorJSONResponse }
+
+func (response ListNodes500JSONResponse) VisitListNodesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListNetworksRequestObject struct {
+	Name   string `json:"name"`
+	Params ListNetworksParams
+}
+
+type ListNetworksResponseObject interface {
+	VisitListNetworksResponse(w http.ResponseWriter) error
+}
+
+type ListNetworks200JSONResponse []Network
+
+func (response ListNetworks200JSONResponse) VisitListNetworksResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListNetworks400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response ListNetworks400JSONResponse) VisitListNetworksResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListNetworks404Response struct {
+}
+
+func (response ListNetworks404Response) VisitListNetworksResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type ListNetworks500JSONResponse struct{ ErrorJSONResponse }
+
+func (response ListNetworks500JSONResponse) VisitListNetworksResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetNodeStatusRequestObject struct {
+	Name   string `json:"name"`
+	Params GetNodeStatusParams
+}
+
+type GetNodeStatusResponseObject interface {
+	VisitGetNodeStatusResponse(w http.ResponseWriter) error
+}
+
+type GetNodeStatus200JSONResponse NodeStatus
+
+func (response GetNodeStatus200JSONResponse) VisitGetNodeStatusResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetNodeStatus400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response GetNodeStatus400JSONResponse) VisitGetNodeStatusResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetNodeStatus404Response struct {
+}
+
+func (response GetNodeStatus404Response) VisitGetNodeStatusResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type GetNodeStatus500JSONResponse struct{ ErrorJSONResponse }
+
+func (response GetNodeStatus500JSONResponse) VisitGetNodeStatusResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (GET /api/v1/containers)
+	ListContainers(ctx context.Context, request ListContainersRequestObject) (ListContainersResponseObject, error)
+
+	// (GET /api/v1/containers/{identifier})
+	GetContainer(ctx context.Context, request GetContainerRequestObject) (GetContainerResponseObject, error)
+
+	// (GET /api/v1/containers/{identifier}/snapshots)
+	ListContainerSnapshots(ctx context.Context, request ListContainerSnapshotsRequestObject) (ListContainerSnapshotsResponseObject, error)
+
+	// (POST /api/v1/containers/{identifier}/snapshots)
+	CreateContainerSnapshot(ctx context.Context, request CreateContainerSnapshotRequestObject) (CreateContainerSnapshotResponseObject, error)
+
+	// (DELETE /api/v1/containers/{identifier}/snapshots/{name})
+	DeleteContainerSnapshot(ctx context.Context, request DeleteContainerSnapshotRequestObject) (DeleteContainerSnapshotResponseObject, error)
+
+	// (POST /api/v1/containers/{identifier}/snapshots/{name}/rollback)
+	RollbackContainerSnapshot(ctx context.Context, request RollbackContainerSnapshotRequestObject) (RollbackContainerSnapshotResponseObject, error)
+
+	// (GET /api/v1/instances)
+	ListInstances(ctx context.Context, request ListInstancesRequestObject) (ListInstancesResponseObject, error)
+
+	// (GET /api/v1/machines)
+	ListMachines(ctx context.Context, request ListMachinesRequestObject) (ListMachinesResponseObject, error)
+
+	// (GET /api/v1/machines/{identifier})
+	GetMachine(ctx context.Context, request GetMachineRequestObject) (GetMachineResponseObject, error)
+
+	// (POST /api/v1/machines/{identifier}/reset)
+	ResetMachine(ctx context.Context, request ResetMachineRequestObject) (ResetMachineResponseObject, error)
+
+	// (POST /api/v1/machines/{identifier}/shutdown)
+	ShutdownMachine(ctx context.Context, request ShutdownMachineRequestObject) (ShutdownMachineResponseObject, error)
+
+	// (GET /api/v1/machines/{identifier}/snapshots)
+	ListMachineSnapshots(ctx context.Context, request ListMachineSnapshotsRequestObject) (ListMachineSnapshotsResponseObject, error)
+
+	// (POST /api/v1/machines/{identifier}/snapshots)
+	CreateMachineSnapshot(ctx context.Context, request CreateMachineSnapshotRequestObject) (CreateMachineSnapshotResponseObject, error)
+
+	// (DELETE /api/v1/machines/{identifier}/snapshots/{name})
+	DeleteMachineSnapshot(ctx context.Context, request DeleteMachineSnapshotRequestObject) (DeleteMachineSnapshotResponseObject, error)
+
+	// (POST /api/v1/machines/{identifier}/snapshots/{name}/rollback)
+	RollbackMachineSnapshot(ctx context.Context, request RollbackMachineSnapshotRequestObject) (RollbackMachineSnapshotResponseObject, error)
+
+	// (POST /api/v1/machines/{identifier}/start)
+	StartMachine(ctx context.Context, request StartMachineRequestObject) (StartMachineResponseObject, error)
+
+	// (POST /api/v1/machines/{identifier}/stop)
+	StopMachine(ctx context.Context, request StopMachineRequestObject) (StopMachineResponseObject, error)
+
+	// (GET /api/v1/nodes)
+	ListNodes(ctx context.Context, request ListNodesRequestObject) (ListNodesResponseObject, error)
+
+	// (GET /api/v1/nodes/{name}/networks)
+	ListNetworks(ctx context.Context, request ListNetworksRequestObject) (ListNetworksResponseObject, error)
+
+	// (GET /api/v1/nodes/{name}/status)
+	GetNodeStatus(ctx context.Context, request GetNodeStatusRequestObject) (GetNodeStatusResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// ListContainers operation middleware
+func (sh *strictHandler) ListContainers(w http.ResponseWriter, r *http.Request, params ListContainersParams) {
+	var request ListContainersRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListContainers(ctx, request.(ListContainersRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListContainers")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListContainersResponseObject); ok {
+		if err := validResponse.VisitListContainersResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetContainer operation middleware
+func (sh *strictHandler) GetContainer(w http.ResponseWriter, r *http.Request, identifier int64, params GetContainerParams) {
+	var request GetContainerRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetContainer(ctx, request.(GetContainerRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetContainer")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetContainerResponseObject); ok {
+		if err := validResponse.VisitGetContainerResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListContainerSnapshots operation middleware
+func (sh *strictHandler) ListContainerSnapshots(w http.ResponseWriter, r *http.Request, identifier int64, params ListContainerSnapshotsParams) {
+	var request ListContainerSnapshotsRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListContainerSnapshots(ctx, request.(ListContainerSnapshotsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListContainerSnapshots")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListContainerSnapshotsResponseObject); ok {
+		if err := validResponse.VisitListContainerSnapshotsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateContainerSnapshot operation middleware
+func (sh *strictHandler) CreateContainerSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, params CreateContainerSnapshotParams) {
+	var request CreateContainerSnapshotRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	var body CreateContainerSnapshotJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateContainerSnapshot(ctx, request.(CreateContainerSnapshotRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateContainerSnapshot")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateContainerSnapshotResponseObject); ok {
+		if err := validResponse.VisitCreateContainerSnapshotResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteContainerSnapshot operation middleware
+func (sh *strictHandler) DeleteContainerSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params DeleteContainerSnapshotParams) {
+	var request DeleteContainerSnapshotRequestObject
+
+	request.Identifier = identifier
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteContainerSnapshot(ctx, request.(DeleteContainerSnapshotRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteContainerSnapshot")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteContainerSnapshotResponseObject); ok {
+		if err := validResponse.VisitDeleteContainerSnapshotResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// RollbackContainerSnapshot operation middleware
+func (sh *strictHandler) RollbackContainerSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params RollbackContainerSnapshotParams) {
+	var request RollbackContainerSnapshotRequestObject
+
+	request.Identifier = identifier
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.RollbackContainerSnapshot(ctx, request.(RollbackContainerSnapshotRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "RollbackContainerSnapshot")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(RollbackContainerSnapshotResponseObject); ok {
+		if err := validResponse.VisitRollbackContainerSnapshotResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListInstances operation middleware
+func (sh *strictHandler) ListInstances(w http.ResponseWriter, r *http.Request) {
+	var request ListInstancesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListInstances(ctx, request.(ListInstancesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListInstances")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListInstancesResponseObject); ok {
+		if err := validResponse.VisitListInstancesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListMachines operation middleware
+func (sh *strictHandler) ListMachines(w http.ResponseWriter, r *http.Request, params ListMachinesParams) {
+	var request ListMachinesRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListMachines(ctx, request.(ListMachinesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListMachines")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListMachinesResponseObject); ok {
+		if err := validResponse.VisitListMachinesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetMachine operation middleware
+func (sh *strictHandler) GetMachine(w http.ResponseWriter, r *http.Request, identifier int64, params GetMachineParams) {
+	var request GetMachineRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetMachine(ctx, request.(GetMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetMachineResponseObject); ok {
+		if err := validResponse.VisitGetMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ResetMachine operation middleware
+func (sh *strictHandler) ResetMachine(w http.ResponseWriter, r *http.Request, identifier int64, params ResetMachineParams) {
+	var request ResetMachineRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ResetMachine(ctx, request.(ResetMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ResetMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ResetMachineResponseObject); ok {
+		if err := validResponse.VisitResetMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ShutdownMachine operation middleware
+func (sh *strictHandler) ShutdownMachine(w http.ResponseWriter, r *http.Request, identifier int64, params ShutdownMachineParams) {
+	var request ShutdownMachineRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ShutdownMachine(ctx, request.(ShutdownMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ShutdownMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ShutdownMachineResponseObject); ok {
+		if err := validResponse.VisitShutdownMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListMachineSnapshots operation middleware
+func (sh *strictHandler) ListMachineSnapshots(w http.ResponseWriter, r *http.Request, identifier int64, params ListMachineSnapshotsParams) {
+	var request ListMachineSnapshotsRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListMachineSnapshots(ctx, request.(ListMachineSnapshotsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListMachineSnapshots")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListMachineSnapshotsResponseObject); ok {
+		if err := validResponse.VisitListMachineSnapshotsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateMachineSnapshot operation middleware
+func (sh *strictHandler) CreateMachineSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, params CreateMachineSnapshotParams) {
+	var request CreateMachineSnapshotRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	var body CreateMachineSnapshotJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateMachineSnapshot(ctx, request.(CreateMachineSnapshotRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateMachineSnapshot")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateMachineSnapshotResponseObject); ok {
+		if err := validResponse.VisitCreateMachineSnapshotResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteMachineSnapshot operation middleware
+func (sh *strictHandler) DeleteMachineSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params DeleteMachineSnapshotParams) {
+	var request DeleteMachineSnapshotRequestObject
+
+	request.Identifier = identifier
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteMachineSnapshot(ctx, request.(DeleteMachineSnapshotRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteMachineSnapshot")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteMachineSnapshotResponseObject); ok {
+		if err := validResponse.VisitDeleteMachineSnapshotResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// RollbackMachineSnapshot operation middleware
+func (sh *strictHandler) RollbackMachineSnapshot(w http.ResponseWriter, r *http.Request, identifier int64, name string, params RollbackMachineSnapshotParams) {
+	var request RollbackMachineSnapshotRequestObject
+
+	request.Identifier = identifier
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.RollbackMachineSnapshot(ctx, request.(RollbackMachineSnapshotRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "RollbackMachineSnapshot")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(RollbackMachineSnapshotResponseObject); ok {
+		if err := validResponse.VisitRollbackMachineSnapshotResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// StartMachine operation middleware
+func (sh *strictHandler) StartMachine(w http.ResponseWriter, r *http.Request, identifier int64, params StartMachineParams) {
+	var request StartMachineRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.StartMachine(ctx, request.(StartMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "StartMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(StartMachineResponseObject); ok {
+		if err := validResponse.VisitStartMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// StopMachine operation middleware
+func (sh *strictHandler) StopMachine(w http.ResponseWriter, r *http.Request, identifier int64, params StopMachineParams) {
+	var request StopMachineRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.StopMachine(ctx, request.(StopMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "StopMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(StopMachineResponseObject); ok {
+		if err := validResponse.VisitStopMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListNodes operation middleware
+func (sh *strictHandler) ListNodes(w http.ResponseWriter, r *http.Request, params ListNodesParams) {
+	var request ListNodesRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListNodes(ctx, request.(ListNodesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListNodes")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListNodesResponseObject); ok {
+		if err := validResponse.VisitListNodesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListNetworks operation middleware
+func (sh *strictHandler) ListNetworks(w http.ResponseWriter, r *http.Request, name string, params ListNetworksParams) {
+	var request ListNetworksRequestObject
+
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListNetworks(ctx, request.(ListNetworksRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListNetworks")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListNetworksResponseObject); ok {
+		if err := validResponse.VisitListNetworksResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetNodeStatus operation middleware
+func (sh *strictHandler) GetNodeStatus(w http.ResponseWriter, r *http.Request, name string, params GetNodeStatusParams) {
+	var request GetNodeStatusRequestObject
+
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetNodeStatus(ctx, request.(GetNodeStatusRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetNodeStatus")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetNodeStatusResponseObject); ok {
+		if err := validResponse.VisitGetNodeStatusResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+xaW2/bNhT+KwK3R8NOt2IPfusSdCjQZEVcFAOKPNDSsc1aIhnyKI4R+L8PpG62RUmM",
-	"E+eqpzbiES/f9/HcrDsSikQKDhw1Gd8RHS4gofa/p4IjZRyU+UMqIUEhAzsUytT+i2sJZEwYR5iDIpsB",
-	"YRFwZDOWvTUTKqGYWfz1kQwcLyT09ozppb/1OST+xpMVlZ7WnCawdSaNivG5HRCRe0AjxR0cqiGkc/dA",
-	"KpFl63RuaTMgCq5TpiAi45/byOabvSrfEdNfEKKZvyTtDJCyuE4dVeHCubNQKGggtZnuCHSomEQmuHPS",
-	"hdDYCOzr1UoCiVBrNyRvQ0fnNFwwDs6rv7NqJNJpDNWyPE2mXao5hPh7UOlt+aaoarrw7ff6wVx2eYDI",
-	"/8K+KH9wRBEJ/d0+culLhEvABqhfpPisJ/zCZ6KuvJkC8AQRBdLY0zbVZoN+B6rt9wJwJdTSERdDZDfb",
-	"pEyFiIFy8xKNIgXaDTBNUWikCt2vThWL5vBNKHS/HrJINYTjJCmSstrgnCKs6NodVWc0bBAkYEKz61IX",
-	"kFuR+5qwc7t0cJGL/dBgEd3rHp9m8742j9BygQ+/p3a1cu4mbibl0ocytATFIf4BSje5+ljQ6NMNKDq3",
-	"B2EIiW4RG6FK0fVuOvW7ghkZk99GVVUyykuS0Zar2QzMMW4Tcdu2HyUEfmYx6LXGjDz/6XWeDPq/UTHo",
-	"44cmnEq9EFhnpCugNqpLUgUc3YCzBDTSRB4ssKuWM1zCdQracZSGrfrO/53q5SXoNHZMjVQvv0Tdk+d2",
-	"9emNIcvDFjKMzdhc5KqKyIDcFMoiH4YnwxMbuCVwKhkZkz/tI4M5Lux+RlSy0c2HUVjUX/bpHOzWzcap",
-	"IdTsmHxlGk8rM0scTQDtOz/3BEA+sxhBBdN1YPKJwIA1DP5NGAYzoQIax/a5HhJzHDIm1ymodRGxx1kS",
-	"MsjLehdcVwYvLQXXGbB/nJxkWSPHXE1UypiFdv+jXzpTZTVfecvbbkrVSqjd/s1+Dkm+/ncaVDAOjclm",
-	"4AB4dFelKJtGtP+BCuwurEvDoJq5BNZQXeG6kx1VgkOVwjbaHndtfxMXFc0TCRDpIJVBLMQylcFqATxY",
-	"crHiz8a3F815LeIgt4I4sjZDo4iPJx9rnm/Lkgsj9pRHnloY6dwxed7BSWne6+Np/EEZ/TzcQcmOdXi4",
-	"gMo53F88AyKFdujhVAFFqCmiF0QuCBvg/xbR+tF8xX7ysNmN3AaXzRFd1VZu0aK5ILS6iI7rpUZ3hotN",
-	"NnkMCHV9ntnnr1OfJZhWo+7V8yKmed1alveGwqanFjNteGlRqECXqD9UlyMl4nhKw6xp4nSfl7lFL9B3",
-	"KNCC/IBxhow+pkSTrLXdnsedF0bvoZIqfpfxSJx+MIUpjYMCxCZwveuoYu0OnHOz4MtZnxv737HdX3Ec",
-	"dBawdtVNhV3npdr1+gp0RnuDhzfDvQCezckWmFqaHp18vUgxEivezP8kt+gl8OwSKMjyibeH6sGrgZJP",
-	"7t0+6UXxjE2TnOj7SqW9YbKngHcugL5JciQv5N0geT167GvOJ2qKFBzfq958tIZIL8i+CXIUSRZfHDVk",
-	"62a4T9WfP1U3PBwjMqKQbewL2ZP/AsgXUj6IfNuPbC3BLqzFU1Qf9gM/j8rjUxwH37KvaIp+quNQRSTl",
-	"2eeYHYcsjDrEXCnqkcLXk5R1xRepHtjmpoG5VWpGQ9CB4La6M6A2Cy0DplVlBSHVJ4pNXeCtrwlfGx9d",
-	"+s6P5ULeHCXDprMB60J7s/k/AAD//51ra2ZpNQAA",
+	"H4sIAAAAAAAC/+xbUW/bthP/KgL//0fBzrpsD3nrknUI0GZFUhQDimKgpbPNWiJV8uTUCPzdB1KUZFuU",
+	"zLi2Ywd6S8Tj8Xj3u9PxR+uJRCLNBAeOilw9kYxKmgKCNP/dcoWUR6D/jkFFkmXIBCdX5KMUP1LxI2BW",
+	"IuA0hUHwtxmnSfA4BR4IniwCwaGWYiqIBB+zSS4hHpCQMK3sew5yQUKidZArUkqTkKhoCinVy+Mi02MK",
+	"JeMTslwuQyJBZYIrMKZeJww4/imlkPrfSHAEjvpPmmUJi6g2bPhNaeufVvT+X8KYXJH/DWs/DItRNVzV",
+	"aVZc98Etn9OExYGQQcqUYnwS1O4bkGVI9muO0XZvN+02CEFq7yuQc5AB6AkDogWtDoenMikykMgKN0L5",
+	"eNPf2t3fcyYhJldfrNjXsBQTo28Qod7yteBIGQeH7ijL1YpqxhEmIPUkFgNHNmbFrLGQKcVC4vdLEjom",
+	"pPTHDVMzf+kPkPoLPzzSzFO6gGzDXSHhInYPKKS45od6COnEPZBnyIp1tpq0EagVz1pjO4N2A0hZ0gwd",
+	"ldHUaVkkJLQEtT3ca6h1KJ0Kha2OPV+spJAKuXC75HXgaL1CeReXkMAcOP67HlqfCuSY6bKrfI+1wVsD",
+	"zu19d1g2bDFSBWydy3+g0ZRxcFbEtWDEIh8lUEeD5+loWzLtkg/PQLi35OtAsA1VG1C6y91Px3JbYYz9",
+	"69hJlckDgkioT+aRC18imgG2uPokwWdeELd8LJrIG0sATyeiQJp4yuZKG+i3oYa9d4CPQs4c7UKEbL4a",
+	"lJEQCVCuJ9E4lqDcDqY5CoVUonvqSLJ4Ah+FRPf0iMWypUtJ0/KE0xicUIRHunA3G2MatQASMKVFujQB",
+	"5EbkJiaMbhcO7izYd31ZxM/K4+tC77lVhI4E3j1P7Zvc6m6LzUO19K4RmoHkkHwGqdpKfSJo/HYOkk7M",
+	"RhhCqjrARqiUdLHeZXadJVdKzTLU29Cn+S57pBD4jiWgFgqL4PmrV7ZH9p9RR9CnDj1wmqmpwGZEtr1Q",
+	"W9GVUWnP602HsxQU0jTbGWBfO/ZwD99zUI6tPKMVden/RNXsHlSeOFQjVbPbeLtyK9dUrwWZfW0hw0SP",
+	"TYRFVUxCMi+RRd4MLgYX5sWdAacZI1fkV/NI+xynxp4hzdhw/sswKo+l5ukEjOnacMOeaIvJe6bwuhYL",
+	"1wisL27I1SLDiuBahpsM1zuWIMhgtAh071HyWynDYCxkQJPEPFdtJJZpWLoIrK8bBNabi4tnMUVVRehk",
+	"sCo2plEpmvTR+3+ug9rlhsC6LIxyLVEZv06TheQ3nzkVqbYMHeEePtUN07I19n9BHfp9Rr5SGtRWVGHW",
+	"IF2hKlf7ujpVUOawGnuPKrFpxF0NuocMIFZBngWJELM8K8jVGReP/MXQ5wU6e4pyQK12cWxkdgbb5cVl",
+	"k5yutXOh0zXn8eAQyBwqW7Q969NDJd6j9fRqZdVFeJTKKpLmZYBTqAvnKUI5JJlluNbReS2BIjTw2cNz",
+	"B3iatu0PES/2Vkc3W8Llej+m/bI8YBlf6Rg7MiCIDIbic6/gwycd7WVhSgIIzWy5Mc9ff7ZUoTUZ417d",
+	"HpTb122cJF5Rg+OZGQWODpYZQgaqitRxs2QoRZKMaFRQf85Xy72V6NOlT5fOdCmBEjDOkNHzSpjypyrd",
+	"B4DbSuoYfezGZadHN/s2SVZ+lhNs/rZHDTZ2nRaXZN2b/lAK9ZzMBtNpb4M9AvOZScxpEpQOPz4nU67s",
+	"zciUu9tj1K3K4PamP9f6V931m2wHuEq3HoKBKXXvqcw6UajnFCBs6UD0cA/Hs2gCSp+akJ4hFNU0x1g8",
+	"8nY0PliJHpBnBcgysIfqTo+DTi+a2ppyEJK6h+gLUtMWFKcH3G5aegOPPRx7KvolqOjjVmhvGvp1ZkfP",
+	"pZ0w9Vzi4gA8ml9WPIN27tOjT4+jU83HT5Dyt9ItZ0493B84z+vAqWN2nj0MiqwLiyLroXhmUBRZduJQ",
+	"NPc9nbTGnZHYHXJHOeCbLz48b+rK6zl71XXsGyGzbNmQ8eILoC0RKIX2mPd18u2pCzpOmO0HUx6RtqKB",
+	"LkByTCNQgeCGztEB2G9OFs7cY0KW8Ki/0Wm7Llz5nOY1o2Nb7lsXuHCgt1L48SA3dT8f++XyvwAAAP//",
+	"AM1QNkVEAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

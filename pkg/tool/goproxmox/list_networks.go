@@ -2,11 +2,11 @@ package goproxmox
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/spf13/cobra"
 )
 
-func listNetworks(c *client.Client) *cobra.Command {
+func listNetworks(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "list-networks [node]",
 		Short: "List network interfaces on a node",
@@ -15,7 +15,7 @@ func listNetworks(c *client.Client) *cobra.Command {
 			_ *cobra.Command,
 			a []string,
 		) {
-			fmt.Println(c.ListNetworks(a[0]))
+			fmt.Println(c.Client().ListNetworks(a[0]))
 		},
 	}
 }

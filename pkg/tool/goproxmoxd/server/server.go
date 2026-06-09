@@ -1,7 +1,11 @@
 package server
 
-import "github.com/funtimecoding/go-library/pkg/proxmox"
+import (
+	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/service"
+)
 
 type Server struct {
-	client *proxmox.Client
+	service  *service.Service
+	reporter face.Reporter
 }

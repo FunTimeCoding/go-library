@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) CreateContainerSnapshot(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.CreateContainerSnapshot,
 ) (*mcp.CallToolResult, error) {
@@ -20,17 +20,29 @@ func (s *Server) CreateContainerSnapshot(
 		return response.Fail("name is required")
 	}
 
-	c, e := s.findContainer(a.Identifier, a.Node)
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	p, e := s.service.Client(instance)
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
-	if c == nil {
+	ct, e := findContainer(p, a.Identifier, a.Node)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	if ct == nil {
 		return response.Fail("container %d not found", a.Identifier)
 	}
 
-	task, e := s.client.CreateContainerSnapshot(c, a.Name)
+	task, e := p.CreateContainerSnapshot(ct, a.Name)
 
 	if e != nil {
 		return s.captureDetail(e)

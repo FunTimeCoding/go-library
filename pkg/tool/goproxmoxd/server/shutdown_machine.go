@@ -1,29 +1,50 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ShutdownMachine(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier int64,
-	v server.ShutdownMachineParams,
-) {
-	m := s.findMachine(identifier, v.Node)
+	_ context.Context,
+	r server.ShutdownMachineRequestObject,
+) (server.ShutdownMachineResponseObject, error) {
+	instance, e := s.resolveInstance(r.Params.Instance)
 
-	if m == nil {
-		w.WriteHeader(http.StatusNotFound)
-
-		return
+	if e != nil {
+		return server.ShutdownMachine400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
 	}
 
-	web.EncodeNotation(
-		w,
-		server.TaskResult{
-			TaskId: string(s.client.MustShutdownMachine(m).UPID),
-		},
-	)
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return server.ShutdownMachine500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	vm, e := findMachine(c, r.Identifier, r.Params.Node)
+
+	if e != nil {
+		return server.ShutdownMachine500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	if vm == nil {
+		return nil, nil
+	}
+
+	task, e := c.ShutdownMachine(vm)
+
+	if e != nil {
+		return server.ShutdownMachine500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	return server.ShutdownMachine200JSONResponse{
+		TaskId: string(task.UPID),
+	}, nil
 }

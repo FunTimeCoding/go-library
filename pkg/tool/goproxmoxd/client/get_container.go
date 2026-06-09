@@ -13,7 +13,7 @@ func (c *Client) GetContainer(
 	result, e := c.client.GetContainer(
 		c.context,
 		identifier,
-		&client.GetContainerParams{Node: node},
+		&client.GetContainerParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

@@ -1,35 +1,50 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateContainerSnapshot(
-	w http.ResponseWriter,
-	r *http.Request,
-	identifier int64,
-	v server.CreateContainerSnapshotParams,
-) {
-	c := s.findContainer(identifier, v.Node)
+	_ context.Context,
+	r server.CreateContainerSnapshotRequestObject,
+) (server.CreateContainerSnapshotResponseObject, error) {
+	instance, e := s.resolveInstance(r.Params.Instance)
 
-	if c == nil {
-		w.WriteHeader(http.StatusNotFound)
-
-		return
+	if e != nil {
+		return server.CreateContainerSnapshot400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
 	}
 
-	var b server.SnapshotRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&b))
-	web.EncodeNotation(
-		w,
-		server.TaskResult{
-			TaskId: string(
-				s.client.MustCreateContainerSnapshot(c, b.Name).UPID,
-			),
-		},
-	)
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return server.CreateContainerSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	ct, e := findContainer(c, r.Identifier, r.Params.Node)
+
+	if e != nil {
+		return server.CreateContainerSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	if ct == nil {
+		return nil, nil
+	}
+
+	task, e := c.CreateContainerSnapshot(ct, r.Body.Name)
+
+	if e != nil {
+		return server.CreateContainerSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	return server.CreateContainerSnapshot200JSONResponse{
+		TaskId: string(task.UPID),
+	}, nil
 }

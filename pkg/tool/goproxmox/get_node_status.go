@@ -2,11 +2,11 @@ package goproxmox
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/spf13/cobra"
 )
 
-func getNodeStatus(c *client.Client) *cobra.Command {
+func getNodeStatus(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "get-node-status [name]",
 		Short: "Get Proxmox node status",
@@ -15,7 +15,7 @@ func getNodeStatus(c *client.Client) *cobra.Command {
 			_ *cobra.Command,
 			a []string,
 		) {
-			fmt.Println(c.GetNodeStatus(a[0]))
+			fmt.Println(c.Client().GetNodeStatus(a[0]))
 		},
 	}
 }

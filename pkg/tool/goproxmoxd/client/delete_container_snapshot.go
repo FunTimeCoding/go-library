@@ -15,7 +15,7 @@ func (c *Client) DeleteContainerSnapshot(
 		c.context,
 		identifier,
 		name,
-		&client.DeleteContainerSnapshotParams{Node: node},
+		&client.DeleteContainerSnapshotParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

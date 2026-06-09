@@ -13,7 +13,7 @@ func (c *Client) ListMachineSnapshots(
 	result, e := c.client.ListMachineSnapshots(
 		c.context,
 		identifier,
-		&client.ListMachineSnapshotsParams{Node: node},
+		&client.ListMachineSnapshotsParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

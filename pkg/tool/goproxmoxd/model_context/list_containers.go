@@ -9,16 +9,28 @@ import (
 )
 
 func (s *Server) ListContainers(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.ListContainers,
 ) (*mcp.CallToolResult, error) {
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
 	var nodeNames []string
 
 	if a.Node != "" {
 		nodeNames = []string{a.Node}
 	} else {
-		nodes, e := s.client.Nodes()
+		nodes, e := c.Nodes()
 
 		if e != nil {
 			return s.captureDetail(e)
@@ -32,32 +44,32 @@ func (s *Server) ListContainers(
 	var rows []proxResponse.Container
 
 	for _, name := range nodeNames {
-		node, e := s.client.Node(name)
+		node, e := c.Node(name)
 
 		if e != nil {
 			return s.captureFail(e, "node not found")
 		}
 
-		containers, e := s.client.Containers(node)
+		containers, e := c.Containers(node)
 
 		if e != nil {
 			return s.captureDetail(e)
 		}
 
-		for _, c := range containers {
+		for _, ct := range containers {
 			rows = append(
 				rows,
 				proxResponse.Container{
-					Identifier: uint64(c.VMID),
-					Name:       c.Name,
-					Node:       c.Node,
-					Status:     c.Status,
-					CPUs:       c.CPUs,
-					MaxMem:     c.MaxMem,
-					MaxDisk:    c.MaxDisk,
-					MaxSwap:    c.MaxSwap,
-					Uptime:     c.Uptime,
-					Tags:       c.Tags,
+					Identifier: uint64(ct.VMID),
+					Name:       ct.Name,
+					Node:       ct.Node,
+					Status:     ct.Status,
+					CPUs:       ct.CPUs,
+					MaxMem:     ct.MaxMem,
+					MaxDisk:    ct.MaxDisk,
+					MaxSwap:    ct.MaxSwap,
+					Uptime:     ct.Uptime,
+					Tags:       ct.Tags,
 				},
 			)
 		}

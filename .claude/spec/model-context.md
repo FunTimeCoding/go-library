@@ -290,12 +290,17 @@ generate:
   embedded-spec: true
 ```
 
-### OpenAPI error schema
+### OpenAPI error schemas
 
-Every spec includes an `ErrorResponse` schema and references it
-from error response codes:
+Every spec includes two error schemas for the two error tiers:
 
 ```yaml
+ClientError:
+  type: object
+  required: [error]
+  properties:
+    error:
+      type: string
 ErrorResponse:
   type: object
   required: [error, event_identifier]
@@ -304,6 +309,33 @@ ErrorResponse:
       type: string
     event_identifier:
       type: string
+```
+
+`ClientError` is for 400 responses (tier 1 — input validation,
+application-level validation like missing instance selection).
+No Sentry event ID.
+
+`ErrorResponse` is for 500 responses (tier 2 — infrastructure
+failures). Carries the Sentry event ID so the caller can look
+up the full error.
+
+Use shared response references to keep the spec DRY:
+
+```yaml
+components:
+  responses:
+    ClientError:
+      description: Invalid or missing parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ClientError"
+    Error:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
 ```
 
 ### Strict handler pattern

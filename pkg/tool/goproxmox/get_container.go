@@ -3,12 +3,12 @@ package goproxmox
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/spf13/cobra"
 	"strconv"
 )
 
-func getContainer(c *client.Client) *cobra.Command {
+func getContainer(c *command_context.Context) *cobra.Command {
 	var node string
 	result := &cobra.Command{
 		Use:   "get-container [identifier]",
@@ -26,7 +26,7 @@ func getContainer(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.GetContainer(identifier, n))
+			fmt.Println(c.Client().GetContainer(identifier, n))
 		},
 	}
 	result.Flags().StringVar(

@@ -1,48 +1,43 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetMachine(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier int64,
-	v server.GetMachineParams,
-) {
-	if v.Node != nil && *v.Node != "" {
-		web.EncodeNotation(
-			w,
-			convert.MachineDetail(
-				s.client.MustMachine(
-					s.client.MustNode(*v.Node),
-					int(identifier),
-				),
-			),
-		)
+	_ context.Context,
+	r server.GetMachineRequestObject,
+) (server.GetMachineResponseObject, error) {
+	instance, e := s.resolveInstance(r.Params.Instance)
 
-		return
+	if e != nil {
+		return server.GetMachine400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
 	}
 
-	for _, n := range s.client.MustNodes() {
-		o := s.client.MustNode(n.Node)
+	c, e := s.service.Client(instance)
 
-		for _, listed := range s.client.MustMachines(o) {
-			if int64(listed.VMID) == identifier {
-				web.EncodeNotation(
-					w,
-					convert.MachineDetail(
-						s.client.MustMachine(o, int(identifier)),
-					),
-				)
-
-				return
-			}
-		}
+	if e != nil {
+		return server.GetMachine500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
 	}
 
-	w.WriteHeader(http.StatusNotFound)
+	vm, e := findMachine(c, r.Identifier, r.Params.Node)
+
+	if e != nil {
+		return server.GetMachine500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	if vm == nil {
+		return nil, nil
+	}
+
+	return server.GetMachine200JSONResponse(
+		*convert.MachineDetail(vm),
+	), nil
 }

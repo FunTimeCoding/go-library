@@ -11,6 +11,7 @@ func New(
 	host string,
 	port int,
 	insecure bool,
+	instance string,
 ) *Client {
 	l := locator.New(host).Port(port)
 
@@ -21,5 +22,9 @@ func New(
 	c, e := client.NewClientWithResponses(l.String())
 	errors.PanicOnError(e)
 
-	return &Client{context: context.Background(), client: c}
+	return &Client{
+		context:  context.Background(),
+		client:   c,
+		instance: instance,
+	}
 }

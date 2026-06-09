@@ -1,32 +1,50 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) RollbackContainerSnapshot(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier int64,
-	name string,
-	v server.RollbackContainerSnapshotParams,
-) {
-	c := s.findContainer(identifier, v.Node)
+	_ context.Context,
+	r server.RollbackContainerSnapshotRequestObject,
+) (server.RollbackContainerSnapshotResponseObject, error) {
+	instance, e := s.resolveInstance(r.Params.Instance)
 
-	if c == nil {
-		w.WriteHeader(http.StatusNotFound)
-
-		return
+	if e != nil {
+		return server.RollbackContainerSnapshot400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
 	}
 
-	web.EncodeNotation(
-		w,
-		server.TaskResult{
-			TaskId: string(
-				s.client.MustRollbackContainerSnapshot(c, name).UPID,
-			),
-		},
-	)
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return server.RollbackContainerSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	ct, e := findContainer(c, r.Identifier, r.Params.Node)
+
+	if e != nil {
+		return server.RollbackContainerSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	if ct == nil {
+		return nil, nil
+	}
+
+	task, e := c.RollbackContainerSnapshot(ct, r.Name)
+
+	if e != nil {
+		return server.RollbackContainerSnapshot500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	return server.RollbackContainerSnapshot200JSONResponse{
+		TaskId: string(task.UPID),
+	}, nil
 }

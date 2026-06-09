@@ -13,7 +13,7 @@ func (c *Client) StopMachine(
 	result, e := c.client.StopMachine(
 		c.context,
 		identifier,
-		&client.StopMachineParams{Node: node},
+		&client.StopMachineParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

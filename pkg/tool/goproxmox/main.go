@@ -4,8 +4,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/argument"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
 	"github.com/spf13/cobra"
 )
 
@@ -16,12 +16,26 @@ func Main(
 ) {
 	r := reporter.New(constant.Identity.Name(), version).Start()
 	defer func() { r.RecoverFlush(recover()) }()
-	c := client.NewEnvironment()
+	var instance string
+	c := command_context.New()
 	o := &cobra.Command{
 		Use:     constant.Identity.Usage(),
 		Short:   constant.Identity.Description(),
 		Version: argument.CobraVersion(version, gitHash, buildDate),
+		PersistentPreRun: func(
+			_ *cobra.Command,
+			_ []string,
+		) {
+			c.Initialize(instance)
+		},
 	}
+	o.PersistentFlags().StringVar(
+		&instance,
+		"instance",
+		"",
+		"Proxmox instance name",
+	)
+	o.AddCommand(listInstances(c))
 	o.AddCommand(listNodes(c))
 	o.AddCommand(getNodeStatus(c))
 	o.AddCommand(listMachines(c))

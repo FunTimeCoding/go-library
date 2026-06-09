@@ -2,11 +2,11 @@ package goproxmox
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/spf13/cobra"
 )
 
-func listNodes(c *client.Client) *cobra.Command {
+func listNodes(c *command_context.Context) *cobra.Command {
 	return &cobra.Command{
 		Use:   "list-nodes",
 		Short: "List Proxmox nodes",
@@ -14,7 +14,7 @@ func listNodes(c *client.Client) *cobra.Command {
 			_ *cobra.Command,
 			_ []string,
 		) {
-			fmt.Println(c.ListNodes())
+			fmt.Println(c.Client().ListNodes())
 		},
 	}
 }

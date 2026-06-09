@@ -9,16 +9,28 @@ import (
 )
 
 func (s *Server) ListMachines(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.ListMachines,
 ) (*mcp.CallToolResult, error) {
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
 	var nodeNames []string
 
 	if a.Node != "" {
 		nodeNames = []string{a.Node}
 	} else {
-		nodes, e := s.client.Nodes()
+		nodes, e := c.Nodes()
 
 		if e != nil {
 			return s.captureDetail(e)
@@ -32,13 +44,13 @@ func (s *Server) ListMachines(
 	var rows []proxResponse.Machine
 
 	for _, name := range nodeNames {
-		node, e := s.client.Node(name)
+		node, e := c.Node(name)
 
 		if e != nil {
 			return s.captureFail(e, "node not found")
 		}
 
-		machines, f := s.client.Machines(node)
+		machines, f := c.Machines(node)
 
 		if f != nil {
 			return s.captureDetail(f)

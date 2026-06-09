@@ -13,7 +13,7 @@ func (c *Client) GetMachine(
 	result, e := c.client.GetMachine(
 		c.context,
 		identifier,
-		&client.GetMachineParams{Node: node},
+		&client.GetMachineParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

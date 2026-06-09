@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) ListNetworks(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.ListNetworks,
 ) (*mcp.CallToolResult, error) {
@@ -16,13 +16,25 @@ func (s *Server) ListNetworks(
 		return response.Fail("node is required")
 	}
 
-	node, e := s.client.Node(a.Node)
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
-	networks, e := s.client.Networks(node)
+	node, e := c.Node(a.Node)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	networks, e := c.Networks(node)
 
 	if e != nil {
 		return s.captureDetail(e)

@@ -6,6 +6,7 @@ import (
 )
 
 type Client struct {
-	context context.Context
-	client  *client.ClientWithResponses
+	context  context.Context
+	client   *client.ClientWithResponses
+	instance string
 }

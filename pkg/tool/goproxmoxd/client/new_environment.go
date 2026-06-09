@@ -5,10 +5,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client/constant"
 )
 
-func NewEnvironment() *Client {
+func NewEnvironment(instance string) *Client {
 	return New(
 		environment.Required(constant.HostEnvironment),
 		environment.RequiredInteger(constant.PortEnvironment),
 		environment.Exists(constant.InsecureEnvironment),
+		instance,
 	)
 }

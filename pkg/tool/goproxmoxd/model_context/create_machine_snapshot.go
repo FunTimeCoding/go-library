@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) CreateMachineSnapshot(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.CreateMachineSnapshot,
 ) (*mcp.CallToolResult, error) {
@@ -20,7 +20,19 @@ func (s *Server) CreateMachineSnapshot(
 		return response.Fail("name is required")
 	}
 
-	vm, e := s.findMachine(a.Identifier, a.Node)
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	vm, e := findMachine(c, a.Identifier, a.Node)
 
 	if e != nil {
 		return s.captureDetail(e)
@@ -30,7 +42,7 @@ func (s *Server) CreateMachineSnapshot(
 		return response.Fail("vm %d not found", a.Identifier)
 	}
 
-	task, e := s.client.CreateMachineSnapshot(vm, a.Name)
+	task, e := c.CreateMachineSnapshot(vm, a.Name)
 
 	if e != nil {
 		return s.captureDetail(e)

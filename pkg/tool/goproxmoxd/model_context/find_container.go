@@ -1,35 +1,39 @@
 package model_context
 
-import "github.com/luthermonson/go-proxmox"
+import (
+	"github.com/funtimecoding/go-library/pkg/proxmox"
+	upstream "github.com/luthermonson/go-proxmox"
+)
 
-func (s *Server) findContainer(
+func findContainer(
+	c *proxmox.Client,
 	identifier int,
 	nodeName string,
-) (*proxmox.Container, error) {
+) (*upstream.Container, error) {
 	if nodeName != "" {
-		node, e := s.client.Node(nodeName)
+		node, e := c.Node(nodeName)
 
 		if e != nil {
 			return nil, e
 		}
 
-		return s.client.Container(node, identifier)
+		return c.Container(node, identifier)
 	}
 
-	nodes, e := s.client.Nodes()
+	nodes, e := c.Nodes()
 
 	if e != nil {
 		return nil, e
 	}
 
 	for _, n := range nodes {
-		node, f := s.client.Node(n.Node)
+		node, f := c.Node(n.Node)
 
 		if f != nil {
 			continue
 		}
 
-		containers, g := s.client.Containers(node)
+		containers, g := c.Containers(node)
 
 		if g != nil {
 			continue
@@ -37,7 +41,7 @@ func (s *Server) findContainer(
 
 		for _, listed := range containers {
 			if int(listed.VMID) == identifier {
-				return s.client.Container(node, identifier)
+				return c.Container(node, identifier)
 			}
 		}
 	}

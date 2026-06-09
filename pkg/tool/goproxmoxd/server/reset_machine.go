@@ -1,27 +1,50 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ResetMachine(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier int64,
-	v server.ResetMachineParams,
-) {
-	m := s.findMachine(identifier, v.Node)
+	_ context.Context,
+	r server.ResetMachineRequestObject,
+) (server.ResetMachineResponseObject, error) {
+	instance, e := s.resolveInstance(r.Params.Instance)
 
-	if m == nil {
-		w.WriteHeader(http.StatusNotFound)
-
-		return
+	if e != nil {
+		return server.ResetMachine400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
 	}
 
-	web.EncodeNotation(
-		w,
-		server.TaskResult{TaskId: string(s.client.MustResetMachine(m).UPID)},
-	)
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return server.ResetMachine500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	vm, e := findMachine(c, r.Identifier, r.Params.Node)
+
+	if e != nil {
+		return server.ResetMachine500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	if vm == nil {
+		return nil, nil
+	}
+
+	task, e := c.ResetMachine(vm)
+
+	if e != nil {
+		return server.ResetMachine500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	return server.ResetMachine200JSONResponse{
+		TaskId: string(task.UPID),
+	}, nil
 }

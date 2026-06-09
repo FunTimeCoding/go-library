@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) GetMachine(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.GetMachine,
 ) (*mcp.CallToolResult, error) {
@@ -16,14 +16,26 @@ func (s *Server) GetMachine(
 		return response.Fail("identifier is required")
 	}
 
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
 	if a.Node != "" {
-		node, e := s.client.Node(a.Node)
+		node, e := c.Node(a.Node)
 
 		if e != nil {
 			return s.captureFail(e, "node not found")
 		}
 
-		vm, f := s.client.Machine(node, a.Identifier)
+		vm, f := c.Machine(node, a.Identifier)
 
 		if f != nil {
 			return s.captureDetail(f)
@@ -32,20 +44,20 @@ func (s *Server) GetMachine(
 		return response.SuccessAny(machineDetail(vm))
 	}
 
-	nodes, e := s.client.Nodes()
+	nodes, e := c.Nodes()
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
 	for _, n := range nodes {
-		node, g := s.client.Node(n.Node)
+		node, g := c.Node(n.Node)
 
 		if g != nil {
 			return s.captureFail(g, "node not found")
 		}
 
-		machines, h := s.client.Machines(node)
+		machines, h := c.Machines(node)
 
 		if h != nil {
 			return s.captureDetail(h)
@@ -53,7 +65,7 @@ func (s *Server) GetMachine(
 
 		for _, listed := range machines {
 			if uint64(listed.VMID) == uint64(a.Identifier) {
-				m, i := s.client.Machine(node, a.Identifier)
+				m, i := c.Machine(node, a.Identifier)
 
 				if i != nil {
 					return s.captureDetail(i)

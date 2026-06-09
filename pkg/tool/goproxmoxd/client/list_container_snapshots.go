@@ -13,7 +13,7 @@ func (c *Client) ListContainerSnapshots(
 	result, e := c.client.ListContainerSnapshots(
 		c.context,
 		identifier,
-		&client.ListContainerSnapshotsParams{Node: node},
+		&client.ListContainerSnapshotsParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

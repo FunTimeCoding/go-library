@@ -2,11 +2,11 @@ package goproxmox
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/spf13/cobra"
 )
 
-func listContainers(c *client.Client) *cobra.Command {
+func listContainers(c *command_context.Context) *cobra.Command {
 	var node string
 	result := &cobra.Command{
 		Use:   "list-containers",
@@ -21,7 +21,7 @@ func listContainers(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.ListContainers(n))
+			fmt.Println(c.Client().ListContainers(n))
 		},
 	}
 	result.Flags().StringVar(

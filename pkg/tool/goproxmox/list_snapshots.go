@@ -3,12 +3,12 @@ package goproxmox
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/client"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmox/command_context"
 	"github.com/spf13/cobra"
 	"strconv"
 )
 
-func listSnapshots(c *client.Client) *cobra.Command {
+func listSnapshots(c *command_context.Context) *cobra.Command {
 	var node string
 	result := &cobra.Command{
 		Use:   "list-snapshots [identifier]",
@@ -26,7 +26,7 @@ func listSnapshots(c *client.Client) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.ListMachineSnapshots(identifier, n))
+			fmt.Println(c.Client().ListMachineSnapshots(identifier, n))
 		},
 	}
 	result.Flags().StringVar(

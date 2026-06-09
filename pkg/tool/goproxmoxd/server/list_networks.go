@@ -1,18 +1,52 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
 )
 
 func (s *Server) ListNetworks(
-	w http.ResponseWriter,
-	_ *http.Request,
-	name string,
-) {
-	web.EncodeNotation(
-		w,
-		convert.Networks(s.client.MustNetworks(s.client.MustNode(name))),
-	)
+	_ context.Context,
+	r server.ListNetworksRequestObject,
+) (server.ListNetworksResponseObject, error) {
+	instance, e := s.resolveInstance(r.Params.Instance)
+
+	if e != nil {
+		return server.ListNetworks400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return server.ListNetworks500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	node, e := c.Node(r.Name)
+
+	if e != nil {
+		return server.ListNetworks500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	networks, e := c.Networks(node)
+
+	if e != nil {
+		return server.ListNetworks500JSONResponse{
+			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+		}, nil
+	}
+
+	pointers := convert.Networks(networks)
+	result := make(server.ListNetworks200JSONResponse, len(pointers))
+
+	for i, n := range pointers {
+		result[i] = *n
+	}
+
+	return result, nil
 }

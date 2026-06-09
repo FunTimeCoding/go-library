@@ -16,6 +16,11 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// ClientError defines model for ClientError.
+type ClientError struct {
+	Error string `json:"error"`
+}
+
 // Container defines model for Container.
 type Container struct {
 	Cpus       *int    `json:"cpus,omitempty"`
@@ -47,6 +52,18 @@ type ContainerDetail struct {
 	Status      *string `json:"status,omitempty"`
 	Tags        *string `json:"tags,omitempty"`
 	Uptime      *int64  `json:"uptime,omitempty"`
+}
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
+// InstanceDetail defines model for InstanceDetail.
+type InstanceDetail struct {
+	Host string `json:"host"`
+	Name string `json:"name"`
 }
 
 // Machine defines model for Machine.
@@ -147,100 +164,172 @@ type TaskResult struct {
 	TaskId string `json:"taskId"`
 }
 
+// Instance defines model for Instance.
+type Instance = string
+
+// Error defines model for Error.
+type Error = ErrorResponse
+
 // ListContainersParams defines parameters for ListContainers.
 type ListContainersParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Filter by node name. Omit for all nodes.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // GetContainerParams defines parameters for GetContainer.
 type GetContainerParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ListContainerSnapshotsParams defines parameters for ListContainerSnapshots.
 type ListContainerSnapshotsParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // CreateContainerSnapshotParams defines parameters for CreateContainerSnapshot.
 type CreateContainerSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // DeleteContainerSnapshotParams defines parameters for DeleteContainerSnapshot.
 type DeleteContainerSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // RollbackContainerSnapshotParams defines parameters for RollbackContainerSnapshot.
 type RollbackContainerSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ListMachinesParams defines parameters for ListMachines.
 type ListMachinesParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Filter by node name. Omit for all nodes.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // GetMachineParams defines parameters for GetMachine.
 type GetMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ResetMachineParams defines parameters for ResetMachine.
 type ResetMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ShutdownMachineParams defines parameters for ShutdownMachine.
 type ShutdownMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // ListMachineSnapshotsParams defines parameters for ListMachineSnapshots.
 type ListMachineSnapshotsParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // CreateMachineSnapshotParams defines parameters for CreateMachineSnapshot.
 type CreateMachineSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // DeleteMachineSnapshotParams defines parameters for DeleteMachineSnapshot.
 type DeleteMachineSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // RollbackMachineSnapshotParams defines parameters for RollbackMachineSnapshot.
 type RollbackMachineSnapshotParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // StartMachineParams defines parameters for StartMachine.
 type StartMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
 // StopMachineParams defines parameters for StopMachine.
 type StopMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
 	// Node Node name. Speeds up lookup when known.
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// ListNodesParams defines parameters for ListNodes.
+type ListNodesParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// ListNetworksParams defines parameters for ListNetworks.
+type ListNetworksParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// GetNodeStatusParams defines parameters for GetNodeStatus.
+type GetNodeStatusParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
 }
 
 // CreateContainerSnapshotJSONRequestBody defines body for CreateContainerSnapshot for application/json ContentType.
@@ -342,6 +431,9 @@ type ClientInterface interface {
 	// RollbackContainerSnapshot request
 	RollbackContainerSnapshot(ctx context.Context, identifier int64, name string, params *RollbackContainerSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListInstances request
+	ListInstances(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListMachines request
 	ListMachines(ctx context.Context, params *ListMachinesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -375,13 +467,13 @@ type ClientInterface interface {
 	StopMachine(ctx context.Context, identifier int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListNodes request
-	ListNodes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ListNodes(ctx context.Context, params *ListNodesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListNetworks request
-	ListNetworks(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ListNetworks(ctx context.Context, name string, params *ListNetworksParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetNodeStatus request
-	GetNodeStatus(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetNodeStatus(ctx context.Context, name string, params *GetNodeStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListContainers(ctx context.Context, params *ListContainersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -458,6 +550,18 @@ func (c *Client) DeleteContainerSnapshot(ctx context.Context, identifier int64, 
 
 func (c *Client) RollbackContainerSnapshot(ctx context.Context, identifier int64, name string, params *RollbackContainerSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRollbackContainerSnapshotRequest(c.Server, identifier, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListInstances(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListInstancesRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -600,8 +704,8 @@ func (c *Client) StopMachine(ctx context.Context, identifier int64, params *Stop
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListNodes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListNodesRequest(c.Server)
+func (c *Client) ListNodes(ctx context.Context, params *ListNodesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListNodesRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -612,8 +716,8 @@ func (c *Client) ListNodes(ctx context.Context, reqEditors ...RequestEditorFn) (
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListNetworks(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListNetworksRequest(c.Server, name)
+func (c *Client) ListNetworks(ctx context.Context, name string, params *ListNetworksParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListNetworksRequest(c.Server, name, params)
 	if err != nil {
 		return nil, err
 	}
@@ -624,8 +728,8 @@ func (c *Client) ListNetworks(ctx context.Context, name string, reqEditors ...Re
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetNodeStatus(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetNodeStatusRequest(c.Server, name)
+func (c *Client) GetNodeStatus(ctx context.Context, name string, params *GetNodeStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetNodeStatusRequest(c.Server, name, params)
 	if err != nil {
 		return nil, err
 	}
@@ -657,6 +761,22 @@ func NewListContainersRequest(server string, params *ListContainersParams) (*htt
 
 	if params != nil {
 		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
 
 		if params.Node != nil {
 
@@ -714,6 +834,22 @@ func NewGetContainerRequest(server string, identifier int64, params *GetContaine
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -769,6 +905,22 @@ func NewListContainerSnapshotsRequest(server string, identifier int64, params *L
 
 	if params != nil {
 		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
 
 		if params.Node != nil {
 
@@ -837,6 +989,22 @@ func NewCreateContainerSnapshotRequestWithBody(server string, identifier int64, 
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -902,6 +1070,22 @@ func NewDeleteContainerSnapshotRequest(server string, identifier int64, name str
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -965,6 +1149,22 @@ func NewRollbackContainerSnapshotRequest(server string, identifier int64, name s
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -985,6 +1185,33 @@ func NewRollbackContainerSnapshotRequest(server string, identifier int64, name s
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListInstancesRequest generates requests for ListInstances
+func NewListInstancesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/instances")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1013,6 +1240,22 @@ func NewListMachinesRequest(server string, params *ListMachinesParams) (*http.Re
 
 	if params != nil {
 		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
 
 		if params.Node != nil {
 
@@ -1070,6 +1313,22 @@ func NewGetMachineRequest(server string, identifier int64, params *GetMachinePar
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -1125,6 +1384,22 @@ func NewResetMachineRequest(server string, identifier int64, params *ResetMachin
 
 	if params != nil {
 		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
 
 		if params.Node != nil {
 
@@ -1182,6 +1457,22 @@ func NewShutdownMachineRequest(server string, identifier int64, params *Shutdown
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -1237,6 +1528,22 @@ func NewListMachineSnapshotsRequest(server string, identifier int64, params *Lis
 
 	if params != nil {
 		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
 
 		if params.Node != nil {
 
@@ -1305,6 +1612,22 @@ func NewCreateMachineSnapshotRequestWithBody(server string, identifier int64, pa
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -1370,6 +1693,22 @@ func NewDeleteMachineSnapshotRequest(server string, identifier int64, name strin
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -1433,6 +1772,22 @@ func NewRollbackMachineSnapshotRequest(server string, identifier int64, name str
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -1488,6 +1843,22 @@ func NewStartMachineRequest(server string, identifier int64, params *StartMachin
 
 	if params != nil {
 		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
 
 		if params.Node != nil {
 
@@ -1545,6 +1916,22 @@ func NewStopMachineRequest(server string, identifier int64, params *StopMachineP
 	if params != nil {
 		queryValues := queryURL.Query()
 
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Node != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -1573,7 +1960,7 @@ func NewStopMachineRequest(server string, identifier int64, params *StopMachineP
 }
 
 // NewListNodesRequest generates requests for ListNodes
-func NewListNodesRequest(server string) (*http.Request, error) {
+func NewListNodesRequest(server string, params *ListNodesParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1591,6 +1978,28 @@ func NewListNodesRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -1600,7 +2009,7 @@ func NewListNodesRequest(server string) (*http.Request, error) {
 }
 
 // NewListNetworksRequest generates requests for ListNetworks
-func NewListNetworksRequest(server string, name string) (*http.Request, error) {
+func NewListNetworksRequest(server string, name string, params *ListNetworksParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1625,6 +2034,28 @@ func NewListNetworksRequest(server string, name string) (*http.Request, error) {
 		return nil, err
 	}
 
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -1634,7 +2065,7 @@ func NewListNetworksRequest(server string, name string) (*http.Request, error) {
 }
 
 // NewGetNodeStatusRequest generates requests for GetNodeStatus
-func NewGetNodeStatusRequest(server string, name string) (*http.Request, error) {
+func NewGetNodeStatusRequest(server string, name string, params *GetNodeStatusParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1657,6 +2088,28 @@ func NewGetNodeStatusRequest(server string, name string) (*http.Request, error) 
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -1730,6 +2183,9 @@ type ClientWithResponsesInterface interface {
 	// RollbackContainerSnapshotWithResponse request
 	RollbackContainerSnapshotWithResponse(ctx context.Context, identifier int64, name string, params *RollbackContainerSnapshotParams, reqEditors ...RequestEditorFn) (*RollbackContainerSnapshotResponse, error)
 
+	// ListInstancesWithResponse request
+	ListInstancesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListInstancesResponse, error)
+
 	// ListMachinesWithResponse request
 	ListMachinesWithResponse(ctx context.Context, params *ListMachinesParams, reqEditors ...RequestEditorFn) (*ListMachinesResponse, error)
 
@@ -1763,19 +2219,21 @@ type ClientWithResponsesInterface interface {
 	StopMachineWithResponse(ctx context.Context, identifier int64, params *StopMachineParams, reqEditors ...RequestEditorFn) (*StopMachineResponse, error)
 
 	// ListNodesWithResponse request
-	ListNodesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListNodesResponse, error)
+	ListNodesWithResponse(ctx context.Context, params *ListNodesParams, reqEditors ...RequestEditorFn) (*ListNodesResponse, error)
 
 	// ListNetworksWithResponse request
-	ListNetworksWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*ListNetworksResponse, error)
+	ListNetworksWithResponse(ctx context.Context, name string, params *ListNetworksParams, reqEditors ...RequestEditorFn) (*ListNetworksResponse, error)
 
 	// GetNodeStatusWithResponse request
-	GetNodeStatusWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*GetNodeStatusResponse, error)
+	GetNodeStatusWithResponse(ctx context.Context, name string, params *GetNodeStatusParams, reqEditors ...RequestEditorFn) (*GetNodeStatusResponse, error)
 }
 
 type ListContainersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Container
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1798,6 +2256,8 @@ type GetContainerResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ContainerDetail
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1820,6 +2280,8 @@ type ListContainerSnapshotsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Snapshot
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1842,6 +2304,8 @@ type CreateContainerSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1864,6 +2328,8 @@ type DeleteContainerSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1886,6 +2352,8 @@ type RollbackContainerSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1904,10 +2372,34 @@ func (r RollbackContainerSnapshotResponse) StatusCode() int {
 	return 0
 }
 
+type ListInstancesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]InstanceDetail
+}
+
+// Status returns HTTPResponse.Status
+func (r ListInstancesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListInstancesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListMachinesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Machine
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1930,6 +2422,8 @@ type GetMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *MachineDetail
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1952,6 +2446,8 @@ type ResetMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1974,6 +2470,8 @@ type ShutdownMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -1996,6 +2494,8 @@ type ListMachineSnapshotsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Snapshot
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2018,6 +2518,8 @@ type CreateMachineSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2040,6 +2542,8 @@ type DeleteMachineSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2062,6 +2566,8 @@ type RollbackMachineSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2084,6 +2590,8 @@ type StartMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2106,6 +2614,8 @@ type StopMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2128,6 +2638,8 @@ type ListNodesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Node
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2150,6 +2662,8 @@ type ListNetworksResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Network
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2172,6 +2686,8 @@ type GetNodeStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *NodeStatus
+	JSON400      *ClientError
+	JSON500      *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -2250,6 +2766,15 @@ func (c *ClientWithResponses) RollbackContainerSnapshotWithResponse(ctx context.
 		return nil, err
 	}
 	return ParseRollbackContainerSnapshotResponse(rsp)
+}
+
+// ListInstancesWithResponse request returning *ListInstancesResponse
+func (c *ClientWithResponses) ListInstancesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListInstancesResponse, error) {
+	rsp, err := c.ListInstances(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListInstancesResponse(rsp)
 }
 
 // ListMachinesWithResponse request returning *ListMachinesResponse
@@ -2351,8 +2876,8 @@ func (c *ClientWithResponses) StopMachineWithResponse(ctx context.Context, ident
 }
 
 // ListNodesWithResponse request returning *ListNodesResponse
-func (c *ClientWithResponses) ListNodesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListNodesResponse, error) {
-	rsp, err := c.ListNodes(ctx, reqEditors...)
+func (c *ClientWithResponses) ListNodesWithResponse(ctx context.Context, params *ListNodesParams, reqEditors ...RequestEditorFn) (*ListNodesResponse, error) {
+	rsp, err := c.ListNodes(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2360,8 +2885,8 @@ func (c *ClientWithResponses) ListNodesWithResponse(ctx context.Context, reqEdit
 }
 
 // ListNetworksWithResponse request returning *ListNetworksResponse
-func (c *ClientWithResponses) ListNetworksWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*ListNetworksResponse, error) {
-	rsp, err := c.ListNetworks(ctx, name, reqEditors...)
+func (c *ClientWithResponses) ListNetworksWithResponse(ctx context.Context, name string, params *ListNetworksParams, reqEditors ...RequestEditorFn) (*ListNetworksResponse, error) {
+	rsp, err := c.ListNetworks(ctx, name, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2369,8 +2894,8 @@ func (c *ClientWithResponses) ListNetworksWithResponse(ctx context.Context, name
 }
 
 // GetNodeStatusWithResponse request returning *GetNodeStatusResponse
-func (c *ClientWithResponses) GetNodeStatusWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*GetNodeStatusResponse, error) {
-	rsp, err := c.GetNodeStatus(ctx, name, reqEditors...)
+func (c *ClientWithResponses) GetNodeStatusWithResponse(ctx context.Context, name string, params *GetNodeStatusParams, reqEditors ...RequestEditorFn) (*GetNodeStatusResponse, error) {
+	rsp, err := c.GetNodeStatus(ctx, name, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2398,6 +2923,20 @@ func ParseListContainersResponse(rsp *http.Response) (*ListContainersResponse, e
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2423,6 +2962,20 @@ func ParseGetContainerResponse(rsp *http.Response) (*GetContainerResponse, error
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2450,6 +3003,20 @@ func ParseListContainerSnapshotsResponse(rsp *http.Response) (*ListContainerSnap
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2475,6 +3042,20 @@ func ParseCreateContainerSnapshotResponse(rsp *http.Response) (*CreateContainerS
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2502,6 +3083,20 @@ func ParseDeleteContainerSnapshotResponse(rsp *http.Response) (*DeleteContainerS
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2523,6 +3118,46 @@ func ParseRollbackContainerSnapshotResponse(rsp *http.Response) (*RollbackContai
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest TaskResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListInstancesResponse parses an HTTP response from a ListInstancesWithResponse call
+func ParseListInstancesResponse(rsp *http.Response) (*ListInstancesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListInstancesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []InstanceDetail
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2554,6 +3189,20 @@ func ParseListMachinesResponse(rsp *http.Response) (*ListMachinesResponse, error
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2579,6 +3228,20 @@ func ParseGetMachineResponse(rsp *http.Response) (*GetMachineResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2606,6 +3269,20 @@ func ParseResetMachineResponse(rsp *http.Response) (*ResetMachineResponse, error
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2631,6 +3308,20 @@ func ParseShutdownMachineResponse(rsp *http.Response) (*ShutdownMachineResponse,
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2658,6 +3349,20 @@ func ParseListMachineSnapshotsResponse(rsp *http.Response) (*ListMachineSnapshot
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2683,6 +3388,20 @@ func ParseCreateMachineSnapshotResponse(rsp *http.Response) (*CreateMachineSnaps
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2710,6 +3429,20 @@ func ParseDeleteMachineSnapshotResponse(rsp *http.Response) (*DeleteMachineSnaps
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2735,6 +3468,20 @@ func ParseRollbackMachineSnapshotResponse(rsp *http.Response) (*RollbackMachineS
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2762,6 +3509,20 @@ func ParseStartMachineResponse(rsp *http.Response) (*StartMachineResponse, error
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2787,6 +3548,20 @@ func ParseStopMachineResponse(rsp *http.Response) (*StopMachineResponse, error) 
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2814,6 +3589,20 @@ func ParseListNodesResponse(rsp *http.Response) (*ListNodesResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2840,6 +3629,20 @@ func ParseListNetworksResponse(rsp *http.Response) (*ListNetworksResponse, error
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2865,6 +3668,20 @@ func ParseGetNodeStatusResponse(rsp *http.Response) (*GetNodeStatusResponse, err
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

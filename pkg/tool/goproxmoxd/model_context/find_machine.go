@@ -1,35 +1,39 @@
 package model_context
 
-import "github.com/luthermonson/go-proxmox"
+import (
+	"github.com/funtimecoding/go-library/pkg/proxmox"
+	upstream "github.com/luthermonson/go-proxmox"
+)
 
-func (s *Server) findMachine(
+func findMachine(
+	c *proxmox.Client,
 	identifier int,
 	nodeName string,
-) (*proxmox.VirtualMachine, error) {
+) (*upstream.VirtualMachine, error) {
 	if nodeName != "" {
-		node, e := s.client.Node(nodeName)
+		node, e := c.Node(nodeName)
 
 		if e != nil {
 			return nil, e
 		}
 
-		return s.client.Machine(node, identifier)
+		return c.Machine(node, identifier)
 	}
 
-	nodes, e := s.client.Nodes()
+	nodes, e := c.Nodes()
 
 	if e != nil {
 		return nil, e
 	}
 
 	for _, n := range nodes {
-		node, f := s.client.Node(n.Node)
+		node, f := c.Node(n.Node)
 
 		if f != nil {
 			continue
 		}
 
-		machines, g := s.client.Machines(node)
+		machines, g := c.Machines(node)
 
 		if g != nil {
 			continue
@@ -37,7 +41,7 @@ func (s *Server) findMachine(
 
 		for _, listed := range machines {
 			if int(listed.VMID) == identifier {
-				return s.client.Machine(node, identifier)
+				return c.Machine(node, identifier)
 			}
 		}
 	}

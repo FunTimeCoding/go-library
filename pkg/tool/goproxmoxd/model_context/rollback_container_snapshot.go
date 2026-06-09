@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) RollbackContainerSnapshot(
-	_ context.Context,
+	x context.Context,
 	_ mcp.CallToolRequest,
 	a argument.RollbackContainerSnapshot,
 ) (*mcp.CallToolResult, error) {
@@ -20,17 +20,29 @@ func (s *Server) RollbackContainerSnapshot(
 		return response.Fail("name is required")
 	}
 
-	c, e := s.findContainer(a.Identifier, a.Node)
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	p, e := s.service.Client(instance)
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
-	if c == nil {
+	ct, e := findContainer(p, a.Identifier, a.Node)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	if ct == nil {
 		return response.Fail("container %d not found", a.Identifier)
 	}
 
-	task, e := s.client.RollbackContainerSnapshot(c, a.Name)
+	task, e := p.RollbackContainerSnapshot(ct, a.Name)
 
 	if e != nil {
 		return s.captureDetail(e)

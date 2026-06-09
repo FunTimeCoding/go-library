@@ -15,7 +15,7 @@ func (c *Client) RollbackContainerSnapshot(
 		c.context,
 		identifier,
 		name,
-		&client.RollbackContainerSnapshotParams{Node: node},
+		&client.RollbackContainerSnapshotParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 

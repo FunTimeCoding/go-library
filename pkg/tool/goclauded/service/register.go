@@ -13,8 +13,6 @@ func (s *Service) Register(sessionIdentifier string) (*ensure_result.Result, err
 		return nil, e
 	}
 
-	s.EnrichSession(sessionIdentifier)
-
 	if e := s.store.LogEvent(
 		sessionIdentifier,
 		"register",

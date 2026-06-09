@@ -5,14 +5,12 @@ import (
 	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/sweep"
 )
 
 func (s *Server) PostRegister(
 	_ context.Context,
 	r server.PostRegisterRequestObject,
 ) (server.PostRegisterResponseObject, error) {
-	sweep.Run(s.harborPath)
 	result, e := s.service.Register(r.Body.Session)
 
 	if e != nil {

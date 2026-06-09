@@ -64,3 +64,14 @@ func TestColorer(t *testing.T) {
 		r.ScoreColor()("r"),
 	)
 }
+
+func TestZeroScore(t *testing.T) {
+	a := score_fixture.New(0)
+	b := score_fixture.New(0)
+	c := Default(a, b)
+	c.Set(a)
+	c.Set(b)
+	console.GreenInstance.EnableColor()
+	assert.String(t, console.Green("%s", "a"), a.ScoreColor()("a"))
+	assert.String(t, console.Green("%s", "b"), b.ScoreColor()("b"))
+}

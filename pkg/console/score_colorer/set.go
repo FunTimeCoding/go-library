@@ -7,6 +7,12 @@ import (
 )
 
 func (c *Colorer) Set(i face.ScoreColorable) {
+	if c.largest == 0 {
+		i.SetScoreColor(console.Green)
+
+		return
+	}
+
 	value := i.Score() / c.largest
 
 	for _, m := range c.mapping {

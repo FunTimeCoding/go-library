@@ -17,9 +17,10 @@ func Main(
 	r.Start()
 	defer func() { r.RecoverFlush(recover()) }()
 	o := &cobra.Command{
-		Use:     constant.Identity.Usage(),
-		Short:   constant.Identity.Description(),
-		Version: argument.CobraVersion(version, gitHash, buildDate),
+		Use:           constant.Identity.Usage(),
+		Short:         constant.Identity.Description(),
+		Version:       argument.CobraVersion(version, gitHash, buildDate),
+		SilenceErrors: true,
 	}
 	o.PersistentFlags().StringP(
 		"file",

@@ -34,6 +34,7 @@ Commands:
 			cmd *cobra.Command,
 			arguments []string,
 		) error {
+			cmd.SilenceUsage = true
 			procfilePath, e := cmd.Flags().GetString("file")
 			errors.PanicOnError(e)
 			command := arguments[0]

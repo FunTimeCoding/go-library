@@ -17,6 +17,7 @@ func checkCommand() *cobra.Command {
 			cmd *cobra.Command,
 			_ []string,
 		) error {
+			cmd.SilenceUsage = true
 			procfilePath, e := cmd.Flags().GetString("file")
 			errors.PanicOnError(e)
 			entries, e := procfile.Parse(procfilePath)

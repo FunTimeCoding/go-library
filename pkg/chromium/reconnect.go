@@ -7,8 +7,8 @@ import (
 )
 
 func (c *Client) reconnect() error {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
 
 	if c.context.Err() == nil {
 		return nil

@@ -18,7 +18,7 @@ func (s *Server) cacheSnapshot(
 		}
 	}
 	walk(nodes)
-	s.mu.Lock()
+	s.mutex.Lock()
 	s.snapshotCache[tabID] = cache
-	s.mu.Unlock()
+	s.mutex.Unlock()
 }

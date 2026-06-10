@@ -8,8 +8,8 @@ import (
 
 func (c *Client) AcquireTarget(identifier string) context.Context {
 	c.reconnectIfNeeded()
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
 
 	if x, okay := c.targets[identifier]; okay {
 		if x.Err() == nil {

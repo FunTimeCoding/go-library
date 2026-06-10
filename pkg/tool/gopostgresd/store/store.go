@@ -10,5 +10,5 @@ type Store struct {
 	inventory *inventory.Inventory
 	pools     map[string]*pgxpool.Pool
 	sessions  sync.Map
-	mu        sync.Mutex
+	mutex     sync.Mutex
 }

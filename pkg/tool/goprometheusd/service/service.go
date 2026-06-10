@@ -10,5 +10,5 @@ type Service struct {
 	inventory *inventory.Inventory
 	clients   map[string]*prometheus.Client
 	sessions  sync.Map
-	mu        sync.Mutex
+	mutex     sync.Mutex
 }

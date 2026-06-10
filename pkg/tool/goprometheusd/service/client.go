@@ -6,8 +6,8 @@ import (
 )
 
 func (s *Service) Client(instance string) (*prometheus.Client, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 
 	if c, okay := s.clients[instance]; okay {
 		return c, nil

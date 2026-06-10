@@ -10,9 +10,9 @@ func (c *Client) listenTargets() {
 		c.context,
 		func(v any) {
 			if e, okay := v.(*target.EventTargetDestroyed); okay {
-				c.mu.Lock()
+				c.mutex.Lock()
 				delete(c.targets, string(e.TargetID))
-				c.mu.Unlock()
+				c.mutex.Unlock()
 			}
 		},
 	)

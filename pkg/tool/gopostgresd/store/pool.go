@@ -7,8 +7,8 @@ import (
 )
 
 func (s *Store) Pool(instance string) (*pgxpool.Pool, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 
 	if p, okay := s.pools[instance]; okay {
 		return p, nil

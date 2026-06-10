@@ -12,6 +12,6 @@ type Server struct {
 	client            *chromium.Client
 	downloadDirectory string
 	snapshotCache     map[string]map[string]int64
-	mu                sync.Mutex
+	mutex             sync.Mutex
 	reporter          face.Reporter
 }

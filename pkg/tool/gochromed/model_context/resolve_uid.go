@@ -4,8 +4,8 @@ func (s *Server) resolveUID(
 	tabID string,
 	uid string,
 ) (int64, bool) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	cache, okay := s.snapshotCache[tabID]
 
 	if !okay {

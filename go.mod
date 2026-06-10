@@ -69,7 +69,7 @@ require (
 	github.com/nwaples/rardecode/v2 v2.2.3
 	github.com/oapi-codegen/runtime v1.4.1
 	github.com/olekukonko/tablewriter v1.1.4
-	github.com/ollama/ollama v0.30.6
+	github.com/ollama/ollama v0.30.7
 	github.com/openai/openai-go/v3 v3.39.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23

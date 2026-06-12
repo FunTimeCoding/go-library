@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/store"
 	"maragu.dev/gomponents"
@@ -36,7 +37,7 @@ func raidsTable(rows []store.RaidRow) gomponents.Node {
 							),
 						),
 						html.Td(
-							gomponents.Text(r.Date.Format("2006-01-02")),
+							gomponents.Text(r.Date.Format(time.DateYear)),
 						),
 						html.Td(gomponents.Textf("%d", r.Fights)),
 						html.Td(gomponents.Textf("%d", r.Players)),

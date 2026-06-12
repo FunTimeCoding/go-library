@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/run"
+	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
 	"os"
 	"path/filepath"
@@ -116,7 +117,7 @@ func (s *Server) PostGenerate(
 
 	reportName := fmt.Sprintf(
 		"ONYX Log %s.html",
-		date.Format("2006-01-02"),
+		date.Format(timeLibrary.DateYear),
 	)
 	var reportSource string
 

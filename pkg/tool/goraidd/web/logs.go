@@ -3,6 +3,7 @@ package web
 import (
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/constant"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -20,8 +21,8 @@ func (s *Server) logs(
 	endValue := r.URL.Query().Get("end")
 
 	if !filtered {
-		startValue = join.Empty(time.Now().Format("2006-01-02"), "T00:00")
-		endValue = join.Empty(time.Now().Format("2006-01-02"), "T23:59")
+		startValue = join.Empty(time.Now().Format(timeLibrary.DateYear), "T00:00")
+		endValue = join.Empty(time.Now().Format(timeLibrary.DateYear), "T23:59")
 	}
 
 	var fights []raid.Fight

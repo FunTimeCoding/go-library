@@ -3,6 +3,7 @@ package gw2
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/gw2/constant"
+	timeLibrary "github.com/funtimecoding/go-library/pkg/time"
 	"strings"
 	"time"
 )
@@ -13,7 +14,7 @@ func LatestAleevaFile(files []string) string {
 	for _, file := range files {
 		date := strings.TrimPrefix(file, constant.AleevaPrefix)
 		date = strings.TrimSuffix(date, constant.NotationSuffix)
-		t, e := time.Parse("2006-01-02", date)
+		t, e := time.Parse(timeLibrary.DateYear, date)
 
 		if e != nil {
 			continue
@@ -27,7 +28,7 @@ func LatestAleevaFile(files []string) string {
 	return fmt.Sprintf(
 		"%s%s%s",
 		constant.AleevaPrefix,
-		latest.Format("2006-01-02"),
+		latest.Format(timeLibrary.DateYear),
 		constant.NotationSuffix,
 	)
 }

@@ -34,7 +34,7 @@ func Log(
 	atRiskCutOff := environment.Required(constant.AtRiskCutOffEnvironment)
 	currentTeam := environment.Required(constant.TeamEnvironment)
 	start := timeLibrary.Parse(
-		"2006-01-02",
+		timeLibrary.DateYear,
 		environment.Required(constant.LinkStartDateEnvironment),
 	)
 	matchUpStart := time.Date(

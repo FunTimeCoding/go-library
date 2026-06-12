@@ -1,6 +1,9 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/errors"
+import (
+	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/time"
+)
 
 func (s *Service) summaryMetadata(
 	sessionIdentifier string,
@@ -14,7 +17,7 @@ func (s *Service) summaryMetadata(
 	errors.PanicOnError(e)
 
 	if session != nil && !session.StartedAt.IsZero() {
-		result["date"] = session.StartedAt.Format("2006-01-02")
+		result["date"] = session.StartedAt.Format(time.DateYear)
 	}
 
 	return result

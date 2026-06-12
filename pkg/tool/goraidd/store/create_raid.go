@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/raid"
+	"github.com/funtimecoding/go-library/pkg/time"
 )
 
 func (s *Store) CreateRaid(filenames []string) uint {
@@ -17,7 +18,7 @@ func (s *Store) CreateRaid(filenames []string) uint {
 	r := raid.NewRaid()
 	r.Name = fmt.Sprintf(
 		"Raid %s",
-		firstFight.Timestamp.Format("2006-01-02"),
+		firstFight.Timestamp.Format(time.DateYear),
 	)
 	r.Date = firstFight.Timestamp
 	errors.PanicOnError(s.mapper.Create(r).Error)

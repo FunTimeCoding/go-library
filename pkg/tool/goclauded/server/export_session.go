@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude/session"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/system/writer"
+	"github.com/funtimecoding/go-library/pkg/time"
 	"os"
 	"path/filepath"
 	"strings"
@@ -42,7 +43,7 @@ func (s *Server) exportSession(
 
 	name := fmt.Sprintf(
 		"%s-%s.md",
-		created.Format("2006-01-02"),
+		created.Format(time.DateYear),
 		strings.ReplaceAll(
 			strings.ToLower(slug),
 			" ",
@@ -64,7 +65,7 @@ func (s *Server) exportSession(
 	writer.Print(
 		&b,
 		"created: %s\n",
-		created.Format("2006-01-02"),
+		created.Format(time.DateYear),
 	)
 	writer.Print(&b, "---\n\n")
 

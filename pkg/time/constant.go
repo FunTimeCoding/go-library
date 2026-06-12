@@ -5,6 +5,7 @@ import "time"
 const (
 	HourMinute       = "15:04"
 	HourMinuteSecond = "15:04:05"
+	DateYear         = "2006-01-02"
 	DateMinute       = "2006-01-02 15:04"
 	DateSecond       = "2006-01-02 15:04:05"
 	Micro            = "15:04:05.000000"

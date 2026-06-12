@@ -71,8 +71,14 @@ func New(
 		option = append(option, proxmox.WithHTTPClient(c))
 	}
 
+	p := constant.Port
+
+	if result.port > 0 {
+		p = result.port
+	}
+
 	result.client = proxmox.NewClient(
-		locator.New(host).Port(constant.Port).Base(constant.Base).String(),
+		locator.New(host).Port(p).Base(constant.Base).String(),
 		option...,
 	)
 

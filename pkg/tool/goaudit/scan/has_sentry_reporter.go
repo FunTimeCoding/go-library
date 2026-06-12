@@ -26,12 +26,14 @@ func hasSentryReporter(
 			continue
 		}
 
-		if parse.HasCall(
-			f,
-			"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter",
-			"New",
-		) {
-			return true
+		for _, name := range []string{"New", "NewOptional"} {
+			if parse.HasCall(
+				f,
+				"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter",
+				name,
+			) {
+				return true
+			}
 		}
 	}
 

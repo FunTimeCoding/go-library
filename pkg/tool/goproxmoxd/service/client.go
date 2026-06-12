@@ -20,25 +20,29 @@ func (s *Service) Client(instance string) (*proxmox.Client, error) {
 		return nil, fmt.Errorf("unknown instance: %s", instance)
 	}
 
-	var option []proxmox.Option
+	var o []proxmox.Option
 
 	if i.User != "" && i.Password != "" {
-		option = append(option, proxmox.WithUser(i.User, i.Password))
+		o = append(o, proxmox.WithUser(i.User, i.Password))
 	} else if i.Token != "" && i.Secret != "" {
-		option = append(option, proxmox.WithToken(i.Token, i.Secret))
+		o = append(o, proxmox.WithToken(i.Token, i.Secret))
+	}
+
+	if i.Port > 0 {
+		o = append(o, proxmox.WithPort(i.Port))
 	}
 
 	if i.Insecure {
-		option = append(option, proxmox.WithInsecure())
+		o = append(o, proxmox.WithInsecure())
 	}
 
 	if i.Timeout != "" {
 		if d, e := time.ParseDuration(i.Timeout); e == nil {
-			option = append(option, proxmox.WithTimeout(d))
+			o = append(o, proxmox.WithTimeout(d))
 		}
 	}
 
-	c := proxmox.New(i.Host, option...)
+	c := proxmox.New(i.Host, o...)
 	s.clients[instance] = c
 
 	return c, nil

@@ -16,5 +16,6 @@ type Client struct {
 	selfSigned bool
 	log        bool
 	verbose    bool
+	port       int
 	timeout    time.Duration
 }

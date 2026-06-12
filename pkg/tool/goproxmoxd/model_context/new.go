@@ -17,6 +17,10 @@ func New(
 		server: server.New(
 			constant.Identity,
 			version,
+		).WithInstructions(
+			constant.Identity.RenderInstructions(map[string]bool{
+				constant.MultiInstance: len(v.Instances()) > 1,
+			}),
 		).WithRecorder(t).Server(),
 		service:  v,
 		reporter: r,

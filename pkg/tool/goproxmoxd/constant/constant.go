@@ -1,15 +1,23 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/identity"
+import (
+	"github.com/funtimecoding/go-library/pkg/identity"
+	"github.com/funtimecoding/go-library/pkg/identity/paragraph"
+)
 
 var Identity = identity.New(
 	"goproxmoxd",
 	"Proxmox hypervisor bridge for node and VM inspection",
 	"goproxmoxd",
 ).WithInstructions(
-	"Proxmox hypervisor bridge. Multi-instance - call list_instances and use_instance before querying.",
+	"Proxmox hypervisor bridge.",
+	paragraph.New(
+		MultiInstance,
+		"Multi-instance - call list_instances and use_instance before querying.",
+	),
 )
 
+const MultiInstance = "multi_instance"
 const (
 	ListInstances             = "list_instances"
 	UseInstance               = "use_instance"

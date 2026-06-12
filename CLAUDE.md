@@ -25,7 +25,6 @@ Design and coding specs live in `.claude/spec/`:
 - `model-context.md` - MCP tool exposure pattern (model_context/ subpackage, HTTP transport)
 - `package-design.md` - one struct with receivers per package rule (when to extract sub-packages)
 - `package-taxonomy.md` - package roles, dependency direction, and promotion criteria for growing service tools
-- `plan.md` - implementation plan file conventions (doc/plan/, lifecycle, format)
 
 Read the relevant spec before working in that area.
 

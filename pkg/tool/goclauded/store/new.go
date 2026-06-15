@@ -4,6 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/completion"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event_metadata"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/label"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/message"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/pool_name"
@@ -23,12 +24,14 @@ func New(
 	d, e := gorm.Open(sqlite.Open(path), &gorm.Config{})
 	errors.PanicOnError(e)
 	errors.PanicOnError(d.Exec("PRAGMA journal_mode = WAL").Error)
+	errors.PanicOnError(d.Exec("PRAGMA foreign_keys = ON").Error)
 	migrateColumns(d)
 	errors.PanicOnError(
 		d.AutoMigrate(
 			session.Stub(),
 			message.Stub(),
 			event.Stub(),
+			event_metadata.Stub(),
 			completion.Stub(),
 			summary.Stub(),
 			pool_name.Stub(),
@@ -37,6 +40,12 @@ func New(
 			pulse.Stub(),
 		),
 	)
+	migrateEventMetadata(d)
+
+	if foreignKeysPrecondition(d) {
+		migrateEventMetadataConstraint(d)
+		migrateForeignKeys(d)
+	}
 
 	return &Store{database: d, clock: clock}
 }

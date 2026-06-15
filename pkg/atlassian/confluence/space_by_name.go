@@ -19,5 +19,9 @@ func (c *Client) SpaceByName(name string) (*space.Space, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("space not found: %s: %w", name, constant.ErrorNotFound)
+	return nil, fmt.Errorf(
+		"space not found: %s: %w",
+		name,
+		constant.ErrorNotFound,
+	)
 }

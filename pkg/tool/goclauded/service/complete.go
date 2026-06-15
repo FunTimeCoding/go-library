@@ -1,6 +1,9 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"time"
+)
 
 func (s *Service) Complete(
 	sessionIdentifier string,
@@ -8,27 +11,39 @@ func (s *Service) Complete(
 	topic string,
 	message string,
 ) error {
-	if e := s.store.UpsertCompletion(
+	c, e := s.store.UpsertCompletion(
 		sessionIdentifier,
 		name,
 		constant.Complete,
 		topic,
 		message,
-	); e != nil {
+	)
+
+	if e != nil {
 		return e
 	}
 
-	if e := s.store.UpsertEvent(
+	if f := s.store.UpsertEvent(
 		sessionIdentifier,
 		constant.Complete,
 		name,
-		topic,
-		message,
-	); e != nil {
-		return e
+		map[string]string{constant.Topic: topic, constant.Message: message},
+	); f != nil {
+		return f
 	}
 
 	s.notify()
+	slug, metadata, f := s.sessionMetadata(sessionIdentifier)
 
-	return nil
+	if f != nil {
+		return f
+	}
+
+	if slug == "" {
+		return nil
+	}
+
+	metadata["created_at"] = c.CreatedAt.Format(time.RFC3339)
+
+	return s.pushCompletion(slug, c.Sequence, message, metadata)
 }

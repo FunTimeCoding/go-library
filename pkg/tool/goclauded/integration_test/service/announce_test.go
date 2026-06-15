@@ -5,9 +5,9 @@ package service
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/service_tester"
 	"testing"
-	"time"
 )
 
 func TestAnnounce(t *testing.T) {
@@ -17,15 +17,9 @@ func TestAnnounce(t *testing.T) {
 	e := s.Store.GetSession("session-1")
 	assert.String(t, "fixing auth", e.Topic)
 	assert.String(t, "pkg/auth", e.Files)
-	events := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Announce,
-		10,
-		0,
-	)
+	events := s.Store.Events(event_query.New().Kind(constant.Announce).SetLimit(10))
 	assert.Count(t, 1, events)
-	assert.String(t, "fixing auth", events[0].Body)
+	assert.String(t, "fixing auth", events[0].Metadata[constant.Topic])
 }
 
 func TestAnnounceUpdatesTopic(t *testing.T) {

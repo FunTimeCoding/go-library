@@ -49,17 +49,17 @@ type ContextEntry struct {
 	PathPrefix  string `json:"path_prefix"`
 }
 
-// DocumentEntry defines model for DocumentEntry.
-type DocumentEntry struct {
-	FilePath    string `json:"file_path"`
-	Title       string `json:"title"`
-	VirtualPath string `json:"virtual_path"`
-}
-
 // EmbedResult defines model for EmbedResult.
 type EmbedResult struct {
 	Chunks    int `json:"chunks"`
 	Documents int `json:"documents"`
+}
+
+// Facet defines model for Facet.
+type Facet struct {
+	Distinct int             `json:"distinct"`
+	Key      string          `json:"key"`
+	Values   *map[string]int `json:"values,omitempty"`
 }
 
 // IndexResult defines model for IndexResult.
@@ -71,21 +71,35 @@ type IndexResult struct {
 	Updated    int    `json:"updated"`
 }
 
+// ListOutcome defines model for ListOutcome.
+type ListOutcome struct {
+	Facets  *[]Facet       `json:"facets,omitempty"`
+	Results []SearchResult `json:"results"`
+}
+
+// SearchOutcome defines model for SearchOutcome.
+type SearchOutcome struct {
+	Degraded *bool          `json:"degraded,omitempty"`
+	Facets   *[]Facet       `json:"facets,omitempty"`
+	Results  []SearchResult `json:"results"`
+}
+
 // SearchResult defines model for SearchResult.
 type SearchResult struct {
-	Body        *string `json:"body,omitempty"`
-	Collection  string  `json:"collection"`
-	Context     *string `json:"context,omitempty"`
-	FilePath    string  `json:"file_path"`
-	Hash        string  `json:"hash"`
-	Path        string  `json:"path"`
-	Score       float32 `json:"score"`
-	Snippet     *string `json:"snippet,omitempty"`
-	SnippetLine *int    `json:"snippet_line,omitempty"`
-	Source      string  `json:"source"`
-	SourceType  *string `json:"source_type,omitempty"`
-	Title       string  `json:"title"`
-	VirtualPath string  `json:"virtual_path"`
+	Body        *string            `json:"body,omitempty"`
+	Collection  string             `json:"collection"`
+	Context     *string            `json:"context,omitempty"`
+	FilePath    string             `json:"file_path"`
+	Hash        string             `json:"hash"`
+	Metadata    *map[string]string `json:"metadata,omitempty"`
+	Path        string             `json:"path"`
+	Score       float32            `json:"score"`
+	Snippet     *string            `json:"snippet,omitempty"`
+	SnippetLine *int               `json:"snippet_line,omitempty"`
+	Source      string             `json:"source"`
+	SourceType  *string            `json:"source_type,omitempty"`
+	Title       string             `json:"title"`
+	VirtualPath string             `json:"virtual_path"`
 }
 
 // SourceTypeTag defines model for SourceTypeTag.
@@ -155,7 +169,18 @@ type PostIndexJSONBody struct {
 
 // GetListParams defines parameters for GetList.
 type GetListParams struct {
-	Collection string `form:"collection" json:"collection"`
+	Collection string             `form:"collection" json:"collection"`
+	SourceType *string            `form:"source_type,omitempty" json:"source_type,omitempty"`
+	Limit      *int               `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset     *int               `form:"offset,omitempty" json:"offset,omitempty"`
+	Full       *bool              `form:"full,omitempty" json:"full,omitempty"`
+	Metadata   *map[string]string `json:"metadata,omitempty"`
+}
+
+// GetMetadataParams defines parameters for GetMetadata.
+type GetMetadataParams struct {
+	Collection string  `form:"collection" json:"collection"`
+	Key        *string `form:"key,omitempty" json:"key,omitempty"`
 }
 
 // GetSearchParams defines parameters for GetSearch.
@@ -166,6 +191,7 @@ type GetSearchParams struct {
 	Mode       *GetSearchParamsMode `form:"mode,omitempty" json:"mode,omitempty"`
 	Full       *bool                `form:"full,omitempty" json:"full,omitempty"`
 	SourceType *string              `form:"source_type,omitempty" json:"source_type,omitempty"`
+	Metadata   *map[string]string   `json:"metadata,omitempty"`
 }
 
 // GetSearchParamsMode defines parameters for GetSearch.
@@ -312,6 +338,9 @@ type ClientInterface interface {
 
 	// GetList request
 	GetList(ctx context.Context, params *GetListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMetadata request
+	GetMetadata(ctx context.Context, params *GetMetadataParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSearch request
 	GetSearch(ctx context.Context, params *GetSearchParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -501,6 +530,18 @@ func (c *Client) PostIndex(ctx context.Context, body PostIndexJSONRequestBody, r
 
 func (c *Client) GetList(ctx context.Context, params *GetListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMetadata(ctx context.Context, params *GetMetadataParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMetadataRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1035,6 +1076,147 @@ func NewGetListRequest(server string, params *GetListParams) (*http.Request, err
 			}
 		}
 
+		if params.SourceType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "source_type", *params.SourceType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Full != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "full", *params.Full, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Metadata != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("deepObject", true, "metadata", *params.Metadata, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "object", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetMetadataRequest generates requests for GetMetadata
+func NewGetMetadataRequest(server string, params *GetMetadataParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/metadata")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "collection", params.Collection, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		if params.Key != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "key", *params.Key, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -1147,6 +1329,22 @@ func NewGetSearchRequest(server string, params *GetSearchParams) (*http.Request,
 		if params.SourceType != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "source_type", *params.SourceType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Metadata != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("deepObject", true, "metadata", *params.Metadata, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "object", Format: ""}); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -1410,6 +1608,9 @@ type ClientWithResponsesInterface interface {
 	// GetListWithResponse request
 	GetListWithResponse(ctx context.Context, params *GetListParams, reqEditors ...RequestEditorFn) (*GetListResponse, error)
 
+	// GetMetadataWithResponse request
+	GetMetadataWithResponse(ctx context.Context, params *GetMetadataParams, reqEditors ...RequestEditorFn) (*GetMetadataResponse, error)
+
 	// GetSearchWithResponse request
 	GetSearchWithResponse(ctx context.Context, params *GetSearchParams, reqEditors ...RequestEditorFn) (*GetSearchResponse, error)
 
@@ -1654,7 +1855,7 @@ func (r PostIndexResponse) StatusCode() int {
 type GetListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]DocumentEntry
+	JSON200      *ListOutcome
 }
 
 // Status returns HTTPResponse.Status
@@ -1673,10 +1874,32 @@ func (r GetListResponse) StatusCode() int {
 	return 0
 }
 
+type GetMetadataResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Facet
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMetadataResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMetadataResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetSearchResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]SearchResult
+	JSON200      *SearchOutcome
 }
 
 // Status returns HTTPResponse.Status
@@ -1911,6 +2134,15 @@ func (c *ClientWithResponses) GetListWithResponse(ctx context.Context, params *G
 		return nil, err
 	}
 	return ParseGetListResponse(rsp)
+}
+
+// GetMetadataWithResponse request returning *GetMetadataResponse
+func (c *ClientWithResponses) GetMetadataWithResponse(ctx context.Context, params *GetMetadataParams, reqEditors ...RequestEditorFn) (*GetMetadataResponse, error) {
+	rsp, err := c.GetMetadata(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMetadataResponse(rsp)
 }
 
 // GetSearchWithResponse request returning *GetSearchResponse
@@ -2217,7 +2449,33 @@ func ParseGetListResponse(rsp *http.Response) (*GetListResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []DocumentEntry
+		var dest ListOutcome
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMetadataResponse parses an HTTP response from a GetMetadataWithResponse call
+func ParseGetMetadataResponse(rsp *http.Response) (*GetMetadataResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMetadataResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Facet
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2243,7 +2501,7 @@ func ParseGetSearchResponse(rsp *http.Response) (*GetSearchResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []SearchResult
+		var dest SearchOutcome
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

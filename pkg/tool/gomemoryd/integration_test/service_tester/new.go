@@ -15,5 +15,5 @@ func New(t *testing.T) *Tester {
 	t.Cleanup(s.Close)
 	i := mock_indexer.New()
 
-	return &Tester{Service: service.New(s, i), Indexer: i}
+	return &Tester{Service: service.New(s, i, i, i), Indexer: i}
 }

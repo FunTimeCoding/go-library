@@ -24,7 +24,7 @@ func (s *Server) dashboard(
 		html.H3(gomponents.Text("Recent Activity")),
 		html.Div(
 			gomponents.Attr("sse-swap", constant.Activity),
-			s.activitySection(),
+			s.activitySection(nil),
 		),
 	)
 }

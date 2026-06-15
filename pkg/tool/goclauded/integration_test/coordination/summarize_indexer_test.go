@@ -14,14 +14,20 @@ func TestSummarizePushesIndexer(t *testing.T) {
 	defer a.Close()
 	a.Announce(a.Name(), "building things")
 	a.MustCallTool(
+		constant.EditSession,
+		map[string]any{
+			constant.Slug: "test-session",
+		},
+	)
+	a.MustCallTool(
 		constant.Summarize,
 		map[string]any{
 			constant.Body: "summary for indexing",
 		},
 	)
-	assert.Count(t, 1, s.Indexer.Pushed)
-	assert.String(t, a.Name(), s.Indexer.Pushed[0].Name)
-	assert.String(t, "summary for indexing", s.Indexer.Pushed[0].Body)
+	assert.Count(t, 1, s.SummaryIndexer.Pushed)
+	assert.String(t, "test-session", s.SummaryIndexer.Pushed[0].Name)
+	assert.String(t, "summary for indexing", s.SummaryIndexer.Pushed[0].Body)
 }
 
 func TestSummarizeAmendPushesUpdatedBody(t *testing.T) {
@@ -30,6 +36,12 @@ func TestSummarizeAmendPushesUpdatedBody(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "building things")
+	a.MustCallTool(
+		constant.EditSession,
+		map[string]any{
+			constant.Slug: "test-session",
+		},
+	)
 	a.MustCallTool(
 		constant.Summarize,
 		map[string]any{
@@ -42,6 +54,10 @@ func TestSummarizeAmendPushesUpdatedBody(t *testing.T) {
 			constant.Body: "revised with more detail",
 		},
 	)
-	assert.Count(t, 2, s.Indexer.Pushed)
-	assert.String(t, "revised with more detail", s.Indexer.Pushed[1].Body)
+	assert.Count(t, 2, s.SummaryIndexer.Pushed)
+	assert.String(
+		t,
+		"revised with more detail",
+		s.SummaryIndexer.Pushed[1].Body,
+	)
 }

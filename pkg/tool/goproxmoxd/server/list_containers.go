@@ -32,7 +32,10 @@ func (s *Server) ListContainers(
 
 		if e != nil {
 			return server.ListContainers500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+				ErrorJSONResponse: *s.captureFail(
+					e,
+					constant.UnexpectedError,
+				),
 			}, nil
 		}
 
@@ -40,7 +43,10 @@ func (s *Server) ListContainers(
 
 		if e != nil {
 			return server.ListContainers500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+				ErrorJSONResponse: *s.captureFail(
+					e,
+					constant.UnexpectedError,
+				),
 			}, nil
 		}
 
@@ -50,7 +56,10 @@ func (s *Server) ListContainers(
 
 		if e != nil {
 			return server.ListContainers500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+				ErrorJSONResponse: *s.captureFail(
+					e,
+					constant.UnexpectedError,
+				),
 			}, nil
 		}
 

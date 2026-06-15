@@ -101,7 +101,8 @@ func TestCheckRecentActivityUpdate(t *testing.T) {
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.Topic: "milestone reached",
+			constant.Message: "completed",
+			constant.Topic:   "milestone reached",
 		},
 	)
 	check := b.Check()

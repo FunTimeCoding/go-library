@@ -17,8 +17,10 @@ func reconcileMemories(s *service.Service) {
 			fmt.Sprintf("memory/%d", full.Identifier),
 			full.Content,
 			map[string]string{
-				"memory_id": fmt.Sprintf("%d", full.Identifier),
-				"type":      full.Type,
+				"memory_id":   fmt.Sprintf("%d", full.Identifier),
+				"type":        full.Type,
+				"name":        full.Name,
+				"description": full.Description,
 			},
 		)
 	}

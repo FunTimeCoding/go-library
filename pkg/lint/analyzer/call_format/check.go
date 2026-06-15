@@ -1,11 +1,9 @@
 package call_format
 
 import (
-	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
-	"path/filepath"
 )
 
 func Check(
@@ -13,10 +11,6 @@ func Check(
 	results *output.Results,
 ) {
 	for _, file := range p.Syntax {
-		if filepath.Base(p.Fset.File(file.Pos()).Name()) == constant.GeneratedFile {
-			continue
-		}
-
 		if ast.IsGenerated(file) {
 			continue
 		}

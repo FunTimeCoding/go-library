@@ -52,17 +52,17 @@ type ContextEntry struct {
 	PathPrefix  string `json:"path_prefix"`
 }
 
-// DocumentEntry defines model for DocumentEntry.
-type DocumentEntry struct {
-	FilePath    string `json:"file_path"`
-	Title       string `json:"title"`
-	VirtualPath string `json:"virtual_path"`
-}
-
 // EmbedResult defines model for EmbedResult.
 type EmbedResult struct {
 	Chunks    int `json:"chunks"`
 	Documents int `json:"documents"`
+}
+
+// Facet defines model for Facet.
+type Facet struct {
+	Distinct int             `json:"distinct"`
+	Key      string          `json:"key"`
+	Values   *map[string]int `json:"values,omitempty"`
 }
 
 // IndexResult defines model for IndexResult.
@@ -74,21 +74,35 @@ type IndexResult struct {
 	Updated    int    `json:"updated"`
 }
 
+// ListOutcome defines model for ListOutcome.
+type ListOutcome struct {
+	Facets  *[]Facet       `json:"facets,omitempty"`
+	Results []SearchResult `json:"results"`
+}
+
+// SearchOutcome defines model for SearchOutcome.
+type SearchOutcome struct {
+	Degraded *bool          `json:"degraded,omitempty"`
+	Facets   *[]Facet       `json:"facets,omitempty"`
+	Results  []SearchResult `json:"results"`
+}
+
 // SearchResult defines model for SearchResult.
 type SearchResult struct {
-	Body        *string `json:"body,omitempty"`
-	Collection  string  `json:"collection"`
-	Context     *string `json:"context,omitempty"`
-	FilePath    string  `json:"file_path"`
-	Hash        string  `json:"hash"`
-	Path        string  `json:"path"`
-	Score       float32 `json:"score"`
-	Snippet     *string `json:"snippet,omitempty"`
-	SnippetLine *int    `json:"snippet_line,omitempty"`
-	Source      string  `json:"source"`
-	SourceType  *string `json:"source_type,omitempty"`
-	Title       string  `json:"title"`
-	VirtualPath string  `json:"virtual_path"`
+	Body        *string            `json:"body,omitempty"`
+	Collection  string             `json:"collection"`
+	Context     *string            `json:"context,omitempty"`
+	FilePath    string             `json:"file_path"`
+	Hash        string             `json:"hash"`
+	Metadata    *map[string]string `json:"metadata,omitempty"`
+	Path        string             `json:"path"`
+	Score       float32            `json:"score"`
+	Snippet     *string            `json:"snippet,omitempty"`
+	SnippetLine *int               `json:"snippet_line,omitempty"`
+	Source      string             `json:"source"`
+	SourceType  *string            `json:"source_type,omitempty"`
+	Title       string             `json:"title"`
+	VirtualPath string             `json:"virtual_path"`
 }
 
 // SourceTypeTag defines model for SourceTypeTag.
@@ -158,7 +172,18 @@ type PostIndexJSONBody struct {
 
 // GetListParams defines parameters for GetList.
 type GetListParams struct {
-	Collection string `form:"collection" json:"collection"`
+	Collection string             `form:"collection" json:"collection"`
+	SourceType *string            `form:"source_type,omitempty" json:"source_type,omitempty"`
+	Limit      *int               `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset     *int               `form:"offset,omitempty" json:"offset,omitempty"`
+	Full       *bool              `form:"full,omitempty" json:"full,omitempty"`
+	Metadata   *map[string]string `json:"metadata,omitempty"`
+}
+
+// GetMetadataParams defines parameters for GetMetadata.
+type GetMetadataParams struct {
+	Collection string  `form:"collection" json:"collection"`
+	Key        *string `form:"key,omitempty" json:"key,omitempty"`
 }
 
 // GetSearchParams defines parameters for GetSearch.
@@ -169,6 +194,7 @@ type GetSearchParams struct {
 	Mode       *GetSearchParamsMode `form:"mode,omitempty" json:"mode,omitempty"`
 	Full       *bool                `form:"full,omitempty" json:"full,omitempty"`
 	SourceType *string              `form:"source_type,omitempty" json:"source_type,omitempty"`
+	Metadata   *map[string]string   `json:"metadata,omitempty"`
 }
 
 // GetSearchParamsMode defines parameters for GetSearch.
@@ -237,6 +263,9 @@ type ServerInterface interface {
 
 	// (GET /api/list)
 	GetList(w http.ResponseWriter, r *http.Request, params GetListParams)
+
+	// (GET /api/metadata)
+	GetMetadata(w http.ResponseWriter, r *http.Request, params GetMetadataParams)
 
 	// (GET /api/search)
 	GetSearch(w http.ResponseWriter, r *http.Request, params GetSearchParams)
@@ -536,8 +565,90 @@ func (siw *ServerInterfaceWrapper) GetList(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	// ------------- Optional query parameter "source_type" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "source_type", r.URL.Query(), &params.SourceType, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "source_type", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "offset", r.URL.Query(), &params.Offset, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "offset", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "full" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "full", r.URL.Query(), &params.Full, runtime.BindQueryParameterOptions{Type: "boolean", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "full", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "metadata" -------------
+
+	err = runtime.BindQueryParameterWithOptions("deepObject", true, false, "metadata", r.URL.Query(), &params.Metadata, runtime.BindQueryParameterOptions{Type: "object", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "metadata", Err: err})
+		return
+	}
+
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetList(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetMetadata operation middleware
+func (siw *ServerInterfaceWrapper) GetMetadata(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetMetadataParams
+
+	// ------------- Required query parameter "collection" -------------
+
+	if paramValue := r.URL.Query().Get("collection"); paramValue != "" {
+
+	} else {
+		siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "collection"})
+		return
+	}
+
+	err = runtime.BindQueryParameterWithOptions("form", true, true, "collection", r.URL.Query(), &params.Collection, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "collection", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "key" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "key", r.URL.Query(), &params.Key, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetMetadata(w, r, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -607,6 +718,14 @@ func (siw *ServerInterfaceWrapper) GetSearch(w http.ResponseWriter, r *http.Requ
 	err = runtime.BindQueryParameterWithOptions("form", true, false, "source_type", r.URL.Query(), &params.SourceType, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
 	if err != nil {
 		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "source_type", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "metadata" -------------
+
+	err = runtime.BindQueryParameterWithOptions("deepObject", true, false, "metadata", r.URL.Query(), &params.Metadata, runtime.BindQueryParameterOptions{Type: "object", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "metadata", Err: err})
 		return
 	}
 
@@ -836,6 +955,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/api/embed", wrapper.PostEmbed)
 	m.HandleFunc("POST "+options.BaseURL+"/api/index", wrapper.PostIndex)
 	m.HandleFunc("GET "+options.BaseURL+"/api/list", wrapper.GetList)
+	m.HandleFunc("GET "+options.BaseURL+"/api/metadata", wrapper.GetMetadata)
 	m.HandleFunc("GET "+options.BaseURL+"/api/search", wrapper.GetSearch)
 	m.HandleFunc("GET "+options.BaseURL+"/api/status", wrapper.GetStatus)
 	m.HandleFunc("GET "+options.BaseURL+"/api/tag", wrapper.GetTag)
@@ -848,26 +968,28 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/9RYzW7bOBB+FYG7RyFOd2++7abBosAeik1uRWDQ0lhiK5EsOUpjBHr3BUnJEmVSctLE",
-	"aW62hhzOfPPND/lIMlFLwYGjJutHorMSamp/XomqggyZ4DdIsbHfpBISFDKw/3KRNTVw3GSi4Wi+4F4C",
-	"WRPGEQpQpE0JpzWMJBoV44URSIplTICgeEDWpkTB94YpyMn6i1PdKRq2pVOz7tJej9h+hQzNGVeCIzzg",
-	"NUe1P/YrO3geNDAHnSkmo3Jj0EYq2LGHZSdGZ/k7/XNCTnzs/Ix4sWMVbKIoI8MqHJh7prChVWzrxH5v",
-	"dTo6tD8iZPl1vYX8P9BNhQH0y4Z/02E29aENiieWDWvTXmfIlk88h4eoLfNMYGavOS1kq4Ja3MeEDc9K",
-	"youoWOYUw8I5/vT2DArGJw0mhXC4AaqyMgbEVuT7IAQLCGUu0YKyeYKWVJdPKxw6E2pMad7UWwen5kxK",
-	"CFvRyTYV4xAOhhaNysK54kQb9/1tsuyogBwyr8OwB+bgSDD6VnS7l3BLiyfnwXzFW4KpDdkTaTmDIfYv",
-	"Q6jtj98V7Mia/LYa2tmq62Wro0Y2HEiVonvrAfCc8WIDpjKZX5EChAJptZktQ/2ieVXRNDblanpKQGXQ",
-	"5OPItrZK7YQ1wZGRFOJ7A2pvCsI9KG2DSj5cXF5cGuOFBE4lI2vyp/3komt9WFHJVj4VcqgAbVBNlKj5",
-	"/Ckna/LRfr/yualoDQhKk/WXR8LMqdYQ0k8JfUcfgEHVQNoNJSHm3JnFWgquHT3+uLx0LOEIbiKhUlYs",
-	"s4atvmpn9KBvMs9Yo8dVdytEBZSHONpOJ4HRwJR0mi7cMik0HkP0WWj0ADJug8a/u1L7TCfONHCFqeZH",
-	"rg1HJ4oazfMOszbtyXZoH0tMcwtPolk2Rf00sqVhbf7Q9m65a/FLugmhI24BAd7+Azig/VMenFi9R6P6",
-	"UeU+9uSvqko62ugT8m9w5CWS713cHJ6dqI4ix1naN6rlNO2vLG+Vp+83QXvkJq0llqFPA/rs0MwlvHcR",
-	"CSBxw3hRQdKTLvnBsEx2TZ/2HBezfgTOy6T9c29HNSDNKVqNNM+ZWUirz57u4zvFdFaOX4iWxu7ZckJS",
-	"59eLFZADhWWjy0kJsUOsBTYaNftoQF6ReONXiQDvrvs5O1F2jfYcsFfveQfsS8N5Wk2oorTn6Nbj15QT",
-	"mrVd3uOZSFDJ4JYHb8UcqrF696+Rv2ZTuTsHev6L3gn49Rt0wngMOm3r6Rx4ruKeBl//96fbsReHJ++u",
-	"WM3Q25jDjtqnqw+XaeC2HVZTixzCWki53ypm6g3wpjYF8vDhG+x/CDV+RVuy1nSn8DE7WmlIAxNBWNG4",
-	"or85W/1GvUxWtz5YPfXhuSfKUbfiNeeO7nEoVqWcjZ7Z6N7KYjbf0uIZNenXH2xnUfQeEkMssAsSY1OC",
-	"tFgc1hyIZ7mevcwg1YVjvOfFRqhbWiQaMBHKu6mP+KgXCKnPcmmfsOC0W7v2mdGlWtv+HwAA//8woR9N",
-	"pBwAAA==",
+	"H4sIAAAAAAAC/9xZX2/bNhD/KgK3R6FOtze/bW02FOjQYslbURi0dJLZSCRLUmmMwN99IClZonS0FSdx",
+	"lr45Inm8+93v/vByTzJRS8GBG02W90RnG6ip+/lOVBVkhgl+Zahp3DephARlGLi/cpE1NXCzykTDjf1i",
+	"thLIkjBuoARFdinhtIbBijaK8dIuSGo2sQUDiiNru5Qo+N4wBTlZfvGiW0H9sXSs1te0kyPW3yAz9o53",
+	"ghu4M5fcqO3UrmxvOapgDjpTTEbXrUIrqaBgd8eNGNwVngzvwYy4rNeQ/wu6qQxiw6bhNxr3SQcQujzS",
+	"r9+bdjIxXf6iGSBa5EwbxrMIN25giwJ4S6vGn6d5zqz9tPocyJ3KGmk0ssLelPbaYBZ84DncRdE8zAhm",
+	"z9qbMM0U1OI2ttjwbEN5GV2WOTX44iEedfr0AoY39SphOHxk2nxqTCZ83IY4FNbN7hczULsfvyooyJL8",
+	"sugTyaLNIgvPit47VCm69ZhYnOcLugKqsk3rnYm8ERSdcMw6LyhqXw6lonkA+FqICii3h38S62MkX4sc",
+	"j8cj7M98MkXXClbBKprqN1TjCzUYmlNDZ+SA/tDE3Oi9OhNqWJV4U699wGnOpATclnZtVTEOeLhq0agM",
+	"L3d+aeW/Y8ozU+Ert0yZhlYxFEfuD3YP8U+npYZ017ae6IDZG4JyyC1dbyVc0/LBmfJwbTwGE+bkWHPS",
+	"KzI/0CYtDxK8EnjOeLkCW33tr1hBEoZWq4Olttt0WFQ00duSPL4FEYmqPPXsztWxQjgVPBlJKb43oLa2",
+	"ZNyC0s6p5O2bizcXVnkhgVPJyJL87j557zobFlSyRUiFHCowzqnWS9R+/pCTJXnvvr8LualoDQaUJssv",
+	"94TZW50ipOsnu96vB8aoBtK2fcWY89WlXSm49vT47eLCs4Qb8L0rlbJimVNs8U17pXt54zphlUbLxA5F",
+	"NugZB6110kp647dJoc0Uos9CmwAgazZo82ebsE804kytOU610HM73DtR1Giet5jt0o5s+yJ0jGl+4yya",
+	"ZWPU55EtxaWF7f2r5a7DL2l7yJa4JSC8/RtMj/ajLJiZvQePummbNLHkj6pKWtroGfHXG/IUwfcq3pgn",
+	"B6qnyDRKu0J1PEzfdztfKE5fb4B2yI1KSyxCHwb02aGZ/y6aInHFeFlB0pEu+cHMJimaLuy5ORr1A3Ce",
+	"JuxPfWM994PoWNt9MJ2Q1Nv1ZAlkT2HZ6M0ohbgm1gEb9ZobjJFnJN5w8obw7rLrs5P2MR4Y4IYzhw1w",
+	"s6jzlBoso+zOUa2H87YZxdpt7/BMJKikNyuAt2Ie1Vi++2jXX6CoDEPshOMVq5kJDuZQUDfHeXuRIo9G",
+	"XIwoCg0ROQ8QY5MoLqSglYYUKVz3BO5kJXLoEMTk7tPcUPbp+U6brXvH5gDyU/v1OQvScHZ6oDLrthK5",
+	"cWJA3mGajxH4nx6js5PYz9Gfr9o/Zq46xbtDqkU6KUQ0a2jXShyC3Tcb80Dv/nw03oH3Xipn1DZoUSlk",
+	"s10rZkst8Ka2vcH+ww1sfwg1/BfDMW1PyimPzLQ/f0oK/+GBNcluw76yxjKT3o9ZowHidzynLe1QNtYd",
+	"eB0DtY2fUcd0vqblCWn0//+gPIhiMMDHGOE2JFanxNDy6CPJg3iWscjTPGBadwzPPNnT5ZqWiQaTCBVM",
+	"yAZ81EcIqc8yLBuxYN60TIfMaENtt/svAAD//0C3IUtGIgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

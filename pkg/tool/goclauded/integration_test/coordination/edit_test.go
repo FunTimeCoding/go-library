@@ -3,9 +3,9 @@ package coordination
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/base"
 	"testing"
-	"time"
 )
 
 func TestEdit(t *testing.T) {
@@ -20,7 +20,7 @@ func TestEdit(t *testing.T) {
 			constant.Message: "hasty summary",
 		},
 	)
-	events := s.Store.EventsSince(time.Time{}, time.Time{}, "", 1, 0)
+	events := s.Store.Events(event_query.New().SetLimit(1))
 	assert.Count(t, 1, events)
 	a.MustCallTool(
 		constant.EditEvent,

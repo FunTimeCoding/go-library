@@ -9,5 +9,6 @@ type Completion struct {
 	Kind              string    `gorm:"column:kind"`
 	Topic             string    `gorm:"column:topic"`
 	Summary           string    `gorm:"column:summary"`
+	Sequence          int       `gorm:"column:sequence"`
 	CreatedAt         time.Time `gorm:"column:created_at"`
 }

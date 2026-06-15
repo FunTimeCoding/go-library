@@ -1,7 +1,6 @@
 package string_constant
 
 import (
-	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -29,17 +28,13 @@ func Check(
 	}
 
 	for _, file := range p.Syntax {
+		if ast.IsGenerated(file) {
+			continue
+		}
+
 		name := filepath.Base(p.Fset.File(file.Pos()).Name())
 
-		if name == constant.GeneratedFile {
-			continue
-		}
-
 		if name == "constant.go" {
-			continue
-		}
-
-		if ast.IsGenerated(file) {
 			continue
 		}
 

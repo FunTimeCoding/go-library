@@ -1,47 +1,103 @@
 package timeline
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+)
 
 func FormatDescription(e *Entry) string {
+	actor := e.Actor
+
+	if e.Alias != "" {
+		actor = fmt.Sprintf("%s (%s)", e.Actor, e.Alias)
+	}
+
 	switch e.Kind {
 	case "announce":
-		return fmt.Sprintf("%s announced: %s", e.Actor, e.Subject)
+		return fmt.Sprintf("%s announced: %s", actor, e.meta(constant.Topic))
 	case "complete":
-		if e.Detail != "" {
+		if m := e.meta(constant.Message); m != "" {
 			return fmt.Sprintf(
 				"%s completed %s: %s",
-				e.Actor,
-				e.Subject,
-				e.Detail,
+				actor,
+				e.meta(constant.Topic),
+				m,
 			)
 		}
 
-		return fmt.Sprintf("%s completed %s", e.Actor, e.Subject)
+		return fmt.Sprintf("%s completed %s", actor, e.meta(constant.Topic))
 	case "update":
-		return fmt.Sprintf("%s updated scope: %s", e.Actor, e.Subject)
+		if m := e.meta(constant.Message); m != "" {
+			return fmt.Sprintf(
+				"%s updated %s: %s",
+				actor,
+				e.meta(constant.Topic),
+				m,
+			)
+		}
+
+		return fmt.Sprintf(
+			"%s updated scope: %s",
+			actor,
+			e.meta(constant.Topic),
+		)
 	case "send":
-		return fmt.Sprintf("%s → %s", e.Actor, e.Subject)
+		to := "all"
+
+		if recipient := e.meta("recipient"); recipient != "" {
+			to = recipient
+		}
+
+		return fmt.Sprintf(
+			"%s → %s: %s",
+			actor,
+			to,
+			e.meta(constant.Message),
+		)
 	case "moment":
-		return fmt.Sprintf("%s captured: %s", e.Actor, e.Subject)
+		return fmt.Sprintf(
+			"%s captured: %s",
+			actor,
+			e.meta(constant.Line),
+		)
 	case "summarize":
-		if e.Detail != "" {
-			return fmt.Sprintf("%s summarized: %s", e.Actor, e.Detail)
+		body := e.meta(constant.Body)
+
+		if body == "" {
+			return fmt.Sprintf("%s summarized", actor)
 		}
 
-		return fmt.Sprintf("%s summarized", e.Actor)
+		if !e.Full && len(body) > 200 {
+			body = fmt.Sprintf("%s…", body[:200])
+		}
+
+		return fmt.Sprintf("%s summarized: %s", actor, body)
+	case "label":
+		return fmt.Sprintf("%s label: %s", actor, e.meta("change"))
 	case "release":
-		return fmt.Sprintf("%s left", e.Actor)
+		return fmt.Sprintf("%s left", actor)
 	case "register":
-		return fmt.Sprintf("%s joined", e.Actor)
+		return fmt.Sprintf("%s joined", actor)
 	case "inactivity_timeout":
-		return fmt.Sprintf("%s timed out (inactive)", e.Actor)
+		return fmt.Sprintf("%s timed out (inactive)", actor)
 	case "complete_timeout":
-		return fmt.Sprintf("%s timed out (idle after completing)", e.Actor)
+		return fmt.Sprintf(
+			"%s timed out (idle after completing)",
+			actor,
+		)
 	default:
-		if e.Actor != "" {
-			return fmt.Sprintf("%s %s: %s", e.Actor, e.Kind, e.Subject)
+		if name := e.meta(constant.SessionName); name != "" {
+			if actor != "" {
+				return fmt.Sprintf("%s %s: %s", actor, e.Kind, name)
+			}
+
+			return fmt.Sprintf("%s: %s", e.Kind, name)
 		}
 
-		return fmt.Sprintf("%s: %s", e.Kind, e.Subject)
+		if actor != "" {
+			return fmt.Sprintf("%s %s", actor, e.Kind)
+		}
+
+		return e.Kind
 	}
 }

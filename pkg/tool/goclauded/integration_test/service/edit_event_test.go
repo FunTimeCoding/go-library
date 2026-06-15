@@ -5,9 +5,9 @@ package service
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/service_tester"
 	"testing"
-	"time"
 )
 
 func TestEditEventSummaryCascade(t *testing.T) {
@@ -17,13 +17,7 @@ func TestEditEventSummaryCascade(t *testing.T) {
 		t,
 		s.Service.Summarize("session-1", "Cedar", "original summary"),
 	)
-	events := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Summarize,
-		10,
-		0,
-	)
+	events := s.Store.Events(event_query.New().Kind(constant.Summarize).SetLimit(10))
 	assert.Count(t, 1, events)
 	_, e := s.Service.EditEvent(events[0].Identifier, "revised summary")
 	assert.FatalOnError(t, e)
@@ -37,13 +31,7 @@ func TestEditEventCompletionCascade(t *testing.T) {
 	s.Store.Announce(r.Callsign, "fixing auth", "")
 	topic := s.Store.CompleteTask(r.Callsign)
 	s.Complete("session-1", r.Callsign, topic, "original message")
-	events := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Complete,
-		10,
-		0,
-	)
+	events := s.Store.Events(event_query.New().Kind(constant.Complete).SetLimit(10))
 	assert.Count(t, 1, events)
 	_, f := s.Service.EditEvent(events[0].Identifier, "corrected message")
 	assert.FatalOnError(t, f)

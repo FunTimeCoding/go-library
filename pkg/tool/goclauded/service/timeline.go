@@ -1,64 +1,70 @@
 package service
 
 import (
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/timeline"
-	"strings"
 	"time"
 )
 
-func (s *Service) Timeline(q argument.Timeline) ([]*timeline.Entry, error) {
-	fetch := q.Limit + q.Offset
-	var since, before time.Time
+func (s *Service) Timeline(a argument.Timeline) ([]*timeline.Entry, error) {
+	fetch := a.Limit + a.Offset
+	q := event_query.New().SetLimit(fetch)
 
-	if q.Since != "" {
-		t, e := time.Parse(time.RFC3339, q.Since)
+	if a.Since != "" {
+		t, e := time.Parse(time.RFC3339, a.Since)
 
 		if e == nil {
-			since = t
+			q.SetSince(t)
 		}
 	}
 
-	if q.Before != "" {
-		t, e := time.Parse(time.RFC3339, q.Before)
+	if a.Before != "" {
+		t, e := time.Parse(time.RFC3339, a.Before)
 
 		if e == nil {
-			before = t
+			q.SetBefore(t)
 		}
 	}
 
-	events, e := s.store.EventsSince(
-		since,
-		before,
-		q.Kind,
-		fetch,
-		0,
-	)
+	if len(a.Kinds) > 0 {
+		q.SetKinds(a.Kinds)
+	}
+
+	events, e := s.store.Events(q)
 
 	if e != nil {
 		return nil, e
 	}
 
+	sessionIDs := map[string]bool{}
+
+	for _, v := range events {
+		if v.SessionIdentifier != "" {
+			sessionIDs[v.SessionIdentifier] = true
+		}
+	}
+
+	aliases := s.resolveAliases(sessionIDs)
 	var entries []*timeline.Entry
 
 	for _, v := range events {
-		entries = append(
-			entries,
-			timeline.FromEvent(
-				v.Identifier,
-				v.Kind,
-				v.Name,
-				v.Body,
-				v.Target,
-				v.CreatedAt,
-				q.Full,
-			),
+		entry := timeline.FromEvent(
+			v.Identifier,
+			v.SessionIdentifier,
+			v.Kind,
+			v.Actor,
+			v.Metadata,
+			v.CreatedAt,
 		)
+		entry.Alias = aliases[v.SessionIdentifier]
+		entry.Full = a.Full
+		entries = append(entries, entry)
 	}
 
-	if q.Kind == "" || strings.HasPrefix(q.Kind, "memory_") {
-		entries = append(entries, s.FetchVersions(q.Since, fetch)...)
+	if len(a.Kinds) == 0 || hasMemoryKind(a.Kinds) {
+		entries = append(entries, s.FetchVersions(a.Since, fetch)...)
 	}
 
-	return timeline.Merge(entries, q.Limit, q.Offset), nil
+	return timeline.Merge(entries, a.Limit, a.Offset), nil
 }

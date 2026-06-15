@@ -10,8 +10,7 @@ func (s *Service) Release(
 		sessionIdentifier,
 		constant.Release,
 		name,
-		"",
-		"",
+		nil,
 	); e != nil {
 		return e
 	}

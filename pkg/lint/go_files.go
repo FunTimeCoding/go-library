@@ -28,6 +28,14 @@ func goFiles(
 			continue
 		}
 
+		if IsGeneratedHeader(v.ReadString(p)) {
+			if verbose {
+				fmt.Printf("Skip generated file: %s\n", p)
+			}
+
+			continue
+		}
+
 		if verbose {
 			fmt.Printf("Select go file: %s\n", p)
 		}

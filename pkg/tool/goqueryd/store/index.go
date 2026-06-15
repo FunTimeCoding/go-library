@@ -1,6 +1,7 @@
 package store
 
 import (
+	"github.com/funtimecoding/go-library/pkg/lint"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/index"
 	"strings"
@@ -17,6 +18,10 @@ func (s *Store) Index(collection string) *index.Index {
 		content := string(system.ReadBytes(path, relative))
 
 		if strings.TrimSpace(content) == "" {
+			continue
+		}
+
+		if lint.IsGeneratedHeader(content) {
 			continue
 		}
 

@@ -5,17 +5,14 @@ import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
 func (s *Store) LogEvent(
 	sessionIdentifier string,
 	kind string,
-	name string,
-	target string,
-	body string,
+	actor string,
+	metadata map[string]string,
 ) error {
-	return s.database.Create(
-		event.New(
-			sessionIdentifier,
-			kind,
-			name,
-			target,
-			body,
-		),
-	).Error
+	record := event.New(sessionIdentifier, kind, actor)
+
+	if e := s.database.Create(record).Error; e != nil {
+		return e
+	}
+
+	return s.SetEventMetadata(record.Identifier, metadata)
 }

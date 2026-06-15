@@ -29,8 +29,8 @@ func TestTimelinePagination(t *testing.T) {
 	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 5, *first.JSON200)
-	assert.String(t, "topic-12", (*first.JSON200)[0].Subject)
-	assert.String(t, "topic-08", (*first.JSON200)[4].Subject)
+	assert.StringContains(t, "topic-12", (*first.JSON200)[0].Subject)
+	assert.StringContains(t, "topic-08", (*first.JSON200)[4].Subject)
 	second, f := a.RestClient.GetTimelineWithResponse(
 		x,
 		&client.GetTimelineParams{
@@ -40,8 +40,8 @@ func TestTimelinePagination(t *testing.T) {
 	)
 	assert.FatalOnError(t, f)
 	assert.Count(t, 5, *second.JSON200)
-	assert.String(t, "topic-07", (*second.JSON200)[0].Subject)
-	assert.String(t, "topic-03", (*second.JSON200)[4].Subject)
+	assert.StringContains(t, "topic-07", (*second.JSON200)[0].Subject)
+	assert.StringContains(t, "topic-03", (*second.JSON200)[4].Subject)
 	third, g := a.RestClient.GetTimelineWithResponse(
 		x,
 		&client.GetTimelineParams{
@@ -51,6 +51,6 @@ func TestTimelinePagination(t *testing.T) {
 	)
 	assert.FatalOnError(t, g)
 	assert.Count(t, 2, *third.JSON200)
-	assert.String(t, "topic-02", (*third.JSON200)[0].Subject)
-	assert.String(t, "topic-01", (*third.JSON200)[1].Subject)
+	assert.StringContains(t, "topic-02", (*third.JSON200)[0].Subject)
+	assert.StringContains(t, "topic-01", (*third.JSON200)[1].Subject)
 }

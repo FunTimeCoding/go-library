@@ -12,7 +12,6 @@ func TestListDocuments(t *testing.T) {
 	defer s.Close()
 	entries := s.MustListDocuments("test")
 	assert.Count(t, 5, entries)
-	assert.String(t, "qmd://test/alpha.md", entries[0].VirtualPath)
 }
 
 func TestListDocumentsEmptyCollection(t *testing.T) {

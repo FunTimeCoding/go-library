@@ -72,12 +72,32 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.List,
 			mcp.WithDescription(
-				"List all documents in a collection. Returns virtual paths and titles.",
+				"List documents in a collection, ordered by recency. Optional metadata filter, pagination, and full body. Response includes facets showing metadata key distribution.",
 			),
 			mcp.WithString(
 				constant.Collection,
 				mcp.Required(),
 				mcp.Description("Collection name"),
+			),
+			mcp.WithString(
+				constant.SourceType,
+				mcp.Description("Filter by source type"),
+			),
+			mcp.WithObject(
+				constant.Metadata,
+				mcp.Description("Filter results by metadata key-value pairs (exact match)"),
+			),
+			mcp.WithNumber(
+				parameter.Limit,
+				mcp.Description("Maximum number of results (default 10, 0 for all)"),
+			),
+			mcp.WithNumber(
+				parameter.Offset,
+				mcp.Description("Number of results to skip (default 0)"),
+			),
+			mcp.WithBoolean(
+				constant.Full,
+				mcp.Description("Include full document body (default false)"),
 			),
 		),
 		s.list,
@@ -274,5 +294,23 @@ func (s *Server) register() {
 			),
 		),
 		s.listTags,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.ListMetadata,
+			mcp.WithDescription(
+				"List distinct metadata keys and value distributions for a collection. Shows which fields exist and what values they take — use before filtering to discover available metadata.",
+			),
+			mcp.WithString(
+				constant.Collection,
+				mcp.Required(),
+				mcp.Description("Collection name"),
+			),
+			mcp.WithString(
+				constant.Key,
+				mcp.Description("Specific key to expand (shows all values regardless of cardinality)"),
+			),
+		),
+		s.listMetadata,
 	)
 }

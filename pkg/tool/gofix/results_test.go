@@ -14,9 +14,9 @@ func TestRelativize(t *testing.T) {
 				t,
 				"pkg/foo/bar.go",
 				output.NewResultsWithDirectory(
-					"/Users/example/src/go-mint/",
+					"/Users/example/src/go-example/",
 				).Relativize(
-					"/Users/example/src/go-mint/pkg/foo/bar.go",
+					"/Users/example/src/go-example/pkg/foo/bar.go",
 				),
 			)
 		},
@@ -28,7 +28,7 @@ func TestRelativize(t *testing.T) {
 				t,
 				"/other/path/file.go",
 				output.NewResultsWithDirectory(
-					"/Users/example/src/go-mint/",
+					"/Users/example/src/go-example/",
 				).Relativize("/other/path/file.go"),
 			)
 		},

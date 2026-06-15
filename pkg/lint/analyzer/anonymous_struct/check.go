@@ -14,17 +14,13 @@ func Check(
 	results *output.Results,
 ) {
 	for _, file := range p.Syntax {
+		if ast.IsGenerated(file) {
+			continue
+		}
+
 		name := filepath.Base(p.Fset.File(file.Pos()).Name())
 
-		if name == constant.GeneratedFile {
-			continue
-		}
-
 		if strings.HasSuffix(name, constant.TestSuffix) {
-			continue
-		}
-
-		if ast.IsGenerated(file) {
 			continue
 		}
 

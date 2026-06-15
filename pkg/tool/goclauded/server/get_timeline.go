@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/timeline"
 )
 
 func (s *Server) GetTimeline(
@@ -36,17 +37,13 @@ func (s *Server) GetTimeline(
 	var result []server.TimelineEntry
 
 	for _, e := range merged {
+		description := timeline.FormatDescription(e)
 		entry := server.TimelineEntry{
 			Timestamp: e.Timestamp,
 			Kind:      e.Kind,
 			Actor:     e.Actor,
-			Subject:   e.Subject,
+			Subject:   description,
 		}
-
-		if e.Detail != "" {
-			entry.Detail = &e.Detail
-		}
-
 		result = append(result, entry)
 	}
 

@@ -40,8 +40,10 @@ func (s *Service) UpdateMemory(
 		fmt.Sprintf("memory/%d", m.Identifier),
 		m.Content,
 		map[string]string{
-			"memory_id": fmt.Sprintf("%d", m.Identifier),
-			"type":      m.Type,
+			"memory_id":   fmt.Sprintf("%d", m.Identifier),
+			"type":        m.Type,
+			"name":        m.Name,
+			"description": m.Description,
 		},
 	); e != nil {
 		return nil, e

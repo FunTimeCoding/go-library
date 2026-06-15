@@ -11,8 +11,7 @@ func (s *Service) Moment(
 		sessionIdentifier,
 		constant.Moment,
 		name,
-		"",
-		line,
+		map[string]string{"line": line},
 	); e != nil {
 		return e
 	}

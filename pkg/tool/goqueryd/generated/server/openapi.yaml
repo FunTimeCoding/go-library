@@ -37,15 +37,21 @@ paths:
         in: query
         schema:
           type: string
+      - name: metadata
+        in: query
+        style: deepObject
+        explode: true
+        schema:
+          type: object
+          additionalProperties:
+            type: string
       responses:
         "200":
-          description: Search results.
+          description: Search results with facets.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/SearchResult"
+                $ref: "#/components/schemas/SearchOutcome"
   /api/list:
     get:
       operationId: getList
@@ -55,15 +61,40 @@ paths:
         required: true
         schema:
           type: string
+      - name: source_type
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: full
+        in: query
+        schema:
+          type: boolean
+          default: false
+      - name: metadata
+        in: query
+        style: deepObject
+        explode: true
+        schema:
+          type: object
+          additionalProperties:
+            type: string
       responses:
         "200":
-          description: Documents in collection.
+          description: Documents with facets.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/DocumentEntry"
+                $ref: "#/components/schemas/ListOutcome"
   /api/status:
     get:
       operationId: getStatus
@@ -260,6 +291,28 @@ paths:
                 properties:
                   deleted:
                     type: boolean
+  /api/metadata:
+    get:
+      operationId: getMetadata
+      parameters:
+      - name: collection
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Metadata facets for collection.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Facet"
   /api/tags:
     get:
       operationId: getTags
@@ -343,6 +396,48 @@ components:
           type: integer
         body:
           type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    Facet:
+      type: object
+      required: [key, distinct]
+      properties:
+        key:
+          type: string
+        distinct:
+          type: integer
+        values:
+          type: object
+          additionalProperties:
+            type: integer
+    SearchOutcome:
+      type: object
+      required: [results]
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchResult"
+        facets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Facet"
+        degraded:
+          type: boolean
+    ListOutcome:
+      type: object
+      required: [results]
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchResult"
+        facets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Facet"
     Status:
       type: object
       required: [collections, total_documents, total_embeddings, pending_embeddings]

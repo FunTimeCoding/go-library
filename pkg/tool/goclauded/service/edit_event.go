@@ -18,20 +18,47 @@ func (s *Service) EditEvent(
 	switch edited.Kind {
 	case constant.Summarize:
 		s.store.UpdateSummaryBody(edited.SessionIdentifier, message)
+		slug, metadata, f := s.sessionMetadata(edited.SessionIdentifier)
 
-		if e := s.pushSummary(
-			edited.Name,
-			message,
-			s.summaryMetadata(edited.SessionIdentifier, edited.Name),
-		); e != nil {
-			return edited, e
+		if f != nil {
+			return edited, f
+		}
+
+		if slug != "" {
+			if g := s.pushSummary(slug, message, metadata); g != nil {
+				return edited, g
+			}
 		}
 	case constant.Complete:
+		topic := edited.Metadata[constant.Topic]
 		s.store.UpdateCompletionSummary(
 			edited.SessionIdentifier,
-			edited.Target,
+			topic,
 			message,
 		)
+		slug, metadata, f := s.sessionMetadata(edited.SessionIdentifier)
+
+		if f != nil {
+			return edited, f
+		}
+
+		if slug != "" {
+			c, f := s.store.CompletionByTopic(
+				edited.SessionIdentifier,
+				topic,
+			)
+
+			if f == nil && c != nil {
+				if g := s.pushCompletion(
+					slug,
+					c.Sequence,
+					message,
+					metadata,
+				); g != nil {
+					return edited, g
+				}
+			}
+		}
 	}
 
 	s.notify()

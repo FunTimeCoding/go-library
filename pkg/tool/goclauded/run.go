@@ -15,8 +15,8 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/session_indexer"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/summary_indexer"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/sweep"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/watcher"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/web"
@@ -55,11 +55,22 @@ func Run(
 	l.Structured("gomemoryd_connected", "elapsed", elapsed())
 	queryClient := connect.Wait(l)
 	l.Structured("goqueryd_connected", "elapsed", elapsed())
+	summaryIdx := session_indexer.New(
+		queryClient,
+		"summaries",
+		"session-summary",
+	)
+	completionIdx := session_indexer.New(
+		queryClient,
+		"completions",
+		"session-completion",
+	)
 	v := service.New(
 		s,
 		claude.New(),
 		memoryClient,
-		summary_indexer.New(queryClient),
+		summaryIdx,
+		completionIdx,
 		n,
 		r,
 		h,
@@ -68,6 +79,8 @@ func Run(
 	)
 	v.ReconcileSummaries()
 	l.Structured("summaries_reconciled", "elapsed", elapsed())
+	v.ReconcileCompletions()
+	l.Structured("completions_reconciled", "elapsed", elapsed())
 	v.PopulateCache()
 	l.Structured("cache_populated", "elapsed", elapsed())
 	v.BackfillSessions()

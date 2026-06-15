@@ -20,7 +20,7 @@ func (s *Server) PostRegister(
 	}
 
 	s.logger.Structured(
-		"register",
+		constant.Register,
 		"claude_session_identifier",
 		r.Body.Session,
 		constant.SessionName,

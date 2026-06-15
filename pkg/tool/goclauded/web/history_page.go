@@ -22,14 +22,15 @@ func (s *Server) historyPage(
 		}
 	}
 
+	kinds := r.URL.Query()[constant.Kind]
 	limit := 10
 	offset := (page - 1) * limit
-	entries, e := s.service.Timeline(
-		argument.Timeline{
-			Limit:  limit + 1,
-			Offset: offset,
-		},
-	)
+	a := argument.Timeline{
+		Kinds:  kinds,
+		Limit:  limit + 1,
+		Offset: offset,
+	}
+	entries, e := s.service.Timeline(a)
 	errors.PanicOnError(e)
 	hasMore := len(entries) > limit
 
@@ -37,65 +38,34 @@ func (s *Server) historyPage(
 		entries = entries[:limit]
 	}
 
-	var rows []gomponents.Node
+	table := s.historyTable(entries)
+	isHTMX := r.Header.Get("HX-Request") == "true"
 
-	for _, e := range entries {
-		rows = append(rows, timelineRow(e))
+	if isHTMX {
+		navigation := historyNavigation(page, hasMore, kinds)
+		errors.PanicOnError(
+			gomponents.Group(
+				[]gomponents.Node{table, navigation},
+			).Render(w),
+		)
+
+		return
 	}
 
 	var content []gomponents.Node
-	content = append(content, html.H3(gomponents.Text(constant.HistoryTitle)))
-
-	if len(rows) == 0 {
-		content = append(
-			content,
-			html.P(gomponents.Text("No events recorded.")),
-		)
-	} else {
-		content = append(
-			content,
-			html.Table(
-				html.THead(
-					html.Tr(
-						html.Th(gomponents.Text("Time")),
-						html.Th(gomponents.Text("Event")),
-					),
-				),
-				html.TBody(rows...),
-			),
-		)
-	}
-
-	var navigation []gomponents.Node
-
-	if page > 1 {
-		navigation = append(
-			navigation,
-			html.A(
-				gomponents.Attr("href", paginationLink(page-1)),
-				gomponents.Text("← Newer"),
-			),
-		)
-	}
-
-	if hasMore {
-		if len(navigation) > 0 {
-			navigation = append(navigation, gomponents.Text(" · "))
-		}
-
-		navigation = append(
-			navigation,
-			html.A(
-				gomponents.Attr("href", paginationLink(page+1)),
-				gomponents.Text("Older →"),
-			),
-		)
-	}
-
-	if len(navigation) > 0 {
-		content = append(content, html.P(gomponents.Group(navigation)))
-	}
-
+	content = append(
+		content,
+		html.H3(gomponents.Text(constant.HistoryTitle)),
+		historyFilters(kinds),
+	)
+	content = append(
+		content,
+		html.Div(
+			html.ID("history-content"),
+			table,
+			historyNavigation(page, hasMore, kinds),
+		),
+	)
 	s.view.RenderPage(
 		w,
 		constant.HistoryTitle,

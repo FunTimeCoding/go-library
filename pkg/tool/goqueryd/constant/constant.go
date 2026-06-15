@@ -26,6 +26,7 @@ const (
 	AddContext       = "add_context"
 	RemoveContext    = "remove_context"
 	ListContexts     = "list_contexts"
+	ListMetadata     = "list_metadata"
 
 	Metadata    = "metadata"
 	Collection  = "collection"
@@ -37,6 +38,7 @@ const (
 	Pattern     = "pattern"
 	PathPrefix  = "path_prefix"
 	Description = "description"
+	Key         = "key"
 
 	DefaultSequenceLength = 512
 	ModelEnvironment      = "RERANK_MODEL"

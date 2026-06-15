@@ -20,6 +20,12 @@ func (s *Server) update(
 		return response.Fail("unknown session - announce first to bind your identity")
 	}
 
+	message, e := q.RequireString(constant.Message)
+
+	if e != nil {
+		return response.Fail("message is required: %v", e)
+	}
+
 	topic, e := q.RequireString(constant.Topic)
 
 	if e != nil {
@@ -42,12 +48,13 @@ func (s *Server) update(
 		c.SessionIdentifier,
 		c.Callsign,
 		topic,
+		message,
 		join.NewLine(files),
 	); f != nil {
 		return s.captureFail(f, library.UnexpectedError)
 	}
 
 	return response.Success(
-		fmt.Sprintf("Updated scope: %s", topic),
+		fmt.Sprintf("Updated %s: %s", topic, message),
 	)
 }

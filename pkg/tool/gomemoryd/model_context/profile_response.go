@@ -7,4 +7,5 @@ type profileResponse struct {
 	Relevant    []store.SearchResult  `json:"relevant,omitempty"`
 	Index       []store.MemorySummary `json:"index"`
 	Impressions []store.Impression    `json:"impressions,omitempty"`
+	Completions []completionEntry     `json:"completions,omitempty"`
 }

@@ -27,7 +27,13 @@ func rollbackSnapshot(c *command_context.Context) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.Client().RollbackMachineSnapshot(identifier, name, n))
+			fmt.Println(
+				c.Client().RollbackMachineSnapshot(
+					identifier,
+					name,
+					n,
+				),
+			)
 		},
 	}
 	result.Flags().StringVar(

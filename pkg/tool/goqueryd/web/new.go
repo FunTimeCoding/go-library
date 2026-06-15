@@ -3,6 +3,7 @@ package web
 import (
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/service"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/web/search_cache"
 	"github.com/funtimecoding/go-library/pkg/web/layout"
 	"github.com/funtimecoding/go-library/pkg/web/layout/navigation_item"
 	"github.com/funtimecoding/go-library/pkg/web/palette"
@@ -33,6 +34,7 @@ func New(s *service.Service) *Server {
 	return &Server{
 		service:  s,
 		registry: registry,
+		cache:    search_cache.New(10),
 		view: view.New(
 			layout.New(constant.Identity).
 				WithTheme(theme.Slate).

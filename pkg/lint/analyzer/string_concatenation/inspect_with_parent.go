@@ -9,7 +9,6 @@ import (
 
 func inspectWithParent(
 	file *ast.File,
-	generated map[string]bool,
 	p *packages.Package,
 	results *output.Results,
 ) {
@@ -22,10 +21,6 @@ func inspectWithParent(
 		parent ast.Node,
 	) {
 		if n == nil {
-			return
-		}
-
-		if generated[p.Fset.Position(n.Pos()).Filename] {
 			return
 		}
 

@@ -86,7 +86,7 @@ func Go(o *option.Build) {
 
 		if runtime.GOOS == systemConstant.Linux {
 			// On Linux, the file is busy if it is currently running.
-			// panic: open /home/shiin/bin/gobuild: text file busy
+			// panic: open /home/user/bin/gobuild: text file busy
 			if destination == system.ExecutablePath() {
 				system.Move(
 					destination,

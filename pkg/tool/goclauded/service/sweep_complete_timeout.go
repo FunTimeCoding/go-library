@@ -16,8 +16,7 @@ func (s *Service) sweepCompleteTimeout() {
 				e.Identifier,
 				constant.CompleteTimeout,
 				e.CallsignValue(),
-				"",
-				"",
+				nil,
 			),
 		)
 	}

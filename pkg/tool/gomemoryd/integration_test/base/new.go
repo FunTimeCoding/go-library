@@ -20,7 +20,7 @@ func New(t *testing.T) *Server {
 	t.Helper()
 	s := store.New(filepath.Join(t.TempDir(), constant.TestDatabase))
 	i := mock_indexer.New()
-	v := service.New(s, i)
+	v := service.New(s, i, i, i)
 
 	return &Server{
 		t:       t,

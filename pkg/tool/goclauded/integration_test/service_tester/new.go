@@ -17,7 +17,8 @@ func New(t *testing.T) *Tester {
 	t.Helper()
 	s := store_tester.New(t)
 	c := mock_client.New()
-	i := mock_indexer.New()
+	si := mock_indexer.New()
+	ci := mock_indexer.New()
 	n := mock_notifier.New()
 	harbor := t.TempDir()
 
@@ -28,16 +29,18 @@ func New(t *testing.T) *Tester {
 			s.Store,
 			c,
 			memoryMock.New(),
-			i,
+			si,
+			ci,
 			n,
 			memory.New(),
 			harbor,
 			s.Clock(),
 			logger.New(context.Background()),
 		),
-		Harbor:   harbor,
-		Client:   c,
-		Indexer:  i,
-		Notifier: n,
+		Harbor:            harbor,
+		Client:            c,
+		SummaryIndexer:    si,
+		CompletionIndexer: ci,
+		Notifier:          n,
 	}
 }

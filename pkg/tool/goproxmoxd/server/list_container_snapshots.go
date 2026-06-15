@@ -46,7 +46,10 @@ func (s *Server) ListContainerSnapshots(
 	}
 
 	pointers := convert.ContainerSnapshots(snapshots)
-	result := make(server.ListContainerSnapshots200JSONResponse, len(pointers))
+	result := make(
+		server.ListContainerSnapshots200JSONResponse,
+		len(pointers),
+	)
 
 	for i, snap := range pointers {
 		result[i] = *snap

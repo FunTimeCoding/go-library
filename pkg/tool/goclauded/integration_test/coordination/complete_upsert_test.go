@@ -3,9 +3,9 @@ package coordination
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/base"
 	"testing"
-	"time"
 )
 
 func TestCompleteAmend(t *testing.T) {
@@ -64,16 +64,14 @@ func TestCompleteAmendOneEvent(t *testing.T) {
 	)
 	var found int
 
-	for _, e := range s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Complete,
-		10,
-		0,
-	) {
-		if e.Target == "search index" {
+	for _, e := range s.Store.Events(event_query.New().Kind(constant.Complete).SetLimit(10)) {
+		if e.Metadata[constant.Topic] == "search index" {
 			found++
-			assert.String(t, "revised with edge cases", e.Body)
+			assert.String(
+				t,
+				"revised with edge cases",
+				e.Metadata[constant.Message],
+			)
 		}
 	}
 

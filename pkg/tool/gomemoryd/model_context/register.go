@@ -181,6 +181,15 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.ListTags,
+			mcp.WithDescription(
+				"List all tags with memory counts. Returns each tag and how many active memories carry it, ordered by count.",
+			),
+		),
+		s.listTags,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.TagMemory,
 			mcp.WithDescription(
 				"Add, remove, or replace tags on a memory. At least one of add, remove, or replace_all is required. Tags are comma-separated.",

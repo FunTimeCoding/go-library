@@ -16,7 +16,8 @@ func TestUpdate(t *testing.T) {
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.Topic: "second topic",
+			constant.Message: "completed",
+			constant.Topic:   "second topic",
 		},
 	)
 	r := a.Check()
@@ -33,13 +34,15 @@ func TestUpdateMultiple(t *testing.T) {
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.Topic: "step two",
+			constant.Message: "completed",
+			constant.Topic:   "step two",
 		},
 	)
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.Topic: "step three",
+			constant.Message: "completed",
+			constant.Topic:   "step three",
 		},
 	)
 	r := a.Check()
@@ -55,11 +58,12 @@ func TestUpdateHistoryEvents(t *testing.T) {
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.Topic: "milestone one",
+			constant.Message: "completed",
+			constant.Topic:   "milestone one",
 		},
 	)
 	r := a.MustCallTool(constant.History, map[string]any{})
-	assert.StringContains(t, "updated scope: milestone one", r)
+	assert.StringContains(t, "updated milestone one: completed", r)
 }
 
 func TestUpdateBeforeAnnounce(t *testing.T) {
@@ -73,7 +77,8 @@ func TestUpdateBeforeAnnounce(t *testing.T) {
 		a.MustCallToolError(
 			constant.Update,
 			map[string]any{
-				constant.Topic: "premature update",
+				constant.Message: "completed",
+				constant.Topic:   "premature update",
 			},
 		),
 	)

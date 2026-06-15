@@ -19,5 +19,9 @@ func (c *Client) BoardByName(name string) (*jira.Board, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("board not found: %s: %w", name, constant.ErrorNotFound)
+	return nil, fmt.Errorf(
+		"board not found: %s: %w",
+		name,
+		constant.ErrorNotFound,
+	)
 }

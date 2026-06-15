@@ -5,5 +5,5 @@ func (s *Service) pushSummary(
 	body string,
 	metadata map[string]string,
 ) error {
-	return s.indexer.Push(name, body, metadata)
+	return s.summaryIndexer.Push(name, body, metadata)
 }

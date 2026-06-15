@@ -28,6 +28,7 @@ func Main(
 		Version: argument.CobraVersion(version, gitHash, buildDate),
 	}
 	o.AddCommand(search(c))
+	o.AddCommand(list(c))
 	o.AddCommand(index(c))
 	o.AddCommand(addCollection(c))
 	o.AddCommand(deleteCollection(c))
@@ -35,6 +36,7 @@ func Main(
 	o.AddCommand(addContext(c))
 	o.AddCommand(listContexts(c))
 	o.AddCommand(listTags(c))
+	o.AddCommand(listMetadata(c))
 	o.AddCommand(removeContext(c))
 	o.AddCommand(status(c))
 	errors.PanicOnError(o.Execute())

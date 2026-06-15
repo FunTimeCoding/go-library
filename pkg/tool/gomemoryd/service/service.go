@@ -6,6 +6,8 @@ import (
 )
 
 type Service struct {
-	store   *store.Store
-	indexer face.Indexer
+	store    *store.Store
+	indexer  face.Indexer
+	searcher face.Searcher
+	lister   face.Lister
 }

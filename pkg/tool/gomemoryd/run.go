@@ -26,7 +26,8 @@ func Run(
 	l := logger.New(context.Background())
 	s := store.New(o.DatabasePath)
 	defer s.Close()
-	v := service.New(s, memory_indexer.New(connect.Wait(l)))
+	idx := memory_indexer.New(connect.Wait(l))
+	v := service.New(s, idx, idx, idx)
 	reconcileMemories(v)
 	lifecycle.New(
 		l,

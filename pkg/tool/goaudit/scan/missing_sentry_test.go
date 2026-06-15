@@ -30,6 +30,17 @@ func TestMissingSentryWithReporter(t *testing.T) {
 	assert.Integer(t, 0, len(result))
 }
 
+func TestMissingSentryWithOptionalReporter(t *testing.T) {
+	v := virtual_file_system.New()
+	v.WriteString("cmd/gotest/main.go", "package main\n")
+	v.WriteString(
+		"pkg/tool/gotest/run.go",
+		"package gotest\n\nimport \"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter\"\n\nfunc Run() {\n\tr := reporter.NewOptional(\"gotest\", \"v0.1.0\")\n}\n",
+	)
+	result := MissingSentry(v)
+	assert.Integer(t, 0, len(result))
+}
+
 func TestMissingSentrySkipsExample(t *testing.T) {
 	v := virtual_file_system.New()
 	v.WriteString("cmd/example/main.go", "package main\n")

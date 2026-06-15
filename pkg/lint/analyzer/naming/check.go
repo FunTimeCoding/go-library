@@ -10,27 +10,17 @@ func Check(
 	p *packages.Package,
 	results *output.Results,
 ) {
-	skip := make(map[string]bool)
-
-	for _, f := range p.Syntax {
-		name := p.Fset.File(f.Pos()).Name()
-
-		if isGenerated(name) || ast.IsGenerated(f) {
-			skip[name] = true
-		}
-	}
-
 	for _, file := range p.Syntax {
+		if ast.IsGenerated(file) {
+			continue
+		}
+
 		ast.Inspect(
 			file,
 			func(n ast.Node) bool {
 				ident, okay := n.(*ast.Ident)
 
 				if !okay {
-					return true
-				}
-
-				if skip[p.Fset.File(ident.Pos()).Name()] {
 					return true
 				}
 

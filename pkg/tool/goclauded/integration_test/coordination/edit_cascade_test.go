@@ -3,9 +3,9 @@ package coordination
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/base"
 	"testing"
-	"time"
 )
 
 func TestEditCascadeSummary(t *testing.T) {
@@ -20,13 +20,7 @@ func TestEditCascadeSummary(t *testing.T) {
 			constant.Body: "original summary",
 		},
 	)
-	events := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Summarize,
-		1,
-		0,
-	)
+	events := s.Store.Events(event_query.New().Kind(constant.Summarize).SetLimit(1))
 	assert.Count(t, 1, events)
 	a.MustCallTool(
 		constant.EditEvent,
@@ -47,19 +41,19 @@ func TestEditCascadeSummaryPushesIndexer(t *testing.T) {
 	defer a.Close()
 	a.Announce(a.Name(), "building things")
 	a.MustCallTool(
+		constant.EditSession,
+		map[string]any{
+			constant.Slug: "test-session",
+		},
+	)
+	a.MustCallTool(
 		constant.Summarize,
 		map[string]any{
 			constant.Body: "original",
 		},
 	)
-	before := len(s.Indexer.Pushed)
-	events := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Summarize,
-		1,
-		0,
-	)
+	before := len(s.SummaryIndexer.Pushed)
+	events := s.Store.Events(event_query.New().Kind(constant.Summarize).SetLimit(1))
 	a.MustCallTool(
 		constant.EditEvent,
 		map[string]any{
@@ -67,8 +61,8 @@ func TestEditCascadeSummaryPushesIndexer(t *testing.T) {
 			constant.Message:    "edited via cascade",
 		},
 	)
-	assert.Integer(t, before+1, len(s.Indexer.Pushed))
-	last := s.Indexer.Pushed[len(s.Indexer.Pushed)-1]
+	assert.Integer(t, before+1, len(s.SummaryIndexer.Pushed))
+	last := s.SummaryIndexer.Pushed[len(s.SummaryIndexer.Pushed)-1]
 	assert.String(t, "edited via cascade", last.Body)
 }
 
@@ -84,13 +78,7 @@ func TestEditCascadeCompletion(t *testing.T) {
 			constant.Message: "hasty completion",
 		},
 	)
-	events := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Complete,
-		1,
-		0,
-	)
+	events := s.Store.Events(event_query.New().Kind(constant.Complete).SetLimit(1))
 	assert.Count(t, 1, events)
 	a.MustCallTool(
 		constant.EditEvent,
@@ -124,14 +112,8 @@ func TestEditMomentNoCascade(t *testing.T) {
 			constant.Line: "something landed",
 		},
 	)
-	before := len(s.Indexer.Pushed)
-	events := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Moment,
-		1,
-		0,
-	)
+	before := len(s.SummaryIndexer.Pushed)
+	events := s.Store.Events(event_query.New().Kind(constant.Moment).SetLimit(1))
 	assert.Count(t, 1, events)
 	a.MustCallTool(
 		constant.EditEvent,
@@ -140,13 +122,7 @@ func TestEditMomentNoCascade(t *testing.T) {
 			constant.Message:    "revised moment",
 		},
 	)
-	assert.Integer(t, before, len(s.Indexer.Pushed))
-	edited := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Moment,
-		1,
-		0,
-	)
-	assert.String(t, "revised moment", edited[0].Body)
+	assert.Integer(t, before, len(s.SummaryIndexer.Pushed))
+	edited := s.Store.Events(event_query.New().Kind(constant.Moment).SetLimit(1))
+	assert.String(t, "revised moment", edited[0].Metadata[constant.Line])
 }

@@ -8,7 +8,6 @@ import (
 	"go/ast"
 	"go/types"
 	"golang.org/x/tools/go/packages"
-	"path/filepath"
 	"strings"
 )
 
@@ -23,11 +22,11 @@ func Check(
 	module := p.Module.Path
 
 	for _, file := range p.Syntax {
-		name := p.Fset.File(file.Pos()).Name()
-
-		if filepath.Base(name) == constant.GeneratedFile {
+		if ast.IsGenerated(file) {
 			continue
 		}
+
+		name := p.Fset.File(file.Pos()).Name()
 
 		if strings.HasSuffix(name, constant.TestSuffix) {
 			continue

@@ -5,9 +5,9 @@ package service
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/service_tester"
 	"testing"
-	"time"
 )
 
 func TestSummarize(t *testing.T) {
@@ -21,13 +21,7 @@ func TestSummarize(t *testing.T) {
 	assert.FatalOnError(t, e)
 	body := s.Store.SummaryBySession("session-1")
 	assert.String(t, "Fixed the auth race condition", body)
-	events := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Summarize,
-		10,
-		0,
-	)
+	events := s.Store.Events(event_query.New().Kind(constant.Summarize).SetLimit(10))
 	assert.Count(t, 1, events)
 }
 

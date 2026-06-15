@@ -14,5 +14,7 @@ func (s *Store) GetEvent(identifier uint) *event.Event {
 		return nil
 	}
 
+	e.Metadata = s.EventMetadataByEvent(identifier)
+
 	return &e
 }

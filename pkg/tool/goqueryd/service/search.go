@@ -10,6 +10,8 @@ func (s *Service) Search(
 	mode string,
 	metadata map[string]string,
 ) *store.SearchOutcome {
+	var outcome *store.SearchOutcome
+
 	if mode == "keyword" {
 		results, e := s.store.SearchKeyword(
 			query,
@@ -22,16 +24,19 @@ func (s *Service) Search(
 			return store.NewDegradedSearchOutcome(e)
 		}
 
-		return store.NewSearchOutcome(
+		outcome = store.NewSearchOutcome(
 			s.store.EnrichResults(results, metadata),
 		)
+	} else {
+		o := store.NewSearchOption(query, limit)
+		o.Collection = collection
+		o.Full = full
+		o.Metadata = metadata
+		o.Reranker = s.reranker
+		outcome = s.store.SearchWithFallback(o, s.ollama)
 	}
 
-	o := store.NewSearchOption(query, limit)
-	o.Collection = collection
-	o.Full = full
-	o.Metadata = metadata
-	o.Reranker = s.reranker
+	outcome.Facets = store.ComputeFacets(outcome.Results, 20)
 
-	return s.store.SearchWithFallback(o, s.ollama)
+	return outcome
 }

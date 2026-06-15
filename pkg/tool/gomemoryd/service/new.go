@@ -8,6 +8,8 @@ import (
 func New(
 	s *store.Store,
 	i face.Indexer,
+	r face.Searcher,
+	l face.Lister,
 ) *Service {
-	return &Service{store: s, indexer: i}
+	return &Service{store: s, indexer: i, searcher: r, lister: l}
 }

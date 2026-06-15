@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -18,11 +19,28 @@ func (s *Server) list(
 		return response.Fail("collection is required: %v", e)
 	}
 
-	documents, f := s.service.ListDocuments(collection)
+	metadata := extractMetadata(q)
+	sourceType := q.GetString(constant.SourceType, "")
+
+	if sourceType != "" {
+		if metadata == nil {
+			metadata = map[string]string{}
+		}
+
+		metadata[constant.SourceType] = sourceType
+	}
+
+	outcome, f := s.service.ListDocuments(
+		collection,
+		metadata,
+		q.GetInt(parameter.Limit, 10),
+		q.GetInt(parameter.Offset, 0),
+		q.GetBool(constant.Full, false),
+	)
 
 	if f != nil {
 		return s.captureFail(f, "document listing failed")
 	}
 
-	return response.Success(notation.MarshalIndent(documents))
+	return response.Success(notation.MarshalIndent(outcome))
 }

@@ -13,7 +13,16 @@ func timelineRow(e *timeline.Entry) gomponents.Node {
 	display := e.Timestamp
 
 	if f == nil {
-		display = t.Local().Format("15:04")
+		local := t.Local()
+		now := time.Now()
+
+		if local.Year() == now.Year() &&
+			local.Month() == now.Month() &&
+			local.Day() == now.Day() {
+			display = local.Format("15:04")
+		} else {
+			display = local.Format("Jan 02 15:04")
+		}
 	}
 
 	description := timeline.FormatDescription(e)

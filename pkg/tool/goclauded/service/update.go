@@ -6,6 +6,7 @@ func (s *Service) Update(
 	sessionIdentifier string,
 	name string,
 	topic string,
+	message string,
 	files string,
 ) error {
 	if e := s.store.UpdateTopic(name, topic, files); e != nil {
@@ -17,7 +18,7 @@ func (s *Service) Update(
 		name,
 		constant.Update,
 		topic,
-		"",
+		message,
 	); e != nil {
 		return e
 	}
@@ -26,8 +27,7 @@ func (s *Service) Update(
 		sessionIdentifier,
 		constant.Update,
 		name,
-		"",
-		topic,
+		map[string]string{"topic": topic, "message": message},
 	); e != nil {
 		return e
 	}

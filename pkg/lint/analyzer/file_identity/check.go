@@ -1,7 +1,6 @@
 package file_identity
 
 import (
-	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"golang.org/x/tools/go/packages"
@@ -13,17 +12,13 @@ func Check(
 	results *output.Results,
 ) {
 	for _, file := range p.Syntax {
+		if ast.IsGenerated(file) {
+			continue
+		}
+
 		name := filepath.Base(p.Fset.File(file.Pos()).Name())
 
 		if skip(name) {
-			continue
-		}
-
-		if name == constant.GeneratedFile {
-			continue
-		}
-
-		if ast.IsGenerated(file) {
 			continue
 		}
 

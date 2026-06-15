@@ -21,8 +21,14 @@ func (s *Server) logs(
 	endValue := r.URL.Query().Get("end")
 
 	if !filtered {
-		startValue = join.Empty(time.Now().Format(timeLibrary.DateYear), "T00:00")
-		endValue = join.Empty(time.Now().Format(timeLibrary.DateYear), "T23:59")
+		startValue = join.Empty(
+			time.Now().Format(timeLibrary.DateYear),
+			"T00:00",
+		)
+		endValue = join.Empty(
+			time.Now().Format(timeLibrary.DateYear),
+			"T23:59",
+		)
 	}
 
 	var fights []raid.Fight

@@ -1,0 +1,14 @@
+package store
+
+import "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+
+func editableKey(kind string) string {
+	switch kind {
+	case constant.Complete:
+		return constant.Message
+	case constant.Moment:
+		return constant.Line
+	default:
+		return constant.Body
+	}
+}

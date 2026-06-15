@@ -23,6 +23,7 @@ const (
 	SearchMemories = "search_memories"
 	RelateMemories = "relate_memories"
 	TagMemory      = "tag_memory"
+	ListTags       = "list_tags"
 
 	MemoryName       = "name"
 	Source           = "source"

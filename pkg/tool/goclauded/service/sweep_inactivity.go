@@ -16,8 +16,7 @@ func (s *Service) sweepInactivity() {
 				e.Identifier,
 				constant.InactivityTimeout,
 				e.CallsignValue(),
-				e.Topic,
-				"",
+				map[string]string{"topic": e.Topic},
 			),
 		)
 	}

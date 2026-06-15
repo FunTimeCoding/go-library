@@ -27,12 +27,14 @@ func (s *Service) DeleteLabel(
 		sessionIdentifier,
 		constant.Label,
 		name,
-		target,
-		change,
+		map[string]string{
+			constant.Target: target,
+			constant.Key:    key,
+			"change":        change,
+		},
 	); e != nil {
 		return "", e
 	}
-
 	s.notify()
 
 	return change, nil

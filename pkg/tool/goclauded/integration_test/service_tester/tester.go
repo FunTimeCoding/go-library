@@ -10,11 +10,12 @@ import (
 )
 
 type Tester struct {
-	Store    *store_tester.Tester
-	t        *testing.T
-	Service  *service.Service
-	Client   *mock_client.Client
-	Indexer  *mock_indexer.Indexer
-	Notifier *mock_notifier.Notifier
-	Harbor   string
+	Store             *store_tester.Tester
+	t                 *testing.T
+	Service           *service.Service
+	Client            *mock_client.Client
+	SummaryIndexer    *mock_indexer.Indexer
+	CompletionIndexer *mock_indexer.Indexer
+	Notifier          *mock_notifier.Notifier
+	Harbor            string
 }

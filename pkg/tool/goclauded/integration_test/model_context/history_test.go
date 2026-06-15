@@ -61,7 +61,8 @@ func TestHistoryAllKinds(t *testing.T) {
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.Topic: "milestone",
+			constant.Message: "completed",
+			constant.Topic:   "milestone",
 		},
 	)
 	a.MustCallTool(
@@ -72,6 +73,6 @@ func TestHistoryAllKinds(t *testing.T) {
 	)
 	history := a.MustCallTool(constant.History, map[string]any{})
 	assert.StringContains(t, "announced: working", history)
-	assert.StringContains(t, "updated scope: milestone", history)
+	assert.StringContains(t, "updated milestone: completed", history)
 	assert.StringContains(t, "completed milestone: finished", history)
 }

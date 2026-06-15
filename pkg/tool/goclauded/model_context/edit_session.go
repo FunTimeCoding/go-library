@@ -60,6 +60,11 @@ func (s *Server) editSession(
 		hasChange = true
 	}
 
+	if v := q.GetString(constant.Slug, ""); v != "" {
+		a.Slug = &v
+		hasChange = true
+	}
+
 	if v := q.GetString(constant.Topic, ""); v != "" {
 		a.Topic = &v
 		hasChange = true

@@ -1,25 +1,26 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
-
 func (s *Store) EnrichResults(
 	results []SearchResult,
 	metadata map[string]string,
 ) []SearchResult {
+	var keys []documentKey
+
+	for _, r := range results {
+		keys = append(keys, documentKey{r.Collection, r.Path})
+	}
+
+	identifierMap := s.documentIdentifiers(keys)
+	var identifiers []int
+
+	for _, k := range keys {
+		identifiers = append(identifiers, identifierMap[k])
+	}
+
+	s.enrichMetadata(results, identifiers)
 	var enriched []SearchResult
 
 	for _, r := range results {
-		identifier := s.documentIdentifier(r.Collection, r.Path)
-		r.Metadata = s.GetMetadata(identifier)
-
-		if r.Metadata != nil {
-			r.SourceType = r.Metadata[constant.SourceType]
-		}
-
-		if r.SourceType == "" {
-			r.SourceType = s.ResolveSourceType(r.Collection, r.Path)
-		}
-
 		if !matchesMetadata(r.Metadata, r.SourceType, metadata) {
 			continue
 		}

@@ -43,5 +43,5 @@ func (s *Server) search(
 		s.reporter.CaptureException(outcome.Cause)
 	}
 
-	return response.Success(notation.MarshalIndent(outcome.Results))
+	return response.Success(notation.MarshalIndent(outcome))
 }

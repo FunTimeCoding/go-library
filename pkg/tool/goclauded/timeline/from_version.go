@@ -13,7 +13,9 @@ func FromVersion(
 		Timestamp: changedAt,
 		Kind:      fmt.Sprintf("memory_%s", changeType),
 		Actor:     source,
-		Subject:   name,
-		Detail:    description,
+		Metadata: map[string]string{
+			"name":        name,
+			"description": description,
+		},
 	}
 }

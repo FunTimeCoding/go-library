@@ -4,10 +4,11 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/notation"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
 	"github.com/mark3labs/mcp-go/mcp"
-	"time"
+	"strings"
 )
 
 func (s *Server) profile(
@@ -24,7 +25,7 @@ func (s *Server) profile(
 	var relevant []store.SearchResult
 
 	if topic != "" {
-		relevant, e = s.service.SearchMemories(topic, 10, "", "")
+		relevant, e = s.service.SearchRelevant(topic, 10)
 
 		if e != nil {
 			return s.captureFail(e, "failed to search for relevant memories")
@@ -57,11 +58,31 @@ func (s *Server) profile(
 		}
 	}
 
-	since := time.Now().Add(-48 * time.Hour).UTC().Format(time.RFC3339)
-	impressions, e := s.service.RecentImpressions(since)
+	impressions, e := s.service.LatestImpressions(10)
 
 	if e != nil {
 		impressions = nil
+	}
+
+	var completions []completionEntry
+	results, e := s.service.ListCompletions()
+
+	if e == nil {
+		for _, r := range results {
+			name := r.Path
+
+			if i := strings.LastIndex(name, separator.Slash); i >= 0 {
+				name = name[:i]
+			}
+
+			completions = append(
+				completions,
+				completionEntry{
+					SessionName: name,
+					Body:        r.Body,
+				},
+			)
+		}
 	}
 
 	return response.Success(
@@ -71,6 +92,7 @@ func (s *Server) profile(
 				Relevant:    relevant,
 				Index:       index,
 				Impressions: impressions,
+				Completions: completions,
 			},
 		),
 	)

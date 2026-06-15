@@ -3,9 +3,9 @@ package coordination
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/base"
 	"testing"
-	"time"
 )
 
 func TestSummarize(t *testing.T) {
@@ -84,15 +84,9 @@ func TestSummarizeAmendOneEvent(t *testing.T) {
 			constant.Body: "revised",
 		},
 	)
-	v := s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		constant.Summarize,
-		10,
-		0,
-	)
+	v := s.Store.Events(event_query.New().Kind(constant.Summarize).SetLimit(10))
 	assert.Count(t, 1, v)
-	assert.String(t, "revised", v[0].Body)
+	assert.String(t, "revised", v[0].Metadata[constant.Body])
 }
 
 func TestSummarizeBeforeAnnounce(t *testing.T) {

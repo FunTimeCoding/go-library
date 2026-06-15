@@ -8,7 +8,7 @@ func (s *Store) UpsertCompletion(
 	kind string,
 	topic string,
 	message string,
-) error {
+) (*completion.Completion, error) {
 	var existing completion.Completion
 	result := s.database.Where(
 		"session_identifier = ? AND topic = ?",
@@ -17,20 +17,36 @@ func (s *Store) UpsertCompletion(
 	).Limit(1).Find(&existing)
 
 	if result.Error != nil {
-		return result.Error
+		return nil, result.Error
 	}
 
 	if result.RowsAffected > 0 {
-		return s.database.Model(&existing).Updates(
+		e := s.database.Model(&existing).Updates(
 			map[string]any{
 				"name":    name,
 				"kind":    kind,
 				"summary": message,
 			},
 		).Error
+
+		if e != nil {
+			return nil, e
+		}
+
+		return &existing, nil
 	}
 
-	return s.database.Create(
-		completion.New(sessionIdentifier, name, kind, topic, message),
-	).Error
+	var count int64
+	s.database.Model(completion.Stub()).Where(
+		"session_identifier = ?",
+		sessionIdentifier,
+	).Count(&count)
+	c := completion.New(sessionIdentifier, name, kind, topic, message)
+	c.Sequence = int(count) + 1
+
+	if e := s.database.Create(c).Error; e != nil {
+		return nil, e
+	}
+
+	return c, nil
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/timeline"
 	"github.com/mark3labs/mcp-go/mcp"
+	"strings"
 	"time"
 )
 
@@ -20,9 +21,13 @@ func (s *Server) history(
 	a := argument.Timeline{
 		Limit:  int(q.GetFloat(constant.Limit, 20)),
 		Offset: int(q.GetFloat(constant.Offset, 0)),
-		Kind:   q.GetString(constant.Kind, ""),
 		Full:   q.GetBool(constant.Full, false),
 	}
+
+	if kind := q.GetString(constant.Kind, ""); kind != "" {
+		a.Kinds = strings.Split(kind, ",")
+	}
+
 	sinceRaw := q.GetString(constant.Since, "")
 	beforeRaw := q.GetString(constant.Before, "")
 

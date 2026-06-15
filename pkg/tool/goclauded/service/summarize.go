@@ -15,17 +15,21 @@ func (s *Service) Summarize(
 		sessionIdentifier,
 		constant.Summarize,
 		name,
-		"",
-		body,
+		map[string]string{constant.Body: body},
 	); e != nil {
 		return e
 	}
 
 	s.notify()
+	slug, metadata, f := s.sessionMetadata(sessionIdentifier)
 
-	return s.pushSummary(
-		name,
-		body,
-		s.summaryMetadata(sessionIdentifier, name),
-	)
+	if f != nil {
+		return f
+	}
+
+	if slug == "" {
+		return nil
+	}
+
+	return s.pushSummary(slug, body, metadata)
 }

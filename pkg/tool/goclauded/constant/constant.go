@@ -32,6 +32,7 @@ const (
 	HistoryCount = "history_count"
 	EditSession  = "edit_session"
 	Send         = "send"
+	Register     = "register"
 	Release      = "release"
 	Listen       = "listen"
 	Summarize    = "summarize"

@@ -36,7 +36,8 @@ func TestCompletionTableAfterUpdate(t *testing.T) {
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.Topic: "milestone reached",
+			constant.Message: "completed",
+			constant.Topic:   "milestone reached",
 		},
 	)
 	c := s.Store.RecentCompletions()
@@ -44,7 +45,7 @@ func TestCompletionTableAfterUpdate(t *testing.T) {
 	assert.String(t, a.Name(), c[0].Name)
 	assert.String(t, constant.Update, c[0].Kind)
 	assert.String(t, "milestone reached", c[0].Topic)
-	assert.String(t, "", c[0].Summary)
+	assert.String(t, "completed", c[0].Summary)
 }
 
 func TestCompletionTableHookContext(t *testing.T) {
@@ -65,7 +66,8 @@ func TestCompletionTableHookContext(t *testing.T) {
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.Topic: "pivot to testing",
+			constant.Message: "completed",
+			constant.Topic:   "pivot to testing",
 		},
 	)
 	r := b.CheckLive()

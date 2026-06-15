@@ -1,11 +1,16 @@
 package service
 
+import "github.com/funtimecoding/go-library/pkg/errors"
+
 func (s *Service) ReconcileSummaries() {
 	for _, m := range s.store.ListSummaries() {
-		s.indexer.MustPush(
-			m.Name,
-			m.Body,
-			s.summaryMetadata(m.SessionIdentifier, m.Name),
-		)
+		slug, metadata, e := s.sessionMetadata(m.SessionIdentifier)
+		errors.PanicOnError(e)
+
+		if slug == "" {
+			continue
+		}
+
+		s.summaryIndexer.MustPush(slug, m.Body, metadata)
 	}
 }

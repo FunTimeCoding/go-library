@@ -26,6 +26,6 @@ const (
 )
 
 var (
-	Format         = option.Color.Copy()
-	ErrorNotFound  = errors.New("not found")
+	Format        = option.Color.Copy()
+	ErrorNotFound = errors.New("not found")
 )

@@ -2,11 +2,10 @@ package struct_literal
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/lint"
 	"go/ast"
 	"go/types"
 	"golang.org/x/tools/go/packages"
-	"path/filepath"
 	"strings"
 )
 
@@ -48,9 +47,15 @@ func ownedType(
 		return nil
 	}
 
-	if filepath.Base(
-		p.Fset.Position(typeName.Pos()).Filename,
-	) == constant.GeneratedFile {
+	filename := p.Fset.Position(typeName.Pos()).Filename
+
+	for _, file := range p.Syntax {
+		if p.Fset.File(file.Pos()).Name() == filename && ast.IsGenerated(file) {
+			return nil
+		}
+	}
+
+	if lint.IsGeneratedFile(filename) {
 		return nil
 	}
 

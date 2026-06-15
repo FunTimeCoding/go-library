@@ -27,8 +27,8 @@ func TestHistoryCountMultiple(t *testing.T) {
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
-			constant.SessionName: a.Name(),
-			constant.Topic:       "three",
+			constant.Message: "completed",
+			constant.Topic:   "three",
 		},
 	)
 	result := a.MustCallTool(constant.HistoryCount, map[string]any{})

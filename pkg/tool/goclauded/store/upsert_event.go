@@ -1,14 +1,18 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event_metadata"
+)
 
 func (s *Store) UpsertEvent(
 	sessionIdentifier string,
 	kind string,
-	name string,
-	target string,
-	body string,
+	actor string,
+	metadata map[string]string,
 ) error {
+	scope := metadata[constant.Topic]
 	var existing event.Event
 	query := s.database.Where(
 		"session_identifier = ? AND kind = ?",
@@ -16,8 +20,12 @@ func (s *Store) UpsertEvent(
 		kind,
 	)
 
-	if target != "" {
-		query = query.Where("target = ?", target)
+	if scope != "" {
+		query = query.Where(
+			"identifier IN (SELECT event_identifier FROM event_metadata WHERE key = ? AND value = ?)",
+			constant.Topic,
+			scope,
+		)
 	}
 
 	result := query.Limit(1).Find(&existing)
@@ -27,14 +35,28 @@ func (s *Store) UpsertEvent(
 	}
 
 	if result.RowsAffected > 0 {
-		return s.database.Model(&existing).Updates(
-			map[string]any{
-				"name":   name,
-				"target": target,
-				"body":   body,
-			},
-		).Error
+		if e := s.database.Model(&existing).Update(
+			"actor",
+			actor,
+		).Error; e != nil {
+			return e
+		}
+
+		if e := s.database.Where(
+			"event_identifier = ?",
+			existing.Identifier,
+		).Delete(event_metadata.Stub()).Error; e != nil {
+			return e
+		}
+
+		return s.SetEventMetadata(existing.Identifier, metadata)
 	}
 
-	return s.LogEvent(sessionIdentifier, kind, name, target, body)
+	record := event.New(sessionIdentifier, kind, actor)
+
+	if e := s.database.Create(record).Error; e != nil {
+		return e
+	}
+
+	return s.SetEventMetadata(record.Identifier, metadata)
 }

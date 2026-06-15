@@ -16,8 +16,7 @@ func (s *Service) Announce(
 		sessionIdentifier,
 		constant.Announce,
 		name,
-		"",
-		topic,
+		map[string]string{"topic": topic},
 	); e != nil {
 		return e
 	}

@@ -59,7 +59,12 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.Update,
 			mcp.WithDescription(
-				"Record a milestone and update your topic on the roster. Use when your scope changes mid-task without completing.",
+				"Record a milestone and shift to the next scope. Captures what was accomplished before moving on. Use between announce and complete to track progress incrementally.",
+			),
+			mcp.WithString(
+				constant.Message,
+				mcp.Required(),
+				mcp.Description("What was accomplished in the current scope"),
 			),
 			mcp.WithString(
 				constant.Topic,

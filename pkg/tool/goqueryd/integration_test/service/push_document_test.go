@@ -19,11 +19,11 @@ func TestPushDocumentAppearsInList(t *testing.T) {
 			nil,
 		),
 	)
-	entries, e := s.Service.ListDocuments("notes")
+	outcome, e := s.Service.ListDocuments("notes", nil, 0, 0, false)
 	assert.FatalOnError(t, e)
-	assert.Count(t, 1, entries)
-	assert.String(t, "First Note", entries[0].Title)
-	assert.String(t, "qmd://notes/first.md", entries[0].VirtualPath)
+	assert.Count(t, 1, outcome.Results)
+	assert.String(t, "First Note", outcome.Results[0].Title)
+	assert.String(t, "qmd://notes/first.md", outcome.Results[0].VirtualPath)
 }
 
 func TestPushDocumentAppearsInSearch(t *testing.T) {
@@ -37,7 +37,7 @@ func TestPushDocumentAppearsInSearch(t *testing.T) {
 			nil,
 		),
 	)
-	outcome := s.Service.Search(
+	result := s.Service.Search(
 		"platypus",
 		10,
 		"",
@@ -45,8 +45,8 @@ func TestPushDocumentAppearsInSearch(t *testing.T) {
 		"keyword",
 		nil,
 	)
-	assert.Count(t, 1, outcome.Results)
-	assert.String(t, "Searchable", outcome.Results[0].Title)
+	assert.Count(t, 1, result.Results)
+	assert.String(t, "Searchable", result.Results[0].Title)
 }
 
 func TestPushDocumentDedup(t *testing.T) {
@@ -60,9 +60,9 @@ func TestPushDocumentDedup(t *testing.T) {
 		t,
 		s.Service.PushDocument("notes", "first.md", body, nil),
 	)
-	entries, e := s.Service.ListDocuments("notes")
+	outcome, e := s.Service.ListDocuments("notes", nil, 0, 0, false)
 	assert.FatalOnError(t, e)
-	assert.Count(t, 1, entries)
+	assert.Count(t, 1, outcome.Results)
 	status := s.Service.MustStatus()
 	assert.Integer(t, 1, status.TotalDocuments)
 }

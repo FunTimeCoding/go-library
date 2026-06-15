@@ -1,13 +1,10 @@
 package store
 
-import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/result"
-)
+import "github.com/funtimecoding/go-library/pkg/errors"
 
-func (s *Store) MustListDocuments(collection string) []result.DocumentEntry {
-	result, e := s.ListDocuments(collection)
+func (s *Store) MustListDocuments(collection string) []SearchResult {
+	results, e := s.ListDocuments(collection, nil, 0, 0, false)
 	errors.PanicOnError(e)
 
-	return result
+	return results
 }

@@ -1,12 +1,10 @@
 package struct_literal
 
 import (
-	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"go/ast"
 	"go/token"
 	"golang.org/x/tools/go/packages"
-	"path/filepath"
 )
 
 func Check(
@@ -18,25 +16,16 @@ func Check(
 	}
 
 	module := p.Module.Path
-	generated := make(map[string]bool)
 
 	for _, file := range p.Syntax {
-		name := p.Fset.File(file.Pos()).Name()
-
-		if filepath.Base(name) == constant.GeneratedFile {
-			generated[name] = true
+		if ast.IsGenerated(file) {
+			continue
 		}
-	}
 
-	for _, file := range p.Syntax {
 		ast.Inspect(
 			file,
 			func(n ast.Node) bool {
 				if n == nil {
-					return true
-				}
-
-				if generated[p.Fset.Position(n.Pos()).Filename] {
 					return true
 				}
 

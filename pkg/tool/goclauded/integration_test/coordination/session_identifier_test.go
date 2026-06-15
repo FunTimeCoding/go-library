@@ -3,9 +3,9 @@ package coordination
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/base"
 	"testing"
-	"time"
 )
 
 func TestEventSessionID(t *testing.T) {
@@ -27,13 +27,7 @@ func TestEventSessionID(t *testing.T) {
 		},
 	)
 
-	for _, e := range s.Store.EventsSince(
-		time.Time{},
-		time.Time{},
-		"",
-		10,
-		0,
-	) {
+	for _, e := range s.Store.Events(event_query.New().SetLimit(10)) {
 		if e.Kind == "register" {
 			continue
 		}

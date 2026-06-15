@@ -22,7 +22,7 @@ func (s *Server) event() http.HandlerFunc {
 			}
 
 			layout.PushEvent(w, constant.Roster, s.rosterSection())
-			layout.PushEvent(w, constant.Activity, s.activitySection())
+			layout.PushEvent(w, constant.Activity, s.activitySection(nil))
 			f.Flush()
 		},
 	)

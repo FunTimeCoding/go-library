@@ -7,8 +7,14 @@ import (
 	"maragu.dev/gomponents/html"
 )
 
-func (s *Server) activitySection() gomponents.Node {
-	entries, e := s.service.Timeline(argument.Timeline{Limit: 10})
+func (s *Server) activitySection(kinds []string) gomponents.Node {
+	a := argument.Timeline{Limit: 10}
+
+	if len(kinds) > 0 {
+		a.Kinds = kinds
+	}
+
+	entries, e := s.service.Timeline(a)
 	errors.PanicOnError(e)
 
 	if len(entries) == 0 {

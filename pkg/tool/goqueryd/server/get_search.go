@@ -32,8 +32,16 @@ func (s *Server) GetSearch(
 
 	var metadata map[string]string
 
+	if v.Metadata != nil {
+		metadata = *v.Metadata
+	}
+
 	if v.SourceType != nil && *v.SourceType != "" {
-		metadata = map[string]string{constant.SourceType: *v.SourceType}
+		if metadata == nil {
+			metadata = map[string]string{}
+		}
+
+		metadata[constant.SourceType] = *v.SourceType
 	}
 
 	outcome := s.service.Search(
@@ -44,5 +52,5 @@ func (s *Server) GetSearch(
 		mode,
 		metadata,
 	)
-	web.EncodeNotation(w, outcome.Results)
+	web.EncodeNotation(w, outcome)
 }

@@ -15,7 +15,10 @@ func (c *Client) CreateContainerSnapshot(
 	result, e := c.client.CreateContainerSnapshot(
 		c.context,
 		identifier,
-		&client.CreateContainerSnapshotParams{Instance: &c.instance, Node: node},
+		&client.CreateContainerSnapshotParams{
+			Instance: &c.instance,
+			Node:     node,
+		},
 		body,
 	)
 	errors.PanicOnError(e)

@@ -23,7 +23,13 @@ func (r *Run) Pipe(
 	errors.PanicOnError(pipe.Close())
 
 	if f := c.Wait(); f != nil {
-		log.Panicf("wait: %e", f)
+		r.Error = f
+
+		if r.Panic {
+			log.Panicf("wait: %e", f)
+		}
+
+		return stdout.String(), stderr.String()
 	}
 
 	if written == 0 {

@@ -10,4 +10,5 @@ type Process interface {
 	StderrReader() io.ReadCloser
 	Wait() error
 	Signal(s os.Signal) error
+	ExitCode() int
 }

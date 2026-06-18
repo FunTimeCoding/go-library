@@ -37,7 +37,7 @@ func migrateForeignKeys(d *gorm.DB) {
 	)
 	recreateWithFK(
 		d,
-		"summary",
+		constant.SummaryTable,
 		`CREATE TABLE summary_new (
 			identifier INTEGER PRIMARY KEY AUTOINCREMENT,
 			session_identifier TEXT NOT NULL

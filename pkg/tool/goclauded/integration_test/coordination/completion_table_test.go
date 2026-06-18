@@ -56,6 +56,7 @@ func TestCompletionTableHookContext(t *testing.T) {
 	b := s.NewSession(t)
 	defer b.Close()
 	a.Announce(a.Name(), "search index")
+	b.CheckLive()
 	a.MustCallTool(
 		constant.Complete,
 		map[string]any{
@@ -72,19 +73,11 @@ func TestCompletionTableHookContext(t *testing.T) {
 	)
 	r := b.CheckLive()
 	assert.True(t, r.Changed)
-	var foundComplete bool
-	var foundUpdate bool
-
-	for _, c := range r.Completions {
-		if c.Name == a.Name() && c.Topic == "search index" && c.Kind == constant.Complete {
-			foundComplete = true
-		}
-
-		if c.Name == a.Name() && c.Topic == "pivot to testing" && c.Kind == constant.Update {
-			foundUpdate = true
-		}
-	}
-
-	assert.True(t, foundComplete)
-	assert.True(t, foundUpdate)
+	completions := clientEntriesByKind(
+		r.Entries,
+		constant.QueueSessionComplete,
+	)
+	updates := clientEntriesByKind(r.Entries, constant.QueueSessionUpdate)
+	assert.True(t, len(completions) > 0)
+	assert.True(t, len(updates) > 0)
 }

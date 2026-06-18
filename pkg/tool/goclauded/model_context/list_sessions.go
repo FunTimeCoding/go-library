@@ -14,7 +14,12 @@ func (s *Server) listSessions(
 	x context.Context,
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	s.resolveCaller(x, constant.ListSessions)
+	_, e := s.resolveCaller(x, constant.ListSessions)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	limit := int(q.GetFloat(constant.Limit, 20))
 	offset := int(q.GetFloat(constant.Offset, 0))
 	sessions, e := s.service.EnrichedSessions(limit, offset)

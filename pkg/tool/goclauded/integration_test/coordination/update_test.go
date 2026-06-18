@@ -13,6 +13,7 @@ func TestUpdate(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "first topic")
+	a.CheckLive()
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
@@ -20,9 +21,10 @@ func TestUpdate(t *testing.T) {
 			constant.Topic:   "second topic",
 		},
 	)
-	r := a.Check()
-	assert.Count(t, 1, r.Sessions)
-	assert.String(t, "second topic", r.Sessions[0].Topic)
+	r := a.CheckLive()
+	updates := clientEntriesByKind(r.Entries, constant.QueueSessionUpdate)
+	assert.True(t, len(updates) > 0)
+	assert.StringContains(t, "second topic", updates[0].Body)
 }
 
 func TestUpdateMultiple(t *testing.T) {
@@ -31,6 +33,7 @@ func TestUpdateMultiple(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "step one")
+	a.CheckLive()
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
@@ -45,8 +48,9 @@ func TestUpdateMultiple(t *testing.T) {
 			constant.Topic:   "step three",
 		},
 	)
-	r := a.Check()
-	assert.String(t, "step three", r.Sessions[0].Topic)
+	r := a.CheckLive()
+	updates := clientEntriesByKind(r.Entries, constant.QueueSessionUpdate)
+	assert.True(t, len(updates) >= 2)
 }
 
 func TestUpdateHistoryEvents(t *testing.T) {

@@ -1,18 +1,9 @@
 package lifecycle
 
-import (
-	"github.com/funtimecoding/go-library/pkg/lifecycle/server"
-	"net/http"
-)
+import "github.com/funtimecoding/go-library/pkg/lifecycle/server"
 
-func WithServer(
-	address string,
-	setup func(*http.ServeMux),
-) Option {
+func WithServer(s *server.Server) Option {
 	return func(l *Lifecycle) {
-		l.component = append(
-			l.component,
-			server.New(http.NewServeMux(), setup, address),
-		)
+		l.component = append(l.component, s)
 	}
 }

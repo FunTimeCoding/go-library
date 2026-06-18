@@ -14,14 +14,16 @@ func TestInactivityTimeout(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "working on something")
+	a.CheckLive()
 	s.Store.Advance(2 * time.Hour)
 	s.Service.RunTimeoutSweep()
 	r := a.CheckLive()
-	assert.True(t, r.TimeoutMessage != nil)
-	assert.StringContains(t, "inactivity", *r.TimeoutMessage)
+	timeouts := clientEntriesByKind(r.Entries, constant.QueueTimeout)
+	assert.Count(t, 1, timeouts)
+	assert.StringContains(t, "inactivity", timeouts[0].Body)
 }
 
-func TestCompleteTimeout(t *testing.T) {
+func TestCompleteTimeoutCoordination(t *testing.T) {
 	s := base.New(t)
 	defer s.Close()
 	a := s.NewSession(t)
@@ -33,11 +35,13 @@ func TestCompleteTimeout(t *testing.T) {
 			constant.Message: "done",
 		},
 	)
+	a.CheckLive()
 	s.Store.Advance(45 * time.Minute)
 	s.Service.RunTimeoutSweep()
 	r := a.CheckLive()
-	assert.True(t, r.TimeoutMessage != nil)
-	assert.StringContains(t, "completing", *r.TimeoutMessage)
+	timeouts := clientEntriesByKind(r.Entries, constant.QueueTimeout)
+	assert.Count(t, 1, timeouts)
+	assert.StringContains(t, "completing", timeouts[0].Body)
 }
 
 func TestNoFalseTimeout(t *testing.T) {
@@ -46,10 +50,12 @@ func TestNoFalseTimeout(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "still working")
+	a.CheckLive()
 	s.Store.Advance(30 * time.Minute)
 	s.Service.RunTimeoutSweep()
 	r := a.CheckLive()
-	assert.True(t, r.TimeoutMessage == nil)
+	timeouts := clientEntriesByKind(r.Entries, constant.QueueTimeout)
+	assert.Count(t, 0, timeouts)
 }
 
 func TestTimeoutClearsOnCheck(t *testing.T) {
@@ -58,12 +64,15 @@ func TestTimeoutClearsOnCheck(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "working")
+	a.CheckLive()
 	s.Store.Advance(2 * time.Hour)
 	s.Service.RunTimeoutSweep()
 	first := a.CheckLive()
-	assert.True(t, first.TimeoutMessage != nil)
+	timeouts := clientEntriesByKind(first.Entries, constant.QueueTimeout)
+	assert.Count(t, 1, timeouts)
 	second := a.CheckLive()
-	assert.True(t, second.TimeoutMessage == nil)
+	timeouts = clientEntriesByKind(second.Entries, constant.QueueTimeout)
+	assert.Count(t, 0, timeouts)
 }
 
 func TestTimeoutVisibleToOthers(t *testing.T) {

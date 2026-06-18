@@ -1,12 +1,12 @@
 package goclaude
 
 import (
-	"context"
+	"encoding/json"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system/writer"
 	"github.com/funtimecoding/go-library/pkg/tool/goclaude/command_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclaude/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -20,34 +20,23 @@ func register(c *command_context.Context) *cobra.Command {
 			_ *cobra.Command,
 			_ []string,
 		) {
-			input := readHookInput()
-			sessionID := input.SessionID
+			session := readHookInput().SessionID
 
-			if sessionID == "" {
+			if session == "" {
 				return
 			}
 
-			response, e := c.Client().PostRegisterWithResponse(
-				context.Background(),
-				client.PostRegisterJSONRequestBody{
-					Session: sessionID,
-				},
-			)
+			name := RunRegister(c.Client(), session)
 
-			if e != nil {
+			if name == "" {
 				return
 			}
 
-			if response.JSON200 == nil {
-				return
-			}
+			environmentFile := os.Getenv(constant.EnvironmentFileEnvironment)
 
-			name := response.JSON200.Callsign
-			envFile := os.Getenv("CLAUDE_ENV_FILE")
-
-			if envFile != "" {
+			if environmentFile != "" {
 				f, fe := os.OpenFile(
-					envFile,
+					environmentFile,
 					os.O_APPEND|os.O_CREATE|os.O_WRONLY,
 					0644,
 				)
@@ -57,7 +46,7 @@ func register(c *command_context.Context) *cobra.Command {
 						f,
 						"export %s=%s\n",
 						constant.SessionIdentifierEnvironment,
-						sessionID,
+						session,
 					)
 					writer.Print(
 						f,
@@ -68,6 +57,20 @@ func register(c *command_context.Context) *cobra.Command {
 					errors.PanicOnError(f.Close())
 				}
 			}
+
+			errors.PanicOnError(
+				json.NewEncoder(os.Stdout).Encode(
+					hookOutput{
+						HookSpecificOutput: hookSpecificOutput{
+							HookEventName: "SessionStart",
+							AdditionalContext: fmt.Sprintf(
+								"[goclauded] Called %s today.",
+								name,
+							),
+						},
+					},
+				),
+			)
 		},
 	}
 

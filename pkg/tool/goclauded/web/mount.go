@@ -11,7 +11,6 @@ func (s *Server) Mount(m *http.ServeMux) {
 	m.Handle("GET /event", s.event())
 	m.HandleFunc("GET /sessions", s.sessionsPage)
 	m.HandleFunc("GET /sessions/{identifier}", s.sessionDetailPage)
-	m.Handle("GET /sessions/{identifier}/event", s.sessionEvent())
 	m.HandleFunc("GET /sessions/{identifier}/edit", s.sessionEditForm)
 	m.HandleFunc("POST /sessions/{identifier}/edit", s.sessionEditSubmit)
 	m.HandleFunc("POST /sessions/{identifier}/pulse", s.sessionPulseSubmit)

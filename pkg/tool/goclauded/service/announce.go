@@ -1,6 +1,9 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+)
 
 func (s *Service) Announce(
 	sessionIdentifier string,
@@ -9,6 +12,20 @@ func (s *Service) Announce(
 	files string,
 ) error {
 	if e := s.store.Announce(name, topic, files); e != nil {
+		return e
+	}
+
+	if e := s.store.DeletePendingQueue(
+		name,
+		constant.QueueReannounce,
+	); e != nil {
+		return e
+	}
+
+	if e := s.store.DeletePendingQueue(
+		name,
+		constant.QueueTimeout,
+	); e != nil {
 		return e
 	}
 
@@ -21,7 +38,8 @@ func (s *Service) Announce(
 		return e
 	}
 
-	s.notify()
-
-	return nil
+	return s.PushQueueBroadcast(
+		constant.QueueSessionAnnounce,
+		fmt.Sprintf("%s - %s", name, topic),
+	)
 }

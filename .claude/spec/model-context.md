@@ -409,22 +409,23 @@ import (
     "github.com/funtimecoding/go-library/pkg/web"
 )
 
-lifecycle.WithServerMiddleware(
-    web.AddressPort(o.Port),
-    func(m *http.ServeMux) {
-        t := telemetry.NewEnvironment()
-        generated.HandlerFromMux(
-            generated.NewStrictHandler(
-                server.New(s, r),
-                []generated.StrictMiddlewareFunc{
-                    web.TelemetryMiddleware(t),
-                },
-            ),
-            m,
-        )
-        model_context.New(s, r, t, p, o.Version).Mount(m)
-    },
-    web.RecoveryMiddleware(r),
+lifecycle.WithServer(
+    server.New(
+        web.AddressPort(o.Port),
+        func(m *http.ServeMux) {
+            t := telemetry.NewEnvironment()
+            generated.HandlerFromMux(
+                generated.NewStrictHandler(
+                    server.New(s, r),
+                    []generated.StrictMiddlewareFunc{
+                        web.TelemetryMiddleware(t),
+                    },
+                ),
+                m,
+            )
+            model_context.New(s, r, t, p, o.Version).Mount(m)
+        },
+    ).WithMiddleware(web.RecoveryMiddleware(r)),
 )
 ```
 

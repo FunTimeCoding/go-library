@@ -13,7 +13,12 @@ func (s *Server) historyCount(
 	x context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	s.resolveCaller(x, constant.HistoryCount)
+	_, e := s.resolveCaller(x, constant.HistoryCount)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	count, e := s.service.CountEvents()
 
 	if e != nil {

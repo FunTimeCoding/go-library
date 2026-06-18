@@ -3,136 +3,92 @@ package goclaude
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/client"
 )
 
 func formatCheckContext(r *client.CheckResponse) string {
-	hasTimeout := r.TimeoutMessage != nil && *r.TimeoutMessage != ""
-	hasMemory := r.MemoryActivity != nil && len(*r.MemoryActivity) > 0
-	hasReannounce := r.Reannounce != nil && *r.Reannounce
-	hasPulses := r.Pulses != nil && len(*r.Pulses) > 0
-
-	if len(r.Sessions) == 0 &&
-		len(r.Messages) == 0 &&
-		len(r.Completions) == 0 &&
-		!hasTimeout &&
-		!hasMemory &&
-		!hasReannounce &&
-		!hasPulses {
+	if len(r.Entries) == 0 {
 		return ""
 	}
 
-	parts := []string{
-		fmt.Sprintf("[goclauded] Called %s today.", r.Callsign),
+	groups := map[string][]string{}
+
+	for _, e := range r.Entries {
+		groups[e.Kind] = append(groups[e.Kind], e.Body)
 	}
 
-	if hasReannounce {
-		parts = append(
-			parts,
-			"Re-announce required: MCP binding lost during service restart. Call announce with your session name and topic to restore.",
-		)
+	var parts []string
+
+	if v, okay := groups[constant.QueueReannounce]; okay {
+		parts = append(parts, v...)
 	}
 
-	if hasPulses {
-		for _, p := range *r.Pulses {
-			parts = append(
-				parts,
-				fmt.Sprintf("[pulse] %s", p.Body),
-			)
+	if v, okay := groups[constant.QueuePulse]; okay {
+		for _, body := range v {
+			parts = append(parts, fmt.Sprintf("[pulse] %s", body))
 		}
 	}
 
-	if len(r.Sessions) > 0 {
-		parts = append(parts, "Active sessions:")
+	var sessionActivity []string
 
-		for _, s := range r.Sessions {
-			line := fmt.Sprintf("  %s", s.Callsign)
-
-			if s.Topic != "" {
-				line = fmt.Sprintf("%s - %s", line, s.Topic)
-			}
-
-			parts = append(parts, line)
-
-			if s.Labels != nil && len(*s.Labels) > 0 {
-				var pips []string
-
-				for _, l := range *s.Labels {
-					pips = append(
-						pips,
-						fmt.Sprintf("(%s:%s)", l.Key, l.Value),
-					)
-				}
-
-				parts = append(
-					parts,
-					fmt.Sprintf("    %s", join.Space(pips...)),
-				)
-			}
+	for _, kind := range []string{
+		constant.QueueSessionAnnounce,
+		constant.QueueSessionRelease,
+		constant.QueueSessionComplete,
+		constant.QueueSessionUpdate,
+	} {
+		if v, okay := groups[kind]; okay {
+			sessionActivity = append(sessionActivity, v...)
 		}
 	}
 
-	if len(r.Completions) > 0 {
-		parts = append(parts, "Recent activity:")
+	if len(sessionActivity) > 0 {
+		parts = append(parts, "Session activity:")
 
-		for _, c := range r.Completions {
-			switch c.Kind {
-			case "complete":
-				parts = append(
-					parts,
-					fmt.Sprintf("  %s completed %s", c.Name, c.Topic),
-				)
-			case "update":
-				parts = append(
-					parts,
-					fmt.Sprintf(
-						"  %s updated scope: %s",
-						c.Name,
-						c.Topic,
-					),
-				)
-			}
+		for _, body := range sessionActivity {
+			parts = append(parts, fmt.Sprintf("  %s", body))
 		}
 	}
 
-	if hasTimeout {
-		parts = append(
-			parts,
-			fmt.Sprintf("Timeout: %s", *r.TimeoutMessage),
-		)
+	var memoryActivity []string
+
+	for _, kind := range []string{
+		constant.QueueMemoryCreate,
+		constant.QueueMemoryUpdate,
+	} {
+		if v, okay := groups[kind]; okay {
+			memoryActivity = append(memoryActivity, v...)
+		}
 	}
 
-	if hasMemory {
+	if len(memoryActivity) > 0 {
 		parts = append(parts, "Memory activity:")
 
-		for _, a := range *r.MemoryActivity {
-			if a.Source != "" {
-				parts = append(
-					parts,
-					fmt.Sprintf(
-						"  %s %s by %s",
-						a.Name,
-						a.ChangeType,
-						a.Source,
-					),
-				)
-			} else {
-				parts = append(
-					parts,
-					fmt.Sprintf("  %s %s", a.Name, a.ChangeType),
-				)
-			}
+		for _, body := range memoryActivity {
+			parts = append(parts, fmt.Sprintf("  %s", body))
 		}
 	}
 
-	if len(r.Messages) > 0 {
+	if v, okay := groups[constant.QueueTimeout]; okay {
+		for _, body := range v {
+			parts = append(parts, fmt.Sprintf("Timeout: %s", body))
+		}
+	}
+
+	if v, okay := groups[constant.QueueMessage]; okay {
 		parts = append(parts, "Messages:")
 
-		for _, m := range r.Messages {
-			parts = append(
-				parts,
-				fmt.Sprintf("  %s: %s", m.From, m.Body),
-			)
+		for _, body := range v {
+			parts = append(parts, fmt.Sprintf("  %s", body))
+		}
+	}
+
+	if v, okay := groups[constant.QueueNotification]; okay {
+		parts = append(parts, "Notifications:")
+
+		for _, body := range v {
+			parts = append(parts, fmt.Sprintf("  %s", body))
 		}
 	}
 

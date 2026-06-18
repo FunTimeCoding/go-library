@@ -1,6 +1,7 @@
 package watcher
 
 import (
+	"github.com/fsnotify/fsnotify"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service"
@@ -12,4 +13,5 @@ type Watcher struct {
 	logger   *logger.Logger
 	harbor   string
 	changed  map[string]string
+	notifier *fsnotify.Watcher
 }

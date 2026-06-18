@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/analyzer/variable_naming"
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
+	"github.com/funtimecoding/go-library/pkg/source/resolve"
 	"go/ast"
 	"go/token"
 	"golang.org/x/tools/go/packages"
@@ -60,7 +61,7 @@ func findVariableNamingEdits(
 								true,
 							),
 						)
-						references := findAllReferences(
+						references := resolve.FindAllReferences(
 							all,
 							rename.Object,
 						)
@@ -69,8 +70,8 @@ func findVariableNamingEdits(
 							result = append(
 								result,
 								edit{
-									position: e.ident.Pos(),
-									end:      e.ident.End(),
+									position: e.Ident.Pos(),
+									end:      e.Ident.End(),
 									newText:  rename.NewName,
 								},
 							)

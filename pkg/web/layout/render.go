@@ -110,10 +110,16 @@ func (p *Page) Render() gomponents.Node {
 	mainAttrs = append(mainAttrs, html.Class("container"))
 
 	if p.liveEndpoint != "" {
+		endpoint := p.liveEndpoint
+
+		if p.liveParams != "" {
+			endpoint = fmt.Sprintf("%s?%s", endpoint, p.liveParams)
+		}
+
 		mainAttrs = append(
 			mainAttrs,
 			gomponents.Attr("hx-ext", "sse"),
-			gomponents.Attr("sse-connect", p.liveEndpoint),
+			gomponents.Attr("sse-connect", endpoint),
 		)
 	}
 

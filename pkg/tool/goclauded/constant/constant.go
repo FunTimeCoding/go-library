@@ -1,7 +1,11 @@
 package constant
 
-import "github.com/funtimecoding/go-library/pkg/identity"
+import (
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/identity"
+)
 
+var ErrorAliasCollision = errors.New("alias already in use")
 var Identity = identity.New(
 	"goclauded",
 	"Session coordination for parallel Claude Code sessions",
@@ -11,8 +15,10 @@ var Identity = identity.New(
 )
 
 const (
-	SessionExportPathEnvironment = "SESSION_EXPORT_PATH"
-	MonitorUsageEnvironment      = "CLAUDE_MONITOR_USAGE"
+	SessionExportPathEnvironment  = "SESSION_EXPORT_PATH"
+	MonitorUsageEnvironment       = "CLAUDE_MONITOR_USAGE"
+	CertificateFileEnvironment    = "CERTIFICATE_FILE"
+	CertificateKeyFileEnvironment = "CERTIFICATE_KEY_FILE"
 
 	SessionName = "name"
 	Callsign    = "callsign"
@@ -45,6 +51,13 @@ const (
 	InactivityTimeout = "inactivity_timeout"
 	CompleteTimeout   = "complete_timeout"
 
+	EventSummary = "summary"
+	EventSession = "session"
+
+	SessionTable  = "session"
+	SummaryTable  = "summary"
+	SummaryColumn = "summary"
+
 	Pulse      = "pulse"
 	Label      = "label"
 	Key        = "key"
@@ -61,6 +74,18 @@ const (
 	Line       = "line"
 	Message    = "message"
 	Identifier = "identifier"
+
+	QueueSessionAnnounce = "session_announce"
+	QueueSessionRelease  = "session_release"
+	QueueSessionComplete = "session_complete"
+	QueueSessionUpdate   = "session_update"
+	QueueMessage         = "message"
+	QueueNotification    = "notification"
+	QueuePulse           = "pulse"
+	QueueMemoryUpdate    = "memory_update"
+	QueueMemoryCreate    = "memory_create"
+	QueueTimeout         = "timeout"
+	QueueReannounce      = "reannounce"
 
 	DashboardTitle     = "Dashboard"
 	DashboardPath      = "/"

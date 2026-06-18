@@ -8,7 +8,7 @@ and graceful degradation.
 
 | Pillar | Where constructed | Where threaded |
 |--------|-------------------|----------------|
-| Reporter | `Main()` via `reporter.New` | `Run()` param → workers, recovery middleware, model_context |
+| Reporter | `Main()` via `reporter.New` | `Run()` param -> workers, recovery middleware, model_context |
 | Logger | `Run()` via `logger.New(ctx)` | Workers, lifecycle |
 | Recovery | `Run()` via middleware + worker patterns | HTTP servers, worker loops |
 
@@ -44,10 +44,11 @@ func Run(o *option.Config, r face.Reporter) {
     lifecycle.New(
         l,
         lifecycle.WithWorker(worker.New(l, r)),
-        lifecycle.WithServerMiddleware(
-            web.AddressPort(o.Port),
-            func(m *http.ServeMux) { /* routes */ },
-            web.RecoveryMiddleware(r),
+        lifecycle.WithServer(
+            server.New(
+                web.AddressPort(o.Port),
+                func(m *http.ServeMux) { /* routes */ },
+            ).WithMiddleware(web.RecoveryMiddleware(r)),
         ),
     ).RunUntilSignal()
 }
@@ -62,8 +63,8 @@ Three layers, from outermost to innermost:
 
 2. **HTTP middleware** (`web.RecoveryMiddleware`): wraps the HTTP mux.
    Panics from handlers are caught, reported via `r.Recover(v)`, and
-   converted to 500 responses. Wired via `WithServerMiddleware` or
-   `WithProtectedServerMiddleware`. See `lifecycle.md`.
+   converted to 500 responses. Wired via `server.New(...).WithMiddleware(...)`.
+   See `lifecycle.md`.
 
 3. **Worker loops** (`withRecovery`): each worker wraps per-iteration
    work in a recovery defer. Panics are reported via `r.Recover(v)`
@@ -72,17 +73,21 @@ Three layers, from outermost to innermost:
 MCP handlers do not need per-handler recover defers - the mcp-go
 framework handles recovery internally.
 
-## Server Type Selection
+## Server Configuration
 
-| Server type | Use when |
-|-------------|----------|
-| `WithServerMiddleware` | Streaming, MCP, long-running requests |
-| `WithProtectedServerMiddleware` | Plain REST (adds 10s read/write timeout) |
+The server builder controls timeout and TLS:
 
-Mixed servers (REST + MCP on same mux) use `WithServerMiddleware` -
-the streaming endpoint governs the timeout choice.
+```go
+server.New(address, setup).
+    WithMiddleware(web.RecoveryMiddleware(r)).  // panic recovery
+    WithProtected().                            // 10s read/write timeout
+    WithCertificate(cert, key).                 // TLS / HTTP/2
+    WithProfiling()                             // pprof endpoints
+```
 
-Both variants accept a middleware parameter for `web.RecoveryMiddleware`.
+Omit `WithProtected()` for streaming servers (MCP, SSE) — the
+streaming endpoint governs the timeout choice. Mixed servers
+(REST + MCP on the same mux) omit it for the same reason.
 
 ## What Each Component Receives
 
@@ -90,5 +95,5 @@ Both variants accept a middleware parameter for `web.RecoveryMiddleware`.
 |-----------|--------|----------|-----|
 | Lifecycle workers | Yes (constructor param) | Yes (for withRecovery) | Workers need both for recovery logging |
 | HTTP route handlers | Via recovery middleware | Via recovery middleware | Middleware catches panics |
-| MCP tool handlers | Not directly | Via Server struct + captureFail | Tier 2 errors use captureFail → response.CaptureFail |
+| MCP tool handlers | Not directly | Via Server struct + captureFail | Tier 2 errors use captureFail -> response.CaptureFail |
 | Startup one-shot tasks | Yes (from Run) | Yes (for withRecovery if looping) | Same recovery pattern as workers |

@@ -23,6 +23,7 @@ func (s *Store) EnsureSession(identifier string) (*ensure_result.Result, error) 
 			map[string]any{
 				"last_seen":  s.clock(),
 				"turn_count": i.TurnCount + 1,
+				"timed_out":  "",
 			},
 		).Error; e != nil {
 			return nil, e

@@ -14,5 +14,6 @@ const (
 	PortEnvironment  = "CLAUDE_PORT"
 	PeekOutputBudget = 120
 
+	EnvironmentFileEnvironment   = "CLAUDE_ENV_FILE"
 	SessionIdentifierEnvironment = "CLAUDE_SESSION_ID"
 )

@@ -3,79 +3,54 @@ package server
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"strings"
 )
 
 func (s *Server) checkPreview(
 	sessionIdentifier string,
 ) (server.GetCheckResponseObject, error) {
-	name := s.service.CallsignBySessionIdentifier(sessionIdentifier)
+	callsign, e := s.service.CallsignBySessionIdentifier(sessionIdentifier)
 
-	if name == "" {
+	if e != nil {
+		return server.GetCheck500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	if callsign == "" {
 		return server.GetCheck200JSONResponse{
-			Changed:     false,
-			Sessions:    []server.SessionEntry{},
-			Messages:    []server.Message{},
-			Completions: []server.CompletionEntry{},
+			Changed: false,
+			Entries: []server.QueueEntry{},
 		}, nil
 	}
 
-	var entries []server.SessionEntry
-	sessions, listError := s.service.ListSessions()
+	entries, e := s.service.PeekQueue(callsign)
 
-	if listError != nil {
+	if e != nil {
 		return server.GetCheck500JSONResponse(
-			*s.captureFail(listError, constant.UnexpectedError),
+			*s.captureFail(e, constant.UnexpectedError),
 		), nil
 	}
 
-	for _, e := range sessions {
-		entry := server.SessionEntry{
-			Callsign: e.CallsignValue(),
-			Topic:    e.Topic,
-		}
+	var result []server.QueueEntry
 
-		if e.Files != "" {
-			files := strings.Split(e.Files, "\n")
-			entry.Files = &files
-		}
-
-		entries = append(entries, entry)
-	}
-
-	var completions []server.CompletionEntry
-	recent, completionError := s.service.RecentCompletions()
-
-	if completionError != nil {
-		return server.GetCheck500JSONResponse(
-			*s.captureFail(completionError, constant.UnexpectedError),
-		), nil
-	}
-
-	for _, c := range recent {
-		completions = append(
-			completions,
-			server.CompletionEntry{
-				Name:  c.Name,
-				Topic: c.Topic,
-				Kind:  c.Kind,
+	for _, entry := range entries {
+		result = append(
+			result,
+			server.QueueEntry{
+				Kind:      entry.Kind,
+				Body:      entry.Body,
+				Timestamp: entry.CreatedAt.Format("2006-01-02T15:04:05Z"),
 			},
 		)
 	}
 
-	if entries == nil {
-		entries = []server.SessionEntry{}
-	}
-
-	if completions == nil {
-		completions = []server.CompletionEntry{}
+	if result == nil {
+		result = []server.QueueEntry{}
 	}
 
 	return server.GetCheck200JSONResponse{
-		Callsign:    name,
-		Changed:     true,
-		Sessions:    entries,
-		Messages:    []server.Message{},
-		Completions: completions,
+		Callsign: callsign,
+		Changed:  len(result) > 0,
+		Entries:  result,
 	}, nil
 }

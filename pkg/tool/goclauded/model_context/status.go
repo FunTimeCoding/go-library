@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
@@ -13,7 +14,11 @@ func (s *Server) status(
 	x context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	c := s.resolveCaller(x, constant.Status)
+	c, e := s.resolveCaller(x, constant.Status)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
 
 	if c.Callsign == "" {
 		return response.Fail(
@@ -21,22 +26,26 @@ func (s *Server) status(
 		)
 	}
 
-	e := s.service.SessionByCallsign(c.Callsign)
+	d, f := s.service.SessionByCallsign(c.Callsign)
 
-	if e == nil {
+	if f != nil {
+		return s.captureFail(f, library.UnexpectedError)
+	}
+
+	if d == nil {
 		return response.Fail("session not found for %s", c.Callsign)
 	}
 
-	lines := []string{fmt.Sprintf("Name: %s", e.Name)}
+	lines := []string{fmt.Sprintf("Name: %s", d.Name)}
 
-	if e.Topic != "" {
-		lines = append(lines, fmt.Sprintf("Topic: %s", e.Topic))
+	if d.Topic != "" {
+		lines = append(lines, fmt.Sprintf("Topic: %s", d.Topic))
 	} else {
 		lines = append(lines, "Topic: (none)")
 	}
 
-	if e.Files != "" {
-		lines = append(lines, fmt.Sprintf("Files: %s", e.Files))
+	if d.Files != "" {
+		lines = append(lines, fmt.Sprintf("Files: %s", d.Files))
 	}
 
 	return response.Success(join.NewLine(lines))

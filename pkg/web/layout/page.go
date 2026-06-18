@@ -20,5 +20,6 @@ type Page struct {
 	content         []gomponents.Node
 	summary         []string
 	liveEndpoint    string
+	liveParams      string
 	paletteEndpoint string
 }

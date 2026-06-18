@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	"github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"net/http"
@@ -18,7 +19,9 @@ func New(
 	p, n := system.ClaimPort()
 	b := lifecycle.New(
 		logger.New(context.Background()),
-		lifecycle.WithListener(n, setup),
+		lifecycle.WithServer(
+			server.New("", setup).WithListener(n),
+		),
 	)
 	b.Run()
 	assert.Listen(t, p)

@@ -13,7 +13,7 @@ func (s *Server) Setup(m *http.ServeMux) {
 		location.ModelContext,
 		server.NewStreamableHTTPServer(
 			s.server,
-			server.WithLogger(s.Logger()),
+			server.WithStreamableHTTPLogger(s.Logger()),
 			server.WithHeartbeatInterval(15*time.Second),
 		),
 	)

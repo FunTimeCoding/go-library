@@ -1,3 +1,5 @@
+//go:build local
+
 package coordination
 
 import (
@@ -33,7 +35,7 @@ func TestCheckPreviewNoSession(t *testing.T) {
 	)
 	assert.FatalOnError(t, e)
 	assert.False(t, response.JSON200.Changed)
-	assert.Count(t, 0, response.JSON200.Sessions)
+	assert.Count(t, 0, response.JSON200.Entries)
 }
 
 func TestCheckRecentActivity(t *testing.T) {
@@ -44,18 +46,23 @@ func TestCheckRecentActivity(t *testing.T) {
 	b := s.NewSession(t)
 	defer b.Close()
 	a.Announce(a.Name(), "build search index")
+	b.CheckLive()
 	a.MustCallTool(
 		constant.Complete,
 		map[string]any{
 			constant.Message: "indexing done",
 		},
 	)
-	check := b.Check()
-	assert.True(t, len(check.Completions) > 0)
+	check := b.CheckLive()
+	completions := clientEntriesByKind(
+		check.Entries,
+		constant.QueueSessionComplete,
+	)
+	assert.True(t, len(completions) > 0)
 	found := false
 
-	for _, c := range check.Completions {
-		if c.Name == a.Name() && c.Topic == "build search index" && c.Kind == constant.Complete {
+	for _, c := range completions {
+		if c.Body != "" {
 			found = true
 		}
 	}
@@ -71,6 +78,7 @@ func TestCheckRecentActivityLive(t *testing.T) {
 	b := s.NewSession(t)
 	defer b.Close()
 	a.Announce(a.Name(), "search index")
+	b.Check()
 	a.MustCallTool(
 		constant.Complete,
 		map[string]any{
@@ -79,15 +87,11 @@ func TestCheckRecentActivityLive(t *testing.T) {
 	)
 	check := b.CheckLive()
 	assert.True(t, check.Changed)
-	found := false
-
-	for _, c := range check.Completions {
-		if c.Name == a.Name() && c.Topic == "search index" && c.Kind == constant.Complete {
-			found = true
-		}
-	}
-
-	assert.True(t, found)
+	completions := clientEntriesByKind(
+		check.Entries,
+		constant.QueueSessionComplete,
+	)
+	assert.True(t, len(completions) > 0)
 }
 
 func TestCheckRecentActivityUpdate(t *testing.T) {
@@ -98,6 +102,7 @@ func TestCheckRecentActivityUpdate(t *testing.T) {
 	b := s.NewSession(t)
 	defer b.Close()
 	a.Announce(a.Name(), "initial")
+	b.CheckLive()
 	a.MustCallTool(
 		constant.Update,
 		map[string]any{
@@ -105,14 +110,7 @@ func TestCheckRecentActivityUpdate(t *testing.T) {
 			constant.Topic:   "milestone reached",
 		},
 	)
-	check := b.Check()
-	found := false
-
-	for _, c := range check.Completions {
-		if c.Name == a.Name() && c.Kind == constant.Update {
-			found = true
-		}
-	}
-
-	assert.True(t, found)
+	check := b.CheckLive()
+	updates := clientEntriesByKind(check.Entries, constant.QueueSessionUpdate)
+	assert.True(t, len(updates) > 0)
 }

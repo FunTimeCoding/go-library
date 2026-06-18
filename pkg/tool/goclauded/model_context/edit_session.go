@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"errors"
 	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
@@ -13,7 +14,12 @@ func (s *Server) editSession(
 	x context.Context,
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	c := s.resolveCaller(x, constant.EditSession)
+	c, e := s.resolveCaller(x, constant.EditSession)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	target := q.GetString(constant.Target, "")
 	var sessionIdentifier string
 
@@ -80,6 +86,10 @@ func (s *Server) editSession(
 	}
 
 	if e := s.service.EditSession(sessionIdentifier, a); e != nil {
+		if errors.Is(e, constant.ErrorAliasCollision) {
+			return response.Fail(e.Error())
+		}
+
 		return s.captureFail(e, library.UnexpectedError)
 	}
 

@@ -9,7 +9,13 @@ func (s *Store) WaitMessage(
 	name string,
 	timeout time.Duration,
 ) ([]message.Message, error) {
-	if !s.isListening(name) {
+	listening, e := s.isListening(name)
+
+	if e != nil {
+		return nil, e
+	}
+
+	if !listening {
 		return nil, nil
 	}
 

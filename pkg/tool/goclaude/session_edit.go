@@ -49,11 +49,17 @@ func sessionEdit(c *command_context.Context) *cobra.Command {
 				return
 			}
 
-			_, e := c.Client().PostEditSessionWithResponse(
+			response, e := c.Client().PostEditSessionWithResponse(
 				context.Background(),
 				body,
 			)
 			errors.PanicOnError(e)
+
+			if response.JSON500 != nil {
+				fmt.Println(response.JSON500.Error)
+
+				return
+			}
 
 			if name != "" {
 				fmt.Printf("renamed: %s → %s\n", identifier, name)

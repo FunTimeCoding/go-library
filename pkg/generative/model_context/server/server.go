@@ -4,13 +4,13 @@ import (
 	"context"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/mark3labs/mcp-go/server"
-	"github.com/mark3labs/mcp-go/util"
+	"log/slog"
 	"sync"
 )
 
 type Server struct {
 	server               *server.MCPServer
-	logger               util.Logger
+	logger               *slog.Logger
 	context              context.Context
 	openAuthentication   bool
 	verifier             *oidc.IDTokenVerifier

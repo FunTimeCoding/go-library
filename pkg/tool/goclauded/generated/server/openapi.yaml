@@ -42,7 +42,7 @@ paths:
           type: boolean
       responses:
         "200":
-          description: Session roster and pending messages.
+          description: Session queue entries.
           content:
             application/json:
               schema:
@@ -83,6 +83,24 @@ paths:
       responses:
         "200":
           description: Message sent.
+        "500":
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/notify:
+    post:
+      operationId: postNotify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotifyRequest"
+      responses:
+        "200":
+          description: Notification sent.
         "500":
           description: Internal error.
           content:
@@ -705,38 +723,42 @@ components:
       required:
       - callsign
       - changed
-      - sessions
-      - messages
-      - completions
+      - entries
       properties:
         callsign:
           type: string
         changed:
           type: boolean
-        sessions:
+        entries:
           type: array
           items:
-            $ref: "#/components/schemas/SessionEntry"
-        messages:
-          type: array
-          items:
-            $ref: "#/components/schemas/Message"
-        completions:
-          type: array
-          items:
-            $ref: "#/components/schemas/CompletionEntry"
-        timeoutMessage:
+            $ref: "#/components/schemas/QueueEntry"
+    QueueEntry:
+      type: object
+      required:
+      - kind
+      - body
+      - timestamp
+      properties:
+        kind:
           type: string
-        reannounce:
-          type: boolean
-        memoryActivity:
-          type: array
-          items:
-            $ref: "#/components/schemas/MemoryActivityEntry"
-        pulses:
-          type: array
-          items:
-            $ref: "#/components/schemas/PulseEntry"
+        body:
+          type: string
+        timestamp:
+          type: string
+    NotificationEntry:
+      type: object
+      required:
+      - source
+      - body
+      - timestamp
+      properties:
+        source:
+          type: string
+        body:
+          type: string
+        timestamp:
+          type: string
     PulseEntry:
       type: object
       required:
@@ -857,6 +879,19 @@ components:
         callsign:
           type: string
         to:
+          type: string
+        body:
+          type: string
+    NotifyRequest:
+      type: object
+      required:
+      - callsign
+      - source
+      - body
+      properties:
+        callsign:
+          type: string
+        source:
           type: string
         body:
           type: string

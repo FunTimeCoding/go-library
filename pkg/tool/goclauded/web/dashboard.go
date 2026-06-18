@@ -11,10 +11,11 @@ func (s *Server) dashboard(
 	w http.ResponseWriter,
 	_ *http.Request,
 ) {
-	s.view.RenderPageWithSummary(
+	s.view.RenderLivePageWithSummary(
 		w,
 		constant.DashboardTitle,
 		constant.DashboardPath,
+		"subscribe=roster,activity,summary",
 		s.usageSummary(),
 		html.H3(gomponents.Text("Roster")),
 		html.Div(

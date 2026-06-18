@@ -171,15 +171,16 @@ import (
     generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/generated/server"
 )
 
-lifecycle.WithServerMiddleware(
-    web.AddressPort(o.Port),
-    func(m *http.ServeMux) {
-        generated.HandlerFromMux(
-            generated.NewStrictHandler(server.New(dep, r), nil),
-            m,
-        )
-    },
-    web.RecoveryMiddleware(r),
+lifecycle.WithServer(
+    server.New(
+        web.AddressPort(o.Port),
+        func(m *http.ServeMux) {
+            generated.HandlerFromMux(
+                generated.NewStrictHandler(server.New(dep, r), nil),
+                m,
+            )
+        },
+    ).WithMiddleware(web.RecoveryMiddleware(r)),
 )
 ```
 
@@ -192,16 +193,17 @@ import (
     generated "github.com/funtimecoding/go-library/pkg/tool/go<tool>d/generated/server"
 )
 
-lifecycle.WithServerMiddleware(
-    web.AddressPort(o.Port),
-    func(m *http.ServeMux) {
-        generated.HandlerFromMux(
-            generated.NewStrictHandler(server.New(dep, r), nil),
-            m,
-        )
-        model_context.New(dep, r).Mount(m)
-    },
-    web.RecoveryMiddleware(r),
+lifecycle.WithServer(
+    server.New(
+        web.AddressPort(o.Port),
+        func(m *http.ServeMux) {
+            generated.HandlerFromMux(
+                generated.NewStrictHandler(server.New(dep, r), nil),
+                m,
+            )
+            model_context.New(dep, r).Mount(m)
+        },
+    ).WithMiddleware(web.RecoveryMiddleware(r)),
 )
 ```
 

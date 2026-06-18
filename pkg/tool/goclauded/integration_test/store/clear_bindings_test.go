@@ -17,5 +17,4 @@ func TestClearBindings(t *testing.T) {
 	s.Store.ClearBindings()
 	e = s.GetSession("session-1")
 	assert.String(t, "", e.ModelContextSession)
-	assert.True(t, e.NeedsReannounce)
 }

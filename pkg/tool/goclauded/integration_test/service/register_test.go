@@ -14,7 +14,6 @@ func TestRegister(t *testing.T) {
 	result := s.Register("session-1")
 	assert.True(t, result.New)
 	assert.True(t, result.Callsign != "")
-	assert.True(t, s.Store.GetSession("session-1").NeedsRoster)
 }
 
 func TestRegisterExisting(t *testing.T) {

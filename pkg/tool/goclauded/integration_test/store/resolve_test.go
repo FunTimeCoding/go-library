@@ -12,38 +12,45 @@ import (
 func TestResolveByName(t *testing.T) {
 	s := store_tester.New(t)
 	r := s.EnsureSession("session-1")
-	resolved := s.Store.ResolveByCallsign(r.Callsign)
+	resolved, e := s.Store.ResolveByCallsign(r.Callsign)
+	assert.FatalOnError(t, e)
 	assert.String(t, "session-1", resolved)
 }
 
 func TestResolveByNameNotFound(t *testing.T) {
 	s := store_tester.New(t)
-	assert.String(t, "", s.Store.ResolveByCallsign("nonexistent"))
+	resolved, e := s.Store.ResolveByCallsign("nonexistent")
+	assert.FatalOnError(t, e)
+	assert.String(t, "", resolved)
 }
 
-func TestResolveAlias(t *testing.T) {
+func TestAliasOwner(t *testing.T) {
 	s := store_tester.New(t)
 	s.EnsureSession("session-1")
 	edit(s, "session-1", &argument.EditSession{Alias: new("my-alias")})
-	resolved := s.Store.ResolveAlias("my-alias")
-	assert.String(t, "session-1", resolved)
+	owner, e := s.Store.AliasOwner("my-alias")
+	assert.FatalOnError(t, e)
+	assert.String(t, "session-1", owner)
 }
 
-func TestResolveAliasNotFound(t *testing.T) {
+func TestAliasOwnerNotFound(t *testing.T) {
 	s := store_tester.New(t)
-	assert.String(t, "", s.Store.ResolveAlias("nonexistent"))
+	owner, e := s.Store.AliasOwner("nonexistent")
+	assert.FatalOnError(t, e)
+	assert.String(t, "", owner)
 }
 
 func TestSessionByName(t *testing.T) {
 	s := store_tester.New(t)
 	r := s.EnsureSession("session-1")
-	e := s.Store.SessionByCallsign(r.Callsign)
-	assert.String(t, "session-1", e.Identifier)
+	result, e := s.Store.SessionByCallsign(r.Callsign)
+	assert.FatalOnError(t, e)
+	assert.String(t, "session-1", result.Identifier)
 }
 
 func TestSessionByNameNotFound(t *testing.T) {
-	assert.True(
-		t,
-		store_tester.New(t).Store.SessionByCallsign("nonexistent") == nil,
-	)
+	s := store_tester.New(t)
+	result, e := s.Store.SessionByCallsign("nonexistent")
+	assert.FatalOnError(t, e)
+	assert.True(t, result == nil)
 }

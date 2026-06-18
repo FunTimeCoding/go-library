@@ -43,22 +43,9 @@ type BashDumpResponse struct {
 
 // CheckResponse defines model for CheckResponse.
 type CheckResponse struct {
-	Callsign       string                 `json:"callsign"`
-	Changed        bool                   `json:"changed"`
-	Completions    []CompletionEntry      `json:"completions"`
-	MemoryActivity *[]MemoryActivityEntry `json:"memoryActivity,omitempty"`
-	Messages       []Message              `json:"messages"`
-	Pulses         *[]PulseEntry          `json:"pulses,omitempty"`
-	Reannounce     *bool                  `json:"reannounce,omitempty"`
-	Sessions       []SessionEntry         `json:"sessions"`
-	TimeoutMessage *string                `json:"timeoutMessage,omitempty"`
-}
-
-// CompletionEntry defines model for CompletionEntry.
-type CompletionEntry struct {
-	Kind  string `json:"kind"`
-	Name  string `json:"name"`
-	Topic string `json:"topic"`
+	Callsign string       `json:"callsign"`
+	Changed  bool         `json:"changed"`
+	Entries  []QueueEntry `json:"entries"`
 }
 
 // EditSessionRequest defines model for EditSessionRequest.
@@ -120,14 +107,6 @@ type ListenRequest struct {
 	Listening *bool  `json:"listening,omitempty"`
 }
 
-// MemoryActivityEntry defines model for MemoryActivityEntry.
-type MemoryActivityEntry struct {
-	ChangeType       string `json:"change_type"`
-	MemoryIdentifier int    `json:"memory_identifier"`
-	Name             string `json:"name"`
-	Source           string `json:"source"`
-}
-
 // Message defines model for Message.
 type Message struct {
 	Body      string `json:"body"`
@@ -138,6 +117,13 @@ type Message struct {
 // MessagesResponse defines model for MessagesResponse.
 type MessagesResponse struct {
 	Messages []SessionMessage `json:"messages"`
+}
+
+// NotifyRequest defines model for NotifyRequest.
+type NotifyRequest struct {
+	Body     string `json:"body"`
+	Callsign string `json:"callsign"`
+	Source   string `json:"source"`
 }
 
 // PeekEntry defines model for PeekEntry.
@@ -165,6 +151,13 @@ type PulseEntry struct {
 // PulseRequest defines model for PulseRequest.
 type PulseRequest struct {
 	Body string `json:"body"`
+}
+
+// QueueEntry defines model for QueueEntry.
+type QueueEntry struct {
+	Body      string `json:"body"`
+	Kind      string `json:"kind"`
+	Timestamp string `json:"timestamp"`
 }
 
 // RegisterRequest defines model for RegisterRequest.
@@ -243,18 +236,6 @@ type SessionDetailResponse struct {
 	Slug        *string                    `json:"slug,omitempty"`
 	Summary     *string                    `json:"summary,omitempty"`
 	TurnCount   *int                       `json:"turnCount,omitempty"`
-}
-
-// SessionEntry defines model for SessionEntry.
-type SessionEntry struct {
-	Alias        *string       `json:"alias,omitempty"`
-	Callsign     string        `json:"callsign"`
-	Files        *[]string     `json:"files,omitempty"`
-	FirstMessage *string       `json:"firstMessage,omitempty"`
-	Labels       *[]LabelEntry `json:"labels,omitempty"`
-	Slug         *string       `json:"slug,omitempty"`
-	Topic        string        `json:"topic"`
-	TurnCount    *int          `json:"turnCount,omitempty"`
 }
 
 // SessionListResponse defines model for SessionListResponse.
@@ -392,6 +373,9 @@ type PostAnnounceJSONRequestBody = AnnounceRequest
 // PostListenJSONRequestBody defines body for PostListen for application/json ContentType.
 type PostListenJSONRequestBody = ListenRequest
 
+// PostNotifyJSONRequestBody defines body for PostNotify for application/json ContentType.
+type PostNotifyJSONRequestBody = NotifyRequest
+
 // PostRegisterJSONRequestBody defines body for PostRegister for application/json ContentType.
 type PostRegisterJSONRequestBody = RegisterRequest
 
@@ -421,6 +405,9 @@ type ServerInterface interface {
 
 	// (POST /api/listen)
 	PostListen(w http.ResponseWriter, r *http.Request)
+
+	// (POST /api/notify)
+	PostNotify(w http.ResponseWriter, r *http.Request)
 
 	// (POST /api/register)
 	PostRegister(w http.ResponseWriter, r *http.Request)
@@ -576,6 +563,20 @@ func (siw *ServerInterfaceWrapper) PostListen(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.PostListen(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// PostNotify operation middleware
+func (siw *ServerInterfaceWrapper) PostNotify(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.PostNotify(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -1295,6 +1296,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/api/backfill", wrapper.PostBackfill)
 	m.HandleFunc("GET "+options.BaseURL+"/api/check", wrapper.GetCheck)
 	m.HandleFunc("POST "+options.BaseURL+"/api/listen", wrapper.PostListen)
+	m.HandleFunc("POST "+options.BaseURL+"/api/notify", wrapper.PostNotify)
 	m.HandleFunc("POST "+options.BaseURL+"/api/register", wrapper.PostRegister)
 	m.HandleFunc("POST "+options.BaseURL+"/api/release", wrapper.PostRelease)
 	m.HandleFunc("GET "+options.BaseURL+"/api/resolve", wrapper.GetResolve)
@@ -1417,6 +1419,31 @@ func (response PostListen200Response) VisitPostListenResponse(w http.ResponseWri
 type PostListen500JSONResponse ErrorResponse
 
 func (response PostListen500JSONResponse) VisitPostListenResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostNotifyRequestObject struct {
+	Body *PostNotifyJSONRequestBody
+}
+
+type PostNotifyResponseObject interface {
+	VisitPostNotifyResponse(w http.ResponseWriter) error
+}
+
+type PostNotify200Response struct {
+}
+
+func (response PostNotify200Response) VisitPostNotifyResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostNotify500JSONResponse ErrorResponse
+
+func (response PostNotify500JSONResponse) VisitPostNotifyResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -2069,6 +2096,9 @@ type StrictServerInterface interface {
 	// (POST /api/listen)
 	PostListen(ctx context.Context, request PostListenRequestObject) (PostListenResponseObject, error)
 
+	// (POST /api/notify)
+	PostNotify(ctx context.Context, request PostNotifyRequestObject) (PostNotifyResponseObject, error)
+
 	// (POST /api/register)
 	PostRegister(ctx context.Context, request PostRegisterRequestObject) (PostRegisterResponseObject, error)
 
@@ -2273,6 +2303,37 @@ func (sh *strictHandler) PostListen(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(PostListenResponseObject); ok {
 		if err := validResponse.VisitPostListenResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostNotify operation middleware
+func (sh *strictHandler) PostNotify(w http.ResponseWriter, r *http.Request) {
+	var request PostNotifyRequestObject
+
+	var body PostNotifyJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostNotify(ctx, request.(PostNotifyRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostNotify")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostNotifyResponseObject); ok {
+		if err := validResponse.VisitPostNotifyResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {
@@ -2901,50 +2962,48 @@ func (sh *strictHandler) GetWait(w http.ResponseWriter, r *http.Request, params 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"UgAA",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

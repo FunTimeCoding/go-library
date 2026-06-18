@@ -12,10 +12,9 @@ func (s *Store) Announce(
 		name,
 	).Updates(
 		map[string]any{
-			"topic":            topic,
-			"files":            files,
-			"needs_reannounce": false,
-			"last_seen":        s.clock(),
+			"topic":     topic,
+			"files":     files,
+			"last_seen": s.clock(),
 		},
 	).Error
 }

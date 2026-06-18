@@ -1,6 +1,9 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/completion"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/completion"
+)
 
 func (s *Store) UpsertCompletion(
 	sessionIdentifier string,
@@ -23,9 +26,9 @@ func (s *Store) UpsertCompletion(
 	if result.RowsAffected > 0 {
 		e := s.database.Model(&existing).Updates(
 			map[string]any{
-				"name":    name,
-				"kind":    kind,
-				"summary": message,
+				"name":                 name,
+				"kind":                 kind,
+				constant.SummaryColumn: message,
 			},
 		).Error
 

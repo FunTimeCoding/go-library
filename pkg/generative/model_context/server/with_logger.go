@@ -1,8 +1,8 @@
 package server
 
-import "github.com/mark3labs/mcp-go/util"
+import "log/slog"
 
-func WithLogger(l util.Logger) Option {
+func WithLogger(l *slog.Logger) Option {
 	return func(s *Server) {
 		s.logger = l
 	}

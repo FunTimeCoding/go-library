@@ -16,6 +16,7 @@ func TestSendDirectMessage(t *testing.T) {
 	defer b.Close()
 	a.Announce(a.Name(), "sender")
 	b.Announce(b.Name(), "receiver")
+	b.CheckLive()
 	a.MustCallTool(
 		constant.Send,
 		map[string]any{
@@ -24,9 +25,10 @@ func TestSendDirectMessage(t *testing.T) {
 		},
 	)
 	r := b.CheckLive()
-	assert.Count(t, 1, r.Messages)
-	assert.String(t, a.Name(), r.Messages[0].From)
-	assert.String(t, "heads up: running lint", r.Messages[0].Body)
+	messages := clientEntriesByKind(r.Entries, constant.QueueMessage)
+	assert.Count(t, 1, messages)
+	assert.StringContains(t, a.Name(), messages[0].Body)
+	assert.StringContains(t, "heads up: running lint", messages[0].Body)
 }
 
 func TestSendBroadcast(t *testing.T) {
@@ -38,6 +40,7 @@ func TestSendBroadcast(t *testing.T) {
 	defer b.Close()
 	a.Announce(a.Name(), "sender")
 	b.Announce(b.Name(), "listener")
+	b.CheckLive()
 	a.MustCallTool(
 		constant.Send,
 		map[string]any{
@@ -45,6 +48,7 @@ func TestSendBroadcast(t *testing.T) {
 		},
 	)
 	r := b.CheckLive()
-	assert.Count(t, 1, r.Messages)
-	assert.String(t, "deploying service", r.Messages[0].Body)
+	messages := clientEntriesByKind(r.Entries, constant.QueueMessage)
+	assert.Count(t, 1, messages)
+	assert.StringContains(t, "deploying service", messages[0].Body)
 }

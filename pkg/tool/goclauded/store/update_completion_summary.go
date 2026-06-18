@@ -2,6 +2,7 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/completion"
 )
 
@@ -17,6 +18,6 @@ func (s *Store) UpdateCompletionSummary(
 				sessionIdentifier,
 				topic,
 			).
-			Update("summary", message).Error,
+			Update(constant.SummaryColumn, message).Error,
 	)
 }

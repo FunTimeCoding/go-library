@@ -9,7 +9,7 @@ import (
 func (w *Watcher) run() {
 	n, e := fsnotify.NewWatcher()
 	errors.PanicOnError(e)
-	defer func() { errors.PanicOnError(n.Close()) }()
+	w.notifier = n
 	w.addDirectories(n)
 	ticker := time.NewTicker(10 * time.Minute)
 	defer ticker.Stop()

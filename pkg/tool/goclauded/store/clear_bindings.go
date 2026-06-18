@@ -9,11 +9,6 @@ func (s *Store) ClearBindings() {
 	errors.PanicOnError(
 		s.database.Model(session.Stub()).
 			Where("model_context_session != ''").
-			Updates(
-				map[string]any{
-					"model_context_session": "",
-					"needs_reannounce":      true,
-				},
-			).Error,
+			Update("model_context_session", "").Error,
 	)
 }

@@ -1,6 +1,9 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+)
 
 func (s *Service) Update(
 	sessionIdentifier string,
@@ -32,7 +35,8 @@ func (s *Service) Update(
 		return e
 	}
 
-	s.notify()
-
-	return nil
+	return s.PushQueueBroadcast(
+		constant.QueueSessionUpdate,
+		fmt.Sprintf("%s updated scope: %s", name, topic),
+	)
 }

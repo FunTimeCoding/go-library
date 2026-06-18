@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	lifecycleServer "github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidparsed/generated/server"
@@ -17,17 +18,19 @@ func TestRunLifecycle(t *testing.T) {
 	port, n := system.ClaimPort()
 	l := lifecycle.New(
 		logger.New(context.Background()),
-		lifecycle.WithListener(
-			n,
-			func(m *http.ServeMux) {
-				generated.HandlerFromMux(
-					generated.NewStrictHandler(
-						server.New("", "", t.TempDir(), nil, nil),
-						nil,
-					),
-					m,
-				)
-			},
+		lifecycle.WithServer(
+			lifecycleServer.New(
+				"",
+				func(m *http.ServeMux) {
+					generated.HandlerFromMux(
+						generated.NewStrictHandler(
+							server.New("", "", t.TempDir(), nil, nil),
+							nil,
+						),
+						m,
+					)
+				},
+			).WithListener(n),
 		),
 	)
 	l.Run()

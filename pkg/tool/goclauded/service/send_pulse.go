@@ -1,5 +1,7 @@
 package service
 
+import "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+
 func (s *Service) SendPulse(
 	sessionIdentifier string,
 	fromName string,
@@ -7,6 +9,18 @@ func (s *Service) SendPulse(
 ) error {
 	if e := s.store.SendPulse(sessionIdentifier, fromName, body); e != nil {
 		return e
+	}
+
+	if fromName == "" {
+		callsign, e := s.store.CallsignBySessionIdentifier(sessionIdentifier)
+
+		if e != nil {
+			return e
+		}
+
+		if callsign != "" {
+			return s.PushQueue(callsign, constant.QueuePulse, body)
+		}
 	}
 
 	s.notify()

@@ -77,7 +77,7 @@ func connectSSE(
 ) <-chan sseEvent {
 	t.Helper()
 	l := fmt.Sprintf(
-		"http://localhost:%d/event",
+		"http://localhost:%d/event?subscribe=roster,activity,summary",
 		s.Port(),
 	)
 	r, e := http.Get(l)

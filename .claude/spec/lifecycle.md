@@ -20,11 +20,7 @@ pkg/lifecycle/
   run.go                              - Run() starts all components in order
   run_until_signal.go                 - RunUntilSignal() runs, blocks, stops
   stop.go                             - Stop() stops all in reverse order
-  with_logger.go                      - WithLogger option (structured startup line)
-  with_server.go                      - WithServer option (no timeout - streaming/MCP)
-  with_server_middleware.go           - WithServerMiddleware option (no timeout)
-  with_protected_server.go            - WithProtectedServer option (10s - plain REST)
-  with_protected_server_middleware.go - WithProtectedServerMiddleware option (10s + middleware)
+  with_server.go                      - WithServer option (takes *server.Server)
   with_verbose.go                     - WithVerbose option
   with_worker.go                      - WithWorker option
   component/
@@ -33,11 +29,17 @@ pkg/lifecycle/
     stop.go
   server/
     constant.go             - readWriteTimeout for protected servers
-    server.go               - server struct (internal)
-    new.go                  - New constructor (no timeout)
-    new_protected.go        - NewProtected constructor (sets protected flag)
-    start.go                - sets up mux, creates http.Server, applies timeout if protected
+    server.go               - Server struct
+    new.go                  - New(address, setup) constructor
+    start.go                - sets up mux, registers pprof if enabled,
+                              applies middleware, creates http.Server,
+                              serves TLS or plain
     stop.go                 - graceful HTTP shutdown
+    with_certificate.go     - WithCertificate(cert, key) - enables TLS/HTTP/2
+    with_listener.go        - WithListener(net.Listener) - for tests
+    with_middleware.go       - WithMiddleware(func(http.Handler) http.Handler)
+    with_profiling.go        - WithProfiling() - registers pprof endpoints
+    with_protected.go        - WithProtected() - 10s read/write timeout
 ```
 
 ## Worker Interface
@@ -53,40 +55,32 @@ type Worker interface {
 
 Implemented by: `metric.Server`, `ticker.Ticker`, `reporter.Reporter`, and any struct with `Start()`/`Stop()`.
 
-## WithServer / WithServerMiddleware
+## WithServer
 
-For streaming servers (MCP, SSE) - no read/write timeout. The lifecycle owns the `*http.ServeMux` and `*http.Server`; the setup callback only registers routes.
-
-```go
-lifecycle.WithServer(address, func(m *http.ServeMux) {
-    v.Setup(m) // MCP or SSE handler
-})
-
-lifecycle.WithServerMiddleware(address, func(m *http.ServeMux) {
-    // register routes on m
-}, web.RecoveryMiddleware(hub))
-```
-
-The middleware parameter is typically `web.RecoveryMiddleware(hub)` -
-the shared recovery middleware that catches panics, reports them to
-Sentry, and returns 500. See `error-handling.md` for recovery layer
-design.
-
-## WithProtectedServer / WithProtectedServerMiddleware
-
-For plain request/response REST servers - applies a 10s read/write timeout (slowloris protection). Use these whenever the server does not serve streaming or long-lived connections.
+One option for all server configurations. The caller builds a
+`*server.Server` using the builder methods and passes it in.
 
 ```go
-lifecycle.WithProtectedServer(address, func(m *http.ServeMux) {
-    m.HandleFunc("/health", health)
-})
-
-lifecycle.WithProtectedServerMiddleware(address, func(m *http.ServeMux) {
-    // register routes on m
-}, tokenMiddleware)
+lifecycle.WithServer(
+    server.New(address, setup).
+        WithMiddleware(web.RecoveryMiddleware(r)),
+)
 ```
 
-Mixed servers (REST routes + MCP on the same mux) must use `WithServer` - the streaming endpoint governs the timeout choice.
+Builder methods on `*server.Server`:
+- `WithMiddleware(fn)` — wraps the mux handler. Typically
+  `web.RecoveryMiddleware(r)` for panic recovery + sentry.
+- `WithProtected()` — adds 10s read/write timeout (slowloris
+  protection). Use for plain REST servers that don't serve
+  streaming or long-lived connections.
+- `WithCertificate(cert, key)` — enables TLS. Go enables HTTP/2
+  automatically over TLS.
+- `WithProfiling()` — registers pprof endpoints at `/debug/pprof/`.
+- `WithListener(l)` — serves on a pre-bound listener instead of
+  an address. Used in tests with `system.ClaimPort()`.
+
+Mixed servers (REST routes + MCP/SSE on the same mux) omit
+`WithProtected()` — the streaming endpoint governs the timeout.
 
 ## Registration Order Matters
 
@@ -95,8 +89,8 @@ Components start in the order they are registered. This is intentional:
 ```go
 // Worker initializes before servers accept traffic
 lifecycle.New(
-    lifecycle.WithWorker(w),   // starts first
-    lifecycle.WithServer(...), // starts second
+    lifecycle.WithWorker(w),
+    lifecycle.WithServer(srv),
 )
 ```
 
@@ -107,15 +101,6 @@ Stop happens in reverse: the server shuts down before the worker stops.
 - **Sentry** - lives in `Main()`, not `Run()`. See `entrypoint.md`. The `recover()` defer in `Main()` catches panics from `Run()`.
 - **App-specific setup** - database connections, client construction, configuration parsing. All happen before `lifecycle.New()`.
 
-## WithLogger
-
-Emits a structured `lifecycle_start` log line after all components
-have started. Pass the logger created in `Run()`.
-
-```go
-lifecycle.WithLogger(logger.New(context.Background()))
-```
-
 ## Usage Pattern
 
 ```go
@@ -124,12 +109,13 @@ func Run(o *option.Config, r face.Reporter) {
     lifecycle.New(
         l,
         lifecycle.WithWorker(worker.New(l, r)),
-        lifecycle.WithServerMiddleware(
-            web.AddressPort(o.Port),
-            func(m *http.ServeMux) {
-                m.HandleFunc("/health", health)
-            },
-            web.RecoveryMiddleware(r),
+        lifecycle.WithServer(
+            server.New(
+                web.AddressPort(o.Port),
+                func(m *http.ServeMux) {
+                    m.HandleFunc("/health", health)
+                },
+            ).WithMiddleware(web.RecoveryMiddleware(r)),
         ),
     ).RunUntilSignal()
 }

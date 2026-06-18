@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"time"
 )
@@ -32,7 +33,13 @@ func (s *Service) Complete(
 		return f
 	}
 
-	s.notify()
+	if g := s.PushQueueBroadcast(
+		constant.QueueSessionComplete,
+		fmt.Sprintf("%s completed %s", name, topic),
+	); g != nil {
+		return g
+	}
+
 	slug, metadata, f := s.sessionMetadata(sessionIdentifier)
 
 	if f != nil {

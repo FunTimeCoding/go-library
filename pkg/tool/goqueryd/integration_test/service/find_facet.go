@@ -2,7 +2,10 @@ package service
 
 import "github.com/funtimecoding/go-library/pkg/tool/goqueryd/store"
 
-func findFacet(facets []store.Facet, key string) *store.Facet {
+func findFacet(
+	facets []store.Facet,
+	key string,
+) *store.Facet {
 	for _, f := range facets {
 		if f.Key == key {
 			return &f

@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/firefox"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	"github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/gofirefoxd/model_context"
@@ -20,24 +21,26 @@ func Run(
 	c := firefox.NewEnvironment()
 	lifecycle.New(
 		logger.New(context.Background()),
-		lifecycle.WithServerMiddleware(
-			web.AddressPort(o.BridgePort),
-			func(m *http.ServeMux) {
-				m.Handle("/", c)
-			},
-			web.RecoveryMiddleware(r),
+		lifecycle.WithServer(
+			server.New(
+				web.AddressPort(o.BridgePort),
+				func(m *http.ServeMux) {
+					m.Handle("/", c)
+				},
+			).WithMiddleware(web.RecoveryMiddleware(r)),
 		),
-		lifecycle.WithServerMiddleware(
-			web.AddressPort(o.Port),
-			func(m *http.ServeMux) {
-				model_context.New(
-					c,
-					r,
-					telemetry.NewEnvironment(),
-					o.Version,
-				).Mount(m)
-			},
-			web.RecoveryMiddleware(r),
+		lifecycle.WithServer(
+			server.New(
+				web.AddressPort(o.Port),
+				func(m *http.ServeMux) {
+					model_context.New(
+						c,
+						r,
+						telemetry.NewEnvironment(),
+						o.Version,
+					).Mount(m)
+				},
+			).WithMiddleware(web.RecoveryMiddleware(r)),
 		),
 	).RunUntilSignal()
 }

@@ -67,12 +67,13 @@ func Run(o *option.Log, r face.Reporter) {
     lifecycle.New(
         l,
         lifecycle.WithWorker(worker.New(client, s, l, r, 1*time.Minute)),
-        lifecycle.WithServerMiddleware(
-            web.AddressPort(o.Port),
-            func(m *http.ServeMux) {
-                m.HandleFunc("/api/alerts", server.Alerts(s))
-            },
-            web.RecoveryMiddleware(r),
+        lifecycle.WithServer(
+            server.New(
+                web.AddressPort(o.Port),
+                func(m *http.ServeMux) {
+                    m.HandleFunc("/api/alerts", server.Alerts(s))
+                },
+            ).WithMiddleware(web.RecoveryMiddleware(r)),
         ),
     ).RunUntilSignal()
 }
@@ -81,7 +82,7 @@ func Run(o *option.Log, r face.Reporter) {
 Key conventions:
 - Logger constructed first, threaded to workers and lifecycle
 - Reporter threaded to workers (for `withRecovery`) and recovery middleware
-- Use `WithServerMiddleware` (streaming/MCP) or `WithProtectedServerMiddleware` (plain REST) with `web.RecoveryMiddleware(r)`
+- Use `WithServer(server.New(...).WithMiddleware(web.RecoveryMiddleware(r)))` — add `.WithProtected()` for plain REST servers
 - Server address uses `web.AddressPort(o.Port)` to format the port as `":8080"`
 - Routes registered in the `func(*http.ServeMux)` callback
 - `RunUntilSignal()` handles run, signal block, and reverse-order stop

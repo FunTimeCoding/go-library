@@ -2,6 +2,7 @@ package coordination
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/base"
 	"testing"
 )
@@ -12,22 +13,11 @@ func TestReannounceAfterRestart(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "building things")
-	s.Store.ClearBindings()
+	a.CheckLive()
+	s.Service.ClearBindings()
 	r := a.CheckLive()
-	assert.True(t, r.Reannounce != nil && *r.Reannounce)
-}
-
-func TestReannounceConsumedOnCheck(t *testing.T) {
-	s := base.New(t)
-	defer s.Close()
-	a := s.NewSession(t)
-	defer a.Close()
-	a.Announce(a.Name(), "building things")
-	s.Store.ClearBindings()
-	first := a.CheckLive()
-	assert.True(t, first.Reannounce != nil && *first.Reannounce)
-	second := a.CheckLive()
-	assert.True(t, second.Reannounce == nil)
+	reannounce := clientEntriesByKind(r.Entries, constant.QueueReannounce)
+	assert.Count(t, 1, reannounce)
 }
 
 func TestReannounceNotSetWithoutPriorBinding(t *testing.T) {
@@ -35,9 +25,11 @@ func TestReannounceNotSetWithoutPriorBinding(t *testing.T) {
 	defer s.Close()
 	a := s.NewSession(t)
 	defer a.Close()
-	s.Store.ClearBindings()
+	a.CheckLive()
+	s.Service.ClearBindings()
 	r := a.CheckLive()
-	assert.True(t, r.Reannounce == nil)
+	reannounce := clientEntriesByKind(r.Entries, constant.QueueReannounce)
+	assert.Count(t, 0, reannounce)
 }
 
 func TestAnnounceClearsReannounce(t *testing.T) {
@@ -46,8 +38,26 @@ func TestAnnounceClearsReannounce(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "first topic")
-	s.Store.ClearBindings()
+	a.CheckLive()
+	s.Service.ClearBindings()
 	a.Announce(a.Name(), "second topic")
 	r := a.CheckLive()
-	assert.True(t, r.Reannounce == nil)
+	reannounce := clientEntriesByKind(r.Entries, constant.QueueReannounce)
+	assert.Count(t, 0, reannounce)
+}
+
+func TestReannounceConsumedByCheck(t *testing.T) {
+	s := base.New(t)
+	defer s.Close()
+	a := s.NewSession(t)
+	defer a.Close()
+	a.Announce(a.Name(), "building things")
+	a.CheckLive()
+	s.Service.ClearBindings()
+	first := a.CheckLive()
+	reannounce := clientEntriesByKind(first.Entries, constant.QueueReannounce)
+	assert.Count(t, 1, reannounce)
+	second := a.CheckLive()
+	reannounce = clientEntriesByKind(second.Entries, constant.QueueReannounce)
+	assert.Count(t, 0, reannounce)
 }

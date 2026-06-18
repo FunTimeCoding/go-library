@@ -48,6 +48,10 @@ func (b *Builder) Server() *server.MCPServer {
 		server.WithHooks(hooks),
 	}
 
+	if b.logger != nil {
+		options = append(options, server.WithLogger(b.logger.Slog()))
+	}
+
 	if b.resources {
 		options = append(
 			options,

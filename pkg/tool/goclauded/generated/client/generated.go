@@ -37,22 +37,9 @@ type BashDumpResponse struct {
 
 // CheckResponse defines model for CheckResponse.
 type CheckResponse struct {
-	Callsign       string                 `json:"callsign"`
-	Changed        bool                   `json:"changed"`
-	Completions    []CompletionEntry      `json:"completions"`
-	MemoryActivity *[]MemoryActivityEntry `json:"memoryActivity,omitempty"`
-	Messages       []Message              `json:"messages"`
-	Pulses         *[]PulseEntry          `json:"pulses,omitempty"`
-	Reannounce     *bool                  `json:"reannounce,omitempty"`
-	Sessions       []SessionEntry         `json:"sessions"`
-	TimeoutMessage *string                `json:"timeoutMessage,omitempty"`
-}
-
-// CompletionEntry defines model for CompletionEntry.
-type CompletionEntry struct {
-	Kind  string `json:"kind"`
-	Name  string `json:"name"`
-	Topic string `json:"topic"`
+	Callsign string       `json:"callsign"`
+	Changed  bool         `json:"changed"`
+	Entries  []QueueEntry `json:"entries"`
 }
 
 // EditSessionRequest defines model for EditSessionRequest.
@@ -114,14 +101,6 @@ type ListenRequest struct {
 	Listening *bool  `json:"listening,omitempty"`
 }
 
-// MemoryActivityEntry defines model for MemoryActivityEntry.
-type MemoryActivityEntry struct {
-	ChangeType       string `json:"change_type"`
-	MemoryIdentifier int    `json:"memory_identifier"`
-	Name             string `json:"name"`
-	Source           string `json:"source"`
-}
-
 // Message defines model for Message.
 type Message struct {
 	Body      string `json:"body"`
@@ -132,6 +111,13 @@ type Message struct {
 // MessagesResponse defines model for MessagesResponse.
 type MessagesResponse struct {
 	Messages []SessionMessage `json:"messages"`
+}
+
+// NotifyRequest defines model for NotifyRequest.
+type NotifyRequest struct {
+	Body     string `json:"body"`
+	Callsign string `json:"callsign"`
+	Source   string `json:"source"`
 }
 
 // PeekEntry defines model for PeekEntry.
@@ -159,6 +145,13 @@ type PulseEntry struct {
 // PulseRequest defines model for PulseRequest.
 type PulseRequest struct {
 	Body string `json:"body"`
+}
+
+// QueueEntry defines model for QueueEntry.
+type QueueEntry struct {
+	Body      string `json:"body"`
+	Kind      string `json:"kind"`
+	Timestamp string `json:"timestamp"`
 }
 
 // RegisterRequest defines model for RegisterRequest.
@@ -237,18 +230,6 @@ type SessionDetailResponse struct {
 	Slug        *string                    `json:"slug,omitempty"`
 	Summary     *string                    `json:"summary,omitempty"`
 	TurnCount   *int                       `json:"turnCount,omitempty"`
-}
-
-// SessionEntry defines model for SessionEntry.
-type SessionEntry struct {
-	Alias        *string       `json:"alias,omitempty"`
-	Callsign     string        `json:"callsign"`
-	Files        *[]string     `json:"files,omitempty"`
-	FirstMessage *string       `json:"firstMessage,omitempty"`
-	Labels       *[]LabelEntry `json:"labels,omitempty"`
-	Slug         *string       `json:"slug,omitempty"`
-	Topic        string        `json:"topic"`
-	TurnCount    *int          `json:"turnCount,omitempty"`
 }
 
 // SessionListResponse defines model for SessionListResponse.
@@ -386,6 +367,9 @@ type PostAnnounceJSONRequestBody = AnnounceRequest
 // PostListenJSONRequestBody defines body for PostListen for application/json ContentType.
 type PostListenJSONRequestBody = ListenRequest
 
+// PostNotifyJSONRequestBody defines body for PostNotify for application/json ContentType.
+type PostNotifyJSONRequestBody = NotifyRequest
+
 // PostRegisterJSONRequestBody defines body for PostRegister for application/json ContentType.
 type PostRegisterJSONRequestBody = RegisterRequest
 
@@ -489,6 +473,11 @@ type ClientInterface interface {
 	PostListenWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostListen(ctx context.Context, body PostListenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostNotifyWithBody request with any body
+	PostNotifyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostNotify(ctx context.Context, body PostNotifyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostRegisterWithBody request with any body
 	PostRegisterWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -632,6 +621,30 @@ func (c *Client) PostListenWithBody(ctx context.Context, contentType string, bod
 
 func (c *Client) PostListen(ctx context.Context, body PostListenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostListenRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostNotifyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostNotifyRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostNotify(ctx context.Context, body PostNotifyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostNotifyRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1127,6 +1140,46 @@ func NewPostListenRequestWithBody(server string, contentType string, body io.Rea
 	}
 
 	operationPath := fmt.Sprintf("/api/listen")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostNotifyRequest calls the generic PostNotify builder with application/json body
+func NewPostNotifyRequest(server string, body PostNotifyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostNotifyRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostNotifyRequestWithBody generates requests for PostNotify with any type of body
+func NewPostNotifyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/notify")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -2188,6 +2241,11 @@ type ClientWithResponsesInterface interface {
 
 	PostListenWithResponse(ctx context.Context, body PostListenJSONRequestBody, reqEditors ...RequestEditorFn) (*PostListenResponse, error)
 
+	// PostNotifyWithBodyWithResponse request with any body
+	PostNotifyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostNotifyResponse, error)
+
+	PostNotifyWithResponse(ctx context.Context, body PostNotifyJSONRequestBody, reqEditors ...RequestEditorFn) (*PostNotifyResponse, error)
+
 	// PostRegisterWithBodyWithResponse request with any body
 	PostRegisterWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostRegisterResponse, error)
 
@@ -2352,6 +2410,28 @@ func (r PostListenResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r PostListenResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostNotifyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostNotifyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostNotifyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2934,6 +3014,23 @@ func (c *ClientWithResponses) PostListenWithResponse(ctx context.Context, body P
 	return ParsePostListenResponse(rsp)
 }
 
+// PostNotifyWithBodyWithResponse request with arbitrary body returning *PostNotifyResponse
+func (c *ClientWithResponses) PostNotifyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostNotifyResponse, error) {
+	rsp, err := c.PostNotifyWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostNotifyResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostNotifyWithResponse(ctx context.Context, body PostNotifyJSONRequestBody, reqEditors ...RequestEditorFn) (*PostNotifyResponse, error) {
+	rsp, err := c.PostNotify(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostNotifyResponse(rsp)
+}
+
 // PostRegisterWithBodyWithResponse request with arbitrary body returning *PostRegisterResponse
 func (c *ClientWithResponses) PostRegisterWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostRegisterResponse, error) {
 	rsp, err := c.PostRegisterWithBody(ctx, contentType, body, reqEditors...)
@@ -3282,6 +3379,32 @@ func ParsePostListenResponse(rsp *http.Response) (*PostListenResponse, error) {
 	}
 
 	response := &PostListenResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostNotifyResponse parses an HTTP response from a PostNotifyWithResponse call
+func ParsePostNotifyResponse(rsp *http.Response) (*PostNotifyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostNotifyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

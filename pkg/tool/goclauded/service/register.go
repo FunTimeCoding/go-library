@@ -16,10 +16,6 @@ func (s *Service) Register(sessionIdentifier string) (*ensure_result.Result, err
 		return result, nil
 	}
 
-	if e := s.store.MarkNeedsRoster(sessionIdentifier); e != nil {
-		return nil, e
-	}
-
 	if e := s.store.LogEvent(
 		sessionIdentifier,
 		constant.Register,

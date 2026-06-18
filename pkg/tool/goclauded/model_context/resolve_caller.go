@@ -11,15 +11,20 @@ import (
 func (s *Server) resolveCaller(
 	x context.Context,
 	tool string,
-) *caller {
+) (*caller, error) {
 	session := server.ClientSessionFromContext(x)
 
 	if session == nil {
-		return &caller{}
+		return &caller{}, nil
 	}
 
 	modelContextSessionIdentifier := session.SessionID()
-	name, sessionIdentifier := s.service.ResolveModelContextSession(modelContextSessionIdentifier)
+	name, sessionIdentifier, e := s.service.ResolveModelContextSession(modelContextSessionIdentifier)
+
+	if e != nil {
+		return nil, e
+	}
+
 	s.logger.Structured(
 		"model_context_tool_call",
 		"tool",
@@ -38,5 +43,5 @@ func (s *Server) resolveCaller(
 		),
 	)
 
-	return &caller{Callsign: name, SessionIdentifier: sessionIdentifier}
+	return &caller{Callsign: name, SessionIdentifier: sessionIdentifier}, nil
 }

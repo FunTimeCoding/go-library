@@ -13,7 +13,12 @@ func (s *Server) label(
 	x context.Context,
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	c := s.resolveCaller(x, constant.Label)
+	c, e := s.resolveCaller(x, constant.Label)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	key, e := q.RequireString(constant.Key)
 
 	if e != nil {

@@ -1,13 +1,13 @@
 package server
 
-import "github.com/mark3labs/mcp-go/util"
+import "log/slog"
 
-func (s *Server) Logger() util.Logger {
+func (s *Server) Logger() *slog.Logger {
 	if s.logger != nil {
 		return s.logger
 	}
 
-	s.logger = util.DefaultLogger()
+	s.logger = slog.Default()
 
 	return s.logger
 }

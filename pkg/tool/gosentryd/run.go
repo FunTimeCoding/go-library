@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	"github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/gosentryd/model_context"
@@ -20,18 +21,19 @@ func Run(
 ) {
 	lifecycle.New(
 		logger.New(context.Background()),
-		lifecycle.WithServerMiddleware(
-			constant.ListenAddress,
-			func(m *http.ServeMux) {
-				model_context.New(
-					sentry.NewEnvironment(),
-					o.Organization,
-					r,
-					telemetry.NewEnvironment(),
-					o.Version,
-				).Mount(m)
-			},
-			web.RecoveryMiddleware(r),
+		lifecycle.WithServer(
+			server.New(
+				constant.ListenAddress,
+				func(m *http.ServeMux) {
+					model_context.New(
+						sentry.NewEnvironment(),
+						o.Organization,
+						r,
+						telemetry.NewEnvironment(),
+						o.Version,
+					).Mount(m)
+				},
+			).WithMiddleware(web.RecoveryMiddleware(r)),
 		),
 	).RunUntilSignal()
 }

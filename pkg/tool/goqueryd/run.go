@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/generative/ollama"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	lifecycleServer "github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
@@ -38,19 +39,20 @@ func Run(
 		lifecycle.WithWorker(
 			worker.New(v, 10*time.Minute, l, r),
 		),
-		lifecycle.WithServerMiddleware(
-			web.AddressPort(o.Port),
-			func(m *http.ServeMux) {
-				generated.HandlerFromMux(server.New(v), m)
-				model_context.New(
-					v,
-					r,
-					telemetry.NewEnvironment(),
-					o.Version,
-				).Mount(m)
-				queryWeb.New(v).Mount(m)
-			},
-			web.RecoveryMiddleware(r),
+		lifecycle.WithServer(
+			lifecycleServer.New(
+				web.AddressPort(o.Port),
+				func(m *http.ServeMux) {
+					generated.HandlerFromMux(server.New(v), m)
+					model_context.New(
+						v,
+						r,
+						telemetry.NewEnvironment(),
+						o.Version,
+					).Mount(m)
+					queryWeb.New(v).Mount(m)
+				},
+			).WithMiddleware(web.RecoveryMiddleware(r)),
 		),
 	).RunUntilSignal()
 }

@@ -29,8 +29,13 @@ func (s *Server) edit(
 		return response.Fail("invalid event identifier")
 	}
 
-	s.resolveCaller(x, constant.EditEvent)
-	_, g := s.service.EditEvent(uint(identifier), message)
+	_, g := s.resolveCaller(x, constant.EditEvent)
+
+	if g != nil {
+		return s.captureFail(g, library.UnexpectedError)
+	}
+
+	_, g = s.service.EditEvent(uint(identifier), message)
 
 	if g != nil {
 		return s.captureFail(g, library.UnexpectedError)

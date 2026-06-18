@@ -23,7 +23,7 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20260427013145-5737772c319b
 	github.com/chromedp/chromedp v0.15.1
 	github.com/coder/websocket v1.8.15
-	github.com/coreos/go-oidc/v3 v3.18.0
+	github.com/coreos/go-oidc/v3 v3.19.0
 	github.com/coreos/go-semver v0.3.1
 	github.com/ctreminiom/go-atlassian/v2 v2.12.0
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
@@ -35,7 +35,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.13.10
 	github.com/getkin/kin-openapi v0.140.0
 	github.com/getlantern/systray v1.2.2
-	github.com/getsentry/sentry-go v0.46.2
+	github.com/getsentry/sentry-go v0.47.0
 	github.com/glebarez/go-sqlite v1.22.0
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-git/go-billy/v5 v5.9.0
@@ -57,9 +57,9 @@ require (
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v5 v5.10.0
 	github.com/kestra-io/client-sdk/go-sdk v1.1.0
-	github.com/liushuangls/go-anthropic/v2 v2.20.2
-	github.com/luthermonson/go-proxmox v0.7.1
-	github.com/mark3labs/mcp-go v0.54.1
+	github.com/liushuangls/go-anthropic/v2 v2.21.0
+	github.com/luthermonson/go-proxmox v0.8.0
+	github.com/mark3labs/mcp-go v0.55.0
 	github.com/mattermost/mattermost/server/public v0.4.2
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.6.1
@@ -69,14 +69,14 @@ require (
 	github.com/nwaples/rardecode/v2 v2.2.5
 	github.com/oapi-codegen/runtime v1.4.1
 	github.com/olekukonko/tablewriter v1.1.4
-	github.com/ollama/ollama v0.30.8
-	github.com/openai/openai-go/v3 v3.39.0
+	github.com/ollama/ollama v0.30.10
+	github.com/openai/openai-go/v3 v3.40.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.33.0
 	github.com/prometheus/client_golang v1.23.2
-	github.com/prometheus/common v0.68.1
+	github.com/prometheus/common v0.69.0
 	github.com/rivo/tview v0.42.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/samber/slog-loki/v3 v3.7.2
@@ -102,7 +102,7 @@ require (
 	golang.org/x/time v0.15.0
 	golang.org/x/tools v0.46.0
 	gonum.org/v1/gonum v0.17.0
-	google.golang.org/api v0.284.0
+	google.golang.org/api v0.285.0
 	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.6.0
@@ -342,7 +342,7 @@ require (
 	golang.org/x/sync v0.21.0 // indirect
 	golang.org/x/term v0.44.0 // indirect
 	golang.org/x/text v0.38.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260526163538-3dc84a4a5aaa // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260610212136-7ab31c22f7ad // indirect
 	google.golang.org/grpc v1.81.1 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect

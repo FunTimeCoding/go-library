@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"fmt"
+	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
@@ -13,7 +14,12 @@ func (s *Server) tokenUsage(
 	x context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	s.resolveCaller(x, constant.TokenUsage)
+	_, e := s.resolveCaller(x, constant.TokenUsage)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	result := s.service.Usage()
 
 	if result == nil {

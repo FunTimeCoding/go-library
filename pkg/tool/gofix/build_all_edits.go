@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/lint/segment"
+	"github.com/funtimecoding/go-library/pkg/source/resolve"
 	"go/token"
 	"golang.org/x/tools/go/packages"
 )
@@ -34,7 +35,7 @@ func buildAllEdits(
 		}
 
 		replacement := segment.ReplaceSegment(v.ident.Name, v.segment, v.fix)
-		references := findAllReferences(all, v.object)
+		references := resolve.FindAllReferences(all, v.object)
 		r.AddConcern(
 			concern.NewFile(
 				"renamed",
@@ -50,12 +51,12 @@ func buildAllEdits(
 		)
 
 		for _, e := range references {
-			newName := segment.ReplaceSegment(e.ident.Name, v.segment, v.fix)
+			newName := segment.ReplaceSegment(e.Ident.Name, v.segment, v.fix)
 			result = append(
 				result,
 				edit{
-					position: e.ident.Pos(),
-					end:      e.ident.End(),
+					position: e.Ident.Pos(),
+					end:      e.Ident.End(),
 					newText:  newName,
 				},
 			)

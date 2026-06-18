@@ -1,5 +1,10 @@
 package service
 
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+)
+
 func (s *Service) Send(
 	name string,
 	to string,
@@ -9,7 +14,11 @@ func (s *Service) Send(
 		return e
 	}
 
-	s.notify()
+	formatted := fmt.Sprintf("%s: %s", name, body)
 
-	return nil
+	if to != "" {
+		return s.PushQueue(to, constant.QueueMessage, formatted)
+	}
+
+	return s.PushQueueBroadcast(constant.QueueMessage, formatted)
 }

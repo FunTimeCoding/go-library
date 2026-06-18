@@ -48,7 +48,11 @@ func (s *Server) announce(
 		}
 	}
 
-	c := s.resolveCaller(x, constant.Announce)
+	c, g := s.resolveCaller(x, constant.Announce)
+
+	if g != nil {
+		return s.captureFail(g, library.UnexpectedError)
+	}
 
 	if f := s.service.Announce(
 		c.SessionIdentifier,

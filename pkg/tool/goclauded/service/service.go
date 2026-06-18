@@ -26,4 +26,5 @@ type Service struct {
 	cache             *session_cache.Cache
 	usage             *usage_result.Result
 	usageMutex        sync.RWMutex
+	lastMemoryPoll    string
 }

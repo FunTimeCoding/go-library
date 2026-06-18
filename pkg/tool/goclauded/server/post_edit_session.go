@@ -2,7 +2,9 @@ package server
 
 import (
 	"context"
+	"errors"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	goclauded "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
 )
@@ -18,6 +20,12 @@ func (s *Server) PostEditSession(
 	a.Files = r.Body.Files
 
 	if e := s.service.EditSession(r.Body.Session, a); e != nil {
+		if errors.Is(e, goclauded.ErrorAliasCollision) {
+			return server.PostEditSession500JSONResponse(
+				server.ErrorResponse{Error: e.Error()},
+			), nil
+		}
+
 		return server.PostEditSession500JSONResponse(
 			*s.captureFail(e, constant.UnexpectedError),
 		), nil

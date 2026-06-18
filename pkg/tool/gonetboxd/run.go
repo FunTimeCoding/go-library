@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	lifecycleServer "github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
@@ -20,18 +21,19 @@ func Run(
 ) {
 	lifecycle.New(
 		logger.New(context.Background()),
-		lifecycle.WithServerMiddleware(
-			web.AddressPort(o.Port),
-			func(m *http.ServeMux) {
-				generated.HandlerFromMux(server.New(o.Client, r), m)
-				model_context.New(
-					o.Client,
-					r,
-					telemetry.NewEnvironment(),
-					o.Version,
-				).Mount(m)
-			},
-			web.RecoveryMiddleware(r),
+		lifecycle.WithServer(
+			lifecycleServer.New(
+				web.AddressPort(o.Port),
+				func(m *http.ServeMux) {
+					generated.HandlerFromMux(server.New(o.Client, r), m)
+					model_context.New(
+						o.Client,
+						r,
+						telemetry.NewEnvironment(),
+						o.Version,
+					).Mount(m)
+				},
+			).WithMiddleware(web.RecoveryMiddleware(r)),
 		),
 	).RunUntilSignal()
 }

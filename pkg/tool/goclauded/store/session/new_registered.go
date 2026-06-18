@@ -9,11 +9,10 @@ func NewRegistered(
 	now := time.Now()
 
 	return &Session{
-		Identifier:  identifier,
-		Name:        callsign,
-		Callsign:    &callsign,
-		NeedsRoster: true,
-		LastSeen:    now,
-		StartedAt:   now,
+		Identifier: identifier,
+		Name:       callsign,
+		Callsign:   &callsign,
+		LastSeen:   now,
+		StartedAt:  now,
 	}
 }

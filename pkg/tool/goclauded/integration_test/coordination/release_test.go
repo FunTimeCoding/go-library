@@ -12,10 +12,16 @@ func TestRelease(t *testing.T) {
 	defer s.Close()
 	a := s.NewSession(t)
 	defer a.Close()
+	b := s.NewSession(t)
+	defer b.Close()
 	a.Announce(a.Name(), "temporary work")
+	b.Announce(b.Name(), "watching")
+	b.CheckLive()
 	a.MustCallTool(constant.Release, map[string]any{})
-	r := a.Check()
-	assert.Count(t, 0, r.Sessions)
+	r := b.CheckLive()
+	releases := clientEntriesByKind(r.Entries, constant.QueueSessionRelease)
+	assert.True(t, len(releases) > 0)
+	assert.StringContains(t, a.Name(), releases[0].Body)
 }
 
 func TestReleaseHistoryEvent(t *testing.T) {

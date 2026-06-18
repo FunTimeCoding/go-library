@@ -17,7 +17,12 @@ func (s *Server) history(
 	x context.Context,
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	s.resolveCaller(x, constant.History)
+	_, e := s.resolveCaller(x, constant.History)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	a := argument.Timeline{
 		Limit:  int(q.GetFloat(constant.Limit, 20)),
 		Offset: int(q.GetFloat(constant.Offset, 0)),

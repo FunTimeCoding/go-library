@@ -297,8 +297,9 @@ overall recovery layer design.
 
 `pkg/web/RecoveryMiddleware` is the shared HTTP recovery layer. It wraps
 the mux, catches panics from any handler, reports via `r.Recover(v)`,
-and returns 500. Wired into lifecycle via `WithServerMiddleware` or
-`WithProtectedServerMiddleware`. See `lifecycle.md`.
+and returns 500. Wired into lifecycle via
+`server.New(...).WithMiddleware(web.RecoveryMiddleware(r))`.
+See `lifecycle.md`.
 
 ### Sentry body enrichment
 

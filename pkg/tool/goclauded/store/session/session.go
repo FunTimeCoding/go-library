@@ -20,8 +20,6 @@ type Session struct {
 	SessionTimestamp    string    `gorm:"column:session_timestamp"`
 	Listening           bool      `gorm:"column:listening"`
 	TimedOut            string    `gorm:"column:timed_out"`
-	NeedsRoster         bool      `gorm:"column:needs_roster"`
-	NeedsReannounce     bool      `gorm:"column:needs_reannounce"`
 	LastSeen            time.Time `gorm:"column:last_seen"`
 	StartedAt           time.Time `gorm:"column:started_at"`
 	LastActiveAt        time.Time `gorm:"column:last_active_at"`

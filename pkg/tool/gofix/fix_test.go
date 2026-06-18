@@ -4,7 +4,6 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
-	"go/token"
 	"os"
 	"path/filepath"
 	"testing"
@@ -13,8 +12,7 @@ import (
 func TestFix(t *testing.T) {
 	directory := writeTestModule(t)
 	r := output.NewResultsWithDirectory(directory)
-	fileSet := token.NewFileSet()
-	all := load(fileSet, directory, []string{"./..."})
+	all, fileSet := load(directory, []string{"./..."})
 	violations := findViolations(all)
 	edits := buildAllEdits(fileSet, all, violations, r)
 	applyEdits(fileSet, edits, directory, false)

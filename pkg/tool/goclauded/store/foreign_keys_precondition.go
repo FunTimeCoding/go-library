@@ -2,17 +2,18 @@ package store
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"gorm.io/gorm"
 	"log"
 )
 
 func foreignKeysPrecondition(d *gorm.DB) bool {
 	checks := []foreignKeyCheck{
-		{"event", "session_identifier", "session"},
-		{"completion", "session_identifier", "session"},
-		{"summary", "session_identifier", "session"},
-		{"label", "session_identifier", "session"},
-		{"pulse", "session_identifier", "session"},
+		{"event", "session_identifier", constant.SessionTable},
+		{"completion", "session_identifier", constant.SessionTable},
+		{constant.SummaryTable, "session_identifier", constant.SessionTable},
+		{"label", "session_identifier", constant.SessionTable},
+		{"pulse", "session_identifier", constant.SessionTable},
 		{"event_metadata", "event_identifier", "event"},
 	}
 

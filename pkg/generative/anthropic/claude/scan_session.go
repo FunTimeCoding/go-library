@@ -37,10 +37,6 @@ func scanSession(path string) *session.Session {
 			continue
 		}
 
-		if line.Timestamp != "" {
-			s.LastTimestamp = line.Timestamp
-		}
-
 		if filled {
 			continue
 		}

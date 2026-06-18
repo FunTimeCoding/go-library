@@ -1,9 +1,6 @@
 package gofix
 
-import (
-	"github.com/funtimecoding/go-library/pkg/lint/output"
-	"go/token"
-)
+import "github.com/funtimecoding/go-library/pkg/lint/output"
 
 func runFix(
 	patterns []string,
@@ -14,8 +11,7 @@ func runFix(
 		patterns = []string{"./..."}
 	}
 
-	fileSet := token.NewFileSet()
-	all := load(fileSet, "", patterns)
+	all, fileSet := load("", patterns)
 	violations := findViolations(all)
 
 	if len(violations) == 0 {

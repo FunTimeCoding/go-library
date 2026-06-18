@@ -13,15 +13,20 @@ func TestComplete(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "building search index")
+	a.CheckLive()
 	a.MustCallTool(
 		constant.Complete,
 		map[string]any{
 			constant.Message: "search index and refresh implemented",
 		},
 	)
-	r := a.Check()
-	assert.Count(t, 1, r.Sessions)
-	assert.String(t, "", r.Sessions[0].Topic)
+	r := a.CheckLive()
+	completions := clientEntriesByKind(
+		r.Entries,
+		constant.QueueSessionComplete,
+	)
+	assert.True(t, len(completions) > 0)
+	assert.StringContains(t, "building search index", completions[0].Body)
 }
 
 func TestCompleteHistoryEvent(t *testing.T) {
@@ -47,6 +52,7 @@ func TestCompleteAndReannounce(t *testing.T) {
 	a := s.NewSession(t)
 	defer a.Close()
 	a.Announce(a.Name(), "first task")
+	a.CheckLive()
 	a.MustCallTool(
 		constant.Complete,
 		map[string]any{
@@ -54,8 +60,10 @@ func TestCompleteAndReannounce(t *testing.T) {
 		},
 	)
 	a.Announce(a.Name(), "second task")
-	check := a.Check()
-	assert.String(t, "second task", check.Sessions[0].Topic)
+	r := a.CheckLive()
+	announces := clientEntriesByKind(r.Entries, constant.QueueSessionAnnounce)
+	assert.True(t, len(announces) > 0)
+	assert.StringContains(t, "second task", announces[len(announces)-1].Body)
 }
 
 func TestCompleteWithExplicitTopic(t *testing.T) {

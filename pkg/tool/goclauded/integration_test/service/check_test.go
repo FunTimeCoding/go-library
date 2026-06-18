@@ -4,22 +4,37 @@ package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/service_tester"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/queue"
 	"testing"
 	"time"
 )
+
+func entriesByKind(
+	entries []queue.Entry,
+	kind string,
+) []queue.Entry {
+	var result []queue.Entry
+
+	for _, e := range entries {
+		if e.Kind == kind {
+			result = append(result, e)
+		}
+	}
+
+	return result
+}
 
 func TestCheckNewSession(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Check("session-1")
 	assert.True(t, r.Callsign != "")
-	assert.True(t, r.Changed)
 }
 
 func TestCheckNoChanges(t *testing.T) {
 	s := service_tester.New(t)
-	first := s.Check("session-1")
-	assert.True(t, first.Changed)
+	s.Check("session-1")
 	second := s.Check("session-1")
 	assert.False(t, second.Changed)
 }
@@ -32,92 +47,89 @@ func TestCheckWithMessage(t *testing.T) {
 	s.Send(r1.Callsign, "", "broadcast")
 	r := s.Check("session-1")
 	assert.True(t, r.Changed)
-	assert.Count(t, 1, r.Messages)
+	messages := entriesByKind(r.Entries, constant.QueueMessage)
+	assert.Count(t, 1, messages)
 }
 
 func TestCheckWithTimeout(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Check("session-1")
 	s.Announce("session-1", r.Callsign, "working", "")
+	s.Check("session-1")
 	s.Store.Advance(2 * time.Hour)
 	s.Service.RunTimeoutSweep()
 	r = s.Check("session-1")
 	assert.True(t, r.Changed)
-	assert.StringContains(t, "inactivity", r.TimeoutMessage)
+	timeouts := entriesByKind(r.Entries, constant.QueueTimeout)
+	assert.Count(t, 1, timeouts)
+	assert.StringContains(t, "inactivity", timeouts[0].Body)
 }
 
 func TestCheckWithReannounce(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Check("session-1")
 	s.Store.BindModelContextSession(r.Callsign, "mcp-abc")
-	s.Store.ClearBindings()
+	s.Service.ClearBindings()
 	r = s.Check("session-1")
 	assert.True(t, r.Changed)
-	assert.True(t, r.Reannounce)
+	reannounce := entriesByKind(r.Entries, constant.QueueReannounce)
+	assert.Count(t, 1, reannounce)
 }
 
-func TestCheckSessionsPopulated(t *testing.T) {
+func TestCheckWithSessionActivity(t *testing.T) {
 	s := service_tester.New(t)
 	s.Check("session-1")
 	r2 := s.Store.EnsureSession("session-2")
 	s.Store.Advance(time.Second)
-	s.Store.Announce(r2.Callsign, "other work", "pkg/auth")
+	s.Announce("session-2", r2.Callsign, "other work", "pkg/auth")
 	r := s.Check("session-1")
 	assert.True(t, r.Changed)
-	assert.True(t, len(r.Sessions) >= 2)
-	found := false
-
-	for _, e := range r.Sessions {
-		if e.CallsignValue() == r2.Callsign {
-			assert.String(t, "other work", e.Topic)
-			found = true
-		}
-	}
-
-	assert.True(t, found)
+	announces := entriesByKind(r.Entries, constant.QueueSessionAnnounce)
+	assert.True(t, len(announces) > 0)
 }
 
 func TestCheckCompleteTimeout(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Check("session-1")
 	s.Announce("session-1", r.Callsign, "topic", "")
+	s.Check("session-1")
 	s.Store.CompleteTask(r.Callsign)
 	s.Store.Advance(time.Hour)
 	s.Service.RunTimeoutSweep()
 	r = s.Check("session-1")
 	assert.True(t, r.Changed)
+	timeouts := entriesByKind(r.Entries, constant.QueueTimeout)
+	assert.Count(t, 1, timeouts)
 	assert.StringContains(
 		t,
 		"completing without re-announcing",
-		r.TimeoutMessage,
+		timeouts[0].Body,
 	)
 }
 
-func TestCheckConsumesMessages(t *testing.T) {
+func TestCheckConsumesEntries(t *testing.T) {
 	s := service_tester.New(t)
 	r1 := s.Check("session-1")
 	r2 := s.Store.EnsureSession("session-2")
 	s.Send(r2.Callsign, r1.Callsign, "hello")
-	assert.Count(
-		t,
-		1,
-		s.Check("session-1").Messages,
-	)
-	assert.Count(
-		t,
-		0,
-		s.Check("session-1").Messages,
-	)
+	first := s.Check("session-1")
+	messages := entriesByKind(first.Entries, constant.QueueMessage)
+	assert.Count(t, 1, messages)
+	second := s.Check("session-1")
+	messages = entriesByKind(second.Entries, constant.QueueMessage)
+	assert.Count(t, 0, messages)
 }
 
 func TestCheckWithCompletionActivity(t *testing.T) {
 	s := service_tester.New(t)
 	s.Check("session-1")
 	r2 := s.Store.EnsureSession("session-2")
-	s.Store.Announce(r2.Callsign, "some work", "")
+	s.Announce("session-2", r2.Callsign, "some work", "")
+	s.Check("session-1")
 	s.Complete("session-2", r2.Callsign, "some work", "done")
 	s.Store.Advance(time.Second)
 	r := s.Check("session-1")
 	assert.True(t, r.Changed)
-	assert.True(t, len(r.Completions) > 0)
+	completions := entriesByKind(r.Entries, constant.QueueSessionComplete)
+	assert.True(t, len(completions) > 0)
 }

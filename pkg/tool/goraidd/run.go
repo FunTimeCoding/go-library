@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	lifecycleServer "github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/raid_parser"
 	"github.com/funtimecoding/go-library/pkg/relational"
@@ -31,27 +32,28 @@ func Run(
 	lifecycle.New(
 		l,
 		lifecycle.WithWorker(s),
-		lifecycle.WithServerMiddleware(
-			web.AddressPort(o.Port),
-			func(m *http.ServeMux) {
-				p := raid_parser.New("localhost:8081", true)
-				generated.HandlerFromMux(
-					server.New(
+		lifecycle.WithServer(
+			lifecycleServer.New(
+				web.AddressPort(o.Port),
+				func(m *http.ServeMux) {
+					p := raid_parser.New("localhost:8081", true)
+					generated.HandlerFromMux(
+						server.New(
+							s,
+							o.ElitePath,
+							o.OutputPath,
+							p,
+						),
+						m,
+					)
+					raidWeb.New(
 						s,
 						o.ElitePath,
 						o.OutputPath,
 						p,
-					),
-					m,
-				)
-				raidWeb.New(
-					s,
-					o.ElitePath,
-					o.OutputPath,
-					p,
-				).Mount(m)
-			},
-			web.RecoveryMiddleware(r),
+					).Mount(m)
+				},
+			).WithMiddleware(web.RecoveryMiddleware(r)),
 		),
 	).RunUntilSignal()
 }

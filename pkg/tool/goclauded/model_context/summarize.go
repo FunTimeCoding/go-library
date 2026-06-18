@@ -12,7 +12,11 @@ func (s *Server) summarize(
 	x context.Context,
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	c := s.resolveCaller(x, constant.Summarize)
+	c, e := s.resolveCaller(x, constant.Summarize)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
 
 	if c.Callsign == "" {
 		return response.Fail("unknown session - announce first to bind your identity")

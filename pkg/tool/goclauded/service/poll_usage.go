@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (s *Service) pollUsage() {
+func (s *Service) PollUsage() {
 	defer func() {
 		if r := recover(); r != nil {
 			s.logger.Structured(

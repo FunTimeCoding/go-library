@@ -14,7 +14,11 @@ func (s *Server) update(
 	x context.Context,
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	c := s.resolveCaller(x, constant.Update)
+	c, e := s.resolveCaller(x, constant.Update)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
 
 	if c.Callsign == "" {
 		return response.Fail("unknown session - announce first to bind your identity")

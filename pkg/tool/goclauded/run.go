@@ -2,13 +2,16 @@ package goclauded
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
 	"github.com/funtimecoding/go-library/pkg/event/notifier"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/generative/anthropic/claude"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	lifecycleServer "github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
+	"github.com/funtimecoding/go-library/pkg/ticker"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context"
@@ -50,7 +53,6 @@ func Run(
 		"skipped",
 		result.Skipped,
 	)
-	s.ClearBindings()
 	memoryClient := memory.Wait(l)
 	l.Structured("gomemoryd_connected", "elapsed", elapsed())
 	queryClient := connect.Wait(l)
@@ -77,6 +79,7 @@ func Run(
 		time.Now,
 		l,
 	)
+	v.ClearBindings()
 	v.ReconcileSummaries()
 	l.Structured("summaries_reconciled", "elapsed", elapsed())
 	v.ReconcileCompletions()
@@ -87,36 +90,55 @@ func Run(
 	l.Structured("sessions_backfilled", "elapsed", elapsed())
 	v.CheckConsistency()
 	l.Structured("consistency_checked", "elapsed", elapsed())
-	go v.RunTimeoutLoop()
+	rec := recovery.New(l, r)
+	timeoutTicker := ticker.New(
+		5*time.Minute,
+		v.RunTimeoutSweep,
+		rec,
+	)
+	memoryTicker := ticker.New(30*time.Second, v.PollMemory, rec)
 	w := watcher.New(v, l, r, h)
-
-	if environment.Exists(constant.MonitorUsageEnvironment) {
-		go v.RunUsageLoop()
+	address := library.AddressPort(o.Port)
+	setup := func(m *http.ServeMux) {
+		generated.HandlerFromMux(
+			generated.NewStrictHandler(
+				server.New(v, l, r, h, o.SessionExportPath),
+				nil,
+			),
+			m,
+		)
+		model_context.New(
+			v,
+			r,
+			l,
+			telemetry.NewEnvironment(),
+			o.Version,
+		).Mount(m)
+		web.New(v).Mount(m)
+	}
+	middleware := library.RecoveryMiddleware(r)
+	srv := lifecycleServer.New(address, setup).
+		WithMiddleware(middleware).
+		WithProfiling().
+		WithCertificate(
+			environment.Required(constant.CertificateFileEnvironment),
+			environment.Required(constant.CertificateKeyFileEnvironment),
+		)
+	options := []lifecycle.Option{
+		lifecycle.WithWorker(w),
+		lifecycle.WithServer(srv),
+		lifecycle.WithWorker(timeoutTicker),
+		lifecycle.WithWorker(memoryTicker),
 	}
 
-	lifecycle.New(
-		l,
-		lifecycle.WithWorker(w),
-		lifecycle.WithServerMiddleware(
-			library.AddressPort(o.Port),
-			func(m *http.ServeMux) {
-				generated.HandlerFromMux(
-					generated.NewStrictHandler(
-						server.New(v, l, r, h, o.SessionExportPath),
-						nil,
-					),
-					m,
-				)
-				model_context.New(
-					v,
-					r,
-					l,
-					telemetry.NewEnvironment(),
-					o.Version,
-				).Mount(m)
-				web.New(v).Mount(m)
-			},
-			library.RecoveryMiddleware(r),
-		),
-	).RunUntilSignal()
+	if environment.Exists(constant.MonitorUsageEnvironment) {
+		options = append(
+			options,
+			lifecycle.WithWorker(
+				ticker.New(time.Minute, v.PollUsage, rec),
+			),
+		)
+	}
+
+	lifecycle.New(l, options...).RunUntilSignal()
 }

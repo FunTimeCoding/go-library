@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/lifecycle/mock_worker"
+	"github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/web/location"
@@ -56,19 +57,21 @@ func TestRunServerResponds(t *testing.T) {
 	p, n := system.ClaimPort()
 	l := New(
 		logger.New(context.Background()),
-		WithListener(
-			n,
-			func(m *http.ServeMux) {
-				m.HandleFunc(
-					location.Health,
-					func(
-						w http.ResponseWriter,
-						_ *http.Request,
-					) {
-						w.WriteHeader(http.StatusOK)
-					},
-				)
-			},
+		WithServer(
+			server.New(
+				"",
+				func(m *http.ServeMux) {
+					m.HandleFunc(
+						location.Health,
+						func(
+							w http.ResponseWriter,
+							_ *http.Request,
+						) {
+							w.WriteHeader(http.StatusOK)
+						},
+					)
+				},
+			).WithListener(n),
 		),
 	)
 	l.Run()
@@ -85,19 +88,21 @@ func TestStopServerShutsDown(t *testing.T) {
 	p, n := system.ClaimPort()
 	l := New(
 		logger.New(context.Background()),
-		WithListener(
-			n,
-			func(m *http.ServeMux) {
-				m.HandleFunc(
-					location.Health,
-					func(
-						w http.ResponseWriter,
-						_ *http.Request,
-					) {
-						w.WriteHeader(http.StatusOK)
-					},
-				)
-			},
+		WithServer(
+			server.New(
+				"",
+				func(m *http.ServeMux) {
+					m.HandleFunc(
+						location.Health,
+						func(
+							w http.ResponseWriter,
+							_ *http.Request,
+						) {
+							w.WriteHeader(http.StatusOK)
+						},
+					)
+				},
+			).WithListener(n),
 		),
 	)
 	l.Run()
@@ -110,30 +115,33 @@ func TestRunServerMiddleware(t *testing.T) {
 	p := system.FindUnusedPort(19300)
 	l := New(
 		logger.New(context.Background()),
-		WithServerMiddleware(
-			fmt.Sprintf(":%d", p),
-			func(m *http.ServeMux) {
-				m.HandleFunc(
-					location.Health,
-					func(
-						w http.ResponseWriter,
-						_ *http.Request,
-					) {
-						w.WriteHeader(http.StatusOK)
-					},
-				)
-			},
-			func(h http.Handler) http.Handler {
-				return http.HandlerFunc(
-					func(
-						w http.ResponseWriter,
-						r *http.Request,
-					) {
-						w.Header().Set("X-Test", "middleware")
-						h.ServeHTTP(w, r)
-					},
-				)
-			},
+		WithServer(
+			server.New(
+				fmt.Sprintf(":%d", p),
+				func(m *http.ServeMux) {
+					m.HandleFunc(
+						location.Health,
+						func(
+							w http.ResponseWriter,
+							_ *http.Request,
+						) {
+							w.WriteHeader(http.StatusOK)
+						},
+					)
+				},
+			).WithMiddleware(
+				func(h http.Handler) http.Handler {
+					return http.HandlerFunc(
+						func(
+							w http.ResponseWriter,
+							r *http.Request,
+						) {
+							w.Header().Set("X-Test", "middleware")
+							h.ServeHTTP(w, r)
+						},
+					)
+				},
+			),
 		),
 	)
 	l.Run()
@@ -152,20 +160,22 @@ func TestRunMixedOrder(t *testing.T) {
 	l := New(
 		logger.New(context.Background()),
 		WithWorker(mock_worker.New("a", &log)),
-		WithListener(
-			n,
-			func(m *http.ServeMux) {
-				log = append(log, "start:server")
-				m.HandleFunc(
-					location.Health,
-					func(
-						w http.ResponseWriter,
-						_ *http.Request,
-					) {
-						w.WriteHeader(http.StatusOK)
-					},
-				)
-			},
+		WithServer(
+			server.New(
+				"",
+				func(m *http.ServeMux) {
+					log = append(log, "start:server")
+					m.HandleFunc(
+						location.Health,
+						func(
+							w http.ResponseWriter,
+							_ *http.Request,
+						) {
+							w.WriteHeader(http.StatusOK)
+						},
+					)
+				},
+			).WithListener(n),
 		),
 		WithWorker(mock_worker.New("b", &log)),
 	)

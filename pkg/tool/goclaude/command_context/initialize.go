@@ -11,7 +11,7 @@ func (c *Context) Initialize(
 	port int,
 ) {
 	r, e := client.NewClientWithResponses(
-		locator.New(host).Port(port).Insecure().String(),
+		locator.New(host).Port(port).String(),
 	)
 	errors.PanicOnError(e)
 	c.client = r

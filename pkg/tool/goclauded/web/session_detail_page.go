@@ -203,15 +203,8 @@ func (s *Server) sessionDetailPage(
 	content = append(
 		content,
 		html.Div(
-			gomponents.Attr("hx-ext", "sse"),
-			gomponents.Attr(
-				"sse-connect",
-				fmt.Sprintf("/sessions/%s/event", d.Identifier),
-			),
-			html.Div(
-				gomponents.Attr("sse-swap", constant.Pulse),
-				s.pulseSection(d.Identifier),
-			),
+			gomponents.Attr("sse-swap", constant.Pulse),
+			s.pulseSection(d.Identifier),
 		),
 	)
 	content = append(
@@ -247,10 +240,11 @@ func (s *Server) sessionDetailPage(
 			),
 		),
 	)
-	s.view.RenderPage(
+	s.view.RenderLivePage(
 		w,
 		title,
 		constant.SessionsPath,
+		fmt.Sprintf("subscribe=pulse&session=%s", d.Identifier),
 		content...,
 	)
 }

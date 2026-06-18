@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"time"
@@ -17,6 +18,16 @@ func (s *Service) sweepInactivity() {
 				constant.InactivityTimeout,
 				e.CallsignValue(),
 				map[string]string{"topic": e.Topic},
+			),
+		)
+		errors.PanicOnError(
+			s.PushQueue(
+				e.CallsignValue(),
+				constant.QueueTimeout,
+				fmt.Sprintf(
+					"You were timed out due to 1 hour inactivity. Last topic: %s",
+					e.Topic,
+				),
 			),
 		)
 	}

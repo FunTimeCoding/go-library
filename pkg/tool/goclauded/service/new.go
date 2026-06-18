@@ -34,5 +34,6 @@ func New(
 		cache:             session_cache.New(),
 		clock:             clock,
 		logger:            l,
+		lastMemoryPoll:    clock().UTC().Format("2006-01-02T15:04:05Z"),
 	}
 }

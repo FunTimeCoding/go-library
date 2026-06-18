@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	lifecycleServer "github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/metric"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager"
@@ -41,23 +42,24 @@ func Run(
 		g,
 		lifecycle.WithWorker(m),
 		lifecycle.WithWorker(w),
-		lifecycle.WithServerMiddleware(
-			constant.ListenAddress,
-			func(m *http.ServeMux) {
-				t := telemetry.NewEnvironment()
-				generated.HandlerFromMux(
-					generated.NewStrictHandler(
-						server.New(s, w, r),
-						[]generated.StrictMiddlewareFunc{
-							web.TelemetryMiddleware(t),
-						},
-					),
-					m,
-				)
-				model_context.New(s, w, r, t, o.Version).Mount(m)
-				alertWeb.New(s, w).Mount(m)
-			},
-			web.RecoveryMiddleware(r),
+		lifecycle.WithServer(
+			lifecycleServer.New(
+				constant.ListenAddress,
+				func(m *http.ServeMux) {
+					t := telemetry.NewEnvironment()
+					generated.HandlerFromMux(
+						generated.NewStrictHandler(
+							server.New(s, w, r),
+							[]generated.StrictMiddlewareFunc{
+								web.TelemetryMiddleware(t),
+							},
+						),
+						m,
+					)
+					model_context.New(s, w, r, t, o.Version).Mount(m)
+					alertWeb.New(s, w).Mount(m)
+				},
+			).WithMiddleware(web.RecoveryMiddleware(r)),
 		),
 	).RunUntilSignal()
 }

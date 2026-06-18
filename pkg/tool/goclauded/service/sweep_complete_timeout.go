@@ -19,6 +19,13 @@ func (s *Service) sweepCompleteTimeout() {
 				nil,
 			),
 		)
+		errors.PanicOnError(
+			s.PushQueue(
+				e.CallsignValue(),
+				constant.QueueTimeout,
+				"You were timed out after completing without re-announcing.",
+			),
+		)
 	}
 
 	if len(sessions) > 0 {

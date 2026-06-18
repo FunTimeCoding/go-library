@@ -12,7 +12,12 @@ func (s *Server) pulse(
 	x context.Context,
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	c := s.resolveCaller(x, constant.Pulse)
+	c, e := s.resolveCaller(x, constant.Pulse)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	line, e := q.RequireString(constant.Line)
 
 	if e != nil {

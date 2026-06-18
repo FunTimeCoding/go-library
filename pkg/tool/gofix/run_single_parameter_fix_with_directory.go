@@ -1,9 +1,6 @@
 package gofix
 
-import (
-	"github.com/funtimecoding/go-library/pkg/lint/output"
-	"go/token"
-)
+import "github.com/funtimecoding/go-library/pkg/lint/output"
 
 func runSingleParameterFixWithDirectory(
 	patterns []string,
@@ -14,8 +11,7 @@ func runSingleParameterFixWithDirectory(
 		patterns = []string{"./..."}
 	}
 
-	fileSet := token.NewFileSet()
-	all := load(fileSet, directory, patterns)
+	all, fileSet := load(directory, patterns)
 	edits := findSingleParameterEdits(all, r)
 
 	if len(edits) == 0 {

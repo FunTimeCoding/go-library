@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/event/notifier"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
+	"github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/model_context"
@@ -29,18 +30,19 @@ func Run(
 	lifecycle.New(
 		l,
 		lifecycle.WithWorker(w),
-		lifecycle.WithServerMiddleware(
-			web.AddressPort(o.Port),
-			func(m *http.ServeMux) {
-				model_context.New(
-					v,
-					r,
-					telemetry.NewEnvironment(),
-					o.Version,
-				).Mount(m)
-				sproutWeb.New(v).Mount(m)
-			},
-			web.RecoveryMiddleware(r),
+		lifecycle.WithServer(
+			server.New(
+				web.AddressPort(o.Port),
+				func(m *http.ServeMux) {
+					model_context.New(
+						v,
+						r,
+						telemetry.NewEnvironment(),
+						o.Version,
+					).Mount(m)
+					sproutWeb.New(v).Mount(m)
+				},
+			).WithMiddleware(web.RecoveryMiddleware(r)),
 		),
 	).RunUntilSignal()
 }

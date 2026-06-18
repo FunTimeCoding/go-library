@@ -15,7 +15,12 @@ func (s *Server) roster(
 	x context.Context,
 	_ mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	s.resolveCaller(x, constant.Roster)
+	_, e := s.resolveCaller(x, constant.Roster)
+
+	if e != nil {
+		return s.captureFail(e, library.UnexpectedError)
+	}
+
 	sessions, e := s.service.ListSessions()
 
 	if e != nil {

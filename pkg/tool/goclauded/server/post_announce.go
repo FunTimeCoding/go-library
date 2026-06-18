@@ -2,8 +2,10 @@ package server
 
 import (
 	"context"
+	"errors"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/strings/join"
+	goclauded "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 )
 
@@ -31,6 +33,12 @@ func (s *Server) PostAnnounce(
 		r.Body.Topic,
 		files,
 	); e != nil {
+		if errors.Is(e, goclauded.ErrorCallsignNotFound) {
+			return server.PostAnnounce500JSONResponse(
+				server.ErrorResponse{Error: e.Error()},
+			), nil
+		}
+
 		return server.PostAnnounce500JSONResponse(
 			*s.captureFail(e, constant.UnexpectedError),
 		), nil

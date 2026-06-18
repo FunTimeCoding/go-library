@@ -1,13 +1,17 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
+)
 
 func (s *Store) Announce(
 	name string,
 	topic string,
 	files string,
 ) error {
-	return s.database.Model(session.Stub()).Where(
+	result := s.database.Model(session.Stub()).Where(
 		"callsign = ?",
 		name,
 	).Updates(
@@ -16,5 +20,15 @@ func (s *Store) Announce(
 			"files":     files,
 			"last_seen": s.clock(),
 		},
-	).Error
+	)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("%w: %s", constant.ErrorCallsignNotFound, name)
+	}
+
+	return nil
 }

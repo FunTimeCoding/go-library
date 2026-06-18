@@ -65,6 +65,10 @@ func (s *Server) announce(
 		topic,
 		join.NewLine(files),
 	); f != nil {
+		if errors.Is(f, constant.ErrorCallsignNotFound) {
+			return response.Fail(f.Error())
+		}
+
 		return s.captureFail(f, library.UnexpectedError)
 	}
 

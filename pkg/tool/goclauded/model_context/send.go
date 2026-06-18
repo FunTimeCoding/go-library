@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
@@ -32,6 +33,10 @@ func (s *Server) send(
 	to := q.GetString(constant.To, "")
 
 	if f := s.service.Send(c.Callsign, to, body); f != nil {
+		if errors.Is(f, constant.ErrorCallsignNotFound) {
+			return response.Fail(f.Error())
+		}
+
 		return s.captureFail(f, library.UnexpectedError)
 	}
 

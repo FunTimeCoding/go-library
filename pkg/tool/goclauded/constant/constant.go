@@ -8,6 +8,7 @@ import (
 var (
 	ErrorAliasCollision   = errors.New("alias already in use")
 	ErrorCallsignNotFound = errors.New("callsign does not exist")
+	ErrorEventNotFound    = errors.New("event not found")
 	Identity              = identity.New(
 		"goclauded",
 		"Session coordination for parallel Claude Code sessions",

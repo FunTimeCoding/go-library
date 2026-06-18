@@ -10,6 +10,22 @@ func (s *Service) Send(
 	to string,
 	body string,
 ) error {
+	if to != "" {
+		session, e := s.store.SessionByCallsign(to)
+
+		if e != nil {
+			return e
+		}
+
+		if session == nil {
+			return fmt.Errorf(
+				"%w: %s",
+				constant.ErrorCallsignNotFound,
+				to,
+			)
+		}
+	}
+
 	if e := s.store.SendMessage(name, to, body); e != nil {
 		return e
 	}

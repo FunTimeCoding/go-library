@@ -1,6 +1,11 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/relational"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/event"
+)
 
 func (s *Store) EditEvent(
 	identifier uint,
@@ -12,6 +17,10 @@ func (s *Store) EditEvent(
 		"identifier = ?",
 		identifier,
 	).First(&existing).Error; e != nil {
+		if relational.NotFound(e) {
+			return nil, fmt.Errorf("%w: %d", constant.ErrorEventNotFound, identifier)
+		}
+
 		return nil, e
 	}
 

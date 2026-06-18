@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
@@ -38,6 +39,10 @@ func (s *Server) edit(
 	_, g = s.service.EditEvent(uint(identifier), message)
 
 	if g != nil {
+		if errors.Is(g, constant.ErrorEventNotFound) {
+			return response.Fail(g.Error())
+		}
+
 		return s.captureFail(g, library.UnexpectedError)
 	}
 

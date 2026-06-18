@@ -5,13 +5,16 @@ import (
 	"github.com/funtimecoding/go-library/pkg/identity"
 )
 
-var ErrorAliasCollision = errors.New("alias already in use")
-var Identity = identity.New(
-	"goclauded",
-	"Session coordination for parallel Claude Code sessions",
-	"goclauded",
-).WithInstructions(
-	"Session coordination for parallel Claude Code sessions. Read the goclauded://guide/session-workflow resource on your first turn to understand the session lifecycle, tool rhythm, and coordination patterns.",
+var (
+	ErrorAliasCollision   = errors.New("alias already in use")
+	ErrorCallsignNotFound = errors.New("callsign does not exist")
+	Identity              = identity.New(
+		"goclauded",
+		"Session coordination for parallel Claude Code sessions",
+		"goclauded",
+	).WithInstructions(
+		"Session coordination for parallel Claude Code sessions. Read the goclauded://guide/session-workflow resource on your first turn to understand the session lifecycle, tool rhythm, and coordination patterns.",
+	)
 )
 
 const (

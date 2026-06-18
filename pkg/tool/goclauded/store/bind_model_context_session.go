@@ -1,16 +1,29 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
+import (
+	"fmt"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store/session"
+)
 
 func (s *Store) BindModelContextSession(
 	name string,
 	modelContextSessionIdentifier string,
 ) error {
-	return s.database.Model(session.Stub()).Where(
+	result := s.database.Model(session.Stub()).Where(
 		"callsign = ?",
 		name,
-	).Update(
-		"model_context_session",
-		modelContextSessionIdentifier,
-	).Error
+	).Updates(map[string]any{
+		"model_context_session": modelContextSessionIdentifier,
+	})
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("%w: %s", constant.ErrorCallsignNotFound, name)
+	}
+
+	return nil
 }

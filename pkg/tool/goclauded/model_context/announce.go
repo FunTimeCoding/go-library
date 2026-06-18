@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
@@ -44,6 +45,10 @@ func (s *Server) announce(
 			name,
 			cs.SessionID(),
 		); f != nil {
+			if errors.Is(f, constant.ErrorCallsignNotFound) {
+				return response.Fail(f.Error())
+			}
+
 			return s.captureFail(f, library.UnexpectedError)
 		}
 	}

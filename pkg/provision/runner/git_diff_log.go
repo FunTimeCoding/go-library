@@ -5,7 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/system/run"
 )
 
-func (r *Runner) gitDiffLog(old string, new string) string {
+func (r *Runner) gitDiffLog(
+	old string,
+	new string,
+) string {
 	c := run.New()
 	c.Directory = r.clonePath
 	c.Start(

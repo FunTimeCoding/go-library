@@ -23,9 +23,9 @@ func New(
 	}
 	result.provision = runner.New(
 		runner.Configuration{
-			Repository:  o.Repository,
-			ClonePath:   o.ClonePath,
-			ToolPath:    o.TerraformPath,
+			Repository:      o.Repository,
+			ClonePath:       o.ClonePath,
+			ToolPath:        o.TerraformPath,
 			ApplyFunction:   result.apply,
 			InitFunction:    result.terraformInit,
 			CleanupFunction: s.Cleanup,

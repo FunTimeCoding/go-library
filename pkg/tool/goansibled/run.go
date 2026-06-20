@@ -21,7 +21,10 @@ func Run(
 	r face.Reporter,
 ) {
 	l := logger.New(context.Background())
-	s := store.New(relational.New(o.PostgresLocator).Mapper(), "playbook_runs")
+	s := store.New(
+		relational.New(o.PostgresLocator).Mapper(),
+		"playbook_runs",
+	)
 	n := runner.New(o, s, l, r)
 	lifecycle.New(
 		l,

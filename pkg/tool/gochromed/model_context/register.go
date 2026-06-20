@@ -219,6 +219,12 @@ func (s *Server) register() {
 					"Take a new snapshot after filling (default: true)",
 				),
 			),
+			mcp.WithBoolean(
+				constant.Direct,
+				mcp.Description(
+					"Set value directly instead of using CDP Input.insertText (default: false). Use when the default path fails on exotic web components or shadow DOM elements.",
+				),
+			),
 		),
 		mcp.NewTypedToolHandler(s.Fill),
 	)

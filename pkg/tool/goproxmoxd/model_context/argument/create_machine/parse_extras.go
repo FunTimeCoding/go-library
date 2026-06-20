@@ -21,7 +21,8 @@ func parseExtras(s string) []proxmox.VirtualMachineOption {
 				proxmox.VirtualMachineOption{
 					Name:  strings.TrimSpace(parts[0]),
 					Value: strings.TrimSpace(parts[1]),
-				})
+				},
+			)
 		}
 	}
 

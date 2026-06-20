@@ -37,11 +37,12 @@ func (s *Server) Fill(
 		)
 	}
 
+	direct := a.Direct != nil && *a.Direct
 	x := s.client.AcquireTarget(t.Identifier)
 	e = withTimeoutAction(
 		constant.TargetTimeout,
 		func() error {
-			return s.client.FillNode(x, backendID, a.Value)
+			return s.client.FillNode(x, backendID, a.Value, direct)
 		},
 	)
 

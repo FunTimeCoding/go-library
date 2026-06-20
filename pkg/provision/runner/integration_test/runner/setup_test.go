@@ -17,7 +17,10 @@ func TestSetupReturnsFalseSkipsApply(t *testing.T) {
 	r := runner.New(
 		runner.Configuration{
 			SetupFunction: func() bool { return false },
-			ApplyFunction: func(_ map[string]any, _ string) any {
+			ApplyFunction: func(
+				_ map[string]any,
+				_ string,
+			) any {
 				applied = true
 
 				return nil

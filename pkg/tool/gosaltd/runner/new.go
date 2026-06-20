@@ -26,9 +26,9 @@ func New(
 	}
 	result.provision = runner.New(
 		runner.Configuration{
-			Repository:  o.Repository,
-			ClonePath:   o.ClonePath,
-			ToolPath:    o.SaltPath,
+			Repository:      o.Repository,
+			ClonePath:       o.ClonePath,
+			ToolPath:        o.SaltPath,
 			ApplyFunction:   result.apply,
 			SetupFunction:   result.connectLoop,
 			CleanupFunction: s.Cleanup,

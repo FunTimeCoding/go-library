@@ -30,7 +30,7 @@ func check(c *command_context.Context) *cobra.Command {
 				json.NewEncoder(os.Stdout).Encode(
 					hookOutput{
 						HookSpecificOutput: hookSpecificOutput{
-							HookEventName:    "UserPromptSubmit",
+							HookEventName:     "UserPromptSubmit",
 							AdditionalContext: o,
 						},
 					},

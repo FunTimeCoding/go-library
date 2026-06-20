@@ -49,9 +49,10 @@ func (s *Server) DeleteMachine(
 	task, e := c.DeleteMachine(
 		vm,
 		&proxmox.VirtualMachineDeleteOptions{
-		Purge:                    proxmox.IntOrBool(a.Purge),
-		DestroyUnreferencedDisks: proxmox.IntOrBool(true),
-	})
+			Purge:                    proxmox.IntOrBool(a.Purge),
+			DestroyUnreferencedDisks: proxmox.IntOrBool(true),
+		},
+	)
 
 	if e != nil {
 		return s.captureDetail(e)

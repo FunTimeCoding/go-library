@@ -14,13 +14,15 @@ import (
 
 func TestDrainChannelsOnStop(t *testing.T) {
 	gate := make(chan struct{})
-	t.Cleanup(func() {
-		select {
-		case <-gate:
-		default:
-			close(gate)
-		}
-	})
+	t.Cleanup(
+		func() {
+			select {
+			case <-gate:
+			default:
+				close(gate)
+			}
+		},
+	)
 	r := runner.New(
 		runner.Configuration{
 			SetupFunction: func() bool {
@@ -28,7 +30,10 @@ func TestDrainChannelsOnStop(t *testing.T) {
 
 				return false
 			},
-			ApplyFunction: func(_ map[string]any, _ string) any {
+			ApplyFunction: func(
+				_ map[string]any,
+				_ string,
+			) any {
 				return nil
 			},
 		},

@@ -231,15 +231,29 @@ func (s *Server) register() {
 			mcp.WithDescription(
 				"Create a virtual machine. Waits for the creation task to complete before returning.",
 			),
-			mcp.WithString("node", mcp.Required(), mcp.Description("Target node name")),
-			mcp.WithString("name", mcp.Required(), mcp.Description("VM name")),
+			mcp.WithString(
+				"node",
+				mcp.Required(),
+				mcp.Description("Target node name"),
+			),
+			mcp.WithString(
+				"name",
+				mcp.Required(),
+				mcp.Description("VM name"),
+			),
 			mcp.WithNumber(
 				"identifier",
 				mcp.Description("VMID (auto-allocated when omitted)"),
 			),
 			mcp.WithNumber("cores", mcp.Description("CPU cores (default 2)")),
-			mcp.WithNumber("memory", mcp.Description("Memory in MiB (default 2048)")),
-			mcp.WithNumber("disk_size", mcp.Description("Disk size in GiB (default 32)")),
+			mcp.WithNumber(
+				"memory",
+				mcp.Description("Memory in MiB (default 2048)"),
+			),
+			mcp.WithNumber(
+				"disk_size",
+				mcp.Description("Disk size in GiB (default 32)"),
+			),
 			mcp.WithString(
 				"disk_storage",
 				mcp.Description("Storage backend (default local-lvm)"),
@@ -248,9 +262,15 @@ func (s *Server) register() {
 				"disk_import",
 				mcp.Description("Import-from path for disk image, e.g. local:import/debian-13-generic-amd64.qcow2"),
 			),
-			mcp.WithString("bridge", mcp.Description("Network bridge (default vnet0)")),
+			mcp.WithString(
+				"bridge",
+				mcp.Description("Network bridge (default vnet0)"),
+			),
 			mcp.WithString("ci_user", mcp.Description("Cloud-init user")),
-			mcp.WithString("ci_password", mcp.Description("Cloud-init password")),
+			mcp.WithString(
+				"ci_password",
+				mcp.Description("Cloud-init password"),
+			),
 			mcp.WithString(
 				"ssh_keys",
 				mcp.Description("SSH public keys, newline-separated"),
@@ -259,12 +279,18 @@ func (s *Server) register() {
 				"ip_config",
 				mcp.Description("Cloud-init IP config (default ip=dhcp when cloud-init is used)"),
 			),
-			mcp.WithString("os_type", mcp.Description("OS type, e.g. l26 for Linux")),
+			mcp.WithString(
+				"os_type",
+				mcp.Description("OS type, e.g. l26 for Linux"),
+			),
 			mcp.WithBoolean(
 				"start",
 				mcp.Description("Start VM after creation (default false)"),
 			),
-			mcp.WithString("tags", mcp.Description("Semicolon-separated tags")),
+			mcp.WithString(
+				"tags",
+				mcp.Description("Semicolon-separated tags"),
+			),
 			mcp.WithString(
 				"extras",
 				mcp.Description("Additional Proxmox options as comma-separated key=value pairs"),

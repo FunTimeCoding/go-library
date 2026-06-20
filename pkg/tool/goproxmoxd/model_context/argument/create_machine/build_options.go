@@ -37,7 +37,8 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 			option(
 				"scsi0",
 				fmt.Sprintf("%s:0,import-from=%s", diskStorage, m.DiskImport),
-			))
+			),
+		)
 	} else {
 		diskSize := m.DiskSize
 
@@ -50,7 +51,8 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 			option(
 				"scsi0",
 				fmt.Sprintf("%s:%d", diskStorage, diskSize),
-			))
+			),
+		)
 	}
 
 	result = append(result, option("boot", "order=scsi0"))
@@ -65,7 +67,8 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		option(
 			"net0",
 			fmt.Sprintf("virtio,bridge=%s", bridge),
-		))
+		),
+	)
 
 	if m.OSType != "" {
 		result = append(result, option("ostype", m.OSType))
@@ -81,7 +84,10 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 
 	if m.SSHKeys != "" {
 		keys := strings.Split(m.SSHKeys, "\n")
-		result = append(result, option("sshkeys", proxmox.EncodeSSHKeys(keys...)))
+		result = append(
+			result,
+			option("sshkeys", proxmox.EncodeSSHKeys(keys...)),
+		)
 	}
 
 	if m.CIUser != "" || m.SSHKeys != "" || m.CIPassword != "" {

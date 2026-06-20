@@ -32,7 +32,10 @@ func (s *Server) CreateMachine(
 
 		if e != nil {
 			return server.CreateMachine500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+				ErrorJSONResponse: *s.captureFail(
+					e,
+					constant.UnexpectedError,
+				),
 			}, nil
 		}
 	}
@@ -67,7 +70,10 @@ func (s *Server) CreateMachine(
 
 		if e != nil {
 			return server.CreateMachine500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+				ErrorJSONResponse: *s.captureFail(
+					e,
+					constant.UnexpectedError,
+				),
 			}, nil
 		}
 
@@ -75,7 +81,10 @@ func (s *Server) CreateMachine(
 
 		if e != nil {
 			return server.CreateMachine500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+				ErrorJSONResponse: *s.captureFail(
+					e,
+					constant.UnexpectedError,
+				),
 			}, nil
 		}
 
@@ -83,7 +92,10 @@ func (s *Server) CreateMachine(
 
 		if e != nil {
 			return server.CreateMachine500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
+				ErrorJSONResponse: *s.captureFail(
+					e,
+					constant.UnexpectedError,
+				),
 			}, nil
 		}
 	}

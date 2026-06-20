@@ -28,6 +28,7 @@ const (
 	ReadBody   = "read_body"
 	Click      = "click"
 	Fill       = "fill"
+	Direct     = "direct"
 	Wake       = "wake"
 	TabHistory = "history"
 )

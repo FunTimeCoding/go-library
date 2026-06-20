@@ -8,7 +8,10 @@ import (
 	"testing"
 )
 
-func New(t *testing.T, port int) *Tester {
+func New(
+	t *testing.T,
+	port int,
+) *Tester {
 	t.Helper()
 	c, e := client.NewClientWithResponses(
 		locator.New(

@@ -6,16 +6,19 @@ import (
 )
 
 type Runner struct {
-	repository  string
-	clonePath   string
-	toolPath    string
-	applyFunction   func(parameters map[string]any, triggerSource string) any
+	repository    string
+	clonePath     string
+	toolPath      string
+	applyFunction func(
+		parameters map[string]any,
+		triggerSource string,
+	) any
 	initFunction    func()
 	setupFunction   func() bool
 	cleanupFunction func()
-	logger      *logger.Logger
-	recovery    *recovery.Recovery
-	trigger     chan TriggerRequest
-	sync        chan SyncRequest
-	stop        chan struct{}
+	logger          *logger.Logger
+	recovery        *recovery.Recovery
+	trigger         chan TriggerRequest
+	sync            chan SyncRequest
+	stop            chan struct{}
 }

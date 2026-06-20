@@ -5,7 +5,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func New(m *gorm.DB, tableName string) *Store {
+func New(
+	m *gorm.DB,
+	tableName string,
+) *Store {
 	errors.PanicOnError(m.Table(tableName).AutoMigrate(&Run{}))
 
 	return &Store{mapper: m, tableName: tableName}

@@ -23,9 +23,9 @@ func New(
 	}
 	result.provision = runner.New(
 		runner.Configuration{
-			Repository:  o.Repository,
-			ClonePath:   o.ClonePath,
-			ToolPath:    o.AnsiblePath,
+			Repository:      o.Repository,
+			ClonePath:       o.ClonePath,
+			ToolPath:        o.AnsiblePath,
 			ApplyFunction:   result.apply,
 			CleanupFunction: s.Cleanup,
 		},

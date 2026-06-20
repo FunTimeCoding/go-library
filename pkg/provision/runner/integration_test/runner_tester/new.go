@@ -30,7 +30,10 @@ func New(t *testing.T) *Tester {
 		runner.Configuration{
 			Repository: remote,
 			ClonePath:  clone,
-			ApplyFunction: func(parameters map[string]any, triggerSource string) any {
+			ApplyFunction: func(
+				parameters map[string]any,
+				triggerSource string,
+			) any {
 				call := &ApplyCall{
 					Parameters:    parameters,
 					TriggerSource: triggerSource,

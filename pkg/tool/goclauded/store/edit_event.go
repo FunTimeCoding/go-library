@@ -18,7 +18,11 @@ func (s *Store) EditEvent(
 		identifier,
 	).First(&existing).Error; e != nil {
 		if relational.NotFound(e) {
-			return nil, fmt.Errorf("%w: %d", constant.ErrorEventNotFound, identifier)
+			return nil, fmt.Errorf(
+				"%w: %d",
+				constant.ErrorEventNotFound,
+				identifier,
+			)
 		}
 
 		return nil, e

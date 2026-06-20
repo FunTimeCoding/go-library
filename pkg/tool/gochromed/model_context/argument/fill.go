@@ -7,4 +7,5 @@ type Fill struct {
 	Title    string `json:"title"`
 	URL      string `json:"url"`
 	Snapshot *bool  `json:"snapshot"`
+	Direct   *bool  `json:"direct"`
 }

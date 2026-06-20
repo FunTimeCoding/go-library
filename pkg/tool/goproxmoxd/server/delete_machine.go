@@ -41,7 +41,10 @@ func (s *Server) DeleteMachine(
 	if vm.Status == "running" {
 		return server.DeleteMachine400JSONResponse{
 			ClientErrorJSONResponse: *clientError(
-				fmt.Errorf("vm %d is running — stop it before deleting", r.Identifier),
+				fmt.Errorf(
+					"vm %d is running — stop it before deleting",
+					r.Identifier,
+				),
 			),
 		}, nil
 	}
@@ -55,9 +58,10 @@ func (s *Server) DeleteMachine(
 	task, e := c.DeleteMachine(
 		vm,
 		&proxmox.VirtualMachineDeleteOptions{
-		Purge:                    proxmox.IntOrBool(purge),
-		DestroyUnreferencedDisks: proxmox.IntOrBool(true),
-	})
+			Purge:                    proxmox.IntOrBool(purge),
+			DestroyUnreferencedDisks: proxmox.IntOrBool(true),
+		},
+	)
 
 	if e != nil {
 		return server.DeleteMachine500JSONResponse{

@@ -17,14 +17,35 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.Sync,
+			mcp.WithDescription(
+				"Pull the latest changes from the repository. Returns a filtered log of commits that touched ansible playbooks.",
+			),
+		),
+		s.syncRepository,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.Trigger,
 			mcp.WithDescription(
-				"Trigger an ansible playbook run. Omit playbook to run all configured playbooks. Returns immediately; use runs/run tools to check results.",
+				"Trigger an ansible playbook run. Set update to pull latest code first. Set synchronous to wait for the result instead of returning immediately.",
 			),
 			mcp.WithString(
 				constant.Playbook,
 				mcp.Description(
 					"Specific playbook path to run. Omit to run all.",
+				),
+			),
+			mcp.WithBoolean(
+				constant.Update,
+				mcp.Description(
+					"Pull latest code before running. Default: false.",
+				),
+			),
+			mcp.WithBoolean(
+				constant.Synchronous,
+				mcp.Description(
+					"Wait for the run to complete and return the result. Default: false.",
 				),
 			),
 		),

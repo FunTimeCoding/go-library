@@ -6,12 +6,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle"
 	"github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 	"github.com/funtimecoding/go-library/pkg/relational"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/runner"
-	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/store"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -21,7 +21,7 @@ func Run(
 	r face.Reporter,
 ) {
 	l := logger.New(context.Background())
-	s := store.New(relational.New(o.PostgresLocator).Mapper())
+	s := store.New(relational.New(o.PostgresLocator).Mapper(), "terraform_runs")
 	n := runner.New(o, s, l, r)
 	lifecycle.New(
 		l,

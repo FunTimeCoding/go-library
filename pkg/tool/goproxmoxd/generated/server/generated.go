@@ -60,6 +60,33 @@ type ContainerDetail struct {
 	Uptime      *int64  `json:"uptime,omitempty"`
 }
 
+// CreateMachineRequest defines model for CreateMachineRequest.
+type CreateMachineRequest struct {
+	Bridge      *string `json:"bridge,omitempty"`
+	CiPassword  *string `json:"ciPassword,omitempty"`
+	CiUser      *string `json:"ciUser,omitempty"`
+	Cores       *int    `json:"cores,omitempty"`
+	DiskImport  *string `json:"diskImport,omitempty"`
+	DiskSize    *int    `json:"diskSize,omitempty"`
+	DiskStorage *string `json:"diskStorage,omitempty"`
+	Extras      *string `json:"extras,omitempty"`
+	Identifier  *int64  `json:"identifier,omitempty"`
+	IpConfig    *string `json:"ipConfig,omitempty"`
+	Memory      *int    `json:"memory,omitempty"`
+	Name        string  `json:"name"`
+	Node        string  `json:"node"`
+	OsType      *string `json:"osType,omitempty"`
+	SshKeys     *string `json:"sshKeys,omitempty"`
+	Start       *bool   `json:"start,omitempty"`
+	Tags        *string `json:"tags,omitempty"`
+}
+
+// CreateMachineResult defines model for CreateMachineResult.
+type CreateMachineResult struct {
+	Identifier int64   `json:"identifier"`
+	Status     *string `json:"status,omitempty"`
+}
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	Error           string `json:"error"`
@@ -239,6 +266,24 @@ type ListMachinesParams struct {
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
+// CreateMachineParams defines parameters for CreateMachine.
+type CreateMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// DeleteMachineParams defines parameters for DeleteMachine.
+type DeleteMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+
+	// Purge Remove from cluster config and associated resources.
+	Purge *bool `form:"purge,omitempty" json:"purge,omitempty"`
+}
+
 // GetMachineParams defines parameters for GetMachine.
 type GetMachineParams struct {
 	// Instance Proxmox instance name. Optional when only one instance is configured.
@@ -341,6 +386,9 @@ type GetNodeStatusParams struct {
 // CreateContainerSnapshotJSONRequestBody defines body for CreateContainerSnapshot for application/json ContentType.
 type CreateContainerSnapshotJSONRequestBody = SnapshotRequest
 
+// CreateMachineJSONRequestBody defines body for CreateMachine for application/json ContentType.
+type CreateMachineJSONRequestBody = CreateMachineRequest
+
 // CreateMachineSnapshotJSONRequestBody defines body for CreateMachineSnapshot for application/json ContentType.
 type CreateMachineSnapshotJSONRequestBody = SnapshotRequest
 
@@ -370,6 +418,12 @@ type ServerInterface interface {
 
 	// (GET /api/v1/machines)
 	ListMachines(w http.ResponseWriter, r *http.Request, params ListMachinesParams)
+
+	// (POST /api/v1/machines)
+	CreateMachine(w http.ResponseWriter, r *http.Request, params CreateMachineParams)
+
+	// (DELETE /api/v1/machines/{identifier})
+	DeleteMachine(w http.ResponseWriter, r *http.Request, identifier int64, params DeleteMachineParams)
 
 	// (GET /api/v1/machines/{identifier})
 	GetMachine(w http.ResponseWriter, r *http.Request, identifier int64, params GetMachineParams)
@@ -730,6 +784,85 @@ func (siw *ServerInterfaceWrapper) ListMachines(w http.ResponseWriter, r *http.R
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.ListMachines(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateMachine operation middleware
+func (siw *ServerInterfaceWrapper) CreateMachine(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateMachineParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateMachine(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteMachine operation middleware
+func (siw *ServerInterfaceWrapper) DeleteMachine(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
+
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params DeleteMachineParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "node" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "node", Err: err})
+		return
+	}
+
+	// ------------- Optional query parameter "purge" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "purge", r.URL.Query(), &params.Purge, runtime.BindQueryParameterOptions{Type: "boolean", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "purge", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteMachine(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -1380,6 +1513,8 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/containers/{identifier}/snapshots/{name}/rollback", wrapper.RollbackContainerSnapshot)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/instances", wrapper.ListInstances)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines", wrapper.ListMachines)
+	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines", wrapper.CreateMachine)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/v1/machines/{identifier}", wrapper.DeleteMachine)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/machines/{identifier}", wrapper.GetMachine)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/reset", wrapper.ResetMachine)
 	m.HandleFunc("POST "+options.BaseURL+"/api/v1/machines/{identifier}/shutdown", wrapper.ShutdownMachine)
@@ -1703,6 +1838,86 @@ func (response ListMachines400JSONResponse) VisitListMachinesResponse(w http.Res
 type ListMachines500JSONResponse struct{ ErrorJSONResponse }
 
 func (response ListMachines500JSONResponse) VisitListMachinesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateMachineRequestObject struct {
+	Params CreateMachineParams
+	Body   *CreateMachineJSONRequestBody
+}
+
+type CreateMachineResponseObject interface {
+	VisitCreateMachineResponse(w http.ResponseWriter) error
+}
+
+type CreateMachine200JSONResponse CreateMachineResult
+
+func (response CreateMachine200JSONResponse) VisitCreateMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateMachine400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response CreateMachine400JSONResponse) VisitCreateMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateMachine500JSONResponse struct{ ErrorJSONResponse }
+
+func (response CreateMachine500JSONResponse) VisitCreateMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteMachineRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     DeleteMachineParams
+}
+
+type DeleteMachineResponseObject interface {
+	VisitDeleteMachineResponse(w http.ResponseWriter) error
+}
+
+type DeleteMachine200JSONResponse TaskResult
+
+func (response DeleteMachine200JSONResponse) VisitDeleteMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteMachine400JSONResponse struct{ ClientErrorJSONResponse }
+
+func (response DeleteMachine400JSONResponse) VisitDeleteMachineResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteMachine404Response struct {
+}
+
+func (response DeleteMachine404Response) VisitDeleteMachineResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteMachine500JSONResponse struct{ ErrorJSONResponse }
+
+func (response DeleteMachine500JSONResponse) VisitDeleteMachineResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -2258,6 +2473,12 @@ type StrictServerInterface interface {
 	// (GET /api/v1/machines)
 	ListMachines(ctx context.Context, request ListMachinesRequestObject) (ListMachinesResponseObject, error)
 
+	// (POST /api/v1/machines)
+	CreateMachine(ctx context.Context, request CreateMachineRequestObject) (CreateMachineResponseObject, error)
+
+	// (DELETE /api/v1/machines/{identifier})
+	DeleteMachine(ctx context.Context, request DeleteMachineRequestObject) (DeleteMachineResponseObject, error)
+
 	// (GET /api/v1/machines/{identifier})
 	GetMachine(ctx context.Context, request GetMachineRequestObject) (GetMachineResponseObject, error)
 
@@ -2537,6 +2758,66 @@ func (sh *strictHandler) ListMachines(w http.ResponseWriter, r *http.Request, pa
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(ListMachinesResponseObject); ok {
 		if err := validResponse.VisitListMachinesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateMachine operation middleware
+func (sh *strictHandler) CreateMachine(w http.ResponseWriter, r *http.Request, params CreateMachineParams) {
+	var request CreateMachineRequestObject
+
+	request.Params = params
+
+	var body CreateMachineJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateMachine(ctx, request.(CreateMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateMachineResponseObject); ok {
+		if err := validResponse.VisitCreateMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteMachine operation middleware
+func (sh *strictHandler) DeleteMachine(w http.ResponseWriter, r *http.Request, identifier int64, params DeleteMachineParams) {
+	var request DeleteMachineRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteMachine(ctx, request.(DeleteMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteMachineResponseObject); ok {
+		if err := validResponse.VisitDeleteMachineResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {
@@ -2879,34 +3160,37 @@ func (sh *strictHandler) GetNodeStatus(w http.ResponseWriter, r *http.Request, n
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"AM1QNkVEAAA=",
+	"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",
+	"/Xz+bwAAAP//BMEnaONLAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

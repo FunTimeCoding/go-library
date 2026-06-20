@@ -82,6 +82,27 @@ paths:
           $ref: "#/components/responses/ClientError"
         "500":
           $ref: "#/components/responses/Error"
+    post:
+      operationId: createMachine
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMachineRequest"
+      responses:
+        "200":
+          description: Machine created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateMachineResult"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
   /api/v1/machines/{identifier}:
     get:
       operationId: getMachine
@@ -107,6 +128,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MachineDetail"
+        "404":
+          description: Machine not found.
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "500":
+          $ref: "#/components/responses/Error"
+    delete:
+      operationId: deleteMachine
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      - name: purge
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Remove from cluster config and associated resources.
+      responses:
+        "200":
+          description: Machine deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
         "400":
@@ -906,6 +963,57 @@ components:
           type: integer
           format: int64
         parent:
+          type: string
+    CreateMachineRequest:
+      type: object
+      required:
+      - node
+      - name
+      properties:
+        node:
+          type: string
+        name:
+          type: string
+        identifier:
+          type: integer
+          format: int64
+        cores:
+          type: integer
+        memory:
+          type: integer
+        diskSize:
+          type: integer
+        diskStorage:
+          type: string
+        diskImport:
+          type: string
+        bridge:
+          type: string
+        ciUser:
+          type: string
+        ciPassword:
+          type: string
+        sshKeys:
+          type: string
+        ipConfig:
+          type: string
+        osType:
+          type: string
+        start:
+          type: boolean
+        tags:
+          type: string
+        extras:
+          type: string
+    CreateMachineResult:
+      type: object
+      required:
+      - identifier
+      properties:
+        identifier:
+          type: integer
+          format: int64
+        status:
           type: string
     SnapshotRequest:
       type: object

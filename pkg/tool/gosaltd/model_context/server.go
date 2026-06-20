@@ -2,8 +2,8 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/runner"
-	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/store"
 	"github.com/mark3labs/mcp-go/server"
 )
 

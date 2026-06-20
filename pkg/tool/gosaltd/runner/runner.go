@@ -3,18 +3,17 @@ package runner
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/provision/runner"
 	"github.com/funtimecoding/go-library/pkg/provision/salt"
-	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/store"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 )
 
 type Runner struct {
-	repository    string
-	clonePath     string
+	provision     *runner.Runner
+	store         *store.Store
 	saltConnector func() *salt.Client
 	salt          *salt.Client
+	connected     chan struct{}
 	logger        *logger.Logger
 	recovery      *recovery.Recovery
-	store         *store.Store
-	trigger       chan TriggerRequest
-	stop          chan struct{}
 }

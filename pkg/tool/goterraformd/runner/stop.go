@@ -1,5 +1,5 @@
 package runner
 
 func (r *Runner) Stop() {
-	close(r.stop)
+	r.provision.Stop()
 }

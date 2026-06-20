@@ -1,11 +1,11 @@
 package runner
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/provision/runner"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 	"github.com/funtimecoding/go-library/pkg/tool/goansibled/option"
-	"github.com/funtimecoding/go-library/pkg/tool/goansibled/store"
 )
 
 func New(
@@ -14,15 +14,24 @@ func New(
 	l *logger.Logger,
 	r face.Reporter,
 ) *Runner {
-	return &Runner{
-		repository:  o.Repository,
+	result := &Runner{
+		store:       s,
+		playbook:    o.Playbook,
 		clonePath:   o.ClonePath,
 		ansiblePath: o.AnsiblePath,
-		playbook:    o.Playbook,
 		logger:      l,
-		recovery:    recovery.New(l, r),
-		store:       s,
-		trigger:     make(chan TriggerRequest, 1),
-		stop:        make(chan struct{}),
 	}
+	result.provision = runner.New(
+		runner.Configuration{
+			Repository:  o.Repository,
+			ClonePath:   o.ClonePath,
+			ToolPath:    o.AnsiblePath,
+			ApplyFunction:   result.apply,
+			CleanupFunction: s.Cleanup,
+		},
+		l,
+		r,
+	)
+
+	return result
 }

@@ -3,9 +3,9 @@ package model_context
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/runner"
-	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/store"
 )
 
 func New(

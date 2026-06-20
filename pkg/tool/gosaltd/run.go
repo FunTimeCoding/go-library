@@ -7,12 +7,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/lifecycle/server"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/provision/salt"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 	"github.com/funtimecoding/go-library/pkg/relational"
 	"github.com/funtimecoding/go-library/pkg/telemetry"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/runner"
-	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/store"
 	"github.com/funtimecoding/go-library/pkg/web"
 	"net/http"
 )
@@ -22,7 +22,7 @@ func Run(
 	r face.Reporter,
 ) {
 	l := logger.New(context.Background())
-	s := store.New(relational.New(o.PostgresLocator).Mapper())
+	s := store.New(relational.New(o.PostgresLocator).Mapper(), "highstate_runs")
 	n := runner.New(o, salt.NewEnvironment, s, l, r)
 	lifecycle.New(
 		l,

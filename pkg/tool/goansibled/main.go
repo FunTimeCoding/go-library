@@ -22,11 +22,6 @@ func Main(
 	a.String(argument.Repository, "", "Git repository URL")
 	a.String(argument.ClonePath, "", "Local repository path")
 	a.String(
-		argument.AnsiblePath,
-		"",
-		"Path within repository to ansible root",
-	)
-	a.String(
 		argument.Playbook,
 		"",
 		"Comma-separated playbook paths relative to ansible path",
@@ -37,7 +32,7 @@ func Main(
 	o.Version = version
 	o.Repository = a.Required(argument.Repository)
 	o.ClonePath = a.Required(argument.ClonePath)
-	o.AnsiblePath = a.Required(argument.AnsiblePath)
+	o.AnsiblePath = environment.Required(constant.AnsiblePathEnvironment)
 	o.Playbook = a.Slice(argument.Playbook)
 	o.PostgresLocator = environment.Required(postgres.LocatorEnvironment)
 	Run(o, r)

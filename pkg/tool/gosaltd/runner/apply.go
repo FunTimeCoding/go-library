@@ -3,20 +3,31 @@ package runner
 import (
 	"encoding/json"
 	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/store"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/constant"
 	"time"
 )
 
-func (r *Runner) apply(triggerSource string) {
-	head := r.currentHead()
-	record := store.NewHighstateRun()
+func (r *Runner) apply(
+	parameters map[string]any,
+	triggerSource string,
+) any {
+	head := r.provision.CurrentHead()
+	target := "*"
+
+	if v, okay := parameters[constant.Target]; okay {
+		target = v.(string)
+	}
+
+	record := r.store.NewRun()
+	record.Scope = target
 	record.TriggerSource = triggerSource
 	record.Status = store.StatusRunning
 	record.GitHead = head
 	r.store.Create(record)
-	r.logger.Structured("highstate_start")
+	r.logger.Structured("highstate_start", constant.Target, target)
 	start := time.Now()
-	result, e := r.salt.Highstate(AllMinions)
+	result, e := r.salt.Highstate(target)
 	record.DurationMillisecond = time.Since(start).Milliseconds()
 
 	if e != nil {
@@ -36,4 +47,6 @@ func (r *Runner) apply(triggerSource string) {
 	}
 
 	r.store.Update(record)
+
+	return record
 }

@@ -3,7 +3,6 @@ package argument
 const (
 	Action         = "action"
 	All            = "all"
-	AnsiblePath    = "ansible-path"
 	Arm            = "arm"
 	Body           = "body"
 	Branch         = "branch"
@@ -109,7 +108,6 @@ const (
 	Tag            = "tag"
 	Team           = "team"
 	Template       = "template"
-	TerraformPath  = "terraform-path"
 	Text           = "text"
 	Timeout        = "timeout"
 	Title          = "title"

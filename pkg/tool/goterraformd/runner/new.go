@@ -1,11 +1,11 @@
 package runner
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/provision/runner"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/option"
-	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/store"
 )
 
 func New(
@@ -14,15 +14,25 @@ func New(
 	l *logger.Logger,
 	r face.Reporter,
 ) *Runner {
-	return &Runner{
-		repository:    o.Repository,
+	result := &Runner{
+		store:         s,
 		clonePath:     o.ClonePath,
 		terraformPath: o.TerraformPath,
 		logger:        l,
 		reporter:      r,
-		recovery:      recovery.New(l, r),
-		store:         s,
-		trigger:       make(chan TriggerRequest, 1),
-		stop:          make(chan struct{}),
 	}
+	result.provision = runner.New(
+		runner.Configuration{
+			Repository:  o.Repository,
+			ClonePath:   o.ClonePath,
+			ToolPath:    o.TerraformPath,
+			ApplyFunction:   result.apply,
+			InitFunction:    result.terraformInit,
+			CleanupFunction: s.Cleanup,
+		},
+		l,
+		r,
+	)
+
+	return result
 }

@@ -3,6 +3,7 @@ package model_context
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/provision/runner"
 	"github.com/funtimecoding/go-library/pkg/tool/goansibled/constant"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -12,16 +13,34 @@ func (s *Server) triggerRun(
 	r mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
 	playbook := r.GetString(constant.Playbook, "")
-	var playbooks []string
+	update := r.GetBool(constant.Update, false)
+	synchronous := r.GetBool(constant.Synchronous, false)
+	request := runner.TriggerRequest{Update: update}
 
 	if playbook != "" {
-		playbooks = []string{playbook}
+		request.Parameters = map[string]any{
+			constant.Playbook: playbook,
+		}
 	}
 
-	e := s.runner.Trigger(playbooks)
+	if synchronous {
+		request.Response = make(chan *runner.TriggerResult, 1)
+	}
+
+	e := s.runner.Trigger(request)
 
 	if e != nil {
 		return response.Fail(e.Error())
+	}
+
+	if synchronous {
+		result := <-request.Response
+
+		if result.Error != nil {
+			return response.Fail(result.Error.Error())
+		}
+
+		return response.SuccessAny(result.Value)
 	}
 
 	return response.Success("run queued")

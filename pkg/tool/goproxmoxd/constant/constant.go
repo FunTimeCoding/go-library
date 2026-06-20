@@ -40,4 +40,6 @@ const (
 	RollbackContainerSnapshot = "rollback_container_snapshot"
 	DeleteContainerSnapshot   = "delete_container_snapshot"
 	ListNetworks              = "list_networks"
+	CreateMachine             = "create_machine"
+	DeleteMachine             = "delete_machine"
 )

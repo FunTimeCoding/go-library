@@ -4,9 +4,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
+	"github.com/funtimecoding/go-library/pkg/provision/runner"
 	"github.com/funtimecoding/go-library/pkg/provision/salt"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/option"
-	"github.com/funtimecoding/go-library/pkg/tool/gosaltd/store"
 )
 
 func New(
@@ -16,14 +17,25 @@ func New(
 	l *logger.Logger,
 	r face.Reporter,
 ) *Runner {
-	return &Runner{
-		repository:    o.Repository,
-		clonePath:     o.ClonePath,
+	result := &Runner{
+		store:         s,
 		saltConnector: connector,
+		connected:     make(chan struct{}),
 		logger:        l,
 		recovery:      recovery.New(l, r),
-		store:         s,
-		trigger:       make(chan TriggerRequest, 1),
-		stop:          make(chan struct{}),
 	}
+	result.provision = runner.New(
+		runner.Configuration{
+			Repository:  o.Repository,
+			ClonePath:   o.ClonePath,
+			ToolPath:    o.SaltPath,
+			ApplyFunction:   result.apply,
+			SetupFunction:   result.connectLoop,
+			CleanupFunction: s.Cleanup,
+		},
+		l,
+		r,
+	)
+
+	return result
 }

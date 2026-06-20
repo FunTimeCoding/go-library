@@ -1,5 +1,5 @@
 package runner
 
 func (r *Runner) Start() {
-	go r.run()
+	r.provision.Start()
 }

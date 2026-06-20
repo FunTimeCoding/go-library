@@ -2,10 +2,10 @@ package model_context
 
 import (
 	"context"
-	mark "github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/provision/model_context"
 	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goterraformd/model_context/response"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -20,12 +20,13 @@ func (s *Server) runs(
 		return s.captureFail(e, constant.RecentRunsFailed)
 	}
 
-	summaries := make([]response.RunSummary, len(result))
+	summaries := make([]model_context.RunSummary, len(result))
 
 	for i, v := range result {
-		summaries[i] = response.RunSummary{
+		summaries[i] = model_context.RunSummary{
 			ID:                  v.ID,
 			CreatedAt:           v.CreatedAt.Format(time.DateSecond),
+			Scope:               v.Scope,
 			TriggerSource:       v.TriggerSource,
 			DurationMillisecond: v.DurationMillisecond,
 			Status:              v.Status,
@@ -33,5 +34,5 @@ func (s *Server) runs(
 		}
 	}
 
-	return mark.SuccessAny(summaries)
+	return response.SuccessAny(summaries)
 }

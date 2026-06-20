@@ -54,6 +54,33 @@ type ContainerDetail struct {
 	Uptime      *int64  `json:"uptime,omitempty"`
 }
 
+// CreateMachineRequest defines model for CreateMachineRequest.
+type CreateMachineRequest struct {
+	Bridge      *string `json:"bridge,omitempty"`
+	CiPassword  *string `json:"ciPassword,omitempty"`
+	CiUser      *string `json:"ciUser,omitempty"`
+	Cores       *int    `json:"cores,omitempty"`
+	DiskImport  *string `json:"diskImport,omitempty"`
+	DiskSize    *int    `json:"diskSize,omitempty"`
+	DiskStorage *string `json:"diskStorage,omitempty"`
+	Extras      *string `json:"extras,omitempty"`
+	Identifier  *int64  `json:"identifier,omitempty"`
+	IpConfig    *string `json:"ipConfig,omitempty"`
+	Memory      *int    `json:"memory,omitempty"`
+	Name        string  `json:"name"`
+	Node        string  `json:"node"`
+	OsType      *string `json:"osType,omitempty"`
+	SshKeys     *string `json:"sshKeys,omitempty"`
+	Start       *bool   `json:"start,omitempty"`
+	Tags        *string `json:"tags,omitempty"`
+}
+
+// CreateMachineResult defines model for CreateMachineResult.
+type CreateMachineResult struct {
+	Identifier int64   `json:"identifier"`
+	Status     *string `json:"status,omitempty"`
+}
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	Error           string `json:"error"`
@@ -233,6 +260,24 @@ type ListMachinesParams struct {
 	Node *string `form:"node,omitempty" json:"node,omitempty"`
 }
 
+// CreateMachineParams defines parameters for CreateMachine.
+type CreateMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// DeleteMachineParams defines parameters for DeleteMachine.
+type DeleteMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+
+	// Purge Remove from cluster config and associated resources.
+	Purge *bool `form:"purge,omitempty" json:"purge,omitempty"`
+}
+
 // GetMachineParams defines parameters for GetMachine.
 type GetMachineParams struct {
 	// Instance Proxmox instance name. Optional when only one instance is configured.
@@ -335,6 +380,9 @@ type GetNodeStatusParams struct {
 // CreateContainerSnapshotJSONRequestBody defines body for CreateContainerSnapshot for application/json ContentType.
 type CreateContainerSnapshotJSONRequestBody = SnapshotRequest
 
+// CreateMachineJSONRequestBody defines body for CreateMachine for application/json ContentType.
+type CreateMachineJSONRequestBody = CreateMachineRequest
+
 // CreateMachineSnapshotJSONRequestBody defines body for CreateMachineSnapshot for application/json ContentType.
 type CreateMachineSnapshotJSONRequestBody = SnapshotRequest
 
@@ -436,6 +484,14 @@ type ClientInterface interface {
 
 	// ListMachines request
 	ListMachines(ctx context.Context, params *ListMachinesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateMachineWithBody request with any body
+	CreateMachineWithBody(ctx context.Context, params *CreateMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateMachine(ctx context.Context, params *CreateMachineParams, body CreateMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteMachine request
+	DeleteMachine(ctx context.Context, identifier int64, params *DeleteMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetMachine request
 	GetMachine(ctx context.Context, identifier int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -574,6 +630,42 @@ func (c *Client) ListInstances(ctx context.Context, reqEditors ...RequestEditorF
 
 func (c *Client) ListMachines(ctx context.Context, params *ListMachinesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListMachinesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateMachineWithBody(ctx context.Context, params *CreateMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMachineRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateMachine(ctx context.Context, params *CreateMachineParams, body CreateMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMachineRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteMachine(ctx context.Context, identifier int64, params *DeleteMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteMachineRequest(c.Server, identifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1277,6 +1369,156 @@ func NewListMachinesRequest(server string, params *ListMachinesParams) (*http.Re
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateMachineRequest calls the generic CreateMachine builder with application/json body
+func NewCreateMachineRequest(server string, params *CreateMachineParams, body CreateMachineJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateMachineRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateMachineRequestWithBody generates requests for CreateMachine with any type of body
+func NewCreateMachineRequestWithBody(server string, params *CreateMachineParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/machines")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteMachineRequest generates requests for DeleteMachine
+func NewDeleteMachineRequest(server string, identifier int64, params *DeleteMachineParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/machines/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Node != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Purge != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "purge", *params.Purge, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2189,6 +2431,14 @@ type ClientWithResponsesInterface interface {
 	// ListMachinesWithResponse request
 	ListMachinesWithResponse(ctx context.Context, params *ListMachinesParams, reqEditors ...RequestEditorFn) (*ListMachinesResponse, error)
 
+	// CreateMachineWithBodyWithResponse request with any body
+	CreateMachineWithBodyWithResponse(ctx context.Context, params *CreateMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMachineResponse, error)
+
+	CreateMachineWithResponse(ctx context.Context, params *CreateMachineParams, body CreateMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMachineResponse, error)
+
+	// DeleteMachineWithResponse request
+	DeleteMachineWithResponse(ctx context.Context, identifier int64, params *DeleteMachineParams, reqEditors ...RequestEditorFn) (*DeleteMachineResponse, error)
+
 	// GetMachineWithResponse request
 	GetMachineWithResponse(ctx context.Context, identifier int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*GetMachineResponse, error)
 
@@ -2412,6 +2662,54 @@ func (r ListMachinesResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r ListMachinesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateMachineResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CreateMachineResult
+	JSON400      *ClientError
+	JSON500      *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateMachineResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateMachineResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteMachineResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TaskResult
+	JSON400      *ClientError
+	JSON500      *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteMachineResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteMachineResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2784,6 +3082,32 @@ func (c *ClientWithResponses) ListMachinesWithResponse(ctx context.Context, para
 		return nil, err
 	}
 	return ParseListMachinesResponse(rsp)
+}
+
+// CreateMachineWithBodyWithResponse request with arbitrary body returning *CreateMachineResponse
+func (c *ClientWithResponses) CreateMachineWithBodyWithResponse(ctx context.Context, params *CreateMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMachineResponse, error) {
+	rsp, err := c.CreateMachineWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateMachineResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateMachineWithResponse(ctx context.Context, params *CreateMachineParams, body CreateMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMachineResponse, error) {
+	rsp, err := c.CreateMachine(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateMachineResponse(rsp)
+}
+
+// DeleteMachineWithResponse request returning *DeleteMachineResponse
+func (c *ClientWithResponses) DeleteMachineWithResponse(ctx context.Context, identifier int64, params *DeleteMachineParams, reqEditors ...RequestEditorFn) (*DeleteMachineResponse, error) {
+	rsp, err := c.DeleteMachine(ctx, identifier, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteMachineResponse(rsp)
 }
 
 // GetMachineWithResponse request returning *GetMachineResponse
@@ -3184,6 +3508,86 @@ func ParseListMachinesResponse(rsp *http.Response) (*ListMachinesResponse, error
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []Machine
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateMachineResponse parses an HTTP response from a CreateMachineWithResponse call
+func ParseCreateMachineResponse(rsp *http.Response) (*CreateMachineResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateMachineResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CreateMachineResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ClientError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteMachineResponse parses an HTTP response from a DeleteMachineWithResponse call
+func ParseDeleteMachineResponse(rsp *http.Response) (*DeleteMachineResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteMachineResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TaskResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

@@ -8,9 +8,36 @@ import (
 func (s *Server) register() {
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.Sync,
+			mcp.WithDescription(
+				"Pull the latest changes from the repository. Returns a filtered log of commits that touched salt states.",
+			),
+		),
+		s.syncRepository,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.Trigger,
 			mcp.WithDescription(
-				"Trigger a salt highstate on all minions. Returns immediately; use runs/run tools to check results.",
+				"Trigger a salt highstate. Set target to run on specific minions. Set update to pull latest code first. Set synchronous to wait for the result instead of returning immediately.",
+			),
+			mcp.WithString(
+				constant.Target,
+				mcp.Description(
+					"Target minion pattern. Default: * (all minions).",
+				),
+			),
+			mcp.WithBoolean(
+				constant.Update,
+				mcp.Description(
+					"Pull latest code before running. Default: false.",
+				),
+			),
+			mcp.WithBoolean(
+				constant.Synchronous,
+				mcp.Description(
+					"Wait for the run to complete and return the result. Default: false.",
+				),
 			),
 		),
 		s.triggerRun,

@@ -1,12 +1,7 @@
 package runner
 
-import "fmt"
+import "github.com/funtimecoding/go-library/pkg/provision/runner"
 
-func (r *Runner) Trigger() error {
-	select {
-	case r.trigger <- TriggerRequest{}:
-		return nil
-	default:
-		return fmt.Errorf("run already queued")
-	}
+func (r *Runner) Trigger(request runner.TriggerRequest) error {
+	return r.provision.Trigger(request)
 }

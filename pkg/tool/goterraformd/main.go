@@ -21,18 +21,13 @@ func Main(
 	a.Integer(argument.Port, web.ListenPort, web.PortUsage)
 	a.String(argument.Repository, "", "Git repository URL")
 	a.String(argument.ClonePath, "", "Local repository path")
-	a.String(
-		argument.TerraformPath,
-		"",
-		"Path within repository to terraform root",
-	)
 	a.Parse(version, gitHash, buildDate)
 	o := option.New()
 	o.Port = a.RequiredInteger(argument.Port)
 	o.Version = version
 	o.Repository = a.Required(argument.Repository)
 	o.ClonePath = a.Required(argument.ClonePath)
-	o.TerraformPath = a.Required(argument.TerraformPath)
+	o.TerraformPath = environment.Required(constant.TerraformPathEnvironment)
 	o.PostgresLocator = environment.Required(postgres.LocatorEnvironment)
 	Run(o, r)
 }

@@ -27,6 +27,7 @@ func Main(
 	o.Version = version
 	o.Repository = a.Required(argument.Repository)
 	o.ClonePath = a.Required(argument.ClonePath)
+	o.SaltPath = environment.Required(constant.SaltPathEnvironment)
 	o.PostgresLocator = environment.Required(postgres.LocatorEnvironment)
 	Run(o, r)
 }

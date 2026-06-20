@@ -1,19 +1,16 @@
 package runner
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/recovery"
 	"github.com/funtimecoding/go-library/pkg/log/logger"
-	"github.com/funtimecoding/go-library/pkg/tool/goansibled/store"
+	"github.com/funtimecoding/go-library/pkg/provision/runner"
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 )
 
 type Runner struct {
-	repository  string
+	provision   *runner.Runner
+	store       *store.Store
+	playbook    []string
 	clonePath   string
 	ansiblePath string
-	playbook    []string
 	logger      *logger.Logger
-	recovery    *recovery.Recovery
-	store       *store.Store
-	trigger     chan TriggerRequest
-	stop        chan struct{}
 }

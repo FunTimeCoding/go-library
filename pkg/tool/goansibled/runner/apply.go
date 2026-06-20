@@ -1,23 +1,30 @@
 package runner
 
 import (
+	"github.com/funtimecoding/go-library/pkg/provision/store"
 	"github.com/funtimecoding/go-library/pkg/system/run"
 	"github.com/funtimecoding/go-library/pkg/tool/goansibled/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goansibled/store"
 	"path/filepath"
 	"time"
 )
 
 func (r *Runner) apply(
-	playbooks []string,
+	parameters map[string]any,
 	triggerSource string,
-) {
+) any {
 	directory := filepath.Join(r.clonePath, r.ansiblePath)
-	head := r.currentHead()
+	head := r.provision.CurrentHead()
+	playbooks := r.playbook
+
+	if v, okay := parameters[constant.Playbook]; okay {
+		playbooks = []string{v.(string)}
+	}
+
+	var results []*store.Run
 
 	for _, p := range playbooks {
-		record := store.NewPlaybookRun()
-		record.Playbook = p
+		record := r.store.NewRun()
+		record.Scope = p
 		record.TriggerSource = triggerSource
 		record.Status = store.StatusRunning
 		record.GitHead = head
@@ -46,5 +53,8 @@ func (r *Runner) apply(
 		}
 
 		r.store.Update(record)
+		results = append(results, record)
 	}
+
+	return results
 }

@@ -79,10 +79,10 @@ func FormatDescription(e *Entry) string {
 	case "register":
 		return fmt.Sprintf("%s joined", actor)
 	case "inactivity_timeout":
-		return fmt.Sprintf("%s timed out (inactive)", actor)
+		return fmt.Sprintf("%s removed from roster (inactive)", actor)
 	case "complete_timeout":
 		return fmt.Sprintf(
-			"%s timed out (idle after completing)",
+			"%s removed from roster (idle after completing)",
 			actor,
 		)
 	default:

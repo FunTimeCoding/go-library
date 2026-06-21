@@ -62,7 +62,11 @@ func TestCheckWithTimeout(t *testing.T) {
 	assert.True(t, r.Changed)
 	timeouts := entriesByKind(r.Entries, constant.QueueTimeout)
 	assert.Count(t, 1, timeouts)
-	assert.StringContains(t, "inactivity", timeouts[0].Body)
+	assert.String(
+		t,
+		"1 hour since last turn. Removed from roster. Last topic: working",
+		timeouts[0].Body,
+	)
 }
 
 func TestCheckWithReannounce(t *testing.T) {
@@ -100,9 +104,9 @@ func TestCheckCompleteTimeout(t *testing.T) {
 	assert.True(t, r.Changed)
 	timeouts := entriesByKind(r.Entries, constant.QueueTimeout)
 	assert.Count(t, 1, timeouts)
-	assert.StringContains(
+	assert.String(
 		t,
-		"completing without re-announcing",
+		"30 minutes since completing. Removed from roster.",
 		timeouts[0].Body,
 	)
 }

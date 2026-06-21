@@ -20,7 +20,11 @@ func TestInactivityTimeout(t *testing.T) {
 	r := a.CheckLive()
 	timeouts := clientEntriesByKind(r.Entries, constant.QueueTimeout)
 	assert.Count(t, 1, timeouts)
-	assert.StringContains(t, "inactivity", timeouts[0].Body)
+	assert.String(
+		t,
+		"1 hour since last turn. Removed from roster. Last topic: working on something",
+		timeouts[0].Body,
+	)
 }
 
 func TestCompleteTimeoutCoordination(t *testing.T) {
@@ -41,7 +45,11 @@ func TestCompleteTimeoutCoordination(t *testing.T) {
 	r := a.CheckLive()
 	timeouts := clientEntriesByKind(r.Entries, constant.QueueTimeout)
 	assert.Count(t, 1, timeouts)
-	assert.StringContains(t, "completing", timeouts[0].Body)
+	assert.String(
+		t,
+		"30 minutes since completing. Removed from roster.",
+		timeouts[0].Body,
+	)
 }
 
 func TestNoFalseTimeout(t *testing.T) {
@@ -87,6 +95,6 @@ func TestTimeoutVisibleToOthers(t *testing.T) {
 	s.Store.Advance(2 * time.Hour)
 	s.Service.RunTimeoutSweep()
 	v := b.MustCallTool(constant.History, map[string]any{})
-	assert.StringContains(t, "timed out", v)
+	assert.StringContains(t, "removed from roster", v)
 	assert.StringContains(t, a.Name(), v)
 }

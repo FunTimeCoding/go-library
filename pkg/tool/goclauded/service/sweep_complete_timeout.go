@@ -23,7 +23,7 @@ func (s *Service) sweepCompleteTimeout() {
 			s.PushQueue(
 				e.CallsignValue(),
 				constant.QueueTimeout,
-				"You were timed out after completing without re-announcing.",
+				"30 minutes since completing. Removed from roster.",
 			),
 		)
 	}

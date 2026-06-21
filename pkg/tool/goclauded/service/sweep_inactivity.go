@@ -25,7 +25,7 @@ func (s *Service) sweepInactivity() {
 				e.CallsignValue(),
 				constant.QueueTimeout,
 				fmt.Sprintf(
-					"You were timed out due to 1 hour inactivity. Last topic: %s",
+					"1 hour since last turn. Removed from roster. Last topic: %s",
 					e.Topic,
 				),
 			),

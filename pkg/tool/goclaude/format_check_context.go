@@ -72,7 +72,7 @@ func formatCheckContext(r *client.CheckResponse) string {
 
 	if v, okay := groups[constant.QueueTimeout]; okay {
 		for _, body := range v {
-			parts = append(parts, fmt.Sprintf("Timeout: %s", body))
+			parts = append(parts, fmt.Sprintf("Idle: %s", body))
 		}
 	}
 

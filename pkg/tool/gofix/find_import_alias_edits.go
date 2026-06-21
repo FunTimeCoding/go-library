@@ -94,6 +94,23 @@ func findImportAliasEdits(
 					continue
 				}
 
+				if isBuiltinName(declaredName) {
+					r.AddConcern(
+						concern.NewFile(
+							"import_alias",
+							fmt.Sprintf(
+								"cannot de-alias %s → %s (builtin collision)",
+								alias,
+								declaredName,
+							),
+							filePath,
+							false,
+						),
+					)
+
+					continue
+				}
+
 				r.AddConcern(
 					concern.NewFile(
 						"import_alias",

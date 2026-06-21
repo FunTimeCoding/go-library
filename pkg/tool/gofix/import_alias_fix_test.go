@@ -140,6 +140,22 @@ func TestImportAliasFix(t *testing.T) {
 		},
 	)
 	t.Run(
+		"BuiltinCollisionKept",
+		func(t *testing.T) {
+			assert.String(
+				t,
+				"package example\n\nimport model \"testmodule/pkg/setting/string\"\n\nfunc UseBuiltin(name string) string {\n\treturn model.Value(name)\n}\n",
+				testutil.ReadFile(
+					t,
+					filepath.Join(
+						directory,
+						"builtin_collision.go",
+					),
+				),
+			)
+		},
+	)
+	t.Run(
 		"ResultEntries",
 		func(t *testing.T) {
 			applied := filterApplied(r.Entries)
@@ -169,12 +185,18 @@ func TestImportAliasFix(t *testing.T) {
 				"struct_field.go",
 				"de-aliased h → helper",
 			)
-			assert.Integer(t, 1, len(blocked))
+			assert.Integer(t, 2, len(blocked))
 			assertResult(
 				t,
 				blocked,
 				"collision.go",
 				"cannot de-alias h → helper (local collision with \"helper\")",
+			)
+			assertResult(
+				t,
+				blocked,
+				"builtin_collision.go",
+				"cannot de-alias model → string (builtin collision)",
 			)
 		},
 	)
@@ -272,6 +294,18 @@ func writeImportAliasTestModule(t *testing.T) string {
 		directory,
 		"struct_field.go",
 		"package example\n\nimport h \"testmodule/pkg/helper\"\n\ntype Thing struct {\n\thelper string\n}\n\nfunc UseThing() string {\n\treturn h.Value()\n}\n",
+	)
+	testutil.WriteFile(
+		t,
+		directory,
+		"pkg/setting/string/string.go",
+		"package string\n\nfunc Value(name string) string { return name }\n",
+	)
+	testutil.WriteFile(
+		t,
+		directory,
+		"builtin_collision.go",
+		"package example\n\nimport model \"testmodule/pkg/setting/string\"\n\nfunc UseBuiltin(name string) string {\n\treturn model.Value(name)\n}\n",
 	)
 
 	return directory

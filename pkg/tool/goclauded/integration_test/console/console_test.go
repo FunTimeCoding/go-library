@@ -73,8 +73,11 @@ func TestCheckTimeout(t *testing.T) {
 	s.Store.Advance(2 * time.Hour)
 	s.Service.RunTimeoutSweep()
 	output := c.Check("session-1")
-	assert.StringContains(t, "Timeout", output)
-	assert.StringContains(t, "inactivity", output)
+	assert.StringContains(
+		t,
+		"Idle: 1 hour since last turn. Removed from roster.",
+		output,
+	)
 }
 
 func TestCheckDirectMessage(t *testing.T) {

@@ -5,27 +5,22 @@ package store
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/integration_test/store_tester"
-	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store/save_option"
 	"testing"
 )
 
 func TestUpdateCreatesVersion(t *testing.T) {
 	s := store_tester.New(t)
-	identifier := s.CreateMemory(
-		&store.SaveOption{
-			Content:     "original",
-			Description: "desc",
-			Type:        "feedback",
-		},
-	)
-	s.UpdateMemory(
-		identifier,
-		&store.SaveOption{
-			Content:     "updated content",
-			Description: "new desc",
-			Tags:        []string{"always"},
-		},
-	)
+	o := save_option.New()
+	o.Content = "original"
+	o.Description = "desc"
+	o.Type = "feedback"
+	identifier := s.CreateMemory(o)
+	p := save_option.New()
+	p.Content = "updated content"
+	p.Description = "new desc"
+	p.Tags = []string{"always"}
+	s.UpdateMemory(identifier, p)
 	history := s.GetMemoryHistory(identifier)
 	assert.Count(t, 2, history)
 	assert.String(t, "created", history[0].ChangeType)

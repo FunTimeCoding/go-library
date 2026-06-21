@@ -2,6 +2,7 @@ package gofix
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/testutil"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"path/filepath"
 	"testing"
@@ -22,7 +23,7 @@ func TestVariableNamingFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nimport \"fmt\"\n\nfunc WrongSingle() {\n\te := fmt.Errorf(\"test\")\n\t_ = e\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "wrong_single.go"),
 				),
@@ -35,7 +36,7 @@ func TestVariableNamingFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nimport \"fmt\"\n\nfunc ErrorRenamed() {\n\te := fmt.Errorf(\"test\")\n\t_ = e\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "error_renamed.go"),
 				),
@@ -48,7 +49,7 @@ func TestVariableNamingFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nimport \"fmt\"\n\nfunc ErrorChainRenamed() {\n\te := fmt.Errorf(\"first\")\n\tf := fmt.Errorf(\"second\")\n\t_ = e\n\t_ = f\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(
 						directory,
@@ -64,7 +65,7 @@ func TestVariableNamingFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nimport \"fmt\"\n\nfunc CorrectUntouched() {\n\te := fmt.Errorf(\"test\")\n\ts := \"hello\"\n\t_ = e\n\t_ = s\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "correct.go"),
 				),
@@ -96,31 +97,31 @@ func TestVariableNamingFix(t *testing.T) {
 func writeVariableNamingTestModule(t *testing.T) string {
 	t.Helper()
 	directory := t.TempDir()
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"go.mod",
 		"module example\n\ngo 1.22\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"wrong_single.go",
 		"package example\n\nimport \"fmt\"\n\nfunc WrongSingle() {\n\tx := fmt.Errorf(\"test\")\n\t_ = x\n}\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"error_renamed.go",
 		"package example\n\nimport \"fmt\"\n\nfunc ErrorRenamed() {\n\terr := fmt.Errorf(\"test\")\n\t_ = err\n}\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"error_chain_renamed.go",
 		"package example\n\nimport \"fmt\"\n\nfunc ErrorChainRenamed() {\n\terr := fmt.Errorf(\"first\")\n\terr2 := fmt.Errorf(\"second\")\n\t_ = err\n\t_ = err2\n}\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"correct.go",

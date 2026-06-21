@@ -4,6 +4,7 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"testing"
 )
 
@@ -30,8 +31,8 @@ func TestSearchKeywordCollectionFilter(t *testing.T) {
 	second := t.TempDir()
 	writeFixture(t, first, "one.md", "# One\n\nUnique keyword aardvark.\n")
 	writeFixture(t, second, "two.md", "# Two\n\nUnique keyword aardvark.\n")
-	s.AddCollection("first", first, "**/*.md")
-	s.AddCollection("second", second, "**/*.md")
+	s.AddCollection("first", first, constant.DefaultGlob)
+	s.AddCollection("second", second, constant.DefaultGlob)
 	s.Index("first")
 	s.Index("second")
 	all := s.MustSearchKeyword("aardvark", 10, "", false)
@@ -72,7 +73,7 @@ func TestSearchKeywordQuotedPhrase(t *testing.T) {
 		"partial.md",
 		"# Partial\n\nThe quick fox is brown and lazy.\n",
 	)
-	s.AddCollection("test", directory, "**/*.md")
+	s.AddCollection("test", directory, constant.DefaultGlob)
 	s.Index("test")
 	results := s.MustSearchKeyword(`"quick brown fox"`, 10, "", false)
 	assert.Count(t, 1, results)

@@ -15,11 +15,17 @@ func TestDeleteResource(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddPod(pod.New("default", "nginx", "Running"))
 	e := s.Service.DeleteResource(
-		context.Background(), "test", "pods", "nginx", "default",
+		context.Background(),
+		"test",
+		"pods",
+		"nginx",
+		"default",
 	)
 	assert.Nil(t, e)
 	result, f := s.Service.ListResources(
-		context.Background(), "test", service.ListQuery{
+		context.Background(),
+		"test",
+		service.ListQuery{
 			ResourceType: "pods",
 			Namespace:    "default",
 		},
@@ -31,7 +37,11 @@ func TestDeleteResource(t *testing.T) {
 func TestDeleteResourceNotFound(t *testing.T) {
 	s := service_tester.New(t)
 	e := s.Service.DeleteResource(
-		context.Background(), "test", "pods", "nonexistent", "default",
+		context.Background(),
+		"test",
+		"pods",
+		"nonexistent",
+		"default",
 	)
 	assert.NotNil(t, e)
 }

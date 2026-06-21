@@ -16,7 +16,7 @@ func (s *Service) Rename(
 	receiver string,
 ) (*output.Results, error) {
 	r := output.NewResultsWithDirectory(directory)
-	all, fileSet, e := resolve.LoadPackages(directory, "./...")
+	all, set, e := resolve.LoadPackages(directory, "./...")
 
 	if e != nil {
 		return nil, e
@@ -25,7 +25,9 @@ func (s *Service) Rename(
 	declaration, p, e := findDeclaration(all, packagePath, oldName, receiver)
 
 	if e != nil {
-		r.AddConcern(concern.NewFile("validation", e.Error(), "", false))
+		r.AddConcern(
+			concern.NewFile("validation", e.Error(), "", false),
+		)
 
 		return r, nil
 	}
@@ -33,18 +35,22 @@ func (s *Service) Rename(
 	e = checkCollision(p, newName, receiver)
 
 	if e != nil {
-		r.AddConcern(concern.NewFile("validation", e.Error(), "", false))
+		r.AddConcern(
+			concern.NewFile("validation", e.Error(), "", false),
+		)
 
 		return r, nil
 	}
 
 	references := resolve.FindAllReferences(all, declaration)
-	unexporting := unicode.IsUpper(rune(oldName[0])) && unicode.IsLower(rune(newName[0]))
+	unexporting := unicode.IsUpper(
+		rune(oldName[0]),
+	) && unicode.IsLower(rune(newName[0]))
 
 	if unexporting {
 		for _, f := range references {
 			if f.Package.PkgPath != p.PkgPath {
-				position := fileSet.Position(f.Ident.Pos())
+				position := set.Position(f.Ident.Pos())
 				r.AddConcern(
 					concern.NewLine(
 						"cross-package",
@@ -68,7 +74,7 @@ func (s *Service) Rename(
 	}
 
 	for _, f := range references {
-		position := fileSet.Position(f.Ident.Pos())
+		position := set.Position(f.Ident.Pos())
 		f.Ident.Name = newName
 		r.AddConcern(
 			concern.NewLine(
@@ -82,7 +88,7 @@ func (s *Service) Rename(
 		)
 	}
 
-	_, e = writeModifiedFiles(fileSet, references)
+	_, e = writeModifiedFiles(set, references)
 
 	if e != nil {
 		return nil, e

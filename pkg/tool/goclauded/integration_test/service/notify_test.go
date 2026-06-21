@@ -4,8 +4,9 @@ package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/service_tester"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument/edit_session"
 	"testing"
 )
 
@@ -20,9 +21,9 @@ func TestAnnounceNotifies(t *testing.T) {
 func TestCompleteNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Store.EnsureSession("session-1")
-	s.Store.Announce(r.Callsign, "topic", "")
+	s.Store.Announce(r.Callsign, constant.FixtureTopic, "")
 	s.Notifier.Reset()
-	s.Complete("session-1", r.Callsign, "topic", "done")
+	s.Complete("session-1", r.Callsign, constant.FixtureTopic, "done")
 	assert.True(t, s.Notifier.Notified == 1)
 }
 
@@ -46,7 +47,6 @@ func TestEditSessionNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	s.Store.EnsureSession("session-1")
 	s.Notifier.Reset()
-	alias := "my-project"
-	s.EditSession("session-1", &argument.EditSession{Alias: &alias})
+	s.EditSession("session-1", edit_session.New().WithAlias("my-project"))
 	assert.True(t, s.Notifier.Notified == 1)
 }

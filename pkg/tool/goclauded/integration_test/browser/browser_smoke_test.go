@@ -14,7 +14,7 @@ func TestBrowserSmoke(t *testing.T) {
 	var title string
 	b.Evaluate("document.title", &title)
 	fmt.Printf("title: %q\n", title)
-	var html string
-	b.Evaluate("document.body.innerHTML.substring(0, 500)", &html)
-	fmt.Printf("body: %s\n", html)
+	var m string
+	b.Evaluate("document.body.innerHTML.substring(0, 500)", &m)
+	fmt.Printf("body: %s\n", m)
 }

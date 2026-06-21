@@ -33,7 +33,7 @@ func TestEditSessionAliasOther(t *testing.T) {
 	b := s.NewSession(t)
 	defer b.Close()
 	a.Announce(a.Name(), "editor")
-	b.Announce(b.Name(), "target")
+	b.Announce(b.Name(), constant.FixtureTarget)
 	a.MustCallTool(
 		constant.EditSession,
 		map[string]any{

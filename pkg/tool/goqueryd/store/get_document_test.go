@@ -4,6 +4,7 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
 	"testing"
 )
 
@@ -35,7 +36,7 @@ func TestGetDocumentNotFound(t *testing.T) {
 func TestGetDocumentWithContext(t *testing.T) {
 	s, _ := indexedTestStore(t)
 	defer s.Close()
-	s.AddContext("test", "/", "root context")
+	s.AddContext("test", separator.Slash, "root context")
 	d := s.MustGetDocument("test/alpha.md")
 	assert.NotNil(t, d)
 	assert.String(t, "root context", d.Context)

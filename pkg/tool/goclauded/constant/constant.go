@@ -101,4 +101,8 @@ const (
 	HistoryPath        = "/history"
 	ConversationsTitle = "Conversations"
 	ConversationsPath  = "/conversations"
+
+	FixtureTopic  = "topic"
+	FixtureTarget = "target"
+	FixtureBefore = "before"
 )

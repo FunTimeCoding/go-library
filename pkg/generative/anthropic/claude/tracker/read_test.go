@@ -3,6 +3,7 @@
 package tracker
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"os"
@@ -14,7 +15,7 @@ func writeLine(
 	f *os.File,
 	line string,
 ) {
-	_, e := f.WriteString(line + "\n")
+	_, e := fmt.Fprintf(f, "%s\n", line)
 
 	if e != nil {
 		panic(e)

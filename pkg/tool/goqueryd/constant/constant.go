@@ -74,6 +74,10 @@ Query: `
 	CollectionsPath  = "/collections"
 	Identifier       = "identifier"
 
+	FixtureAuthorKey  = "author"
+	FixtureTagKey     = "tag"
+	FixtureBuildValue = "build"
+
 	TestBody = `# Search Pipeline
 
 This document describes the hybrid search pipeline.

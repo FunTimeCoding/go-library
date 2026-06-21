@@ -15,7 +15,9 @@ func TestGetResource(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddPod(pod.New("default", "nginx", "Running"))
 	result, e := s.Service.GetResource(
-		context.Background(), "test", service.GetQuery{
+		context.Background(),
+		"test",
+		service.GetQuery{
 			ResourceType: "pods",
 			Name:         "nginx",
 			Namespace:    "default",
@@ -29,7 +31,9 @@ func TestGetResourceFiltered(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddPod(pod.New("default", "nginx", "Running"))
 	result, e := s.Service.GetResource(
-		context.Background(), "test", service.GetQuery{
+		context.Background(),
+		"test",
+		service.GetQuery{
 			ResourceType: "pods",
 			Name:         "nginx",
 			Namespace:    "default",
@@ -45,7 +49,9 @@ func TestGetResourceUnfiltered(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddPod(pod.New("default", "nginx", "Running"))
 	result, e := s.Service.GetResource(
-		context.Background(), "test", service.GetQuery{
+		context.Background(),
+		"test",
+		service.GetQuery{
 			ResourceType: "pods",
 			Name:         "nginx",
 			Namespace:    "default",
@@ -60,7 +66,9 @@ func TestGetResourceUnfiltered(t *testing.T) {
 func TestGetResourceNotFound(t *testing.T) {
 	s := service_tester.New(t)
 	_, e := s.Service.GetResource(
-		context.Background(), "test", service.GetQuery{
+		context.Background(),
+		"test",
+		service.GetQuery{
 			ResourceType: "pods",
 			Name:         "nonexistent",
 			Namespace:    "default",

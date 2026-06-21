@@ -5,6 +5,7 @@ package integration_test
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/integration_test/web_interface_tester"
 	"net/url"
 	"testing"
@@ -14,7 +15,7 @@ func TestFilterWebInterface(t *testing.T) {
 	o := web_interface_tester.New(t)
 	defer o.Close()
 	o.PostForm(
-		"/add",
+		constant.AddEntryPath,
 		url.Values{
 			"action":      {"restart"},
 			"user":        {"alice"},
@@ -24,7 +25,7 @@ func TestFilterWebInterface(t *testing.T) {
 		},
 	)
 	o.PostForm(
-		"/add",
+		constant.AddEntryPath,
 		url.Values{
 			"action":      {"backup"},
 			"user":        {"bob"},

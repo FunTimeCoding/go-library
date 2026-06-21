@@ -12,7 +12,8 @@ import (
 func TestCreateMemory(t *testing.T) {
 	s := model_context_tester.New(t)
 	result := s.MustCallTool(
-		constant.SaveMemory, map[string]any{
+		constant.SaveMemory,
+		map[string]any{
 			constant.MemoryName:  "test memory",
 			constant.Content:     "test content",
 			constant.Description: "a test",
@@ -27,14 +28,16 @@ func TestCreateMemory(t *testing.T) {
 func TestUpdateMemory(t *testing.T) {
 	s := model_context_tester.New(t)
 	s.MustCallTool(
-		constant.SaveMemory, map[string]any{
+		constant.SaveMemory,
+		map[string]any{
 			constant.MemoryName:  "test memory",
 			constant.Content:     "original",
 			constant.Description: "a test",
 		},
 	)
 	result := s.MustCallTool(
-		constant.UpdateMemory, map[string]any{
+		constant.UpdateMemory,
+		map[string]any{
 			constant.MemoryIdentifier: 1,
 			constant.MemoryName:       "test memory",
 			constant.Content:          "updated",
@@ -50,7 +53,8 @@ func TestUpdateMemory(t *testing.T) {
 func TestUpdateMemoryRequiresID(t *testing.T) {
 	s := model_context_tester.New(t)
 	result := s.MustCallToolError(
-		constant.UpdateMemory, map[string]any{
+		constant.UpdateMemory,
+		map[string]any{
 			constant.MemoryName:  "test",
 			constant.Content:     "test",
 			constant.Description: "test",
@@ -59,17 +63,19 @@ func TestUpdateMemoryRequiresID(t *testing.T) {
 	assert.StringContains(t, "memory_id is required", result)
 }
 
-func TestUpdateMemoryWithWrongParamName(t *testing.T) {
+func TestUpdateMemoryWithWrongParameterName(t *testing.T) {
 	s := model_context_tester.New(t)
 	s.MustCallTool(
-		constant.SaveMemory, map[string]any{
+		constant.SaveMemory,
+		map[string]any{
 			constant.MemoryName:  "test memory",
 			constant.Content:     "original",
 			constant.Description: "a test",
 		},
 	)
 	result := s.MustCallToolError(
-		constant.UpdateMemory, map[string]any{
+		constant.UpdateMemory,
+		map[string]any{
 			"id":                 1,
 			constant.MemoryName:  "test memory",
 			constant.Content:     "should fail",

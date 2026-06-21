@@ -91,7 +91,7 @@ func TestCheckWithSessionActivity(t *testing.T) {
 func TestCheckCompleteTimeout(t *testing.T) {
 	s := service_tester.New(t)
 	r := s.Check("session-1")
-	s.Announce("session-1", r.Callsign, "topic", "")
+	s.Announce("session-1", r.Callsign, constant.FixtureTopic, "")
 	s.Check("session-1")
 	s.Store.CompleteTask(r.Callsign)
 	s.Store.Advance(time.Hour)

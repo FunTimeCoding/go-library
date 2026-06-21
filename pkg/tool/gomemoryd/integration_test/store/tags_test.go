@@ -5,28 +5,24 @@ package store
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/integration_test/store_tester"
-	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store/save_option"
 	"testing"
 )
 
 func TestListTags(t *testing.T) {
 	s := store_tester.New(t)
-	s.CreateMemory(
-		&store.SaveOption{
-			Content:     "a",
-			Description: "desc a",
-			Type:        "feedback",
-			Tags:        []string{"always", "deployment"},
-		},
-	)
-	s.CreateMemory(
-		&store.SaveOption{
-			Content:     "b",
-			Description: "desc b",
-			Type:        "feedback",
-			Tags:        []string{"always"},
-		},
-	)
+	o := save_option.New()
+	o.Content = "a"
+	o.Description = "desc a"
+	o.Type = "feedback"
+	o.Tags = []string{"always", "deployment"}
+	s.CreateMemory(o)
+	p := save_option.New()
+	p.Content = "b"
+	p.Description = "desc b"
+	p.Type = "feedback"
+	p.Tags = []string{"always"}
+	s.CreateMemory(p)
 	tags := s.ListTags()
 	assert.Count(t, 2, tags)
 	assert.String(t, "always", tags[0].Tag)

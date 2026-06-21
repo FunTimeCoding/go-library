@@ -1,8 +1,11 @@
 package store
 
-import "time"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store/save_option"
+	"time"
+)
 
-func (s *Store) CreateMemory(o *SaveOption) (int64, error) {
+func (s *Store) CreateMemory(o *save_option.Option) (int64, error) {
 	now := time.Now().UTC().Format(time.RFC3339)
 	t, e := s.database.Begin()
 

@@ -3,6 +3,7 @@ package importer
 import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store/save_option"
 	"os"
 	"path/filepath"
 	"strings"
@@ -69,7 +70,7 @@ func Import(
 			continue
 		}
 
-		o := store.NewSaveOption()
+		o := save_option.New()
 		o.Name = parsed.Name
 		o.Content = parsed.Content
 		o.Description = parsed.Description

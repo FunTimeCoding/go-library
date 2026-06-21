@@ -3,12 +3,12 @@ package service
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument/edit_session"
 )
 
 func (s *Service) EditSession(
 	identifier string,
-	a *argument.EditSession,
+	a *edit_session.Session,
 ) error {
 	if a.Alias != nil && *a.Alias != "" {
 		owner, e := s.store.AliasOwner(*a.Alias)

@@ -12,12 +12,12 @@ func load(
 	directory string,
 	patterns []string,
 ) ([]*packages.Package, *token.FileSet) {
-	result, fileSet, e := resolve.LoadPackages(directory, patterns...)
+	result, set, e := resolve.LoadPackages(directory, patterns...)
 
 	if e != nil {
 		errors.Printf("load: %s\n", e)
 		os.Exit(1)
 	}
 
-	return result, fileSet
+	return result, set
 }

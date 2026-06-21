@@ -5,20 +5,18 @@ package store
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/integration_test/store_tester"
-	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store/save_option"
 	"testing"
 )
 
 func TestCreateAndGetMemory(t *testing.T) {
 	s := store_tester.New(t)
-	identifier := s.CreateMemory(
-		&store.SaveOption{
-			Content:     "Retry failed requests with exponential backoff.",
-			Description: "retry with backoff; each caller gets its own policy",
-			Type:        "feedback",
-			Tags:        []string{"always", "http-client"},
-		},
-	)
+	o := save_option.New()
+	o.Content = "Retry failed requests with exponential backoff."
+	o.Description = "retry with backoff; each caller gets its own policy"
+	o.Type = "feedback"
+	o.Tags = []string{"always", "http-client"}
+	identifier := s.CreateMemory(o)
 	m := s.GetMemory(identifier)
 	assert.String(
 		t,

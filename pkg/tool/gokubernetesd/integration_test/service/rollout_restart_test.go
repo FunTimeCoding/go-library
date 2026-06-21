@@ -14,11 +14,17 @@ func TestRolloutRestart(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddDeployment("default", "nginx", 1, 1)
 	e := s.Service.RolloutRestart(
-		context.Background(), "test", "deployment", "nginx", "default",
+		context.Background(),
+		"test",
+		"deployment",
+		"nginx",
+		"default",
 	)
 	assert.Nil(t, e)
 	deployment, f := s.Clientset.AppsV1().Deployments("default").Get(
-		context.Background(), "nginx", v1.GetOptions{},
+		context.Background(),
+		"nginx",
+		v1.GetOptions{},
 	)
 	assert.Nil(t, f)
 	annotations := deployment.Spec.Template.Annotations
@@ -29,7 +35,11 @@ func TestRolloutRestart(t *testing.T) {
 func TestRolloutRestartUnsupportedType(t *testing.T) {
 	s := service_tester.New(t)
 	e := s.Service.RolloutRestart(
-		context.Background(), "test", "service", "nginx", "default",
+		context.Background(),
+		"test",
+		"service",
+		"nginx",
+		"default",
 	)
 	assert.NotNil(t, e)
 }

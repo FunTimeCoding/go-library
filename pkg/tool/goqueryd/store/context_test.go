@@ -4,13 +4,15 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings/separator"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"testing"
 )
 
 func TestContextHierarchicalResolution(t *testing.T) {
 	s, _ := indexedTestStore(t)
 	defer s.Close()
-	s.AddContext("test", "/", "root context")
+	s.AddContext("test", separator.Slash, "root context")
 	s.AddContext("test", "/tools/", "tools context")
 	root := s.resolveContext("test", "alpha.md")
 	assert.String(t, "root context", root)
@@ -22,7 +24,7 @@ func TestContextHierarchicalResolution(t *testing.T) {
 func TestContextAttachedToSearchResults(t *testing.T) {
 	s, _ := indexedTestStore(t)
 	defer s.Close()
-	s.AddContext("test", "/", "all documents")
+	s.AddContext("test", separator.Slash, "all documents")
 	results := s.MustSearchKeyword("hybrid search pipeline", 10, "", false)
 	assert.Count(t, 1, results)
 	assert.String(t, "all documents", results[0].Context)
@@ -32,9 +34,9 @@ func TestContextAddOverwrites(t *testing.T) {
 	s, _ := openTestStore(t)
 	defer s.Close()
 	directory := t.TempDir()
-	s.AddCollection("test", directory, "**/*.md")
-	s.AddContext("test", "/", "first")
-	s.AddContext("test", "/", "second")
+	s.AddCollection("test", directory, constant.DefaultGlob)
+	s.AddContext("test", separator.Slash, "first")
+	s.AddContext("test", separator.Slash, "second")
 	entries := s.ListContexts()
 	assert.Count(t, 1, entries)
 	assert.String(t, "second", entries[0].Description)
@@ -44,9 +46,9 @@ func TestContextRemove(t *testing.T) {
 	s, _ := openTestStore(t)
 	defer s.Close()
 	directory := t.TempDir()
-	s.AddCollection("test", directory, "**/*.md")
-	s.AddContext("test", "/", "to remove")
-	removed := s.RemoveContext("test", "/")
+	s.AddCollection("test", directory, constant.DefaultGlob)
+	s.AddContext("test", separator.Slash, "to remove")
+	removed := s.RemoveContext("test", separator.Slash)
 	assert.True(t, removed)
 	entries := s.ListContexts()
 	assert.Count(t, 0, entries)
@@ -55,6 +57,6 @@ func TestContextRemove(t *testing.T) {
 func TestContextRemoveNotFound(t *testing.T) {
 	s, _ := openTestStore(t)
 	defer s.Close()
-	removed := s.RemoveContext("nonexistent", "/")
+	removed := s.RemoveContext("nonexistent", separator.Slash)
 	assert.False(t, removed)
 }

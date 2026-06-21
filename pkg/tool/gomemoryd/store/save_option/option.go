@@ -1,6 +1,6 @@
-package store
+package save_option
 
-type SaveOption struct {
+type Option struct {
 	Name        string
 	Content     string
 	Description string

@@ -1,6 +1,6 @@
-package argument
+package edit_session
 
-type EditSession struct {
+type Session struct {
 	Alias       *string
 	Description *string
 	Slug        *string

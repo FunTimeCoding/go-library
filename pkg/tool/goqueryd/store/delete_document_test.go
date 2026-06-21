@@ -13,7 +13,8 @@ func TestDeleteDocument(t *testing.T) {
 	assert.FatalOnError(
 		t,
 		pushTestDocument(
-			s, o,
+			s,
+			o,
 			"notes",
 			"doomed.md",
 			"# Doomed\n\nThis document will be deleted.\n",
@@ -41,7 +42,8 @@ func TestDeleteDocumentCleansOrphanedContent(t *testing.T) {
 	assert.FatalOnError(
 		t,
 		pushTestDocument(
-			s, o,
+			s,
+			o,
 			"notes",
 			"unique.md",
 			"# Unique\n\nOnly one document uses this content.\n",
@@ -78,7 +80,8 @@ func TestDeleteDocumentRemovesFromSearch(t *testing.T) {
 	assert.FatalOnError(
 		t,
 		pushTestDocument(
-			s, o,
+			s,
+			o,
 			"notes",
 			"findable.md",
 			"# Findable\n\nContains the keyword wolverine.\n",

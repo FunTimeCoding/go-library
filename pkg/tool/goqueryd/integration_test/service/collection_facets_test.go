@@ -4,6 +4,7 @@ package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/integration_test/service_tester"
 	"testing"
 )
@@ -16,7 +17,7 @@ func TestCollectionFacets(t *testing.T) {
 			"notes",
 			"a.md",
 			"# Alpha\n\nFirst.\n",
-			map[string]string{"author": "alice", "tag": "design"},
+			map[string]string{constant.FixtureAuthorKey: "alice", constant.FixtureTagKey: "design"},
 		),
 	)
 	assert.FatalOnError(
@@ -25,7 +26,7 @@ func TestCollectionFacets(t *testing.T) {
 			"notes",
 			"b.md",
 			"# Beta\n\nSecond.\n",
-			map[string]string{"author": "alice", "tag": "build"},
+			map[string]string{constant.FixtureAuthorKey: "alice", constant.FixtureTagKey: constant.FixtureBuildValue},
 		),
 	)
 	assert.FatalOnError(
@@ -34,19 +35,19 @@ func TestCollectionFacets(t *testing.T) {
 			"notes",
 			"c.md",
 			"# Gamma\n\nThird.\n",
-			map[string]string{"author": "bob", "tag": "build"},
+			map[string]string{constant.FixtureAuthorKey: "bob", constant.FixtureTagKey: constant.FixtureBuildValue},
 		),
 	)
 	facets := s.Service.CollectionFacets("notes", nil)
-	authorFacet := findFacet(facets, "author")
+	authorFacet := findFacet(facets, constant.FixtureAuthorKey)
 	assert.NotNil(t, authorFacet)
 	assert.Integer(t, 2, authorFacet.Distinct)
 	assert.Integer(t, 2, authorFacet.Values["alice"])
 	assert.Integer(t, 1, authorFacet.Values["bob"])
-	tagFacet := findFacet(facets, "tag")
+	tagFacet := findFacet(facets, constant.FixtureTagKey)
 	assert.NotNil(t, tagFacet)
 	assert.Integer(t, 2, tagFacet.Distinct)
-	assert.Integer(t, 2, tagFacet.Values["build"])
+	assert.Integer(t, 2, tagFacet.Values[constant.FixtureBuildValue])
 	assert.Integer(t, 1, tagFacet.Values["design"])
 }
 
@@ -58,7 +59,7 @@ func TestCollectionFacetsForKey(t *testing.T) {
 			"notes",
 			"a.md",
 			"# Alpha\n\nFirst.\n",
-			map[string]string{"author": "alice", "tag": "design"},
+			map[string]string{constant.FixtureAuthorKey: "alice", constant.FixtureTagKey: "design"},
 		),
 	)
 	assert.FatalOnError(
@@ -67,10 +68,10 @@ func TestCollectionFacetsForKey(t *testing.T) {
 			"notes",
 			"b.md",
 			"# Beta\n\nSecond.\n",
-			map[string]string{"author": "bob", "tag": "build"},
+			map[string]string{constant.FixtureAuthorKey: "bob", constant.FixtureTagKey: constant.FixtureBuildValue},
 		),
 	)
-	facets := s.Service.CollectionFacetsForKey("notes", "author")
+	facets := s.Service.CollectionFacetsForKey("notes", constant.FixtureAuthorKey)
 	assert.Count(t, 1, facets)
 	assert.String(t, "author", facets[0].Key)
 	assert.Integer(t, 2, facets[0].Distinct)

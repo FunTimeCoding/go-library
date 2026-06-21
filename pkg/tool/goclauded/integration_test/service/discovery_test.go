@@ -3,6 +3,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
@@ -54,11 +55,14 @@ func writeSessionFile(
 	identifier string,
 	slug string,
 ) {
-	path := filepath.Join(harbor, identifier+".jsonl")
+	path := filepath.Join(harbor, fmt.Sprintf("%s.jsonl", identifier))
 	f := system.Create(path)
-	_, e := f.WriteString(
-		`{"type":"user","timestamp":"2026-05-21T10:00:00Z","sessionId":"` + identifier + `","slug":"` + slug + `","cwd":"/home/user","gitBranch":"main","message":{"role":"user","content":"can you help me fix the login bug"}}` + "\n" +
-			`{"type":"user","timestamp":"2026-05-21T10:02:00Z","sessionId":"` + identifier + `","message":{"role":"user","content":"now update the tests to match"}}` + "\n",
+	_, e := fmt.Fprintf(
+		f,
+		"{\"type\":\"user\",\"timestamp\":\"2026-05-21T10:00:00Z\",\"sessionId\":\"%s\",\"slug\":\"%s\",\"cwd\":\"/home/user\",\"gitBranch\":\"main\",\"message\":{\"role\":\"user\",\"content\":\"can you help me fix the login bug\"}}\n{\"type\":\"user\",\"timestamp\":\"2026-05-21T10:02:00Z\",\"sessionId\":\"%s\",\"message\":{\"role\":\"user\",\"content\":\"now update the tests to match\"}}\n",
+		identifier,
+		slug,
+		identifier,
 	)
 	errors.PanicOnError(e)
 	errors.PanicClose(f)

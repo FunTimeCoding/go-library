@@ -2,6 +2,7 @@ package gofix
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/lint/analyzer/testutil"
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"path/filepath"
 	"testing"
@@ -17,7 +18,7 @@ func TestSingleParameterFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nimport \"context\"\n\ntype Client struct{}\n\nfunc (c *Client) Snapshot(x context.Context) (string, error) {\n\treturn \"\", nil\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "method.go"),
 				),
@@ -30,7 +31,7 @@ func TestSingleParameterFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nfunc Process(name string) error {\n\treturn nil\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "function.go"),
 				),
@@ -43,7 +44,7 @@ func TestSingleParameterFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nfunc TwoParams(\n\ta string,\n\tb string,\n) error {\n\treturn nil\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "two_params.go"),
 				),
@@ -56,7 +57,7 @@ func TestSingleParameterFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nfunc Short(x int) {}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "already_single.go"),
 				),
@@ -69,7 +70,7 @@ func TestSingleParameterFix(t *testing.T) {
 			assert.String(
 				t,
 				"package example\n\nfunc VeryLongFunctionNameThatWouldExceedTheLimit(\n\tparameterWithAVeryLongName string,\n) error {\n\treturn nil\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "too_long.go"),
 				),
@@ -107,7 +108,7 @@ func TestSingleParameterFixWithTestFiles(t *testing.T) {
 			assert.String(
 				t,
 				"package tested\n\nfunc FindLatest(v []string) *string {\n\treturn nil\n}\n",
-				readFile(
+				testutil.ReadFile(
 					t,
 					filepath.Join(directory, "find.go"),
 				),
@@ -119,19 +120,19 @@ func TestSingleParameterFixWithTestFiles(t *testing.T) {
 func writeSingleParameterTestModuleWithTests(t *testing.T) string {
 	t.Helper()
 	directory := t.TempDir()
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"go.mod",
 		"module example\n\ngo 1.22\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"find.go",
 		"package tested\n\nfunc FindLatest(\n\tv []string,\n) *string {\n\treturn nil\n}\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"find_test.go",
@@ -144,37 +145,37 @@ func writeSingleParameterTestModuleWithTests(t *testing.T) string {
 func writeSingleParameterTestModule(t *testing.T) string {
 	t.Helper()
 	directory := t.TempDir()
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"go.mod",
 		"module example\n\ngo 1.22\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"method.go",
 		"package example\n\nimport \"context\"\n\ntype Client struct{}\n\nfunc (c *Client) Snapshot(\n\tx context.Context,\n) (string, error) {\n\treturn \"\", nil\n}\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"function.go",
 		"package example\n\nfunc Process(\n\tname string,\n) error {\n\treturn nil\n}\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"two_params.go",
 		"package example\n\nfunc TwoParams(\n\ta string,\n\tb string,\n) error {\n\treturn nil\n}\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"already_single.go",
 		"package example\n\nfunc Short(x int) {}\n",
 	)
-	writeFile(
+	testutil.WriteFile(
 		t,
 		directory,
 		"too_long.go",

@@ -6,14 +6,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/constant"
 	goclauded "github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument/edit_session"
 )
 
 func (s *Server) PostEditSession(
 	_ context.Context,
 	r server.PostEditSessionRequestObject,
 ) (server.PostEditSessionResponseObject, error) {
-	a := argument.NewEditSession()
+	a := edit_session.New()
 	a.Alias = r.Body.Name
 	a.Description = r.Body.Description
 	a.Topic = r.Body.Topic

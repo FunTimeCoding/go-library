@@ -3,16 +3,20 @@
 package chunk
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"strings"
 	"testing"
 )
 
 func TestChunkGoSourceSplitsAtDeclarations(t *testing.T) {
-	source := "package main\n\n" +
-		"func Alpha() {\n" + strings.Repeat("\t// line\n", 200) + "}\n\n" +
-		"func Beta() {\n" + strings.Repeat("\t// line\n", 200) + "}\n\n" +
-		"func Gamma() {\n" + strings.Repeat("\t// line\n", 200) + "}\n"
+	body := strings.Repeat("\t// line\n", 200)
+	source := fmt.Sprintf(
+		"package main\n\nfunc Alpha() {\n%s}\n\nfunc Beta() {\n%s}\n\nfunc Gamma() {\n%s}\n",
+		body,
+		body,
+		body,
+	)
 	chunks := Document(source, "main.go")
 	assert.Greater(t, 1, float64(len(chunks)))
 	assert.StringContains(t, "package main", chunks[0].Text)
@@ -30,8 +34,10 @@ func TestChunkGoSourceSplitsAtDeclarations(t *testing.T) {
 }
 
 func TestChunkGoSourceFallsBackOnParseError(t *testing.T) {
-	invalid := "package main\n\nfunc broken {{{{\n" +
-		strings.Repeat("text\n", 1000)
+	invalid := fmt.Sprintf(
+		"package main\n\nfunc broken {{{{\n%s",
+		strings.Repeat("text\n", 1000),
+	)
 	chunks := Document(invalid, "broken.go")
 	assert.Greater(t, 0, float64(len(chunks)))
 }

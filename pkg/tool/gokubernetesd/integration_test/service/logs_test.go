@@ -17,7 +17,9 @@ func TestLogsDirectPod(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddPod(pod.New("default", "nginx-abc123", "Running"))
 	_, e := s.Service.Logs(
-		context.Background(), "test", service.LogsQuery{
+		context.Background(),
+		"test",
+		service.LogsQuery{
 			Name:      "nginx-abc123",
 			Namespace: "default",
 		},
@@ -32,7 +34,9 @@ func TestLogsAmbiguousPods(t *testing.T) {
 	s.AddPod(pod.New("default", "nginx-abc", "Running").WithLabels(labels))
 	s.AddPod(pod.New("default", "nginx-def", "Running").WithLabels(labels))
 	_, e := s.Service.Logs(
-		context.Background(), "test", service.LogsQuery{
+		context.Background(),
+		"test",
+		service.LogsQuery{
 			Name:      "deployment/nginx",
 			Namespace: "default",
 		},
@@ -49,7 +53,9 @@ func TestLogsSinglePodDeployment(t *testing.T) {
 	s.AddDeployment("default", "redis", 1, 1)
 	s.AddPod(pod.New("default", "redis-xyz", "Running").WithLabels(labels))
 	_, e := s.Service.Logs(
-		context.Background(), "test", service.LogsQuery{
+		context.Background(),
+		"test",
+		service.LogsQuery{
 			Name:      "deployment/redis",
 			Namespace: "default",
 		},

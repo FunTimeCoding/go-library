@@ -14,13 +14,11 @@ func TestModelContext(t *testing.T) {
 	o := model_context_tester.New(t)
 	defer o.Close()
 	assert.Count(t, 9, o.Client.ListTools())
-	o.MockClient.AddTab(
-		&tab.Tab{
-			Identifier: 100,
-			Locator:    "https://example.com",
-			Title:      "Example",
-		},
-	)
+	b := tab.New()
+	b.Identifier = 100
+	b.Locator = "https://example.com"
+	b.Title = "Example"
+	o.MockClient.AddTab(b)
 	assert.StringContains(
 		t,
 		"Example",

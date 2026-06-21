@@ -6,7 +6,7 @@ import (
 	library "github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument/edit_session"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -53,7 +53,7 @@ func (s *Server) editSession(
 		)
 	}
 
-	a := argument.NewEditSession()
+	a := edit_session.New()
 	hasChange := false
 
 	if v := q.GetString(constant.Alias, ""); v != "" {

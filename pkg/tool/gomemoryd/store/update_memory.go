@@ -1,10 +1,13 @@
 package store
 
-import "time"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store/save_option"
+	"time"
+)
 
 func (s *Store) UpdateMemory(
 	identifier int64,
-	o *SaveOption,
+	o *save_option.Option,
 ) error {
 	now := time.Now().UTC().Format(time.RFC3339)
 	t, e := s.database.Begin()

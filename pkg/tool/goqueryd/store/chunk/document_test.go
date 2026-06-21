@@ -3,6 +3,7 @@
 package chunk
 
 import (
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"strings"
@@ -24,11 +25,14 @@ func TestDocumentSplitsAtHeadings(t *testing.T) {
 		sections[i] = strings.Repeat("x", constant.ChunkSize/4)
 	}
 
-	content := "# First\n\n" + sections[0] +
-		"\n# Second\n\n" + sections[1] +
-		"\n# Third\n\n" + sections[2] +
-		"\n# Fourth\n\n" + sections[3] +
-		"\n# Fifth\n\n" + sections[4]
+	content := fmt.Sprintf(
+		"# First\n\n%s\n# Second\n\n%s\n# Third\n\n%s\n# Fourth\n\n%s\n# Fifth\n\n%s",
+		sections[0],
+		sections[1],
+		sections[2],
+		sections[3],
+		sections[4],
+	)
 	chunks := Document(content, "test.md")
 	assert.Greater(t, 1, float64(len(chunks)))
 	assert.StringContains(t, "# First", chunks[0].Text)
@@ -38,9 +42,12 @@ func TestDocumentPreservesCodeFences(t *testing.T) {
 	before := strings.Repeat("text ", constant.ChunkSize/8)
 	code := strings.Repeat("line\n", 20)
 	after := strings.Repeat("more ", constant.ChunkSize/8)
-	content := "# Before\n\n" + before +
-		"\n```go\n" + code + "```\n\n" +
-		"# After\n\n" + after
+	content := fmt.Sprintf(
+		"# Before\n\n%s\n```go\n%s```\n\n# After\n\n%s",
+		before,
+		code,
+		after,
+	)
 	chunks := Document(content, "test.md")
 
 	for _, c := range chunks {

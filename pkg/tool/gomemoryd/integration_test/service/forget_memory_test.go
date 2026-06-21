@@ -4,6 +4,7 @@ package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/integration_test/service_tester"
 	"testing"
 )
@@ -12,7 +13,7 @@ func TestServiceForgetMemory(t *testing.T) {
 	o := service_tester.New(t)
 	m, e := o.Service.CreateMemory(
 		"to forget",
-		"content",
+		constant.FixtureContent,
 		"desc",
 		"feedback",
 		"test",

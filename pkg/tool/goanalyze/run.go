@@ -3,7 +3,6 @@ package goanalyze
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/output"
 	"github.com/funtimecoding/go-library/pkg/tool/goanalyze/option"
-	"go/token"
 	"os"
 )
 
@@ -14,8 +13,7 @@ func Run(o *option.Analyze) {
 		patterns = []string{"./..."}
 	}
 
-	fileSet := token.NewFileSet()
-	loaded := load(fileSet, patterns)
+	loaded := load(patterns)
 	results := output.NewResults()
 
 	for _, p := range loaded {

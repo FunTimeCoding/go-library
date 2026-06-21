@@ -2,32 +2,42 @@ package resolve
 
 import (
 	"fmt"
+	"github.com/funtimecoding/go-library/pkg/source/build_tag"
 	"go/token"
 	"golang.org/x/tools/go/packages"
+	"strings"
 )
 
 func LoadPackages(
 	directory string,
 	patterns ...string,
 ) ([]*packages.Package, *token.FileSet, error) {
-	fileSet := token.NewFileSet()
-	configuration := &packages.Config{
+	set := token.NewFileSet()
+	c := &packages.Config{
 		Mode:  packages.LoadSyntax | packages.NeedModule,
-		Fset:  fileSet,
+		Fset:  set,
 		Dir:   directory,
 		Tests: true,
 	}
-	result, e := packages.Load(configuration, patterns...)
+	tags := build_tag.Discover(directory)
+
+	if len(tags) > 0 {
+		c.BuildFlags = []string{
+			fmt.Sprintf("-tags=%s", strings.Join(tags, ",")),
+		}
+	}
+
+	result, e := packages.Load(c, patterns...)
 
 	if e != nil {
 		return nil, nil, fmt.Errorf("load packages: %w", e)
 	}
 
 	for _, p := range result {
-		for _, e := range p.Errors {
-			return nil, nil, fmt.Errorf("%s: %s", p.PkgPath, e)
+		for _, f := range p.Errors {
+			return nil, nil, fmt.Errorf("%s: %s", p.PkgPath, f)
 		}
 	}
 
-	return result, fileSet, nil
+	return result, set, nil
 }

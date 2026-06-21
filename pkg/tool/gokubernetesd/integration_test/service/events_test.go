@@ -14,7 +14,9 @@ func TestEvents(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddEvent("default", "Pulled", "pulled image", "Normal", "Pod", "nginx")
 	result, e := s.Service.Events(
-		context.Background(), "test", service.EventsQuery{
+		context.Background(),
+		"test",
+		service.EventsQuery{
 			Namespace: "default",
 			Limit:     50,
 		},
@@ -44,7 +46,9 @@ func TestEventsMutedFiltered(t *testing.T) {
 	)
 	s.Mute("DNSConfigForming", "", "")
 	result, e := s.Service.Events(
-		context.Background(), "test", service.EventsQuery{
+		context.Background(),
+		"test",
+		service.EventsQuery{
 			Namespace: "kube-system",
 			Limit:     50,
 		},
@@ -74,7 +78,9 @@ func TestEventsMutedUnfiltered(t *testing.T) {
 	)
 	s.Mute("DNSConfigForming", "", "")
 	result, e := s.Service.Events(
-		context.Background(), "test", service.EventsQuery{
+		context.Background(),
+		"test",
+		service.EventsQuery{
 			Namespace:  "kube-system",
 			Limit:      50,
 			Unfiltered: true,

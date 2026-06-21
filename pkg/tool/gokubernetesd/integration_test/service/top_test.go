@@ -27,17 +27,23 @@ func TestTopNodes(t *testing.T) {
 func TestTopPods(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddPodMetrics(
-		"default", "nginx", []map[string]string{
+		"default",
+		"nginx",
+		[]map[string]string{
 			{"name": "nginx", "cpu": "100m", "memory": "64Mi"},
 		},
 	)
 	s.AddPodMetrics(
-		"default", "redis", []map[string]string{
+		"default",
+		"redis",
+		[]map[string]string{
 			{"name": "redis", "cpu": "200m", "memory": "128Mi"},
 		},
 	)
 	result, e := s.Service.TopPods(
-		context.Background(), "test", service.TopQuery{Namespace: "default"},
+		context.Background(),
+		"test",
+		service.TopQuery{Namespace: "default"},
 	)
 	assert.Nil(t, e)
 	assert.Count(t, 2, result)
@@ -48,7 +54,9 @@ func TestTopPods(t *testing.T) {
 func TestTopPodContainers(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddPodMetrics(
-		"default", "multi", []map[string]string{
+		"default",
+		"multi",
+		[]map[string]string{
 			{"name": "app", "cpu": "300m", "memory": "256Mi"},
 			{"name": "sidecar", "cpu": "50m", "memory": "32Mi"},
 		},

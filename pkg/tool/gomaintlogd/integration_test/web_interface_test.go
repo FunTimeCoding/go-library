@@ -4,6 +4,7 @@ package integration_test
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/integration_test/web_interface_tester"
 	"net/http"
 	"net/url"
@@ -13,12 +14,12 @@ import (
 func TestWebInterface(t *testing.T) {
 	o := web_interface_tester.New(t)
 	defer o.Close()
-	o.AssertStatus("/", http.StatusOK)
-	o.AssertStatus("/entries", http.StatusOK)
-	o.AssertStatus("/add", http.StatusOK)
-	assert.StringContains(t, "No entries found", o.Get("/"))
+	o.AssertStatus(constant.DashboardPath, http.StatusOK)
+	o.AssertStatus(constant.EntriesPath, http.StatusOK)
+	o.AssertStatus(constant.AddEntryPath, http.StatusOK)
+	assert.StringContains(t, "No entries found", o.Get(constant.DashboardPath))
 	addBody := o.PostForm(
-		"/add",
+		constant.AddEntryPath,
 		url.Values{
 			"action":      {"restarted web server"},
 			"user":        {"jdoe"},
@@ -29,9 +30,9 @@ func TestWebInterface(t *testing.T) {
 	)
 	assert.StringContains(t, "Entry added", addBody)
 	assert.StringContains(t, "restarted web server", addBody)
-	assert.StringContains(t, "restarted web server", o.Get("/"))
-	assert.StringContains(t, "jdoe", o.Get("/"))
-	assert.StringContains(t, "worker1", o.Get("/entries"))
+	assert.StringContains(t, "restarted web server", o.Get(constant.DashboardPath))
+	assert.StringContains(t, "jdoe", o.Get(constant.DashboardPath))
+	assert.StringContains(t, "worker1", o.Get(constant.EntriesPath))
 	detail := o.Get("/entry/detail?id=1")
 	assert.StringContains(t, "nginx was unresponsive, restarted", detail)
 	assert.StringContains(t, "Edit", detail)
@@ -52,5 +53,5 @@ func TestWebInterface(t *testing.T) {
 	)
 	assert.StringContains(t, "cleared and documented", editBody)
 	o.PostForm("/entry/delete?id=1", nil)
-	assert.StringContains(t, "No entries found", o.Get("/"))
+	assert.StringContains(t, "No entries found", o.Get(constant.DashboardPath))
 }

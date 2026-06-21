@@ -15,7 +15,9 @@ func TestPatchResource(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddDeployment("default", "nginx", 1, 1)
 	e := s.Service.PatchResource(
-		context.Background(), "test", service.PatchQuery{
+		context.Background(),
+		"test",
+		service.PatchQuery{
 			ResourceType: "deployments",
 			Name:         "nginx",
 			Namespace:    "default",
@@ -25,7 +27,9 @@ func TestPatchResource(t *testing.T) {
 	)
 	assert.Nil(t, e)
 	result, f := s.Service.GetResource(
-		context.Background(), "test", service.GetQuery{
+		context.Background(),
+		"test",
+		service.GetQuery{
 			ResourceType: "deployments",
 			Name:         "nginx",
 			Namespace:    "default",

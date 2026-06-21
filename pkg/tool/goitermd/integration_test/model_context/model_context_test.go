@@ -14,14 +14,12 @@ func TestModelContext(t *testing.T) {
 	o := model_context_tester.New(t)
 	defer o.Close()
 	assert.Count(t, 8, o.Client.ListTools())
-	o.MockClient.AddSession(
-		&session.Session{
-			Identifier:    "sess-1",
-			TabIdentifier: "tab-1",
-			TabTitle:      "build",
-			JobName:       "zsh",
-		},
-	)
+	n := session.Stub()
+	n.Identifier = "sess-1"
+	n.TabIdentifier = "tab-1"
+	n.TabTitle = "build"
+	n.JobName = "zsh"
+	o.MockClient.AddSession(n)
 	assert.StringContains(
 		t,
 		"build",

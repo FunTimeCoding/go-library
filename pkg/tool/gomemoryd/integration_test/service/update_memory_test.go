@@ -4,6 +4,7 @@ package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/integration_test/service_tester"
 	"testing"
 )
@@ -42,8 +43,8 @@ func TestServiceUpdateMemoryNonexistentFails(t *testing.T) {
 	o := service_tester.New(t)
 	_, e := o.Service.UpdateMemory(
 		999,
-		"name",
-		"content",
+		constant.FixtureName,
+		constant.FixtureContent,
 		"desc",
 		"test",
 	)

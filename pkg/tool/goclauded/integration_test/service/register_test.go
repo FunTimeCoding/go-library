@@ -4,6 +4,7 @@ package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/event_query"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/integration_test/service_tester"
 	"testing"
@@ -28,7 +29,7 @@ func TestRegisterExisting(t *testing.T) {
 func TestRegisterLogsEvent(t *testing.T) {
 	s := service_tester.New(t)
 	s.Register("session-1")
-	events := s.Store.Events(event_query.New().Kind("register").SetLimit(10))
+	events := s.Store.Events(event_query.New().Kind(constant.Register).SetLimit(10))
 	assert.Count(t, 1, events)
 }
 

@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store/save_option"
 )
 
 func (s *Service) CreateMemory(
@@ -16,7 +17,7 @@ func (s *Service) CreateMemory(
 		memoryType = "feedback"
 	}
 
-	o := store.NewSaveOption()
+	o := save_option.New()
 	o.Name = name
 	o.Content = content
 	o.Description = description

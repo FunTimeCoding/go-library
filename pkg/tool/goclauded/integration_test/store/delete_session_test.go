@@ -25,13 +25,17 @@ func TestDeleteSessionCascadesChildRecords(t *testing.T) {
 		t,
 		s.Store.LogEvent(
 			"session-1",
-			"announce",
+			constant.Announce,
 			"Ash",
 			map[string]string{constant.Topic: "test topic"},
 		),
 	)
 	_, e := s.Store.UpsertCompletion(
-		"session-1", "Ash", "complete", "test topic", "test summary",
+		"session-1",
+		"Ash",
+		constant.Complete,
+		"test topic",
+		"test summary",
 	)
 	assert.FatalOnError(t, e)
 	assert.FatalOnError(

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument"
+	"github.com/funtimecoding/go-library/pkg/tool/goclauded/service/argument/edit_session"
 	"net/http"
 )
 
@@ -16,7 +16,7 @@ func (s *Server) sessionEditSubmit(
 	errors.PanicOnError(r.ParseForm())
 	alias := r.FormValue(constant.Alias)
 	description := r.FormValue(constant.Description)
-	a := argument.NewEditSession()
+	a := edit_session.New()
 	a.Alias = &alias
 	a.Description = &description
 	errors.PanicOnError(s.service.EditSession(identifier, a))

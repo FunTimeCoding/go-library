@@ -34,7 +34,7 @@ func TestWebService(t *testing.T) {
 	assert.NotNil(t, create.JSON200)
 	assert.String(t, "restarted web server", create.JSON200.Action)
 	assert.String(t, "jdoe", create.JSON200.User)
-	id := create.JSON200.Id
+	identifier := create.JSON200.Id
 	status, e := c.GetStatusWithResponse(x)
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusOK, status.StatusCode())
@@ -46,7 +46,7 @@ func TestWebService(t *testing.T) {
 	newAction := "cleared and documented"
 	update, e := c.UpdateEntryWithResponse(
 		x,
-		id,
+		identifier,
 		client.UpdateEntryJSONRequestBody{
 			Action:      newAction,
 			User:        "jdoe",
@@ -61,7 +61,7 @@ func TestWebService(t *testing.T) {
 	entries, e = c.GetEntriesWithResponse(x, &client.GetEntriesParams{})
 	assert.FatalOnError(t, e)
 	assert.String(t, newAction, (*entries.JSON200)[0].Action)
-	del, e := c.DeleteEntryWithResponse(x, id)
+	del, e := c.DeleteEntryWithResponse(x, identifier)
 	assert.FatalOnError(t, e)
 	assert.Integer(t, http.StatusNoContent, del.StatusCode())
 	status, e = c.GetStatusWithResponse(x)

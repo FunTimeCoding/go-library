@@ -14,7 +14,9 @@ func TestDescribeResource(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddDeployment("default", "nginx", 1, 1)
 	result, e := s.Service.DescribeResource(
-		context.Background(), "test", service.DescribeQuery{
+		context.Background(),
+		"test",
+		service.DescribeQuery{
 			ResourceType: "deployments",
 			Name:         "nginx",
 			Namespace:    "default",
@@ -29,7 +31,9 @@ func TestDescribeResourceFiltered(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddDeployment("default", "nginx", 1, 1)
 	result, e := s.Service.DescribeResource(
-		context.Background(), "test", service.DescribeQuery{
+		context.Background(),
+		"test",
+		service.DescribeQuery{
 			ResourceType: "deployments",
 			Name:         "nginx",
 			Namespace:    "default",

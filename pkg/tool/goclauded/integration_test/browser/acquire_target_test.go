@@ -17,14 +17,14 @@ func TestAcquireTargetDoesNotCloseTab(t *testing.T) {
 	b := browser_tester.New(t)
 	b.Navigate("about:blank")
 	browser := chromedp.FromContext(b.Context).Browser
-	id, e := target.CreateTarget(
+	identifier, e := target.CreateTarget(
 		"about:blank",
 	).Do(cdp.WithExecutor(b.Context, browser))
 	assert.FatalOnError(t, e)
 	// Cancel func discarded - calling it triggers chromedp cleanup that closes the tab
 	cached, _ := chromedp.NewContext(
 		b.Context,
-		chromedp.WithTargetID(id),
+		chromedp.WithTargetID(identifier),
 	)
 	assert.FatalOnError(
 		t,
@@ -75,7 +75,7 @@ func TestAcquireTargetDoesNotCloseTab(t *testing.T) {
 		func(t *testing.T) {
 			fresh, _ := chromedp.NewContext(
 				b.Context,
-				chromedp.WithTargetID(target.ID(string(id))),
+				chromedp.WithTargetID(target.ID(string(identifier))),
 			)
 			wrapped, cancel := context.WithTimeout(
 				fresh,

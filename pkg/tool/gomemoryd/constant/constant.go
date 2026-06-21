@@ -51,4 +51,7 @@ const (
 	SearchPath       = "/search"
 	Identifier       = "identifier"
 	Query            = "query"
+
+	FixtureName    = "name"
+	FixtureContent = "content"
 )

@@ -27,7 +27,10 @@ func TestArgocdApplicationDetail(t *testing.T) {
 	s := service_tester.New(t)
 	s.AddArgoApp("model-context", "model-context", "Synced", "Healthy")
 	result, e := s.Service.ArgocdApplication(
-		context.Background(), "test", "model-context", false,
+		context.Background(),
+		"test",
+		"model-context",
+		false,
 	)
 	assert.Nil(t, e)
 	assert.NotNil(t, result.Application)

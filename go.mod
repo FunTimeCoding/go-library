@@ -93,7 +93,7 @@ require (
 	github.com/whilp/git-urls v1.0.0
 	github.com/yuin/goldmark v1.8.2
 	gitlab.com/gitlab-org/api/client-go/v2 v2.40.0
-	go.etcd.io/bbolt v1.4.3
+	go.etcd.io/bbolt v1.5.0
 	golang.org/x/crypto v0.53.0
 	golang.org/x/mod v0.37.0
 	golang.org/x/net v0.56.0

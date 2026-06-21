@@ -310,7 +310,12 @@ func TestFix(t *testing.T) {
 func writeTestModule(t *testing.T) string {
 	t.Helper()
 	directory := t.TempDir()
-	testutil.WriteFile(t, directory, "go.mod", "module testmodule\n\ngo 1.22\n")
+	testutil.WriteFile(
+		t,
+		directory,
+		"go.mod",
+		"module testmodule\n\ngo 1.22\n",
+	)
 	testutil.WriteFile(
 		t,
 		directory,

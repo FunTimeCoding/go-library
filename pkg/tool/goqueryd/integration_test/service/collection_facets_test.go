@@ -17,7 +17,10 @@ func TestCollectionFacets(t *testing.T) {
 			"notes",
 			"a.md",
 			"# Alpha\n\nFirst.\n",
-			map[string]string{constant.FixtureAuthorKey: "alice", constant.FixtureTagKey: "design"},
+			map[string]string{
+				constant.FixtureAuthorKey: "alice",
+				constant.FixtureTagKey:    "design",
+			},
 		),
 	)
 	assert.FatalOnError(
@@ -26,7 +29,10 @@ func TestCollectionFacets(t *testing.T) {
 			"notes",
 			"b.md",
 			"# Beta\n\nSecond.\n",
-			map[string]string{constant.FixtureAuthorKey: "alice", constant.FixtureTagKey: constant.FixtureBuildValue},
+			map[string]string{
+				constant.FixtureAuthorKey: "alice",
+				constant.FixtureTagKey:    constant.FixtureBuildValue,
+			},
 		),
 	)
 	assert.FatalOnError(
@@ -35,7 +41,10 @@ func TestCollectionFacets(t *testing.T) {
 			"notes",
 			"c.md",
 			"# Gamma\n\nThird.\n",
-			map[string]string{constant.FixtureAuthorKey: "bob", constant.FixtureTagKey: constant.FixtureBuildValue},
+			map[string]string{
+				constant.FixtureAuthorKey: "bob",
+				constant.FixtureTagKey:    constant.FixtureBuildValue,
+			},
 		),
 	)
 	facets := s.Service.CollectionFacets("notes", nil)
@@ -59,7 +68,10 @@ func TestCollectionFacetsForKey(t *testing.T) {
 			"notes",
 			"a.md",
 			"# Alpha\n\nFirst.\n",
-			map[string]string{constant.FixtureAuthorKey: "alice", constant.FixtureTagKey: "design"},
+			map[string]string{
+				constant.FixtureAuthorKey: "alice",
+				constant.FixtureTagKey:    "design",
+			},
 		),
 	)
 	assert.FatalOnError(
@@ -68,10 +80,16 @@ func TestCollectionFacetsForKey(t *testing.T) {
 			"notes",
 			"b.md",
 			"# Beta\n\nSecond.\n",
-			map[string]string{constant.FixtureAuthorKey: "bob", constant.FixtureTagKey: constant.FixtureBuildValue},
+			map[string]string{
+				constant.FixtureAuthorKey: "bob",
+				constant.FixtureTagKey:    constant.FixtureBuildValue,
+			},
 		),
 	)
-	facets := s.Service.CollectionFacetsForKey("notes", constant.FixtureAuthorKey)
+	facets := s.Service.CollectionFacetsForKey(
+		"notes",
+		constant.FixtureAuthorKey,
+	)
 	assert.Count(t, 1, facets)
 	assert.String(t, "author", facets[0].Key)
 	assert.Integer(t, 2, facets[0].Distinct)

@@ -37,7 +37,11 @@ func writeFixture(
 func indexedTestStore(t *testing.T) (*Store, *ollama.Client) {
 	t.Helper()
 	s, o := openTestStore(t)
-	s.AddCollection("test", fixture.Path(system.SearchPath), goqueryd.DefaultGlob)
+	s.AddCollection(
+		"test",
+		fixture.Path(system.SearchPath),
+		goqueryd.DefaultGlob,
+	)
 	s.Index("test")
 
 	return s, o

@@ -17,7 +17,11 @@ func TestWebInterface(t *testing.T) {
 	o.AssertStatus(constant.DashboardPath, http.StatusOK)
 	o.AssertStatus(constant.EntriesPath, http.StatusOK)
 	o.AssertStatus(constant.AddEntryPath, http.StatusOK)
-	assert.StringContains(t, "No entries found", o.Get(constant.DashboardPath))
+	assert.StringContains(
+		t,
+		"No entries found",
+		o.Get(constant.DashboardPath),
+	)
 	addBody := o.PostForm(
 		constant.AddEntryPath,
 		url.Values{
@@ -30,7 +34,11 @@ func TestWebInterface(t *testing.T) {
 	)
 	assert.StringContains(t, "Entry added", addBody)
 	assert.StringContains(t, "restarted web server", addBody)
-	assert.StringContains(t, "restarted web server", o.Get(constant.DashboardPath))
+	assert.StringContains(
+		t,
+		"restarted web server",
+		o.Get(constant.DashboardPath),
+	)
 	assert.StringContains(t, "jdoe", o.Get(constant.DashboardPath))
 	assert.StringContains(t, "worker1", o.Get(constant.EntriesPath))
 	detail := o.Get("/entry/detail?id=1")
@@ -53,5 +61,9 @@ func TestWebInterface(t *testing.T) {
 	)
 	assert.StringContains(t, "cleared and documented", editBody)
 	o.PostForm("/entry/delete?id=1", nil)
-	assert.StringContains(t, "No entries found", o.Get(constant.DashboardPath))
+	assert.StringContains(
+		t,
+		"No entries found",
+		o.Get(constant.DashboardPath),
+	)
 }

@@ -35,9 +35,24 @@ func Run(
 								r,
 							),
 							[]generated.StrictMiddlewareFunc{
-								web.TelemetryMiddleware(
-									telemetry.NewEnvironment(),
-								),
+								func(
+									f generated.StrictHandlerFunc,
+									operation string,
+								) generated.StrictHandlerFunc {
+									t := telemetry.NewEnvironment()
+
+									return func(
+										x context.Context,
+										w http.ResponseWriter,
+										r *http.Request,
+										request any,
+									) (any, error) {
+										response, e := f(x, w, r, request)
+										web.RecordTelemetry(t, operation, e)
+
+										return response, e
+									}
+								},
 							},
 						),
 						m,

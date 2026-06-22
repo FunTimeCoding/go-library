@@ -99,11 +99,29 @@ func Run(
 	memoryTicker := ticker.New(30*time.Second, v.PollMemory, rec)
 	w := watcher.New(v, l, r, h)
 	address := library.AddressPort(o.Port)
+	t := telemetry.NewEnvironment()
 	setup := func(m *http.ServeMux) {
 		generated.HandlerFromMux(
 			generated.NewStrictHandler(
 				server.New(v, l, r, h, o.SessionExportPath),
-				nil,
+				[]generated.StrictMiddlewareFunc{
+					func(
+						f generated.StrictHandlerFunc,
+						operation string,
+					) generated.StrictHandlerFunc {
+						return func(
+							x context.Context,
+							w http.ResponseWriter,
+							q *http.Request,
+							request any,
+						) (any, error) {
+							response, e := f(x, w, q, request)
+							library.RecordTelemetry(t, operation, e)
+
+							return response, e
+						}
+					},
+				},
 			),
 			m,
 		)
@@ -111,7 +129,7 @@ func Run(
 			v,
 			r,
 			l,
-			telemetry.NewEnvironment(),
+			t,
 			o.Version,
 		).Mount(m)
 		web.New(v).Mount(m)

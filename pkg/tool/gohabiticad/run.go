@@ -32,7 +32,22 @@ func Run(
 						generated.NewStrictHandler(
 							server.New(c, r),
 							[]generated.StrictMiddlewareFunc{
-								web.TelemetryMiddleware(t),
+								func(
+									f generated.StrictHandlerFunc,
+									operation string,
+								) generated.StrictHandlerFunc {
+									return func(
+										x context.Context,
+										w http.ResponseWriter,
+										r *http.Request,
+										request any,
+									) (any, error) {
+										response, e := f(x, w, r, request)
+										web.RecordTelemetry(t, operation, e)
+
+										return response, e
+									}
+								},
 							},
 						),
 						m,

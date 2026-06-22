@@ -5,15 +5,19 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/telemetry/constant"
 	"github.com/funtimecoding/go-library/pkg/telemetry/record"
-	"github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 	"net/http"
 )
 
-func TelemetryMiddleware(c face.Recorder) nethttp.StrictHTTPMiddlewareFunc {
+func TelemetryMiddleware(
+	c face.Recorder,
+) func(
+	func(context.Context, http.ResponseWriter, *http.Request, any) (any, error),
+	string,
+) func(context.Context, http.ResponseWriter, *http.Request, any) (any, error) {
 	return func(
-		f nethttp.StrictHTTPHandlerFunc,
+		f func(context.Context, http.ResponseWriter, *http.Request, any) (any, error),
 		operation string,
-	) nethttp.StrictHTTPHandlerFunc {
+	) func(context.Context, http.ResponseWriter, *http.Request, any) (any, error) {
 		return func(
 			x context.Context,
 			w http.ResponseWriter,

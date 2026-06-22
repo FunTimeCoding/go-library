@@ -1,15 +1,20 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"net/http"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
 )
 
 func (s *Server) DeleteEntry(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier int,
-) {
-	errors.PanicOnError(s.store.Delete(uint(identifier)))
-	w.WriteHeader(http.StatusNoContent)
+	_ context.Context,
+	r server.DeleteEntryRequestObject,
+) (server.DeleteEntryResponseObject, error) {
+	if e := s.store.Delete(uint(r.Id)); e != nil {
+		return server.DeleteEntry500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.DeleteEntry204Response{}, nil
 }

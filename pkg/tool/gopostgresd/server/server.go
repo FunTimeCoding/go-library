@@ -1,7 +1,11 @@
 package server
 
-import "github.com/funtimecoding/go-library/pkg/tool/gopostgresd/store"
+import (
+	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/tool/gopostgresd/store"
+)
 
 type Server struct {
-	store *store.Store
+	store    *store.Store
+	reporter face.Reporter
 }

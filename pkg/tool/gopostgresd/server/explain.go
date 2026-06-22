@@ -1,31 +1,33 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gopostgresd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) Explain(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.ExplainRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	c context.Context,
+	r server.ExplainRequestObject,
+) (server.ExplainResponseObject, error) {
 	prefix := "EXPLAIN"
 
-	if body.Analyze != nil && *body.Analyze {
+	if r.Body.Analyze != nil && *r.Body.Analyze {
 		prefix = "EXPLAIN ANALYZE"
 	}
 
 	rows, e := s.store.Query(
-		r.Context(),
-		body.Instance,
-		fmt.Sprintf("%s %s", prefix, body.Sql),
+		c,
+		r.Body.Instance,
+		fmt.Sprintf("%s %s", prefix, r.Body.Sql),
 	)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, server.QueryResult{Rows: toRows(rows)})
+
+	if e != nil {
+		return server.Explain500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.Explain200JSONResponse{Rows: toRows(rows)}, nil
 }

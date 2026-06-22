@@ -1,15 +1,14 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gopostgresd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListInstances(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListInstancesRequestObject,
+) (server.ListInstancesResponseObject, error) {
 	var result []server.Instance
 
 	for _, i := range s.store.Instances() {
@@ -24,5 +23,5 @@ func (s *Server) ListInstances(
 		)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.ListInstances200JSONResponse(result), nil
 }

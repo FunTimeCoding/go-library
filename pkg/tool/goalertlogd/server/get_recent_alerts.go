@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
 	"time"
 )
@@ -26,7 +27,7 @@ func (s *Server) GetRecentAlerts(
 
 	if e != nil {
 		return server.GetRecentAlerts500JSONResponse(
-			*s.captureFail(e, "failed to query recent alerts"),
+			*s.captureFail(e, constant.UnexpectedError),
 		), nil
 	}
 

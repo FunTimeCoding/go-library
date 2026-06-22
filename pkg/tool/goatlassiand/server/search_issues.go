@@ -1,26 +1,38 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) SearchIssues(
-	w http.ResponseWriter,
-	_ *http.Request,
-	p server.SearchIssuesParams,
-) {
-	var issues []*server.JiraIssue
+	_ context.Context,
+	r server.SearchIssuesRequestObject,
+) (server.SearchIssuesResponseObject, error) {
+	if r.Params.Limit != nil {
+		result, e := s.jira.SearchLimit(*r.Params.Limit, r.Params.Query)
 
-	if p.Limit != nil {
-		issues = convert.JiraIssues(
-			s.jira.MustSearchLimit(*p.Limit, p.Query),
-		)
-	} else {
-		issues = convert.JiraIssues(s.jira.MustSearch(p.Query))
+		if e != nil {
+			return server.SearchIssues500JSONResponse(
+				*s.captureDetail(e),
+			), nil
+		}
+
+		return server.SearchIssues200JSONResponse(
+			convert.JiraIssues(result),
+		), nil
 	}
 
-	web.EncodeNotation(w, issues)
+	result, e := s.jira.Search(r.Params.Query)
+
+	if e != nil {
+		return server.SearchIssues500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.SearchIssues200JSONResponse(
+		convert.JiraIssues(result),
+	), nil
 }

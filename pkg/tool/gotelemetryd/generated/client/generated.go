@@ -37,6 +37,12 @@ func (e GetSummaryParamsGroupBy) Valid() bool {
 	}
 }
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // EventEntry defines model for EventEntry.
 type EventEntry struct {
 	Actor      string             `json:"actor"`
@@ -573,6 +579,7 @@ type GetEventsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]EventEntry
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -595,6 +602,7 @@ type PostEventResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *EventResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -617,6 +625,7 @@ type GetSummaryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]SummaryEntry
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -691,6 +700,13 @@ func ParseGetEventsResponse(rsp *http.Response) (*GetEventsResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -717,6 +733,13 @@ func ParsePostEventResponse(rsp *http.Response) (*PostEventResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -742,6 +765,13 @@ func ParseGetSummaryResponse(rsp *http.Response) (*GetSummaryResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

@@ -65,6 +65,12 @@ type CreatePageRequest struct {
 	Title string `json:"title"`
 }
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // JiraIssue defines model for JiraIssue.
 type JiraIssue struct {
 	Assignee    *string   `json:"assignee,omitempty"`
@@ -1104,6 +1110,7 @@ type CreatePageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *ConfluencePageDetail
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1126,6 +1133,7 @@ type GetPageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ConfluencePageDetail
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1148,6 +1156,7 @@ type UpdatePageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ConfluencePageDetail
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1169,7 +1178,8 @@ func (r UpdatePageResponse) StatusCode() int {
 type GetPageChildrenResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]ConfluencePage
+	JSON200      *[]*ConfluencePage
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1191,6 +1201,7 @@ func (r GetPageChildrenResponse) StatusCode() int {
 type AddPageCommentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1212,7 +1223,8 @@ func (r AddPageCommentResponse) StatusCode() int {
 type SearchPagesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]ConfluencePage
+	JSON200      *[]*ConfluencePage
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1234,7 +1246,8 @@ func (r SearchPagesResponse) StatusCode() int {
 type ListSpacesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]ConfluenceSpace
+	JSON200      *[]*ConfluenceSpace
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1257,6 +1270,7 @@ type GetIssueResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *JiraIssue
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1278,6 +1292,7 @@ func (r GetIssueResponse) StatusCode() int {
 type AddIssueCommentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1299,6 +1314,7 @@ func (r AddIssueCommentResponse) StatusCode() int {
 type TransitionIssueResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1320,7 +1336,8 @@ func (r TransitionIssueResponse) StatusCode() int {
 type GetTransitionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]JiraTransition
+	JSON200      *[]*JiraTransition
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1342,7 +1359,8 @@ func (r GetTransitionsResponse) StatusCode() int {
 type ListProjectsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]JiraProject
+	JSON200      *[]*JiraProject
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1364,7 +1382,8 @@ func (r ListProjectsResponse) StatusCode() int {
 type SearchIssuesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]JiraIssue
+	JSON200      *[]*JiraIssue
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1561,6 +1580,13 @@ func ParseCreatePageResponse(rsp *http.Response) (*CreatePageResponse, error) {
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1586,6 +1612,13 @@ func ParseGetPageResponse(rsp *http.Response) (*GetPageResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1613,6 +1646,13 @@ func ParseUpdatePageResponse(rsp *http.Response) (*UpdatePageResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1633,11 +1673,18 @@ func ParseGetPageChildrenResponse(rsp *http.Response) (*GetPageChildrenResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []ConfluencePage
+		var dest []*ConfluencePage
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1655,6 +1702,16 @@ func ParseAddPageCommentResponse(rsp *http.Response) (*AddPageCommentResponse, e
 	response := &AddPageCommentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1675,11 +1732,18 @@ func ParseSearchPagesResponse(rsp *http.Response) (*SearchPagesResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []ConfluencePage
+		var dest []*ConfluencePage
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1701,11 +1765,18 @@ func ParseListSpacesResponse(rsp *http.Response) (*ListSpacesResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []ConfluenceSpace
+		var dest []*ConfluenceSpace
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1733,6 +1804,13 @@ func ParseGetIssueResponse(rsp *http.Response) (*GetIssueResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1751,6 +1829,16 @@ func ParseAddIssueCommentResponse(rsp *http.Response) (*AddIssueCommentResponse,
 		HTTPResponse: rsp,
 	}
 
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
 	return response, nil
 }
 
@@ -1765,6 +1853,16 @@ func ParseTransitionIssueResponse(rsp *http.Response) (*TransitionIssueResponse,
 	response := &TransitionIssueResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1785,11 +1883,18 @@ func ParseGetTransitionsResponse(rsp *http.Response) (*GetTransitionsResponse, e
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []JiraTransition
+		var dest []*JiraTransition
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1811,11 +1916,18 @@ func ParseListProjectsResponse(rsp *http.Response) (*ListProjectsResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []JiraProject
+		var dest []*JiraProject
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1837,11 +1949,18 @@ func ParseSearchIssuesResponse(rsp *http.Response) (*SearchIssuesResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []JiraIssue
+		var dest []*JiraIssue
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

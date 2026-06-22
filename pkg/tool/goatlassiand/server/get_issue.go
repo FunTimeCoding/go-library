@@ -1,15 +1,24 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
 )
 
 func (s *Server) GetIssue(
-	w http.ResponseWriter,
-	_ *http.Request,
-	key string,
-) {
-	web.EncodeNotation(w, convert.JiraIssue(s.jira.MustIssue(key)))
+	_ context.Context,
+	r server.GetIssueRequestObject,
+) (server.GetIssueResponseObject, error) {
+	result, e := s.jira.Issue(r.Key)
+
+	if e != nil {
+		return server.GetIssue500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.GetIssue200JSONResponse(
+		*convert.JiraIssue(result),
+	), nil
 }

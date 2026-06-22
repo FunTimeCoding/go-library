@@ -32,6 +32,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/VersionEntry"
+        "500":
+          description: Failed to query versions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/impressions:
     post:
       operationId: postImpressions
@@ -54,6 +60,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ImpressionResponse"
+        "500":
+          description: Failed to create impression.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     ImpressionResponse:
@@ -79,4 +91,12 @@ components:
         change_type:
           type: string
         source:
+          type: string
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
           type: string

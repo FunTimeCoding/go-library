@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,6 +19,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
 
 // CommentRequest defines model for CommentRequest.
@@ -66,6 +69,12 @@ type CreatePageRequest struct {
 
 	// Title Page title.
 	Title string `json:"title"`
+}
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
 }
 
 // JiraIssue defines model for JiraIssue.
@@ -654,30 +663,880 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type CreatePageRequestObject struct {
+	Body *CreatePageJSONRequestBody
+}
+
+type CreatePageResponseObject interface {
+	VisitCreatePageResponse(w http.ResponseWriter) error
+}
+
+type CreatePage201JSONResponse ConfluencePageDetail
+
+func (response CreatePage201JSONResponse) VisitCreatePageResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreatePage400Response struct {
+}
+
+func (response CreatePage400Response) VisitCreatePageResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type CreatePage500JSONResponse ErrorResponse
+
+func (response CreatePage500JSONResponse) VisitCreatePageResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetPageRequestObject struct {
+	Identifier string `json:"identifier"`
+}
+
+type GetPageResponseObject interface {
+	VisitGetPageResponse(w http.ResponseWriter) error
+}
+
+type GetPage200JSONResponse ConfluencePageDetail
+
+func (response GetPage200JSONResponse) VisitGetPageResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetPage404Response struct {
+}
+
+func (response GetPage404Response) VisitGetPageResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type GetPage500JSONResponse ErrorResponse
+
+func (response GetPage500JSONResponse) VisitGetPageResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdatePageRequestObject struct {
+	Identifier string `json:"identifier"`
+	Body       *UpdatePageJSONRequestBody
+}
+
+type UpdatePageResponseObject interface {
+	VisitUpdatePageResponse(w http.ResponseWriter) error
+}
+
+type UpdatePage200JSONResponse ConfluencePageDetail
+
+func (response UpdatePage200JSONResponse) VisitUpdatePageResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdatePage404Response struct {
+}
+
+func (response UpdatePage404Response) VisitUpdatePageResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type UpdatePage500JSONResponse ErrorResponse
+
+func (response UpdatePage500JSONResponse) VisitUpdatePageResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetPageChildrenRequestObject struct {
+	Identifier string `json:"identifier"`
+}
+
+type GetPageChildrenResponseObject interface {
+	VisitGetPageChildrenResponse(w http.ResponseWriter) error
+}
+
+type GetPageChildren200JSONResponse []*ConfluencePage
+
+func (response GetPageChildren200JSONResponse) VisitGetPageChildrenResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetPageChildren500JSONResponse ErrorResponse
+
+func (response GetPageChildren500JSONResponse) VisitGetPageChildrenResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type AddPageCommentRequestObject struct {
+	Identifier string `json:"identifier"`
+	Body       *AddPageCommentJSONRequestBody
+}
+
+type AddPageCommentResponseObject interface {
+	VisitAddPageCommentResponse(w http.ResponseWriter) error
+}
+
+type AddPageComment204Response struct {
+}
+
+func (response AddPageComment204Response) VisitAddPageCommentResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type AddPageComment400Response struct {
+}
+
+func (response AddPageComment400Response) VisitAddPageCommentResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type AddPageComment500JSONResponse ErrorResponse
+
+func (response AddPageComment500JSONResponse) VisitAddPageCommentResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type SearchPagesRequestObject struct {
+	Params SearchPagesParams
+}
+
+type SearchPagesResponseObject interface {
+	VisitSearchPagesResponse(w http.ResponseWriter) error
+}
+
+type SearchPages200JSONResponse []*ConfluencePage
+
+func (response SearchPages200JSONResponse) VisitSearchPagesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type SearchPages400Response struct {
+}
+
+func (response SearchPages400Response) VisitSearchPagesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type SearchPages500JSONResponse ErrorResponse
+
+func (response SearchPages500JSONResponse) VisitSearchPagesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListSpacesRequestObject struct {
+}
+
+type ListSpacesResponseObject interface {
+	VisitListSpacesResponse(w http.ResponseWriter) error
+}
+
+type ListSpaces200JSONResponse []*ConfluenceSpace
+
+func (response ListSpaces200JSONResponse) VisitListSpacesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListSpaces500JSONResponse ErrorResponse
+
+func (response ListSpaces500JSONResponse) VisitListSpacesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetIssueRequestObject struct {
+	Key string `json:"key"`
+}
+
+type GetIssueResponseObject interface {
+	VisitGetIssueResponse(w http.ResponseWriter) error
+}
+
+type GetIssue200JSONResponse JiraIssue
+
+func (response GetIssue200JSONResponse) VisitGetIssueResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetIssue404Response struct {
+}
+
+func (response GetIssue404Response) VisitGetIssueResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type GetIssue500JSONResponse ErrorResponse
+
+func (response GetIssue500JSONResponse) VisitGetIssueResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type AddIssueCommentRequestObject struct {
+	Key  string `json:"key"`
+	Body *AddIssueCommentJSONRequestBody
+}
+
+type AddIssueCommentResponseObject interface {
+	VisitAddIssueCommentResponse(w http.ResponseWriter) error
+}
+
+type AddIssueComment204Response struct {
+}
+
+func (response AddIssueComment204Response) VisitAddIssueCommentResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type AddIssueComment400Response struct {
+}
+
+func (response AddIssueComment400Response) VisitAddIssueCommentResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type AddIssueComment500JSONResponse ErrorResponse
+
+func (response AddIssueComment500JSONResponse) VisitAddIssueCommentResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type TransitionIssueRequestObject struct {
+	Key  string `json:"key"`
+	Body *TransitionIssueJSONRequestBody
+}
+
+type TransitionIssueResponseObject interface {
+	VisitTransitionIssueResponse(w http.ResponseWriter) error
+}
+
+type TransitionIssue204Response struct {
+}
+
+func (response TransitionIssue204Response) VisitTransitionIssueResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type TransitionIssue400Response struct {
+}
+
+func (response TransitionIssue400Response) VisitTransitionIssueResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type TransitionIssue500JSONResponse ErrorResponse
+
+func (response TransitionIssue500JSONResponse) VisitTransitionIssueResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetTransitionsRequestObject struct {
+	Key string `json:"key"`
+}
+
+type GetTransitionsResponseObject interface {
+	VisitGetTransitionsResponse(w http.ResponseWriter) error
+}
+
+type GetTransitions200JSONResponse []*JiraTransition
+
+func (response GetTransitions200JSONResponse) VisitGetTransitionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetTransitions500JSONResponse ErrorResponse
+
+func (response GetTransitions500JSONResponse) VisitGetTransitionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListProjectsRequestObject struct {
+}
+
+type ListProjectsResponseObject interface {
+	VisitListProjectsResponse(w http.ResponseWriter) error
+}
+
+type ListProjects200JSONResponse []*JiraProject
+
+func (response ListProjects200JSONResponse) VisitListProjectsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListProjects500JSONResponse ErrorResponse
+
+func (response ListProjects500JSONResponse) VisitListProjectsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type SearchIssuesRequestObject struct {
+	Params SearchIssuesParams
+}
+
+type SearchIssuesResponseObject interface {
+	VisitSearchIssuesResponse(w http.ResponseWriter) error
+}
+
+type SearchIssues200JSONResponse []*JiraIssue
+
+func (response SearchIssues200JSONResponse) VisitSearchIssuesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type SearchIssues400Response struct {
+}
+
+func (response SearchIssues400Response) VisitSearchIssuesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type SearchIssues500JSONResponse ErrorResponse
+
+func (response SearchIssues500JSONResponse) VisitSearchIssuesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (POST /api/v1/confluence/page)
+	CreatePage(ctx context.Context, request CreatePageRequestObject) (CreatePageResponseObject, error)
+
+	// (GET /api/v1/confluence/page/{identifier})
+	GetPage(ctx context.Context, request GetPageRequestObject) (GetPageResponseObject, error)
+
+	// (PUT /api/v1/confluence/page/{identifier})
+	UpdatePage(ctx context.Context, request UpdatePageRequestObject) (UpdatePageResponseObject, error)
+
+	// (GET /api/v1/confluence/page/{identifier}/children)
+	GetPageChildren(ctx context.Context, request GetPageChildrenRequestObject) (GetPageChildrenResponseObject, error)
+
+	// (POST /api/v1/confluence/page/{identifier}/comment)
+	AddPageComment(ctx context.Context, request AddPageCommentRequestObject) (AddPageCommentResponseObject, error)
+
+	// (GET /api/v1/confluence/search)
+	SearchPages(ctx context.Context, request SearchPagesRequestObject) (SearchPagesResponseObject, error)
+
+	// (GET /api/v1/confluence/spaces)
+	ListSpaces(ctx context.Context, request ListSpacesRequestObject) (ListSpacesResponseObject, error)
+
+	// (GET /api/v1/jira/issue/{key})
+	GetIssue(ctx context.Context, request GetIssueRequestObject) (GetIssueResponseObject, error)
+
+	// (POST /api/v1/jira/issue/{key}/comment)
+	AddIssueComment(ctx context.Context, request AddIssueCommentRequestObject) (AddIssueCommentResponseObject, error)
+
+	// (POST /api/v1/jira/issue/{key}/transition)
+	TransitionIssue(ctx context.Context, request TransitionIssueRequestObject) (TransitionIssueResponseObject, error)
+
+	// (GET /api/v1/jira/issue/{key}/transitions)
+	GetTransitions(ctx context.Context, request GetTransitionsRequestObject) (GetTransitionsResponseObject, error)
+
+	// (GET /api/v1/jira/projects)
+	ListProjects(ctx context.Context, request ListProjectsRequestObject) (ListProjectsResponseObject, error)
+
+	// (GET /api/v1/jira/search)
+	SearchIssues(ctx context.Context, request SearchIssuesRequestObject) (SearchIssuesResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// CreatePage operation middleware
+func (sh *strictHandler) CreatePage(w http.ResponseWriter, r *http.Request) {
+	var request CreatePageRequestObject
+
+	var body CreatePageJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreatePage(ctx, request.(CreatePageRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreatePage")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreatePageResponseObject); ok {
+		if err := validResponse.VisitCreatePageResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetPage operation middleware
+func (sh *strictHandler) GetPage(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request GetPageRequestObject
+
+	request.Identifier = identifier
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetPage(ctx, request.(GetPageRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetPage")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetPageResponseObject); ok {
+		if err := validResponse.VisitGetPageResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// UpdatePage operation middleware
+func (sh *strictHandler) UpdatePage(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request UpdatePageRequestObject
+
+	request.Identifier = identifier
+
+	var body UpdatePageJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdatePage(ctx, request.(UpdatePageRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdatePage")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(UpdatePageResponseObject); ok {
+		if err := validResponse.VisitUpdatePageResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetPageChildren operation middleware
+func (sh *strictHandler) GetPageChildren(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request GetPageChildrenRequestObject
+
+	request.Identifier = identifier
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetPageChildren(ctx, request.(GetPageChildrenRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetPageChildren")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetPageChildrenResponseObject); ok {
+		if err := validResponse.VisitGetPageChildrenResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// AddPageComment operation middleware
+func (sh *strictHandler) AddPageComment(w http.ResponseWriter, r *http.Request, identifier string) {
+	var request AddPageCommentRequestObject
+
+	request.Identifier = identifier
+
+	var body AddPageCommentJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.AddPageComment(ctx, request.(AddPageCommentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "AddPageComment")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(AddPageCommentResponseObject); ok {
+		if err := validResponse.VisitAddPageCommentResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// SearchPages operation middleware
+func (sh *strictHandler) SearchPages(w http.ResponseWriter, r *http.Request, params SearchPagesParams) {
+	var request SearchPagesRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.SearchPages(ctx, request.(SearchPagesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "SearchPages")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(SearchPagesResponseObject); ok {
+		if err := validResponse.VisitSearchPagesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListSpaces operation middleware
+func (sh *strictHandler) ListSpaces(w http.ResponseWriter, r *http.Request) {
+	var request ListSpacesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListSpaces(ctx, request.(ListSpacesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListSpaces")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListSpacesResponseObject); ok {
+		if err := validResponse.VisitListSpacesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetIssue operation middleware
+func (sh *strictHandler) GetIssue(w http.ResponseWriter, r *http.Request, key string) {
+	var request GetIssueRequestObject
+
+	request.Key = key
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetIssue(ctx, request.(GetIssueRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetIssue")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetIssueResponseObject); ok {
+		if err := validResponse.VisitGetIssueResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// AddIssueComment operation middleware
+func (sh *strictHandler) AddIssueComment(w http.ResponseWriter, r *http.Request, key string) {
+	var request AddIssueCommentRequestObject
+
+	request.Key = key
+
+	var body AddIssueCommentJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.AddIssueComment(ctx, request.(AddIssueCommentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "AddIssueComment")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(AddIssueCommentResponseObject); ok {
+		if err := validResponse.VisitAddIssueCommentResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// TransitionIssue operation middleware
+func (sh *strictHandler) TransitionIssue(w http.ResponseWriter, r *http.Request, key string) {
+	var request TransitionIssueRequestObject
+
+	request.Key = key
+
+	var body TransitionIssueJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.TransitionIssue(ctx, request.(TransitionIssueRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "TransitionIssue")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(TransitionIssueResponseObject); ok {
+		if err := validResponse.VisitTransitionIssueResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetTransitions operation middleware
+func (sh *strictHandler) GetTransitions(w http.ResponseWriter, r *http.Request, key string) {
+	var request GetTransitionsRequestObject
+
+	request.Key = key
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetTransitions(ctx, request.(GetTransitionsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetTransitions")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetTransitionsResponseObject); ok {
+		if err := validResponse.VisitGetTransitionsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListProjects operation middleware
+func (sh *strictHandler) ListProjects(w http.ResponseWriter, r *http.Request) {
+	var request ListProjectsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListProjects(ctx, request.(ListProjectsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListProjects")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListProjectsResponseObject); ok {
+		if err := validResponse.VisitListProjectsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// SearchIssues operation middleware
+func (sh *strictHandler) SearchIssues(w http.ResponseWriter, r *http.Request, params SearchIssuesParams) {
+	var request SearchIssuesRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.SearchIssues(ctx, request.(SearchIssuesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "SearchIssues")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(SearchIssuesResponseObject); ok {
+		if err := validResponse.VisitSearchIssuesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/9xYUW/bNhD+KwS3hw3wLKfNk9+6BBgSdGjWdHspioGRzvYlEsmQVFoj8H8fSEpyLJGS",
-	"3Lhu1qfEInW8+7677058pKkopODAjabzR6rTFRTM/XsmigK4eQ/3JWhjn0glJCiD4NZvRLa2fzPQqUJp",
-	"UHA6r98idpUY+GKmdELNWgKdU20U8iXdbCZUwX2JCjI6/+gNfWp2iZtbSA3dTOiZ4Iu8BJ7CFVtC1wPM",
-	"gBtcICj7q3XIhObI74IL2jBT6uCSQZNDeMU9eByI5YlLtbHhyM7BMMzjCHd8+erAJUvhov/lGALPDfTa",
-	"nt2NcSd7Au6sRAGSLYe8HkDkDsJAclYcjG17RmUxiIQCZhzde1aUfYWkghtbVshJwdRdJj7zQGFNqGQK",
-	"uNkFq23O7iAWU3JxHjQSSJNdG45LcnFOjCCpi4uYFXibGHasSatAcG5tWCfabgWirc+ZxEXlEhW70LoM",
-	"5CLTGpccwhnh48yCa0NJnJWwV1rm7AZyL3EGCt2ToZQpxda9RS8VCoVmva8U6rIomFo/ozx8RdR2msOq",
-	"12PkXCnhfu4tFVE0Y8g8s/oHCt7G8kExrrH2eK/uFXdOXMdI65OnqJ9bH6PCZJotfaqwNWSlYaFEQZZg",
-	"/t2+rIdrPHhSyOu/ZXYEOS1A62r02LXyDyhtA039uPOtJG9Azex25AvhOPKn0aVgJrdKxnhGJ/TBO0rn",
-	"9GQ6m86sX0ICZxLpnL52j6yOmpWDLGESk4eTJG3adiLr0Ut4jC3CzBNkx72mq1HvOWjze4V7BbJTVilz",
-	"TN1rya321eBHTfvfzwoWdE5/SrazaFINokm3bW52QTKqBPdAS8G1Z/7V7ORwDoRGNedDa/D1/cE1wamF",
-	"+XQ265L/J2qNfElq/8kCIc/01FrcTGL4J4/bUt5Yo0sIcPEHmIoIyRQrwIDSdP4xmH++86P9bcmv9WG+",
-	"qxm7KE+eINZO208dBmZHZ8AFlrll8hnNyn+DVC5UlJxG6pELQxai5NnUW5ZlAOCt5nw/jA9fYV0lHVVh",
-	"x+fXO7pTYePoHFlYSbrCPFPAhyrsrN43mAXtUfvlFFwzWI5npjt1BlTQQuMi1vtB7/tovNG8yTIHfbXv",
-	"B6q/1j3LqOI7jV+8sCyDbLgBWW3sYUgDU+kqWgjXbtmirIeoOPvrLbkvQa2JB5IIRWTOkDe3Q44ht2VL",
-	"Uf3zf18QDiNSMJOubPD2M9nFNsyQUAT5A8sxq/BrYO7jzX4j6yhvb1Gba7/luHD5258ReL3Jc/KAGm9y",
-	"ID6YdrS3qFiC9gs+ebyDde885D/0BzLUbSJ3sCa/wHQ5JVfv313+dvLq9a8R+fDffS9jNtreZgSw9IH5",
-	"iSjeMP2uaMdswz1Kqp3NkVrdwH9IuH9kme4wYnZvGYKkbD/O96uJl01K9+7ia3l5cnnh3Okj56KS5S3u",
-	"e1Ck+/Tqw5Nt34Ohb90QWndiY/rBA8Oc2W7wBEKyEMq1UgdxEHzpbxH7W+FVvelYsdd3m3s2wjqYYKSj",
-	"RjWXLYM5ddma1Q43nU06Ase+YFEWhJfFDSgiFkSBLnOjp+RdgcYxzPI85kGOBdrO0jkRuYElqGMmdNV/",
-	"hyn1JOwOgw3kzx8IN5v/AgAA//9ypYr4zh0AAA==",
+	"H4sIAAAAAAAC/+xZXW/bNhf+KwTf92IDPMtpsxvfdck2JOiQLOl2UxQFLR3LTCiSISm3RuD/PpDUh2VR",
+	"lp24UVbsKrH59ZxznvOcQ/oRxyKTggM3Gk8fsY4XkBH375nIMuDmBh5y0MZ+I5WQoAwFNz4Tycr+TUDH",
+	"ikpDBcfTchWyo8jAVzPGI2xWEvAUa6MoT/F6PcIKHnKqIMHTj36jT9UsMbuD2OD1CJ8JPmc58BiuSQpt",
+	"BDQBbuicgrKftg4ZYUb5fXBAG2JyHRwy1DAIj7gvHnts2YBUbtZv2TkYQlm3h1tYnmy4JDFc7F7c5YHn",
+	"Gnprz27b2GBPAM5CZCBJ2oe6xyP3EHYkJ9nRom3PKHYMekIBMS7cB2aUXYJiwY1NK8pRRtR9Ir7wQGKN",
+	"sCQKuGk6a3s7OwNZn6KL8+AmAZo093CxRBfnyAgUO7uQWYDfk4aBVbQKGOfG+nViG1bA2vKcUbeo/KqU",
+	"UDegpeA6wEeww0FKwBK4+byTaFuA/V6BlSFcl1SRC63zACaiNU05hJnq/Z8Ex/qSK8nhoHRhZAbMS6+B",
+	"TO/IHEyUIqudYiQVFYqa1aESrfMsI2r1jLT1mVruUx1WLO8KzrUS7uPBEtbpzS7PPFOVeoTI2vJBEa5p",
+	"ifigqtoNTtx2BW2XbHbirDF2CqappuxSq3ojK1lzJTKUgvlcL9b92hM8KYT6L5m8gMxnoHXREjV3+RuU",
+	"tobGvg37VlLco7J2OuVz4WLkT8OpIIZZJSM8wSO89EDxFJ+MJ+OJxSUkcCIpnuK37iur72bhXBYRSaPl",
+	"SRRX7UQky5ZQeB9bDxMfINuGVtUWe+SgzS+F3wsnO2WVktHYLYvutM8G3wLb//6vYI6n+H9R3SNHRYMc",
+	"tcv5uukko3JwX/hK48x4Mzk5HoBQC+kwbDXkvj644jy2bj6dTNrB/4NqTXmKSvxoToEl2i342S84Cupm",
+	"9Q3A/Y1QBslGY1HgdlM7aBA91oqytghSCFDidzAFHyRRJAMDSuPpx2Aa+MaI2s+Wg6VMTZvS1Qz2aMMF",
+	"29nzqUWEyYsTwRmWuGH0hZqFv6IVEApmnHbIAhcGzUXOkyEJkYKp2TDCMg8EuZbf4eJ8fLFpF5W9xObl",
+	"OeaBNsTmVVMqd3gP1pgoXlCWKOB9YnNWzusl4/al7PVoT9XqE8au5g78/lTB9nieM0ZmtgsoeNq8IwRq",
+	"lnWb84YeWnDKSB9GD999dbcn75LE0aOY9x1J1dar4V46ddr9jEiSBJL+tsWWsiGZQpKkbrk7iaKBqHjR",
+	"qRm3btgGW/cx4uzP9+ghB7VCPp5IKCQZobx6cnVEcVNqppQfv2vtcP5DGTHxwjrGLMB7qp9EQiHKl4TR",
+	"pPBtFYIhqeVJU4lhJ7ckiX2Mgtx6T7W59VOGCql/AH5STN8xhpZU0xkD5A0dMiKMalPDaATkjioSUa1z",
+	"iB7vYbXzMuIf+3oS3U1C97BCP8A4HaPrm6vLn07evP2xoxj4t5/XcTGpXzQD7vSG+etId6foZ72a24eL",
+	"bF/M96r+zrA9y3/FgWPG/L/K/80rf4sYpvnqGuRG/Vh5mD68bm6033KfSo+Nx1wHZxdHLopqXvt9SKbU",
+	"KPbUkY0H6l115MPGtCHY8nK9xNYvF09rJZaEuhUb8dBoLpTrFMvADFplGj9MBDgi/Q9Ru5u963LSy4eo",
+	"/KHs2a1eaejgzd4GkHY49rrVuczrzc/LrWvd8S5yo1b9JF9plmeI59kMFBJzpEDnzOgxusqocRlBGOtC",
+	"wGhGbePSOpFyAymoYcSh6DafwjsfoOa9sQrHv/zu6FStIO96/U8AAAD//xq15VDzJQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

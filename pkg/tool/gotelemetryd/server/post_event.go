@@ -1,45 +1,41 @@
 package server
 
 import (
+	"context"
 	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostEvent(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var request server.EventRequest
-
-	if json.NewDecoder(r.Body).Decode(&request) != nil {
-		http.Error(w, "invalid request", http.StatusBadRequest)
-
-		return
-	}
-
+	_ context.Context,
+	r server.PostEventRequestObject,
+) (server.PostEventResponseObject, error) {
 	e := store.NewUsageEvent()
-	e.Tool = request.Tool
-	e.Surface = request.Surface
-	e.Actor = request.Actor
-	e.Outcome = request.Outcome
-	e.Kind = request.Kind
+	e.Tool = r.Body.Tool
+	e.Surface = r.Body.Surface
+	e.Actor = r.Body.Actor
+	e.Outcome = r.Body.Outcome
+	e.Kind = r.Body.Kind
 
-	if request.DurationMs != nil {
-		e.DurationMillisecond = int64(*request.DurationMs)
+	if r.Body.DurationMs != nil {
+		e.DurationMillisecond = int64(*r.Body.DurationMs)
 	}
 
-	if request.Detail != nil {
-		encoded, marshalError := json.Marshal(*request.Detail)
+	if r.Body.Detail != nil {
+		encoded, marshalError := json.Marshal(*r.Body.Detail)
 
 		if marshalError == nil {
 			e.Detail = new(string(encoded))
 		}
 	}
 
-	errors.PanicOnError(s.store.Create(e))
-	web.EncodeNotation(w, server.EventResponse{Id: int(e.ID)})
+	if f := s.store.Create(e); f != nil {
+		return server.PostEvent500JSONResponse(
+			*s.captureFail(f, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.PostEvent200JSONResponse{Id: int(e.ID)}, nil
 }

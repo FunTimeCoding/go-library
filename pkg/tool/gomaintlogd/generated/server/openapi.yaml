@@ -49,6 +49,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/EntryResponse"
+        "500":
+          description: Failed to query entries.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: postEntry
       requestBody:
@@ -66,6 +72,12 @@ paths:
                 $ref: "#/components/schemas/EntryResponse"
         "400":
           description: Missing or invalid fields.
+        "500":
+          description: Failed to add entry.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/entries/{id}:
     put:
       operationId: updateEntry
@@ -90,6 +102,12 @@ paths:
                 $ref: "#/components/schemas/EntryResponse"
         "404":
           description: Entry not found.
+        "500":
+          description: Failed to update entry.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: deleteEntry
       parameters:
@@ -103,6 +121,12 @@ paths:
           description: Entry deleted successfully.
         "404":
           description: Entry not found.
+        "500":
+          description: Failed to delete entry.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/status:
     get:
       operationId: getStatus
@@ -113,6 +137,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatusResponse"
+        "500":
+          description: Failed to query status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     EntryResponse:
@@ -167,3 +197,11 @@ components:
       properties:
         totalEntries:
           type: integer
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
+          type: string

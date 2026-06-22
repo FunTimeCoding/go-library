@@ -20,6 +20,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EventResponse"
+        "500":
+          description: Failed to record event.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     get:
       operationId: getEvents
       parameters:
@@ -66,6 +72,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/EventEntry"
+        "500":
+          description: Failed to query events.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/summary:
     get:
       operationId: getSummary
@@ -93,6 +105,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SummaryEntry"
+        "500":
+          description: Failed to query summary.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     EventRequest:
@@ -157,3 +175,11 @@ components:
           type: string
         count:
           type: integer
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
+          type: string

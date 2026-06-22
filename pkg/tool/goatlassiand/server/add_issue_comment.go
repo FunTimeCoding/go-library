@@ -1,19 +1,19 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
-	"net/http"
 )
 
 func (s *Server) AddIssueComment(
-	w http.ResponseWriter,
-	e *http.Request,
-	key string,
-) {
-	var q server.CommentRequest
-	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
-	s.jira.MustComment(key, q.Body)
-	w.WriteHeader(http.StatusNoContent)
+	_ context.Context,
+	r server.AddIssueCommentRequestObject,
+) (server.AddIssueCommentResponseObject, error) {
+	if e := s.jira.Comment(r.Key, r.Body.Body); e != nil {
+		return server.AddIssueComment500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.AddIssueComment204Response{}, nil
 }

@@ -1,20 +1,18 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/constant"
-	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/system"
 	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 	"strings"
 )
 
 func (s *Server) GetReports(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.GetReportsRequestObject,
+) (server.GetReportsResponseObject, error) {
 	var result []server.ReportResponse
 
 	for _, e := range system.ReadDirectory(s.outputPath) {
@@ -26,7 +24,13 @@ func (s *Server) GetReports(
 		}
 
 		i, f := e.Info()
-		errors.PanicOnError(f)
+
+		if f != nil {
+			return server.GetReports500JSONResponse(
+				*s.captureFail(f, constant.UnexpectedError),
+			), nil
+		}
+
 		result = append(
 			result,
 			server.ReportResponse{
@@ -37,5 +41,5 @@ func (s *Server) GetReports(
 		)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.GetReports200JSONResponse(result), nil
 }

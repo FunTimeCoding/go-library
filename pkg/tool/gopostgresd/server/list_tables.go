@@ -1,24 +1,28 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gopostgresd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListTables(
-	w http.ResponseWriter,
-	r *http.Request,
-	v server.ListTablesParams,
-) {
+	c context.Context,
+	r server.ListTablesRequestObject,
+) (server.ListTablesResponseObject, error) {
 	schema := "public"
 
-	if v.Schema != nil {
-		schema = *v.Schema
+	if r.Params.Schema != nil {
+		schema = *r.Params.Schema
 	}
 
-	rows, e := s.store.ListTables(r.Context(), v.Instance, schema)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, server.QueryResult{Rows: toRows(rows)})
+	rows, e := s.store.ListTables(c, r.Params.Instance, schema)
+
+	if e != nil {
+		return server.ListTables500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.ListTables200JSONResponse{Rows: toRows(rows)}, nil
 }

@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -18,11 +20,13 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
 
-// GenerateRequest defines model for GenerateRequest.
-type GenerateRequest struct {
-	FileNames []string `json:"fileNames"`
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
 }
 
 // LogResponse defines model for LogResponse.
@@ -56,14 +60,8 @@ type GetLogsParams struct {
 	End    *time.Time `form:"end,omitempty" json:"end,omitempty"`
 }
 
-// PostGenerateJSONRequestBody defines body for PostGenerate for application/json ContentType.
-type PostGenerateJSONRequestBody = GenerateRequest
-
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-
-	// (POST /api/v1/generate)
-	PostGenerate(w http.ResponseWriter, r *http.Request)
 
 	// (GET /api/v1/logs)
 	GetLogs(w http.ResponseWriter, r *http.Request, params GetLogsParams)
@@ -80,20 +78,6 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
-
-// PostGenerate operation middleware
-func (siw *ServerInterfaceWrapper) PostGenerate(w http.ResponseWriter, r *http.Request) {
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.PostGenerate(w, r)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
 
 // GetLogs operation middleware
 func (siw *ServerInterfaceWrapper) GetLogs(w http.ResponseWriter, r *http.Request) {
@@ -280,26 +264,165 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
-	m.HandleFunc("POST "+options.BaseURL+"/api/v1/generate", wrapper.PostGenerate)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/logs", wrapper.GetLogs)
 	m.HandleFunc("GET "+options.BaseURL+"/api/v1/reports", wrapper.GetReports)
 
 	return m
 }
 
+type GetLogsRequestObject struct {
+	Params GetLogsParams
+}
+
+type GetLogsResponseObject interface {
+	VisitGetLogsResponse(w http.ResponseWriter) error
+}
+
+type GetLogs200JSONResponse LogsResponse
+
+func (response GetLogs200JSONResponse) VisitGetLogsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetLogs500JSONResponse ErrorResponse
+
+func (response GetLogs500JSONResponse) VisitGetLogsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetReportsRequestObject struct {
+}
+
+type GetReportsResponseObject interface {
+	VisitGetReportsResponse(w http.ResponseWriter) error
+}
+
+type GetReports200JSONResponse []ReportResponse
+
+func (response GetReports200JSONResponse) VisitGetReportsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetReports500JSONResponse ErrorResponse
+
+func (response GetReports500JSONResponse) VisitGetReportsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (GET /api/v1/logs)
+	GetLogs(ctx context.Context, request GetLogsRequestObject) (GetLogsResponseObject, error)
+
+	// (GET /api/v1/reports)
+	GetReports(ctx context.Context, request GetReportsRequestObject) (GetReportsResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// GetLogs operation middleware
+func (sh *strictHandler) GetLogs(w http.ResponseWriter, r *http.Request, params GetLogsParams) {
+	var request GetLogsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetLogs(ctx, request.(GetLogsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetLogs")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetLogsResponseObject); ok {
+		if err := validResponse.VisitGetLogsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetReports operation middleware
+func (sh *strictHandler) GetReports(w http.ResponseWriter, r *http.Request) {
+	var request GetReportsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetReports(ctx, request.(GetReportsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetReports")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetReportsResponseObject); ok {
+		if err := validResponse.VisitGetReportsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/6xVzY7TMBB+lWjgGDZdYDnkBhxWSGiFel3twU0mWa8Sj2tPKoUq745sJ9umcQsFbqk9",
-	"Hn9/4+6hoFaTQsUW8j3Y4hlb4T/vUaERjGvcdmjZLWlDGg1L9AWVbPBBtOGHZGz9B/caIQfLRqoahnRa",
-	"EMaIHoYhBYPbThosIX886vH0WkmbFyzYHf1O9RqtJmVxeX3ZGcGSVPTSqW90sxX6W3m0IxVjjcZt6Ub0",
-	"aL5Sp/hSwVWUU2AZRXJGCxgPpAeKE+Y5wAOaM+LZ8+o1VM9JvDVYQQ5vskMgsjEN2bEPMXrEoonJdUIw",
-	"1KXh7hjkNWoyfB70RVet/Ok3KjKt4ADj00dIIyb+rR/+iiVwd1CqinxLyY3bq8kIWTrHdmisjync3qxu",
-	"Vu5+0qiElpDDB7+Ughb87ClmQstsd5vV4/R5ESiMn5PC58GlF36Q5WlGISBHy1+o7F1tQYoxhFho3cjC",
-	"H8xebBiY4OzvfD99Aoa5RGw69AvBL4///erWDyfawkgd5nP0NRk5SVKJZWEYyxunxl3syANx0iMnstUN",
-	"tqhCsQcwSTRFuMaIOvfIbgC8tEa0yH5oH/cgXfdth6aHFJQPE1BVWXTzdJClxEp0DUO+SiOxjrdpZCvP",
-	"dLm7oo3XZtbmNdKlYHw3hnER3ng3VOX1vZ4Wrq7+W6hm75I3dO78552Qjdg0mBTUbgQnzudT741P1EX7",
-	"12PJP1L5owfy5OFa/ustWE6jVSaBSuJem5HmMPwKAAD//0ul/r6XBwAA",
+	"H4sIAAAAAAAC/8xUQW/bPAz9Kwa/7+jV6bbu4NswbMWAYYdei2JQbNplIUsqxQTIgvz3QbTTNImSrdsO",
+	"O8URJfLxvUeuofFD8A6dRKjXEJt7HIx+fmT2fIMxeBcxHQT2AVkINYwpnD5kFRBqiMLketiUgEt08o1a",
+	"dEIdYe7SpgTGxwUxtlDfTrkyL+/K7Us/f8BGUvovvj+Nql2wEfIuC6wji1/NgNngYMLn9lmEnGCPnELB",
+	"mhXyB79wcu6CAiDBIWYLTAeG2az0P2WRHFDzhHl6UO5a3GLeB7hDc4K8eJo96/v9Jv5n7KCG/6qdS6rJ",
+	"ItVzHXLteTE2R9dBg+O9cqydg3yDwbOcBn1W1UjfNdB5HoyMMN69hTIj4u/qoSWOgaeH5DqvKUlsivWe",
+	"DbVJsSVyVJvC5cXsYpbq+4DOBIIa3uhRCcHIvbZYmUDV8rLa6tOjGjGxoFZIxoVrlKSuvmMzoKgjb9dA",
+	"qczjAnkFJThlCnzXRUxmGdXU0cHOLKxAPSszmuXTWBroRJarF6SJYng/zZNerRF8NTF9pEw+G7r25bnu",
+	"ksyjxZTi17NZ+mm8ExzH3oRgqVG+q4c4rphdkZ9Mym7o1BgtxoYpjJsK3i8NWTO3WDR+mBspks4XyRNX",
+	"fxHF/j7PwPhkyGJbiC+U0C0Kvbl1IOswnjXhzXTlDwn9pR10sBuO1tBxk9foEl5si7GVIg30P0D2ROzI",
+	"92bzIwAA///TgmVNmAcAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

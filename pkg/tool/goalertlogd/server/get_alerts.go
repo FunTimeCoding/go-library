@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
 )
 
@@ -13,7 +14,7 @@ func (s *Server) GetAlerts(
 
 	if e != nil {
 		return server.GetAlerts500JSONResponse(
-			*s.captureFail(e, "failed to query alerts"),
+			*s.captureFail(e, constant.UnexpectedError),
 		), nil
 	}
 

@@ -1,45 +1,49 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetEntries(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.GetEntriesParams,
-) {
+	_ context.Context,
+	r server.GetEntriesRequestObject,
+) (server.GetEntriesResponseObject, error) {
 	f := store.NewFilter()
 
-	if v.System != nil {
-		f.System = *v.System
+	if r.Params.System != nil {
+		f.System = *r.Params.System
 	}
 
-	if v.Service != nil {
-		f.Service = *v.Service
+	if r.Params.Service != nil {
+		f.Service = *r.Params.Service
 	}
 
-	if v.User != nil {
-		f.User = *v.User
+	if r.Params.User != nil {
+		f.User = *r.Params.User
 	}
 
-	if v.Since != nil {
-		f.Since = *v.Since
+	if r.Params.Since != nil {
+		f.Since = *r.Params.Since
 	}
 
-	if v.Until != nil {
-		f.Until = *v.Until
+	if r.Params.Until != nil {
+		f.Until = *r.Params.Until
 	}
 
-	if v.Limit != nil {
-		f.Limit = *v.Limit
+	if r.Params.Limit != nil {
+		f.Limit = *r.Params.Limit
 	}
 
 	entries, e := s.store.List(f)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, toResponse(entries))
+
+	if e != nil {
+		return server.GetEntries500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.GetEntries200JSONResponse(toResponse(entries)), nil
 }

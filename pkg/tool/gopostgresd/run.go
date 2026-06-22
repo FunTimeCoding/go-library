@@ -27,11 +27,20 @@ func Run(
 				web.AddressPort(o.Port),
 				func(m *http.ServeMux) {
 					s := store.New(o.Inventory)
-					generated.HandlerFromMux(server.New(s), m)
+					t := telemetry.NewEnvironment()
+					generated.HandlerFromMux(
+						generated.NewStrictHandler(
+							server.New(s, r),
+							[]generated.StrictMiddlewareFunc{
+								web.TelemetryMiddleware(t),
+							},
+						),
+						m,
+					)
 					model_context.New(
 						s,
 						r,
-						telemetry.NewEnvironment(),
+						t,
 						o.Version,
 					).Mount(m)
 				},

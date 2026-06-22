@@ -1,28 +1,26 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/raid"
 	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetLogs(
-	w http.ResponseWriter,
-	_ *http.Request,
-	params server.GetLogsParams,
-) {
+	_ context.Context,
+	r server.GetLogsRequestObject,
+) (server.GetLogsResponseObject, error) {
 	all := s.store.Fights()
 	var fights []raid.Fight
 
 	for _, f := range all {
-		if params.Start != nil && f.Timestamp.Before(*params.Start) {
+		if r.Params.Start != nil && f.Timestamp.Before(*r.Params.Start) {
 			continue
 		}
 
-		if params.End != nil && f.Timestamp.After(*params.End) {
+		if r.Params.End != nil && f.Timestamp.After(*r.Params.End) {
 			continue
 		}
 
@@ -33,12 +31,12 @@ func (s *Server) GetLogs(
 	offset := 0
 	limit := 50
 
-	if params.Offset != nil {
-		offset = *params.Offset
+	if r.Params.Offset != nil {
+		offset = *r.Params.Offset
 	}
 
-	if params.Limit != nil {
-		limit = *params.Limit
+	if r.Params.Limit != nil {
+		limit = *r.Params.Limit
 	}
 
 	if offset > total {
@@ -52,7 +50,7 @@ func (s *Server) GetLogs(
 	}
 
 	page := fights[offset:end]
-	var result []server.LogResponse
+	result := make([]server.LogResponse, 0, len(page))
 
 	for _, f := range page {
 		result = append(
@@ -68,11 +66,8 @@ func (s *Server) GetLogs(
 		)
 	}
 
-	web.EncodeNotation(
-		w,
-		server.LogsResponse{
-			Total: total,
-			Logs:  result,
-		},
-	)
+	return server.GetLogs200JSONResponse{
+		Total: total,
+		Logs:  result,
+	}, nil
 }

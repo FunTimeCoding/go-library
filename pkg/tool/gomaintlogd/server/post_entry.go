@@ -1,40 +1,43 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostEntry(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.PostEntryJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostEntryRequestObject,
+) (server.PostEntryResponseObject, error) {
 	e := entry.New()
-	e.Action = body.Action
-	e.User = body.User
+	e.Action = r.Body.Action
+	e.User = r.Body.User
 
-	if body.System != nil {
-		e.System = *body.System
+	if r.Body.System != nil {
+		e.System = *r.Body.System
 	}
 
-	if body.Service != nil {
-		e.Service = *body.Service
+	if r.Body.Service != nil {
+		e.Service = *r.Body.Service
 	}
 
-	if body.Description != nil {
-		e.Description = *body.Description
+	if r.Body.Description != nil {
+		e.Description = *r.Body.Description
 	}
 
-	if body.Timestamp != nil {
-		e.Timestamp = *body.Timestamp
+	if r.Body.Timestamp != nil {
+		e.Timestamp = *r.Body.Timestamp
 	}
 
-	errors.PanicOnError(s.store.Add(e))
-	web.EncodeNotation(w, toResponse([]entry.Entry{*e})[0])
+	if f := s.store.Add(e); f != nil {
+		return server.PostEntry500JSONResponse(
+			*s.captureFail(f, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.PostEntry200JSONResponse(
+		toResponse([]entry.Entry{*e})[0],
+	), nil
 }

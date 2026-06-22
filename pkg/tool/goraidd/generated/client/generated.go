@@ -4,7 +4,6 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,9 +16,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
-// GenerateRequest defines model for GenerateRequest.
-type GenerateRequest struct {
-	FileNames []string `json:"fileNames"`
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
 }
 
 // LogResponse defines model for LogResponse.
@@ -52,9 +52,6 @@ type GetLogsParams struct {
 	Start  *time.Time `form:"start,omitempty" json:"start,omitempty"`
 	End    *time.Time `form:"end,omitempty" json:"end,omitempty"`
 }
-
-// PostGenerateJSONRequestBody defines body for PostGenerate for application/json ContentType.
-type PostGenerateJSONRequestBody = GenerateRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -129,40 +126,11 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// PostGenerateWithBody request with any body
-	PostGenerateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	PostGenerate(ctx context.Context, body PostGenerateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// GetLogs request
 	GetLogs(ctx context.Context, params *GetLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetReports request
 	GetReports(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-}
-
-func (c *Client) PostGenerateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostGenerateRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) PostGenerate(ctx context.Context, body PostGenerateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostGenerateRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
 }
 
 func (c *Client) GetLogs(ctx context.Context, params *GetLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -187,46 +155,6 @@ func (c *Client) GetReports(ctx context.Context, reqEditors ...RequestEditorFn) 
 		return nil, err
 	}
 	return c.Client.Do(req)
-}
-
-// NewPostGenerateRequest calls the generic PostGenerate builder with application/json body
-func NewPostGenerateRequest(server string, body PostGenerateJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPostGenerateRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPostGenerateRequestWithBody generates requests for PostGenerate with any type of body
-func NewPostGenerateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/generate")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
 }
 
 // NewGetLogsRequest generates requests for GetLogs
@@ -396,11 +324,6 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// PostGenerateWithBodyWithResponse request with any body
-	PostGenerateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostGenerateResponse, error)
-
-	PostGenerateWithResponse(ctx context.Context, body PostGenerateJSONRequestBody, reqEditors ...RequestEditorFn) (*PostGenerateResponse, error)
-
 	// GetLogsWithResponse request
 	GetLogsWithResponse(ctx context.Context, params *GetLogsParams, reqEditors ...RequestEditorFn) (*GetLogsResponse, error)
 
@@ -408,31 +331,11 @@ type ClientWithResponsesInterface interface {
 	GetReportsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetReportsResponse, error)
 }
 
-type PostGenerateResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r PostGenerateResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostGenerateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type GetLogsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *LogsResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -455,6 +358,7 @@ type GetReportsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]ReportResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -473,23 +377,6 @@ func (r GetReportsResponse) StatusCode() int {
 	return 0
 }
 
-// PostGenerateWithBodyWithResponse request with arbitrary body returning *PostGenerateResponse
-func (c *ClientWithResponses) PostGenerateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostGenerateResponse, error) {
-	rsp, err := c.PostGenerateWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostGenerateResponse(rsp)
-}
-
-func (c *ClientWithResponses) PostGenerateWithResponse(ctx context.Context, body PostGenerateJSONRequestBody, reqEditors ...RequestEditorFn) (*PostGenerateResponse, error) {
-	rsp, err := c.PostGenerate(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostGenerateResponse(rsp)
-}
-
 // GetLogsWithResponse request returning *GetLogsResponse
 func (c *ClientWithResponses) GetLogsWithResponse(ctx context.Context, params *GetLogsParams, reqEditors ...RequestEditorFn) (*GetLogsResponse, error) {
 	rsp, err := c.GetLogs(ctx, params, reqEditors...)
@@ -506,22 +393,6 @@ func (c *ClientWithResponses) GetReportsWithResponse(ctx context.Context, reqEdi
 		return nil, err
 	}
 	return ParseGetReportsResponse(rsp)
-}
-
-// ParsePostGenerateResponse parses an HTTP response from a PostGenerateWithResponse call
-func ParsePostGenerateResponse(rsp *http.Response) (*PostGenerateResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostGenerateResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
 }
 
 // ParseGetLogsResponse parses an HTTP response from a GetLogsWithResponse call
@@ -544,6 +415,13 @@ func ParseGetLogsResponse(rsp *http.Response) (*GetLogsResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -570,6 +448,13 @@ func ParseGetReportsResponse(rsp *http.Response) (*GetReportsResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

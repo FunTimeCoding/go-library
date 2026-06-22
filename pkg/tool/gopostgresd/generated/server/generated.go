@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,7 +19,14 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
 
 // ExplainRequest defines model for ExplainRequest.
 type ExplainRequest struct {
@@ -541,23 +550,553 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type ExplainRequestObject struct {
+	Body *ExplainJSONRequestBody
+}
+
+type ExplainResponseObject interface {
+	VisitExplainResponse(w http.ResponseWriter) error
+}
+
+type Explain200JSONResponse QueryResult
+
+func (response Explain200JSONResponse) VisitExplainResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type Explain400Response struct {
+}
+
+func (response Explain400Response) VisitExplainResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type Explain500JSONResponse ErrorResponse
+
+func (response Explain500JSONResponse) VisitExplainResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListIndexesRequestObject struct {
+	Params ListIndexesParams
+}
+
+type ListIndexesResponseObject interface {
+	VisitListIndexesResponse(w http.ResponseWriter) error
+}
+
+type ListIndexes200JSONResponse QueryResult
+
+func (response ListIndexes200JSONResponse) VisitListIndexesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListIndexes400Response struct {
+}
+
+func (response ListIndexes400Response) VisitListIndexesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type ListIndexes500JSONResponse ErrorResponse
+
+func (response ListIndexes500JSONResponse) VisitListIndexesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListInstancesRequestObject struct {
+}
+
+type ListInstancesResponseObject interface {
+	VisitListInstancesResponse(w http.ResponseWriter) error
+}
+
+type ListInstances200JSONResponse []Instance
+
+func (response ListInstances200JSONResponse) VisitListInstancesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type QueryRequestObject struct {
+	Body *QueryJSONRequestBody
+}
+
+type QueryResponseObject interface {
+	VisitQueryResponse(w http.ResponseWriter) error
+}
+
+type Query200JSONResponse QueryResult
+
+func (response Query200JSONResponse) VisitQueryResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type Query400Response struct {
+}
+
+func (response Query400Response) VisitQueryResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type Query500JSONResponse ErrorResponse
+
+func (response Query500JSONResponse) VisitQueryResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListSchemasRequestObject struct {
+	Params ListSchemasParams
+}
+
+type ListSchemasResponseObject interface {
+	VisitListSchemasResponse(w http.ResponseWriter) error
+}
+
+type ListSchemas200JSONResponse QueryResult
+
+func (response ListSchemas200JSONResponse) VisitListSchemasResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListSchemas400Response struct {
+}
+
+func (response ListSchemas400Response) VisitListSchemasResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type ListSchemas500JSONResponse ErrorResponse
+
+func (response ListSchemas500JSONResponse) VisitListSchemasResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type TableSizesRequestObject struct {
+	Params TableSizesParams
+}
+
+type TableSizesResponseObject interface {
+	VisitTableSizesResponse(w http.ResponseWriter) error
+}
+
+type TableSizes200JSONResponse QueryResult
+
+func (response TableSizes200JSONResponse) VisitTableSizesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type TableSizes400Response struct {
+}
+
+func (response TableSizes400Response) VisitTableSizesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type TableSizes500JSONResponse ErrorResponse
+
+func (response TableSizes500JSONResponse) VisitTableSizesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListTablesRequestObject struct {
+	Params ListTablesParams
+}
+
+type ListTablesResponseObject interface {
+	VisitListTablesResponse(w http.ResponseWriter) error
+}
+
+type ListTables200JSONResponse QueryResult
+
+func (response ListTables200JSONResponse) VisitListTablesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListTables400Response struct {
+}
+
+func (response ListTables400Response) VisitListTablesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type ListTables500JSONResponse ErrorResponse
+
+func (response ListTables500JSONResponse) VisitListTablesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DescribeTableRequestObject struct {
+	Table  string `json:"table"`
+	Params DescribeTableParams
+}
+
+type DescribeTableResponseObject interface {
+	VisitDescribeTableResponse(w http.ResponseWriter) error
+}
+
+type DescribeTable200JSONResponse QueryResult
+
+func (response DescribeTable200JSONResponse) VisitDescribeTableResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DescribeTable404Response struct {
+}
+
+func (response DescribeTable404Response) VisitDescribeTableResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DescribeTable500JSONResponse ErrorResponse
+
+func (response DescribeTable500JSONResponse) VisitDescribeTableResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (POST /api/v1/explain)
+	Explain(ctx context.Context, request ExplainRequestObject) (ExplainResponseObject, error)
+
+	// (GET /api/v1/indexes)
+	ListIndexes(ctx context.Context, request ListIndexesRequestObject) (ListIndexesResponseObject, error)
+
+	// (GET /api/v1/instances)
+	ListInstances(ctx context.Context, request ListInstancesRequestObject) (ListInstancesResponseObject, error)
+
+	// (POST /api/v1/query)
+	Query(ctx context.Context, request QueryRequestObject) (QueryResponseObject, error)
+
+	// (GET /api/v1/schemas)
+	ListSchemas(ctx context.Context, request ListSchemasRequestObject) (ListSchemasResponseObject, error)
+
+	// (GET /api/v1/table-sizes)
+	TableSizes(ctx context.Context, request TableSizesRequestObject) (TableSizesResponseObject, error)
+
+	// (GET /api/v1/tables)
+	ListTables(ctx context.Context, request ListTablesRequestObject) (ListTablesResponseObject, error)
+
+	// (GET /api/v1/tables/{table})
+	DescribeTable(ctx context.Context, request DescribeTableRequestObject) (DescribeTableResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// Explain operation middleware
+func (sh *strictHandler) Explain(w http.ResponseWriter, r *http.Request) {
+	var request ExplainRequestObject
+
+	var body ExplainJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.Explain(ctx, request.(ExplainRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "Explain")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ExplainResponseObject); ok {
+		if err := validResponse.VisitExplainResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListIndexes operation middleware
+func (sh *strictHandler) ListIndexes(w http.ResponseWriter, r *http.Request, params ListIndexesParams) {
+	var request ListIndexesRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListIndexes(ctx, request.(ListIndexesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListIndexes")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListIndexesResponseObject); ok {
+		if err := validResponse.VisitListIndexesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListInstances operation middleware
+func (sh *strictHandler) ListInstances(w http.ResponseWriter, r *http.Request) {
+	var request ListInstancesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListInstances(ctx, request.(ListInstancesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListInstances")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListInstancesResponseObject); ok {
+		if err := validResponse.VisitListInstancesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// Query operation middleware
+func (sh *strictHandler) Query(w http.ResponseWriter, r *http.Request) {
+	var request QueryRequestObject
+
+	var body QueryJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.Query(ctx, request.(QueryRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "Query")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(QueryResponseObject); ok {
+		if err := validResponse.VisitQueryResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListSchemas operation middleware
+func (sh *strictHandler) ListSchemas(w http.ResponseWriter, r *http.Request, params ListSchemasParams) {
+	var request ListSchemasRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListSchemas(ctx, request.(ListSchemasRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListSchemas")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListSchemasResponseObject); ok {
+		if err := validResponse.VisitListSchemasResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// TableSizes operation middleware
+func (sh *strictHandler) TableSizes(w http.ResponseWriter, r *http.Request, params TableSizesParams) {
+	var request TableSizesRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.TableSizes(ctx, request.(TableSizesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "TableSizes")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(TableSizesResponseObject); ok {
+		if err := validResponse.VisitTableSizesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListTables operation middleware
+func (sh *strictHandler) ListTables(w http.ResponseWriter, r *http.Request, params ListTablesParams) {
+	var request ListTablesRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListTables(ctx, request.(ListTablesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListTables")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListTablesResponseObject); ok {
+		if err := validResponse.VisitListTablesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DescribeTable operation middleware
+func (sh *strictHandler) DescribeTable(w http.ResponseWriter, r *http.Request, table string, params DescribeTableParams) {
+	var request DescribeTableRequestObject
+
+	request.Table = table
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DescribeTable(ctx, request.(DescribeTableRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DescribeTable")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DescribeTableResponseObject); ok {
+		if err := validResponse.VisitDescribeTableResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+xXS08jORD+K5Z3j73psMupb9kZDpEyCAiHmUEcnHYlMXLKju1mCKj/+8iPJJ10HgeC",
-	"QCNORO16ft9XZfNCSzXTCgGdpcULteUUZiz8vHjSkgm8gXkF1vkv2igNxgkI5wyZXDyD/8lhzCrpaDFm",
-	"0kJGOdjSCO2EQlrQmwrJxferQa9/SXqXvcGPnxcdmlG30EALOlJKAkNaZ1SgdQzLFLIZop9OCLIZNJyt",
-	"MwIn3tfOZdtteD0gThGInezwqzNqYF4JA5wWd+sCYrz7lb0aPUDpfJ5+o8ZNPDhzbMRsOGmVN1URwtaB",
-	"b2jngVam6SHQwQRMq+Tgn+Inp2xdyq4Oriswi72svh0HUFYOTsJB6sAGyW03YNSv2IiDWdQp58LXwuRV",
-	"w9CZCnaETh+YMWzRKi2EbhdUB+mOVWBLOOnPJkor6yYGLKcZfQRjIxpnnW6n6xMpDci0oAX9L3zKqGZu",
-	"GgrOmRb541meZBtaTPLx9TPfTJ/TYjmhNFYJ1v2v+MKblQodYPBgWktRBp/8wSpcD7n/9beBMS3oX/l6",
-	"C+RpBeRb819vouHxCx+sVmgj9P92uyfL3uQ4pN5UVSqOaMmw4/E8j7k3rb4JawVOiDJE4COTghPNDJuB",
-	"A2M7Pm6dreAWyOEpNjKBHWgPhHX9ZOPZWsahxd3RUfEs0rlviS5Hvin0TVizBkStWdlOdctG8nAe5y1e",
-	"l2QYTA9mSdGaYVe3AtXVSIpyx+jfv5+CEpVEIXFTIAGl40o6JJ9I5zEBLa1e2flqvR2CYHVZtTdbC4+e",
-	"lKRUOBaTygAnq3a2+4y8791J10kWb7GRNm6uj7WPwjEx4Zz4e+JES6nxHturqWGyebel9I5TnHonIk7x",
-	"8uFzHP1lo2vst6EPG+EfK54PjHTYvsNg8nGuhD9xW8drLpBBGHI/YqRUFTp7MqoPD9ltNPlk+c1ZXg1z",
-	"dDodv/lL+Fvv5flrCD+C2/RiOkj1joeXf8Gf9N31KadXyemLktUMCYexwPAv4HJZnLfFlOhUjoxVhTwq",
-	"qK5/BwAA//+0tqu/IBEAAA==",
+	"H4sIAAAAAAAC/+xYTW/jNhD9KwTboxpl2+1Ft7RNAQPuYhPn0HaxKGhxZHNBkzRJuesN/N8LDilZtmT7",
+	"EAdOiuQSQZyvN/P4SPmRlnphtALlHS0eqSvnsGD4eGuttvfgjFYOwgtjtQHrBeAyhOXw4NcGaEGdt0LN",
+	"6CajsALl/xEclBeVgCGjTUYtLGthgdPiU4o14Pk5azz19AuUPoS//WokE+oeljU43y+MKSbX37BiDhWr",
+	"padFxaSDjHJwpRXGC61oQe9rRW7//Di+GX0gNx9uxn/9fXtF24RTrSUwFTIK5TxTZQrZDTFKK0SxBXSc",
+	"t81wS9l3m9yNidcEIpIBv73+tAXEeENdGXVq3O0HZ55NWRxhr7y5ji3sLQRAgwtG266HUB5mYHslo3+K",
+	"n5yybSlDCO5qsOuDU32+GUBZezjLDBICh5TbB2D1vxGIh0XkKeci1MLkx46htzUMhE4vmLVs3SsNQ/cL",
+	"2iB1K43TEl6GtZk22vmZBcdpRldgXezGu6vrq+uQSBtQzAha0J/wVUYN83MsOGdG5Kt3eaItQkz0CfWz",
+	"AGbEadHsUBqrBOd/0XwdzEqtPCj0YMZIUaJP/sVptRWf8PS9hYoW9Lt8q055kqZ8b/9vdrsR+ocvom5h",
+	"4T9eX58te3fGmHqXVak4YiRTV6Gf72PuXas/hHNCzYi2RKgVk4ITwyxbgAfr0O3nM5a8K+QDRf/OhATe",
+	"2Q1bZdqgeTN5oTh8jT2dwcDgx8L5UbIJxGkg0eLTyV0bCEWXobu0UZ/untudcNaB3tu2+6ke2FQez+OD",
+	"xdOSTND0aJYUrRu2PaCoqadSlAMq9PlyZE6jJFoRPweCXTpN6pfBZCmcJ4mvfRpHWp0icmP1xAm0in8M",
+	"Wnt+98W+h/JGSlJqVYlZbYGTFs4+zsi/gzJ9l+j5HCK9c5i/LInGZWJxnYSj8xXrNE54f+ydO/xBck+S",
+	"zcVU+oKylrATEWWtuZSepkEDdEuCiytc8tunAEr1D058O6JxeCxO0OTlnNX/x2M03j9wGIQpHjSHlLpW",
+	"3r02yuEk4j0g4hnk3XHleYgmb5R7dsq1ChedXqW+RUIN0yx/xP+bg3T7DSNP4SFd748ybuArIXz5nvUj",
+	"4Y3VT2L1r1rWC0U4VELhTyeNgL7vczqNU3tS6VrxSxKZJxq2H1D4918AAAD//6CcE696FQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

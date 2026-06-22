@@ -8,6 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/log/logger"
 	"github.com/funtimecoding/go-library/pkg/raid_parser"
 	"github.com/funtimecoding/go-library/pkg/relational"
+	"github.com/funtimecoding/go-library/pkg/telemetry"
 	generated "github.com/funtimecoding/go-library/pkg/tool/goraidd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/option"
 	"github.com/funtimecoding/go-library/pkg/tool/goraidd/server"
@@ -38,11 +39,13 @@ func Run(
 				func(m *http.ServeMux) {
 					p := raid_parser.New("localhost:8081", true)
 					generated.HandlerFromMux(
-						server.New(
-							s,
-							o.ElitePath,
-							o.OutputPath,
-							p,
+						generated.NewStrictHandler(
+							server.New(s, o.OutputPath, r),
+							[]generated.StrictMiddlewareFunc{
+								web.TelemetryMiddleware(
+									telemetry.NewEnvironment(),
+								),
+							},
 						),
 						m,
 					)

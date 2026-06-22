@@ -1,40 +1,30 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostImpressions(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.PostImpressionsJSONBody
-
-	if json.NewDecoder(r.Body).Decode(&body) != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
+	_ context.Context,
+	r server.PostImpressionsRequestObject,
+) (server.PostImpressionsResponseObject, error) {
 	source := ""
 
-	if body.Source != nil {
-		source = *body.Source
+	if r.Body.Source != nil {
+		source = *r.Body.Source
 	}
 
-	identifier, e := s.service.CreateImpression(body.Content, source)
+	identifier, e := s.service.CreateImpression(r.Body.Content, source)
 
 	if e != nil {
-		http.Error(w, e.Error(), http.StatusInternalServerError)
-
-		return
+		return server.PostImpressions500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
 	}
 
-	web.EncodeNotation(
-		w,
-		server.ImpressionResponse{Identifier: int(identifier)},
-	)
+	return server.PostImpressions200JSONResponse{
+		Identifier: int(identifier),
+	}, nil
 }

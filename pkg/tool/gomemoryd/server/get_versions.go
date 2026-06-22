@@ -1,37 +1,36 @@
 package server
 
 import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetVersions(
-	w http.ResponseWriter,
-	_ *http.Request,
-	params server.GetVersionsParams,
-) {
+	_ context.Context,
+	r server.GetVersionsRequestObject,
+) (server.GetVersionsResponseObject, error) {
 	limit := 50
 
-	if params.Limit != nil {
-		limit = *params.Limit
+	if r.Params.Limit != nil {
+		limit = *r.Params.Limit
 	}
 
 	offset := 0
 
-	if params.Offset != nil {
-		offset = *params.Offset
+	if r.Params.Offset != nil {
+		offset = *r.Params.Offset
 	}
 
-	versions, e := s.service.VersionsSince(params.Since, limit, offset)
+	versions, e := s.service.VersionsSince(r.Params.Since, limit, offset)
 
 	if e != nil {
-		http.Error(w, e.Error(), http.StatusInternalServerError)
-
-		return
+		return server.GetVersions500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
 	}
 
-	var entries []server.VersionEntry
+	entries := make([]server.VersionEntry, 0, len(versions))
 
 	for _, v := range versions {
 		entries = append(
@@ -48,9 +47,5 @@ func (s *Server) GetVersions(
 		)
 	}
 
-	if entries == nil {
-		entries = []server.VersionEntry{}
-	}
-
-	web.EncodeNotation(w, entries)
+	return server.GetVersions200JSONResponse(entries), nil
 }

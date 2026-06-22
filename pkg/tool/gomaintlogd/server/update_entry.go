@@ -1,42 +1,50 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) UpdateEntry(
-	w http.ResponseWriter,
-	r *http.Request,
-	identifier int,
-) {
-	e, f := s.store.Get(uint(identifier))
-	errors.PanicOnError(f)
-	var body server.UpdateEntryJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	e.Action = body.Action
-	e.User = body.User
+	_ context.Context,
+	r server.UpdateEntryRequestObject,
+) (server.UpdateEntryResponseObject, error) {
+	e, f := s.store.Get(uint(r.Id))
 
-	if body.System != nil {
-		e.System = *body.System
+	if f != nil {
+		return server.UpdateEntry500JSONResponse(
+			*s.captureFail(f, constant.UnexpectedError),
+		), nil
 	}
 
-	if body.Service != nil {
-		e.Service = *body.Service
+	e.Action = r.Body.Action
+	e.User = r.Body.User
+
+	if r.Body.System != nil {
+		e.System = *r.Body.System
 	}
 
-	if body.Description != nil {
-		e.Description = *body.Description
+	if r.Body.Service != nil {
+		e.Service = *r.Body.Service
 	}
 
-	if body.Timestamp != nil {
-		e.Timestamp = *body.Timestamp
+	if r.Body.Description != nil {
+		e.Description = *r.Body.Description
 	}
 
-	errors.PanicOnError(s.store.Update(e))
-	web.EncodeNotation(w, toResponse([]entry.Entry{*e})[0])
+	if r.Body.Timestamp != nil {
+		e.Timestamp = *r.Body.Timestamp
+	}
+
+	if f = s.store.Update(e); f != nil {
+		return server.UpdateEntry500JSONResponse(
+			*s.captureFail(f, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.UpdateEntry200JSONResponse(
+		toResponse([]entry.Entry{*e})[0],
+	), nil
 }

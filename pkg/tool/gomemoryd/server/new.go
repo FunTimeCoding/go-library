@@ -1,7 +1,13 @@
 package server
 
-import "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/service"
+import (
+	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/service"
+)
 
-func New(s *service.Service) *Server {
-	return &Server{service: s}
+func New(s *service.Service, r face.Reporter) *Server {
+	return &Server{
+		service:  s,
+		reporter: r,
+	}
 }

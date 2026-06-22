@@ -1,24 +1,28 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gopostgresd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) TableSizes(
-	w http.ResponseWriter,
-	r *http.Request,
-	v server.TableSizesParams,
-) {
+	c context.Context,
+	r server.TableSizesRequestObject,
+) (server.TableSizesResponseObject, error) {
 	schema := "public"
 
-	if v.Schema != nil {
-		schema = *v.Schema
+	if r.Params.Schema != nil {
+		schema = *r.Params.Schema
 	}
 
-	rows, e := s.store.TableSizes(r.Context(), v.Instance, schema)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, server.QueryResult{Rows: toRows(rows)})
+	rows, e := s.store.TableSizes(c, r.Params.Instance, schema)
+
+	if e != nil {
+		return server.TableSizes500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.TableSizes200JSONResponse{Rows: toRows(rows)}, nil
 }

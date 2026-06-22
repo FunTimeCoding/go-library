@@ -1,29 +1,33 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gopostgresd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListIndexes(
-	w http.ResponseWriter,
-	r *http.Request,
-	v server.ListIndexesParams,
-) {
+	c context.Context,
+	r server.ListIndexesRequestObject,
+) (server.ListIndexesResponseObject, error) {
 	schema := "public"
 
-	if v.Schema != nil {
-		schema = *v.Schema
+	if r.Params.Schema != nil {
+		schema = *r.Params.Schema
 	}
 
 	rows, e := s.store.ListIndexes(
-		r.Context(),
-		v.Instance,
+		c,
+		r.Params.Instance,
 		schema,
-		v.Table,
+		r.Params.Table,
 	)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, server.QueryResult{Rows: toRows(rows)})
+
+	if e != nil {
+		return server.ListIndexes500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.ListIndexes200JSONResponse{Rows: toRows(rows)}, nil
 }

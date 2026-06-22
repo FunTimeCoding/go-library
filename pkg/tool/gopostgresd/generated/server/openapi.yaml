@@ -34,6 +34,12 @@ paths:
                 $ref: "#/components/schemas/QueryResult"
         "400":
           description: Missing or invalid parameters.
+        "500":
+          description: Failed to execute query.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/explain:
     post:
       operationId: explain
@@ -52,6 +58,12 @@ paths:
                 $ref: "#/components/schemas/QueryResult"
         "400":
           description: Missing or invalid parameters.
+        "500":
+          description: Failed to execute explain.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/schemas:
     get:
       operationId: listSchemas
@@ -71,6 +83,12 @@ paths:
                 $ref: "#/components/schemas/QueryResult"
         "400":
           description: Missing instance parameter.
+        "500":
+          description: Failed to list schemas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/tables:
     get:
       operationId: listTables
@@ -97,6 +115,12 @@ paths:
                 $ref: "#/components/schemas/QueryResult"
         "400":
           description: Missing instance parameter.
+        "500":
+          description: Failed to list tables.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/tables/{table}:
     get:
       operationId: describeTable
@@ -129,6 +153,12 @@ paths:
                 $ref: "#/components/schemas/QueryResult"
         "404":
           description: Table not found.
+        "500":
+          description: Failed to describe table.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/indexes:
     get:
       operationId: listIndexes
@@ -161,6 +191,12 @@ paths:
                 $ref: "#/components/schemas/QueryResult"
         "400":
           description: Missing parameters.
+        "500":
+          description: Failed to list indexes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/table-sizes:
     get:
       operationId: tableSizes
@@ -187,6 +223,12 @@ paths:
                 $ref: "#/components/schemas/QueryResult"
         "400":
           description: Missing instance parameter.
+        "500":
+          description: Failed to query table sizes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     Instance:
@@ -243,3 +285,11 @@ components:
           items:
             type: object
             additionalProperties: true
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
+          type: string

@@ -1,36 +1,40 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSummary(
-	w http.ResponseWriter,
-	_ *http.Request,
-	params server.GetSummaryParams,
-) {
+	_ context.Context,
+	r server.GetSummaryRequestObject,
+) (server.GetSummaryResponseObject, error) {
 	since := ""
 	until := ""
 	groupBy := "tool"
 
-	if params.Since != nil {
-		since = *params.Since
+	if r.Params.Since != nil {
+		since = *r.Params.Since
 	}
 
-	if params.Until != nil {
-		until = *params.Until
+	if r.Params.Until != nil {
+		until = *r.Params.Until
 	}
 
-	if params.GroupBy != nil {
-		groupBy = string(*params.GroupBy)
+	if r.Params.GroupBy != nil {
+		groupBy = string(*r.Params.GroupBy)
 	}
 
-	rows, queryError := s.store.Summary(since, until, groupBy)
-	errors.PanicOnError(queryError)
-	var entries []server.SummaryEntry
+	rows, e := s.store.Summary(since, until, groupBy)
+
+	if e != nil {
+		return server.GetSummary500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	entries := make([]server.SummaryEntry, 0, len(rows))
 
 	for _, r := range rows {
 		entry := server.SummaryEntry{
@@ -49,9 +53,5 @@ func (s *Server) GetSummary(
 		entries = append(entries, entry)
 	}
 
-	if entries == nil {
-		entries = []server.SummaryEntry{}
-	}
-
-	web.EncodeNotation(w, entries)
+	return server.GetSummary200JSONResponse(entries), nil
 }

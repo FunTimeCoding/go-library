@@ -1,14 +1,24 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
 )
 
 func (s *Server) ListSpaces(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
-	web.EncodeNotation(w, convert.ConfluenceSpaces(s.confluence.MustSpaces()))
+	_ context.Context,
+	_ server.ListSpacesRequestObject,
+) (server.ListSpacesResponseObject, error) {
+	result, e := s.confluence.Spaces()
+
+	if e != nil {
+		return server.ListSpaces500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.ListSpaces200JSONResponse(
+		convert.ConfluenceSpaces(result),
+	), nil
 }

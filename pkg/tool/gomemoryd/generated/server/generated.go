@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,7 +19,14 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
 
 // ImpressionResponse defines model for ImpressionResponse.
 type ImpressionResponse struct {
@@ -260,18 +269,166 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type PostImpressionsRequestObject struct {
+	Body *PostImpressionsJSONRequestBody
+}
+
+type PostImpressionsResponseObject interface {
+	VisitPostImpressionsResponse(w http.ResponseWriter) error
+}
+
+type PostImpressions200JSONResponse ImpressionResponse
+
+func (response PostImpressions200JSONResponse) VisitPostImpressionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostImpressions500JSONResponse ErrorResponse
+
+func (response PostImpressions500JSONResponse) VisitPostImpressionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetVersionsRequestObject struct {
+	Params GetVersionsParams
+}
+
+type GetVersionsResponseObject interface {
+	VisitGetVersionsResponse(w http.ResponseWriter) error
+}
+
+type GetVersions200JSONResponse []VersionEntry
+
+func (response GetVersions200JSONResponse) VisitGetVersionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetVersions500JSONResponse ErrorResponse
+
+func (response GetVersions500JSONResponse) VisitGetVersionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (POST /api/impressions)
+	PostImpressions(ctx context.Context, request PostImpressionsRequestObject) (PostImpressionsResponseObject, error)
+
+	// (GET /api/versions)
+	GetVersions(ctx context.Context, request GetVersionsRequestObject) (GetVersionsResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// PostImpressions operation middleware
+func (sh *strictHandler) PostImpressions(w http.ResponseWriter, r *http.Request) {
+	var request PostImpressionsRequestObject
+
+	var body PostImpressionsJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostImpressions(ctx, request.(PostImpressionsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostImpressions")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostImpressionsResponseObject); ok {
+		if err := validResponse.VisitPostImpressionsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetVersions operation middleware
+func (sh *strictHandler) GetVersions(w http.ResponseWriter, r *http.Request, params GetVersionsParams) {
+	var request GetVersionsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetVersions(ctx, request.(GetVersionsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetVersions")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetVersionsResponseObject); ok {
+		if err := validResponse.VisitGetVersionsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/6RUTY8TMQz9K5XhGO0UEJcckRDqAQlx2MtqVYWMp/Wq+VjHRaqq+e8oSaft0Cwr4NbG",
-	"z372e/YcwQYXg0cvCfQRkt2iM+XnykXGlCj475hi8Anza+QQkYWwYKhHLzQQcv4nh4iggbzgBhnGUQHj",
-	"854Ye9AP1+BHNYHDjye0AqOCe+RM9tkLH26Z7Nb4Da5r1pkqCZPf5Owa79dGmuEek2WKQsE3438eRIFD",
-	"F/iwfg3mjWu3l8KebSv0skYt0hPDfJ7Z8Gqm1Jn4VvDMTH4IpSeSXY5tQqXsQcHPagdoeHe3vFvmIUJE",
-	"byKBhg/lSUE0si32dCZSR+eNKW8xpGJGttHkTlc9aPgWkqyugHV+TPIp9MV3G7ygL5kmxh3Zkts9pWpd",
-	"3dDGglzS/ln9qUZbrQtSeI/lod5F4X+/XP5V928ZB9DwprscYHe6vq5xeqWD2RZfHejCMhrB/i7DRlXd",
-	"OBlYmttgw4kvKPcTJlvJxqEgJ9APR6DM8LxHPkxLpyGRtwi/C6GuhrqRt11oR47yql4SexzMfiegPy5V",
-	"4zvSLhOGIeELdVplHv/TMhJ06TXvZp+x8dyFYTaHlotfy8UtJrcWReSFkMMkxsVq6Tj+CgAA//8BPST/",
-	"qQUAAA==",
+	"H4sIAAAAAAAC/8RUTWvbQBD9K2Lao7Dcllx0LKQlh0LpIZcQzFZ6sidYu5vZccAY/feyK3+p3tT0A3oT",
+	"mo/3Zt6b3VHjeu8srAaqdxSaFXqTPm9FnHxD8M4GxB9enIcoI4URw/FDtx5UU1Bhu6ShJLzA6oJbWOWO",
+	"kUsaShI8b1jQUv2w75WpfCwPle77ExqN7e96LwiBnX2dXBacrWIJuUC/gncPiWC3VmV7idSsjF1iMVZl",
+	"ljHG24XRbLhFaIS9srPZ+K8HKalH72S7uJZmTZ+nF9xGGlxX6AwgB7pHmM4zGb6cbOoIfLnwiMy2c4kT",
+	"6zrGlm6EbKmkl1EOqundbD6bxyGchzWeqaYP6VdJ3ugqyVMZzxUfHZP+eReSGFFGE5netVTTVxf07ixx",
+	"nB9BP7o26d44q7Cp0ni/5ibVVk9hlG68nIxBTmV/vP1Dj/y2TpkqG6Qf410k/Pfz+W+xfyvoqKY31elh",
+	"qPavQpU5vcRg4uKzAy0agVG0szjszT8kMn2bMhw+GV6jLdTtKRQnD8xi/lCO1ti7KW1qiYwtPkPvDznR",
+	"V2J6KCRQ/bAjjlDPG8j2cAE1BbYN6GdVyrPBLrTON1pzz/FuToUtOrNZK9U38zLzqOXbuK4LeKVPrs3j",
+	"X/qHFX24pt/kTR2OLIyI2ebk/JLOvzioVaQlF8o9gpre/09/pXUfmY3mGoYfAQAA//+7QJQeWAcAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

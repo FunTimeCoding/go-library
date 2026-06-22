@@ -30,7 +30,13 @@ func Run(
 			lifecycleServer.New(
 				web.AddressPort(o.Port),
 				func(m *http.ServeMux) {
-					generated.HandlerFromMux(server.New(s), m)
+					generated.HandlerFromMux(
+						generated.NewStrictHandler(
+							server.New(s, r),
+							nil,
+						),
+						m,
+					)
 					model_context.New(
 						service.New(s),
 						r,

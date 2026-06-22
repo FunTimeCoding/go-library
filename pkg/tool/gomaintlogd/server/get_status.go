@@ -1,17 +1,15 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetStatus(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
-	web.EncodeNotation(
-		w,
-		server.StatusResponse{TotalEntries: s.store.Count()},
-	)
+	_ context.Context,
+	_ server.GetStatusRequestObject,
+) (server.GetStatusResponseObject, error) {
+	return server.GetStatus200JSONResponse{
+		TotalEntries: s.store.Count(),
+	}, nil
 }

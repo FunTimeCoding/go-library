@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,6 +19,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/oapi-codegen/runtime"
+	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
 
 // Defines values for GetSummaryParamsGroupBy.
@@ -38,6 +41,12 @@ func (e GetSummaryParamsGroupBy) Valid() bool {
 	default:
 		return false
 	}
+}
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
 }
 
 // EventEntry defines model for EventEntry.
@@ -391,20 +400,223 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type GetEventsRequestObject struct {
+	Params GetEventsParams
+}
+
+type GetEventsResponseObject interface {
+	VisitGetEventsResponse(w http.ResponseWriter) error
+}
+
+type GetEvents200JSONResponse []EventEntry
+
+func (response GetEvents200JSONResponse) VisitGetEventsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetEvents500JSONResponse ErrorResponse
+
+func (response GetEvents500JSONResponse) VisitGetEventsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostEventRequestObject struct {
+	Body *PostEventJSONRequestBody
+}
+
+type PostEventResponseObject interface {
+	VisitPostEventResponse(w http.ResponseWriter) error
+}
+
+type PostEvent200JSONResponse EventResponse
+
+func (response PostEvent200JSONResponse) VisitPostEventResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostEvent500JSONResponse ErrorResponse
+
+func (response PostEvent500JSONResponse) VisitPostEventResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSummaryRequestObject struct {
+	Params GetSummaryParams
+}
+
+type GetSummaryResponseObject interface {
+	VisitGetSummaryResponse(w http.ResponseWriter) error
+}
+
+type GetSummary200JSONResponse []SummaryEntry
+
+func (response GetSummary200JSONResponse) VisitGetSummaryResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSummary500JSONResponse ErrorResponse
+
+func (response GetSummary500JSONResponse) VisitGetSummaryResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (GET /api/events)
+	GetEvents(ctx context.Context, request GetEventsRequestObject) (GetEventsResponseObject, error)
+
+	// (POST /api/events)
+	PostEvent(ctx context.Context, request PostEventRequestObject) (PostEventResponseObject, error)
+
+	// (GET /api/summary)
+	GetSummary(ctx context.Context, request GetSummaryRequestObject) (GetSummaryResponseObject, error)
+}
+
+type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
+type StrictMiddlewareFunc = strictnethttp.StrictHTTPMiddlewareFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// GetEvents operation middleware
+func (sh *strictHandler) GetEvents(w http.ResponseWriter, r *http.Request, params GetEventsParams) {
+	var request GetEventsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetEvents(ctx, request.(GetEventsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetEvents")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetEventsResponseObject); ok {
+		if err := validResponse.VisitGetEventsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostEvent operation middleware
+func (sh *strictHandler) PostEvent(w http.ResponseWriter, r *http.Request) {
+	var request PostEventRequestObject
+
+	var body PostEventJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostEvent(ctx, request.(PostEventRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostEvent")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostEventResponseObject); ok {
+		if err := validResponse.VisitPostEventResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSummary operation middleware
+func (sh *strictHandler) GetSummary(w http.ResponseWriter, r *http.Request, params GetSummaryParams) {
+	var request GetSummaryRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSummary(ctx, request.(GetSummaryRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSummary")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSummaryResponseObject); ok {
+		if err := validResponse.VisitGetSummaryResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/8RW32/TMBD+V6aDx2gpIF7yBlKFeJtAPE1T5cWXzCOx3fO5UlTlf0e207Wl3mgGKm+p",
-	"fb/83ffddQu16a3RqNlBtQVXP2Av4udyg5qXmmkIvywZi8QK452o2VD44MEiVOCYlG5hLKAmFIxyJTh7",
-	"LZGF6mIIKRUro0V3cxT6xGU6MPePWHOM4UkEz1V/6KA0Y4sUDJTMn/9UWmZTGM+16TF75zw1os7fsTFd",
-	"5mIsgHDtFaGE6jaUM5nuoxUThPvcU3lHCN5lXh/b8g3XHh3PacxFkP9PCJ8L7gt4Omu0w1NA81w67XAu",
-	"9Hff94KGZzRUG695Joz/DKqU/LToYK50Y2IgxV24aw1jhz0yDYGfGySnjIYK3l0vrhexuxa1sAoq+BCP",
-	"CrCCH+IrS2FViZvdfGkxPjngEJn0VUIFX5CXySI4kuiRkRxUt1tQIc/aIw1QgBaBQU/djqMq++K8354e",
-	"s113fJrtOGl6fq1Kv65Sr1m9Cp1O9YqPHCU2wncM1cdFkVFAPoxpGofPxMmFuQv0TOKLBHm/WCRxaMYk",
-	"D2Ftp+rIlvLRBeJtD4IrxjSM3hI2UMGbcr/QymmblQerbD/WBJEYEuMlupqU5UTrH060eJU4e50MrHEZ",
-	"3t4Yl4gLSWPo+LORw6z6/1j2btSPx0pm8jj+JXZn5J7GYgalaHBFWBuSKCNOY5Hk7tLce0nv02g8T/CX",
-	"F0NLxtvV/ZDn8W4CofZ9dv38tmyesl2E7Edb5wy6f2pbwjb85bjykflT+1JLx/FXAAAA//8vEhDtIwoA",
-	"AA==",
+	"H4sIAAAAAAAC/8RWQW/bPAz9K4G+72g02YZefNuAbNit6LBTUQSqRbvsbEmlqAJGkP8+SHLrZJG7uCva",
+	"nlyLpJ4f3yOzFZXprNGg2YlyK1x1C52Mj2siQ5fgrNEOwgtLxgIxQjyGcBweuLcgSuGYUDdiVwh4AM0b",
+	"VKAZa4Rc0K4QBPceCZQor4Zamczr4jHT3NxBxaH8OgStNVN/DEpWPAGqIpAMaiM5e6yAJbaxhFLIaLRs",
+	"Lw5KH6UcAVOeZMjcdPsJqBkaoBCAKv/+F2qVvcJ4rkwH2TPnqZZV/oyNaf/OOioxhI7VioHC8e4B3gGD",
+	"k225hHsPjuc05k2YfyeGTyX3GT6n7JfX0nGHc6V/+K6T1E94qDJe80waX42qdPkx6BCOujaxEHIbzhrD",
+	"0EIHTH3Q5wOQQ6NFKT6crc5WsbsWtLQoSvEpviqElXwbv3IpLS7jvIn/NhA/OfAQlfRdiVJ8A16niJBI",
+	"sgMGcqK82goM99x7oF4UQsugoKduxxGa/eJ83iiP2amPepqdOHh6PlbUL0PqNeOL2GmxQz5IVFBL37Io",
+	"z1dFxgH5MqauHUzUyZW5DvJM5osC+bhaJXNohmQPaW2LVVTL8s4F4W33iiNDGkb/E9SiFP8tx0W7HLbs",
+	"cm+VjWNNEsk+KV6BqwgtJ1n/dLKBRdLsWUg4n4npWSgH2z5z+1eJLagFm0VkdsQRQq1xGf9cGJcMJJLX",
+	"wfEXo/rXw7y/cnaHE4XJw+4fe3jC3dN8xYAFQWVIgXrPfiUMqWGxX7sijT+X9sBz829YFacNwLcfDg0Z",
+	"bzc3fd7XjxMZtO+y6/iP5ft025uY/2ALn2D/z01D0ISfYAsfJ8HQvvcfBSOQ+Pc7AAD//4iaqOxUDAAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

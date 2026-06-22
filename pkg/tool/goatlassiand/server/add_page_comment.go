@@ -1,19 +1,22 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
-	"net/http"
 )
 
 func (s *Server) AddPageComment(
-	w http.ResponseWriter,
-	e *http.Request,
-	identifier string,
-) {
-	var q server.CommentRequest
-	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
-	s.confluence.MustAddComment(identifier, q.Body)
-	w.WriteHeader(http.StatusNoContent)
+	_ context.Context,
+	r server.AddPageCommentRequestObject,
+) (server.AddPageCommentResponseObject, error) {
+	if e := s.confluence.AddComment(
+		r.Identifier,
+		r.Body.Body,
+	); e != nil {
+		return server.AddPageComment500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.AddPageComment204Response{}, nil
 }

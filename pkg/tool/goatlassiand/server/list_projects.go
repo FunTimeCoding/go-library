@@ -1,14 +1,24 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
 )
 
 func (s *Server) ListProjects(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
-	web.EncodeNotation(w, convert.JiraProjects(s.jira.MustProjects()))
+	_ context.Context,
+	_ server.ListProjectsRequestObject,
+) (server.ListProjectsResponseObject, error) {
+	result, e := s.jira.Projects()
+
+	if e != nil {
+		return server.ListProjects500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.ListProjects200JSONResponse(
+		convert.JiraProjects(result),
+	), nil
 }

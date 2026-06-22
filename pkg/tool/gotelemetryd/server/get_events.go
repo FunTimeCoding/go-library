@@ -1,56 +1,60 @@
 package server
 
 import (
+	"context"
 	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gotelemetryd/store"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetEvents(
-	w http.ResponseWriter,
-	_ *http.Request,
-	params server.GetEventsParams,
-) {
+	_ context.Context,
+	r server.GetEventsRequestObject,
+) (server.GetEventsResponseObject, error) {
 	o := store.NewQueryOption()
 
-	if params.Tool != nil {
-		o.Tool = *params.Tool
+	if r.Params.Tool != nil {
+		o.Tool = *r.Params.Tool
 	}
 
-	if params.Surface != nil {
-		o.Surface = *params.Surface
+	if r.Params.Surface != nil {
+		o.Surface = *r.Params.Surface
 	}
 
-	if params.Actor != nil {
-		o.Actor = *params.Actor
+	if r.Params.Actor != nil {
+		o.Actor = *r.Params.Actor
 	}
 
-	if params.Kind != nil {
-		o.Kind = *params.Kind
+	if r.Params.Kind != nil {
+		o.Kind = *r.Params.Kind
 	}
 
-	if params.Since != nil {
-		o.Since = *params.Since
+	if r.Params.Since != nil {
+		o.Since = *r.Params.Since
 	}
 
-	if params.Until != nil {
-		o.Until = *params.Until
+	if r.Params.Until != nil {
+		o.Until = *r.Params.Until
 	}
 
-	if params.Limit != nil {
-		o.Limit = *params.Limit
+	if r.Params.Limit != nil {
+		o.Limit = *r.Params.Limit
 	}
 
-	if params.Offset != nil {
-		o.Offset = *params.Offset
+	if r.Params.Offset != nil {
+		o.Offset = *r.Params.Offset
 	}
 
-	events, queryError := s.store.Recent(o)
-	errors.PanicOnError(queryError)
-	var entries []server.EventEntry
+	events, e := s.store.Recent(o)
+
+	if e != nil {
+		return server.GetEvents500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	entries := make([]server.EventEntry, 0, len(events))
 
 	for _, e := range events {
 		entry := server.EventEntry{
@@ -78,9 +82,5 @@ func (s *Server) GetEvents(
 		entries = append(entries, entry)
 	}
 
-	if entries == nil {
-		entries = []server.EventEntry{}
-	}
-
-	web.EncodeNotation(w, entries)
+	return server.GetEvents200JSONResponse(entries), nil
 }

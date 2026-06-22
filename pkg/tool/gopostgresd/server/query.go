@@ -1,20 +1,22 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gopostgresd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) Query(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.QueryRequest
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
-	rows, e := s.store.Query(r.Context(), body.Instance, body.Sql)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, server.QueryResult{Rows: toRows(rows)})
+	c context.Context,
+	r server.QueryRequestObject,
+) (server.QueryResponseObject, error) {
+	rows, e := s.store.Query(c, r.Body.Instance, r.Body.Sql)
+
+	if e != nil {
+		return server.Query500JSONResponse(
+			*s.captureFail(e, constant.UnexpectedError),
+		), nil
+	}
+
+	return server.Query200JSONResponse{Rows: toRows(rows)}, nil
 }

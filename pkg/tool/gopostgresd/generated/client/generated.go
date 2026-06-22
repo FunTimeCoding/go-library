@@ -16,6 +16,12 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // ExplainRequest defines model for ExplainRequest.
 type ExplainRequest struct {
 	// Analyze Run EXPLAIN ANALYZE.
@@ -814,6 +820,7 @@ type ExplainResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *QueryResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -836,6 +843,7 @@ type ListIndexesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *QueryResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -880,6 +888,7 @@ type QueryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *QueryResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -902,6 +911,7 @@ type ListSchemasResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *QueryResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -924,6 +934,7 @@ type TableSizesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *QueryResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -946,6 +957,7 @@ type ListTablesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *QueryResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -968,6 +980,7 @@ type DescribeTableResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *QueryResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1095,6 +1108,13 @@ func ParseExplainResponse(rsp *http.Response) (*ExplainResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1120,6 +1140,13 @@ func ParseListIndexesResponse(rsp *http.Response) (*ListIndexesResponse, error) 
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1173,6 +1200,13 @@ func ParseQueryResponse(rsp *http.Response) (*QueryResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1198,6 +1232,13 @@ func ParseListSchemasResponse(rsp *http.Response) (*ListSchemasResponse, error) 
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1225,6 +1266,13 @@ func ParseTableSizesResponse(rsp *http.Response) (*TableSizesResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1251,6 +1299,13 @@ func ParseListTablesResponse(rsp *http.Response) (*ListTablesResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1276,6 +1331,13 @@ func ParseDescribeTableResponse(rsp *http.Response) (*DescribeTableResponse, err
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

@@ -31,13 +31,17 @@ func New(t *testing.T) *Tester {
 	idx := memory_indexer.New(c)
 	s := store.New(filepath.Join(t.TempDir(), constant.TestDatabase))
 	v := service.New(s, idx, idx, idx)
+	r := memory.New()
 	gomemorydServer := model_context_server.New(
 		t,
 		func(m *http.ServeMux) {
-			generated.HandlerFromMux(server.New(v), m)
+			generated.HandlerFromMux(
+				generated.NewStrictHandler(server.New(v, r), nil),
+				m,
+			)
 			model_context.New(
 				v,
-				memory.New(),
+				r,
 				mock_recorder.New(),
 				constant.DefaultVersion,
 			).Mount(m)

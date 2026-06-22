@@ -16,6 +16,12 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // ImpressionResponse defines model for ImpressionResponse.
 type ImpressionResponse struct {
 	Identifier int `json:"identifier"`
@@ -339,6 +345,7 @@ type PostImpressionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ImpressionResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -361,6 +368,7 @@ type GetVersionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]VersionEntry
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -426,6 +434,13 @@ func ParsePostImpressionsResponse(rsp *http.Response) (*PostImpressionsResponse,
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -451,6 +466,13 @@ func ParseGetVersionsResponse(rsp *http.Response) (*GetVersionsResponse, error) 
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

@@ -29,6 +29,12 @@ type EntryResponse struct {
 	User        string     `json:"user"`
 }
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // PostEntryRequest defines model for PostEntryRequest.
 type PostEntryRequest struct {
 	Action      string     `json:"action"`
@@ -581,6 +587,7 @@ type GetEntriesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]EntryResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -603,6 +610,7 @@ type PostEntryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *EntryResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -624,6 +632,7 @@ func (r PostEntryResponse) StatusCode() int {
 type DeleteEntryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -646,6 +655,7 @@ type UpdateEntryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *EntryResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -668,6 +678,7 @@ type GetStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *StatusResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -768,6 +779,13 @@ func ParseGetEntriesResponse(rsp *http.Response) (*GetEntriesResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -794,6 +812,13 @@ func ParsePostEntryResponse(rsp *http.Response) (*PostEntryResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -810,6 +835,16 @@ func ParseDeleteEntryResponse(rsp *http.Response) (*DeleteEntryResponse, error) 
 	response := &DeleteEntryResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -836,6 +871,13 @@ func ParseUpdateEntryResponse(rsp *http.Response) (*UpdateEntryResponse, error) 
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -861,6 +903,13 @@ func ParseGetStatusResponse(rsp *http.Response) (*GetStatusResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

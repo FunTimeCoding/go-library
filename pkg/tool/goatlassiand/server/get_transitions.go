@@ -1,17 +1,22 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetTransitions(
-	w http.ResponseWriter,
-	_ *http.Request,
-	key string,
-) {
-	transitions := s.jira.MustTransitions(key)
+	_ context.Context,
+	r server.GetTransitionsRequestObject,
+) (server.GetTransitionsResponseObject, error) {
+	transitions, e := s.jira.Transitions(r.Key)
+
+	if e != nil {
+		return server.GetTransitions500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
 	result := make([]*server.JiraTransition, 0, len(transitions))
 
 	for _, t := range transitions {
@@ -24,5 +29,5 @@ func (s *Server) GetTransitions(
 		result = append(result, a)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.GetTransitions200JSONResponse(result), nil
 }

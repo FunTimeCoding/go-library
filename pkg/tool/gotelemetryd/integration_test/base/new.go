@@ -19,13 +19,17 @@ import (
 func New(t *testing.T) *Server {
 	t.Helper()
 	s := store.New("", filepath.Join(t.TempDir(), constant.TestDatabase))
+	r := memory.New()
 	v := model_context_server.New(
 		t,
 		func(m *http.ServeMux) {
-			generated.HandlerFromMux(server.New(s), m)
+			generated.HandlerFromMux(
+				generated.NewStrictHandler(server.New(s, r), nil),
+				m,
+			)
 			model_context.New(
 				service.New(s),
-				memory.New(),
+				r,
 				mock_recorder.New(),
 				constant.DefaultVersion,
 			).Mount(m)

@@ -1,19 +1,22 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
-	"net/http"
 )
 
 func (s *Server) TransitionIssue(
-	w http.ResponseWriter,
-	e *http.Request,
-	key string,
-) {
-	var q server.TransitionRequest
-	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&q))
-	s.jira.MustTransition(key, q.TransitionIdentifier)
-	w.WriteHeader(http.StatusNoContent)
+	_ context.Context,
+	r server.TransitionIssueRequestObject,
+) (server.TransitionIssueResponseObject, error) {
+	if e := s.jira.Transition(
+		r.Key,
+		r.Body.TransitionIdentifier,
+	); e != nil {
+		return server.TransitionIssue500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.TransitionIssue204Response{}, nil
 }

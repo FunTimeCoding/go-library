@@ -1,31 +1,29 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreatePage(
-	w http.ResponseWriter,
-	e *http.Request,
-) {
-	var c server.CreatePageJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(e.Body).Decode(&s))
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		convert.ConfluencePageDetail(
-			s.confluence.MustCreatePage(
-				c.SpaceIdentifier,
-				c.ParentIdentifier,
-				c.Title,
-				c.Body,
-			),
-		),
+	_ context.Context,
+	r server.CreatePageRequestObject,
+) (server.CreatePageResponseObject, error) {
+	result, e := s.confluence.CreatePage(
+		r.Body.SpaceIdentifier,
+		r.Body.ParentIdentifier,
+		r.Body.Title,
+		r.Body.Body,
 	)
+
+	if e != nil {
+		return server.CreatePage500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.CreatePage201JSONResponse(
+		*convert.ConfluencePageDetail(result),
+	), nil
 }

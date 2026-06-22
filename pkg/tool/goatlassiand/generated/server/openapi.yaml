@@ -28,9 +28,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/JiraIssue"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/JiraIssue"
         "400":
           description: Missing or invalid query parameter.
+        "500":
+          description: Failed to search issues.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/jira/issue/{key}:
     get:
       operationId: getIssue
@@ -50,6 +58,12 @@ paths:
                 $ref: "#/components/schemas/JiraIssue"
         "404":
           description: Issue not found.
+        "500":
+          description: Failed to get issue.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/jira/issue/{key}/transitions:
     get:
       operationId: getTransitions
@@ -68,7 +82,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/JiraTransition"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/JiraTransition"
+        "500":
+          description: Failed to get transitions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/jira/issue/{key}/transition:
     post:
       operationId: transitionIssue
@@ -90,6 +112,12 @@ paths:
           description: Transition applied.
         "400":
           description: Invalid transition.
+        "500":
+          description: Failed to transition issue.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/jira/issue/{key}/comment:
     post:
       operationId: addIssueComment
@@ -111,6 +139,12 @@ paths:
           description: Comment added.
         "400":
           description: Missing body.
+        "500":
+          description: Failed to add comment.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/jira/projects:
     get:
       operationId: listProjects
@@ -122,7 +156,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/JiraProject"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/JiraProject"
+        "500":
+          description: Failed to list projects.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/confluence/spaces:
     get:
       operationId: listSpaces
@@ -134,7 +176,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ConfluenceSpace"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/ConfluenceSpace"
+        "500":
+          description: Failed to list spaces.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/confluence/search:
     get:
       operationId: searchPages
@@ -153,9 +203,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ConfluencePage"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/ConfluencePage"
         "400":
           description: Missing or invalid query parameter.
+        "500":
+          description: Failed to search pages.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/confluence/page:
     post:
       operationId: createPage
@@ -174,6 +232,12 @@ paths:
                 $ref: "#/components/schemas/ConfluencePageDetail"
         "400":
           description: Missing required fields.
+        "500":
+          description: Failed to create page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/confluence/page/{identifier}:
     get:
       operationId: getPage
@@ -193,6 +257,12 @@ paths:
                 $ref: "#/components/schemas/ConfluencePageDetail"
         "404":
           description: Page not found.
+        "500":
+          description: Failed to get page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     put:
       operationId: updatePage
       parameters:
@@ -217,6 +287,12 @@ paths:
                 $ref: "#/components/schemas/ConfluencePageDetail"
         "404":
           description: Page not found.
+        "500":
+          description: Failed to update page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/confluence/page/{identifier}/children:
     get:
       operationId: getPageChildren
@@ -235,7 +311,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ConfluencePage"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/ConfluencePage"
+        "500":
+          description: Failed to get children.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/confluence/page/{identifier}/comment:
     post:
       operationId: addPageComment
@@ -257,6 +341,12 @@ paths:
           description: Comment added.
         "400":
           description: Missing body.
+        "500":
+          description: Failed to add comment.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     JiraIssue:
@@ -421,3 +511,11 @@ components:
         body:
           type: string
           description: Comment body text.
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
+          type: string

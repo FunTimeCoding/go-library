@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goalertlogd/generated/server"
 	"time"
 )
@@ -31,7 +32,7 @@ func (s *Server) GetTopAlerts(
 
 	if e != nil {
 		return server.GetTopAlerts500JSONResponse(
-			*s.captureFail(e, "failed to query top alerts"),
+			*s.captureFail(e, constant.UnexpectedError),
 		), nil
 	}
 

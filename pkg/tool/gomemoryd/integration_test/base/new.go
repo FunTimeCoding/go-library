@@ -21,6 +21,7 @@ func New(t *testing.T) *Server {
 	s := store.New(filepath.Join(t.TempDir(), constant.TestDatabase))
 	i := mock_indexer.New()
 	v := service.New(s, i, i, i)
+	r := memory.New()
 
 	return &Server{
 		t:       t,
@@ -29,10 +30,13 @@ func New(t *testing.T) *Server {
 		server: model_context_server.New(
 			t,
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(server.New(v), m)
+				generated.HandlerFromMux(
+					generated.NewStrictHandler(server.New(v, r), nil),
+					m,
+				)
 				model_context.New(
 					v,
-					memory.New(),
+					r,
 					mock_recorder.New(),
 					constant.DefaultVersion,
 				).Mount(m)

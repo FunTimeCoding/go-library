@@ -1,20 +1,24 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/generated/server"
 )
 
 func (s *Server) GetPageChildren(
-	w http.ResponseWriter,
-	_ *http.Request,
-	identifier string,
-) {
-	web.EncodeNotation(
-		w,
-		convert.ConfluencePagesFromPages(
-			s.confluence.MustChildPagesByIdentifier(identifier),
-		),
-	)
+	_ context.Context,
+	r server.GetPageChildrenRequestObject,
+) (server.GetPageChildrenResponseObject, error) {
+	result, e := s.confluence.ChildPagesByIdentifier(r.Identifier)
+
+	if e != nil {
+		return server.GetPageChildren500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
+	return server.GetPageChildren200JSONResponse(
+		convert.ConfluencePagesFromPages(result),
+	), nil
 }

@@ -124,8 +124,8 @@ is still accurate — there's just nothing to list.
 The `instance` query parameter is optional in the OpenAPI spec.
 When omitted, `ResolveInstance("")` applies the same defaulting
 rule. When multiple instances exist, omitting it returns a 400
-`ClientError` — no Sentry, because it's a caller mistake, not
-an infrastructure failure. See `error-handling.md` for the
+`Error` — no Sentry, because it's a caller mistake, not
+an infrastructure failure. See `error-handling/rest.md` for the
 tier 1 vs tier 2 distinction on strict server.
 
 ## CLI Surface

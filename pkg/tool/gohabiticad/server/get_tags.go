@@ -10,12 +10,13 @@ func (s *Server) GetTags(
 	_ context.Context,
 	_ server.GetTagsRequestObject,
 ) (server.GetTagsResponseObject, error) {
-	tags := convert.Tags(s.habitica.MustTags())
-	result := make(server.GetTags200JSONResponse, len(tags))
+	result, e := s.habitica.Tags()
 
-	for i, t := range tags {
-		result[i] = *t
+	if e != nil {
+		return server.GetTags500JSONResponse(
+			*s.captureDetail(e),
+		), nil
 	}
 
-	return result, nil
+	return server.GetTags200JSONResponse(convert.Tags(result)), nil
 }

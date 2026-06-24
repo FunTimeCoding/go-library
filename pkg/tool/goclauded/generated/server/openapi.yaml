@@ -143,6 +143,10 @@ paths:
                 $ref: "#/components/schemas/ResolveResponse"
         "404":
           description: No match.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "409":
           description: Ambiguous.
           content:
@@ -380,6 +384,10 @@ paths:
                 $ref: "#/components/schemas/SessionDetailResponse"
         "404":
           description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
           description: Internal error.
           content:
@@ -503,6 +511,10 @@ paths:
                 $ref: "#/components/schemas/ExportResponse"
         "404":
           description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
           description: Internal error.
           content:
@@ -618,6 +630,12 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
     ErrorResponse:
       type: object
       required: [error, event_identifier]

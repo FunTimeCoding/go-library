@@ -1,18 +1,27 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) DeleteDocument(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.DeleteDocumentParams,
-) {
-	deleted, e := s.service.DeleteDocument(v.Collection, v.Path)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, map[string]bool{"deleted": deleted})
+	_ context.Context,
+	r server.DeleteDocumentRequestObject,
+) (server.DeleteDocumentResponseObject, error) {
+	deleted, e := s.service.DeleteDocument(r.Params.Collection, r.Params.Path)
+
+	if e != nil {
+		return server.DeleteDocument500JSONResponse(
+			*s.captureFail(
+				e,
+				constant.UnexpectedError,
+			),
+		), nil
+	}
+
+	return server.DeleteDocument200JSONResponse{
+		Deleted: new(bool(deleted)),
+	}, nil
 }

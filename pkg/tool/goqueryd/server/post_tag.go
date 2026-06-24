@@ -1,25 +1,21 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostTag(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.PostTagJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostTagRequestObject,
+) (server.PostTagResponseObject, error) {
 	collection := ""
 
-	if body.Collection != nil {
-		collection = *body.Collection
+	if r.Body.Collection != nil {
+		collection = *r.Body.Collection
 	}
 
-	s.service.SetSourceType(collection, body.Path, body.SourceType)
-	web.EncodeNotation(w, map[string]string{"status": "ok"})
+	s.service.SetSourceType(collection, r.Body.Path, r.Body.SourceType)
+
+	return server.PostTag200Response{}, nil
 }

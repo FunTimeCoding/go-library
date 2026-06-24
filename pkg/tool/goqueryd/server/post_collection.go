@@ -1,25 +1,21 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostCollection(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.PostCollectionJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostCollectionRequestObject,
+) (server.PostCollectionResponseObject, error) {
 	pattern := ""
 
-	if body.Pattern != nil {
-		pattern = *body.Pattern
+	if r.Body.Pattern != nil {
+		pattern = *r.Body.Pattern
 	}
 
-	s.service.AddCollection(body.Name, body.Path, pattern)
-	web.EncodeNotation(w, map[string]string{"status": "ok"})
+	s.service.AddCollection(r.Body.Name, r.Body.Path, pattern)
+
+	return server.PostCollection200Response{}, nil
 }

@@ -1,15 +1,21 @@
 package store
 
 import (
-	"fmt"
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/errors/not_found"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
+	"gorm.io/gorm"
 )
 
 func (s *Store) Get(identifier uint) (*entry.Entry, error) {
 	var result entry.Entry
 
 	if e := s.database.First(&result, identifier).Error; e != nil {
-		return nil, fmt.Errorf("failed to get entry: %w", e)
+		if errors.Is(e, gorm.ErrRecordNotFound) {
+			return nil, not_found.New("entry", identifier)
+		}
+
+		return nil, e
 	}
 
 	return &result, nil

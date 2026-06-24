@@ -1,44 +1,29 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
 	"github.com/netbox-community/go-netbox/v4"
-	"net/http"
 )
 
 func (s *Server) CreateInterface(
-	w http.ResponseWriter,
-	q *http.Request,
-	name string,
-) {
-	var body server.CreateInterfaceRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	d, e := s.client.DeviceByName(name)
+	_ context.Context,
+	r server.CreateInterfaceRequestObject,
+) (server.CreateInterfaceResponseObject, error) {
+	d, e := s.client.DeviceByName(r.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateInterface500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	i, f := s.client.CreateInterface(
 		d,
-		body.Name,
-		netbox.InterfaceTypeValue(body.Type),
+		r.Body.Name,
+		netbox.InterfaceTypeValue(r.Body.Type),
 	)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateInterface500JSONResponse(*s.captureDetail(f)), nil
 	}
 
 	result := server.Interface{
@@ -47,10 +32,9 @@ func (s *Server) CreateInterface(
 	}
 
 	if i.Type != "" {
-		result.Type = new(string(i.Type))
+		t := string(i.Type)
+		result.Type = &t
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, result)
+	return server.CreateInterface201JSONResponse(result), nil
 }

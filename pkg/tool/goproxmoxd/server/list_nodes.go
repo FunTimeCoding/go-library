@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
 )
@@ -14,23 +13,19 @@ func (s *Server) ListNodes(
 	instance, e := s.resolveInstance(r.Params.Instance)
 
 	if e != nil {
-		return server.ListNodes400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
+		return server.ListNodes400JSONResponse(*clientError(e)), nil
 	}
 
 	c, e := s.service.Client(instance)
 
 	if e != nil {
-		return server.ListNodes500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.ListNodes500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	nodes, e := c.Nodes()
 
 	if e != nil {
-		return server.ListNodes500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.ListNodes500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	pointers := convert.Nodes(nodes)

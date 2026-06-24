@@ -1,72 +1,54 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/netbox/tenant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateDevice(
-	w http.ResponseWriter,
-	q *http.Request,
-) {
-	var body server.CreateDeviceRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	role, e := s.client.DeviceRoleByName(body.Role)
+	_ context.Context,
+	r server.CreateDeviceRequestObject,
+) (server.CreateDeviceResponseObject, error) {
+	role, e := s.client.DeviceRoleByName(r.Body.Role)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateDevice500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	deviceType, f := s.client.DeviceTypeByName(body.Type)
+	deviceType, f := s.client.DeviceTypeByName(r.Body.Type)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateDevice500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	site, g := s.client.SiteByName(body.Site)
+	site, g := s.client.SiteByName(r.Body.Site)
 
 	if g != nil {
-		s.captureDetail(w, g)
-
-		return
+		return server.CreateDevice500JSONResponse(*s.captureDetail(g)), nil
 	}
 
 	var tags []string
 
-	if body.Tags != nil {
-		tags = *body.Tags
+	if r.Body.Tags != nil {
+		tags = *r.Body.Tags
 	}
 
 	var ten *tenant.Tenant
 
-	if body.Tenant != nil && *body.Tenant != "" {
-		t, h := s.client.TenantByName(*body.Tenant)
+	if r.Body.Tenant != nil && *r.Body.Tenant != "" {
+		t, h := s.client.TenantByName(*r.Body.Tenant)
 
 		if h != nil {
-			s.captureDetail(w, h)
-
-			return
+			return server.CreateDevice500JSONResponse(*s.captureDetail(h)), nil
 		}
 
 		ten = t
 	}
 
 	d, i := s.client.CreateDevice(
-		body.Name,
+		r.Body.Name,
 		role,
 		tags,
 		deviceType,
@@ -75,12 +57,8 @@ func (s *Server) CreateDevice(
 	)
 
 	if i != nil {
-		s.captureDetail(w, i)
-
-		return
+		return server.CreateDevice500JSONResponse(*s.captureDetail(i)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, convert.Device(d))
+	return server.CreateDevice201JSONResponse(*convert.Device(d)), nil
 }

@@ -13,8 +13,8 @@ func (s *Server) AllocateStat(
 	result, e := s.habitica.Allocate(string(r.Stat))
 
 	if e != nil {
-		return server.AllocateStat400JSONResponse(
-			*s.captureFail(e, "failed to allocate stat"),
+		return server.AllocateStat500JSONResponse(
+			*s.captureDetail(e),
 		), nil
 	}
 

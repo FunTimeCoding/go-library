@@ -10,6 +10,10 @@ func (s *Server) ListSchemas(
 	c context.Context,
 	r server.ListSchemasRequestObject,
 ) (server.ListSchemasResponseObject, error) {
+	if fail, okay := s.resolveInstance(r.Params.Instance); !okay {
+		return server.ListSchemas400JSONResponse(*fail), nil
+	}
+
 	rows, e := s.store.ListSchemas(c, r.Params.Instance)
 
 	if e != nil {

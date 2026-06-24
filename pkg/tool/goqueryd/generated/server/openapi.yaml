@@ -52,6 +52,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SearchOutcome"
+        "500":
+          description: Failed to search.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/list:
     get:
       operationId: getList
@@ -95,6 +101,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ListOutcome"
+        "500":
+          description: Failed to list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/status:
     get:
       operationId: getStatus
@@ -105,6 +117,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Status"
+        "500":
+          description: Failed to get status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/index:
     post:
       operationId: postIndex
@@ -124,7 +142,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/IndexResult"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/IndexResult"
+        "500":
+          description: Failed to index.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/embed:
     post:
       operationId: postEmbed
@@ -135,6 +161,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EmbedResult"
+        "500":
+          description: Failed to embed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/collection:
     post:
       operationId: postCollection
@@ -155,6 +187,12 @@ paths:
       responses:
         "200":
           description: Collection added.
+        "500":
+          description: Failed to add collection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: deleteCollection
       parameters:
@@ -173,6 +211,12 @@ paths:
                 properties:
                   deleted:
                     type: boolean
+        "500":
+          description: Failed to delete collection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/context:
     get:
       operationId: getContext
@@ -184,7 +228,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ContextEntry"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/ContextEntry"
+        "500":
+          description: Failed to get contexts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: postContext
       requestBody:
@@ -204,6 +256,12 @@ paths:
       responses:
         "200":
           description: Context added.
+        "500":
+          description: Failed to add context.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: deleteContext
       parameters:
@@ -227,6 +285,12 @@ paths:
                 properties:
                   deleted:
                     type: boolean
+        "500":
+          description: Failed to remove context.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/document:
     get:
       operationId: getDocument
@@ -243,6 +307,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SearchResult"
+        "500":
+          description: Failed to get document.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: postDocument
       requestBody:
@@ -268,6 +338,12 @@ paths:
       responses:
         "200":
           description: Document pushed.
+        "500":
+          description: Failed to push document.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: deleteDocument
       parameters:
@@ -291,6 +367,12 @@ paths:
                 properties:
                   deleted:
                     type: boolean
+        "500":
+          description: Failed to delete document.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/metadata:
     get:
       operationId: getMetadata
@@ -312,7 +394,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Facet"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Facet"
+        "500":
+          description: Failed to get metadata.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/tags:
     get:
       operationId: getTags
@@ -324,7 +414,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/SourceTypeTag"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/SourceTypeTag"
+        "500":
+          description: Failed to get tags.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/tag:
     get:
       operationId: getTag
@@ -345,6 +443,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SourceTypeTag"
+        "500":
+          description: Failed to get tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: postTag
       requestBody:
@@ -364,6 +468,12 @@ paths:
       responses:
         "200":
           description: Tag set or removed.
+        "500":
+          description: Failed to set tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     SearchResult:
@@ -514,4 +624,12 @@ components:
         file_path:
           type: string
         title:
+          type: string
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
           type: string

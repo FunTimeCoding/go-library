@@ -11,6 +11,10 @@ func (s *Server) Explain(
 	c context.Context,
 	r server.ExplainRequestObject,
 ) (server.ExplainResponseObject, error) {
+	if fail, okay := s.resolveInstance(r.Body.Instance); !okay {
+		return server.Explain400JSONResponse(*fail), nil
+	}
+
 	prefix := "EXPLAIN"
 
 	if r.Body.Analyze != nil && *r.Body.Analyze {

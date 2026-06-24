@@ -1,33 +1,30 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListManufacturers(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListManufacturersRequestObject,
+) (server.ListManufacturersResponseObject, error) {
 	manufacturers, e := s.client.Manufacturers()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListManufacturers500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	result := make([]server.Manufacturer, 0, len(manufacturers))
+	result := make([]*server.Manufacturer, 0, len(manufacturers))
 
 	for _, m := range manufacturers {
 		result = append(
 			result,
-			server.Manufacturer{
+			&server.Manufacturer{
 				Identifier: m.Identifier, Name: m.Name,
 			},
 		)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.ListManufacturers200JSONResponse(result), nil
 }

@@ -273,7 +273,7 @@ func (s *Server) captureFail(
 - Infrastructure errors: `s.captureFail(e, "message")` - captures to Sentry with event ID
 - Error variables progress `e`, `f`, `g`, `h`, `i` - never reuse the same letter. See `naming.md`.
 - Always convert results through the `convert/` package - never serialize raw domain objects
-- Error handling is two-tier - input validation vs infrastructure failures. See `error-handling.md`.
+- Error handling is two-tier - input validation vs infrastructure failures. See `error-handling/mcp.md`.
 
 ## REST Strict Server
 
@@ -292,10 +292,12 @@ generate:
 
 ### OpenAPI error schemas
 
-Every spec includes two error schemas for the two error tiers:
+Every spec includes two error schemas, defined inline on each
+endpoint (not via `components/responses/` — those generate
+struct embeddings instead of direct type aliases, bug #1864):
 
 ```yaml
-ClientError:
+Error:
   type: object
   required: [error]
   properties:
@@ -311,32 +313,13 @@ ErrorResponse:
       type: string
 ```
 
-`ClientError` is for 400 responses (tier 1 — input validation,
+`Error` is for 400/404 responses (tier 1 — input validation,
 application-level validation like missing instance selection).
 No Sentry event ID.
 
-`ErrorResponse` is for 500 responses (tier 2 — infrastructure
+`ErrorResponse` is for 500 responses (tier 2/3 — infrastructure
 failures). Carries the Sentry event ID so the caller can look
 up the full error.
-
-Use shared response references to keep the spec DRY:
-
-```yaml
-components:
-  responses:
-    ClientError:
-      description: Invalid or missing parameters.
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ClientError"
-    Error:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
-```
 
 ### Strict handler pattern
 

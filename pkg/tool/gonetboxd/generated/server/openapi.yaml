@@ -22,7 +22,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Device"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Device"
+        "500":
+          description: Failed to list devices.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/{name}:
     get:
       operationId: getDevice
@@ -42,6 +50,16 @@ paths:
                 $ref: "#/components/schemas/Device"
         "404":
           description: Device not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Failed to get device.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/{name}/interfaces:
     get:
       operationId: listInterfaces
@@ -60,7 +78,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Interface"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Interface"
+        "500":
+          description: Failed to list interfaces.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/{name}/addresses:
     get:
       operationId: listAddresses
@@ -79,7 +105,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Address"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Address"
+        "500":
+          description: Failed to list addresses.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/{name}/addresses/create:
     post:
       operationId: createAddress
@@ -103,6 +137,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Address"
+        "500":
+          description: Failed to create address.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/sites:
     get:
       operationId: listSites
@@ -114,7 +154,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Site"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Site"
+        "500":
+          description: Failed to list sites.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createSite
       requestBody:
@@ -130,6 +178,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Site"
+        "500":
+          description: Failed to create site.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/tenants:
     get:
       operationId: listTenants
@@ -141,7 +195,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Tenant"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Tenant"
+        "500":
+          description: Failed to list tenants.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createTenant
       requestBody:
@@ -157,6 +219,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tenant"
+        "500":
+          description: Failed to create tenant.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/device-roles:
     get:
       operationId: listDeviceRoles
@@ -168,7 +236,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/DeviceRole"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/DeviceRole"
+        "500":
+          description: Failed to list device roles.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createDeviceRole
       requestBody:
@@ -184,6 +260,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeviceRole"
+        "500":
+          description: Failed to create device role.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/manufacturers:
     get:
       operationId: listManufacturers
@@ -195,7 +277,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Manufacturer"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Manufacturer"
+        "500":
+          description: Failed to list manufacturers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createManufacturer
       requestBody:
@@ -211,6 +301,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Manufacturer"
+        "500":
+          description: Failed to create manufacturer.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/device-types:
     get:
       operationId: listDeviceTypes
@@ -222,7 +318,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/DeviceType"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/DeviceType"
+        "500":
+          description: Failed to list device types.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createDeviceType
       requestBody:
@@ -238,6 +342,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeviceType"
+        "500":
+          description: Failed to create device type.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/{name}/interfaces/create:
     post:
       operationId: createInterface
@@ -261,6 +371,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Interface"
+        "500":
+          description: Failed to create interface.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/create:
     post:
       operationId: createDevice
@@ -277,6 +393,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Device"
+        "500":
+          description: Failed to create device.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/cluster-types:
     get:
       operationId: listClusterTypes
@@ -288,7 +410,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ClusterType"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/ClusterType"
+        "500":
+          description: Failed to list cluster types.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createClusterType
       requestBody:
@@ -304,6 +434,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClusterType"
+        "500":
+          description: Failed to create cluster type.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/clusters:
     get:
       operationId: listClusters
@@ -315,7 +451,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Cluster"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Cluster"
+        "500":
+          description: Failed to list clusters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createCluster
       requestBody:
@@ -331,6 +475,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Cluster"
+        "500":
+          description: Failed to create cluster.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/virtual-machines:
     get:
       operationId: listVirtualMachines
@@ -342,7 +492,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/VirtualMachine"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/VirtualMachine"
+        "500":
+          description: Failed to list virtual machines.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createVirtualMachine
       requestBody:
@@ -358,6 +516,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VirtualMachine"
+        "500":
+          description: Failed to create virtual machine.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/virtual-machines/{name}/interfaces/create:
     post:
       operationId: createVirtualInterface
@@ -381,6 +545,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VirtualInterface"
+        "500":
+          description: Failed to create virtual interface.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/virtual-machines/{name}/addresses/create:
     post:
       operationId: createVirtualAddress
@@ -404,6 +574,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Address"
+        "500":
+          description: Failed to create virtual address.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/tags:
     get:
       operationId: listTags
@@ -415,7 +591,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Tag"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Tag"
+        "500":
+          description: Failed to list tags.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createTag
       requestBody:
@@ -431,6 +615,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
+        "500":
+          description: Failed to create tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/{name}/tags:
     get:
       operationId: listDeviceTags
@@ -450,6 +640,12 @@ paths:
                 type: array
                 items:
                   type: string
+        "500":
+          description: Failed to list device tags.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/{name}/tags/{tag}:
     put:
       operationId: addDeviceTag
@@ -473,6 +669,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Device"
+        "500":
+          description: Failed to add tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: removeDeviceTag
       parameters:
@@ -495,6 +697,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Device"
+        "500":
+          description: Failed to remove tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/prefixes:
     get:
       operationId: listPrefixes
@@ -506,7 +714,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Prefix"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Prefix"
+        "500":
+          description: Failed to list prefixes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createPrefix
       requestBody:
@@ -522,6 +738,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Prefix"
+        "500":
+          description: Failed to create prefix.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/tunnel-groups:
     get:
       operationId: listTunnelGroups
@@ -533,7 +755,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/TunnelGroup"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/TunnelGroup"
+        "500":
+          description: Failed to list tunnel groups.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createTunnelGroup
       requestBody:
@@ -549,6 +779,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TunnelGroup"
+        "500":
+          description: Failed to create tunnel group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/tunnels:
     get:
       operationId: listTunnels
@@ -560,7 +796,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Tunnel"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Tunnel"
+        "500":
+          description: Failed to list tunnels.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createTunnel
       requestBody:
@@ -576,6 +820,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tunnel"
+        "500":
+          description: Failed to create tunnel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/tunnel-terminations:
     get:
       operationId: listTunnelTerminations
@@ -587,7 +837,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/TunnelTermination"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/TunnelTermination"
+        "500":
+          description: Failed to list tunnel terminations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/devices/{name}/tunnel-terminations/create:
     post:
       operationId: createDeviceTunnelTermination
@@ -611,6 +869,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TunnelTermination"
+        "500":
+          description: Failed to create tunnel termination.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/virtual-machines/{name}/tunnel-terminations/create:
     post:
       operationId: createVirtualTunnelTermination
@@ -634,6 +898,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TunnelTermination"
+        "500":
+          description: Failed to create virtual tunnel termination.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/virtual-machines/{name}/tags/{tag}:
     put:
       operationId: addVirtualTag
@@ -657,6 +927,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VirtualMachine"
+        "500":
+          description: Failed to add tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: removeVirtualTag
       parameters:
@@ -679,6 +955,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VirtualMachine"
+        "500":
+          description: Failed to remove tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     Device:
@@ -1076,3 +1358,17 @@ components:
         role:
           type: string
           description: Termination role (peer, hub, spoke).
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+    ErrorResponse:
+      type: object
+      required: [error, event_identifier]
+      properties:
+        error:
+          type: string
+        event_identifier:
+          type: string

@@ -31,8 +31,6 @@ paths:
                   nullable: true
                   allOf:
                   - $ref: "#/components/schemas/JiraIssue"
-        "400":
-          description: Missing or invalid query parameter.
         "500":
           description: Failed to search issues.
           content:
@@ -58,6 +56,10 @@ paths:
                 $ref: "#/components/schemas/JiraIssue"
         "404":
           description: Issue not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
           description: Failed to get issue.
           content:
@@ -110,8 +112,6 @@ paths:
       responses:
         "204":
           description: Transition applied.
-        "400":
-          description: Invalid transition.
         "500":
           description: Failed to transition issue.
           content:
@@ -137,8 +137,6 @@ paths:
       responses:
         "204":
           description: Comment added.
-        "400":
-          description: Missing body.
         "500":
           description: Failed to add comment.
           content:
@@ -206,8 +204,6 @@ paths:
                   nullable: true
                   allOf:
                   - $ref: "#/components/schemas/ConfluencePage"
-        "400":
-          description: Missing or invalid query parameter.
         "500":
           description: Failed to search pages.
           content:
@@ -230,8 +226,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ConfluencePageDetail"
-        "400":
-          description: Missing required fields.
         "500":
           description: Failed to create page.
           content:
@@ -257,6 +251,10 @@ paths:
                 $ref: "#/components/schemas/ConfluencePageDetail"
         "404":
           description: Page not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
           description: Failed to get page.
           content:
@@ -287,6 +285,10 @@ paths:
                 $ref: "#/components/schemas/ConfluencePageDetail"
         "404":
           description: Page not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
           description: Failed to update page.
           content:
@@ -339,8 +341,6 @@ paths:
       responses:
         "204":
           description: Comment added.
-        "400":
-          description: Missing body.
         "500":
           description: Failed to add comment.
           content:
@@ -511,6 +511,12 @@ components:
         body:
           type: string
           description: Comment body text.
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
     ErrorResponse:
       type: object
       required: [error, event_identifier]

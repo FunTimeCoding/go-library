@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
 )
@@ -14,31 +13,25 @@ func (s *Server) ListNetworks(
 	instance, e := s.resolveInstance(r.Params.Instance)
 
 	if e != nil {
-		return server.ListNetworks400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
+		return server.ListNetworks400JSONResponse(*clientError(e)), nil
 	}
 
 	c, e := s.service.Client(instance)
 
 	if e != nil {
-		return server.ListNetworks500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.ListNetworks500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	node, e := c.Node(r.Name)
 
 	if e != nil {
-		return server.ListNetworks500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.ListNetworks500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	networks, e := c.Networks(node)
 
 	if e != nil {
-		return server.ListNetworks500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.ListNetworks500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	pointers := convert.Networks(networks)

@@ -13,7 +13,7 @@ func TestWarningMissingOption(t *testing.T) {
 		"package server\n",
 	)
 	v.WriteString("pkg/tool/gotestd/run.go", "package gotestd\n")
-	s := Services(v, "test")
+	s := Services(v, "test", &Configuration{})
 	assert.Integer(t, 1, len(s))
 	assertConcern(t, s[0], MissingOptionKey)
 }
@@ -28,7 +28,7 @@ func TestWarningMissingRun(t *testing.T) {
 		"pkg/tool/gotestd/option/o.go",
 		"package option\n",
 	)
-	s := Services(v, "test")
+	s := Services(v, "test", &Configuration{})
 	assert.Integer(t, 1, len(s))
 	assertConcern(t, s[0], MissingRunKey)
 }
@@ -44,7 +44,7 @@ func TestWarningNoSuffix(t *testing.T) {
 		"package option\n",
 	)
 	v.WriteString("pkg/tool/gotest/run.go", "package gotest\n")
-	s := Services(v, "test")
+	s := Services(v, "test", &Configuration{})
 	assert.Integer(t, 1, len(s))
 	assertConcern(t, s[0], MissingSuffixKey)
 }
@@ -64,7 +64,7 @@ func TestWarningRouteExists(t *testing.T) {
 		"package option\n",
 	)
 	v.WriteString("pkg/tool/gotestd/run.go", "package gotestd\n")
-	assertConcern(t, Services(v, "test")[0], StaleRouteKey)
+	assertConcern(t, Services(v, "test", &Configuration{})[0], StaleRouteKey)
 }
 
 func TestWarningMissingMountGo(t *testing.T) {
@@ -78,7 +78,11 @@ func TestWarningMissingMountGo(t *testing.T) {
 		"package option\n",
 	)
 	v.WriteString("pkg/tool/gotestd/run.go", "package gotestd\n")
-	assertConcern(t, Services(v, "test")[0], MissingMountKey)
+	assertConcern(
+		t,
+		Services(v, "test", &Configuration{})[0],
+		MissingMountKey,
+	)
 }
 
 func TestWarningMissingCaptureFail(t *testing.T) {
@@ -92,7 +96,11 @@ func TestWarningMissingCaptureFail(t *testing.T) {
 		"package option\n",
 	)
 	v.WriteString("pkg/tool/gotestd/run.go", "package gotestd\n")
-	assertConcern(t, Services(v, "test")[0], MissingCaptureFailKey)
+	assertConcern(
+		t,
+		Services(v, "test", &Configuration{})[0],
+		MissingCaptureFailKey,
+	)
 }
 
 func TestWarningConstantFile(t *testing.T) {
@@ -110,7 +118,11 @@ func TestWarningConstantFile(t *testing.T) {
 		"package option\n",
 	)
 	v.WriteString("pkg/tool/gotestd/run.go", "package gotestd\n")
-	assertConcern(t, Services(v, "test")[0], ConstantFileKey)
+	assertConcern(
+		t,
+		Services(v, "test", &Configuration{})[0],
+		ConstantFileKey,
+	)
 }
 
 func TestCleanServiceNoConcerns(t *testing.T) {
@@ -128,7 +140,7 @@ func TestCleanServiceNoConcerns(t *testing.T) {
 		"package option\n",
 	)
 	v.WriteString("pkg/tool/gotestd/run.go", "package gotestd\n")
-	s := Services(v, "test")
+	s := Services(v, "test", &Configuration{})
 	assert.Integer(t, 1, len(s))
 	assert.Integer(t, 0, len(s[0].Concerns))
 }

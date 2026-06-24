@@ -29,6 +29,11 @@ type EntryResponse struct {
 	User        string     `json:"user"`
 }
 
+// Error defines model for Error.
+type Error struct {
+	Error string `json:"error"`
+}
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	Error           string `json:"error"`
@@ -664,6 +669,7 @@ type UpdateEntryResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *EntryResponse
+	JSON404      *Error
 	JSON500      *ErrorResponse
 }
 
@@ -895,6 +901,13 @@ func ParseUpdateEntryResponse(rsp *http.Response) (*UpdateEntryResponse, error) 
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse

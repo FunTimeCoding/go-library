@@ -1,55 +1,33 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateVirtualAddress(
-	w http.ResponseWriter,
-	q *http.Request,
-	name string,
-) {
-	var body server.CreateAddressRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	vm, e := s.client.VirtualMachineByName(name)
+	_ context.Context,
+	r server.CreateVirtualAddressRequestObject,
+) (server.CreateVirtualAddressResponseObject, error) {
+	vm, e := s.client.VirtualMachineByName(r.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateVirtualAddress500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	i, f := s.client.VirtualMachineInterfaceByName(vm, body.Interface)
+	i, f := s.client.VirtualMachineInterfaceByName(vm, r.Body.Interface)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateVirtualAddress500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	a, g := s.client.CreateVirtualAddress(i.GetId(), body.Address)
+	a, g := s.client.CreateVirtualAddress(i.GetId(), r.Body.Address)
 
 	if g != nil {
-		s.captureDetail(w, g)
-
-		return
+		return server.CreateVirtualAddress500JSONResponse(*s.captureDetail(g)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.Address{
-			Identifier: a.Identifier, Address: a.Address.String(),
-		},
-	)
+	return server.CreateVirtualAddress201JSONResponse{
+		Identifier: a.Identifier, Address: a.Address.String(),
+	}, nil
 }

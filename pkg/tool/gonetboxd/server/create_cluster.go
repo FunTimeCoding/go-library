@@ -1,57 +1,36 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateCluster(
-	w http.ResponseWriter,
-	q *http.Request,
-) {
-	var body server.CreateClusterRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	t, e := s.client.ClusterTypeByName(body.Type)
+	_ context.Context,
+	r server.CreateClusterRequestObject,
+) (server.CreateClusterResponseObject, error) {
+	t, e := s.client.ClusterTypeByName(r.Body.Type)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateCluster500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	i, f := s.client.SiteByName(body.Site)
+	i, f := s.client.SiteByName(r.Body.Site)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateCluster500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	cl, g := s.client.CreateCluster(body.Name, t, i)
+	cl, g := s.client.CreateCluster(r.Body.Name, t, i)
 
 	if g != nil {
-		s.captureDetail(w, g)
-
-		return
+		return server.CreateCluster500JSONResponse(*s.captureDetail(g)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.Cluster{
-			Identifier: cl.Identifier,
-			Name:       cl.Name,
-			Type:       &t.Name,
-			Site:       &i.Name,
-		},
-	)
+	return server.CreateCluster201JSONResponse{
+		Identifier: cl.Identifier,
+		Name:       cl.Name,
+		Type:       &t.Name,
+		Site:       &i.Name,
+	}, nil
 }

@@ -1,22 +1,19 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
 func (s *Server) ListDeviceTags(
-	w http.ResponseWriter,
-	_ *http.Request,
-	name string,
-) {
-	tags, e := s.client.DeviceTagNames(name)
+	_ context.Context,
+	r server.ListDeviceTagsRequestObject,
+) (server.ListDeviceTagsResponseObject, error) {
+	tags, e := s.client.DeviceTagNames(r.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListDeviceTags500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.EncodeNotation(w, tags)
+	return server.ListDeviceTags200JSONResponse(tags), nil
 }

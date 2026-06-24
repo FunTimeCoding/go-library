@@ -65,6 +65,11 @@ type CreatePageRequest struct {
 	Title string `json:"title"`
 }
 
+// Error defines model for Error.
+type Error struct {
+	Error string `json:"error"`
+}
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	Error           string `json:"error"`
@@ -1147,6 +1152,7 @@ type GetPageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ConfluencePageDetail
+	JSON404      *Error
 	JSON500      *ErrorResponse
 }
 
@@ -1178,6 +1184,7 @@ type UpdatePageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ConfluencePageDetail
+	JSON404      *Error
 	JSON500      *ErrorResponse
 }
 
@@ -1332,6 +1339,7 @@ type GetIssueResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *JiraIssue
+	JSON404      *Error
 	JSON500      *ErrorResponse
 }
 
@@ -1723,6 +1731,13 @@ func ParseGetPageResponse(rsp *http.Response) (*GetPageResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -1755,6 +1770,13 @@ func ParseUpdatePageResponse(rsp *http.Response) (*UpdatePageResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse
@@ -1913,6 +1935,13 @@ func ParseGetIssueResponse(rsp *http.Response) (*GetIssueResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse

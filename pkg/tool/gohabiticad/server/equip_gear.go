@@ -10,19 +10,17 @@ func (s *Server) EquipGear(
 	_ context.Context,
 	r server.EquipGearRequestObject,
 ) (server.EquipGearResponseObject, error) {
-	e := s.habitica.Equip(r.Key)
-
-	if e != nil {
-		return server.EquipGear400JSONResponse(
-			*s.captureFail(e, "failed to equip gear"),
+	if e := s.habitica.Equip(r.Key); e != nil {
+		return server.EquipGear500JSONResponse(
+			*s.captureDetail(e),
 		), nil
 	}
 
-	result, f := s.habitica.UserGear()
+	result, e := s.habitica.UserGear()
 
-	if f != nil {
+	if e != nil {
 		return server.EquipGear500JSONResponse(
-			*s.captureFail(f, "failed to fetch gear after equip"),
+			*s.captureDetail(e),
 		), nil
 	}
 

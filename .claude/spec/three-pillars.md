@@ -68,7 +68,7 @@ Three layers, from outermost to innermost:
 
 3. **Worker loops** (`withRecovery`): each worker wraps per-iteration
    work in a recovery defer. Panics are reported via `r.Recover(v)`
-   and the worker continues. See `error-handling.md`.
+   and the worker continues. See `error-handling/infrastructure.md`.
 
 MCP handlers do not need per-handler recover defers - the mcp-go
 framework handles recovery internally.

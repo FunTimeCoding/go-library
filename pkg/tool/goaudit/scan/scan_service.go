@@ -10,6 +10,7 @@ func scanService(
 	path string,
 	name string,
 	repo string,
+	c *Configuration,
 ) *Service {
 	s := &Service{
 		Name: name,
@@ -45,7 +46,7 @@ func scanService(
 		return nil
 	}
 
-	s.collectWarnings(v, path)
+	s.collectWarnings(v, path, c)
 
 	return s
 }

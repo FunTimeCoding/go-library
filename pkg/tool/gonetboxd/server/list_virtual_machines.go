@@ -1,27 +1,27 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListVirtualMachines(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListVirtualMachinesRequestObject,
+) (server.ListVirtualMachinesResponseObject, error) {
 	machines, e := s.client.VirtualMachines()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListVirtualMachines500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	result := make([]server.VirtualMachine, 0, len(machines))
+	result := make([]*server.VirtualMachine, 0, len(machines))
 
 	for _, m := range machines {
-		entry := server.VirtualMachine{Identifier: m.Identifier, Name: m.Name}
+		entry := &server.VirtualMachine{
+			Identifier: m.Identifier,
+			Name:       m.Name,
+		}
 
 		if m.Raw.Cluster.IsSet() && m.Raw.Cluster.Get() != nil {
 			entry.Cluster = new(m.Raw.Cluster.Get().GetName())
@@ -38,5 +38,5 @@ func (s *Server) ListVirtualMachines(
 		result = append(result, entry)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.ListVirtualMachines200JSONResponse(result), nil
 }

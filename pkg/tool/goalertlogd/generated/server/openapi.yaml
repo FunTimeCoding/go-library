@@ -22,8 +22,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AlertsResponse"
-        "400":
-          description: Missing or invalid name parameter.
         "500":
           description: Failed to query alerts.
           content:
@@ -55,8 +53,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AlertsResponse"
-        "400":
-          description: Invalid start or end parameter.
         "500":
           description: Failed to query alerts.
           content:
@@ -93,8 +89,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/TopAlertsResponse"
-        "400":
-          description: Invalid parameters.
         "500":
           description: Failed to query alerts.
           content:

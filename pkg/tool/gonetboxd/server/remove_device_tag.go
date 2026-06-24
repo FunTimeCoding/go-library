@@ -1,24 +1,20 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
 func (s *Server) RemoveDeviceTag(
-	w http.ResponseWriter,
-	_ *http.Request,
-	name string,
-	tag string,
-) {
-	d, e := s.client.RemoveTag(name, tag)
+	_ context.Context,
+	r server.RemoveDeviceTagRequestObject,
+) (server.RemoveDeviceTagResponseObject, error) {
+	d, e := s.client.RemoveTag(r.Name, r.Tag)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.RemoveDeviceTag500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.EncodeNotation(w, convert.Device(d))
+	return server.RemoveDeviceTag200JSONResponse(*convert.Device(d)), nil
 }

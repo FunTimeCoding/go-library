@@ -55,6 +55,12 @@ type EmbedResult struct {
 	Documents int `json:"documents"`
 }
 
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // Facet defines model for Facet.
 type Facet struct {
 	Distinct int             `json:"distinct"`
@@ -1615,6 +1621,7 @@ type DeleteCollectionResponse struct {
 	JSON200      *struct {
 		Deleted *bool `json:"deleted,omitempty"`
 	}
+	JSON500 *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1644,6 +1651,7 @@ func (r DeleteCollectionResponse) ContentType() string {
 type PostCollectionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1676,6 +1684,7 @@ type DeleteContextResponse struct {
 	JSON200      *struct {
 		Deleted *bool `json:"deleted,omitempty"`
 	}
+	JSON500 *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1705,7 +1714,8 @@ func (r DeleteContextResponse) ContentType() string {
 type GetContextResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]ContextEntry
+	JSON200      *[]*ContextEntry
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1735,6 +1745,7 @@ func (r GetContextResponse) ContentType() string {
 type PostContextResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1767,6 +1778,7 @@ type DeleteDocumentResponse struct {
 	JSON200      *struct {
 		Deleted *bool `json:"deleted,omitempty"`
 	}
+	JSON500 *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1797,6 +1809,7 @@ type GetDocumentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SearchResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1826,6 +1839,7 @@ func (r GetDocumentResponse) ContentType() string {
 type PostDocumentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1856,6 +1870,7 @@ type PostEmbedResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *EmbedResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1885,7 +1900,8 @@ func (r PostEmbedResponse) ContentType() string {
 type PostIndexResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]IndexResult
+	JSON200      *[]*IndexResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1916,6 +1932,7 @@ type GetListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ListOutcome
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1945,7 +1962,8 @@ func (r GetListResponse) ContentType() string {
 type GetMetadataResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Facet
+	JSON200      *[]*Facet
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1976,6 +1994,7 @@ type GetSearchResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SearchOutcome
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2006,6 +2025,7 @@ type GetStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Status
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2036,6 +2056,7 @@ type GetTagResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SourceTypeTag
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2065,6 +2086,7 @@ func (r GetTagResponse) ContentType() string {
 type PostTagResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2094,7 +2116,8 @@ func (r PostTagResponse) ContentType() string {
 type GetTagsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]SourceTypeTag
+	JSON200      *[]*SourceTypeTag
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -2337,6 +2360,13 @@ func ParseDeleteCollectionResponse(rsp *http.Response) (*DeleteCollectionRespons
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2353,6 +2383,16 @@ func ParsePostCollectionResponse(rsp *http.Response) (*PostCollectionResponse, e
 	response := &PostCollectionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2381,6 +2421,13 @@ func ParseDeleteContextResponse(rsp *http.Response) (*DeleteContextResponse, err
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2401,11 +2448,18 @@ func ParseGetContextResponse(rsp *http.Response) (*GetContextResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []ContextEntry
+		var dest []*ContextEntry
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2423,6 +2477,16 @@ func ParsePostContextResponse(rsp *http.Response) (*PostContextResponse, error) 
 	response := &PostContextResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2451,6 +2515,13 @@ func ParseDeleteDocumentResponse(rsp *http.Response) (*DeleteDocumentResponse, e
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2477,6 +2548,13 @@ func ParseGetDocumentResponse(rsp *http.Response) (*GetDocumentResponse, error) 
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2493,6 +2571,16 @@ func ParsePostDocumentResponse(rsp *http.Response) (*PostDocumentResponse, error
 	response := &PostDocumentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2519,6 +2607,13 @@ func ParsePostEmbedResponse(rsp *http.Response) (*PostEmbedResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2539,11 +2634,18 @@ func ParsePostIndexResponse(rsp *http.Response) (*PostIndexResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []IndexResult
+		var dest []*IndexResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2571,6 +2673,13 @@ func ParseGetListResponse(rsp *http.Response) (*GetListResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2591,11 +2700,18 @@ func ParseGetMetadataResponse(rsp *http.Response) (*GetMetadataResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Facet
+		var dest []*Facet
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2623,6 +2739,13 @@ func ParseGetSearchResponse(rsp *http.Response) (*GetSearchResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2648,6 +2771,13 @@ func ParseGetStatusResponse(rsp *http.Response) (*GetStatusResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -2675,6 +2805,13 @@ func ParseGetTagResponse(rsp *http.Response) (*GetTagResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2691,6 +2828,16 @@ func ParsePostTagResponse(rsp *http.Response) (*PostTagResponse, error) {
 	response := &PostTagResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -2711,11 +2858,18 @@ func ParseGetTagsResponse(rsp *http.Response) (*GetTagsResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []SourceTypeTag
+		var dest []*SourceTypeTag
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

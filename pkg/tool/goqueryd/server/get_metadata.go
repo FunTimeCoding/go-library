@@ -1,30 +1,37 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetMetadata(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.GetMetadataParams,
-) {
+	_ context.Context,
+	r server.GetMetadataRequestObject,
+) (server.GetMetadataResponseObject, error) {
 	key := ""
 
-	if v.Key != nil {
-		key = *v.Key
+	if r.Params.Key != nil {
+		key = *r.Params.Key
 	}
 
 	if key != "" {
-		web.EncodeNotation(
-			w,
-			s.service.CollectionFacetsForKey(v.Collection, key),
-		)
+		facets := s.service.CollectionFacetsForKey(r.Params.Collection, key)
+		result := make(server.GetMetadata200JSONResponse, len(facets))
 
-		return
+		for i, f := range facets {
+			result[i] = convertFacet(f)
+		}
+
+		return result, nil
 	}
 
-	web.EncodeNotation(w, s.service.CollectionFacets(v.Collection, nil))
+	facets := s.service.CollectionFacets(r.Params.Collection, nil)
+	result := make(server.GetMetadata200JSONResponse, len(facets))
+
+	for i, f := range facets {
+		result[i] = convertFacet(f)
+	}
+
+	return result, nil
 }

@@ -825,7 +825,7 @@ type AllocateStatResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Stats
-	JSON400      *ErrorResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -856,6 +856,7 @@ type RunCronResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *CronResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -886,7 +887,6 @@ type EquipGearResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *GearResult
-	JSON400      *ErrorResponse
 	JSON500      *ErrorResponse
 }
 
@@ -949,6 +949,7 @@ type GetStatsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Stats
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -978,7 +979,8 @@ func (r GetStatsResponse) ContentType() string {
 type GetTagsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Tag
+	JSON200      *[]*Tag
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1008,7 +1010,8 @@ func (r GetTagsResponse) ContentType() string {
 type GetTasksResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Task
+	JSON200      *[]*Task
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1039,7 +1042,7 @@ type CreateTaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Task
-	JSON400      *ErrorResponse
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1070,6 +1073,7 @@ type ScoreTaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ScoreResult
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -1206,12 +1210,12 @@ func ParseAllocateStatResponse(rsp *http.Response) (*AllocateStatResponse, error
 		}
 		response.JSON200 = &dest
 
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
-		response.JSON400 = &dest
+		response.JSON500 = &dest
 
 	}
 
@@ -1239,6 +1243,13 @@ func ParseRunCronResponse(rsp *http.Response) (*RunCronResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1264,13 +1275,6 @@ func ParseEquipGearResponse(rsp *http.Response) (*EquipGearResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse
@@ -1338,6 +1342,13 @@ func ParseGetStatsResponse(rsp *http.Response) (*GetStatsResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -1358,11 +1369,18 @@ func ParseGetTagsResponse(rsp *http.Response) (*GetTagsResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Tag
+		var dest []*Tag
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1384,11 +1402,18 @@ func ParseGetTasksResponse(rsp *http.Response) (*GetTasksResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Task
+		var dest []*Task
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -1416,12 +1441,12 @@ func ParseCreateTaskResponse(rsp *http.Response) (*CreateTaskResponse, error) {
 		}
 		response.JSON201 = &dest
 
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
-		response.JSON400 = &dest
+		response.JSON500 = &dest
 
 	}
 
@@ -1448,6 +1473,13 @@ func ParseScoreTaskResponse(rsp *http.Response) (*ScoreTaskResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

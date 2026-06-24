@@ -1,56 +1,67 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetSearch(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.GetSearchParams,
-) {
+	_ context.Context,
+	r server.GetSearchRequestObject,
+) (server.GetSearchResponseObject, error) {
 	limit := 10
 
-	if v.Limit != nil {
-		limit = *v.Limit
+	if r.Params.Limit != nil {
+		limit = *r.Params.Limit
 	}
 
 	collection := ""
 
-	if v.Collection != nil {
-		collection = *v.Collection
+	if r.Params.Collection != nil {
+		collection = *r.Params.Collection
 	}
 
 	mode := "hybrid"
 
-	if v.Mode != nil {
-		mode = string(*v.Mode)
+	if r.Params.Mode != nil {
+		mode = string(*r.Params.Mode)
 	}
 
 	var metadata map[string]string
 
-	if v.Metadata != nil {
-		metadata = *v.Metadata
+	if r.Params.Metadata != nil {
+		metadata = *r.Params.Metadata
 	}
 
-	if v.SourceType != nil && *v.SourceType != "" {
+	if r.Params.SourceType != nil && *r.Params.SourceType != "" {
 		if metadata == nil {
 			metadata = map[string]string{}
 		}
 
-		metadata[constant.SourceType] = *v.SourceType
+		metadata[constant.SourceType] = *r.Params.SourceType
 	}
 
 	outcome := s.service.Search(
-		v.Query,
+		r.Params.Query,
 		limit,
 		collection,
-		v.Full != nil && *v.Full,
+		r.Params.Full != nil && *r.Params.Full,
 		mode,
 		metadata,
 	)
-	web.EncodeNotation(w, outcome)
+	result := server.GetSearch200JSONResponse{
+		Results: convertSearchResults(outcome.Results),
+	}
+
+	if outcome.Degraded {
+		result.Degraded = new(bool(true))
+	}
+
+	if len(outcome.Facets) > 0 {
+		facets := convertFacets(outcome.Facets)
+		result.Facets = &facets
+	}
+
+	return result, nil
 }

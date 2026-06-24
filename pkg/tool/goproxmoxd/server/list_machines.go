@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
 )
@@ -14,15 +13,13 @@ func (s *Server) ListMachines(
 	instance, e := s.resolveInstance(r.Params.Instance)
 
 	if e != nil {
-		return server.ListMachines400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
+		return server.ListMachines400JSONResponse(*clientError(e)), nil
 	}
 
 	c, e := s.service.Client(instance)
 
 	if e != nil {
-		return server.ListMachines500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	var pointers []*server.Machine
@@ -31,23 +28,13 @@ func (s *Server) ListMachines(
 		node, e := c.Node(*r.Params.Node)
 
 		if e != nil {
-			return server.ListMachines500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(
-					e,
-					constant.UnexpectedError,
-				),
-			}, nil
+			return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
 		}
 
 		machines, e := c.Machines(node)
 
 		if e != nil {
-			return server.ListMachines500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(
-					e,
-					constant.UnexpectedError,
-				),
-			}, nil
+			return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
 		}
 
 		pointers = convert.Machines(machines)
@@ -55,12 +42,7 @@ func (s *Server) ListMachines(
 		nodes, e := c.Nodes()
 
 		if e != nil {
-			return server.ListMachines500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(
-					e,
-					constant.UnexpectedError,
-				),
-			}, nil
+			return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
 		}
 
 		for _, ns := range nodes {

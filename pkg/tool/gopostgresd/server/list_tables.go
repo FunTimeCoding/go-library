@@ -10,6 +10,10 @@ func (s *Server) ListTables(
 	c context.Context,
 	r server.ListTablesRequestObject,
 ) (server.ListTablesResponseObject, error) {
+	if fail, okay := s.resolveInstance(r.Params.Instance); !okay {
+		return server.ListTables400JSONResponse(*fail), nil
+	}
+
 	schema := "public"
 
 	if r.Params.Schema != nil {

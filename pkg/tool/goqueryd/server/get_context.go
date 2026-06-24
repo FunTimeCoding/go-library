@@ -1,13 +1,24 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
 )
 
 func (s *Server) GetContext(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
-	web.EncodeNotation(w, s.service.ListContexts())
+	_ context.Context,
+	_ server.GetContextRequestObject,
+) (server.GetContextResponseObject, error) {
+	entries := s.service.ListContexts()
+	result := make(server.GetContext200JSONResponse, len(entries))
+
+	for i, e := range entries {
+		result[i] = &server.ContextEntry{
+			Collection:  e.Collection,
+			PathPrefix:  e.PathPrefix,
+			Description: e.Description,
+		}
+	}
+
+	return result, nil
 }

@@ -1,23 +1,18 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) AddVirtualTag(
-	w http.ResponseWriter,
-	_ *http.Request,
-	name string,
-	tag string,
-) {
-	vm, e := s.client.AddVirtualTag(name, tag)
+	_ context.Context,
+	r server.AddVirtualTagRequestObject,
+) (server.AddVirtualTagResponseObject, error) {
+	vm, e := s.client.AddVirtualTag(r.Name, r.Tag)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.AddVirtualTag500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	entry := server.VirtualMachine{Identifier: vm.Identifier, Name: vm.Name}
@@ -26,5 +21,5 @@ func (s *Server) AddVirtualTag(
 		entry.Tags = &vm.Tags
 	}
 
-	web.EncodeNotation(w, entry)
+	return server.AddVirtualTag200JSONResponse(entry), nil
 }

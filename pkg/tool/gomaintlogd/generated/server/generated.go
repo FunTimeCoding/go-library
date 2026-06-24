@@ -35,6 +35,11 @@ type EntryResponse struct {
 	User        string     `json:"user"`
 }
 
+// Error defines model for Error.
+type Error struct {
+	Error string `json:"error"`
+}
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	Error           string `json:"error"`
@@ -465,14 +470,6 @@ func (response PostEntry200JSONResponse) VisitPostEntryResponse(w http.ResponseW
 	return err
 }
 
-type PostEntry400Response struct {
-}
-
-func (response PostEntry400Response) VisitPostEntryResponse(w http.ResponseWriter) error {
-	w.WriteHeader(400)
-	return nil
-}
-
 type PostEntry500JSONResponse ErrorResponse
 
 func (response PostEntry500JSONResponse) VisitPostEntryResponse(w http.ResponseWriter) error {
@@ -500,14 +497,6 @@ type DeleteEntry204Response struct {
 
 func (response DeleteEntry204Response) VisitDeleteEntryResponse(w http.ResponseWriter) error {
 	w.WriteHeader(204)
-	return nil
-}
-
-type DeleteEntry404Response struct {
-}
-
-func (response DeleteEntry404Response) VisitDeleteEntryResponse(w http.ResponseWriter) error {
-	w.WriteHeader(404)
 	return nil
 }
 
@@ -548,12 +537,18 @@ func (response UpdateEntry200JSONResponse) VisitUpdateEntryResponse(w http.Respo
 	return err
 }
 
-type UpdateEntry404Response struct {
-}
+type UpdateEntry404JSONResponse Error
 
-func (response UpdateEntry404Response) VisitUpdateEntryResponse(w http.ResponseWriter) error {
+func (response UpdateEntry404JSONResponse) VisitUpdateEntryResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
 type UpdateEntry500JSONResponse ErrorResponse
@@ -798,18 +793,18 @@ func (sh *strictHandler) GetStatus(w http.ResponseWriter, r *http.Request) {
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
+	"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",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

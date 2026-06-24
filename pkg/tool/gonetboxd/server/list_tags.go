@@ -1,31 +1,28 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListTags(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListTagsRequestObject,
+) (server.ListTagsResponseObject, error) {
 	tags, e := s.client.Tags()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListTags500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	result := make([]server.Tag, 0, len(tags))
+	result := make([]*server.Tag, 0, len(tags))
 
 	for _, t := range tags {
 		result = append(
 			result,
-			server.Tag{Identifier: t.Identifier, Name: t.Name},
+			&server.Tag{Identifier: t.Identifier, Name: t.Name},
 		)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.ListTags200JSONResponse(result), nil
 }

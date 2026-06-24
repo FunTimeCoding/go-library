@@ -22,7 +22,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Task"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Task"
+        "500":
+          description: Failed to fetch tasks.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createTask
       requestBody:
@@ -38,8 +46,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Task"
-        "400":
-          description: Missing required fields.
+        "500":
+          description: Failed to create task.
           content:
             application/json:
               schema:
@@ -68,6 +76,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ScoreResult"
+        "500":
+          description: Failed to score task.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/tags:
     get:
       operationId: getTags
@@ -79,7 +93,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Tag"
+                  nullable: true
+                  allOf:
+                  - $ref: "#/components/schemas/Tag"
+        "500":
+          description: Failed to fetch tags.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/stats:
     get:
       operationId: getStats
@@ -90,6 +112,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Stats"
+        "500":
+          description: Failed to fetch stats.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/allocate/{stat}:
     post:
       operationId: allocateStat
@@ -108,8 +136,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Stats"
-        "400":
-          description: No points available or invalid stat.
+        "500":
+          description: Failed to allocate stat.
           content:
             application/json:
               schema:
@@ -147,14 +175,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GearResult"
-        "400":
-          description: Failed to equip gear.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
         "500":
-          description: Failed to fetch gear after equip.
+          description: Failed to equip gear.
           content:
             application/json:
               schema:
@@ -169,6 +191,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CronResult"
+        "500":
+          description: Failed to run cron.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     Task:

@@ -16,12 +16,13 @@ func (s *Server) GetTasks(
 		taskType = string(*r.Params.Type)
 	}
 
-	tasks := convert.Tasks(s.habitica.MustTasks(taskType))
-	result := make(server.GetTasks200JSONResponse, len(tasks))
+	result, e := s.habitica.Tasks(taskType)
 
-	for i, t := range tasks {
-		result[i] = *t
+	if e != nil {
+		return server.GetTasks500JSONResponse(
+			*s.captureDetail(e),
+		), nil
 	}
 
-	return result, nil
+	return server.GetTasks200JSONResponse(convert.Tasks(result)), nil
 }

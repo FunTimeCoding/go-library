@@ -8,7 +8,9 @@ package server
 import (
 	"bytes"
 	"compress/flate"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -181,6 +183,17 @@ type DeviceType struct {
 	Identifier   int32   `json:"identifier"`
 	Manufacturer *string `json:"manufacturer,omitempty"`
 	Model        string  `json:"model"`
+}
+
+// Error defines model for Error.
+type Error struct {
+	Error string `json:"error"`
+}
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
 }
 
 // Interface defines model for Interface.
@@ -1423,45 +1436,2844 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type ListClusterTypesRequestObject struct {
+}
+
+type ListClusterTypesResponseObject interface {
+	VisitListClusterTypesResponse(w http.ResponseWriter) error
+}
+
+type ListClusterTypes200JSONResponse []*ClusterType
+
+func (response ListClusterTypes200JSONResponse) VisitListClusterTypesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListClusterTypes500JSONResponse ErrorResponse
+
+func (response ListClusterTypes500JSONResponse) VisitListClusterTypesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateClusterTypeRequestObject struct {
+	Body *CreateClusterTypeJSONRequestBody
+}
+
+type CreateClusterTypeResponseObject interface {
+	VisitCreateClusterTypeResponse(w http.ResponseWriter) error
+}
+
+type CreateClusterType201JSONResponse ClusterType
+
+func (response CreateClusterType201JSONResponse) VisitCreateClusterTypeResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateClusterType500JSONResponse ErrorResponse
+
+func (response CreateClusterType500JSONResponse) VisitCreateClusterTypeResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListClustersRequestObject struct {
+}
+
+type ListClustersResponseObject interface {
+	VisitListClustersResponse(w http.ResponseWriter) error
+}
+
+type ListClusters200JSONResponse []*Cluster
+
+func (response ListClusters200JSONResponse) VisitListClustersResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListClusters500JSONResponse ErrorResponse
+
+func (response ListClusters500JSONResponse) VisitListClustersResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateClusterRequestObject struct {
+	Body *CreateClusterJSONRequestBody
+}
+
+type CreateClusterResponseObject interface {
+	VisitCreateClusterResponse(w http.ResponseWriter) error
+}
+
+type CreateCluster201JSONResponse Cluster
+
+func (response CreateCluster201JSONResponse) VisitCreateClusterResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateCluster500JSONResponse ErrorResponse
+
+func (response CreateCluster500JSONResponse) VisitCreateClusterResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListDeviceRolesRequestObject struct {
+}
+
+type ListDeviceRolesResponseObject interface {
+	VisitListDeviceRolesResponse(w http.ResponseWriter) error
+}
+
+type ListDeviceRoles200JSONResponse []*DeviceRole
+
+func (response ListDeviceRoles200JSONResponse) VisitListDeviceRolesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListDeviceRoles500JSONResponse ErrorResponse
+
+func (response ListDeviceRoles500JSONResponse) VisitListDeviceRolesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateDeviceRoleRequestObject struct {
+	Body *CreateDeviceRoleJSONRequestBody
+}
+
+type CreateDeviceRoleResponseObject interface {
+	VisitCreateDeviceRoleResponse(w http.ResponseWriter) error
+}
+
+type CreateDeviceRole201JSONResponse DeviceRole
+
+func (response CreateDeviceRole201JSONResponse) VisitCreateDeviceRoleResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateDeviceRole500JSONResponse ErrorResponse
+
+func (response CreateDeviceRole500JSONResponse) VisitCreateDeviceRoleResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListDeviceTypesRequestObject struct {
+}
+
+type ListDeviceTypesResponseObject interface {
+	VisitListDeviceTypesResponse(w http.ResponseWriter) error
+}
+
+type ListDeviceTypes200JSONResponse []*DeviceType
+
+func (response ListDeviceTypes200JSONResponse) VisitListDeviceTypesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListDeviceTypes500JSONResponse ErrorResponse
+
+func (response ListDeviceTypes500JSONResponse) VisitListDeviceTypesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateDeviceTypeRequestObject struct {
+	Body *CreateDeviceTypeJSONRequestBody
+}
+
+type CreateDeviceTypeResponseObject interface {
+	VisitCreateDeviceTypeResponse(w http.ResponseWriter) error
+}
+
+type CreateDeviceType201JSONResponse DeviceType
+
+func (response CreateDeviceType201JSONResponse) VisitCreateDeviceTypeResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateDeviceType500JSONResponse ErrorResponse
+
+func (response CreateDeviceType500JSONResponse) VisitCreateDeviceTypeResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListDevicesRequestObject struct {
+	Params ListDevicesParams
+}
+
+type ListDevicesResponseObject interface {
+	VisitListDevicesResponse(w http.ResponseWriter) error
+}
+
+type ListDevices200JSONResponse []*Device
+
+func (response ListDevices200JSONResponse) VisitListDevicesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListDevices500JSONResponse ErrorResponse
+
+func (response ListDevices500JSONResponse) VisitListDevicesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateDeviceRequestObject struct {
+	Body *CreateDeviceJSONRequestBody
+}
+
+type CreateDeviceResponseObject interface {
+	VisitCreateDeviceResponse(w http.ResponseWriter) error
+}
+
+type CreateDevice201JSONResponse Device
+
+func (response CreateDevice201JSONResponse) VisitCreateDeviceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateDevice500JSONResponse ErrorResponse
+
+func (response CreateDevice500JSONResponse) VisitCreateDeviceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetDeviceRequestObject struct {
+	Name string `json:"name"`
+}
+
+type GetDeviceResponseObject interface {
+	VisitGetDeviceResponse(w http.ResponseWriter) error
+}
+
+type GetDevice200JSONResponse Device
+
+func (response GetDevice200JSONResponse) VisitGetDeviceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetDevice404JSONResponse Error
+
+func (response GetDevice404JSONResponse) VisitGetDeviceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetDevice500JSONResponse ErrorResponse
+
+func (response GetDevice500JSONResponse) VisitGetDeviceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListAddressesRequestObject struct {
+	Name string `json:"name"`
+}
+
+type ListAddressesResponseObject interface {
+	VisitListAddressesResponse(w http.ResponseWriter) error
+}
+
+type ListAddresses200JSONResponse []*Address
+
+func (response ListAddresses200JSONResponse) VisitListAddressesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListAddresses500JSONResponse ErrorResponse
+
+func (response ListAddresses500JSONResponse) VisitListAddressesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateAddressRequestObject struct {
+	Name string `json:"name"`
+	Body *CreateAddressJSONRequestBody
+}
+
+type CreateAddressResponseObject interface {
+	VisitCreateAddressResponse(w http.ResponseWriter) error
+}
+
+type CreateAddress201JSONResponse Address
+
+func (response CreateAddress201JSONResponse) VisitCreateAddressResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateAddress500JSONResponse ErrorResponse
+
+func (response CreateAddress500JSONResponse) VisitCreateAddressResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListInterfacesRequestObject struct {
+	Name string `json:"name"`
+}
+
+type ListInterfacesResponseObject interface {
+	VisitListInterfacesResponse(w http.ResponseWriter) error
+}
+
+type ListInterfaces200JSONResponse []*Interface
+
+func (response ListInterfaces200JSONResponse) VisitListInterfacesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListInterfaces500JSONResponse ErrorResponse
+
+func (response ListInterfaces500JSONResponse) VisitListInterfacesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateInterfaceRequestObject struct {
+	Name string `json:"name"`
+	Body *CreateInterfaceJSONRequestBody
+}
+
+type CreateInterfaceResponseObject interface {
+	VisitCreateInterfaceResponse(w http.ResponseWriter) error
+}
+
+type CreateInterface201JSONResponse Interface
+
+func (response CreateInterface201JSONResponse) VisitCreateInterfaceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateInterface500JSONResponse ErrorResponse
+
+func (response CreateInterface500JSONResponse) VisitCreateInterfaceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListDeviceTagsRequestObject struct {
+	Name string `json:"name"`
+}
+
+type ListDeviceTagsResponseObject interface {
+	VisitListDeviceTagsResponse(w http.ResponseWriter) error
+}
+
+type ListDeviceTags200JSONResponse []string
+
+func (response ListDeviceTags200JSONResponse) VisitListDeviceTagsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListDeviceTags500JSONResponse ErrorResponse
+
+func (response ListDeviceTags500JSONResponse) VisitListDeviceTagsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type RemoveDeviceTagRequestObject struct {
+	Name string `json:"name"`
+	Tag  string `json:"tag"`
+}
+
+type RemoveDeviceTagResponseObject interface {
+	VisitRemoveDeviceTagResponse(w http.ResponseWriter) error
+}
+
+type RemoveDeviceTag200JSONResponse Device
+
+func (response RemoveDeviceTag200JSONResponse) VisitRemoveDeviceTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type RemoveDeviceTag500JSONResponse ErrorResponse
+
+func (response RemoveDeviceTag500JSONResponse) VisitRemoveDeviceTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type AddDeviceTagRequestObject struct {
+	Name string `json:"name"`
+	Tag  string `json:"tag"`
+}
+
+type AddDeviceTagResponseObject interface {
+	VisitAddDeviceTagResponse(w http.ResponseWriter) error
+}
+
+type AddDeviceTag200JSONResponse Device
+
+func (response AddDeviceTag200JSONResponse) VisitAddDeviceTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type AddDeviceTag500JSONResponse ErrorResponse
+
+func (response AddDeviceTag500JSONResponse) VisitAddDeviceTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateDeviceTunnelTerminationRequestObject struct {
+	Name string `json:"name"`
+	Body *CreateDeviceTunnelTerminationJSONRequestBody
+}
+
+type CreateDeviceTunnelTerminationResponseObject interface {
+	VisitCreateDeviceTunnelTerminationResponse(w http.ResponseWriter) error
+}
+
+type CreateDeviceTunnelTermination201JSONResponse TunnelTermination
+
+func (response CreateDeviceTunnelTermination201JSONResponse) VisitCreateDeviceTunnelTerminationResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateDeviceTunnelTermination500JSONResponse ErrorResponse
+
+func (response CreateDeviceTunnelTermination500JSONResponse) VisitCreateDeviceTunnelTerminationResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListManufacturersRequestObject struct {
+}
+
+type ListManufacturersResponseObject interface {
+	VisitListManufacturersResponse(w http.ResponseWriter) error
+}
+
+type ListManufacturers200JSONResponse []*Manufacturer
+
+func (response ListManufacturers200JSONResponse) VisitListManufacturersResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListManufacturers500JSONResponse ErrorResponse
+
+func (response ListManufacturers500JSONResponse) VisitListManufacturersResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateManufacturerRequestObject struct {
+	Body *CreateManufacturerJSONRequestBody
+}
+
+type CreateManufacturerResponseObject interface {
+	VisitCreateManufacturerResponse(w http.ResponseWriter) error
+}
+
+type CreateManufacturer201JSONResponse Manufacturer
+
+func (response CreateManufacturer201JSONResponse) VisitCreateManufacturerResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateManufacturer500JSONResponse ErrorResponse
+
+func (response CreateManufacturer500JSONResponse) VisitCreateManufacturerResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListPrefixesRequestObject struct {
+}
+
+type ListPrefixesResponseObject interface {
+	VisitListPrefixesResponse(w http.ResponseWriter) error
+}
+
+type ListPrefixes200JSONResponse []*Prefix
+
+func (response ListPrefixes200JSONResponse) VisitListPrefixesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListPrefixes500JSONResponse ErrorResponse
+
+func (response ListPrefixes500JSONResponse) VisitListPrefixesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreatePrefixRequestObject struct {
+	Body *CreatePrefixJSONRequestBody
+}
+
+type CreatePrefixResponseObject interface {
+	VisitCreatePrefixResponse(w http.ResponseWriter) error
+}
+
+type CreatePrefix201JSONResponse Prefix
+
+func (response CreatePrefix201JSONResponse) VisitCreatePrefixResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreatePrefix500JSONResponse ErrorResponse
+
+func (response CreatePrefix500JSONResponse) VisitCreatePrefixResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListSitesRequestObject struct {
+}
+
+type ListSitesResponseObject interface {
+	VisitListSitesResponse(w http.ResponseWriter) error
+}
+
+type ListSites200JSONResponse []*Site
+
+func (response ListSites200JSONResponse) VisitListSitesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListSites500JSONResponse ErrorResponse
+
+func (response ListSites500JSONResponse) VisitListSitesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateSiteRequestObject struct {
+	Body *CreateSiteJSONRequestBody
+}
+
+type CreateSiteResponseObject interface {
+	VisitCreateSiteResponse(w http.ResponseWriter) error
+}
+
+type CreateSite201JSONResponse Site
+
+func (response CreateSite201JSONResponse) VisitCreateSiteResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateSite500JSONResponse ErrorResponse
+
+func (response CreateSite500JSONResponse) VisitCreateSiteResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTagsRequestObject struct {
+}
+
+type ListTagsResponseObject interface {
+	VisitListTagsResponse(w http.ResponseWriter) error
+}
+
+type ListTags200JSONResponse []*Tag
+
+func (response ListTags200JSONResponse) VisitListTagsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTags500JSONResponse ErrorResponse
+
+func (response ListTags500JSONResponse) VisitListTagsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateTagRequestObject struct {
+	Body *CreateTagJSONRequestBody
+}
+
+type CreateTagResponseObject interface {
+	VisitCreateTagResponse(w http.ResponseWriter) error
+}
+
+type CreateTag201JSONResponse Tag
+
+func (response CreateTag201JSONResponse) VisitCreateTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateTag500JSONResponse ErrorResponse
+
+func (response CreateTag500JSONResponse) VisitCreateTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTenantsRequestObject struct {
+}
+
+type ListTenantsResponseObject interface {
+	VisitListTenantsResponse(w http.ResponseWriter) error
+}
+
+type ListTenants200JSONResponse []*Tenant
+
+func (response ListTenants200JSONResponse) VisitListTenantsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTenants500JSONResponse ErrorResponse
+
+func (response ListTenants500JSONResponse) VisitListTenantsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateTenantRequestObject struct {
+	Body *CreateTenantJSONRequestBody
+}
+
+type CreateTenantResponseObject interface {
+	VisitCreateTenantResponse(w http.ResponseWriter) error
+}
+
+type CreateTenant201JSONResponse Tenant
+
+func (response CreateTenant201JSONResponse) VisitCreateTenantResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateTenant500JSONResponse ErrorResponse
+
+func (response CreateTenant500JSONResponse) VisitCreateTenantResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTunnelGroupsRequestObject struct {
+}
+
+type ListTunnelGroupsResponseObject interface {
+	VisitListTunnelGroupsResponse(w http.ResponseWriter) error
+}
+
+type ListTunnelGroups200JSONResponse []*TunnelGroup
+
+func (response ListTunnelGroups200JSONResponse) VisitListTunnelGroupsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTunnelGroups500JSONResponse ErrorResponse
+
+func (response ListTunnelGroups500JSONResponse) VisitListTunnelGroupsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateTunnelGroupRequestObject struct {
+	Body *CreateTunnelGroupJSONRequestBody
+}
+
+type CreateTunnelGroupResponseObject interface {
+	VisitCreateTunnelGroupResponse(w http.ResponseWriter) error
+}
+
+type CreateTunnelGroup201JSONResponse TunnelGroup
+
+func (response CreateTunnelGroup201JSONResponse) VisitCreateTunnelGroupResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateTunnelGroup500JSONResponse ErrorResponse
+
+func (response CreateTunnelGroup500JSONResponse) VisitCreateTunnelGroupResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTunnelTerminationsRequestObject struct {
+}
+
+type ListTunnelTerminationsResponseObject interface {
+	VisitListTunnelTerminationsResponse(w http.ResponseWriter) error
+}
+
+type ListTunnelTerminations200JSONResponse []*TunnelTermination
+
+func (response ListTunnelTerminations200JSONResponse) VisitListTunnelTerminationsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTunnelTerminations500JSONResponse ErrorResponse
+
+func (response ListTunnelTerminations500JSONResponse) VisitListTunnelTerminationsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTunnelsRequestObject struct {
+}
+
+type ListTunnelsResponseObject interface {
+	VisitListTunnelsResponse(w http.ResponseWriter) error
+}
+
+type ListTunnels200JSONResponse []*Tunnel
+
+func (response ListTunnels200JSONResponse) VisitListTunnelsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListTunnels500JSONResponse ErrorResponse
+
+func (response ListTunnels500JSONResponse) VisitListTunnelsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateTunnelRequestObject struct {
+	Body *CreateTunnelJSONRequestBody
+}
+
+type CreateTunnelResponseObject interface {
+	VisitCreateTunnelResponse(w http.ResponseWriter) error
+}
+
+type CreateTunnel201JSONResponse Tunnel
+
+func (response CreateTunnel201JSONResponse) VisitCreateTunnelResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateTunnel500JSONResponse ErrorResponse
+
+func (response CreateTunnel500JSONResponse) VisitCreateTunnelResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListVirtualMachinesRequestObject struct {
+}
+
+type ListVirtualMachinesResponseObject interface {
+	VisitListVirtualMachinesResponse(w http.ResponseWriter) error
+}
+
+type ListVirtualMachines200JSONResponse []*VirtualMachine
+
+func (response ListVirtualMachines200JSONResponse) VisitListVirtualMachinesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListVirtualMachines500JSONResponse ErrorResponse
+
+func (response ListVirtualMachines500JSONResponse) VisitListVirtualMachinesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateVirtualMachineRequestObject struct {
+	Body *CreateVirtualMachineJSONRequestBody
+}
+
+type CreateVirtualMachineResponseObject interface {
+	VisitCreateVirtualMachineResponse(w http.ResponseWriter) error
+}
+
+type CreateVirtualMachine201JSONResponse VirtualMachine
+
+func (response CreateVirtualMachine201JSONResponse) VisitCreateVirtualMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateVirtualMachine500JSONResponse ErrorResponse
+
+func (response CreateVirtualMachine500JSONResponse) VisitCreateVirtualMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateVirtualAddressRequestObject struct {
+	Name string `json:"name"`
+	Body *CreateVirtualAddressJSONRequestBody
+}
+
+type CreateVirtualAddressResponseObject interface {
+	VisitCreateVirtualAddressResponse(w http.ResponseWriter) error
+}
+
+type CreateVirtualAddress201JSONResponse Address
+
+func (response CreateVirtualAddress201JSONResponse) VisitCreateVirtualAddressResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateVirtualAddress500JSONResponse ErrorResponse
+
+func (response CreateVirtualAddress500JSONResponse) VisitCreateVirtualAddressResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateVirtualInterfaceRequestObject struct {
+	Name string `json:"name"`
+	Body *CreateVirtualInterfaceJSONRequestBody
+}
+
+type CreateVirtualInterfaceResponseObject interface {
+	VisitCreateVirtualInterfaceResponse(w http.ResponseWriter) error
+}
+
+type CreateVirtualInterface201JSONResponse VirtualInterface
+
+func (response CreateVirtualInterface201JSONResponse) VisitCreateVirtualInterfaceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateVirtualInterface500JSONResponse ErrorResponse
+
+func (response CreateVirtualInterface500JSONResponse) VisitCreateVirtualInterfaceResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type RemoveVirtualTagRequestObject struct {
+	Name string `json:"name"`
+	Tag  string `json:"tag"`
+}
+
+type RemoveVirtualTagResponseObject interface {
+	VisitRemoveVirtualTagResponse(w http.ResponseWriter) error
+}
+
+type RemoveVirtualTag200JSONResponse VirtualMachine
+
+func (response RemoveVirtualTag200JSONResponse) VisitRemoveVirtualTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type RemoveVirtualTag500JSONResponse ErrorResponse
+
+func (response RemoveVirtualTag500JSONResponse) VisitRemoveVirtualTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type AddVirtualTagRequestObject struct {
+	Name string `json:"name"`
+	Tag  string `json:"tag"`
+}
+
+type AddVirtualTagResponseObject interface {
+	VisitAddVirtualTagResponse(w http.ResponseWriter) error
+}
+
+type AddVirtualTag200JSONResponse VirtualMachine
+
+func (response AddVirtualTag200JSONResponse) VisitAddVirtualTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type AddVirtualTag500JSONResponse ErrorResponse
+
+func (response AddVirtualTag500JSONResponse) VisitAddVirtualTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateVirtualTunnelTerminationRequestObject struct {
+	Name string `json:"name"`
+	Body *CreateVirtualTunnelTerminationJSONRequestBody
+}
+
+type CreateVirtualTunnelTerminationResponseObject interface {
+	VisitCreateVirtualTunnelTerminationResponse(w http.ResponseWriter) error
+}
+
+type CreateVirtualTunnelTermination201JSONResponse TunnelTermination
+
+func (response CreateVirtualTunnelTermination201JSONResponse) VisitCreateVirtualTunnelTerminationResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateVirtualTunnelTermination500JSONResponse ErrorResponse
+
+func (response CreateVirtualTunnelTermination500JSONResponse) VisitCreateVirtualTunnelTerminationResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (GET /api/v1/cluster-types)
+	ListClusterTypes(ctx context.Context, request ListClusterTypesRequestObject) (ListClusterTypesResponseObject, error)
+
+	// (POST /api/v1/cluster-types)
+	CreateClusterType(ctx context.Context, request CreateClusterTypeRequestObject) (CreateClusterTypeResponseObject, error)
+
+	// (GET /api/v1/clusters)
+	ListClusters(ctx context.Context, request ListClustersRequestObject) (ListClustersResponseObject, error)
+
+	// (POST /api/v1/clusters)
+	CreateCluster(ctx context.Context, request CreateClusterRequestObject) (CreateClusterResponseObject, error)
+
+	// (GET /api/v1/device-roles)
+	ListDeviceRoles(ctx context.Context, request ListDeviceRolesRequestObject) (ListDeviceRolesResponseObject, error)
+
+	// (POST /api/v1/device-roles)
+	CreateDeviceRole(ctx context.Context, request CreateDeviceRoleRequestObject) (CreateDeviceRoleResponseObject, error)
+
+	// (GET /api/v1/device-types)
+	ListDeviceTypes(ctx context.Context, request ListDeviceTypesRequestObject) (ListDeviceTypesResponseObject, error)
+
+	// (POST /api/v1/device-types)
+	CreateDeviceType(ctx context.Context, request CreateDeviceTypeRequestObject) (CreateDeviceTypeResponseObject, error)
+
+	// (GET /api/v1/devices)
+	ListDevices(ctx context.Context, request ListDevicesRequestObject) (ListDevicesResponseObject, error)
+
+	// (POST /api/v1/devices/create)
+	CreateDevice(ctx context.Context, request CreateDeviceRequestObject) (CreateDeviceResponseObject, error)
+
+	// (GET /api/v1/devices/{name})
+	GetDevice(ctx context.Context, request GetDeviceRequestObject) (GetDeviceResponseObject, error)
+
+	// (GET /api/v1/devices/{name}/addresses)
+	ListAddresses(ctx context.Context, request ListAddressesRequestObject) (ListAddressesResponseObject, error)
+
+	// (POST /api/v1/devices/{name}/addresses/create)
+	CreateAddress(ctx context.Context, request CreateAddressRequestObject) (CreateAddressResponseObject, error)
+
+	// (GET /api/v1/devices/{name}/interfaces)
+	ListInterfaces(ctx context.Context, request ListInterfacesRequestObject) (ListInterfacesResponseObject, error)
+
+	// (POST /api/v1/devices/{name}/interfaces/create)
+	CreateInterface(ctx context.Context, request CreateInterfaceRequestObject) (CreateInterfaceResponseObject, error)
+
+	// (GET /api/v1/devices/{name}/tags)
+	ListDeviceTags(ctx context.Context, request ListDeviceTagsRequestObject) (ListDeviceTagsResponseObject, error)
+
+	// (DELETE /api/v1/devices/{name}/tags/{tag})
+	RemoveDeviceTag(ctx context.Context, request RemoveDeviceTagRequestObject) (RemoveDeviceTagResponseObject, error)
+
+	// (PUT /api/v1/devices/{name}/tags/{tag})
+	AddDeviceTag(ctx context.Context, request AddDeviceTagRequestObject) (AddDeviceTagResponseObject, error)
+
+	// (POST /api/v1/devices/{name}/tunnel-terminations/create)
+	CreateDeviceTunnelTermination(ctx context.Context, request CreateDeviceTunnelTerminationRequestObject) (CreateDeviceTunnelTerminationResponseObject, error)
+
+	// (GET /api/v1/manufacturers)
+	ListManufacturers(ctx context.Context, request ListManufacturersRequestObject) (ListManufacturersResponseObject, error)
+
+	// (POST /api/v1/manufacturers)
+	CreateManufacturer(ctx context.Context, request CreateManufacturerRequestObject) (CreateManufacturerResponseObject, error)
+
+	// (GET /api/v1/prefixes)
+	ListPrefixes(ctx context.Context, request ListPrefixesRequestObject) (ListPrefixesResponseObject, error)
+
+	// (POST /api/v1/prefixes)
+	CreatePrefix(ctx context.Context, request CreatePrefixRequestObject) (CreatePrefixResponseObject, error)
+
+	// (GET /api/v1/sites)
+	ListSites(ctx context.Context, request ListSitesRequestObject) (ListSitesResponseObject, error)
+
+	// (POST /api/v1/sites)
+	CreateSite(ctx context.Context, request CreateSiteRequestObject) (CreateSiteResponseObject, error)
+
+	// (GET /api/v1/tags)
+	ListTags(ctx context.Context, request ListTagsRequestObject) (ListTagsResponseObject, error)
+
+	// (POST /api/v1/tags)
+	CreateTag(ctx context.Context, request CreateTagRequestObject) (CreateTagResponseObject, error)
+
+	// (GET /api/v1/tenants)
+	ListTenants(ctx context.Context, request ListTenantsRequestObject) (ListTenantsResponseObject, error)
+
+	// (POST /api/v1/tenants)
+	CreateTenant(ctx context.Context, request CreateTenantRequestObject) (CreateTenantResponseObject, error)
+
+	// (GET /api/v1/tunnel-groups)
+	ListTunnelGroups(ctx context.Context, request ListTunnelGroupsRequestObject) (ListTunnelGroupsResponseObject, error)
+
+	// (POST /api/v1/tunnel-groups)
+	CreateTunnelGroup(ctx context.Context, request CreateTunnelGroupRequestObject) (CreateTunnelGroupResponseObject, error)
+
+	// (GET /api/v1/tunnel-terminations)
+	ListTunnelTerminations(ctx context.Context, request ListTunnelTerminationsRequestObject) (ListTunnelTerminationsResponseObject, error)
+
+	// (GET /api/v1/tunnels)
+	ListTunnels(ctx context.Context, request ListTunnelsRequestObject) (ListTunnelsResponseObject, error)
+
+	// (POST /api/v1/tunnels)
+	CreateTunnel(ctx context.Context, request CreateTunnelRequestObject) (CreateTunnelResponseObject, error)
+
+	// (GET /api/v1/virtual-machines)
+	ListVirtualMachines(ctx context.Context, request ListVirtualMachinesRequestObject) (ListVirtualMachinesResponseObject, error)
+
+	// (POST /api/v1/virtual-machines)
+	CreateVirtualMachine(ctx context.Context, request CreateVirtualMachineRequestObject) (CreateVirtualMachineResponseObject, error)
+
+	// (POST /api/v1/virtual-machines/{name}/addresses/create)
+	CreateVirtualAddress(ctx context.Context, request CreateVirtualAddressRequestObject) (CreateVirtualAddressResponseObject, error)
+
+	// (POST /api/v1/virtual-machines/{name}/interfaces/create)
+	CreateVirtualInterface(ctx context.Context, request CreateVirtualInterfaceRequestObject) (CreateVirtualInterfaceResponseObject, error)
+
+	// (DELETE /api/v1/virtual-machines/{name}/tags/{tag})
+	RemoveVirtualTag(ctx context.Context, request RemoveVirtualTagRequestObject) (RemoveVirtualTagResponseObject, error)
+
+	// (PUT /api/v1/virtual-machines/{name}/tags/{tag})
+	AddVirtualTag(ctx context.Context, request AddVirtualTagRequestObject) (AddVirtualTagResponseObject, error)
+
+	// (POST /api/v1/virtual-machines/{name}/tunnel-terminations/create)
+	CreateVirtualTunnelTermination(ctx context.Context, request CreateVirtualTunnelTerminationRequestObject) (CreateVirtualTunnelTerminationResponseObject, error)
+}
+
+type StrictHandlerFunc func(ctx context.Context, w http.ResponseWriter, r *http.Request, request any) (any, error)
+type StrictMiddlewareFunc func(f StrictHandlerFunc, operationID string) StrictHandlerFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// ListClusterTypes operation middleware
+func (sh *strictHandler) ListClusterTypes(w http.ResponseWriter, r *http.Request) {
+	var request ListClusterTypesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListClusterTypes(ctx, request.(ListClusterTypesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListClusterTypes")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListClusterTypesResponseObject); ok {
+		if err := validResponse.VisitListClusterTypesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateClusterType operation middleware
+func (sh *strictHandler) CreateClusterType(w http.ResponseWriter, r *http.Request) {
+	var request CreateClusterTypeRequestObject
+
+	var body CreateClusterTypeJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateClusterType(ctx, request.(CreateClusterTypeRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateClusterType")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateClusterTypeResponseObject); ok {
+		if err := validResponse.VisitCreateClusterTypeResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListClusters operation middleware
+func (sh *strictHandler) ListClusters(w http.ResponseWriter, r *http.Request) {
+	var request ListClustersRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListClusters(ctx, request.(ListClustersRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListClusters")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListClustersResponseObject); ok {
+		if err := validResponse.VisitListClustersResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateCluster operation middleware
+func (sh *strictHandler) CreateCluster(w http.ResponseWriter, r *http.Request) {
+	var request CreateClusterRequestObject
+
+	var body CreateClusterJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateCluster(ctx, request.(CreateClusterRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateCluster")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateClusterResponseObject); ok {
+		if err := validResponse.VisitCreateClusterResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListDeviceRoles operation middleware
+func (sh *strictHandler) ListDeviceRoles(w http.ResponseWriter, r *http.Request) {
+	var request ListDeviceRolesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListDeviceRoles(ctx, request.(ListDeviceRolesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListDeviceRoles")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListDeviceRolesResponseObject); ok {
+		if err := validResponse.VisitListDeviceRolesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateDeviceRole operation middleware
+func (sh *strictHandler) CreateDeviceRole(w http.ResponseWriter, r *http.Request) {
+	var request CreateDeviceRoleRequestObject
+
+	var body CreateDeviceRoleJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateDeviceRole(ctx, request.(CreateDeviceRoleRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateDeviceRole")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateDeviceRoleResponseObject); ok {
+		if err := validResponse.VisitCreateDeviceRoleResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListDeviceTypes operation middleware
+func (sh *strictHandler) ListDeviceTypes(w http.ResponseWriter, r *http.Request) {
+	var request ListDeviceTypesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListDeviceTypes(ctx, request.(ListDeviceTypesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListDeviceTypes")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListDeviceTypesResponseObject); ok {
+		if err := validResponse.VisitListDeviceTypesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateDeviceType operation middleware
+func (sh *strictHandler) CreateDeviceType(w http.ResponseWriter, r *http.Request) {
+	var request CreateDeviceTypeRequestObject
+
+	var body CreateDeviceTypeJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateDeviceType(ctx, request.(CreateDeviceTypeRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateDeviceType")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateDeviceTypeResponseObject); ok {
+		if err := validResponse.VisitCreateDeviceTypeResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListDevices operation middleware
+func (sh *strictHandler) ListDevices(w http.ResponseWriter, r *http.Request, params ListDevicesParams) {
+	var request ListDevicesRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListDevices(ctx, request.(ListDevicesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListDevices")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListDevicesResponseObject); ok {
+		if err := validResponse.VisitListDevicesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateDevice operation middleware
+func (sh *strictHandler) CreateDevice(w http.ResponseWriter, r *http.Request) {
+	var request CreateDeviceRequestObject
+
+	var body CreateDeviceJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateDevice(ctx, request.(CreateDeviceRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateDevice")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateDeviceResponseObject); ok {
+		if err := validResponse.VisitCreateDeviceResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetDevice operation middleware
+func (sh *strictHandler) GetDevice(w http.ResponseWriter, r *http.Request, name string) {
+	var request GetDeviceRequestObject
+
+	request.Name = name
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetDevice(ctx, request.(GetDeviceRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetDevice")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetDeviceResponseObject); ok {
+		if err := validResponse.VisitGetDeviceResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListAddresses operation middleware
+func (sh *strictHandler) ListAddresses(w http.ResponseWriter, r *http.Request, name string) {
+	var request ListAddressesRequestObject
+
+	request.Name = name
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListAddresses(ctx, request.(ListAddressesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListAddresses")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListAddressesResponseObject); ok {
+		if err := validResponse.VisitListAddressesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateAddress operation middleware
+func (sh *strictHandler) CreateAddress(w http.ResponseWriter, r *http.Request, name string) {
+	var request CreateAddressRequestObject
+
+	request.Name = name
+
+	var body CreateAddressJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateAddress(ctx, request.(CreateAddressRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateAddress")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateAddressResponseObject); ok {
+		if err := validResponse.VisitCreateAddressResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListInterfaces operation middleware
+func (sh *strictHandler) ListInterfaces(w http.ResponseWriter, r *http.Request, name string) {
+	var request ListInterfacesRequestObject
+
+	request.Name = name
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListInterfaces(ctx, request.(ListInterfacesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListInterfaces")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListInterfacesResponseObject); ok {
+		if err := validResponse.VisitListInterfacesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateInterface operation middleware
+func (sh *strictHandler) CreateInterface(w http.ResponseWriter, r *http.Request, name string) {
+	var request CreateInterfaceRequestObject
+
+	request.Name = name
+
+	var body CreateInterfaceJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateInterface(ctx, request.(CreateInterfaceRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateInterface")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateInterfaceResponseObject); ok {
+		if err := validResponse.VisitCreateInterfaceResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListDeviceTags operation middleware
+func (sh *strictHandler) ListDeviceTags(w http.ResponseWriter, r *http.Request, name string) {
+	var request ListDeviceTagsRequestObject
+
+	request.Name = name
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListDeviceTags(ctx, request.(ListDeviceTagsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListDeviceTags")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListDeviceTagsResponseObject); ok {
+		if err := validResponse.VisitListDeviceTagsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// RemoveDeviceTag operation middleware
+func (sh *strictHandler) RemoveDeviceTag(w http.ResponseWriter, r *http.Request, name string, tag string) {
+	var request RemoveDeviceTagRequestObject
+
+	request.Name = name
+	request.Tag = tag
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.RemoveDeviceTag(ctx, request.(RemoveDeviceTagRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "RemoveDeviceTag")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(RemoveDeviceTagResponseObject); ok {
+		if err := validResponse.VisitRemoveDeviceTagResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// AddDeviceTag operation middleware
+func (sh *strictHandler) AddDeviceTag(w http.ResponseWriter, r *http.Request, name string, tag string) {
+	var request AddDeviceTagRequestObject
+
+	request.Name = name
+	request.Tag = tag
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.AddDeviceTag(ctx, request.(AddDeviceTagRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "AddDeviceTag")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(AddDeviceTagResponseObject); ok {
+		if err := validResponse.VisitAddDeviceTagResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateDeviceTunnelTermination operation middleware
+func (sh *strictHandler) CreateDeviceTunnelTermination(w http.ResponseWriter, r *http.Request, name string) {
+	var request CreateDeviceTunnelTerminationRequestObject
+
+	request.Name = name
+
+	var body CreateDeviceTunnelTerminationJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateDeviceTunnelTermination(ctx, request.(CreateDeviceTunnelTerminationRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateDeviceTunnelTermination")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateDeviceTunnelTerminationResponseObject); ok {
+		if err := validResponse.VisitCreateDeviceTunnelTerminationResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListManufacturers operation middleware
+func (sh *strictHandler) ListManufacturers(w http.ResponseWriter, r *http.Request) {
+	var request ListManufacturersRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListManufacturers(ctx, request.(ListManufacturersRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListManufacturers")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListManufacturersResponseObject); ok {
+		if err := validResponse.VisitListManufacturersResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateManufacturer operation middleware
+func (sh *strictHandler) CreateManufacturer(w http.ResponseWriter, r *http.Request) {
+	var request CreateManufacturerRequestObject
+
+	var body CreateManufacturerJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateManufacturer(ctx, request.(CreateManufacturerRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateManufacturer")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateManufacturerResponseObject); ok {
+		if err := validResponse.VisitCreateManufacturerResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListPrefixes operation middleware
+func (sh *strictHandler) ListPrefixes(w http.ResponseWriter, r *http.Request) {
+	var request ListPrefixesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListPrefixes(ctx, request.(ListPrefixesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListPrefixes")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListPrefixesResponseObject); ok {
+		if err := validResponse.VisitListPrefixesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreatePrefix operation middleware
+func (sh *strictHandler) CreatePrefix(w http.ResponseWriter, r *http.Request) {
+	var request CreatePrefixRequestObject
+
+	var body CreatePrefixJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreatePrefix(ctx, request.(CreatePrefixRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreatePrefix")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreatePrefixResponseObject); ok {
+		if err := validResponse.VisitCreatePrefixResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListSites operation middleware
+func (sh *strictHandler) ListSites(w http.ResponseWriter, r *http.Request) {
+	var request ListSitesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListSites(ctx, request.(ListSitesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListSites")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListSitesResponseObject); ok {
+		if err := validResponse.VisitListSitesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateSite operation middleware
+func (sh *strictHandler) CreateSite(w http.ResponseWriter, r *http.Request) {
+	var request CreateSiteRequestObject
+
+	var body CreateSiteJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateSite(ctx, request.(CreateSiteRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateSite")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateSiteResponseObject); ok {
+		if err := validResponse.VisitCreateSiteResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListTags operation middleware
+func (sh *strictHandler) ListTags(w http.ResponseWriter, r *http.Request) {
+	var request ListTagsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListTags(ctx, request.(ListTagsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListTags")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListTagsResponseObject); ok {
+		if err := validResponse.VisitListTagsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateTag operation middleware
+func (sh *strictHandler) CreateTag(w http.ResponseWriter, r *http.Request) {
+	var request CreateTagRequestObject
+
+	var body CreateTagJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateTag(ctx, request.(CreateTagRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateTag")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateTagResponseObject); ok {
+		if err := validResponse.VisitCreateTagResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListTenants operation middleware
+func (sh *strictHandler) ListTenants(w http.ResponseWriter, r *http.Request) {
+	var request ListTenantsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListTenants(ctx, request.(ListTenantsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListTenants")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListTenantsResponseObject); ok {
+		if err := validResponse.VisitListTenantsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateTenant operation middleware
+func (sh *strictHandler) CreateTenant(w http.ResponseWriter, r *http.Request) {
+	var request CreateTenantRequestObject
+
+	var body CreateTenantJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateTenant(ctx, request.(CreateTenantRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateTenant")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateTenantResponseObject); ok {
+		if err := validResponse.VisitCreateTenantResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListTunnelGroups operation middleware
+func (sh *strictHandler) ListTunnelGroups(w http.ResponseWriter, r *http.Request) {
+	var request ListTunnelGroupsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListTunnelGroups(ctx, request.(ListTunnelGroupsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListTunnelGroups")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListTunnelGroupsResponseObject); ok {
+		if err := validResponse.VisitListTunnelGroupsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateTunnelGroup operation middleware
+func (sh *strictHandler) CreateTunnelGroup(w http.ResponseWriter, r *http.Request) {
+	var request CreateTunnelGroupRequestObject
+
+	var body CreateTunnelGroupJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateTunnelGroup(ctx, request.(CreateTunnelGroupRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateTunnelGroup")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateTunnelGroupResponseObject); ok {
+		if err := validResponse.VisitCreateTunnelGroupResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListTunnelTerminations operation middleware
+func (sh *strictHandler) ListTunnelTerminations(w http.ResponseWriter, r *http.Request) {
+	var request ListTunnelTerminationsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListTunnelTerminations(ctx, request.(ListTunnelTerminationsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListTunnelTerminations")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListTunnelTerminationsResponseObject); ok {
+		if err := validResponse.VisitListTunnelTerminationsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListTunnels operation middleware
+func (sh *strictHandler) ListTunnels(w http.ResponseWriter, r *http.Request) {
+	var request ListTunnelsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListTunnels(ctx, request.(ListTunnelsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListTunnels")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListTunnelsResponseObject); ok {
+		if err := validResponse.VisitListTunnelsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateTunnel operation middleware
+func (sh *strictHandler) CreateTunnel(w http.ResponseWriter, r *http.Request) {
+	var request CreateTunnelRequestObject
+
+	var body CreateTunnelJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateTunnel(ctx, request.(CreateTunnelRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateTunnel")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateTunnelResponseObject); ok {
+		if err := validResponse.VisitCreateTunnelResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListVirtualMachines operation middleware
+func (sh *strictHandler) ListVirtualMachines(w http.ResponseWriter, r *http.Request) {
+	var request ListVirtualMachinesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListVirtualMachines(ctx, request.(ListVirtualMachinesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListVirtualMachines")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListVirtualMachinesResponseObject); ok {
+		if err := validResponse.VisitListVirtualMachinesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateVirtualMachine operation middleware
+func (sh *strictHandler) CreateVirtualMachine(w http.ResponseWriter, r *http.Request) {
+	var request CreateVirtualMachineRequestObject
+
+	var body CreateVirtualMachineJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateVirtualMachine(ctx, request.(CreateVirtualMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateVirtualMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateVirtualMachineResponseObject); ok {
+		if err := validResponse.VisitCreateVirtualMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateVirtualAddress operation middleware
+func (sh *strictHandler) CreateVirtualAddress(w http.ResponseWriter, r *http.Request, name string) {
+	var request CreateVirtualAddressRequestObject
+
+	request.Name = name
+
+	var body CreateVirtualAddressJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateVirtualAddress(ctx, request.(CreateVirtualAddressRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateVirtualAddress")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateVirtualAddressResponseObject); ok {
+		if err := validResponse.VisitCreateVirtualAddressResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateVirtualInterface operation middleware
+func (sh *strictHandler) CreateVirtualInterface(w http.ResponseWriter, r *http.Request, name string) {
+	var request CreateVirtualInterfaceRequestObject
+
+	request.Name = name
+
+	var body CreateVirtualInterfaceJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateVirtualInterface(ctx, request.(CreateVirtualInterfaceRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateVirtualInterface")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateVirtualInterfaceResponseObject); ok {
+		if err := validResponse.VisitCreateVirtualInterfaceResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// RemoveVirtualTag operation middleware
+func (sh *strictHandler) RemoveVirtualTag(w http.ResponseWriter, r *http.Request, name string, tag string) {
+	var request RemoveVirtualTagRequestObject
+
+	request.Name = name
+	request.Tag = tag
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.RemoveVirtualTag(ctx, request.(RemoveVirtualTagRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "RemoveVirtualTag")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(RemoveVirtualTagResponseObject); ok {
+		if err := validResponse.VisitRemoveVirtualTagResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// AddVirtualTag operation middleware
+func (sh *strictHandler) AddVirtualTag(w http.ResponseWriter, r *http.Request, name string, tag string) {
+	var request AddVirtualTagRequestObject
+
+	request.Name = name
+	request.Tag = tag
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.AddVirtualTag(ctx, request.(AddVirtualTagRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "AddVirtualTag")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(AddVirtualTagResponseObject); ok {
+		if err := validResponse.VisitAddVirtualTagResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateVirtualTunnelTermination operation middleware
+func (sh *strictHandler) CreateVirtualTunnelTermination(w http.ResponseWriter, r *http.Request, name string) {
+	var request CreateVirtualTunnelTerminationRequestObject
+
+	request.Name = name
+
+	var body CreateVirtualTunnelTerminationJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateVirtualTunnelTermination(ctx, request.(CreateVirtualTunnelTerminationRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateVirtualTunnelTermination")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateVirtualTunnelTerminationResponseObject); ok {
+		if err := validResponse.VisitCreateVirtualTunnelTerminationResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, compressed with deflate, json marshaled OpenAPI spec.
 // Stored as a slice of fixed-width chunks rather than one concatenated
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
+	"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",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

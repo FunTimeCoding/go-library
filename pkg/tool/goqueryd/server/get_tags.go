@@ -1,13 +1,24 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
 )
 
 func (s *Server) GetTags(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
-	web.EncodeNotation(w, s.service.ListSourceTypes())
+	_ context.Context,
+	_ server.GetTagsRequestObject,
+) (server.GetTagsResponseObject, error) {
+	tags := s.service.ListSourceTypes()
+	result := make(server.GetTags200JSONResponse, len(tags))
+
+	for i, t := range tags {
+		result[i] = &server.SourceTypeTag{
+			Collection: new(string(t.Collection)),
+			PathPrefix: new(string(t.PathPrefix)),
+			SourceType: new(string(t.SourceType)),
+		}
+	}
+
+	return result, nil
 }

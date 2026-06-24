@@ -25,11 +25,35 @@ func Run(
 			lifecycleServer.New(
 				web.AddressPort(o.Port),
 				func(m *http.ServeMux) {
-					generated.HandlerFromMux(server.New(o.Client, r), m)
+					t := telemetry.NewEnvironment()
+					generated.HandlerFromMux(
+						generated.NewStrictHandler(
+							server.New(o.Client, r),
+							[]generated.StrictMiddlewareFunc{
+								func(
+									f generated.StrictHandlerFunc,
+									operation string,
+								) generated.StrictHandlerFunc {
+									return func(
+										x context.Context,
+										w http.ResponseWriter,
+										q *http.Request,
+										request any,
+									) (any, error) {
+										response, e := f(x, w, q, request)
+										web.RecordTelemetry(t, operation, e)
+
+										return response, e
+									}
+								},
+							},
+						),
+						m,
+					)
 					model_context.New(
 						o.Client,
 						r,
-						telemetry.NewEnvironment(),
+						t,
 						o.Version,
 					).Mount(m)
 				},

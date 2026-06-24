@@ -29,7 +29,7 @@ func TestIdentityWarningsSkipsServices(t *testing.T) {
 	assert.Integer(
 		t,
 		0,
-		len(IdentityWarnings(v, Services(v, "test"))),
+		len(IdentityWarnings(v, Services(v, "test", &Configuration{}))),
 	)
 }
 

@@ -10,6 +10,10 @@ func (s *Server) ListIndexes(
 	c context.Context,
 	r server.ListIndexesRequestObject,
 ) (server.ListIndexesResponseObject, error) {
+	if fail, okay := s.resolveInstance(r.Params.Instance); !okay {
+		return server.ListIndexes400JSONResponse(*fail), nil
+	}
+
 	schema := "public"
 
 	if r.Params.Schema != nil {

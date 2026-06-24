@@ -179,6 +179,17 @@ type DeviceType struct {
 	Model        string  `json:"model"`
 }
 
+// Error defines model for Error.
+type Error struct {
+	Error string `json:"error"`
+}
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
+}
+
 // Interface defines model for Interface.
 type Interface struct {
 	Description     *string `json:"description,omitempty"`
@@ -2991,7 +3002,8 @@ type ClientWithResponsesInterface interface {
 type ListClusterTypesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]ClusterType
+	JSON200      *[]*ClusterType
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3022,6 +3034,7 @@ type CreateClusterTypeResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *ClusterType
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3051,7 +3064,8 @@ func (r CreateClusterTypeResponse) ContentType() string {
 type ListClustersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Cluster
+	JSON200      *[]*Cluster
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3082,6 +3096,7 @@ type CreateClusterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Cluster
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3111,7 +3126,8 @@ func (r CreateClusterResponse) ContentType() string {
 type ListDeviceRolesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]DeviceRole
+	JSON200      *[]*DeviceRole
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3142,6 +3158,7 @@ type CreateDeviceRoleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *DeviceRole
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3171,7 +3188,8 @@ func (r CreateDeviceRoleResponse) ContentType() string {
 type ListDeviceTypesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]DeviceType
+	JSON200      *[]*DeviceType
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3202,6 +3220,7 @@ type CreateDeviceTypeResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *DeviceType
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3231,7 +3250,8 @@ func (r CreateDeviceTypeResponse) ContentType() string {
 type ListDevicesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Device
+	JSON200      *[]*Device
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3262,6 +3282,7 @@ type CreateDeviceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Device
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3292,6 +3313,8 @@ type GetDeviceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Device
+	JSON404      *Error
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3321,7 +3344,8 @@ func (r GetDeviceResponse) ContentType() string {
 type ListAddressesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Address
+	JSON200      *[]*Address
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3352,6 +3376,7 @@ type CreateAddressResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Address
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3381,7 +3406,8 @@ func (r CreateAddressResponse) ContentType() string {
 type ListInterfacesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Interface
+	JSON200      *[]*Interface
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3412,6 +3438,7 @@ type CreateInterfaceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Interface
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3442,6 +3469,7 @@ type ListDeviceTagsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]string
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3472,6 +3500,7 @@ type RemoveDeviceTagResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Device
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3502,6 +3531,7 @@ type AddDeviceTagResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Device
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3532,6 +3562,7 @@ type CreateDeviceTunnelTerminationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *TunnelTermination
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3561,7 +3592,8 @@ func (r CreateDeviceTunnelTerminationResponse) ContentType() string {
 type ListManufacturersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Manufacturer
+	JSON200      *[]*Manufacturer
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3592,6 +3624,7 @@ type CreateManufacturerResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Manufacturer
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3621,7 +3654,8 @@ func (r CreateManufacturerResponse) ContentType() string {
 type ListPrefixesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Prefix
+	JSON200      *[]*Prefix
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3652,6 +3686,7 @@ type CreatePrefixResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Prefix
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3681,7 +3716,8 @@ func (r CreatePrefixResponse) ContentType() string {
 type ListSitesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Site
+	JSON200      *[]*Site
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3712,6 +3748,7 @@ type CreateSiteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Site
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3741,7 +3778,8 @@ func (r CreateSiteResponse) ContentType() string {
 type ListTagsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Tag
+	JSON200      *[]*Tag
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3772,6 +3810,7 @@ type CreateTagResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Tag
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3801,7 +3840,8 @@ func (r CreateTagResponse) ContentType() string {
 type ListTenantsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Tenant
+	JSON200      *[]*Tenant
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3832,6 +3872,7 @@ type CreateTenantResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Tenant
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3861,7 +3902,8 @@ func (r CreateTenantResponse) ContentType() string {
 type ListTunnelGroupsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]TunnelGroup
+	JSON200      *[]*TunnelGroup
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3892,6 +3934,7 @@ type CreateTunnelGroupResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *TunnelGroup
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3921,7 +3964,8 @@ func (r CreateTunnelGroupResponse) ContentType() string {
 type ListTunnelTerminationsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]TunnelTermination
+	JSON200      *[]*TunnelTermination
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3951,7 +3995,8 @@ func (r ListTunnelTerminationsResponse) ContentType() string {
 type ListTunnelsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Tunnel
+	JSON200      *[]*Tunnel
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -3982,6 +4027,7 @@ type CreateTunnelResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Tunnel
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -4011,7 +4057,8 @@ func (r CreateTunnelResponse) ContentType() string {
 type ListVirtualMachinesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]VirtualMachine
+	JSON200      *[]*VirtualMachine
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -4042,6 +4089,7 @@ type CreateVirtualMachineResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *VirtualMachine
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -4072,6 +4120,7 @@ type CreateVirtualAddressResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Address
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -4102,6 +4151,7 @@ type CreateVirtualInterfaceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *VirtualInterface
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -4132,6 +4182,7 @@ type RemoveVirtualTagResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *VirtualMachine
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -4162,6 +4213,7 @@ type AddVirtualTagResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *VirtualMachine
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -4192,6 +4244,7 @@ type CreateVirtualTunnelTerminationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *TunnelTermination
+	JSON500      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -4754,11 +4807,18 @@ func ParseListClusterTypesResponse(rsp *http.Response) (*ListClusterTypesRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []ClusterType
+		var dest []*ClusterType
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -4786,6 +4846,13 @@ func ParseCreateClusterTypeResponse(rsp *http.Response) (*CreateClusterTypeRespo
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -4806,11 +4873,18 @@ func ParseListClustersResponse(rsp *http.Response) (*ListClustersResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Cluster
+		var dest []*Cluster
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -4838,6 +4912,13 @@ func ParseCreateClusterResponse(rsp *http.Response) (*CreateClusterResponse, err
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -4858,11 +4939,18 @@ func ParseListDeviceRolesResponse(rsp *http.Response) (*ListDeviceRolesResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []DeviceRole
+		var dest []*DeviceRole
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -4890,6 +4978,13 @@ func ParseCreateDeviceRoleResponse(rsp *http.Response) (*CreateDeviceRoleRespons
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -4910,11 +5005,18 @@ func ParseListDeviceTypesResponse(rsp *http.Response) (*ListDeviceTypesResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []DeviceType
+		var dest []*DeviceType
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -4942,6 +5044,13 @@ func ParseCreateDeviceTypeResponse(rsp *http.Response) (*CreateDeviceTypeRespons
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -4962,11 +5071,18 @@ func ParseListDevicesResponse(rsp *http.Response) (*ListDevicesResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Device
+		var dest []*Device
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -4994,6 +5110,13 @@ func ParseCreateDeviceResponse(rsp *http.Response) (*CreateDeviceResponse, error
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5020,6 +5143,20 @@ func ParseGetDeviceResponse(rsp *http.Response) (*GetDeviceResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5040,11 +5177,18 @@ func ParseListAddressesResponse(rsp *http.Response) (*ListAddressesResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Address
+		var dest []*Address
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5072,6 +5216,13 @@ func ParseCreateAddressResponse(rsp *http.Response) (*CreateAddressResponse, err
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5092,11 +5243,18 @@ func ParseListInterfacesResponse(rsp *http.Response) (*ListInterfacesResponse, e
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Interface
+		var dest []*Interface
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5124,6 +5282,13 @@ func ParseCreateInterfaceResponse(rsp *http.Response) (*CreateInterfaceResponse,
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5149,6 +5314,13 @@ func ParseListDeviceTagsResponse(rsp *http.Response) (*ListDeviceTagsResponse, e
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5176,6 +5348,13 @@ func ParseRemoveDeviceTagResponse(rsp *http.Response) (*RemoveDeviceTagResponse,
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5201,6 +5380,13 @@ func ParseAddDeviceTagResponse(rsp *http.Response) (*AddDeviceTagResponse, error
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5228,6 +5414,13 @@ func ParseCreateDeviceTunnelTerminationResponse(rsp *http.Response) (*CreateDevi
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5248,11 +5441,18 @@ func ParseListManufacturersResponse(rsp *http.Response) (*ListManufacturersRespo
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Manufacturer
+		var dest []*Manufacturer
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5280,6 +5480,13 @@ func ParseCreateManufacturerResponse(rsp *http.Response) (*CreateManufacturerRes
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5300,11 +5507,18 @@ func ParseListPrefixesResponse(rsp *http.Response) (*ListPrefixesResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Prefix
+		var dest []*Prefix
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5332,6 +5546,13 @@ func ParseCreatePrefixResponse(rsp *http.Response) (*CreatePrefixResponse, error
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5352,11 +5573,18 @@ func ParseListSitesResponse(rsp *http.Response) (*ListSitesResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Site
+		var dest []*Site
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5384,6 +5612,13 @@ func ParseCreateSiteResponse(rsp *http.Response) (*CreateSiteResponse, error) {
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5404,11 +5639,18 @@ func ParseListTagsResponse(rsp *http.Response) (*ListTagsResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Tag
+		var dest []*Tag
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5436,6 +5678,13 @@ func ParseCreateTagResponse(rsp *http.Response) (*CreateTagResponse, error) {
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5456,11 +5705,18 @@ func ParseListTenantsResponse(rsp *http.Response) (*ListTenantsResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Tenant
+		var dest []*Tenant
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5488,6 +5744,13 @@ func ParseCreateTenantResponse(rsp *http.Response) (*CreateTenantResponse, error
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5508,11 +5771,18 @@ func ParseListTunnelGroupsResponse(rsp *http.Response) (*ListTunnelGroupsRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []TunnelGroup
+		var dest []*TunnelGroup
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5540,6 +5810,13 @@ func ParseCreateTunnelGroupResponse(rsp *http.Response) (*CreateTunnelGroupRespo
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5560,11 +5837,18 @@ func ParseListTunnelTerminationsResponse(rsp *http.Response) (*ListTunnelTermina
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []TunnelTermination
+		var dest []*TunnelTermination
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5586,11 +5870,18 @@ func ParseListTunnelsResponse(rsp *http.Response) (*ListTunnelsResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Tunnel
+		var dest []*Tunnel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5618,6 +5909,13 @@ func ParseCreateTunnelResponse(rsp *http.Response) (*CreateTunnelResponse, error
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5638,11 +5936,18 @@ func ParseListVirtualMachinesResponse(rsp *http.Response) (*ListVirtualMachinesR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []VirtualMachine
+		var dest []*VirtualMachine
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5670,6 +5975,13 @@ func ParseCreateVirtualMachineResponse(rsp *http.Response) (*CreateVirtualMachin
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5695,6 +6007,13 @@ func ParseCreateVirtualAddressResponse(rsp *http.Response) (*CreateVirtualAddres
 			return nil, err
 		}
 		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5722,6 +6041,13 @@ func ParseCreateVirtualInterfaceResponse(rsp *http.Response) (*CreateVirtualInte
 		}
 		response.JSON201 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5747,6 +6073,13 @@ func ParseRemoveVirtualTagResponse(rsp *http.Response) (*RemoveVirtualTagRespons
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -5774,6 +6107,13 @@ func ParseAddVirtualTagResponse(rsp *http.Response) (*AddVirtualTagResponse, err
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
 	}
 
 	return response, nil
@@ -5799,6 +6139,13 @@ func ParseCreateVirtualTunnelTerminationResponse(rsp *http.Response) (*CreateVir
 			return nil, err
 		}
 		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

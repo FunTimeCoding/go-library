@@ -1,18 +1,42 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetDocument(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.GetDocumentParams,
-) {
-	document, _, e := s.service.GetDocument(v.Path)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, document)
+	_ context.Context,
+	r server.GetDocumentRequestObject,
+) (server.GetDocumentResponseObject, error) {
+	document, _, e := s.service.GetDocument(r.Params.Path)
+
+	if e != nil {
+		return server.GetDocument500JSONResponse(
+			*s.captureFail(
+				e,
+				constant.UnexpectedError,
+			),
+		), nil
+	}
+
+	result := server.GetDocument200JSONResponse{
+		Collection:  document.Collection,
+		FilePath:    document.FilePath,
+		Hash:        document.Hash,
+		Path:        document.Path,
+		Title:       document.Title,
+		VirtualPath: document.VirtualPath,
+	}
+
+	if document.Body != "" {
+		result.Body = new(string(document.Body))
+	}
+
+	if document.Context != "" {
+		result.Context = new(string(document.Context))
+	}
+
+	return result, nil
 }

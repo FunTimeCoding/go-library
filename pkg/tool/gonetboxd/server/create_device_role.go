@@ -1,38 +1,21 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateDeviceRole(
-	w http.ResponseWriter,
-	q *http.Request,
-) {
-	var body server.CreateNameRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	r, e := s.client.CreateDeviceRole(body.Name)
+	_ context.Context,
+	r server.CreateDeviceRoleRequestObject,
+) (server.CreateDeviceRoleResponseObject, error) {
+	role, e := s.client.CreateDeviceRole(r.Body.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateDeviceRole500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.DeviceRole{
-			Identifier: r.Identifier, Name: r.Name,
-		},
-	)
+	return server.CreateDeviceRole201JSONResponse{
+		Identifier: role.Identifier, Name: role.Name,
+	}, nil
 }

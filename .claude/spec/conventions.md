@@ -2,7 +2,7 @@
 
 ## Error Handling
 
-- **Prefer `PanicOnError` over returning errors** - see `error-handling.md` for the full strategy and the exceptions (MCP handlers, flow control)
+- **Prefer `PanicOnError` over returning errors** - see `error-handling/` for the full strategy and the exceptions (MCP handlers, flow control)
 - **Prefer `PanicClose` over checking close errors**
 - Use `LogClose` only in loops/uncertain contexts (e.g., validation)
 - **Error variable naming:**

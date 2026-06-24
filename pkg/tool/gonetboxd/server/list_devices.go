@@ -1,38 +1,30 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListDevices(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.ListDevicesParams,
-) {
-	if v.Query != nil && *v.Query != "" {
-		devices, e := s.client.DevicesByMatch(*v.Query)
+	_ context.Context,
+	r server.ListDevicesRequestObject,
+) (server.ListDevicesResponseObject, error) {
+	if r.Params.Query != nil && *r.Params.Query != "" {
+		devices, e := s.client.DevicesByMatch(*r.Params.Query)
 
 		if e != nil {
-			s.captureDetail(w, e)
-
-			return
+			return server.ListDevices500JSONResponse(*s.captureDetail(e)), nil
 		}
 
-		web.EncodeNotation(w, convert.Devices(devices))
-
-		return
+		return server.ListDevices200JSONResponse(convert.Devices(devices)), nil
 	}
 
 	devices, e := s.client.Devices()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListDevices500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.EncodeNotation(w, convert.Devices(devices))
+	return server.ListDevices200JSONResponse(convert.Devices(devices)), nil
 }

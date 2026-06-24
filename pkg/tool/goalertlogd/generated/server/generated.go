@@ -422,14 +422,6 @@ func (response GetAlerts200JSONResponse) VisitGetAlertsResponse(w http.ResponseW
 	return err
 }
 
-type GetAlerts400Response struct {
-}
-
-func (response GetAlerts400Response) VisitGetAlertsResponse(w http.ResponseWriter) error {
-	w.WriteHeader(400)
-	return nil
-}
-
 type GetAlerts500JSONResponse ErrorResponse
 
 func (response GetAlerts500JSONResponse) VisitGetAlertsResponse(w http.ResponseWriter) error {
@@ -466,14 +458,6 @@ func (response GetRecentAlerts200JSONResponse) VisitGetRecentAlertsResponse(w ht
 	return err
 }
 
-type GetRecentAlerts400Response struct {
-}
-
-func (response GetRecentAlerts400Response) VisitGetRecentAlertsResponse(w http.ResponseWriter) error {
-	w.WriteHeader(400)
-	return nil
-}
-
 type GetRecentAlerts500JSONResponse ErrorResponse
 
 func (response GetRecentAlerts500JSONResponse) VisitGetRecentAlertsResponse(w http.ResponseWriter) error {
@@ -508,14 +492,6 @@ func (response GetTopAlerts200JSONResponse) VisitGetTopAlertsResponse(w http.Res
 	w.WriteHeader(200)
 	_, err := buf.WriteTo(w)
 	return err
-}
-
-type GetTopAlerts400Response struct {
-}
-
-func (response GetTopAlerts400Response) VisitGetTopAlertsResponse(w http.ResponseWriter) error {
-	w.WriteHeader(400)
-	return nil
 }
 
 type GetTopAlerts500JSONResponse ErrorResponse
@@ -719,18 +695,18 @@ func (sh *strictHandler) GetStatus(w http.ResponseWriter, r *http.Request) {
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"5FbBbts4EP0VgbtHreVs24tuBdoUORQIktyCoGCksTwBRTLDkQojyL8XJBXJtmgnaQ9NUV9kcDij9948",
-	"DfkgKtNao0GzE+WDcNUaWhn+flRA7C7AWaMd+BVLxgIxQoiDrv2DNxZEKRwT6kY85mKFugGyhJqTcSVv",
-	"QYUKsq6R0Wipzncqz1KGBXN7BxX7BS1bSO500AMhb9JBlsSHItwNrLpWlNdihSGWCwJnVA+1uMkTeV3b",
-	"Skq97dFn3ndIUMdykygD/C2wU6FRnie0I7abhAyfiQwd6ZAPJ/lCD5q/YQ2acYVAzxOItRKZKVyXAfJh",
-	"YEo6PjdKpZttWKoLqAzV225AzdAAzYDtbE+BuTL2OSvLHkg28Kkj6f2YhFWZbsfQI55cVB0RaFab02ia",
-	"5Kafsewe1cE2EUk+Qz0HslV8royvjnplwnuRlY81RnqplGlqkYseyAU5xMliuVh6sMaClhZFKd6FpVxY",
-	"yesgYiEtFv1JESqElQaCYF7pgPCsFqX4AhzbEXJJtsBATpTXDwL9q+47CN9B1OuJ8yQDUwf5MKdSkt2E",
-	"TzY0OoD4f7n0j8pohthAaa3CKiAq7lxs91QPGdqQ+C/BSpTin2KakMUwHos9Q00jShLJTdS2BlcR2mio",
-	"YZpmreRqjbrJeA1Zgz3ozDNc+BLvI9LdvK/onN9vKEPdS4V1SMhG6ULqh1eSPMZtd6gkqJxKVFBnbLLQ",
-	"qyw2fOG3PuZ7NigIqgHRITdchB2v8cQ4GUc+K0OtZFGKWjL8xxg8M/uY0tX8OfbqWm/bZd+R16i3POZZ",
-	"ZCR1c8RpZ4O9grreb6DrP8ZmbOwxj41nwAuHjkhMmK0D6O+25fxAfYEzr4wdOpjdbjJTxaOqgiycZs+7",
-	"curaW3XidIc85MJ4LRK/2KNjVPYuXgkul0A9VpBFtL9fyxFH+P0IAAD//w==",
+	"5FZNb9s4EP0rwuwetZazRS+6FWhT9BYkuQVBwVBjeQKKZEYjFUaQ/16QVPxJO0l7aID6IoPDGb1573Go",
+	"R9Cu886ilR7qR+j1EjsV/34yyNJfYu+d7TGseHYeWQhjHG0THrLyCDX0wmRbeCphQbZF9kxWsnGj7tDE",
+	"CqppSMhZZS52Kh+kTAvu7h61hAWrOszu7HFEJlnlg6JYjkVkmLoaOqhvYEExVgJj78yIDdyWmbyh6xTn",
+	"3vYUMh8GYmxSuQ0pE/wtsJtCa3qe0a6x3WZo+MLs+IRCIZztF0e08p0atEILQn65gVQrk5nDdRUhHwdm",
+	"VC8Xzpi82E6UuUTtuNl2A1nBFvkA2M72HJhr51+yshqRVYufB1bBj1lY2g07hl7jKUEPzGjFrM6TabKb",
+	"fsWye61OtklIygPUh0C2ih8yE6qTXbj4XhITYq1TgSrj2gZKGJH7SAeczeazeQDrPFrlCWr4EJdK8EqW",
+	"kcRKearGsypWiCstRsIC0xHhtwZq+IqS5Ii5rDoU5B7qm0eg8KqHAeM5SHw997yhQXjAcppTOcpu45GN",
+	"QkcQ/8/n4aGdFUwCKu8N6Yiouu+T3Jt6JNjFxH8ZF1DDP9VmQlbTeKz2DLUZUYpZrRK3DfaaySdDTdO0",
+	"6JToJdm2kCUWLY1oi9DhLJT4+EakpwDuToYMnnNFBptCXBEJL5Jqs7D1qdzTsmLUE6Jjkl7GHW8Rdj3e",
+	"1v0sHHdKoIZGCf4nFIU/OBH5auEyenOt922VHyRLsltGCV0UrGz73u0izp/yynogv3ICQOa4b90Gf7e9",
+	"Dm+3Vzjs2vlJweJuVTid7g2NRbxa3qu7Nh9px5yVvjvgN3k/1crel02mlyvkkTQWCe2f53KNI/5+BgAA",
+	"//8=",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

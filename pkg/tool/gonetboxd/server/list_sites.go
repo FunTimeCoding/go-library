@@ -1,22 +1,20 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
 func (s *Server) ListSites(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListSitesRequestObject,
+) (server.ListSitesResponseObject, error) {
 	sites, e := s.client.Sites()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListSites500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.EncodeNotation(w, convert.Sites(sites))
+	return server.ListSites200JSONResponse(convert.Sites(sites)), nil
 }

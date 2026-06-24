@@ -1,31 +1,28 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListDeviceRoles(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListDeviceRolesRequestObject,
+) (server.ListDeviceRolesResponseObject, error) {
 	roles, e := s.client.DeviceRoles()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListDeviceRoles500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	result := make([]server.DeviceRole, 0, len(roles))
+	result := make([]*server.DeviceRole, 0, len(roles))
 
 	for _, r := range roles {
 		result = append(
 			result,
-			server.DeviceRole{Identifier: r.Identifier, Name: r.Name},
+			&server.DeviceRole{Identifier: r.Identifier, Name: r.Name},
 		)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.ListDeviceRoles200JSONResponse(result), nil
 }

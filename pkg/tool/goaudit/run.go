@@ -11,13 +11,10 @@ func Run(o *option.Audit) {
 	for _, root := range o.Roots {
 		v := virtual_file_system.From(root)
 		repo := filepath.Base(root)
-		services := scan.Services(v, repo)
+		configuration := scan.LoadConfiguration(".goaudit.yaml")
+		services := scan.Services(v, repo, configuration)
 		identityWarnings := scan.IdentityWarnings(v, services)
-		clients := scan.Clients(
-			v,
-			repo,
-			scan.LoadConfiguration(".goaudit.yaml"),
-		)
+		clients := scan.Clients(v, repo, configuration)
 
 		if o.Table {
 			runTable(services, identityWarnings, clients)

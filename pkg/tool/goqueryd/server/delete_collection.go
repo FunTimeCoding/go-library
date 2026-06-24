@@ -1,18 +1,17 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) DeleteCollection(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.DeleteCollectionParams,
-) {
-	web.EncodeNotation(
-		w,
-		map[string]bool{"deleted": s.service.DeleteCollection(v.Name)},
-	)
+	_ context.Context,
+	r server.DeleteCollectionRequestObject,
+) (server.DeleteCollectionResponseObject, error) {
+	deleted := s.service.DeleteCollection(r.Params.Name)
+
+	return server.DeleteCollection200JSONResponse{
+		Deleted: new(bool(deleted)),
+	}, nil
 }

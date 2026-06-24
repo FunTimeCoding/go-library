@@ -1,23 +1,18 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) RemoveVirtualTag(
-	w http.ResponseWriter,
-	_ *http.Request,
-	name string,
-	tag string,
-) {
-	vm, e := s.client.RemoveVirtualTag(name, tag)
+	_ context.Context,
+	r server.RemoveVirtualTagRequestObject,
+) (server.RemoveVirtualTagResponseObject, error) {
+	vm, e := s.client.RemoveVirtualTag(r.Name, r.Tag)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.RemoveVirtualTag500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	entry := server.VirtualMachine{Identifier: vm.Identifier, Name: vm.Name}
@@ -26,5 +21,5 @@ func (s *Server) RemoveVirtualTag(
 		entry.Tags = &vm.Tags
 	}
 
-	web.EncodeNotation(w, entry)
+	return server.RemoveVirtualTag200JSONResponse(entry), nil
 }

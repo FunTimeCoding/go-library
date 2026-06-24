@@ -2,6 +2,8 @@ package model_context
 
 import (
 	"context"
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/errors/not_found"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/model_context/argument"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -31,11 +33,11 @@ func (s *Server) ResetMachine(
 	vm, e := findMachine(c, a.Identifier, a.Node)
 
 	if e != nil {
-		return s.captureDetail(e)
-	}
+		if errors.Is(e, not_found.Sentinel) {
+			return response.Fail("%s", e)
+		}
 
-	if vm == nil {
-		return response.Fail("vm %d not found", a.Identifier)
+		return s.captureDetail(e)
 	}
 
 	task, e := c.ResetMachine(vm)

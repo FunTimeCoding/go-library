@@ -1,39 +1,43 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
+	queryConstant "github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostDocument(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.PostDocumentJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostDocumentRequestObject,
+) (server.PostDocumentResponseObject, error) {
 	metadata := map[string]string{}
 
-	if body.Metadata != nil {
-		for key, value := range *body.Metadata {
+	if r.Body.Metadata != nil {
+		for key, value := range *r.Body.Metadata {
 			metadata[key] = value
 		}
 	}
 
-	if body.SourceType != nil && *body.SourceType != "" {
-		metadata[constant.SourceType] = *body.SourceType
+	if r.Body.SourceType != nil && *r.Body.SourceType != "" {
+		metadata[queryConstant.SourceType] = *r.Body.SourceType
 	}
 
-	errors.PanicOnError(
-		s.service.PushDocument(
-			body.Collection,
-			body.Path,
-			body.Body,
-			metadata,
-		),
+	e := s.service.PushDocument(
+		r.Body.Collection,
+		r.Body.Path,
+		r.Body.Body,
+		metadata,
 	)
-	web.EncodeNotation(w, map[string]string{"status": "ok"})
+
+	if e != nil {
+		return server.PostDocument500JSONResponse(
+			*s.captureFail(
+				e,
+				constant.UnexpectedError,
+			),
+		), nil
+	}
+
+	return server.PostDocument200Response{}, nil
 }

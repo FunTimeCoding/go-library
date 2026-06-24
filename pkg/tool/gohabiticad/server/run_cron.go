@@ -10,7 +10,15 @@ func (s *Server) RunCron(
 	_ context.Context,
 	_ server.RunCronRequestObject,
 ) (server.RunCronResponseObject, error) {
+	result, e := s.habitica.Cron()
+
+	if e != nil {
+		return server.RunCron500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
 	return server.RunCron200JSONResponse(
-		*convert.CronResult(s.habitica.MustCron()),
+		*convert.CronResult(result),
 	), nil
 }

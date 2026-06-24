@@ -8,9 +8,12 @@ package server
 import (
 	"bytes"
 	"compress/flate"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"path"
@@ -57,6 +60,12 @@ type ContextEntry struct {
 type EmbedResult struct {
 	Chunks    int `json:"chunks"`
 	Documents int `json:"documents"`
+}
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Error           string `json:"error"`
+	EventIdentifier string `json:"event_identifier"`
 }
 
 // Facet defines model for Facet.
@@ -1019,33 +1028,1172 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
+type DeleteCollectionRequestObject struct {
+	Params DeleteCollectionParams
+}
+
+type DeleteCollectionResponseObject interface {
+	VisitDeleteCollectionResponse(w http.ResponseWriter) error
+}
+
+type DeleteCollection200JSONResponse struct {
+	Deleted *bool `json:"deleted,omitempty"`
+}
+
+func (response DeleteCollection200JSONResponse) VisitDeleteCollectionResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DeleteCollection500JSONResponse ErrorResponse
+
+func (response DeleteCollection500JSONResponse) VisitDeleteCollectionResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type PostCollectionRequestObject struct {
+	Body *PostCollectionJSONRequestBody
+}
+
+type PostCollectionResponseObject interface {
+	VisitPostCollectionResponse(w http.ResponseWriter) error
+}
+
+type PostCollection200Response struct {
+}
+
+func (response PostCollection200Response) VisitPostCollectionResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostCollection500JSONResponse ErrorResponse
+
+func (response PostCollection500JSONResponse) VisitPostCollectionResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DeleteContextRequestObject struct {
+	Params DeleteContextParams
+}
+
+type DeleteContextResponseObject interface {
+	VisitDeleteContextResponse(w http.ResponseWriter) error
+}
+
+type DeleteContext200JSONResponse struct {
+	Deleted *bool `json:"deleted,omitempty"`
+}
+
+func (response DeleteContext200JSONResponse) VisitDeleteContextResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DeleteContext500JSONResponse ErrorResponse
+
+func (response DeleteContext500JSONResponse) VisitDeleteContextResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetContextRequestObject struct {
+}
+
+type GetContextResponseObject interface {
+	VisitGetContextResponse(w http.ResponseWriter) error
+}
+
+type GetContext200JSONResponse []*ContextEntry
+
+func (response GetContext200JSONResponse) VisitGetContextResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetContext500JSONResponse ErrorResponse
+
+func (response GetContext500JSONResponse) VisitGetContextResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type PostContextRequestObject struct {
+	Body *PostContextJSONRequestBody
+}
+
+type PostContextResponseObject interface {
+	VisitPostContextResponse(w http.ResponseWriter) error
+}
+
+type PostContext200Response struct {
+}
+
+func (response PostContext200Response) VisitPostContextResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostContext500JSONResponse ErrorResponse
+
+func (response PostContext500JSONResponse) VisitPostContextResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DeleteDocumentRequestObject struct {
+	Params DeleteDocumentParams
+}
+
+type DeleteDocumentResponseObject interface {
+	VisitDeleteDocumentResponse(w http.ResponseWriter) error
+}
+
+type DeleteDocument200JSONResponse struct {
+	Deleted *bool `json:"deleted,omitempty"`
+}
+
+func (response DeleteDocument200JSONResponse) VisitDeleteDocumentResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DeleteDocument500JSONResponse ErrorResponse
+
+func (response DeleteDocument500JSONResponse) VisitDeleteDocumentResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetDocumentRequestObject struct {
+	Params GetDocumentParams
+}
+
+type GetDocumentResponseObject interface {
+	VisitGetDocumentResponse(w http.ResponseWriter) error
+}
+
+type GetDocument200JSONResponse SearchResult
+
+func (response GetDocument200JSONResponse) VisitGetDocumentResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetDocument500JSONResponse ErrorResponse
+
+func (response GetDocument500JSONResponse) VisitGetDocumentResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type PostDocumentRequestObject struct {
+	Body *PostDocumentJSONRequestBody
+}
+
+type PostDocumentResponseObject interface {
+	VisitPostDocumentResponse(w http.ResponseWriter) error
+}
+
+type PostDocument200Response struct {
+}
+
+func (response PostDocument200Response) VisitPostDocumentResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostDocument500JSONResponse ErrorResponse
+
+func (response PostDocument500JSONResponse) VisitPostDocumentResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type PostEmbedRequestObject struct {
+}
+
+type PostEmbedResponseObject interface {
+	VisitPostEmbedResponse(w http.ResponseWriter) error
+}
+
+type PostEmbed200JSONResponse EmbedResult
+
+func (response PostEmbed200JSONResponse) VisitPostEmbedResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type PostEmbed500JSONResponse ErrorResponse
+
+func (response PostEmbed500JSONResponse) VisitPostEmbedResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type PostIndexRequestObject struct {
+	Body *PostIndexJSONRequestBody
+}
+
+type PostIndexResponseObject interface {
+	VisitPostIndexResponse(w http.ResponseWriter) error
+}
+
+type PostIndex200JSONResponse []*IndexResult
+
+func (response PostIndex200JSONResponse) VisitPostIndexResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type PostIndex500JSONResponse ErrorResponse
+
+func (response PostIndex500JSONResponse) VisitPostIndexResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetListRequestObject struct {
+	Params GetListParams
+}
+
+type GetListResponseObject interface {
+	VisitGetListResponse(w http.ResponseWriter) error
+}
+
+type GetList200JSONResponse ListOutcome
+
+func (response GetList200JSONResponse) VisitGetListResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetList500JSONResponse ErrorResponse
+
+func (response GetList500JSONResponse) VisitGetListResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetMetadataRequestObject struct {
+	Params GetMetadataParams
+}
+
+type GetMetadataResponseObject interface {
+	VisitGetMetadataResponse(w http.ResponseWriter) error
+}
+
+type GetMetadata200JSONResponse []*Facet
+
+func (response GetMetadata200JSONResponse) VisitGetMetadataResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetMetadata500JSONResponse ErrorResponse
+
+func (response GetMetadata500JSONResponse) VisitGetMetadataResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetSearchRequestObject struct {
+	Params GetSearchParams
+}
+
+type GetSearchResponseObject interface {
+	VisitGetSearchResponse(w http.ResponseWriter) error
+}
+
+type GetSearch200JSONResponse SearchOutcome
+
+func (response GetSearch200JSONResponse) VisitGetSearchResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetSearch500JSONResponse ErrorResponse
+
+func (response GetSearch500JSONResponse) VisitGetSearchResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetStatusRequestObject struct {
+}
+
+type GetStatusResponseObject interface {
+	VisitGetStatusResponse(w http.ResponseWriter) error
+}
+
+type GetStatus200JSONResponse Status
+
+func (response GetStatus200JSONResponse) VisitGetStatusResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetStatus500JSONResponse ErrorResponse
+
+func (response GetStatus500JSONResponse) VisitGetStatusResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetTagRequestObject struct {
+	Params GetTagParams
+}
+
+type GetTagResponseObject interface {
+	VisitGetTagResponse(w http.ResponseWriter) error
+}
+
+type GetTag200JSONResponse SourceTypeTag
+
+func (response GetTag200JSONResponse) VisitGetTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetTag500JSONResponse ErrorResponse
+
+func (response GetTag500JSONResponse) VisitGetTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type PostTagRequestObject struct {
+	Body *PostTagJSONRequestBody
+}
+
+type PostTagResponseObject interface {
+	VisitPostTagResponse(w http.ResponseWriter) error
+}
+
+type PostTag200Response struct {
+}
+
+func (response PostTag200Response) VisitPostTagResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type PostTag500JSONResponse ErrorResponse
+
+func (response PostTag500JSONResponse) VisitPostTagResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetTagsRequestObject struct {
+}
+
+type GetTagsResponseObject interface {
+	VisitGetTagsResponse(w http.ResponseWriter) error
+}
+
+type GetTags200JSONResponse []*SourceTypeTag
+
+func (response GetTags200JSONResponse) VisitGetTagsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetTags500JSONResponse ErrorResponse
+
+func (response GetTags500JSONResponse) VisitGetTagsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+
+	// (DELETE /api/collection)
+	DeleteCollection(ctx context.Context, request DeleteCollectionRequestObject) (DeleteCollectionResponseObject, error)
+
+	// (POST /api/collection)
+	PostCollection(ctx context.Context, request PostCollectionRequestObject) (PostCollectionResponseObject, error)
+
+	// (DELETE /api/context)
+	DeleteContext(ctx context.Context, request DeleteContextRequestObject) (DeleteContextResponseObject, error)
+
+	// (GET /api/context)
+	GetContext(ctx context.Context, request GetContextRequestObject) (GetContextResponseObject, error)
+
+	// (POST /api/context)
+	PostContext(ctx context.Context, request PostContextRequestObject) (PostContextResponseObject, error)
+
+	// (DELETE /api/document)
+	DeleteDocument(ctx context.Context, request DeleteDocumentRequestObject) (DeleteDocumentResponseObject, error)
+
+	// (GET /api/document)
+	GetDocument(ctx context.Context, request GetDocumentRequestObject) (GetDocumentResponseObject, error)
+
+	// (POST /api/document)
+	PostDocument(ctx context.Context, request PostDocumentRequestObject) (PostDocumentResponseObject, error)
+
+	// (POST /api/embed)
+	PostEmbed(ctx context.Context, request PostEmbedRequestObject) (PostEmbedResponseObject, error)
+
+	// (POST /api/index)
+	PostIndex(ctx context.Context, request PostIndexRequestObject) (PostIndexResponseObject, error)
+
+	// (GET /api/list)
+	GetList(ctx context.Context, request GetListRequestObject) (GetListResponseObject, error)
+
+	// (GET /api/metadata)
+	GetMetadata(ctx context.Context, request GetMetadataRequestObject) (GetMetadataResponseObject, error)
+
+	// (GET /api/search)
+	GetSearch(ctx context.Context, request GetSearchRequestObject) (GetSearchResponseObject, error)
+
+	// (GET /api/status)
+	GetStatus(ctx context.Context, request GetStatusRequestObject) (GetStatusResponseObject, error)
+
+	// (GET /api/tag)
+	GetTag(ctx context.Context, request GetTagRequestObject) (GetTagResponseObject, error)
+
+	// (POST /api/tag)
+	PostTag(ctx context.Context, request PostTagRequestObject) (PostTagResponseObject, error)
+
+	// (GET /api/tags)
+	GetTags(ctx context.Context, request GetTagsRequestObject) (GetTagsResponseObject, error)
+}
+
+type StrictHandlerFunc func(ctx context.Context, w http.ResponseWriter, r *http.Request, request any) (any, error)
+type StrictMiddlewareFunc func(f StrictHandlerFunc, operationID string) StrictHandlerFunc
+
+type StrictHTTPServerOptions struct {
+	RequestErrorHandlerFunc  func(w http.ResponseWriter, r *http.Request, err error)
+	ResponseErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: StrictHTTPServerOptions{
+		RequestErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		},
+		ResponseErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		},
+	}}
+}
+
+func NewStrictHandlerWithOptions(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc, options StrictHTTPServerOptions) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares, options: options}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+	options     StrictHTTPServerOptions
+}
+
+// DeleteCollection operation middleware
+func (sh *strictHandler) DeleteCollection(w http.ResponseWriter, r *http.Request, params DeleteCollectionParams) {
+	var request DeleteCollectionRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteCollection(ctx, request.(DeleteCollectionRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteCollection")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteCollectionResponseObject); ok {
+		if err := validResponse.VisitDeleteCollectionResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostCollection operation middleware
+func (sh *strictHandler) PostCollection(w http.ResponseWriter, r *http.Request) {
+	var request PostCollectionRequestObject
+
+	var body PostCollectionJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostCollection(ctx, request.(PostCollectionRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostCollection")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostCollectionResponseObject); ok {
+		if err := validResponse.VisitPostCollectionResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteContext operation middleware
+func (sh *strictHandler) DeleteContext(w http.ResponseWriter, r *http.Request, params DeleteContextParams) {
+	var request DeleteContextRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteContext(ctx, request.(DeleteContextRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteContext")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteContextResponseObject); ok {
+		if err := validResponse.VisitDeleteContextResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetContext operation middleware
+func (sh *strictHandler) GetContext(w http.ResponseWriter, r *http.Request) {
+	var request GetContextRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetContext(ctx, request.(GetContextRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetContext")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetContextResponseObject); ok {
+		if err := validResponse.VisitGetContextResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostContext operation middleware
+func (sh *strictHandler) PostContext(w http.ResponseWriter, r *http.Request) {
+	var request PostContextRequestObject
+
+	var body PostContextJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostContext(ctx, request.(PostContextRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostContext")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostContextResponseObject); ok {
+		if err := validResponse.VisitPostContextResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteDocument operation middleware
+func (sh *strictHandler) DeleteDocument(w http.ResponseWriter, r *http.Request, params DeleteDocumentParams) {
+	var request DeleteDocumentRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteDocument(ctx, request.(DeleteDocumentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteDocument")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteDocumentResponseObject); ok {
+		if err := validResponse.VisitDeleteDocumentResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetDocument operation middleware
+func (sh *strictHandler) GetDocument(w http.ResponseWriter, r *http.Request, params GetDocumentParams) {
+	var request GetDocumentRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetDocument(ctx, request.(GetDocumentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetDocument")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetDocumentResponseObject); ok {
+		if err := validResponse.VisitGetDocumentResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostDocument operation middleware
+func (sh *strictHandler) PostDocument(w http.ResponseWriter, r *http.Request) {
+	var request PostDocumentRequestObject
+
+	var body PostDocumentJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostDocument(ctx, request.(PostDocumentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostDocument")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostDocumentResponseObject); ok {
+		if err := validResponse.VisitPostDocumentResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostEmbed operation middleware
+func (sh *strictHandler) PostEmbed(w http.ResponseWriter, r *http.Request) {
+	var request PostEmbedRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostEmbed(ctx, request.(PostEmbedRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostEmbed")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostEmbedResponseObject); ok {
+		if err := validResponse.VisitPostEmbedResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostIndex operation middleware
+func (sh *strictHandler) PostIndex(w http.ResponseWriter, r *http.Request) {
+	var request PostIndexRequestObject
+
+	var body PostIndexJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		if !errors.Is(err, io.EOF) {
+			sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+			return
+		}
+	} else {
+		request.Body = &body
+	}
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostIndex(ctx, request.(PostIndexRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostIndex")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostIndexResponseObject); ok {
+		if err := validResponse.VisitPostIndexResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetList operation middleware
+func (sh *strictHandler) GetList(w http.ResponseWriter, r *http.Request, params GetListParams) {
+	var request GetListRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetList(ctx, request.(GetListRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetList")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetListResponseObject); ok {
+		if err := validResponse.VisitGetListResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetMetadata operation middleware
+func (sh *strictHandler) GetMetadata(w http.ResponseWriter, r *http.Request, params GetMetadataParams) {
+	var request GetMetadataRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetMetadata(ctx, request.(GetMetadataRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetMetadata")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetMetadataResponseObject); ok {
+		if err := validResponse.VisitGetMetadataResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSearch operation middleware
+func (sh *strictHandler) GetSearch(w http.ResponseWriter, r *http.Request, params GetSearchParams) {
+	var request GetSearchRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSearch(ctx, request.(GetSearchRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSearch")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSearchResponseObject); ok {
+		if err := validResponse.VisitGetSearchResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetStatus operation middleware
+func (sh *strictHandler) GetStatus(w http.ResponseWriter, r *http.Request) {
+	var request GetStatusRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetStatus(ctx, request.(GetStatusRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetStatus")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetStatusResponseObject); ok {
+		if err := validResponse.VisitGetStatusResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetTag operation middleware
+func (sh *strictHandler) GetTag(w http.ResponseWriter, r *http.Request, params GetTagParams) {
+	var request GetTagRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetTag(ctx, request.(GetTagRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetTag")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetTagResponseObject); ok {
+		if err := validResponse.VisitGetTagResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// PostTag operation middleware
+func (sh *strictHandler) PostTag(w http.ResponseWriter, r *http.Request) {
+	var request PostTagRequestObject
+
+	var body PostTagJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.PostTag(ctx, request.(PostTagRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostTag")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(PostTagResponseObject); ok {
+		if err := validResponse.VisitPostTagResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetTags operation middleware
+func (sh *strictHandler) GetTags(w http.ResponseWriter, r *http.Request) {
+	var request GetTagsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetTags(ctx, request.(GetTagsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetTags")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetTagsResponseObject); ok {
+		if err := validResponse.VisitGetTagsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, compressed with deflate, json marshaled OpenAPI spec.
 // Stored as a slice of fixed-width chunks rather than one concatenated
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"3Flfb9s2EP8qArdHoU63N79tbTYU6NBiyVtRGLR0ktlIJEtSaYzA330gKVmidLQVJ3GWvjkiebz73e/+",
-	"8HJPMlFLwYEbTZb3RGcbqKn7+U5UFWSGCX5lqGncN6mEBGUYuL9ykTU1cLPKRMON/WK2EsiSMG6gBEV2",
-	"KeG0hsGKNorx0i5IajaxBQOKI2u7lCj43jAFOVl+8aJbQf2xdKzW17STI9bfIDP2jneCG7gzl9yo7dSu",
-	"bG85qmAOOlNMRtetQiupoGB3x40Y3BWeDO/BjLis15D/C7qpDGLDpuE3GvdJBxC6PNKv35t2MjFd/qIZ",
-	"IFrkTBvGswg3bmCLAnhLq8afp3nOrP20+hzIncoaaTSywt6U9tpgFnzgOdxF0TzMCGbP2pswzRTU4ja2",
-	"2PBsQ3kZXZY5NfjiIR51+vQChjf1KmE4fGTafGpMJnzchjgU1s3uFzNQux+/KijIkvyy6BPJos0iC8+K",
-	"3jtUKbr1mFic5wu6AqqyTeudibwRFJ1wzDovKGpfDqWieQD4WogKKLeHfxLrYyRfixyPxyPsz3wyRdcK",
-	"VsEqmuo3VOMLNRiaU0Nn5ID+0MTc6L06E2pYlXhTr33Aac6kBNyWdm1VMQ54uGrRqAwvd35p5b9jyjNT",
-	"4Su3TJmGVjEUR+4Pdg/xT6elhnTXtp7ogNkbgnLILV1vJVzT8sGZ8nBtPAYT5uRYc9IrMj/QJi0PErwS",
-	"eM54uQJbfe2vWEEShlarg6W223RYVDTR25I8vgURiao89ezO1bFCOBU8GUkpvjegtrZk3ILSzqnk7ZuL",
-	"NxdWeSGBU8nIkvzuPnnvOhsWVLJFSIUcKjDOqdZL1H7+kJMlee++vwu5qWgNBpQmyy/3hNlbnSKk6ye7",
-	"3q8HxqgG0rZ9xZjz1aVdKbj29Pjt4sKzhBvwvSuVsmKZU2zxTXule3njOmGVRsvEDkU26BkHrXXSSnrj",
-	"t0mhzRSiz0KbACBrNmjzZ5uwTzTiTK05TrXQczvcO1HUaJ63mO3Sjmz7InSMaX7jLJplY9TnkS3FpYXt",
-	"/avlrsMvaXvIlrglILz9G0yP9qMsmJm9B4+6aZs0seSPqkpa2ugZ8dcb8hTB9yremCcHqqfINEq7QnU8",
-	"TN93O18oTl9vgHbIjUpLLEIfBvTZoZn/LpoiccV4WUHSkS75wcwmKZou7Lk5GvUDcJ4m7E99Yz33g+hY",
-	"230wnZDU2/VkCWRPYdnozSiFuCbWARv1mhuMkWck3nDyhvDusuuzk/YxHhjghjOHDXCzqPOUGiyj7M5R",
-	"rYfzthnF2m3v8EwkqKQ3K4C3Yh7VWL77aNdfoKgMQ+yE4xWrmQkO5lBQN8d5e5Eij0ZcjCgKDRE5DxBj",
-	"kygupKCVhhQpXPcE7mQlcugQxOTu09xQ9un5Tpute8fmAPJT+/U5C9JwdnqgMuu2ErlxYkDeYZqPEfif",
-	"HqOzk9jP0Z+v2j9mrjrFu0OqRTopRDRraNdKHILdNxvzQO/+fDTegfdeKmfUNmhRKWSzXStmSy3wpra9",
-	"wf7DDWx/CDX8F8MxbU/KKY/MtD9/Sgr/4YE1yW7DvrLGMpPej1mjAeJ3PKct7VA21h14HQO1jZ9Rx3S+",
-	"puUJafT//6A8iGIwwMcY4TYkVqfE0PLoI8mDeJaxyNM8YFp3DM882dPlmpaJBpMIFUzIBnzURwipzzIs",
-	"G7Fg3rRMh8xoQ223+y8AAP//",
+	"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",
+	"ELfbfwMAAP//",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

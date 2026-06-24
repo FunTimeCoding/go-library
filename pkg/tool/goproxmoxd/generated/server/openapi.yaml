@@ -31,9 +31,17 @@ paths:
                 items:
                   $ref: "#/components/schemas/Node"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/nodes/{name}/status:
     get:
       operationId: getNodeStatus
@@ -54,10 +62,22 @@ paths:
                 $ref: "#/components/schemas/NodeStatus"
         "404":
           description: Node not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines:
     get:
       operationId: listMachines
@@ -79,9 +99,17 @@ paths:
                 items:
                   $ref: "#/components/schemas/Machine"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createMachine
       parameters:
@@ -100,9 +128,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/CreateMachineResult"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}:
     get:
       operationId: getMachine
@@ -130,10 +166,22 @@ paths:
                 $ref: "#/components/schemas/MachineDetail"
         "404":
           description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: deleteMachine
       parameters:
@@ -166,10 +214,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}/snapshots:
     get:
       operationId: listMachineSnapshots
@@ -199,10 +259,22 @@ paths:
                   $ref: "#/components/schemas/Snapshot"
         "404":
           description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createMachineSnapshot
       parameters:
@@ -235,10 +307,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}/snapshots/{name}/rollback:
     post:
       operationId: rollbackMachineSnapshot
@@ -272,10 +356,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine or snapshot not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}/snapshots/{name}:
     delete:
       operationId: deleteMachineSnapshot
@@ -309,10 +405,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine or snapshot not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}/start:
     post:
       operationId: startMachine
@@ -340,10 +448,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}/stop:
     post:
       operationId: stopMachine
@@ -371,10 +491,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}/shutdown:
     post:
       operationId: shutdownMachine
@@ -402,10 +534,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}/reset:
     post:
       operationId: resetMachine
@@ -433,10 +577,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/nodes/{name}/networks:
     get:
       operationId: listNetworks
@@ -459,10 +615,22 @@ paths:
                   $ref: "#/components/schemas/Network"
         "404":
           description: Node not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/containers:
     get:
       operationId: listContainers
@@ -484,9 +652,17 @@ paths:
                 items:
                   $ref: "#/components/schemas/Container"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/containers/{identifier}:
     get:
       operationId: getContainer
@@ -514,10 +690,22 @@ paths:
                 $ref: "#/components/schemas/ContainerDetail"
         "404":
           description: Container not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/containers/{identifier}/snapshots:
     get:
       operationId: listContainerSnapshots
@@ -547,10 +735,22 @@ paths:
                   $ref: "#/components/schemas/Snapshot"
         "404":
           description: Container not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createContainerSnapshot
       parameters:
@@ -583,10 +783,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Container not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/containers/{identifier}/snapshots/{name}/rollback:
     post:
       operationId: rollbackContainerSnapshot
@@ -620,10 +832,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Container or snapshot not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/containers/{identifier}/snapshots/{name}:
     delete:
       operationId: deleteContainerSnapshot
@@ -657,10 +881,22 @@ paths:
                 $ref: "#/components/schemas/TaskResult"
         "404":
           description: Container or snapshot not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "400":
-          $ref: "#/components/responses/ClientError"
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
-          $ref: "#/components/responses/Error"
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   parameters:
     Instance:
@@ -670,21 +906,8 @@ components:
       schema:
         type: string
       description: Proxmox instance name. Optional when only one instance is configured.
-  responses:
-    ClientError:
-      description: Invalid or missing parameters.
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ClientError"
-    Error:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
   schemas:
-    ClientError:
+    Error:
       type: object
       required: [error]
       properties:

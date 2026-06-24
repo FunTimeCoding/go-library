@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
 )
@@ -14,15 +13,13 @@ func (s *Server) ListContainers(
 	instance, e := s.resolveInstance(r.Params.Instance)
 
 	if e != nil {
-		return server.ListContainers400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
+		return server.ListContainers400JSONResponse(*clientError(e)), nil
 	}
 
 	c, e := s.service.Client(instance)
 
 	if e != nil {
-		return server.ListContainers500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.ListContainers500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	var pointers []*server.Container
@@ -31,23 +28,13 @@ func (s *Server) ListContainers(
 		node, e := c.Node(*r.Params.Node)
 
 		if e != nil {
-			return server.ListContainers500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(
-					e,
-					constant.UnexpectedError,
-				),
-			}, nil
+			return server.ListContainers500JSONResponse(*s.captureDetail(e)), nil
 		}
 
 		containers, e := c.Containers(node)
 
 		if e != nil {
-			return server.ListContainers500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(
-					e,
-					constant.UnexpectedError,
-				),
-			}, nil
+			return server.ListContainers500JSONResponse(*s.captureDetail(e)), nil
 		}
 
 		pointers = convert.Containers(containers)
@@ -55,12 +42,7 @@ func (s *Server) ListContainers(
 		nodes, e := c.Nodes()
 
 		if e != nil {
-			return server.ListContainers500JSONResponse{
-				ErrorJSONResponse: *s.captureFail(
-					e,
-					constant.UnexpectedError,
-				),
-			}, nil
+			return server.ListContainers500JSONResponse(*s.captureDetail(e)), nil
 		}
 
 		for _, ns := range nodes {

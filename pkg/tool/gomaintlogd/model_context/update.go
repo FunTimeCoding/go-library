@@ -2,7 +2,9 @@ package model_context
 
 import (
 	"context"
+	"errors"
 	library "github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/not_found"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/constant"
@@ -23,6 +25,10 @@ func (s *Server) update(
 	e, f := s.store.Get(uint(identifier))
 
 	if f != nil {
+		if errors.Is(f, not_found.Sentinel) {
+			return response.Fail("%s", f)
+		}
+
 		return s.captureFail(f, library.UnexpectedError)
 	}
 

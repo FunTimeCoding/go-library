@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/generated/server"
 )
@@ -42,7 +43,9 @@ func (s *Server) GetResolve(
 	}
 
 	if !result.Found() {
-		return server.GetResolve404Response{}, nil
+		return server.GetResolve404JSONResponse{
+			Error: fmt.Sprintf("session not found: %s", r.Params.Query),
+		}, nil
 	}
 
 	return server.GetResolve200JSONResponse{

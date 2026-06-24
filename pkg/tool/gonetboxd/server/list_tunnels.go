@@ -1,22 +1,22 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
 func (s *Server) ListTunnels(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListTunnelsRequestObject,
+) (server.ListTunnelsResponseObject, error) {
 	tunnels, e := s.client.Tunnels()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListTunnels500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.EncodeNotation(w, convert.Tunnels(tunnels))
+	return server.ListTunnels200JSONResponse(
+		convert.Tunnels(tunnels),
+	), nil
 }

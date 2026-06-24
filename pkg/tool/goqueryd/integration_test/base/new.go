@@ -31,6 +31,7 @@ func New(t *testing.T) *Server {
 	errors.PanicOnError(e)
 	t.Cleanup(func() { errors.LogClose(a) })
 	v := service.New(s, l, a)
+	r := memory.New()
 
 	return &Server{
 		t:        t,
@@ -40,10 +41,16 @@ func New(t *testing.T) *Server {
 		server: model_context_server.New(
 			t,
 			func(m *http.ServeMux) {
-				generated.HandlerFromMux(server.New(v), m)
+				generated.HandlerFromMux(
+					generated.NewStrictHandler(
+						server.New(v, r),
+						nil,
+					),
+					m,
+				)
 				model_context.New(
 					v,
-					memory.New(),
+					r,
 					mock_recorder.New(),
 					constant.DefaultVersion,
 				).Mount(m)

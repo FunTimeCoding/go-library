@@ -38,6 +38,7 @@ func Run(
 				web.AddressPort(o.Port),
 				func(m *http.ServeMux) {
 					p := raid_parser.New("localhost:8081", true)
+					t := telemetry.NewEnvironment()
 					generated.HandlerFromMux(
 						generated.NewStrictHandler(
 							server.New(s, o.OutputPath, r),
@@ -46,8 +47,6 @@ func Run(
 									f generated.StrictHandlerFunc,
 									operation string,
 								) generated.StrictHandlerFunc {
-									t := telemetry.NewEnvironment()
-
 									return func(
 										x context.Context,
 										w http.ResponseWriter,

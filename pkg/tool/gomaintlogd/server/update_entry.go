@@ -2,7 +2,9 @@ package server
 
 import (
 	"context"
+	"errors"
 	"github.com/funtimecoding/go-library/pkg/constant"
+	"github.com/funtimecoding/go-library/pkg/errors/not_found"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/generated/server"
 	"github.com/funtimecoding/go-library/pkg/tool/gomaintlogd/store/entry"
 )
@@ -14,6 +16,10 @@ func (s *Server) UpdateEntry(
 	e, f := s.store.Get(uint(r.Id))
 
 	if f != nil {
+		if errors.Is(f, not_found.Sentinel) {
+			return server.UpdateEntry404JSONResponse{Error: f.Error()}, nil
+		}
+
 		return server.UpdateEntry500JSONResponse(
 			*s.captureFail(f, constant.UnexpectedError),
 		), nil

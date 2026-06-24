@@ -2,7 +2,8 @@ package server
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/constant"
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/errors/not_found"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
 )
 
@@ -13,35 +14,29 @@ func (s *Server) RollbackMachineSnapshot(
 	instance, e := s.resolveInstance(r.Params.Instance)
 
 	if e != nil {
-		return server.RollbackMachineSnapshot400JSONResponse{ClientErrorJSONResponse: *clientError(e)}, nil
+		return server.RollbackMachineSnapshot400JSONResponse(*clientError(e)), nil
 	}
 
 	c, e := s.service.Client(instance)
 
 	if e != nil {
-		return server.RollbackMachineSnapshot500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.RollbackMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	vm, e := findMachine(c, r.Identifier, r.Params.Node)
 
 	if e != nil {
-		return server.RollbackMachineSnapshot500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
-	}
+		if errors.Is(e, not_found.Sentinel) {
+			return server.RollbackMachineSnapshot404JSONResponse{Error: e.Error()}, nil
+		}
 
-	if vm == nil {
-		return nil, nil
+		return server.RollbackMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	task, e := c.RollbackMachineSnapshot(vm, r.Name)
 
 	if e != nil {
-		return server.RollbackMachineSnapshot500JSONResponse{
-			ErrorJSONResponse: *s.captureFail(e, constant.UnexpectedError),
-		}, nil
+		return server.RollbackMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	return server.RollbackMachineSnapshot200JSONResponse{

@@ -1,22 +1,15 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/common"
-	"github.com/funtimecoding/go-library/pkg/web/constant"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
-func (s *Server) captureDetail(
-	w http.ResponseWriter,
-	e error,
-) {
+func (s *Server) captureDetail(e error) *server.ErrorResponse {
 	if m, okay := common.ExtractMessage(e); okay {
-		s.reporter.CaptureException(e)
-		http.Error(w, m, http.StatusBadRequest)
-
-		return
+		return s.captureFail(e, m)
 	}
 
-	s.reporter.CaptureException(e)
-	http.Error(w, constant.InternalError, http.StatusInternalServerError)
+	return s.captureFail(e, constant.UnexpectedError)
 }

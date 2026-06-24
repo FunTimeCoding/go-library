@@ -22,11 +22,6 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
-// ClientError defines model for ClientError.
-type ClientError struct {
-	Error string `json:"error"`
-}
-
 // Container defines model for Container.
 type Container struct {
 	Cpus       *int    `json:"cpus,omitempty"`
@@ -85,6 +80,11 @@ type CreateMachineRequest struct {
 type CreateMachineResult struct {
 	Identifier int64   `json:"identifier"`
 	Status     *string `json:"status,omitempty"`
+}
+
+// Error defines model for Error.
+type Error struct {
+	Error string `json:"error"`
 }
 
 // ErrorResponse defines model for ErrorResponse.
@@ -199,9 +199,6 @@ type TaskResult struct {
 
 // Instance defines model for Instance.
 type Instance = string
-
-// Error defines model for Error.
-type Error = ErrorResponse
 
 // ListContainersParams defines parameters for ListContainers.
 type ListContainersParams struct {
@@ -1747,10 +1744,6 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	return m
 }
 
-type ClientErrorJSONResponse ClientError
-
-type ErrorJSONResponse ErrorResponse
-
 type ListContainersRequestObject struct {
 	Params ListContainersParams
 }
@@ -1773,7 +1766,7 @@ func (response ListContainers200JSONResponse) VisitListContainersResponse(w http
 	return err
 }
 
-type ListContainers400JSONResponse struct{ ClientErrorJSONResponse }
+type ListContainers400JSONResponse Error
 
 func (response ListContainers400JSONResponse) VisitListContainersResponse(w http.ResponseWriter) error {
 
@@ -1787,7 +1780,7 @@ func (response ListContainers400JSONResponse) VisitListContainersResponse(w http
 	return err
 }
 
-type ListContainers500JSONResponse struct{ ErrorJSONResponse }
+type ListContainers500JSONResponse ErrorResponse
 
 func (response ListContainers500JSONResponse) VisitListContainersResponse(w http.ResponseWriter) error {
 
@@ -1824,7 +1817,7 @@ func (response GetContainer200JSONResponse) VisitGetContainerResponse(w http.Res
 	return err
 }
 
-type GetContainer400JSONResponse struct{ ClientErrorJSONResponse }
+type GetContainer400JSONResponse Error
 
 func (response GetContainer400JSONResponse) VisitGetContainerResponse(w http.ResponseWriter) error {
 
@@ -1838,15 +1831,21 @@ func (response GetContainer400JSONResponse) VisitGetContainerResponse(w http.Res
 	return err
 }
 
-type GetContainer404Response struct {
-}
+type GetContainer404JSONResponse Error
 
-func (response GetContainer404Response) VisitGetContainerResponse(w http.ResponseWriter) error {
+func (response GetContainer404JSONResponse) VisitGetContainerResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type GetContainer500JSONResponse struct{ ErrorJSONResponse }
+type GetContainer500JSONResponse ErrorResponse
 
 func (response GetContainer500JSONResponse) VisitGetContainerResponse(w http.ResponseWriter) error {
 
@@ -1883,7 +1882,7 @@ func (response ListContainerSnapshots200JSONResponse) VisitListContainerSnapshot
 	return err
 }
 
-type ListContainerSnapshots400JSONResponse struct{ ClientErrorJSONResponse }
+type ListContainerSnapshots400JSONResponse Error
 
 func (response ListContainerSnapshots400JSONResponse) VisitListContainerSnapshotsResponse(w http.ResponseWriter) error {
 
@@ -1897,15 +1896,21 @@ func (response ListContainerSnapshots400JSONResponse) VisitListContainerSnapshot
 	return err
 }
 
-type ListContainerSnapshots404Response struct {
-}
+type ListContainerSnapshots404JSONResponse Error
 
-func (response ListContainerSnapshots404Response) VisitListContainerSnapshotsResponse(w http.ResponseWriter) error {
+func (response ListContainerSnapshots404JSONResponse) VisitListContainerSnapshotsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type ListContainerSnapshots500JSONResponse struct{ ErrorJSONResponse }
+type ListContainerSnapshots500JSONResponse ErrorResponse
 
 func (response ListContainerSnapshots500JSONResponse) VisitListContainerSnapshotsResponse(w http.ResponseWriter) error {
 
@@ -1943,7 +1948,7 @@ func (response CreateContainerSnapshot200JSONResponse) VisitCreateContainerSnaps
 	return err
 }
 
-type CreateContainerSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+type CreateContainerSnapshot400JSONResponse Error
 
 func (response CreateContainerSnapshot400JSONResponse) VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error {
 
@@ -1957,15 +1962,21 @@ func (response CreateContainerSnapshot400JSONResponse) VisitCreateContainerSnaps
 	return err
 }
 
-type CreateContainerSnapshot404Response struct {
-}
+type CreateContainerSnapshot404JSONResponse Error
 
-func (response CreateContainerSnapshot404Response) VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error {
+func (response CreateContainerSnapshot404JSONResponse) VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type CreateContainerSnapshot500JSONResponse struct{ ErrorJSONResponse }
+type CreateContainerSnapshot500JSONResponse ErrorResponse
 
 func (response CreateContainerSnapshot500JSONResponse) VisitCreateContainerSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2003,7 +2014,7 @@ func (response DeleteContainerSnapshot200JSONResponse) VisitDeleteContainerSnaps
 	return err
 }
 
-type DeleteContainerSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+type DeleteContainerSnapshot400JSONResponse Error
 
 func (response DeleteContainerSnapshot400JSONResponse) VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2017,15 +2028,21 @@ func (response DeleteContainerSnapshot400JSONResponse) VisitDeleteContainerSnaps
 	return err
 }
 
-type DeleteContainerSnapshot404Response struct {
-}
+type DeleteContainerSnapshot404JSONResponse Error
 
-func (response DeleteContainerSnapshot404Response) VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error {
+func (response DeleteContainerSnapshot404JSONResponse) VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type DeleteContainerSnapshot500JSONResponse struct{ ErrorJSONResponse }
+type DeleteContainerSnapshot500JSONResponse ErrorResponse
 
 func (response DeleteContainerSnapshot500JSONResponse) VisitDeleteContainerSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2063,7 +2080,7 @@ func (response RollbackContainerSnapshot200JSONResponse) VisitRollbackContainerS
 	return err
 }
 
-type RollbackContainerSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+type RollbackContainerSnapshot400JSONResponse Error
 
 func (response RollbackContainerSnapshot400JSONResponse) VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2077,15 +2094,21 @@ func (response RollbackContainerSnapshot400JSONResponse) VisitRollbackContainerS
 	return err
 }
 
-type RollbackContainerSnapshot404Response struct {
-}
+type RollbackContainerSnapshot404JSONResponse Error
 
-func (response RollbackContainerSnapshot404Response) VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error {
+func (response RollbackContainerSnapshot404JSONResponse) VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type RollbackContainerSnapshot500JSONResponse struct{ ErrorJSONResponse }
+type RollbackContainerSnapshot500JSONResponse ErrorResponse
 
 func (response RollbackContainerSnapshot500JSONResponse) VisitRollbackContainerSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2142,7 +2165,7 @@ func (response ListMachines200JSONResponse) VisitListMachinesResponse(w http.Res
 	return err
 }
 
-type ListMachines400JSONResponse struct{ ClientErrorJSONResponse }
+type ListMachines400JSONResponse Error
 
 func (response ListMachines400JSONResponse) VisitListMachinesResponse(w http.ResponseWriter) error {
 
@@ -2156,7 +2179,7 @@ func (response ListMachines400JSONResponse) VisitListMachinesResponse(w http.Res
 	return err
 }
 
-type ListMachines500JSONResponse struct{ ErrorJSONResponse }
+type ListMachines500JSONResponse ErrorResponse
 
 func (response ListMachines500JSONResponse) VisitListMachinesResponse(w http.ResponseWriter) error {
 
@@ -2193,7 +2216,7 @@ func (response CreateMachine200JSONResponse) VisitCreateMachineResponse(w http.R
 	return err
 }
 
-type CreateMachine400JSONResponse struct{ ClientErrorJSONResponse }
+type CreateMachine400JSONResponse Error
 
 func (response CreateMachine400JSONResponse) VisitCreateMachineResponse(w http.ResponseWriter) error {
 
@@ -2207,7 +2230,7 @@ func (response CreateMachine400JSONResponse) VisitCreateMachineResponse(w http.R
 	return err
 }
 
-type CreateMachine500JSONResponse struct{ ErrorJSONResponse }
+type CreateMachine500JSONResponse ErrorResponse
 
 func (response CreateMachine500JSONResponse) VisitCreateMachineResponse(w http.ResponseWriter) error {
 
@@ -2244,7 +2267,7 @@ func (response DeleteMachine200JSONResponse) VisitDeleteMachineResponse(w http.R
 	return err
 }
 
-type DeleteMachine400JSONResponse struct{ ClientErrorJSONResponse }
+type DeleteMachine400JSONResponse Error
 
 func (response DeleteMachine400JSONResponse) VisitDeleteMachineResponse(w http.ResponseWriter) error {
 
@@ -2258,15 +2281,21 @@ func (response DeleteMachine400JSONResponse) VisitDeleteMachineResponse(w http.R
 	return err
 }
 
-type DeleteMachine404Response struct {
-}
+type DeleteMachine404JSONResponse Error
 
-func (response DeleteMachine404Response) VisitDeleteMachineResponse(w http.ResponseWriter) error {
+func (response DeleteMachine404JSONResponse) VisitDeleteMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type DeleteMachine500JSONResponse struct{ ErrorJSONResponse }
+type DeleteMachine500JSONResponse ErrorResponse
 
 func (response DeleteMachine500JSONResponse) VisitDeleteMachineResponse(w http.ResponseWriter) error {
 
@@ -2303,7 +2332,7 @@ func (response GetMachine200JSONResponse) VisitGetMachineResponse(w http.Respons
 	return err
 }
 
-type GetMachine400JSONResponse struct{ ClientErrorJSONResponse }
+type GetMachine400JSONResponse Error
 
 func (response GetMachine400JSONResponse) VisitGetMachineResponse(w http.ResponseWriter) error {
 
@@ -2317,15 +2346,21 @@ func (response GetMachine400JSONResponse) VisitGetMachineResponse(w http.Respons
 	return err
 }
 
-type GetMachine404Response struct {
-}
+type GetMachine404JSONResponse Error
 
-func (response GetMachine404Response) VisitGetMachineResponse(w http.ResponseWriter) error {
+func (response GetMachine404JSONResponse) VisitGetMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type GetMachine500JSONResponse struct{ ErrorJSONResponse }
+type GetMachine500JSONResponse ErrorResponse
 
 func (response GetMachine500JSONResponse) VisitGetMachineResponse(w http.ResponseWriter) error {
 
@@ -2362,7 +2397,7 @@ func (response ResetMachine200JSONResponse) VisitResetMachineResponse(w http.Res
 	return err
 }
 
-type ResetMachine400JSONResponse struct{ ClientErrorJSONResponse }
+type ResetMachine400JSONResponse Error
 
 func (response ResetMachine400JSONResponse) VisitResetMachineResponse(w http.ResponseWriter) error {
 
@@ -2376,15 +2411,21 @@ func (response ResetMachine400JSONResponse) VisitResetMachineResponse(w http.Res
 	return err
 }
 
-type ResetMachine404Response struct {
-}
+type ResetMachine404JSONResponse Error
 
-func (response ResetMachine404Response) VisitResetMachineResponse(w http.ResponseWriter) error {
+func (response ResetMachine404JSONResponse) VisitResetMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type ResetMachine500JSONResponse struct{ ErrorJSONResponse }
+type ResetMachine500JSONResponse ErrorResponse
 
 func (response ResetMachine500JSONResponse) VisitResetMachineResponse(w http.ResponseWriter) error {
 
@@ -2421,7 +2462,7 @@ func (response ShutdownMachine200JSONResponse) VisitShutdownMachineResponse(w ht
 	return err
 }
 
-type ShutdownMachine400JSONResponse struct{ ClientErrorJSONResponse }
+type ShutdownMachine400JSONResponse Error
 
 func (response ShutdownMachine400JSONResponse) VisitShutdownMachineResponse(w http.ResponseWriter) error {
 
@@ -2435,15 +2476,21 @@ func (response ShutdownMachine400JSONResponse) VisitShutdownMachineResponse(w ht
 	return err
 }
 
-type ShutdownMachine404Response struct {
-}
+type ShutdownMachine404JSONResponse Error
 
-func (response ShutdownMachine404Response) VisitShutdownMachineResponse(w http.ResponseWriter) error {
+func (response ShutdownMachine404JSONResponse) VisitShutdownMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type ShutdownMachine500JSONResponse struct{ ErrorJSONResponse }
+type ShutdownMachine500JSONResponse ErrorResponse
 
 func (response ShutdownMachine500JSONResponse) VisitShutdownMachineResponse(w http.ResponseWriter) error {
 
@@ -2480,7 +2527,7 @@ func (response ListMachineSnapshots200JSONResponse) VisitListMachineSnapshotsRes
 	return err
 }
 
-type ListMachineSnapshots400JSONResponse struct{ ClientErrorJSONResponse }
+type ListMachineSnapshots400JSONResponse Error
 
 func (response ListMachineSnapshots400JSONResponse) VisitListMachineSnapshotsResponse(w http.ResponseWriter) error {
 
@@ -2494,15 +2541,21 @@ func (response ListMachineSnapshots400JSONResponse) VisitListMachineSnapshotsRes
 	return err
 }
 
-type ListMachineSnapshots404Response struct {
-}
+type ListMachineSnapshots404JSONResponse Error
 
-func (response ListMachineSnapshots404Response) VisitListMachineSnapshotsResponse(w http.ResponseWriter) error {
+func (response ListMachineSnapshots404JSONResponse) VisitListMachineSnapshotsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type ListMachineSnapshots500JSONResponse struct{ ErrorJSONResponse }
+type ListMachineSnapshots500JSONResponse ErrorResponse
 
 func (response ListMachineSnapshots500JSONResponse) VisitListMachineSnapshotsResponse(w http.ResponseWriter) error {
 
@@ -2540,7 +2593,7 @@ func (response CreateMachineSnapshot200JSONResponse) VisitCreateMachineSnapshotR
 	return err
 }
 
-type CreateMachineSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+type CreateMachineSnapshot400JSONResponse Error
 
 func (response CreateMachineSnapshot400JSONResponse) VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2554,15 +2607,21 @@ func (response CreateMachineSnapshot400JSONResponse) VisitCreateMachineSnapshotR
 	return err
 }
 
-type CreateMachineSnapshot404Response struct {
-}
+type CreateMachineSnapshot404JSONResponse Error
 
-func (response CreateMachineSnapshot404Response) VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error {
+func (response CreateMachineSnapshot404JSONResponse) VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type CreateMachineSnapshot500JSONResponse struct{ ErrorJSONResponse }
+type CreateMachineSnapshot500JSONResponse ErrorResponse
 
 func (response CreateMachineSnapshot500JSONResponse) VisitCreateMachineSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2600,7 +2659,7 @@ func (response DeleteMachineSnapshot200JSONResponse) VisitDeleteMachineSnapshotR
 	return err
 }
 
-type DeleteMachineSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+type DeleteMachineSnapshot400JSONResponse Error
 
 func (response DeleteMachineSnapshot400JSONResponse) VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2614,15 +2673,21 @@ func (response DeleteMachineSnapshot400JSONResponse) VisitDeleteMachineSnapshotR
 	return err
 }
 
-type DeleteMachineSnapshot404Response struct {
-}
+type DeleteMachineSnapshot404JSONResponse Error
 
-func (response DeleteMachineSnapshot404Response) VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error {
+func (response DeleteMachineSnapshot404JSONResponse) VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type DeleteMachineSnapshot500JSONResponse struct{ ErrorJSONResponse }
+type DeleteMachineSnapshot500JSONResponse ErrorResponse
 
 func (response DeleteMachineSnapshot500JSONResponse) VisitDeleteMachineSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2660,7 +2725,7 @@ func (response RollbackMachineSnapshot200JSONResponse) VisitRollbackMachineSnaps
 	return err
 }
 
-type RollbackMachineSnapshot400JSONResponse struct{ ClientErrorJSONResponse }
+type RollbackMachineSnapshot400JSONResponse Error
 
 func (response RollbackMachineSnapshot400JSONResponse) VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2674,15 +2739,21 @@ func (response RollbackMachineSnapshot400JSONResponse) VisitRollbackMachineSnaps
 	return err
 }
 
-type RollbackMachineSnapshot404Response struct {
-}
+type RollbackMachineSnapshot404JSONResponse Error
 
-func (response RollbackMachineSnapshot404Response) VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error {
+func (response RollbackMachineSnapshot404JSONResponse) VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type RollbackMachineSnapshot500JSONResponse struct{ ErrorJSONResponse }
+type RollbackMachineSnapshot500JSONResponse ErrorResponse
 
 func (response RollbackMachineSnapshot500JSONResponse) VisitRollbackMachineSnapshotResponse(w http.ResponseWriter) error {
 
@@ -2719,7 +2790,7 @@ func (response StartMachine200JSONResponse) VisitStartMachineResponse(w http.Res
 	return err
 }
 
-type StartMachine400JSONResponse struct{ ClientErrorJSONResponse }
+type StartMachine400JSONResponse Error
 
 func (response StartMachine400JSONResponse) VisitStartMachineResponse(w http.ResponseWriter) error {
 
@@ -2733,15 +2804,21 @@ func (response StartMachine400JSONResponse) VisitStartMachineResponse(w http.Res
 	return err
 }
 
-type StartMachine404Response struct {
-}
+type StartMachine404JSONResponse Error
 
-func (response StartMachine404Response) VisitStartMachineResponse(w http.ResponseWriter) error {
+func (response StartMachine404JSONResponse) VisitStartMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type StartMachine500JSONResponse struct{ ErrorJSONResponse }
+type StartMachine500JSONResponse ErrorResponse
 
 func (response StartMachine500JSONResponse) VisitStartMachineResponse(w http.ResponseWriter) error {
 
@@ -2778,7 +2855,7 @@ func (response StopMachine200JSONResponse) VisitStopMachineResponse(w http.Respo
 	return err
 }
 
-type StopMachine400JSONResponse struct{ ClientErrorJSONResponse }
+type StopMachine400JSONResponse Error
 
 func (response StopMachine400JSONResponse) VisitStopMachineResponse(w http.ResponseWriter) error {
 
@@ -2792,15 +2869,21 @@ func (response StopMachine400JSONResponse) VisitStopMachineResponse(w http.Respo
 	return err
 }
 
-type StopMachine404Response struct {
-}
+type StopMachine404JSONResponse Error
 
-func (response StopMachine404Response) VisitStopMachineResponse(w http.ResponseWriter) error {
+func (response StopMachine404JSONResponse) VisitStopMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type StopMachine500JSONResponse struct{ ErrorJSONResponse }
+type StopMachine500JSONResponse ErrorResponse
 
 func (response StopMachine500JSONResponse) VisitStopMachineResponse(w http.ResponseWriter) error {
 
@@ -2836,7 +2919,7 @@ func (response ListNodes200JSONResponse) VisitListNodesResponse(w http.ResponseW
 	return err
 }
 
-type ListNodes400JSONResponse struct{ ClientErrorJSONResponse }
+type ListNodes400JSONResponse Error
 
 func (response ListNodes400JSONResponse) VisitListNodesResponse(w http.ResponseWriter) error {
 
@@ -2850,7 +2933,7 @@ func (response ListNodes400JSONResponse) VisitListNodesResponse(w http.ResponseW
 	return err
 }
 
-type ListNodes500JSONResponse struct{ ErrorJSONResponse }
+type ListNodes500JSONResponse ErrorResponse
 
 func (response ListNodes500JSONResponse) VisitListNodesResponse(w http.ResponseWriter) error {
 
@@ -2887,7 +2970,7 @@ func (response ListNetworks200JSONResponse) VisitListNetworksResponse(w http.Res
 	return err
 }
 
-type ListNetworks400JSONResponse struct{ ClientErrorJSONResponse }
+type ListNetworks400JSONResponse Error
 
 func (response ListNetworks400JSONResponse) VisitListNetworksResponse(w http.ResponseWriter) error {
 
@@ -2901,15 +2984,21 @@ func (response ListNetworks400JSONResponse) VisitListNetworksResponse(w http.Res
 	return err
 }
 
-type ListNetworks404Response struct {
-}
+type ListNetworks404JSONResponse Error
 
-func (response ListNetworks404Response) VisitListNetworksResponse(w http.ResponseWriter) error {
+func (response ListNetworks404JSONResponse) VisitListNetworksResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type ListNetworks500JSONResponse struct{ ErrorJSONResponse }
+type ListNetworks500JSONResponse ErrorResponse
 
 func (response ListNetworks500JSONResponse) VisitListNetworksResponse(w http.ResponseWriter) error {
 
@@ -2946,7 +3035,7 @@ func (response GetNodeStatus200JSONResponse) VisitGetNodeStatusResponse(w http.R
 	return err
 }
 
-type GetNodeStatus400JSONResponse struct{ ClientErrorJSONResponse }
+type GetNodeStatus400JSONResponse Error
 
 func (response GetNodeStatus400JSONResponse) VisitGetNodeStatusResponse(w http.ResponseWriter) error {
 
@@ -2960,15 +3049,21 @@ func (response GetNodeStatus400JSONResponse) VisitGetNodeStatusResponse(w http.R
 	return err
 }
 
-type GetNodeStatus404Response struct {
-}
+type GetNodeStatus404JSONResponse Error
 
-func (response GetNodeStatus404Response) VisitGetNodeStatusResponse(w http.ResponseWriter) error {
+func (response GetNodeStatus404JSONResponse) VisitGetNodeStatusResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(404)
-	return nil
+	_, err := buf.WriteTo(w)
+	return err
 }
 
-type GetNodeStatus500JSONResponse struct{ ErrorJSONResponse }
+type GetNodeStatus500JSONResponse ErrorResponse
 
 func (response GetNodeStatus500JSONResponse) VisitGetNodeStatusResponse(w http.ResponseWriter) error {
 
@@ -3698,36 +3793,36 @@ func (sh *strictHandler) GetNodeStatus(w http.ResponseWriter, r *http.Request, n
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
+	"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",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

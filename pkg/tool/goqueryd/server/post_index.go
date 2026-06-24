@@ -1,26 +1,43 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/funtimecoding/go-library/pkg/errors"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) PostIndex(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	var body server.PostIndexJSONRequestBody
-	errors.PanicOnError(json.NewDecoder(r.Body).Decode(&body))
+	_ context.Context,
+	r server.PostIndexRequestObject,
+) (server.PostIndexResponseObject, error) {
 	collection := ""
 
-	if body.Collection != nil {
-		collection = *body.Collection
+	if r.Body.Collection != nil {
+		collection = *r.Body.Collection
 	}
 
 	results, e := s.service.IndexCollections(collection)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, results)
+
+	if e != nil {
+		return server.PostIndex500JSONResponse(
+			*s.captureFail(
+				e,
+				constant.UnexpectedError,
+			),
+		), nil
+	}
+
+	converted := make(server.PostIndex200JSONResponse, len(results))
+
+	for i, r := range results {
+		converted[i] = &server.IndexResult{
+			Collection: r.Collection,
+			Indexed:    r.Indexed,
+			Updated:    r.Updated,
+			Unchanged:  r.Unchanged,
+			Removed:    r.Removed,
+		}
+	}
+
+	return converted, nil
 }

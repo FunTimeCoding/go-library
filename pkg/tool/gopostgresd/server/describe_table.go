@@ -10,6 +10,10 @@ func (s *Server) DescribeTable(
 	c context.Context,
 	r server.DescribeTableRequestObject,
 ) (server.DescribeTableResponseObject, error) {
+	if fail, okay := s.resolveInstance(r.Params.Instance); !okay {
+		return server.DescribeTable400JSONResponse(*fail), nil
+	}
+
 	schema := "public"
 
 	if r.Params.Schema != nil {

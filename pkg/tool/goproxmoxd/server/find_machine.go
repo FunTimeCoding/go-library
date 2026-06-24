@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/funtimecoding/go-library/pkg/errors/not_found"
 	"github.com/funtimecoding/go-library/pkg/proxmox"
 	upstream "github.com/luthermonson/go-proxmox"
 )
@@ -46,5 +47,5 @@ func findMachine(
 		}
 	}
 
-	return nil, nil
+	return nil, not_found.New("machine", identifier)
 }

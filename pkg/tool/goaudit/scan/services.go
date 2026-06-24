@@ -11,6 +11,7 @@ import (
 func Services(
 	v *virtual_file_system.System,
 	repo string,
+	configuration *Configuration,
 ) []*Service {
 	var result []*Service
 	toolDirectory := "pkg/tool"
@@ -24,7 +25,13 @@ func Services(
 			continue
 		}
 
-		s := scanService(v, filepath.Join(toolDirectory, name), name, repo)
+		s := scanService(
+			v,
+			filepath.Join(toolDirectory, name),
+			name,
+			repo,
+			configuration,
+		)
 
 		if s != nil {
 			result = append(result, s)

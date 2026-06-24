@@ -1,65 +1,46 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateDeviceTunnelTermination(
-	w http.ResponseWriter,
-	q *http.Request,
-	name string,
-) {
-	var body server.CreateTunnelTerminationRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	t, e := s.client.TunnelByName(body.Tunnel)
+	_ context.Context,
+	r server.CreateDeviceTunnelTerminationRequestObject,
+) (server.CreateDeviceTunnelTerminationResponseObject, error) {
+	t, e := s.client.TunnelByName(r.Body.Tunnel)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateDeviceTunnelTermination500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	d, f := s.client.DeviceByName(name)
+	d, f := s.client.DeviceByName(r.Name)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateDeviceTunnelTermination500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	i, g := s.client.DeviceInterfaceByName(d, body.Interface)
+	i, g := s.client.DeviceInterfaceByName(d, r.Body.Interface)
 
 	if g != nil {
-		s.captureDetail(w, g)
-
-		return
+		return server.CreateDeviceTunnelTermination500JSONResponse(*s.captureDetail(g)), nil
 	}
 
 	tt, h := s.client.CreateTunnelTermination(
 		t,
 		constant.InterfaceAddress,
 		int64(i.Identifier),
-		body.Role,
+		r.Body.Role,
 	)
 
 	if h != nil {
-		s.captureDetail(w, h)
-
-		return
+		return server.CreateDeviceTunnelTermination500JSONResponse(*s.captureDetail(h)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, convert.TunnelTermination(tt))
+	return server.CreateDeviceTunnelTermination201JSONResponse(
+		*convert.TunnelTermination(tt),
+	), nil
 }

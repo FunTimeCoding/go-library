@@ -1,56 +1,34 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateAddress(
-	w http.ResponseWriter,
-	q *http.Request,
-	name string,
-) {
-	var body server.CreateAddressRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	d, e := s.client.DeviceByName(name)
+	_ context.Context,
+	r server.CreateAddressRequestObject,
+) (server.CreateAddressResponseObject, error) {
+	d, e := s.client.DeviceByName(r.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateAddress500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	i, f := s.client.DeviceInterfaceByName(d, body.Interface)
+	i, f := s.client.DeviceInterfaceByName(d, r.Body.Interface)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateAddress500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	a, g := s.client.CreateAddress(i.Identifier, body.Address)
+	a, g := s.client.CreateAddress(i.Identifier, r.Body.Address)
 
 	if g != nil {
-		s.captureDetail(w, g)
-
-		return
+		return server.CreateAddress500JSONResponse(*s.captureDetail(g)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.Address{
-			Identifier: a.Identifier,
-			Address:    a.Address.String(),
-		},
-	)
+	return server.CreateAddress201JSONResponse{
+		Identifier: a.Identifier,
+		Address:    a.Address.String(),
+	}, nil
 }

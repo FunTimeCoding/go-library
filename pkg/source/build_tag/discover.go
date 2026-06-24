@@ -32,6 +32,7 @@ func Discover(directory string) []string {
 
 					if name == "vendor" ||
 						name == "testdata" ||
+						name == "tmp" ||
 						name != constant.CurrentDirectory &&
 							strings.HasPrefix(
 								name,

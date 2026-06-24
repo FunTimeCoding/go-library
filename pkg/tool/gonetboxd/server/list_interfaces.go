@@ -1,31 +1,28 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
 func (s *Server) ListInterfaces(
-	w http.ResponseWriter,
-	_ *http.Request,
-	name string,
-) {
-	d, e := s.client.DeviceByName(name)
+	_ context.Context,
+	r server.ListInterfacesRequestObject,
+) (server.ListInterfacesResponseObject, error) {
+	d, e := s.client.DeviceByName(r.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListInterfaces500JSONResponse(*s.captureDetail(e)), nil
 	}
 
 	interfaces, f := s.client.DeviceInterfaces(d.Identifier)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.ListInterfaces500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	web.EncodeNotation(w, convert.Interfaces(interfaces))
+	return server.ListInterfaces200JSONResponse(
+		convert.Interfaces(interfaces),
+	), nil
 }

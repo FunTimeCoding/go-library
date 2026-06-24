@@ -1,22 +1,22 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
 func (s *Server) ListPrefixes(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListPrefixesRequestObject,
+) (server.ListPrefixesResponseObject, error) {
 	prefixes, e := s.client.Prefixes()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListPrefixes500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.EncodeNotation(w, convert.Prefixes(prefixes))
+	return server.ListPrefixes200JSONResponse(
+		convert.Prefixes(prefixes),
+	), nil
 }

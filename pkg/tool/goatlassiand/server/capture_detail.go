@@ -10,8 +10,8 @@ import (
 
 func (s *Server) captureDetail(e error) *server.ErrorResponse {
 	if j, okay := errors.AsType[*jira.Error](e); okay {
-		if len(j.ErrorMessages) > 0 {
-			return s.captureFail(e, j.ErrorMessages[0])
+		if m := jiraMessage(j); m != "" {
+			return s.captureFail(e, m)
 		}
 	}
 

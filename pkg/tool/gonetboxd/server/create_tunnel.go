@@ -1,42 +1,26 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateTunnel(
-	w http.ResponseWriter,
-	q *http.Request,
-) {
-	var body server.CreateTunnelRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	g, e := s.client.TunnelGroupByName(body.Group)
+	_ context.Context,
+	r server.CreateTunnelRequestObject,
+) (server.CreateTunnelResponseObject, error) {
+	g, e := s.client.TunnelGroupByName(r.Body.Group)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateTunnel500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	t, f := s.client.CreateTunnel(body.Name, body.Encapsulation, g)
+	t, f := s.client.CreateTunnel(r.Body.Name, r.Body.Encapsulation, g)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateTunnel500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, convert.Tunnel(t))
+	return server.CreateTunnel201JSONResponse(*convert.Tunnel(t)), nil
 }

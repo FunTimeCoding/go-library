@@ -1,27 +1,24 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListClusters(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListClustersRequestObject,
+) (server.ListClustersResponseObject, error) {
 	clusters, e := s.client.Clusters()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListClusters500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	result := make([]server.Cluster, 0, len(clusters))
+	result := make([]*server.Cluster, 0, len(clusters))
 
 	for _, cl := range clusters {
-		entry := server.Cluster{Identifier: cl.Identifier, Name: cl.Name}
+		entry := &server.Cluster{Identifier: cl.Identifier, Name: cl.Name}
 
 		if cl.Raw.Type.Name != "" {
 			entry.Type = &cl.Raw.Type.Name
@@ -30,5 +27,5 @@ func (s *Server) ListClusters(
 		result = append(result, entry)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.ListClusters200JSONResponse(result), nil
 }

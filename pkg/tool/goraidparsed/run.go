@@ -25,6 +25,7 @@ func Run(
 			lifecycleServer.New(
 				web.AddressPort(o.Port),
 				func(m *http.ServeMux) {
+					t := telemetry.NewEnvironment()
 					generated.HandlerFromMux(
 						generated.NewStrictHandler(
 							server.New(
@@ -39,8 +40,6 @@ func Run(
 									f generated.StrictHandlerFunc,
 									operation string,
 								) generated.StrictHandlerFunc {
-									t := telemetry.NewEnvironment()
-
 									return func(
 										x context.Context,
 										w http.ResponseWriter,

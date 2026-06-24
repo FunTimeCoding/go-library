@@ -1,39 +1,22 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateTag(
-	w http.ResponseWriter,
-	q *http.Request,
-) {
-	var body server.CreateNameRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	t, e := s.client.CreateTag(body.Name)
+	_ context.Context,
+	r server.CreateTagRequestObject,
+) (server.CreateTagResponseObject, error) {
+	t, e := s.client.CreateTag(r.Body.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateTag500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.Tag{
-			Identifier: t.Identifier,
-			Name:       t.Name,
-		},
-	)
+	return server.CreateTag201JSONResponse{
+		Identifier: t.Identifier,
+		Name:       t.Name,
+	}, nil
 }

@@ -14,7 +14,7 @@ func (s *Server) GetGear(
 
 	if e != nil {
 		return server.GetGear500JSONResponse(
-			*s.captureFail(e, "failed to fetch gear"),
+			*s.captureDetail(e),
 		), nil
 	}
 

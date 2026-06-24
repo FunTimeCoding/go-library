@@ -1,47 +1,27 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateVirtualInterface(
-	w http.ResponseWriter,
-	q *http.Request,
-	name string,
-) {
-	var body server.CreateVirtualInterfaceRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	vm, e := s.client.VirtualMachineByName(name)
+	_ context.Context,
+	r server.CreateVirtualInterfaceRequestObject,
+) (server.CreateVirtualInterfaceResponseObject, error) {
+	vm, e := s.client.VirtualMachineByName(r.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateVirtualInterface500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	i, f := s.client.CreateVirtualInterface(vm, body.Name)
+	i, f := s.client.CreateVirtualInterface(vm, r.Body.Name)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateVirtualInterface500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.VirtualInterface{
-			Identifier: i.GetId(), Name: i.GetName(),
-		},
-	)
+	return server.CreateVirtualInterface201JSONResponse{
+		Identifier: i.GetId(), Name: i.GetName(),
+	}, nil
 }

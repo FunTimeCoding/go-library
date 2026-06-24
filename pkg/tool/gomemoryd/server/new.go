@@ -5,7 +5,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/service"
 )
 
-func New(s *service.Service, r face.Reporter) *Server {
+func New(
+	s *service.Service,
+	r face.Reporter,
+) *Server {
 	return &Server{
 		service:  s,
 		reporter: r,

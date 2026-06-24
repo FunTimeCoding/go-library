@@ -1,23 +1,20 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
+	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
 )
 
 func (s *Server) GetDevice(
-	w http.ResponseWriter,
-	_ *http.Request,
-	name string,
-) {
-	d, e := s.client.DeviceByName(name)
+	_ context.Context,
+	r server.GetDeviceRequestObject,
+) (server.GetDeviceResponseObject, error) {
+	d, e := s.client.DeviceByName(r.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.GetDevice500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.EncodeNotation(w, convert.Device(d))
+	return server.GetDevice200JSONResponse(*convert.Device(d)), nil
 }

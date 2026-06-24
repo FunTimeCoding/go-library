@@ -12,7 +12,7 @@ func collect(
 			*result = append(*result, v.Tag)
 		}
 	case *constraint.NotExpr:
-		collect(v.X, result)
+		return
 	case *constraint.AndExpr:
 		collect(v.X, result)
 		collect(v.Y, result)

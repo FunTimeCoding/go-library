@@ -70,8 +70,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EntryResponse"
-        "400":
-          description: Missing or invalid fields.
         "500":
           description: Failed to add entry.
           content:
@@ -102,6 +100,10 @@ paths:
                 $ref: "#/components/schemas/EntryResponse"
         "404":
           description: Entry not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "500":
           description: Failed to update entry.
           content:
@@ -119,8 +121,6 @@ paths:
       responses:
         "204":
           description: Entry deleted successfully.
-        "404":
-          description: Entry not found.
         "500":
           description: Failed to delete entry.
           content:
@@ -197,6 +197,12 @@ components:
       properties:
         totalEntries:
           type: integer
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
     ErrorResponse:
       type: object
       required: [error, event_identifier]

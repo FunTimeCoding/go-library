@@ -1,35 +1,23 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/netbox/site"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreatePrefix(
-	w http.ResponseWriter,
-	q *http.Request,
-) {
-	var body server.CreatePrefixRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
+	_ context.Context,
+	r server.CreatePrefixRequestObject,
+) (server.CreatePrefixResponseObject, error) {
 	var si *site.Site
 
-	if body.Site != nil && *body.Site != "" {
-		found, e := s.client.SiteByName(*body.Site)
+	if r.Body.Site != nil && *r.Body.Site != "" {
+		found, e := s.client.SiteByName(*r.Body.Site)
 
 		if e != nil {
-			s.captureDetail(w, e)
-
-			return
+			return server.CreatePrefix500JSONResponse(*s.captureDetail(e)), nil
 		}
 
 		si = found
@@ -37,19 +25,15 @@ func (s *Server) CreatePrefix(
 
 	var description string
 
-	if body.Description != nil {
-		description = *body.Description
+	if r.Body.Description != nil {
+		description = *r.Body.Description
 	}
 
-	p, e := s.client.CreatePrefix(body.Prefix, si, description)
+	p, e := s.client.CreatePrefix(r.Body.Prefix, si, description)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreatePrefix500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, convert.Prefix(p))
+	return server.CreatePrefix201JSONResponse(*convert.Prefix(p)), nil
 }

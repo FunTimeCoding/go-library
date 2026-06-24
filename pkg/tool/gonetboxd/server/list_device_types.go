@@ -1,27 +1,24 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListDeviceTypes(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListDeviceTypesRequestObject,
+) (server.ListDeviceTypesResponseObject, error) {
 	types, e := s.client.DeviceTypes()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListDeviceTypes500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	result := make([]server.DeviceType, 0, len(types))
+	result := make([]*server.DeviceType, 0, len(types))
 
 	for _, t := range types {
-		entry := server.DeviceType{
+		entry := &server.DeviceType{
 			Identifier: t.Identifier,
 			Model:      t.Model,
 		}
@@ -33,5 +30,5 @@ func (s *Server) ListDeviceTypes(
 		result = append(result, entry)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.ListDeviceTypes200JSONResponse(result), nil
 }

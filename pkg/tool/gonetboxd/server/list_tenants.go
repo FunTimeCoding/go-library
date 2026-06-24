@@ -1,33 +1,30 @@
 package server
 
 import (
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) ListTenants(
-	w http.ResponseWriter,
-	_ *http.Request,
-) {
+	_ context.Context,
+	_ server.ListTenantsRequestObject,
+) (server.ListTenantsResponseObject, error) {
 	tenants, e := s.client.Tenants()
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.ListTenants500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	result := make([]server.Tenant, 0, len(tenants))
+	result := make([]*server.Tenant, 0, len(tenants))
 
 	for _, t := range tenants {
 		result = append(
 			result,
-			server.Tenant{
+			&server.Tenant{
 				Identifier: t.Identifier, Name: t.Name,
 			},
 		)
 	}
 
-	web.EncodeNotation(w, result)
+	return server.ListTenants200JSONResponse(result), nil
 }

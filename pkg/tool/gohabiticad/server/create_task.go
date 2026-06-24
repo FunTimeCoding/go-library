@@ -19,7 +19,15 @@ func (s *Server) CreateTask(
 		c.Notes = *r.Body.Notes
 	}
 
+	result, e := s.habitica.CreateTask(c)
+
+	if e != nil {
+		return server.CreateTask500JSONResponse(
+			*s.captureDetail(e),
+		), nil
+	}
+
 	return server.CreateTask201JSONResponse(
-		*convert.Task(s.habitica.MustCreateTask(c)),
+		*convert.Task(result),
 	), nil
 }

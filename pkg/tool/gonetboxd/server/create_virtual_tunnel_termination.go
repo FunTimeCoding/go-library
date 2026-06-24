@@ -1,65 +1,46 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/netbox/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/convert"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateVirtualTunnelTermination(
-	w http.ResponseWriter,
-	q *http.Request,
-	name string,
-) {
-	var body server.CreateTunnelTerminationRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	t, e := s.client.TunnelByName(body.Tunnel)
+	_ context.Context,
+	r server.CreateVirtualTunnelTerminationRequestObject,
+) (server.CreateVirtualTunnelTerminationResponseObject, error) {
+	t, e := s.client.TunnelByName(r.Body.Tunnel)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateVirtualTunnelTermination500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	vm, f := s.client.VirtualMachineByName(name)
+	vm, f := s.client.VirtualMachineByName(r.Name)
 
 	if f != nil {
-		s.captureDetail(w, f)
-
-		return
+		return server.CreateVirtualTunnelTermination500JSONResponse(*s.captureDetail(f)), nil
 	}
 
-	i, g := s.client.VirtualMachineInterfaceByName(vm, body.Interface)
+	i, g := s.client.VirtualMachineInterfaceByName(vm, r.Body.Interface)
 
 	if g != nil {
-		s.captureDetail(w, g)
-
-		return
+		return server.CreateVirtualTunnelTermination500JSONResponse(*s.captureDetail(g)), nil
 	}
 
 	tt, h := s.client.CreateTunnelTermination(
 		t,
 		constant.VirtualInterfaceAddress,
 		int64(i.GetId()),
-		body.Role,
+		r.Body.Role,
 	)
 
 	if h != nil {
-		s.captureDetail(w, h)
-
-		return
+		return server.CreateVirtualTunnelTermination500JSONResponse(*s.captureDetail(h)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(w, convert.TunnelTermination(tt))
+	return server.CreateVirtualTunnelTermination201JSONResponse(
+		*convert.TunnelTermination(tt),
+	), nil
 }

@@ -1,36 +1,21 @@
 package server
 
 import (
-	"encoding/json"
+	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/gonetboxd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) CreateSite(
-	w http.ResponseWriter,
-	q *http.Request,
-) {
-	var body server.CreateNameRequest
-
-	if e := json.NewDecoder(q.Body).Decode(&body); e != nil {
-		web.InvalidRequestBody(w)
-
-		return
-	}
-
-	i, e := s.client.CreateSite(body.Name)
+	_ context.Context,
+	r server.CreateSiteRequestObject,
+) (server.CreateSiteResponseObject, error) {
+	i, e := s.client.CreateSite(r.Body.Name)
 
 	if e != nil {
-		s.captureDetail(w, e)
-
-		return
+		return server.CreateSite500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	web.ObjectHeader(w)
-	w.WriteHeader(http.StatusCreated)
-	web.Encode(
-		w,
-		server.Site{Identifier: i.Identifier, Name: i.Name},
-	)
+	return server.CreateSite201JSONResponse{
+		Identifier: i.Identifier, Name: i.Name,
+	}, nil
 }

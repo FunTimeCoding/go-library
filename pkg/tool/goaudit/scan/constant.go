@@ -69,4 +69,17 @@ const (
 
 	IdentityMismatchKey = "identity_mismatch"
 	OpenAPIMismatchKey  = "openapi_mismatch"
+
+	BodylessErrorKey              = "bodyless_error"
+	ErrorResponseOnNon500Key      = "error_response_on_non_500"
+	ErrorOnServerErrorKey         = "error_on_server_error"
+	MissingErrorSchemaKey         = "missing_error_schema"
+	MissingErrorResponseSchemaKey = "missing_error_response_schema"
+	ResponseReferenceKey          = "response_ref"
+	NilNilReturnKey               = "nil_nil_return"
+	HttpErrorInStrictKey          = "http_error_in_strict"
+	MissingServerCaptureFailKey   = "missing_server_capture_fail"
+	MissingServerCaptureFailText  = "server/ has 500 responses but no capture_fail.go"
+	MissingStrictServerKey        = "missing_strict_server"
+	MissingStrictServerText       = "openapi.yaml exists but strict-server not enabled"
 )

@@ -51,6 +51,11 @@ type EditSessionRequest struct {
 	Topic       *string `json:"topic,omitempty"`
 }
 
+// Error defines model for Error.
+type Error struct {
+	Error string `json:"error"`
+}
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	Error           string `json:"error"`
@@ -2555,6 +2560,7 @@ type GetResolveResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ResolveResponse
+	JSON404      *Error
 	JSON409      *ResolveAmbiguousResponse
 	JSON500      *ErrorResponse
 }
@@ -2862,6 +2868,7 @@ type GetSessionDetailResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SessionDetailResponse
+	JSON404      *Error
 	JSON500      *ErrorResponse
 }
 
@@ -2893,6 +2900,7 @@ type PostSessionExportResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ExportResponse
+	JSON404      *Error
 	JSON500      *ErrorResponse
 }
 
@@ -3738,6 +3746,13 @@ func ParseGetResolveResponse(rsp *http.Response) (*GetResolveResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
 		var dest ResolveAmbiguousResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -4047,6 +4062,13 @@ func ParseGetSessionDetailResponse(rsp *http.Response) (*GetSessionDetailRespons
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -4079,6 +4101,13 @@ func ParsePostSessionExportResponse(rsp *http.Response) (*PostSessionExportRespo
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse

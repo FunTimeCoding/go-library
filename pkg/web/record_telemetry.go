@@ -6,7 +6,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/telemetry/record"
 )
 
-func RecordTelemetry(c face.Recorder, operation string, e error) {
+func RecordTelemetry(
+	c face.Recorder,
+	operation string,
+	e error,
+) {
 	outcome := constant.Success
 
 	if e != nil {

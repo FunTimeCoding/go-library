@@ -1,51 +1,67 @@
 package server
 
 import (
-	"github.com/funtimecoding/go-library/pkg/errors"
-	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
+	"context"
+	"github.com/funtimecoding/go-library/pkg/constant"
+	queryConstant "github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
-	"github.com/funtimecoding/go-library/pkg/web"
-	"net/http"
 )
 
 func (s *Server) GetList(
-	w http.ResponseWriter,
-	_ *http.Request,
-	v server.GetListParams,
-) {
+	_ context.Context,
+	r server.GetListRequestObject,
+) (server.GetListResponseObject, error) {
 	var metadata map[string]string
 
-	if v.Metadata != nil {
-		metadata = *v.Metadata
+	if r.Params.Metadata != nil {
+		metadata = *r.Params.Metadata
 	}
 
-	if v.SourceType != nil && *v.SourceType != "" {
+	if r.Params.SourceType != nil && *r.Params.SourceType != "" {
 		if metadata == nil {
 			metadata = map[string]string{}
 		}
 
-		metadata[constant.SourceType] = *v.SourceType
+		metadata[queryConstant.SourceType] = *r.Params.SourceType
 	}
 
 	limit := 10
 
-	if v.Limit != nil {
-		limit = *v.Limit
+	if r.Params.Limit != nil {
+		limit = *r.Params.Limit
 	}
 
 	offset := 0
 
-	if v.Offset != nil {
-		offset = *v.Offset
+	if r.Params.Offset != nil {
+		offset = *r.Params.Offset
 	}
 
 	outcome, e := s.service.ListDocuments(
-		v.Collection,
+		r.Params.Collection,
 		metadata,
 		limit,
 		offset,
-		v.Full != nil && *v.Full,
+		r.Params.Full != nil && *r.Params.Full,
 	)
-	errors.PanicOnError(e)
-	web.EncodeNotation(w, outcome)
+
+	if e != nil {
+		return server.GetList500JSONResponse(
+			*s.captureFail(
+				e,
+				constant.UnexpectedError,
+			),
+		), nil
+	}
+
+	result := server.GetList200JSONResponse{
+		Results: convertSearchResults(outcome.Results),
+	}
+
+	if len(outcome.Facets) > 0 {
+		facets := convertFacets(outcome.Facets)
+		result.Facets = &facets
+	}
+
+	return result, nil
 }

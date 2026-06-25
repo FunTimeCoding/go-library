@@ -7,7 +7,7 @@ var Identity = identity.New(
 	"Jira and Confluence bridge",
 	"goatlassiand",
 ).WithInstructions(
-	"Jira and Confluence - search and manage issues, transitions, checklists, comments, issue links. Confluence: search, read, create, and update pages.",
+	"Jira and Confluence - search and manage issues, transitions, checklists, comments, issue links. Confluence: search, read, create, update, and edit pages. Use confluence_edit_page for partial edits (old_text/new_text replacement) instead of rewriting the full page body.",
 )
 
 const (

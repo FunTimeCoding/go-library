@@ -68,7 +68,7 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 	bridge := m.Bridge
 
 	if bridge == "" {
-		bridge = "vnet0"
+		bridge = "vmbr0"
 	}
 
 	result = append(

@@ -58,7 +58,7 @@ func TestBuildOptionsDefaults(t *testing.T) {
 	)
 	assert.String(
 		t,
-		"virtio,bridge=vnet0",
+		"virtio,bridge=vmbr0",
 		requireOption(t, options, "net0").(string),
 	)
 	_, hasIDE := findOption(options, "ide2")

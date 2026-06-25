@@ -263,6 +263,10 @@ func (s *Server) register() {
 				mcp.Description("Import-from path for disk image, e.g. local:import/debian-13-generic-amd64.qcow2"),
 			),
 			mcp.WithString(
+				"cdrom",
+				mcp.Description("ISO volume to mount as CD-ROM, e.g. local:iso/debian-13.iso. Boots from CD-ROM first when set."),
+			),
+			mcp.WithString(
 				"bridge",
 				mcp.Description("Network bridge (default vnet0)"),
 			),
@@ -297,6 +301,45 @@ func (s *Server) register() {
 			),
 		),
 		mcp.NewTypedToolHandler(s.CreateMachine),
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.CloneMachine,
+			mcp.WithDescription(
+				"Clone a virtual machine. Waits for the clone task to complete before returning.",
+			),
+			mcp.WithNumber(
+				"identifier",
+				mcp.Required(),
+				mcp.Description("Source machine ID to clone from"),
+			),
+			mcp.WithString(
+				"name",
+				mcp.Required(),
+				mcp.Description("Name for the new VM"),
+			),
+			mcp.WithString(
+				"node",
+				mcp.Description("Node name (omit to search all nodes)"),
+			),
+			mcp.WithNumber(
+				"new_identifier",
+				mcp.Description("VMID for the clone (auto-allocated when omitted)"),
+			),
+			mcp.WithBoolean(
+				"full",
+				mcp.Description("Full clone instead of linked clone (default false)"),
+			),
+			mcp.WithString(
+				"storage",
+				mcp.Description("Target storage for the clone"),
+			),
+			mcp.WithString(
+				"snapshot",
+				mcp.Description("Clone from a specific snapshot instead of current state"),
+			),
+		),
+		mcp.NewTypedToolHandler(s.CloneMachine),
 	)
 	s.server.AddTool(
 		mcp.NewTool(
@@ -443,5 +486,38 @@ func (s *Server) register() {
 			),
 		),
 		mcp.NewTypedToolHandler(s.ListNetworks),
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.ListStorages,
+			mcp.WithDescription(
+				"List storage backends on a node. Shows type, content types, and usage.",
+			),
+			mcp.WithString(
+				"node",
+				mcp.Required(),
+				mcp.Description("Node name"),
+			),
+		),
+		mcp.NewTypedToolHandler(s.ListStorages),
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.ListStorageContent,
+			mcp.WithDescription(
+				"List content on a storage backend. Returns ISOs, disk images, templates, and backups with their volume identifiers.",
+			),
+			mcp.WithString(
+				"node",
+				mcp.Required(),
+				mcp.Description("Node name"),
+			),
+			mcp.WithString(
+				"storage",
+				mcp.Required(),
+				mcp.Description("Storage name from list_storages"),
+			),
+		),
+		mcp.NewTypedToolHandler(s.ListStorageContent),
 	)
 }

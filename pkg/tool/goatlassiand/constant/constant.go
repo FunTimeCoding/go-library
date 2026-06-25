@@ -38,6 +38,7 @@ const (
 	ConfluenceUpdatePage      = "confluence_update_page"
 	ConfluenceListSpaces      = "confluence_list_spaces"
 	ConfluenceGetPageChildren = "confluence_get_page_children"
+	ConfluenceEditPage        = "confluence_edit_page"
 	ConfluenceAddComment      = "confluence_add_comment"
 	AllowedValueLimit         = 5
 
@@ -52,6 +53,8 @@ const (
 	IssueType            = "issue_type"
 	Labels               = "labels"
 	NoDiff               = "no_diff"
+	NewText              = "new_text"
+	OldText              = "old_text"
 	Index                = "index"
 	LinkType             = "link_type"
 	Text                 = "text"

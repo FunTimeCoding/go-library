@@ -1,13 +1,6 @@
 package confluence
 
-import (
-	"fmt"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/basic/response"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page/page_put"
-	"github.com/funtimecoding/go-library/pkg/notation"
-)
+import "github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 
 func (c *Client) UpdatePage(
 	identifier string,
@@ -21,23 +14,11 @@ func (c *Client) UpdatePage(
 		return nil, e
 	}
 
-	body, f := c.basic.PutV2Path(
-		fmt.Sprintf("%s/%s", constant.Page, identifier),
-		page_put.New(
-			identifier,
-			title,
-			page.ToStorage(markdown),
-			current.Raw.Version.Number+1,
-			message,
-		).Encode(),
+	return c.UpdatePageAt(
+		identifier,
+		title,
+		markdown,
+		current.Raw.Version.Number+1,
+		message,
 	)
-
-	if f != nil {
-		return nil, f
-	}
-
-	var result *response.Page
-	notation.MustDecode(body, &result, false)
-
-	return page.New(result, c.host), nil
 }

@@ -1,0 +1,86 @@
+package model_context
+
+import (
+	"context"
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/errors/not_found"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/model_context/argument"
+	"github.com/luthermonson/go-proxmox"
+	"github.com/mark3labs/mcp-go/mcp"
+)
+
+func (s *Server) CloneMachine(
+	x context.Context,
+	_ mcp.CallToolRequest,
+	a argument.CloneMachine,
+) (*mcp.CallToolResult, error) {
+	if a.Identifier == 0 {
+		return response.Fail("identifier is required")
+	}
+
+	if a.Name == "" {
+		return response.Fail("name is required")
+	}
+
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.Client(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	vm, e := findMachine(c, a.Identifier, a.Node)
+
+	if e != nil {
+		if errors.Is(e, not_found.Sentinel) {
+			return response.Fail("%s", e)
+		}
+
+		return s.captureDetail(e)
+	}
+
+	options := &proxmox.VirtualMachineCloneOptions{
+		Name: a.Name,
+	}
+
+	if a.NewID > 0 {
+		options.NewID = a.NewID
+	}
+
+	if a.Full {
+		options.Full = true
+	}
+
+	if a.Storage != "" {
+		options.Storage = a.Storage
+	}
+
+	if a.Snapshot != "" {
+		options.SnapName = a.Snapshot
+	}
+
+	newID, task, e := c.CloneMachine(vm, options)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	e = c.WaitForTask(task, 600)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	return response.SuccessAny(
+		map[string]any{
+			"identifier": newID,
+			"status":     "cloned",
+		},
+	)
+}

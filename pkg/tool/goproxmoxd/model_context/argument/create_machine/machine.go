@@ -9,6 +9,7 @@ type Machine struct {
 	DiskSize        int    `json:"disk_size"`
 	DiskStorage     string `json:"disk_storage"`
 	DiskImport      string `json:"disk_import"`
+	CDROM           string `json:"cdrom"`
 	Bridge          string `json:"bridge"`
 	OSType          string `json:"os_type"`
 	Start           bool   `json:"start"`

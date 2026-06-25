@@ -55,7 +55,16 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		)
 	}
 
-	result = append(result, option("boot", "order=scsi0"))
+	if m.CDROM != "" {
+		result = append(
+			result,
+			option("ide2", fmt.Sprintf("%s,media=cdrom", m.CDROM)),
+		)
+		result = append(result, option("boot", "order=ide2;scsi0"))
+	} else {
+		result = append(result, option("boot", "order=scsi0"))
+	}
+
 	bridge := m.Bridge
 
 	if bridge == "" {

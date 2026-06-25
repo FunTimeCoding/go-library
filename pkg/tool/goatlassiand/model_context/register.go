@@ -147,6 +147,42 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.ConfluenceEditPage,
+			mcp.WithDescription(
+				"Edit a Confluence page by replacing a text fragment. Call confluence_get_page first to read the current content. The old_text must appear exactly once in the page.",
+			),
+			mcp.WithString(
+				parameter.Identifier,
+				mcp.Required(),
+				mcp.Description("Page ID"),
+			),
+			mcp.WithString(
+				constant.OldText,
+				mcp.Required(),
+				mcp.Description(
+					"The exact text to find and replace. Must match exactly once.",
+				),
+			),
+			mcp.WithString(
+				constant.NewText,
+				mcp.Required(),
+				mcp.Description("The replacement text"),
+			),
+			mcp.WithString(
+				parameter.Title,
+				mcp.Description(
+					"New page title. If omitted, the current title is kept.",
+				),
+			),
+			mcp.WithString(
+				parameter.Message,
+				mcp.Description("Version comment"),
+			),
+		),
+		s.editPage,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.ConfluenceListSpaces,
 			mcp.WithDescription("List all visible Confluence spaces"),
 		),

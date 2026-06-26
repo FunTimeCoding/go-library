@@ -39,6 +39,7 @@ const (
 	ConfluenceListSpaces      = "confluence_list_spaces"
 	ConfluenceGetPageChildren = "confluence_get_page_children"
 	ConfluenceEditPage        = "confluence_edit_page"
+	ConfluenceSetPageStatus   = "confluence_set_page_status"
 	ConfluenceAddComment      = "confluence_add_comment"
 	AllowedValueLimit         = 5
 
@@ -48,6 +49,7 @@ const (
 	Assignee             = "assignee"
 	Comments             = "include_comments"
 	CustomFields         = "include_custom_fields"
+	Draft                = "draft"
 	ExpandFields         = "expand_fields"
 	IncludeDescriptions  = "include_descriptions"
 	IssueType            = "issue_type"
@@ -55,6 +57,7 @@ const (
 	NoDiff               = "no_diff"
 	NewText              = "new_text"
 	OldText              = "old_text"
+	PageStatus           = "status"
 	Index                = "index"
 	LinkType             = "link_type"
 	Text                 = "text"

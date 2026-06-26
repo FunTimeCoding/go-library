@@ -1,0 +1,34 @@
+package model_context
+
+import (
+	"context"
+	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/model_context/argument"
+	"github.com/mark3labs/mcp-go/mcp"
+)
+
+func (s *Server) DeleteSnippet(
+	x context.Context,
+	_ mcp.CallToolRequest,
+	a argument.DeleteSnippet,
+) (*mcp.CallToolResult, error) {
+	if a.Name == "" {
+		return response.Fail("name is required")
+	}
+
+	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
+
+	if e != nil {
+		return response.Fail("%s", e)
+	}
+
+	c, e := s.service.SSHClient(instance)
+
+	if e != nil {
+		return s.captureDetail(e)
+	}
+
+	c.RemoveFile(snippetPath(a.Name))
+
+	return response.Success("deleted")
+}

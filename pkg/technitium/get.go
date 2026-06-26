@@ -1,11 +1,13 @@
 package technitium
 
+import "encoding/json"
+
 func (c *Client) get(path string, result any) error {
-	r, e := c.do(path)
+	payload, e := c.do(path)
 
 	if e != nil {
 		return e
 	}
 
-	return c.decode(r, result)
+	return json.Unmarshal(payload, result)
 }

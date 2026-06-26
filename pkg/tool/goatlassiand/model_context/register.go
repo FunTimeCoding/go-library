@@ -89,6 +89,12 @@ func (s *Server) register() {
 				mcp.Required(),
 				mcp.Description("Page ID"),
 			),
+			mcp.WithBoolean(
+				constant.Draft,
+				mcp.Description(
+					"Fetch a draft page. Required for unpublished pages which return 'not found' without this flag.",
+				),
+			),
 		),
 		s.getPage,
 	)
@@ -108,13 +114,18 @@ func (s *Server) register() {
 			),
 			mcp.WithString(
 				parameter.Title,
-				mcp.Required(),
-				mcp.Description("Page title"),
+				mcp.Description(
+					"Page title. Required for published pages, optional for drafts.",
+				),
 			),
 			mcp.WithString(
 				parameter.Body,
 				mcp.Required(),
 				mcp.Description("Page content in markdown"),
+			),
+			mcp.WithBoolean(
+				constant.Draft,
+				mcp.Description("Create as a draft page instead of publishing immediately."),
 			),
 		),
 		s.createPage,
@@ -180,6 +191,27 @@ func (s *Server) register() {
 			),
 		),
 		s.editPage,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.ConfluenceSetPageStatus,
+			mcp.WithDescription(
+				"Publish or unpublish a Confluence page. Set status to 'current' to publish a draft, or 'draft' to unpublish a published page.",
+			),
+			mcp.WithString(
+				parameter.Identifier,
+				mcp.Required(),
+				mcp.Description("Page ID"),
+			),
+			mcp.WithString(
+				constant.PageStatus,
+				mcp.Required(),
+				mcp.Description(
+					"Target status: 'current' to publish, 'draft' to unpublish.",
+				),
+			),
+		),
+		s.setPageStatus,
 	)
 	s.server.AddTool(
 		mcp.NewTool(

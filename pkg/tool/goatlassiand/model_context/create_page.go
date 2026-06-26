@@ -24,22 +24,33 @@ func (s *Server) createPage(
 		return response.Fail("parent_identifier is required: %v", f)
 	}
 
-	title, g := r.RequireString(parameter.Title)
+	draft := r.GetBool(constant.Draft, false)
+	title := r.GetString(parameter.Title, "")
+
+	if !draft && title == "" {
+		return response.Fail("title is required for published pages")
+	}
+
+	body, g := r.RequireString(parameter.Body)
 
 	if g != nil {
-		return response.Fail("title is required: %v", g)
+		return response.Fail("body is required: %v", g)
 	}
 
-	body, h := r.RequireString(parameter.Body)
+	if draft {
+		result, h := s.confluence.CreateDraftPage(space, parent, title, body)
+
+		if h != nil {
+			return s.captureFail(h, "draft page not created")
+		}
+
+		return response.SuccessAny(result)
+	}
+
+	result, h := s.confluence.CreatePage(space, parent, title, body)
 
 	if h != nil {
-		return response.Fail("body is required: %v", h)
-	}
-
-	result, i := s.confluence.CreatePage(space, parent, title, body)
-
-	if i != nil {
-		return s.captureFail(i, "page not created")
+		return s.captureFail(h, "page not created")
 	}
 
 	return response.SuccessAny(result)

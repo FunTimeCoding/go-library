@@ -34,6 +34,7 @@ const (
 	Title           = "title"
 
 	CurrentStatus = "current"
+	DraftStatus   = "draft"
 )
 
 // Body format

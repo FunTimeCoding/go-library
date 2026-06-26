@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	confluence.SetStatus()
+	jira.Changelog()
 
 	if false {
 		confluence.Overview()

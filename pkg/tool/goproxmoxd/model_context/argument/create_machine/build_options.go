@@ -85,7 +85,6 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 	}
 
 	result = append(result, option("serial0", "socket"))
-	result = append(result, option("vga", "serial0"))
 
 	if m.OSType != "" {
 		result = append(result, option("ostype", m.OSType))

@@ -63,7 +63,6 @@ func TestBuildOptionsDefaults(t *testing.T) {
 	)
 	assert.Integer(t, 1, requireOption(t, options, "agent").(int))
 	assert.String(t, "socket", requireOption(t, options, "serial0").(string))
-	assert.String(t, "serial0", requireOption(t, options, "vga").(string))
 	_, hasIDE := findOption(options, "ide2")
 	assert.Boolean(t, false, hasIDE)
 	_, hasCI := findOption(options, "ipconfig0")

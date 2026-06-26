@@ -25,13 +25,19 @@ func (c *Client) SetPageStatus(
 		return nil, e
 	}
 
+	version := current.Raw.Version.Number + 1
+
+	if status == constant.DraftStatus {
+		version = 1
+	}
+
 	body, f := c.basic.PutV2Path(
 		fmt.Sprintf("%s/%s", constant.Page, identifier),
 		page_put.NewWithStatus(
 			identifier,
 			current.Name,
 			current.Raw.Body.Storage.Value,
-			current.Raw.Version.Number+1,
+			version,
 			"",
 			status,
 		).Encode(),

@@ -78,6 +78,11 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 			fmt.Sprintf("virtio,bridge=%s", bridge),
 		),
 	)
+	agent := m.Agent == nil || *m.Agent
+
+	if agent {
+		result = append(result, option("agent", 1))
+	}
 
 	if m.OSType != "" {
 		result = append(result, option("ostype", m.OSType))

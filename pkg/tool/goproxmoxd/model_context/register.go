@@ -270,6 +270,10 @@ func (s *Server) register() {
 				"bridge",
 				mcp.Description("Network bridge (default vnet0)"),
 			),
+			mcp.WithBoolean(
+				"agent",
+				mcp.Description("Enable QEMU guest agent (default true)"),
+			),
 			mcp.WithString("ci_user", mcp.Description("Cloud-init user")),
 			mcp.WithString(
 				"ci_password",

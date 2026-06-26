@@ -61,10 +61,21 @@ func TestBuildOptionsDefaults(t *testing.T) {
 		"virtio,bridge=vmbr0",
 		requireOption(t, options, "net0").(string),
 	)
+	assert.Integer(t, 1, requireOption(t, options, "agent").(int))
 	_, hasIDE := findOption(options, "ide2")
 	assert.Boolean(t, false, hasIDE)
 	_, hasCI := findOption(options, "ipconfig0")
 	assert.Boolean(t, false, hasCI)
+}
+
+func TestBuildOptionsAgentDisabled(t *testing.T) {
+	m := &Machine{
+		Name:  "no-agent",
+		Agent: new(false),
+	}
+	options := m.BuildOptions()
+	_, hasAgent := findOption(options, "agent")
+	assert.Boolean(t, false, hasAgent)
 }
 
 func TestBuildOptionsCustomValues(t *testing.T) {

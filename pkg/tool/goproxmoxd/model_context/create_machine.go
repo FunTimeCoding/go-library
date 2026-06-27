@@ -2,6 +2,7 @@ package model_context
 
 import (
 	"context"
+	"fmt"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/model_context/argument/create_machine"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -67,6 +68,36 @@ func (s *Server) CreateMachine(
 
 	if e != nil {
 		return s.captureDetail(e)
+	}
+
+	if a.DiskImport != "" {
+		diskSize := a.DiskSize
+
+		if diskSize == 0 {
+			diskSize = 32
+		}
+
+		vm, e := c.Machine(node, identifier)
+
+		if e != nil {
+			return s.captureDetail(e)
+		}
+
+		resizeTask, e := c.ResizeDisk(
+			vm,
+			"virtio0",
+			fmt.Sprintf("%dG", diskSize),
+		)
+
+		if e != nil {
+			return s.captureDetail(e)
+		}
+
+		e = c.WaitForTask(resizeTask, 120)
+
+		if e != nil {
+			return s.captureDetail(e)
+		}
 	}
 
 	if a.Start {

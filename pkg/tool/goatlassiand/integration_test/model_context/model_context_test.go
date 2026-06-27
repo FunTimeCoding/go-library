@@ -225,3 +225,164 @@ func TestEditPageNotFound(t *testing.T) {
 	)
 	assert.StringContains(t, "not found", result)
 }
+
+func TestEditPageAmbiguous(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.Client.MustCallTool(
+		constant.ConfluenceCreatePage,
+		map[string]any{
+			"space_identifier":  "1",
+			"parent_identifier": "0",
+			"title":             "Edit Target",
+			"body":              "alfa and alfa again",
+		},
+	)
+	result := o.Client.MustCallToolError(
+		constant.ConfluenceEditPage,
+		map[string]any{
+			"identifier": "1",
+			"old_text":   "alfa",
+			"new_text":   "bravo",
+		},
+	)
+	assert.StringContains(t, "2 times", result)
+}
+
+func TestEditWithHeadingsAndLists(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.Client.MustCallTool(
+		constant.ConfluenceCreatePage,
+		map[string]any{
+			"space_identifier":  "1",
+			"parent_identifier": "0",
+			"title":             "Structured Page",
+			"body":              "## Section One\n\n- Item A\n- Item B\n\n## Section Two\n\nParagraph here",
+		},
+	)
+	result := o.Client.MustCallTool(
+		constant.ConfluenceEditPage,
+		map[string]any{
+			"identifier": "1",
+			"old_text":   "- Item A\n- Item B",
+			"new_text":   "- Item A\n- Item B\n- Item C",
+		},
+	)
+	assert.StringContains(t, "Item C", result)
+	assert.StringContains(t, "Section Two", result)
+}
+
+func TestDeletePublishedWithoutDraftFlag(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.Client.MustCallTool(
+		constant.ConfluenceCreatePage,
+		map[string]any{
+			"space_identifier":  "1",
+			"parent_identifier": "0",
+			"title":             "Published",
+			"body":              "Content",
+		},
+	)
+	result := o.Client.MustCallTool(
+		constant.ConfluenceDeletePage,
+		map[string]any{"identifier": "1"},
+	)
+	assert.StringContains(t, "deleted", result)
+}
+
+func TestDeleteDraftWithoutDraftFlagFails(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.Client.MustCallTool(
+		constant.ConfluenceCreatePage,
+		map[string]any{
+			"space_identifier":  "1",
+			"parent_identifier": "0",
+			"title":             "Draft Only",
+			"body":              "Never published",
+			"draft":             true,
+		},
+	)
+	result := o.Client.MustCallToolError(
+		constant.ConfluenceDeletePage,
+		map[string]any{"identifier": "1"},
+	)
+	assert.StringContains(t, "not deleted", result)
+}
+
+func TestFullDraftLifecycle(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+
+	// Create draft
+	created := o.Client.MustCallTool(
+		constant.ConfluenceCreatePage,
+		map[string]any{
+			"space_identifier":  "1",
+			"parent_identifier": "0",
+			"title":             "Lifecycle",
+			"body":              "Draft content",
+			"draft":             true,
+		},
+	)
+	assert.StringContains(t, "draft", created)
+
+	// Read draft
+	read := o.Client.MustCallTool(
+		constant.ConfluenceGetPage,
+		map[string]any{"identifier": "1", "draft": true},
+	)
+	assert.StringContains(t, "Draft content", read)
+
+	// Publish
+	published := o.Client.MustCallTool(
+		constant.ConfluenceSetPageStatus,
+		map[string]any{"identifier": "1", "status": "current"},
+	)
+	assert.StringContains(t, "current", published)
+
+	// Read published
+	afterPublish := o.Client.MustCallTool(
+		constant.ConfluenceGetPage,
+		map[string]any{"identifier": "1"},
+	)
+	assert.StringContains(t, "current", afterPublish)
+	assert.StringContains(t, "Draft content", afterPublish)
+
+	// Create overlay
+	overlay := o.Client.MustCallTool(
+		constant.ConfluenceSetPageStatus,
+		map[string]any{"identifier": "1", "status": "draft"},
+	)
+	assert.StringContains(t, "draft", overlay)
+
+	// Published version still accessible
+	stillPublished := o.Client.MustCallTool(
+		constant.ConfluenceGetPage,
+		map[string]any{"identifier": "1"},
+	)
+	assert.StringContains(t, "current", stillPublished)
+
+	// Overlay accessible via get_draft_overlay
+	draftOverlay := o.Client.MustCallTool(
+		constant.ConfluenceGetDraftOverlay,
+		map[string]any{"identifier": "1"},
+	)
+	assert.StringContains(t, "draft", draftOverlay)
+
+	// Publish overlay
+	republished := o.Client.MustCallTool(
+		constant.ConfluenceSetPageStatus,
+		map[string]any{"identifier": "1", "status": "current"},
+	)
+	assert.StringContains(t, "current", republished)
+
+	// Delete
+	deleted := o.Client.MustCallTool(
+		constant.ConfluenceDeletePage,
+		map[string]any{"identifier": "1"},
+	)
+	assert.StringContains(t, "deleted", deleted)
+}

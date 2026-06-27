@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page/page_put"
 )
 
 func SetStatus() {
@@ -23,7 +22,5 @@ func SetStatus() {
 			result.Raw.Status,
 			result.Raw.Version.Number,
 		)
-		_ = constant.Page
-		_ = page_put.NewWithStatus
 	}
 }

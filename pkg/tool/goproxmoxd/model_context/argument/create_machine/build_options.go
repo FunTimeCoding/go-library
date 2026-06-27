@@ -24,7 +24,7 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 	}
 
 	result = append(result, option("memory", memory))
-	result = append(result, option("scsihw", "virtio-scsi-single"))
+	result = append(result, option("scsihw", "virtio-scsi-pci"))
 	diskStorage := m.DiskStorage
 
 	if diskStorage == "" {
@@ -35,8 +35,12 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		result = append(
 			result,
 			option(
-				"scsi0",
-				fmt.Sprintf("%s:0,import-from=%s", diskStorage, m.DiskImport),
+				"virtio0",
+				fmt.Sprintf(
+					"%s:0,import-from=%s,aio=io_uring,iothread=1,discard=on",
+					diskStorage,
+					m.DiskImport,
+				),
 			),
 		)
 	} else {
@@ -49,13 +53,17 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		result = append(
 			result,
 			option(
-				"scsi0",
-				fmt.Sprintf("%s:%d", diskStorage, diskSize),
+				"virtio0",
+				fmt.Sprintf(
+					"%s:%d,aio=io_uring,iothread=1,discard=on",
+					diskStorage,
+					diskSize,
+				),
 			),
 		)
 	}
 
-	result = append(result, option("boot", "order=scsi0"))
+	result = append(result, option("boot", "order=virtio0"))
 	bridge := m.Bridge
 
 	if bridge == "" {
@@ -76,6 +84,13 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 	}
 
 	result = append(result, option("serial0", "socket"))
+	cpuType := m.CPUType
+
+	if cpuType == "" {
+		cpuType = "host"
+	}
+
+	result = append(result, option("cpu", cpuType))
 
 	if m.OSType != "" {
 		result = append(result, option("ostype", m.OSType))
@@ -107,6 +122,14 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		}
 
 		result = append(result, option("ipconfig0", ipConfiguration))
+
+		if m.SearchDomain != "" {
+			result = append(
+				result,
+				option("searchdomain", m.SearchDomain),
+			)
+		}
+
 		result = append(
 			result,
 			option("ide2", fmt.Sprintf("%s:cloudinit", diskStorage)),

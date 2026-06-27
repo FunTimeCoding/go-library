@@ -2,11 +2,11 @@ package model_context
 
 import (
 	"context"
-	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/constant"
 	"github.com/mark3labs/mcp-go/mcp"
+	"strings"
 )
 
 func (s *Server) editPage(
@@ -31,31 +31,22 @@ func (s *Server) editPage(
 		return response.Fail("new_text is required: %v", h)
 	}
 
-	current, i := s.confluence.Page(identifier)
-
-	if i != nil {
-		return s.captureFail(i, "page not found")
-	}
-
-	markdown := page.ToMarkdown(current.Raw.Body.Storage.Value)
-	newMarkdown, k := replaceUnique(markdown, oldText, newText)
-
-	if k != nil {
-		return response.Fail("%s", k)
-	}
-
-	title := r.GetString(parameter.Title, current.Name)
+	title := r.GetString(parameter.Title, "")
 	message := r.GetString(parameter.Message, "")
-	result, j := s.confluence.UpdatePageAt(
+	result, i := s.service.EditPage(
 		identifier,
+		oldText,
+		newText,
 		title,
-		newMarkdown,
-		current.Raw.Version.Number+1,
 		message,
 	)
 
-	if j != nil {
-		return s.captureFail(j, "page not updated")
+	if i != nil {
+		if strings.Contains(i.Error(), constant.OldText) {
+			return response.Fail("%s", i)
+		}
+
+		return s.captureFail(i, "page not updated")
 	}
 
 	return response.SuccessAny(result)

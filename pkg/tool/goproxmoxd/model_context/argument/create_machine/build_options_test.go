@@ -43,17 +43,17 @@ func TestBuildOptionsDefaults(t *testing.T) {
 	assert.Integer(t, 2048, requireOption(t, options, "memory").(int))
 	assert.String(
 		t,
-		"virtio-scsi-single",
+		"virtio-scsi-pci",
 		requireOption(t, options, "scsihw").(string),
 	)
 	assert.String(
 		t,
-		"local-lvm:32",
-		requireOption(t, options, "scsi0").(string),
+		"local-lvm:32,aio=io_uring,iothread=1,discard=on",
+		requireOption(t, options, "virtio0").(string),
 	)
 	assert.String(
 		t,
-		"order=scsi0",
+		"order=virtio0",
 		requireOption(t, options, "boot").(string),
 	)
 	assert.String(
@@ -63,6 +63,7 @@ func TestBuildOptionsDefaults(t *testing.T) {
 	)
 	assert.Integer(t, 1, requireOption(t, options, "agent").(int))
 	assert.String(t, "socket", requireOption(t, options, "serial0").(string))
+	assert.String(t, "host", requireOption(t, options, "cpu").(string))
 	_, hasIDE := findOption(options, "ide2")
 	assert.Boolean(t, false, hasIDE)
 	_, hasCI := findOption(options, "ipconfig0")
@@ -108,8 +109,8 @@ func TestBuildOptionsDiskImport(t *testing.T) {
 	options := m.BuildOptions()
 	assert.String(
 		t,
-		"local-lvm:0,import-from=local:import/debian-13-generic-amd64.qcow2",
-		requireOption(t, options, "scsi0").(string),
+		"local-lvm:0,import-from=local:import/debian-13-generic-amd64.qcow2,aio=io_uring,iothread=1,discard=on",
+		requireOption(t, options, "virtio0").(string),
 	)
 }
 
@@ -122,8 +123,8 @@ func TestBuildOptionsDiskImportCustomStorage(t *testing.T) {
 	options := m.BuildOptions()
 	assert.String(
 		t,
-		"ceph-pool:0,import-from=local:import/debian-13.qcow2",
-		requireOption(t, options, "scsi0").(string),
+		"ceph-pool:0,import-from=local:import/debian-13.qcow2,aio=io_uring,iothread=1,discard=on",
+		requireOption(t, options, "virtio0").(string),
 	)
 }
 
@@ -220,6 +221,33 @@ func TestBuildOptionsCloudInitSSHKeysOnly(t *testing.T) {
 	)
 }
 
+func TestBuildOptionsCustomCPUType(t *testing.T) {
+	m := &Machine{
+		Name:    "cpu-vm",
+		CPUType: "x86-64-v2-AES",
+	}
+	options := m.BuildOptions()
+	assert.String(
+		t,
+		"x86-64-v2-AES",
+		requireOption(t, options, "cpu").(string),
+	)
+}
+
+func TestBuildOptionsSearchDomain(t *testing.T) {
+	m := &Machine{
+		Name:         "dns-vm",
+		CIUser:       "admin",
+		SearchDomain: "local",
+	}
+	options := m.BuildOptions()
+	assert.String(
+		t,
+		"local",
+		requireOption(t, options, "searchdomain").(string),
+	)
+}
+
 func TestBuildOptionsExtras(t *testing.T) {
 	m := &Machine{
 		Name:   "extras-vm",
@@ -246,7 +274,7 @@ func TestBuildOptionsCustomDiskSize(t *testing.T) {
 	options := m.BuildOptions()
 	assert.String(
 		t,
-		"local-lvm:100",
-		requireOption(t, options, "scsi0").(string),
+		"local-lvm:100,aio=io_uring,iothread=1,discard=on",
+		requireOption(t, options, "virtio0").(string),
 	)
 }

@@ -6,8 +6,12 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 )
 
-func (c *Client) SetPageStatus(
+func (c *Client) PutPage(
 	identifier string,
+	title string,
+	body string,
+	version int,
+	message string,
 	status string,
 ) (*page.Page, error) {
 	e, okay := c.pages[identifier]
@@ -22,27 +26,26 @@ func (c *Client) SetPageStatus(
 		}
 
 		draft := *e.page
+		draft.Title = title
+		draft.Body.Storage.Value = body
+		draft.Version.Number = version
+		draft.Version.Message = message
 		draft.Status = constant.DraftStatus
-		draft.Version.Number = 1
 		e.draft = &draft
 
 		return toPage(e.draft), nil
 	}
 
-	if e.draft != nil {
-		e.page = e.draft
-		e.page.Status = constant.CurrentStatus
-		e.page.Version.Number++
-		e.draft = nil
-
-		return toPage(e.page), nil
+	if e.page == nil {
+		return nil, fmt.Errorf("page not found: %s", identifier)
 	}
 
-	if e.page != nil && e.page.Status == constant.DraftStatus {
-		e.page.Status = constant.CurrentStatus
+	e.page.Title = title
+	e.page.Body.Storage.Value = body
+	e.page.Version.Number = version
+	e.page.Version.Message = message
+	e.page.Status = constant.CurrentStatus
+	e.draft = nil
 
-		return toPage(e.page), nil
-	}
-
-	return nil, fmt.Errorf("no draft to publish: %s", identifier)
+	return toPage(e.page), nil
 }

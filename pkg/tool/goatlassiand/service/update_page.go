@@ -1,22 +1,27 @@
-package confluence
+package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 )
 
-func (c *Client) UpdatePageAt(
+func (s *Service) UpdatePage(
 	identifier string,
 	title string,
 	markdown string,
-	version int,
 	message string,
 ) (*page.Page, error) {
-	return c.PutPage(
+	current, e := s.confluence.Page(identifier)
+
+	if e != nil {
+		return nil, e
+	}
+
+	return s.confluence.PutPage(
 		identifier,
 		title,
 		page.ToStorage(markdown),
-		version,
+		current.Raw.Version.Number+1,
 		message,
 		constant.CurrentStatus,
 	)

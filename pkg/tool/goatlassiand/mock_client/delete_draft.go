@@ -9,17 +9,11 @@ func (c *Client) DeleteDraft(pageIdentifier string) error {
 		return fmt.Errorf("page not found: %s", pageIdentifier)
 	}
 
-	if e.draft != nil {
-		e.draft = nil
-
-		return nil
-	}
-
 	if e.page != nil && e.page.Status == "draft" {
 		e.deleted = true
 
 		return nil
 	}
 
-	return fmt.Errorf("no draft to delete: %s", pageIdentifier)
+	return fmt.Errorf("page not found: %s", pageIdentifier)
 }

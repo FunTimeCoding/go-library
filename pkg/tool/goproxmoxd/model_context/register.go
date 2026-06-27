@@ -268,7 +268,11 @@ func (s *Server) register() {
 			),
 			mcp.WithString(
 				"bridge",
-				mcp.Description("Network bridge (default vnet0)"),
+				mcp.Description("Network bridge (default vmbr0)"),
+			),
+			mcp.WithString(
+				"cpu_type",
+				mcp.Description("CPU type (default host)"),
 			),
 			mcp.WithBoolean(
 				"agent",
@@ -286,6 +290,10 @@ func (s *Server) register() {
 			mcp.WithString(
 				"ip_config",
 				mcp.Description("Cloud-init IP config (default ip=dhcp when cloud-init is used)"),
+			),
+			mcp.WithString(
+				"search_domain",
+				mcp.Description("DNS search domain for cloud-init, e.g. local"),
 			),
 			mcp.WithString(
 				"os_type",

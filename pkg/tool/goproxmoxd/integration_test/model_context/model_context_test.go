@@ -41,6 +41,22 @@ func TestCreateMachineCloudInit(t *testing.T) {
 	assert.StringContains(t, "created", result)
 }
 
+func TestCreateMachineWithDiskImport(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	result := o.Client.MustCallTool(
+		constant.CreateMachine,
+		map[string]any{
+			"node":        "test",
+			"name":        "import-test",
+			"disk_import": "local:import/debian-13.qcow2",
+			"disk_size":   64,
+			"ci_user":     "admin",
+		},
+	)
+	assert.StringContains(t, "created", result)
+}
+
 func TestCreateMachineCDROM(t *testing.T) {
 	o := model_context_tester.New(t)
 	defer o.Close()

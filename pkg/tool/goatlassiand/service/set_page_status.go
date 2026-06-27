@@ -1,11 +1,11 @@
-package confluence
+package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 )
 
-func (c *Client) SetPageStatus(
+func (s *Service) SetPageStatus(
 	identifier string,
 	status string,
 ) (*page.Page, error) {
@@ -13,9 +13,9 @@ func (c *Client) SetPageStatus(
 	var e error
 
 	if status == constant.CurrentStatus {
-		current, e = c.DraftOverlay(identifier)
+		current, e = s.confluence.DraftOverlay(identifier)
 	} else {
-		current, e = c.Page(identifier)
+		current, e = s.confluence.Page(identifier)
 	}
 
 	if e != nil {
@@ -25,14 +25,14 @@ func (c *Client) SetPageStatus(
 	version := 1
 
 	if status == constant.CurrentStatus {
-		published, f := c.Page(identifier)
+		published, f := s.confluence.Page(identifier)
 
 		if f == nil && published.Raw.Status == constant.CurrentStatus {
 			version = published.Raw.Version.Number + 1
 		}
 	}
 
-	return c.PutPage(
+	return s.confluence.PutPage(
 		identifier,
 		current.Name,
 		current.Raw.Body.Storage.Value,

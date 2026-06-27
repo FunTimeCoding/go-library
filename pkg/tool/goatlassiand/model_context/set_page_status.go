@@ -30,7 +30,7 @@ func (s *Server) setPageStatus(
 		)
 	}
 
-	result, h := s.confluence.SetPageStatus(identifier, status)
+	result, h := s.service.SetPageStatus(identifier, status)
 
 	if h != nil {
 		return s.captureFail(h, "page status not updated")

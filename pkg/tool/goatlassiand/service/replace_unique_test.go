@@ -1,4 +1,4 @@
-package model_context
+package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"

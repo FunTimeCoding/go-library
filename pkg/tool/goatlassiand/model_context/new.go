@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/constant"
 	atlassianFace "github.com/funtimecoding/go-library/pkg/tool/goatlassiand/face"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/service"
 )
 
 func New(
@@ -22,6 +23,7 @@ func New(
 		).WithRecorder(t).Server(),
 		jira:       j,
 		confluence: c,
+		service:    service.New(c),
 		reporter:   r,
 	}
 	result.register()

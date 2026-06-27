@@ -25,21 +25,12 @@ type ConfluenceSource interface {
 		title string,
 		markdown string,
 	) (*page.Page, error)
-	UpdatePage(
+	PutPage(
 		identifier string,
 		title string,
-		markdown string,
-		message string,
-	) (*page.Page, error)
-	UpdatePageAt(
-		identifier string,
-		title string,
-		markdown string,
+		body string,
 		version int,
 		message string,
-	) (*page.Page, error)
-	SetPageStatus(
-		identifier string,
 		status string,
 	) (*page.Page, error)
 	AddComment(pageIdentifier string, body string) error

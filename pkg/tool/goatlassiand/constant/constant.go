@@ -38,6 +38,7 @@ const (
 	ConfluenceUpdatePage      = "confluence_update_page"
 	ConfluenceListSpaces      = "confluence_list_spaces"
 	ConfluenceGetPageChildren = "confluence_get_page_children"
+	ConfluenceGetDraftOverlay  = "confluence_get_draft_overlay"
 	ConfluenceEditPage        = "confluence_edit_page"
 	ConfluenceSetPageStatus   = "confluence_set_page_status"
 	ConfluenceAddComment      = "confluence_add_comment"

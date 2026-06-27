@@ -100,6 +100,20 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.ConfluenceGetDraftOverlay,
+			mcp.WithDescription(
+				"Get pending draft edits on a published Confluence page. Returns unpublished changes saved via confluence_set_page_status with status 'draft'. Returns 404 if no draft overlay exists.",
+			),
+			mcp.WithString(
+				parameter.Identifier,
+				mcp.Required(),
+				mcp.Description("Page ID"),
+			),
+		),
+		s.getDraftOverlay,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.ConfluenceCreatePage,
 			mcp.WithDescription("Create a new Confluence page with markdown content"),
 			mcp.WithString(

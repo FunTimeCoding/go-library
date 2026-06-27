@@ -138,34 +138,19 @@ func TestBuildOptionsCDROM(t *testing.T) {
 		"local:iso/debian-13.iso,media=cdrom",
 		requireOption(t, options, "ide2").(string),
 	)
-	assert.String(
-		t,
-		"order=ide2;scsi0",
-		requireOption(t, options, "boot").(string),
-	)
 }
 
-func TestBuildOptionsCDROMWithDiskImport(t *testing.T) {
+func TestBuildOptionsCloudInitTakesIDE2OverCDROM(t *testing.T) {
 	m := &Machine{
-		Name:       "combo-vm",
-		CDROM:      "local:iso/drivers.iso",
-		DiskImport: "local:import/base.qcow2",
+		Name:   "ci-with-cdrom",
+		CDROM:  "local:iso/debian-13.iso",
+		CIUser: "admin",
 	}
 	options := m.BuildOptions()
 	assert.String(
 		t,
-		"local-lvm:0,import-from=local:import/base.qcow2",
-		requireOption(t, options, "scsi0").(string),
-	)
-	assert.String(
-		t,
-		"local:iso/drivers.iso,media=cdrom",
+		"local-lvm:cloudinit",
 		requireOption(t, options, "ide2").(string),
-	)
-	assert.String(
-		t,
-		"order=ide2;scsi0",
-		requireOption(t, options, "boot").(string),
 	)
 }
 
@@ -180,6 +165,11 @@ func TestBuildOptionsCloudInit(t *testing.T) {
 		t,
 		"ip=dhcp",
 		requireOption(t, options, "ipconfig0").(string),
+	)
+	assert.String(
+		t,
+		"local-lvm:cloudinit",
+		requireOption(t, options, "ide2").(string),
 	)
 }
 
@@ -205,6 +195,11 @@ func TestBuildOptionsCloudInitFull(t *testing.T) {
 	)
 	_, hasKeys := findOption(options, "sshkeys")
 	assert.Boolean(t, true, hasKeys)
+	assert.String(
+		t,
+		"local-lvm:cloudinit",
+		requireOption(t, options, "ide2").(string),
+	)
 }
 
 func TestBuildOptionsCloudInitSSHKeysOnly(t *testing.T) {
@@ -217,6 +212,11 @@ func TestBuildOptionsCloudInitSSHKeysOnly(t *testing.T) {
 		t,
 		"ip=dhcp",
 		requireOption(t, options, "ipconfig0").(string),
+	)
+	assert.String(
+		t,
+		"local-lvm:cloudinit",
+		requireOption(t, options, "ide2").(string),
 	)
 }
 

@@ -20,6 +20,14 @@ func (s *Server) CreateMachine(
 		return response.Fail("name is required")
 	}
 
+	cloudInit := a.CIUser != "" || a.SSHKeys != "" || a.CIPassword != ""
+
+	if cloudInit && a.CDROM != "" {
+		return response.Fail(
+			"cdrom and cloud-init are mutually exclusive — both use ide2",
+		)
+	}
+
 	instance, e := s.service.ResolveInstance(s.activeInstanceName(x))
 
 	if e != nil {

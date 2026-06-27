@@ -4,11 +4,11 @@ import (
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/constant"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/service"
+	proxFace "github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/face"
 )
 
 func New(
-	v *service.Service,
+	v proxFace.Service,
 	r face.Reporter,
 	t face.Recorder,
 	version string,

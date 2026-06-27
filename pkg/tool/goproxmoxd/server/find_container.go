@@ -2,15 +2,15 @@ package server
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/not_found"
-	"github.com/funtimecoding/go-library/pkg/proxmox"
-	upstream "github.com/luthermonson/go-proxmox"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/face"
+	"github.com/luthermonson/go-proxmox"
 )
 
 func findContainer(
-	c *proxmox.Client,
+	c face.ProxmoxClient,
 	identifier int64,
 	node *string,
-) (*upstream.Container, error) {
+) (*proxmox.Container, error) {
 	if node != nil && *node != "" {
 		n, e := c.Node(*node)
 

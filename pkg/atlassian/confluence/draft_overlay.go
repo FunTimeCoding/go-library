@@ -5,16 +5,16 @@ import (
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/constant"
 	"github.com/funtimecoding/go-library/pkg/atlassian/confluence/page"
 	"github.com/funtimecoding/go-library/pkg/notation"
-	"github.com/funtimecoding/go-library/pkg/web/locator"
 )
 
 func (c *Client) DraftOverlay(identifier string) (*page.Page, error) {
-	body, e := c.basic.Get(
-		locator.New(c.host).Base(constant.OldBase).Path(
-			"/content/%s",
+	body, e := c.basic.GetV2(
+		c.basic.Base().Copy().Path(
+			"%s/%s",
+			constant.Page,
 			identifier,
-		).Set(constant.Status, constant.DraftStatus).
-			Set("expand", "body.storage,version").String(),
+		).Set(constant.BodyFormat, constant.StorageFormat).
+			Set(constant.GetDraft, "true").String(),
 	)
 
 	if e != nil {

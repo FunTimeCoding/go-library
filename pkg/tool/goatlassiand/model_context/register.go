@@ -229,6 +229,26 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.ConfluenceDeletePage,
+			mcp.WithDescription(
+				"Delete a Confluence page. For draft pages, set draft to true — draft pages are permanently deleted, not sent to trash.",
+			),
+			mcp.WithString(
+				parameter.Identifier,
+				mcp.Required(),
+				mcp.Description("Page ID"),
+			),
+			mcp.WithBoolean(
+				constant.Draft,
+				mcp.Description(
+					"Delete a draft page. Required for pages that have never been published.",
+				),
+			),
+		),
+		s.deletePage,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.ConfluenceListSpaces,
 			mcp.WithDescription("List all visible Confluence spaces"),
 		),

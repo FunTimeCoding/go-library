@@ -55,16 +55,7 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		)
 	}
 
-	if m.CDROM != "" {
-		result = append(
-			result,
-			option("ide2", fmt.Sprintf("%s,media=cdrom", m.CDROM)),
-		)
-		result = append(result, option("boot", "order=ide2;scsi0"))
-	} else {
-		result = append(result, option("boot", "order=scsi0"))
-	}
-
+	result = append(result, option("boot", "order=scsi0"))
 	bridge := m.Bridge
 
 	if bridge == "" {
@@ -106,7 +97,9 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		)
 	}
 
-	if m.CIUser != "" || m.SSHKeys != "" || m.CIPassword != "" {
+	cloudInit := m.CIUser != "" || m.SSHKeys != "" || m.CIPassword != ""
+
+	if cloudInit {
 		ipConfiguration := m.IPConfiguration
 
 		if ipConfiguration == "" {
@@ -114,6 +107,15 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		}
 
 		result = append(result, option("ipconfig0", ipConfiguration))
+		result = append(
+			result,
+			option("ide2", fmt.Sprintf("%s:cloudinit", diskStorage)),
+		)
+	} else if m.CDROM != "" {
+		result = append(
+			result,
+			option("ide2", fmt.Sprintf("%s,media=cdrom", m.CDROM)),
+		)
 	}
 
 	if m.Tags != "" {

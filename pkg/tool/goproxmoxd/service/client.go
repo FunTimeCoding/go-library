@@ -3,10 +3,11 @@ package service
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/proxmox"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/face"
 	"time"
 )
 
-func (s *Service) Client(instance string) (*proxmox.Client, error) {
+func (s *Service) Client(instance string) (face.ProxmoxClient, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 

@@ -2,15 +2,15 @@ package model_context
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/not_found"
-	"github.com/funtimecoding/go-library/pkg/proxmox"
-	upstream "github.com/luthermonson/go-proxmox"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/face"
+	"github.com/luthermonson/go-proxmox"
 )
 
 func findContainer(
-	c *proxmox.Client,
+	c face.ProxmoxClient,
 	identifier int,
 	nodeName string,
-) (*upstream.Container, error) {
+) (*proxmox.Container, error) {
 	if nodeName != "" {
 		node, e := c.Node(nodeName)
 

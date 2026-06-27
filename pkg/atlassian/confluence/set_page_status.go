@@ -13,13 +13,14 @@ func (c *Client) SetPageStatus(
 	identifier string,
 	status string,
 ) (*page.Page, error) {
-	fetchStatus := ""
+	var current *page.Page
+	var e error
 
 	if status == constant.CurrentStatus {
-		fetchStatus = constant.DraftStatus
+		current, e = c.DraftOverlay(identifier)
+	} else {
+		current, e = c.Page(identifier)
 	}
-
-	current, e := c.pageWithStatus(identifier, fetchStatus)
 
 	if e != nil {
 		return nil, e

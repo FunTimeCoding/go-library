@@ -2,10 +2,10 @@ package server
 
 import (
 	"github.com/funtimecoding/go-library/pkg/face"
-	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/service"
+	proxFace "github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/face"
 )
 
 type Server struct {
-	service  *service.Service
+	service  proxFace.Service
 	reporter face.Reporter
 }

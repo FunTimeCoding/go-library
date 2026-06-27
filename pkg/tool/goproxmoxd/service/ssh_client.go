@@ -3,9 +3,10 @@ package service
 import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/ssh"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/face"
 )
 
-func (s *Service) SSHClient(instance string) (*ssh.Client, error) {
+func (s *Service) SSHClient(instance string) (face.SnippetClient, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 

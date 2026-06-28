@@ -28,6 +28,7 @@ type Service interface {
 	ListNetworks(c ProxmoxClient, node string) (proxmox.NodeNetworks, error)
 	ListStorages(c ProxmoxClient, node string) (proxmox.Storages, error)
 	ListStorageContent(c ProxmoxClient, node string, storage string) ([]*proxmox.StorageContent, error)
+	DownloadLocator(c ProxmoxClient, node string, storage string, content string, filename string, l string) error
 	CreateMachine(c ProxmoxClient, m *create_machine.Machine) (int, error)
 	UpdateMachine(c ProxmoxClient, a *update_machine.Machine) error
 	CloneMachine(c ProxmoxClient, identifier int, node string, options *proxmox.VirtualMachineCloneOptions) (int, error)

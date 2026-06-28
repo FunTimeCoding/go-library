@@ -83,4 +83,5 @@ type ProxmoxClient interface {
 		name string,
 	) (*proxmox.Storage, error)
 	StorageContent(s *proxmox.Storage) ([]*proxmox.StorageContent, error)
+	DownloadLocator(s *proxmox.Storage, content string, filename string, l string) (*proxmox.Task, error)
 }

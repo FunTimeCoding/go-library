@@ -57,6 +57,7 @@ const (
 	GetSnippet                = "get_snippet"
 	ListSnippets              = "list_snippets"
 	DeleteSnippet             = "delete_snippet"
+	DownloadLocator           = "download_locator"
 	CreateMachine             = "create_machine"
 	UpdateMachine             = "update_machine"
 	CloneMachine              = "clone_machine"

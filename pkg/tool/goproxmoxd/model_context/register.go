@@ -575,6 +575,40 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
+			constant.DownloadLocator,
+			mcp.WithDescription(
+				"Download a file from a URL to a storage backend. Use content 'import' for qcow2 cloud images, 'iso' for ISOs, 'vztmpl' for container templates. Waits for the download to complete.",
+			),
+			mcp.WithString(
+				"node",
+				mcp.Required(),
+				mcp.Description("Node name"),
+			),
+			mcp.WithString(
+				"storage",
+				mcp.Required(),
+				mcp.Description("Storage name from list_storages"),
+			),
+			mcp.WithString(
+				"content",
+				mcp.Required(),
+				mcp.Description("Content type: import, iso, or vztmpl"),
+			),
+			mcp.WithString(
+				"filename",
+				mcp.Required(),
+				mcp.Description("Filename to save as on the storage"),
+			),
+			mcp.WithString(
+				"locator",
+				mcp.Required(),
+				mcp.Description("URL to download from"),
+			),
+		),
+		mcp.NewTypedToolHandler(s.DownloadLocator),
+	)
+	s.server.AddTool(
+		mcp.NewTool(
 			constant.CreateSnippet,
 			mcp.WithDescription(
 				"Create a cloud-init or other snippet file on the Proxmox host via SSH. Returns the volume reference for use with cicustom.",

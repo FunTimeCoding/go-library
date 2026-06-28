@@ -1178,6 +1178,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /api/v1/nodes/{name}/storages/{storage}/download:
+    post:
+      operationId: downloadLocator
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Node name.
+      - name: storage
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Storage name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DownloadLocatorRequest"
+      responses:
+        "200":
+          description: Download completed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResult"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   parameters:
     Instance:
@@ -1646,6 +1688,19 @@ components:
         name:
           type: string
         content:
+          type: string
+    DownloadLocatorRequest:
+      type: object
+      required:
+      - content
+      - filename
+      - locator
+      properties:
+        content:
+          type: string
+        filename:
+          type: string
+        locator:
           type: string
     SnapshotRequest:
       type: object

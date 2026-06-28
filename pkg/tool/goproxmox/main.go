@@ -61,6 +61,7 @@ func Main(
 	o.AddCommand(listNetworks(c))
 	o.AddCommand(listStorages(c))
 	o.AddCommand(listStorageContent(c))
+	o.AddCommand(downloadLocator(c))
 	o.AddCommand(createSnippet(c))
 	o.AddCommand(getSnippet(c))
 	o.AddCommand(listSnippets(c))

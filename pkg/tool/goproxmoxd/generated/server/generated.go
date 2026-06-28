@@ -96,6 +96,13 @@ type CreateMachineResult struct {
 	Status     *string `json:"status,omitempty"`
 }
 
+// DownloadLocatorRequest defines model for DownloadLocatorRequest.
+type DownloadLocatorRequest struct {
+	Content  string `json:"content"`
+	Filename string `json:"filename"`
+	Locator  string `json:"locator"`
+}
+
 // Error defines model for Error.
 type Error struct {
 	Error string `json:"error"`
@@ -484,6 +491,12 @@ type ListStorageContentParams struct {
 	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
 }
 
+// DownloadLocatorParams defines parameters for DownloadLocator.
+type DownloadLocatorParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
 // ListSnippetsParams defines parameters for ListSnippets.
 type ListSnippetsParams struct {
 	// Instance Proxmox instance name. Optional when only one instance is configured.
@@ -522,6 +535,9 @@ type CloneMachineJSONRequestBody = CloneMachineRequest
 
 // CreateMachineSnapshotJSONRequestBody defines body for CreateMachineSnapshot for application/json ContentType.
 type CreateMachineSnapshotJSONRequestBody = SnapshotRequest
+
+// DownloadLocatorJSONRequestBody defines body for DownloadLocator for application/json ContentType.
+type DownloadLocatorJSONRequestBody = DownloadLocatorRequest
 
 // CreateSnippetJSONRequestBody defines body for CreateSnippet for application/json ContentType.
 type CreateSnippetJSONRequestBody = SnippetCreateRequest
@@ -606,6 +622,9 @@ type ServerInterface interface {
 
 	// (GET /api/v1/nodes/{name}/storages/{storage}/content)
 	ListStorageContent(w http.ResponseWriter, r *http.Request, name string, storage string, params ListStorageContentParams)
+
+	// (POST /api/v1/nodes/{name}/storages/{storage}/download)
+	DownloadLocator(w http.ResponseWriter, r *http.Request, name string, storage string, params DownloadLocatorParams)
 
 	// (GET /api/v1/snippets)
 	ListSnippets(w http.ResponseWriter, r *http.Request, params ListSnippetsParams)
@@ -1962,6 +1981,57 @@ func (siw *ServerInterfaceWrapper) ListStorageContent(w http.ResponseWriter, r *
 	handler.ServeHTTP(w, r)
 }
 
+// DownloadLocator operation middleware
+func (siw *ServerInterfaceWrapper) DownloadLocator(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "storage" -------------
+	var storage string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "storage", r.PathValue("storage"), &storage, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "storage", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params DownloadLocatorParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DownloadLocator(w, r, name, storage, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListSnippets operation middleware
 func (siw *ServerInterfaceWrapper) ListSnippets(w http.ResponseWriter, r *http.Request) {
 
@@ -2258,6 +2328,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/nodes/{name}/status", wrapper.GetNodeStatus)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/nodes/{name}/storages", wrapper.ListStorages)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/nodes/{name}/storages/{storage}/content", wrapper.ListStorageContent)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/nodes/{name}/storages/{storage}/download", wrapper.DownloadLocator)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/snippets", wrapper.ListSnippets)
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/snippets", wrapper.CreateSnippet)
 	m.HandleFunc(http.MethodDelete+" "+options.BaseURL+"/api/v1/snippets/{name}", wrapper.DeleteSnippet)
@@ -3834,6 +3905,59 @@ func (response ListStorageContent500JSONResponse) VisitListStorageContentRespons
 	return err
 }
 
+type DownloadLocatorRequestObject struct {
+	Name    string `json:"name"`
+	Storage string `json:"storage"`
+	Params  DownloadLocatorParams
+	Body    *DownloadLocatorJSONRequestBody
+}
+
+type DownloadLocatorResponseObject interface {
+	VisitDownloadLocatorResponse(w http.ResponseWriter) error
+}
+
+type DownloadLocator200JSONResponse StatusResult
+
+func (response DownloadLocator200JSONResponse) VisitDownloadLocatorResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DownloadLocator400JSONResponse Error
+
+func (response DownloadLocator400JSONResponse) VisitDownloadLocatorResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DownloadLocator500JSONResponse ErrorResponse
+
+func (response DownloadLocator500JSONResponse) VisitDownloadLocatorResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
 type ListSnippetsRequestObject struct {
 	Params ListSnippetsParams
 }
@@ -4117,6 +4241,9 @@ type StrictServerInterface interface {
 
 	// (GET /api/v1/nodes/{name}/storages/{storage}/content)
 	ListStorageContent(ctx context.Context, request ListStorageContentRequestObject) (ListStorageContentResponseObject, error)
+
+	// (POST /api/v1/nodes/{name}/storages/{storage}/download)
+	DownloadLocator(ctx context.Context, request DownloadLocatorRequestObject) (DownloadLocatorResponseObject, error)
 
 	// (GET /api/v1/snippets)
 	ListSnippets(ctx context.Context, request ListSnippetsRequestObject) (ListSnippetsResponseObject, error)
@@ -4895,6 +5022,41 @@ func (sh *strictHandler) ListStorageContent(w http.ResponseWriter, r *http.Reque
 	}
 }
 
+// DownloadLocator operation middleware
+func (sh *strictHandler) DownloadLocator(w http.ResponseWriter, r *http.Request, name string, storage string, params DownloadLocatorParams) {
+	var request DownloadLocatorRequestObject
+
+	request.Name = name
+	request.Storage = storage
+	request.Params = params
+
+	var body DownloadLocatorJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DownloadLocator(ctx, request.(DownloadLocatorRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DownloadLocator")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DownloadLocatorResponseObject); ok {
+		if err := validResponse.VisitDownloadLocatorResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // ListSnippets operation middleware
 func (sh *strictHandler) ListSnippets(w http.ResponseWriter, r *http.Request, params ListSnippetsParams) {
 	var request ListSnippetsRequestObject
@@ -5013,44 +5175,45 @@ func (sh *strictHandler) GetSnippet(w http.ResponseWriter, r *http.Request, name
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
+	"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",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

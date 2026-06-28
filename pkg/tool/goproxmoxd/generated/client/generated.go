@@ -90,6 +90,13 @@ type CreateMachineResult struct {
 	Status     *string `json:"status,omitempty"`
 }
 
+// DownloadLocatorRequest defines model for DownloadLocatorRequest.
+type DownloadLocatorRequest struct {
+	Content  string `json:"content"`
+	Filename string `json:"filename"`
+	Locator  string `json:"locator"`
+}
+
 // Error defines model for Error.
 type Error struct {
 	Error string `json:"error"`
@@ -478,6 +485,12 @@ type ListStorageContentParams struct {
 	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
 }
 
+// DownloadLocatorParams defines parameters for DownloadLocator.
+type DownloadLocatorParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
 // ListSnippetsParams defines parameters for ListSnippets.
 type ListSnippetsParams struct {
 	// Instance Proxmox instance name. Optional when only one instance is configured.
@@ -516,6 +529,9 @@ type CloneMachineJSONRequestBody = CloneMachineRequest
 
 // CreateMachineSnapshotJSONRequestBody defines body for CreateMachineSnapshot for application/json ContentType.
 type CreateMachineSnapshotJSONRequestBody = SnapshotRequest
+
+// DownloadLocatorJSONRequestBody defines body for DownloadLocator for application/json ContentType.
+type DownloadLocatorJSONRequestBody = DownloadLocatorRequest
 
 // CreateSnippetJSONRequestBody defines body for CreateSnippet for application/json ContentType.
 type CreateSnippetJSONRequestBody = SnippetCreateRequest
@@ -680,6 +696,11 @@ type ClientInterface interface {
 
 	// ListStorageContent request
 	ListStorageContent(ctx context.Context, name string, storage string, params *ListStorageContentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DownloadLocatorWithBody request with any body
+	DownloadLocatorWithBody(ctx context.Context, name string, storage string, params *DownloadLocatorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DownloadLocator(ctx context.Context, name string, storage string, params *DownloadLocatorParams, body DownloadLocatorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListSnippets request
 	ListSnippets(ctx context.Context, params *ListSnippetsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -1058,6 +1079,30 @@ func (c *Client) ListStorages(ctx context.Context, name string, params *ListStor
 
 func (c *Client) ListStorageContent(ctx context.Context, name string, storage string, params *ListStorageContentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListStorageContentRequest(c.Server, name, storage, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DownloadLocatorWithBody(ctx context.Context, name string, storage string, params *DownloadLocatorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDownloadLocatorRequestWithBody(c.Server, name, storage, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DownloadLocator(ctx context.Context, name string, storage string, params *DownloadLocatorParams, body DownloadLocatorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDownloadLocatorRequest(c.Server, name, storage, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -2992,6 +3037,87 @@ func NewListStorageContentRequest(server string, name string, storage string, pa
 	return req, nil
 }
 
+// NewDownloadLocatorRequest calls the generic DownloadLocator builder with application/json body
+func NewDownloadLocatorRequest(server string, name string, storage string, params *DownloadLocatorParams, body DownloadLocatorJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDownloadLocatorRequestWithBody(server, name, storage, params, "application/json", bodyReader)
+}
+
+// NewDownloadLocatorRequestWithBody generates requests for DownloadLocator with any type of body
+func NewDownloadLocatorRequestWithBody(server string, name string, storage string, params *DownloadLocatorParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "storage", storage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/nodes/%s/storages/%s/download", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListSnippetsRequest generates requests for ListSnippets
 func NewListSnippetsRequest(server string, params *ListSnippetsParams) (*http.Request, error) {
 	var err error
@@ -3365,6 +3491,11 @@ type ClientWithResponsesInterface interface {
 
 	// ListStorageContentWithResponse request
 	ListStorageContentWithResponse(ctx context.Context, name string, storage string, params *ListStorageContentParams, reqEditors ...RequestEditorFn) (*ListStorageContentResponse, error)
+
+	// DownloadLocatorWithBodyWithResponse request with any body
+	DownloadLocatorWithBodyWithResponse(ctx context.Context, name string, storage string, params *DownloadLocatorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DownloadLocatorResponse, error)
+
+	DownloadLocatorWithResponse(ctx context.Context, name string, storage string, params *DownloadLocatorParams, body DownloadLocatorJSONRequestBody, reqEditors ...RequestEditorFn) (*DownloadLocatorResponse, error)
 
 	// ListSnippetsWithResponse request
 	ListSnippetsWithResponse(ctx context.Context, params *ListSnippetsParams, reqEditors ...RequestEditorFn) (*ListSnippetsResponse, error)
@@ -4230,6 +4361,38 @@ func (r ListStorageContentResponse) ContentType() string {
 	return ""
 }
 
+type DownloadLocatorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *StatusResult
+	JSON400      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DownloadLocatorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DownloadLocatorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DownloadLocatorResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type ListSnippetsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -4630,6 +4793,23 @@ func (c *ClientWithResponses) ListStorageContentWithResponse(ctx context.Context
 		return nil, err
 	}
 	return ParseListStorageContentResponse(rsp)
+}
+
+// DownloadLocatorWithBodyWithResponse request with arbitrary body returning *DownloadLocatorResponse
+func (c *ClientWithResponses) DownloadLocatorWithBodyWithResponse(ctx context.Context, name string, storage string, params *DownloadLocatorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DownloadLocatorResponse, error) {
+	rsp, err := c.DownloadLocatorWithBody(ctx, name, storage, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDownloadLocatorResponse(rsp)
+}
+
+func (c *ClientWithResponses) DownloadLocatorWithResponse(ctx context.Context, name string, storage string, params *DownloadLocatorParams, body DownloadLocatorJSONRequestBody, reqEditors ...RequestEditorFn) (*DownloadLocatorResponse, error) {
+	rsp, err := c.DownloadLocator(ctx, name, storage, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDownloadLocatorResponse(rsp)
 }
 
 // ListSnippetsWithResponse request returning *ListSnippetsResponse
@@ -5811,6 +5991,46 @@ func ParseListStorageContentResponse(rsp *http.Response) (*ListStorageContentRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []StorageContentItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDownloadLocatorResponse parses an HTTP response from a DownloadLocatorWithResponse call
+func ParseDownloadLocatorResponse(rsp *http.Response) (*DownloadLocatorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DownloadLocatorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest StatusResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

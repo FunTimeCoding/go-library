@@ -60,7 +60,7 @@ require (
 	github.com/liushuangls/go-anthropic/v2 v2.21.1
 	github.com/luthermonson/go-proxmox v0.8.0
 	github.com/mark3labs/mcp-go v0.55.1
-	github.com/mattermost/mattermost/server/public v0.4.2
+	github.com/mattermost/mattermost/server/public v0.4.3
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/modelcontextprotocol/go-sdk v1.6.1
 	github.com/muesli/termenv v0.16.0
@@ -69,10 +69,11 @@ require (
 	github.com/nwaples/rardecode/v2 v2.2.5
 	github.com/oapi-codegen/runtime v1.4.2
 	github.com/olekukonko/tablewriter v1.1.4
-	github.com/ollama/ollama v0.30.10
+	github.com/ollama/ollama v0.30.11
 	github.com/openai/openai-go/v3 v3.41.0
 	github.com/openvex/go-vex v0.2.8
 	github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.23
+	github.com/pkg/sftp v1.13.10
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/prometheus/alertmanager v0.33.0
 	github.com/prometheus/client_golang v1.23.2
@@ -294,7 +295,6 @@ require (
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pjbgf/sha1cd v0.6.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/pkg/sftp v1.13.10 // indirect
 	github.com/pkoukk/tiktoken-go v0.1.6 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/procfs v0.17.0 // indirect

@@ -10,12 +10,12 @@ func (c *Client) GetContainer(
 	identifier int64,
 	node *string,
 ) string {
-	result, e := c.client.GetContainer(
+	result, e := c.client.GetContainerWithResponse(
 		c.context,
 		identifier,
 		&client.GetContainerParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

@@ -10,12 +10,12 @@ func (c *Client) StopMachine(
 	identifier int64,
 	node *string,
 ) string {
-	result, e := c.client.StopMachine(
+	result, e := c.client.StopMachineWithResponse(
 		c.context,
 		identifier,
 		&client.StopMachineParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

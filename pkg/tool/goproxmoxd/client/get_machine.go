@@ -10,12 +10,12 @@ func (c *Client) GetMachine(
 	identifier int64,
 	node *string,
 ) string {
-	result, e := c.client.GetMachine(
+	result, e := c.client.GetMachineWithResponse(
 		c.context,
 		identifier,
 		&client.GetMachineParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

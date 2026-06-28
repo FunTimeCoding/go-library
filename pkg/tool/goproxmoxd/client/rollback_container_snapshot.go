@@ -11,7 +11,7 @@ func (c *Client) RollbackContainerSnapshot(
 	name string,
 	node *string,
 ) string {
-	result, e := c.client.RollbackContainerSnapshot(
+	result, e := c.client.RollbackContainerSnapshotWithResponse(
 		c.context,
 		identifier,
 		name,
@@ -22,5 +22,5 @@ func (c *Client) RollbackContainerSnapshot(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

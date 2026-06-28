@@ -11,7 +11,7 @@ func (c *Client) RollbackMachineSnapshot(
 	name string,
 	node *string,
 ) string {
-	result, e := c.client.RollbackMachineSnapshot(
+	result, e := c.client.RollbackMachineSnapshotWithResponse(
 		c.context,
 		identifier,
 		name,
@@ -22,5 +22,5 @@ func (c *Client) RollbackMachineSnapshot(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

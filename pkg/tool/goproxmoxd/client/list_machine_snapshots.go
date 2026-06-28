@@ -10,12 +10,12 @@ func (c *Client) ListMachineSnapshots(
 	identifier int64,
 	node *string,
 ) string {
-	result, e := c.client.ListMachineSnapshots(
+	result, e := c.client.ListMachineSnapshotsWithResponse(
 		c.context,
 		identifier,
 		&client.ListMachineSnapshotsParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

@@ -6,14 +6,15 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) StartMachine(
-	identifier int64,
-	node *string,
+func (c *Client) CreateSnippet(
+	body client.CreateSnippetJSONRequestBody,
 ) string {
-	result, e := c.client.StartMachineWithResponse(
+	result, e := c.client.CreateSnippetWithResponse(
 		c.context,
-		identifier,
-		&client.StartMachineParams{Instance: &c.instance, Node: node},
+		&client.CreateSnippetParams{
+			Instance: &c.instance,
+		},
+		body,
 	)
 	errors.PanicOnError(e)
 

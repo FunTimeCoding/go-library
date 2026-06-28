@@ -9,7 +9,7 @@ import (
 func (c *Client) CreateMachine(
 	body client.CreateMachineJSONRequestBody,
 ) string {
-	result, e := c.client.CreateMachine(
+	result, e := c.client.CreateMachineWithResponse(
 		c.context,
 		&client.CreateMachineParams{
 			Instance: &c.instance,
@@ -18,5 +18,5 @@ func (c *Client) CreateMachine(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

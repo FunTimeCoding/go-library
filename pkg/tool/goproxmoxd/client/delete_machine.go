@@ -11,7 +11,7 @@ func (c *Client) DeleteMachine(
 	node *string,
 	purge *bool,
 ) string {
-	result, e := c.client.DeleteMachine(
+	result, e := c.client.DeleteMachineWithResponse(
 		c.context,
 		identifier,
 		&client.DeleteMachineParams{
@@ -22,5 +22,5 @@ func (c *Client) DeleteMachine(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

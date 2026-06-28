@@ -7,12 +7,12 @@ import (
 )
 
 func (c *Client) ListNetworks(name string) string {
-	result, e := c.client.ListNetworks(
+	result, e := c.client.ListNetworksWithResponse(
 		c.context,
 		name,
 		&client.ListNetworksParams{Instance: &c.instance},
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

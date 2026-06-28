@@ -11,7 +11,7 @@ func (c *Client) DeleteContainerSnapshot(
 	name string,
 	node *string,
 ) string {
-	result, e := c.client.DeleteContainerSnapshot(
+	result, e := c.client.DeleteContainerSnapshotWithResponse(
 		c.context,
 		identifier,
 		name,
@@ -22,5 +22,5 @@ func (c *Client) DeleteContainerSnapshot(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

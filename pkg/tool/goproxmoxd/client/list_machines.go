@@ -7,11 +7,11 @@ import (
 )
 
 func (c *Client) ListMachines(node *string) string {
-	result, e := c.client.ListMachines(
+	result, e := c.client.ListMachinesWithResponse(
 		c.context,
 		&client.ListMachinesParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

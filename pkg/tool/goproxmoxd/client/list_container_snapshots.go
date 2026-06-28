@@ -10,7 +10,7 @@ func (c *Client) ListContainerSnapshots(
 	identifier int64,
 	node *string,
 ) string {
-	result, e := c.client.ListContainerSnapshots(
+	result, e := c.client.ListContainerSnapshotsWithResponse(
 		c.context,
 		identifier,
 		&client.ListContainerSnapshotsParams{
@@ -20,5 +20,5 @@ func (c *Client) ListContainerSnapshots(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

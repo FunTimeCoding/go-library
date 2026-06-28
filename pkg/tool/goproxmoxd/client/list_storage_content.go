@@ -6,14 +6,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) StartMachine(
-	identifier int64,
-	node *string,
-) string {
-	result, e := c.client.StartMachineWithResponse(
+func (c *Client) ListStorageContent(name string, storage string) string {
+	result, e := c.client.ListStorageContentWithResponse(
 		c.context,
-		identifier,
-		&client.StartMachineParams{Instance: &c.instance, Node: node},
+		name,
+		storage,
+		&client.ListStorageContentParams{
+			Instance: &c.instance,
+		},
 	)
 	errors.PanicOnError(e)
 

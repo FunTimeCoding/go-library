@@ -12,7 +12,7 @@ func (c *Client) CreateContainerSnapshot(
 	node *string,
 ) string {
 	body := client.CreateContainerSnapshotJSONRequestBody{Name: name}
-	result, e := c.client.CreateContainerSnapshot(
+	result, e := c.client.CreateContainerSnapshotWithResponse(
 		c.context,
 		identifier,
 		&client.CreateContainerSnapshotParams{
@@ -23,5 +23,5 @@ func (c *Client) CreateContainerSnapshot(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

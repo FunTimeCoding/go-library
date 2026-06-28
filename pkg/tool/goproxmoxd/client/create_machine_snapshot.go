@@ -12,7 +12,7 @@ func (c *Client) CreateMachineSnapshot(
 	node *string,
 ) string {
 	body := client.CreateMachineSnapshotJSONRequestBody{Name: name}
-	result, e := c.client.CreateMachineSnapshot(
+	result, e := c.client.CreateMachineSnapshotWithResponse(
 		c.context,
 		identifier,
 		&client.CreateMachineSnapshotParams{
@@ -23,5 +23,5 @@ func (c *Client) CreateMachineSnapshot(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

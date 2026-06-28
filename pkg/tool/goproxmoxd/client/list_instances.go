@@ -6,8 +6,8 @@ import (
 )
 
 func (c *Client) ListInstances() string {
-	result, e := c.client.ListInstances(c.context)
+	result, e := c.client.ListInstancesWithResponse(c.context)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

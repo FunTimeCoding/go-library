@@ -7,11 +7,11 @@ import (
 )
 
 func (c *Client) ListContainers(node *string) string {
-	result, e := c.client.ListContainers(
+	result, e := c.client.ListContainersWithResponse(
 		c.context,
 		&client.ListContainersParams{Instance: &c.instance, Node: node},
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

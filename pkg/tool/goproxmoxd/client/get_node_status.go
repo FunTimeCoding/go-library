@@ -7,12 +7,12 @@ import (
 )
 
 func (c *Client) GetNodeStatus(name string) string {
-	result, e := c.client.GetNodeStatus(
+	result, e := c.client.GetNodeStatusWithResponse(
 		c.context,
 		name,
 		&client.GetNodeStatusParams{Instance: &c.instance},
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

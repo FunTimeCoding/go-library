@@ -11,7 +11,7 @@ func (c *Client) DeleteMachineSnapshot(
 	name string,
 	node *string,
 ) string {
-	result, e := c.client.DeleteMachineSnapshot(
+	result, e := c.client.DeleteMachineSnapshotWithResponse(
 		c.context,
 		identifier,
 		name,
@@ -22,5 +22,5 @@ func (c *Client) DeleteMachineSnapshot(
 	)
 	errors.PanicOnError(e)
 
-	return web.ReadString(result)
+	return web.ReadString(result.HTTPResponse)
 }

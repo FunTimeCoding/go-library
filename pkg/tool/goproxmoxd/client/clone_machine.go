@@ -6,14 +6,19 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) StartMachine(
+func (c *Client) CloneMachine(
 	identifier int64,
 	node *string,
+	body client.CloneMachineJSONRequestBody,
 ) string {
-	result, e := c.client.StartMachineWithResponse(
+	result, e := c.client.CloneMachineWithResponse(
 		c.context,
 		identifier,
-		&client.StartMachineParams{Instance: &c.instance, Node: node},
+		&client.CloneMachineParams{
+			Instance: &c.instance,
+			Node:     node,
+		},
+		body,
 	)
 	errors.PanicOnError(e)
 

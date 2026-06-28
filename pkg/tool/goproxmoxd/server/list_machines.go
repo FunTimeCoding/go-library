@@ -22,46 +22,19 @@ func (s *Server) ListMachines(
 		return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	var pointers []*server.Machine
+	node := ""
 
-	if r.Params.Node != nil && *r.Params.Node != "" {
-		node, e := c.Node(*r.Params.Node)
-
-		if e != nil {
-			return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
-		}
-
-		machines, e := c.Machines(node)
-
-		if e != nil {
-			return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
-		}
-
-		pointers = convert.Machines(machines)
-	} else {
-		nodes, e := c.Nodes()
-
-		if e != nil {
-			return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
-		}
-
-		for _, ns := range nodes {
-			node, e := c.Node(ns.Node)
-
-			if e != nil {
-				continue
-			}
-
-			machines, e := c.Machines(node)
-
-			if e != nil {
-				continue
-			}
-
-			pointers = append(pointers, convert.Machines(machines)...)
-		}
+	if r.Params.Node != nil {
+		node = *r.Params.Node
 	}
 
+	machines, e := s.service.ListMachines(c, node)
+
+	if e != nil {
+		return server.ListMachines500JSONResponse(*s.captureDetail(e)), nil
+	}
+
+	pointers := convert.Machines(machines)
 	result := make(server.ListMachines200JSONResponse, len(pointers))
 
 	for i, m := range pointers {

@@ -29,13 +29,7 @@ func (s *Server) ListStorages(
 		return s.captureDetail(e)
 	}
 
-	node, e := c.Node(a.Node)
-
-	if e != nil {
-		return s.captureDetail(e)
-	}
-
-	storages, e := c.Storages(node)
+	storages, e := s.service.ListStorages(c, a.Node)
 
 	if e != nil {
 		return s.captureDetail(e)

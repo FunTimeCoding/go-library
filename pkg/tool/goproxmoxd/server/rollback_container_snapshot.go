@@ -23,7 +23,18 @@ func (s *Server) RollbackContainerSnapshot(
 		return server.RollbackContainerSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	ct, e := findContainer(c, r.Identifier, r.Params.Node)
+	node := ""
+
+	if r.Params.Node != nil {
+		node = *r.Params.Node
+	}
+
+	taskID, e := s.service.RollbackContainerSnapshot(
+		c,
+		int(r.Identifier),
+		node,
+		r.Name,
+	)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
@@ -33,13 +44,5 @@ func (s *Server) RollbackContainerSnapshot(
 		return server.RollbackContainerSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	task, e := c.RollbackContainerSnapshot(ct, r.Name)
-
-	if e != nil {
-		return server.RollbackContainerSnapshot500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	return server.RollbackContainerSnapshot200JSONResponse{
-		TaskId: string(task.UPID),
-	}, nil
+	return server.RollbackContainerSnapshot200JSONResponse{TaskId: taskID}, nil
 }

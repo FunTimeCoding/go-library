@@ -30,19 +30,13 @@ func (s *Server) ListMachineSnapshots(
 		return s.captureDetail(e)
 	}
 
-	vm, e := findMachine(c, a.Identifier, a.Node)
+	snapshots, e := s.service.ListMachineSnapshots(c, a.Identifier, a.Node)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
 			return response.Fail("%s", e)
 		}
 
-		return s.captureDetail(e)
-	}
-
-	snapshots, e := c.MachineSnapshots(vm)
-
-	if e != nil {
 		return s.captureDetail(e)
 	}
 

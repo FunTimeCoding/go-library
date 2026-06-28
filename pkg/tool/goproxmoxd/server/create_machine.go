@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"errors"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/generated/server"
 )
 
@@ -18,57 +20,24 @@ func (s *Server) CreateMachine(
 	c, e := s.service.Client(instance)
 
 	if e != nil {
-		return server.CreateMachine500JSONResponse(*s.captureDetail(e)), nil
+		return server.CreateMachine500JSONResponse(
+			*s.captureDetail(e),
+		), nil
 	}
 
 	m := convertCreateMachine(r.Body)
-	identifier := m.Identifier
-
-	if identifier <= 0 {
-		identifier, e = c.NextIdentifier()
-
-		if e != nil {
-			return server.CreateMachine500JSONResponse(*s.captureDetail(e)), nil
-		}
-	}
-
-	node, e := c.Node(r.Body.Node)
+	identifier, e := s.service.CreateMachine(c, m)
 
 	if e != nil {
-		return server.CreateMachine500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	options := m.BuildOptions()
-	task, e := c.CreateMachine(node, identifier, options...)
-
-	if e != nil {
-		return server.CreateMachine500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	e = c.WaitForTask(task, 300)
-
-	if e != nil {
-		return server.CreateMachine500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	if m.Start {
-		vm, e := c.Machine(node, identifier)
-
-		if e != nil {
-			return server.CreateMachine500JSONResponse(*s.captureDetail(e)), nil
+		if errors.Is(e, constant.ErrorCDROMCloudInitConflict) {
+			return server.CreateMachine400JSONResponse(
+				*clientError(e),
+			), nil
 		}
 
-		startTask, e := c.StartMachine(vm)
-
-		if e != nil {
-			return server.CreateMachine500JSONResponse(*s.captureDetail(e)), nil
-		}
-
-		e = c.WaitForTask(startTask, 120)
-
-		if e != nil {
-			return server.CreateMachine500JSONResponse(*s.captureDetail(e)), nil
-		}
+		return server.CreateMachine500JSONResponse(
+			*s.captureDetail(e),
+		), nil
 	}
 
 	status := "created"

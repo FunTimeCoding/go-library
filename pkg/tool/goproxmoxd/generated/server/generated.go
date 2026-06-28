@@ -22,6 +22,15 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// CloneMachineRequest defines model for CloneMachineRequest.
+type CloneMachineRequest struct {
+	Full          *bool   `json:"full,omitempty"`
+	Name          string  `json:"name"`
+	NewIdentifier *int64  `json:"newIdentifier,omitempty"`
+	Snapshot      *string `json:"snapshot,omitempty"`
+	Storage       *string `json:"storage,omitempty"`
+}
+
 // Container defines model for Container.
 type Container struct {
 	Cpus       *int    `json:"cpus,omitempty"`
@@ -57,23 +66,28 @@ type ContainerDetail struct {
 
 // CreateMachineRequest defines model for CreateMachineRequest.
 type CreateMachineRequest struct {
-	Bridge      *string `json:"bridge,omitempty"`
-	CiPassword  *string `json:"ciPassword,omitempty"`
-	CiUser      *string `json:"ciUser,omitempty"`
-	Cores       *int    `json:"cores,omitempty"`
-	DiskImport  *string `json:"diskImport,omitempty"`
-	DiskSize    *int    `json:"diskSize,omitempty"`
-	DiskStorage *string `json:"diskStorage,omitempty"`
-	Extras      *string `json:"extras,omitempty"`
-	Identifier  *int64  `json:"identifier,omitempty"`
-	IpConfig    *string `json:"ipConfig,omitempty"`
-	Memory      *int    `json:"memory,omitempty"`
-	Name        string  `json:"name"`
-	Node        string  `json:"node"`
-	OsType      *string `json:"osType,omitempty"`
-	SshKeys     *string `json:"sshKeys,omitempty"`
-	Start       *bool   `json:"start,omitempty"`
-	Tags        *string `json:"tags,omitempty"`
+	Agent        *bool   `json:"agent,omitempty"`
+	Bridge       *string `json:"bridge,omitempty"`
+	Cdrom        *string `json:"cdrom,omitempty"`
+	CiPassword   *string `json:"ciPassword,omitempty"`
+	CiUser       *string `json:"ciUser,omitempty"`
+	Cores        *int    `json:"cores,omitempty"`
+	CpuType      *string `json:"cpuType,omitempty"`
+	DiskImport   *string `json:"diskImport,omitempty"`
+	DiskSize     *int    `json:"diskSize,omitempty"`
+	DiskStorage  *string `json:"diskStorage,omitempty"`
+	Extras       *string `json:"extras,omitempty"`
+	Identifier   *int64  `json:"identifier,omitempty"`
+	IpConfig     *string `json:"ipConfig,omitempty"`
+	Memory       *int    `json:"memory,omitempty"`
+	Name         string  `json:"name"`
+	Node         string  `json:"node"`
+	Onboot       *bool   `json:"onboot,omitempty"`
+	OsType       *string `json:"osType,omitempty"`
+	SearchDomain *string `json:"searchDomain,omitempty"`
+	SshKeys      *string `json:"sshKeys,omitempty"`
+	Start        *bool   `json:"start,omitempty"`
+	Tags         *string `json:"tags,omitempty"`
 }
 
 // CreateMachineResult defines model for CreateMachineResult.
@@ -192,9 +206,69 @@ type SnapshotRequest struct {
 	Name string `json:"name"`
 }
 
+// SnippetCreateRequest defines model for SnippetCreateRequest.
+type SnippetCreateRequest struct {
+	Content string `json:"content"`
+	Name    string `json:"name"`
+}
+
+// SnippetCreateResult defines model for SnippetCreateResult.
+type SnippetCreateResult struct {
+	Status string `json:"status"`
+	Volume string `json:"volume"`
+}
+
+// SnippetDetail defines model for SnippetDetail.
+type SnippetDetail struct {
+	Content string `json:"content"`
+	Name    string `json:"name"`
+}
+
+// SnippetItem defines model for SnippetItem.
+type SnippetItem struct {
+	Name string `json:"name"`
+	Size *int64 `json:"size,omitempty"`
+}
+
+// StatusResult defines model for StatusResult.
+type StatusResult struct {
+	Status string `json:"status"`
+}
+
+// Storage defines model for Storage.
+type Storage struct {
+	Active  *bool   `json:"active,omitempty"`
+	Avail   *int64  `json:"avail,omitempty"`
+	Content *string `json:"content,omitempty"`
+	Enabled *bool   `json:"enabled,omitempty"`
+	Name    string  `json:"name"`
+	Shared  *bool   `json:"shared,omitempty"`
+	Total   *int64  `json:"total,omitempty"`
+	Type    *string `json:"type,omitempty"`
+	Used    *int64  `json:"used,omitempty"`
+}
+
+// StorageContentItem defines model for StorageContentItem.
+type StorageContentItem struct {
+	Format *string `json:"format,omitempty"`
+	Size   *int64  `json:"size,omitempty"`
+	Volume string  `json:"volume"`
+}
+
 // TaskResult defines model for TaskResult.
 type TaskResult struct {
 	TaskId string `json:"taskId"`
+}
+
+// UpdateMachineRequest defines model for UpdateMachineRequest.
+type UpdateMachineRequest struct {
+	Cores       *int    `json:"cores,omitempty"`
+	Delete      *string `json:"delete,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Memory      *int    `json:"memory,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Onboot      *bool   `json:"onboot,omitempty"`
+	Tags        *string `json:"tags,omitempty"`
 }
 
 // Instance defines model for Instance.
@@ -283,6 +357,24 @@ type DeleteMachineParams struct {
 
 // GetMachineParams defines parameters for GetMachine.
 type GetMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// UpdateMachineParams defines parameters for UpdateMachine.
+type UpdateMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// CloneMachineParams defines parameters for CloneMachine.
+type CloneMachineParams struct {
 	// Instance Proxmox instance name. Optional when only one instance is configured.
 	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
 
@@ -380,14 +472,59 @@ type GetNodeStatusParams struct {
 	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
 }
 
+// ListStoragesParams defines parameters for ListStorages.
+type ListStoragesParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// ListStorageContentParams defines parameters for ListStorageContent.
+type ListStorageContentParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// ListSnippetsParams defines parameters for ListSnippets.
+type ListSnippetsParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// CreateSnippetParams defines parameters for CreateSnippet.
+type CreateSnippetParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// DeleteSnippetParams defines parameters for DeleteSnippet.
+type DeleteSnippetParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// GetSnippetParams defines parameters for GetSnippet.
+type GetSnippetParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
 // CreateContainerSnapshotJSONRequestBody defines body for CreateContainerSnapshot for application/json ContentType.
 type CreateContainerSnapshotJSONRequestBody = SnapshotRequest
 
 // CreateMachineJSONRequestBody defines body for CreateMachine for application/json ContentType.
 type CreateMachineJSONRequestBody = CreateMachineRequest
 
+// UpdateMachineJSONRequestBody defines body for UpdateMachine for application/json ContentType.
+type UpdateMachineJSONRequestBody = UpdateMachineRequest
+
+// CloneMachineJSONRequestBody defines body for CloneMachine for application/json ContentType.
+type CloneMachineJSONRequestBody = CloneMachineRequest
+
 // CreateMachineSnapshotJSONRequestBody defines body for CreateMachineSnapshot for application/json ContentType.
 type CreateMachineSnapshotJSONRequestBody = SnapshotRequest
+
+// CreateSnippetJSONRequestBody defines body for CreateSnippet for application/json ContentType.
+type CreateSnippetJSONRequestBody = SnippetCreateRequest
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
@@ -425,6 +562,12 @@ type ServerInterface interface {
 	// (GET /api/v1/machines/{identifier})
 	GetMachine(w http.ResponseWriter, r *http.Request, identifier int64, params GetMachineParams)
 
+	// (PATCH /api/v1/machines/{identifier})
+	UpdateMachine(w http.ResponseWriter, r *http.Request, identifier int64, params UpdateMachineParams)
+
+	// (POST /api/v1/machines/{identifier}/clone)
+	CloneMachine(w http.ResponseWriter, r *http.Request, identifier int64, params CloneMachineParams)
+
 	// (POST /api/v1/machines/{identifier}/reset)
 	ResetMachine(w http.ResponseWriter, r *http.Request, identifier int64, params ResetMachineParams)
 
@@ -457,6 +600,24 @@ type ServerInterface interface {
 
 	// (GET /api/v1/nodes/{name}/status)
 	GetNodeStatus(w http.ResponseWriter, r *http.Request, name string, params GetNodeStatusParams)
+
+	// (GET /api/v1/nodes/{name}/storages)
+	ListStorages(w http.ResponseWriter, r *http.Request, name string, params ListStoragesParams)
+
+	// (GET /api/v1/nodes/{name}/storages/{storage}/content)
+	ListStorageContent(w http.ResponseWriter, r *http.Request, name string, storage string, params ListStorageContentParams)
+
+	// (GET /api/v1/snippets)
+	ListSnippets(w http.ResponseWriter, r *http.Request, params ListSnippetsParams)
+
+	// (POST /api/v1/snippets)
+	CreateSnippet(w http.ResponseWriter, r *http.Request, params CreateSnippetParams)
+
+	// (DELETE /api/v1/snippets/{name})
+	DeleteSnippet(w http.ResponseWriter, r *http.Request, name string, params DeleteSnippetParams)
+
+	// (GET /api/v1/snippets/{name})
+	GetSnippet(w http.ResponseWriter, r *http.Request, name string, params GetSnippetParams)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -1014,6 +1175,116 @@ func (siw *ServerInterfaceWrapper) GetMachine(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetMachine(w, r, identifier, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// UpdateMachine operation middleware
+func (siw *ServerInterfaceWrapper) UpdateMachine(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
+
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params UpdateMachineParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "node" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "node"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "node", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateMachine(w, r, identifier, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CloneMachine operation middleware
+func (siw *ServerInterfaceWrapper) CloneMachine(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "identifier" -------------
+	var identifier int64
+
+	err = runtime.BindStyledParameterWithOptions("simple", "identifier", r.PathValue("identifier"), &identifier, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "int64"})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "identifier", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CloneMachineParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "node" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "node", r.URL.Query(), &params.Node, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "node"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "node", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CloneMachine(w, r, identifier, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -1598,6 +1869,249 @@ func (siw *ServerInterfaceWrapper) GetNodeStatus(w http.ResponseWriter, r *http.
 	handler.ServeHTTP(w, r)
 }
 
+// ListStorages operation middleware
+func (siw *ServerInterfaceWrapper) ListStorages(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListStoragesParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListStorages(w, r, name, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListStorageContent operation middleware
+func (siw *ServerInterfaceWrapper) ListStorageContent(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "storage" -------------
+	var storage string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "storage", r.PathValue("storage"), &storage, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "storage", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListStorageContentParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListStorageContent(w, r, name, storage, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListSnippets operation middleware
+func (siw *ServerInterfaceWrapper) ListSnippets(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListSnippetsParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListSnippets(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateSnippet operation middleware
+func (siw *ServerInterfaceWrapper) CreateSnippet(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateSnippetParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateSnippet(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteSnippet operation middleware
+func (siw *ServerInterfaceWrapper) DeleteSnippet(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params DeleteSnippetParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteSnippet(w, r, name, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetSnippet operation middleware
+func (siw *ServerInterfaceWrapper) GetSnippet(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "name" -------------
+	var name string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "name", r.PathValue("name"), &name, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "name", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetSnippetParams
+
+	// ------------- Optional query parameter "instance" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "instance", r.URL.Query(), &params.Instance, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "instance"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "instance", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetSnippet(w, r, name, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 type UnescapedCookieParamError struct {
 	ParamName string
 	Err       error
@@ -1729,6 +2243,8 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/machines", wrapper.CreateMachine)
 	m.HandleFunc(http.MethodDelete+" "+options.BaseURL+"/api/v1/machines/{identifier}", wrapper.DeleteMachine)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/machines/{identifier}", wrapper.GetMachine)
+	m.HandleFunc(http.MethodPatch+" "+options.BaseURL+"/api/v1/machines/{identifier}", wrapper.UpdateMachine)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/machines/{identifier}/clone", wrapper.CloneMachine)
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/machines/{identifier}/reset", wrapper.ResetMachine)
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/machines/{identifier}/shutdown", wrapper.ShutdownMachine)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/machines/{identifier}/snapshots", wrapper.ListMachineSnapshots)
@@ -1740,6 +2256,12 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/nodes", wrapper.ListNodes)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/nodes/{name}/networks", wrapper.ListNetworks)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/nodes/{name}/status", wrapper.GetNodeStatus)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/nodes/{name}/storages", wrapper.ListStorages)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/nodes/{name}/storages/{storage}/content", wrapper.ListStorageContent)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/snippets", wrapper.ListSnippets)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/snippets", wrapper.CreateSnippet)
+	m.HandleFunc(http.MethodDelete+" "+options.BaseURL+"/api/v1/snippets/{name}", wrapper.DeleteSnippet)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/snippets/{name}", wrapper.GetSnippet)
 
 	return m
 }
@@ -2363,6 +2885,138 @@ func (response GetMachine404JSONResponse) VisitGetMachineResponse(w http.Respons
 type GetMachine500JSONResponse ErrorResponse
 
 func (response GetMachine500JSONResponse) VisitGetMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type UpdateMachineRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     UpdateMachineParams
+	Body       *UpdateMachineJSONRequestBody
+}
+
+type UpdateMachineResponseObject interface {
+	VisitUpdateMachineResponse(w http.ResponseWriter) error
+}
+
+type UpdateMachine200JSONResponse StatusResult
+
+func (response UpdateMachine200JSONResponse) VisitUpdateMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type UpdateMachine400JSONResponse Error
+
+func (response UpdateMachine400JSONResponse) VisitUpdateMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type UpdateMachine404JSONResponse Error
+
+func (response UpdateMachine404JSONResponse) VisitUpdateMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type UpdateMachine500JSONResponse ErrorResponse
+
+func (response UpdateMachine500JSONResponse) VisitUpdateMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CloneMachineRequestObject struct {
+	Identifier int64 `json:"identifier"`
+	Params     CloneMachineParams
+	Body       *CloneMachineJSONRequestBody
+}
+
+type CloneMachineResponseObject interface {
+	VisitCloneMachineResponse(w http.ResponseWriter) error
+}
+
+type CloneMachine200JSONResponse CreateMachineResult
+
+func (response CloneMachine200JSONResponse) VisitCloneMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CloneMachine400JSONResponse Error
+
+func (response CloneMachine400JSONResponse) VisitCloneMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CloneMachine404JSONResponse Error
+
+func (response CloneMachine404JSONResponse) VisitCloneMachineResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CloneMachine500JSONResponse ErrorResponse
+
+func (response CloneMachine500JSONResponse) VisitCloneMachineResponse(w http.ResponseWriter) error {
 
 	var buf bytes.Buffer
 	if err := json.NewEncoder(&buf).Encode(response); err != nil {
@@ -3077,6 +3731,312 @@ func (response GetNodeStatus500JSONResponse) VisitGetNodeStatusResponse(w http.R
 	return err
 }
 
+type ListStoragesRequestObject struct {
+	Name   string `json:"name"`
+	Params ListStoragesParams
+}
+
+type ListStoragesResponseObject interface {
+	VisitListStoragesResponse(w http.ResponseWriter) error
+}
+
+type ListStorages200JSONResponse []Storage
+
+func (response ListStorages200JSONResponse) VisitListStoragesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListStorages400JSONResponse Error
+
+func (response ListStorages400JSONResponse) VisitListStoragesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListStorages500JSONResponse ErrorResponse
+
+func (response ListStorages500JSONResponse) VisitListStoragesResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListStorageContentRequestObject struct {
+	Name    string `json:"name"`
+	Storage string `json:"storage"`
+	Params  ListStorageContentParams
+}
+
+type ListStorageContentResponseObject interface {
+	VisitListStorageContentResponse(w http.ResponseWriter) error
+}
+
+type ListStorageContent200JSONResponse []StorageContentItem
+
+func (response ListStorageContent200JSONResponse) VisitListStorageContentResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListStorageContent400JSONResponse Error
+
+func (response ListStorageContent400JSONResponse) VisitListStorageContentResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListStorageContent500JSONResponse ErrorResponse
+
+func (response ListStorageContent500JSONResponse) VisitListStorageContentResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListSnippetsRequestObject struct {
+	Params ListSnippetsParams
+}
+
+type ListSnippetsResponseObject interface {
+	VisitListSnippetsResponse(w http.ResponseWriter) error
+}
+
+type ListSnippets200JSONResponse []SnippetItem
+
+func (response ListSnippets200JSONResponse) VisitListSnippetsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListSnippets400JSONResponse Error
+
+func (response ListSnippets400JSONResponse) VisitListSnippetsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type ListSnippets500JSONResponse ErrorResponse
+
+func (response ListSnippets500JSONResponse) VisitListSnippetsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateSnippetRequestObject struct {
+	Params CreateSnippetParams
+	Body   *CreateSnippetJSONRequestBody
+}
+
+type CreateSnippetResponseObject interface {
+	VisitCreateSnippetResponse(w http.ResponseWriter) error
+}
+
+type CreateSnippet200JSONResponse SnippetCreateResult
+
+func (response CreateSnippet200JSONResponse) VisitCreateSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateSnippet400JSONResponse Error
+
+func (response CreateSnippet400JSONResponse) VisitCreateSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type CreateSnippet500JSONResponse ErrorResponse
+
+func (response CreateSnippet500JSONResponse) VisitCreateSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DeleteSnippetRequestObject struct {
+	Name   string `json:"name"`
+	Params DeleteSnippetParams
+}
+
+type DeleteSnippetResponseObject interface {
+	VisitDeleteSnippetResponse(w http.ResponseWriter) error
+}
+
+type DeleteSnippet200JSONResponse StatusResult
+
+func (response DeleteSnippet200JSONResponse) VisitDeleteSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DeleteSnippet400JSONResponse Error
+
+func (response DeleteSnippet400JSONResponse) VisitDeleteSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type DeleteSnippet500JSONResponse ErrorResponse
+
+func (response DeleteSnippet500JSONResponse) VisitDeleteSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetSnippetRequestObject struct {
+	Name   string `json:"name"`
+	Params GetSnippetParams
+}
+
+type GetSnippetResponseObject interface {
+	VisitGetSnippetResponse(w http.ResponseWriter) error
+}
+
+type GetSnippet200JSONResponse SnippetDetail
+
+func (response GetSnippet200JSONResponse) VisitGetSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetSnippet400JSONResponse Error
+
+func (response GetSnippet400JSONResponse) VisitGetSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetSnippet500JSONResponse ErrorResponse
+
+func (response GetSnippet500JSONResponse) VisitGetSnippetResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
 // StrictServerInterface represents all server handlers.
 type StrictServerInterface interface {
 
@@ -3113,6 +4073,12 @@ type StrictServerInterface interface {
 	// (GET /api/v1/machines/{identifier})
 	GetMachine(ctx context.Context, request GetMachineRequestObject) (GetMachineResponseObject, error)
 
+	// (PATCH /api/v1/machines/{identifier})
+	UpdateMachine(ctx context.Context, request UpdateMachineRequestObject) (UpdateMachineResponseObject, error)
+
+	// (POST /api/v1/machines/{identifier}/clone)
+	CloneMachine(ctx context.Context, request CloneMachineRequestObject) (CloneMachineResponseObject, error)
+
 	// (POST /api/v1/machines/{identifier}/reset)
 	ResetMachine(ctx context.Context, request ResetMachineRequestObject) (ResetMachineResponseObject, error)
 
@@ -3145,6 +4111,24 @@ type StrictServerInterface interface {
 
 	// (GET /api/v1/nodes/{name}/status)
 	GetNodeStatus(ctx context.Context, request GetNodeStatusRequestObject) (GetNodeStatusResponseObject, error)
+
+	// (GET /api/v1/nodes/{name}/storages)
+	ListStorages(ctx context.Context, request ListStoragesRequestObject) (ListStoragesResponseObject, error)
+
+	// (GET /api/v1/nodes/{name}/storages/{storage}/content)
+	ListStorageContent(ctx context.Context, request ListStorageContentRequestObject) (ListStorageContentResponseObject, error)
+
+	// (GET /api/v1/snippets)
+	ListSnippets(ctx context.Context, request ListSnippetsRequestObject) (ListSnippetsResponseObject, error)
+
+	// (POST /api/v1/snippets)
+	CreateSnippet(ctx context.Context, request CreateSnippetRequestObject) (CreateSnippetResponseObject, error)
+
+	// (DELETE /api/v1/snippets/{name})
+	DeleteSnippet(ctx context.Context, request DeleteSnippetRequestObject) (DeleteSnippetResponseObject, error)
+
+	// (GET /api/v1/snippets/{name})
+	GetSnippet(ctx context.Context, request GetSnippetRequestObject) (GetSnippetResponseObject, error)
 }
 
 type StrictHandlerFunc func(ctx context.Context, w http.ResponseWriter, r *http.Request, request any) (any, error)
@@ -3483,6 +4467,74 @@ func (sh *strictHandler) GetMachine(w http.ResponseWriter, r *http.Request, iden
 	}
 }
 
+// UpdateMachine operation middleware
+func (sh *strictHandler) UpdateMachine(w http.ResponseWriter, r *http.Request, identifier int64, params UpdateMachineParams) {
+	var request UpdateMachineRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	var body UpdateMachineJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateMachine(ctx, request.(UpdateMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(UpdateMachineResponseObject); ok {
+		if err := validResponse.VisitUpdateMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CloneMachine operation middleware
+func (sh *strictHandler) CloneMachine(w http.ResponseWriter, r *http.Request, identifier int64, params CloneMachineParams) {
+	var request CloneMachineRequestObject
+
+	request.Identifier = identifier
+	request.Params = params
+
+	var body CloneMachineJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CloneMachine(ctx, request.(CloneMachineRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CloneMachine")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CloneMachineResponseObject); ok {
+		if err := validResponse.VisitCloneMachineResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // ResetMachine operation middleware
 func (sh *strictHandler) ResetMachine(w http.ResponseWriter, r *http.Request, identifier int64, params ResetMachineParams) {
 	var request ResetMachineRequestObject
@@ -3788,41 +4840,217 @@ func (sh *strictHandler) GetNodeStatus(w http.ResponseWriter, r *http.Request, n
 	}
 }
 
+// ListStorages operation middleware
+func (sh *strictHandler) ListStorages(w http.ResponseWriter, r *http.Request, name string, params ListStoragesParams) {
+	var request ListStoragesRequestObject
+
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListStorages(ctx, request.(ListStoragesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListStorages")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListStoragesResponseObject); ok {
+		if err := validResponse.VisitListStoragesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListStorageContent operation middleware
+func (sh *strictHandler) ListStorageContent(w http.ResponseWriter, r *http.Request, name string, storage string, params ListStorageContentParams) {
+	var request ListStorageContentRequestObject
+
+	request.Name = name
+	request.Storage = storage
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListStorageContent(ctx, request.(ListStorageContentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListStorageContent")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListStorageContentResponseObject); ok {
+		if err := validResponse.VisitListStorageContentResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListSnippets operation middleware
+func (sh *strictHandler) ListSnippets(w http.ResponseWriter, r *http.Request, params ListSnippetsParams) {
+	var request ListSnippetsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListSnippets(ctx, request.(ListSnippetsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListSnippets")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListSnippetsResponseObject); ok {
+		if err := validResponse.VisitListSnippetsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateSnippet operation middleware
+func (sh *strictHandler) CreateSnippet(w http.ResponseWriter, r *http.Request, params CreateSnippetParams) {
+	var request CreateSnippetRequestObject
+
+	request.Params = params
+
+	var body CreateSnippetJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateSnippet(ctx, request.(CreateSnippetRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateSnippet")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateSnippetResponseObject); ok {
+		if err := validResponse.VisitCreateSnippetResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteSnippet operation middleware
+func (sh *strictHandler) DeleteSnippet(w http.ResponseWriter, r *http.Request, name string, params DeleteSnippetParams) {
+	var request DeleteSnippetRequestObject
+
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteSnippet(ctx, request.(DeleteSnippetRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteSnippet")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteSnippetResponseObject); ok {
+		if err := validResponse.VisitDeleteSnippetResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetSnippet operation middleware
+func (sh *strictHandler) GetSnippet(w http.ResponseWriter, r *http.Request, name string, params GetSnippetParams) {
+	var request GetSnippetRequestObject
+
+	request.Name = name
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSnippet(ctx, request.(GetSnippetRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSnippet")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetSnippetResponseObject); ok {
+		if err := validResponse.VisitGetSnippetResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // Base64 encoded, compressed with deflate, json marshaled OpenAPI spec.
 // Stored as a slice of fixed-width chunks rather than one concatenated
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
+	"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",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

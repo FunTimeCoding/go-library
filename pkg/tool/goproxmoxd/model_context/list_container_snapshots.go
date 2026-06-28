@@ -24,25 +24,19 @@ func (s *Server) ListContainerSnapshots(
 		return response.Fail("%s", e)
 	}
 
-	p, e := s.service.Client(instance)
+	c, e := s.service.Client(instance)
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
-	ct, e := findContainer(p, a.Identifier, a.Node)
+	snapshots, e := s.service.ListContainerSnapshots(c, a.Identifier, a.Node)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
 			return response.Fail("%s", e)
 		}
 
-		return s.captureDetail(e)
-	}
-
-	snapshots, e := p.ContainerSnapshots(ct)
-
-	if e != nil {
 		return s.captureDetail(e)
 	}
 

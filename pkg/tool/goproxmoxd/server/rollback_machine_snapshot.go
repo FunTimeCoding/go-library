@@ -23,7 +23,18 @@ func (s *Server) RollbackMachineSnapshot(
 		return server.RollbackMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	vm, e := findMachine(c, r.Identifier, r.Params.Node)
+	node := ""
+
+	if r.Params.Node != nil {
+		node = *r.Params.Node
+	}
+
+	taskID, e := s.service.RollbackMachineSnapshot(
+		c,
+		int(r.Identifier),
+		node,
+		r.Name,
+	)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
@@ -33,13 +44,5 @@ func (s *Server) RollbackMachineSnapshot(
 		return server.RollbackMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	task, e := c.RollbackMachineSnapshot(vm, r.Name)
-
-	if e != nil {
-		return server.RollbackMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	return server.RollbackMachineSnapshot200JSONResponse{
-		TaskId: string(task.UPID),
-	}, nil
+	return server.RollbackMachineSnapshot200JSONResponse{TaskId: taskID}, nil
 }

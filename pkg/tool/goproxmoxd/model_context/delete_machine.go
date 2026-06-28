@@ -5,8 +5,8 @@ import (
 	"errors"
 	"github.com/funtimecoding/go-library/pkg/errors/not_found"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/response"
+	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/model_context/argument"
-	"github.com/luthermonson/go-proxmox"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -31,38 +31,14 @@ func (s *Server) DeleteMachine(
 		return s.captureDetail(e)
 	}
 
-	vm, e := findMachine(c, a.Identifier, a.Node)
+	e = s.service.DeleteMachine(c, a.Identifier, a.Node, a.Purge)
 
 	if e != nil {
-		if errors.Is(e, not_found.Sentinel) {
+		if errors.Is(e, not_found.Sentinel) ||
+			errors.Is(e, constant.ErrorMachineRunning) {
 			return response.Fail("%s", e)
 		}
 
-		return s.captureDetail(e)
-	}
-
-	if vm.Status == "running" {
-		return response.Fail(
-			"vm %d is running — stop it before deleting",
-			a.Identifier,
-		)
-	}
-
-	task, e := c.DeleteMachine(
-		vm,
-		&proxmox.VirtualMachineDeleteOptions{
-			Purge:                    proxmox.IntOrBool(a.Purge),
-			DestroyUnreferencedDisks: proxmox.IntOrBool(true),
-		},
-	)
-
-	if e != nil {
-		return s.captureDetail(e)
-	}
-
-	e = c.WaitForTask(task, 120)
-
-	if e != nil {
 		return s.captureDetail(e)
 	}
 

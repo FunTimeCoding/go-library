@@ -28,13 +28,18 @@ func (s *Server) RollbackContainerSnapshot(
 		return response.Fail("%s", e)
 	}
 
-	p, e := s.service.Client(instance)
+	c, e := s.service.Client(instance)
 
 	if e != nil {
 		return s.captureDetail(e)
 	}
 
-	ct, e := findContainer(p, a.Identifier, a.Node)
+	taskID, e := s.service.RollbackContainerSnapshot(
+		c,
+		a.Identifier,
+		a.Node,
+		a.Name,
+	)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
@@ -44,11 +49,5 @@ func (s *Server) RollbackContainerSnapshot(
 		return s.captureDetail(e)
 	}
 
-	task, e := p.RollbackContainerSnapshot(ct, a.Name)
-
-	if e != nil {
-		return s.captureDetail(e)
-	}
-
-	return response.SuccessAny(map[string]string{"task_id": string(task.UPID)})
+	return response.SuccessAny(map[string]string{"task_id": taskID})
 }

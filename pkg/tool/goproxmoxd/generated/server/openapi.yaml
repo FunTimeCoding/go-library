@@ -230,6 +230,54 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateMachine
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMachineRequest"
+      responses:
+        "200":
+          description: Machine updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResult"
+        "404":
+          description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/v1/machines/{identifier}/snapshots:
     get:
       operationId: listMachineSnapshots
@@ -897,6 +945,239 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /api/v1/machines/{identifier}/clone:
+    post:
+      operationId: cloneMachine
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      - name: identifier
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: Source machine ID.
+      - name: node
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Node name. Speeds up lookup when known.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CloneMachineRequest"
+      responses:
+        "200":
+          description: Machine cloned.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateMachineResult"
+        "404":
+          description: Machine not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/v1/nodes/{name}/storages:
+    get:
+      operationId: listStorages
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Node name.
+      responses:
+        "200":
+          description: Storage backends on the node.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Storage"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/v1/nodes/{name}/storages/{storage}/content:
+    get:
+      operationId: listStorageContent
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Node name.
+      - name: storage
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Storage name.
+      responses:
+        "200":
+          description: Content on the storage.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StorageContentItem"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/v1/snippets:
+    get:
+      operationId: listSnippets
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      responses:
+        "200":
+          description: Snippet files on the host.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SnippetItem"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: createSnippet
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnippetCreateRequest"
+      responses:
+        "200":
+          description: Snippet created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnippetCreateResult"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/v1/snippets/{name}:
+    get:
+      operationId: getSnippet
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Snippet filename.
+      responses:
+        "200":
+          description: Snippet content.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnippetDetail"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteSnippet
+      parameters:
+      - $ref: "#/components/parameters/Instance"
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Snippet filename.
+      responses:
+        "200":
+          description: Snippet deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResult"
+        "400":
+          description: Invalid or missing parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   parameters:
     Instance:
@@ -1210,8 +1491,16 @@ components:
           type: string
         diskImport:
           type: string
+        cdrom:
+          type: string
         bridge:
           type: string
+        cpuType:
+          type: string
+        agent:
+          type: boolean
+        onboot:
+          type: boolean
         ciUser:
           type: string
         ciPassword:
@@ -1219,6 +1508,8 @@ components:
         sshKeys:
           type: string
         ipConfig:
+          type: string
+        searchDomain:
           type: string
         osType:
           type: string
@@ -1237,6 +1528,124 @@ components:
           type: integer
           format: int64
         status:
+          type: string
+    UpdateMachineRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        tags:
+          type: string
+        onboot:
+          type: boolean
+        cores:
+          type: integer
+        memory:
+          type: integer
+        description:
+          type: string
+        delete:
+          type: string
+    StatusResult:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          type: string
+    CloneMachineRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        newIdentifier:
+          type: integer
+          format: int64
+        full:
+          type: boolean
+        storage:
+          type: string
+        snapshot:
+          type: string
+    Storage:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        content:
+          type: string
+        enabled:
+          type: boolean
+        shared:
+          type: boolean
+        active:
+          type: boolean
+        avail:
+          type: integer
+          format: int64
+        used:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+    StorageContentItem:
+      type: object
+      required:
+      - volume
+      properties:
+        volume:
+          type: string
+        format:
+          type: string
+        size:
+          type: integer
+          format: int64
+    SnippetItem:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+          format: int64
+    SnippetCreateRequest:
+      type: object
+      required:
+      - name
+      - content
+      properties:
+        name:
+          type: string
+        content:
+          type: string
+    SnippetCreateResult:
+      type: object
+      required:
+      - volume
+      - status
+      properties:
+        volume:
+          type: string
+        status:
+          type: string
+    SnippetDetail:
+      type: object
+      required:
+      - name
+      - content
+      properties:
+        name:
+          type: string
+        content:
           type: string
     SnapshotRequest:
       type: object

@@ -23,7 +23,18 @@ func (s *Server) DeleteMachineSnapshot(
 		return server.DeleteMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	vm, e := findMachine(c, r.Identifier, r.Params.Node)
+	node := ""
+
+	if r.Params.Node != nil {
+		node = *r.Params.Node
+	}
+
+	taskID, e := s.service.DeleteMachineSnapshot(
+		c,
+		int(r.Identifier),
+		node,
+		r.Name,
+	)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
@@ -33,13 +44,5 @@ func (s *Server) DeleteMachineSnapshot(
 		return server.DeleteMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	task, e := c.DeleteMachineSnapshot(vm, r.Name)
-
-	if e != nil {
-		return server.DeleteMachineSnapshot500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	return server.DeleteMachineSnapshot200JSONResponse{
-		TaskId: string(task.UPID),
-	}, nil
+	return server.DeleteMachineSnapshot200JSONResponse{TaskId: taskID}, nil
 }

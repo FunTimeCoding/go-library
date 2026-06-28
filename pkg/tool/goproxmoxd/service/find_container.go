@@ -1,4 +1,4 @@
-package server
+package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/errors/not_found"
@@ -8,17 +8,17 @@ import (
 
 func findContainer(
 	c face.ProxmoxClient,
-	identifier int64,
-	node *string,
+	identifier int,
+	nodeName string,
 ) (*proxmox.Container, error) {
-	if node != nil && *node != "" {
-		n, e := c.Node(*node)
+	if nodeName != "" {
+		node, e := c.Node(nodeName)
 
 		if e != nil {
 			return nil, e
 		}
 
-		return c.Container(n, int(identifier))
+		return c.Container(node, identifier)
 	}
 
 	nodes, e := c.Nodes()
@@ -27,22 +27,22 @@ func findContainer(
 		return nil, e
 	}
 
-	for _, ns := range nodes {
-		n, e := c.Node(ns.Node)
+	for _, n := range nodes {
+		node, f := c.Node(n.Node)
 
-		if e != nil {
+		if f != nil {
 			continue
 		}
 
-		containers, e := c.Containers(n)
+		containers, g := c.Containers(node)
 
-		if e != nil {
+		if g != nil {
 			continue
 		}
 
 		for _, listed := range containers {
-			if int64(listed.VMID) == identifier {
-				return c.Container(n, int(identifier))
+			if int(listed.VMID) == identifier {
+				return c.Container(node, identifier)
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 package model_context
 
-import "fmt"
+import "github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/constant"
 
 func snippetPath(name string) string {
-	return fmt.Sprintf("%s/%s", snippetDirectory, name)
+	return constant.SnippetPath(name)
 }

@@ -1,3 +1,5 @@
 package model_context
 
-const snippetDirectory = "/var/lib/vz/snippets"
+import "github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/constant"
+
+var snippetDirectory = constant.SnippetDirectory

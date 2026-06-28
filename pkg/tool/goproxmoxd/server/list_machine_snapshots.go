@@ -24,7 +24,13 @@ func (s *Server) ListMachineSnapshots(
 		return server.ListMachineSnapshots500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	vm, e := findMachine(c, r.Identifier, r.Params.Node)
+	node := ""
+
+	if r.Params.Node != nil {
+		node = *r.Params.Node
+	}
+
+	snapshots, e := s.service.ListMachineSnapshots(c, int(r.Identifier), node)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
@@ -34,17 +40,11 @@ func (s *Server) ListMachineSnapshots(
 		return server.ListMachineSnapshots500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	snapshots, e := c.MachineSnapshots(vm)
+	converted := convert.MachineSnapshots(snapshots)
+	result := make(server.ListMachineSnapshots200JSONResponse, len(converted))
 
-	if e != nil {
-		return server.ListMachineSnapshots500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	pointers := convert.MachineSnapshots(snapshots)
-	result := make(server.ListMachineSnapshots200JSONResponse, len(pointers))
-
-	for i, snap := range pointers {
-		result[i] = *snap
+	for i, v := range converted {
+		result[i] = *v
 	}
 
 	return result, nil

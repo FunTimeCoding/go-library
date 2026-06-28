@@ -24,7 +24,7 @@ func (s *Server) GetNodeStatus(
 		), nil
 	}
 
-	result, e := c.NodeStatus(r.Name)
+	result, e := s.service.GetNodeStatus(c, r.Name)
 
 	if e != nil {
 		return server.GetNodeStatus500JSONResponse(

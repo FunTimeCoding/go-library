@@ -28,13 +28,7 @@ func (s *Server) ListNetworks(
 		return s.captureDetail(e)
 	}
 
-	node, e := c.Node(a.Node)
-
-	if e != nil {
-		return s.captureDetail(e)
-	}
-
-	networks, e := c.Networks(node)
+	networks, e := s.service.ListNetworks(c, a.Node)
 
 	if e != nil {
 		return s.captureDetail(e)

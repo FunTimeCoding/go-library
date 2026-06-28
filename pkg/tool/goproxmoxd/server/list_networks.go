@@ -22,13 +22,7 @@ func (s *Server) ListNetworks(
 		return server.ListNetworks500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	node, e := c.Node(r.Name)
-
-	if e != nil {
-		return server.ListNetworks500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	networks, e := c.Networks(node)
+	networks, e := s.service.ListNetworks(c, r.Name)
 
 	if e != nil {
 		return server.ListNetworks500JSONResponse(*s.captureDetail(e)), nil

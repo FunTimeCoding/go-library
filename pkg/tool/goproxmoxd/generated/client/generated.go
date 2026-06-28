@@ -16,6 +16,15 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// CloneMachineRequest defines model for CloneMachineRequest.
+type CloneMachineRequest struct {
+	Full          *bool   `json:"full,omitempty"`
+	Name          string  `json:"name"`
+	NewIdentifier *int64  `json:"newIdentifier,omitempty"`
+	Snapshot      *string `json:"snapshot,omitempty"`
+	Storage       *string `json:"storage,omitempty"`
+}
+
 // Container defines model for Container.
 type Container struct {
 	Cpus       *int    `json:"cpus,omitempty"`
@@ -51,23 +60,28 @@ type ContainerDetail struct {
 
 // CreateMachineRequest defines model for CreateMachineRequest.
 type CreateMachineRequest struct {
-	Bridge      *string `json:"bridge,omitempty"`
-	CiPassword  *string `json:"ciPassword,omitempty"`
-	CiUser      *string `json:"ciUser,omitempty"`
-	Cores       *int    `json:"cores,omitempty"`
-	DiskImport  *string `json:"diskImport,omitempty"`
-	DiskSize    *int    `json:"diskSize,omitempty"`
-	DiskStorage *string `json:"diskStorage,omitempty"`
-	Extras      *string `json:"extras,omitempty"`
-	Identifier  *int64  `json:"identifier,omitempty"`
-	IpConfig    *string `json:"ipConfig,omitempty"`
-	Memory      *int    `json:"memory,omitempty"`
-	Name        string  `json:"name"`
-	Node        string  `json:"node"`
-	OsType      *string `json:"osType,omitempty"`
-	SshKeys     *string `json:"sshKeys,omitempty"`
-	Start       *bool   `json:"start,omitempty"`
-	Tags        *string `json:"tags,omitempty"`
+	Agent        *bool   `json:"agent,omitempty"`
+	Bridge       *string `json:"bridge,omitempty"`
+	Cdrom        *string `json:"cdrom,omitempty"`
+	CiPassword   *string `json:"ciPassword,omitempty"`
+	CiUser       *string `json:"ciUser,omitempty"`
+	Cores        *int    `json:"cores,omitempty"`
+	CpuType      *string `json:"cpuType,omitempty"`
+	DiskImport   *string `json:"diskImport,omitempty"`
+	DiskSize     *int    `json:"diskSize,omitempty"`
+	DiskStorage  *string `json:"diskStorage,omitempty"`
+	Extras       *string `json:"extras,omitempty"`
+	Identifier   *int64  `json:"identifier,omitempty"`
+	IpConfig     *string `json:"ipConfig,omitempty"`
+	Memory       *int    `json:"memory,omitempty"`
+	Name         string  `json:"name"`
+	Node         string  `json:"node"`
+	Onboot       *bool   `json:"onboot,omitempty"`
+	OsType       *string `json:"osType,omitempty"`
+	SearchDomain *string `json:"searchDomain,omitempty"`
+	SshKeys      *string `json:"sshKeys,omitempty"`
+	Start        *bool   `json:"start,omitempty"`
+	Tags         *string `json:"tags,omitempty"`
 }
 
 // CreateMachineResult defines model for CreateMachineResult.
@@ -186,9 +200,69 @@ type SnapshotRequest struct {
 	Name string `json:"name"`
 }
 
+// SnippetCreateRequest defines model for SnippetCreateRequest.
+type SnippetCreateRequest struct {
+	Content string `json:"content"`
+	Name    string `json:"name"`
+}
+
+// SnippetCreateResult defines model for SnippetCreateResult.
+type SnippetCreateResult struct {
+	Status string `json:"status"`
+	Volume string `json:"volume"`
+}
+
+// SnippetDetail defines model for SnippetDetail.
+type SnippetDetail struct {
+	Content string `json:"content"`
+	Name    string `json:"name"`
+}
+
+// SnippetItem defines model for SnippetItem.
+type SnippetItem struct {
+	Name string `json:"name"`
+	Size *int64 `json:"size,omitempty"`
+}
+
+// StatusResult defines model for StatusResult.
+type StatusResult struct {
+	Status string `json:"status"`
+}
+
+// Storage defines model for Storage.
+type Storage struct {
+	Active  *bool   `json:"active,omitempty"`
+	Avail   *int64  `json:"avail,omitempty"`
+	Content *string `json:"content,omitempty"`
+	Enabled *bool   `json:"enabled,omitempty"`
+	Name    string  `json:"name"`
+	Shared  *bool   `json:"shared,omitempty"`
+	Total   *int64  `json:"total,omitempty"`
+	Type    *string `json:"type,omitempty"`
+	Used    *int64  `json:"used,omitempty"`
+}
+
+// StorageContentItem defines model for StorageContentItem.
+type StorageContentItem struct {
+	Format *string `json:"format,omitempty"`
+	Size   *int64  `json:"size,omitempty"`
+	Volume string  `json:"volume"`
+}
+
 // TaskResult defines model for TaskResult.
 type TaskResult struct {
 	TaskId string `json:"taskId"`
+}
+
+// UpdateMachineRequest defines model for UpdateMachineRequest.
+type UpdateMachineRequest struct {
+	Cores       *int    `json:"cores,omitempty"`
+	Delete      *string `json:"delete,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Memory      *int    `json:"memory,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Onboot      *bool   `json:"onboot,omitempty"`
+	Tags        *string `json:"tags,omitempty"`
 }
 
 // Instance defines model for Instance.
@@ -277,6 +351,24 @@ type DeleteMachineParams struct {
 
 // GetMachineParams defines parameters for GetMachine.
 type GetMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// UpdateMachineParams defines parameters for UpdateMachine.
+type UpdateMachineParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+
+	// Node Node name. Speeds up lookup when known.
+	Node *string `form:"node,omitempty" json:"node,omitempty"`
+}
+
+// CloneMachineParams defines parameters for CloneMachine.
+type CloneMachineParams struct {
 	// Instance Proxmox instance name. Optional when only one instance is configured.
 	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
 
@@ -374,14 +466,59 @@ type GetNodeStatusParams struct {
 	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
 }
 
+// ListStoragesParams defines parameters for ListStorages.
+type ListStoragesParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// ListStorageContentParams defines parameters for ListStorageContent.
+type ListStorageContentParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// ListSnippetsParams defines parameters for ListSnippets.
+type ListSnippetsParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// CreateSnippetParams defines parameters for CreateSnippet.
+type CreateSnippetParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// DeleteSnippetParams defines parameters for DeleteSnippet.
+type DeleteSnippetParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
+// GetSnippetParams defines parameters for GetSnippet.
+type GetSnippetParams struct {
+	// Instance Proxmox instance name. Optional when only one instance is configured.
+	Instance *Instance `form:"instance,omitempty" json:"instance,omitempty"`
+}
+
 // CreateContainerSnapshotJSONRequestBody defines body for CreateContainerSnapshot for application/json ContentType.
 type CreateContainerSnapshotJSONRequestBody = SnapshotRequest
 
 // CreateMachineJSONRequestBody defines body for CreateMachine for application/json ContentType.
 type CreateMachineJSONRequestBody = CreateMachineRequest
 
+// UpdateMachineJSONRequestBody defines body for UpdateMachine for application/json ContentType.
+type UpdateMachineJSONRequestBody = UpdateMachineRequest
+
+// CloneMachineJSONRequestBody defines body for CloneMachine for application/json ContentType.
+type CloneMachineJSONRequestBody = CloneMachineRequest
+
 // CreateMachineSnapshotJSONRequestBody defines body for CreateMachineSnapshot for application/json ContentType.
 type CreateMachineSnapshotJSONRequestBody = SnapshotRequest
+
+// CreateSnippetJSONRequestBody defines body for CreateSnippet for application/json ContentType.
+type CreateSnippetJSONRequestBody = SnippetCreateRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -493,6 +630,16 @@ type ClientInterface interface {
 	// GetMachine request
 	GetMachine(ctx context.Context, identifier int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// UpdateMachineWithBody request with any body
+	UpdateMachineWithBody(ctx context.Context, identifier int64, params *UpdateMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateMachine(ctx context.Context, identifier int64, params *UpdateMachineParams, body UpdateMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CloneMachineWithBody request with any body
+	CloneMachineWithBody(ctx context.Context, identifier int64, params *CloneMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CloneMachine(ctx context.Context, identifier int64, params *CloneMachineParams, body CloneMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ResetMachine request
 	ResetMachine(ctx context.Context, identifier int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -527,6 +674,26 @@ type ClientInterface interface {
 
 	// GetNodeStatus request
 	GetNodeStatus(ctx context.Context, name string, params *GetNodeStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListStorages request
+	ListStorages(ctx context.Context, name string, params *ListStoragesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListStorageContent request
+	ListStorageContent(ctx context.Context, name string, storage string, params *ListStorageContentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSnippets request
+	ListSnippets(ctx context.Context, params *ListSnippetsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSnippetWithBody request with any body
+	CreateSnippetWithBody(ctx context.Context, params *CreateSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateSnippet(ctx context.Context, params *CreateSnippetParams, body CreateSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteSnippet request
+	DeleteSnippet(ctx context.Context, name string, params *DeleteSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSnippet request
+	GetSnippet(ctx context.Context, name string, params *GetSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListContainers(ctx context.Context, params *ListContainersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -685,6 +852,54 @@ func (c *Client) GetMachine(ctx context.Context, identifier int64, params *GetMa
 	return c.Client.Do(req)
 }
 
+func (c *Client) UpdateMachineWithBody(ctx context.Context, identifier int64, params *UpdateMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMachineRequestWithBody(c.Server, identifier, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateMachine(ctx context.Context, identifier int64, params *UpdateMachineParams, body UpdateMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMachineRequest(c.Server, identifier, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CloneMachineWithBody(ctx context.Context, identifier int64, params *CloneMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCloneMachineRequestWithBody(c.Server, identifier, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CloneMachine(ctx context.Context, identifier int64, params *CloneMachineParams, body CloneMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCloneMachineRequest(c.Server, identifier, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ResetMachine(ctx context.Context, identifier int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewResetMachineRequest(c.Server, identifier, params)
 	if err != nil {
@@ -819,6 +1034,90 @@ func (c *Client) ListNetworks(ctx context.Context, name string, params *ListNetw
 
 func (c *Client) GetNodeStatus(ctx context.Context, name string, params *GetNodeStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetNodeStatusRequest(c.Server, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListStorages(ctx context.Context, name string, params *ListStoragesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListStoragesRequest(c.Server, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListStorageContent(ctx context.Context, name string, storage string, params *ListStorageContentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListStorageContentRequest(c.Server, name, storage, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListSnippets(ctx context.Context, params *ListSnippetsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSnippetsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSnippetWithBody(ctx context.Context, params *CreateSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSnippetRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSnippet(ctx context.Context, params *CreateSnippetParams, body CreateSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSnippetRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteSnippet(ctx context.Context, name string, params *DeleteSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSnippetRequest(c.Server, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSnippet(ctx context.Context, name string, params *GetSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSnippetRequest(c.Server, name, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1601,6 +1900,178 @@ func NewGetMachineRequest(server string, identifier int64, params *GetMachinePar
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewUpdateMachineRequest calls the generic UpdateMachine builder with application/json body
+func NewUpdateMachineRequest(server string, identifier int64, params *UpdateMachineParams, body UpdateMachineJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateMachineRequestWithBody(server, identifier, params, "application/json", bodyReader)
+}
+
+// NewUpdateMachineRequestWithBody generates requests for UpdateMachine with any type of body
+func NewUpdateMachineRequestWithBody(server string, identifier int64, params *UpdateMachineParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/machines/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Node != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCloneMachineRequest calls the generic CloneMachine builder with application/json body
+func NewCloneMachineRequest(server string, identifier int64, params *CloneMachineParams, body CloneMachineJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCloneMachineRequestWithBody(server, identifier, params, "application/json", bodyReader)
+}
+
+// NewCloneMachineRequestWithBody generates requests for CloneMachine with any type of body
+func NewCloneMachineRequestWithBody(server string, identifier int64, params *CloneMachineParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "identifier", identifier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/machines/%s/clone", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Node != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "node", *params.Node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -2392,6 +2863,378 @@ func NewGetNodeStatusRequest(server string, name string, params *GetNodeStatusPa
 	return req, nil
 }
 
+// NewListStoragesRequest generates requests for ListStorages
+func NewListStoragesRequest(server string, name string, params *ListStoragesParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/nodes/%s/storages", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListStorageContentRequest generates requests for ListStorageContent
+func NewListStorageContentRequest(server string, name string, storage string, params *ListStorageContentParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "storage", storage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/nodes/%s/storages/%s/content", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListSnippetsRequest generates requests for ListSnippets
+func NewListSnippetsRequest(server string, params *ListSnippetsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/snippets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateSnippetRequest calls the generic CreateSnippet builder with application/json body
+func NewCreateSnippetRequest(server string, params *CreateSnippetParams, body CreateSnippetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSnippetRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateSnippetRequestWithBody generates requests for CreateSnippet with any type of body
+func NewCreateSnippetRequestWithBody(server string, params *CreateSnippetParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/snippets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteSnippetRequest generates requests for DeleteSnippet
+func NewDeleteSnippetRequest(server string, name string, params *DeleteSnippetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/snippets/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetSnippetRequest generates requests for GetSnippet
+func NewGetSnippetRequest(server string, name string, params *GetSnippetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/snippets/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Instance != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "instance", *params.Instance, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -2472,6 +3315,16 @@ type ClientWithResponsesInterface interface {
 	// GetMachineWithResponse request
 	GetMachineWithResponse(ctx context.Context, identifier int64, params *GetMachineParams, reqEditors ...RequestEditorFn) (*GetMachineResponse, error)
 
+	// UpdateMachineWithBodyWithResponse request with any body
+	UpdateMachineWithBodyWithResponse(ctx context.Context, identifier int64, params *UpdateMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMachineResponse, error)
+
+	UpdateMachineWithResponse(ctx context.Context, identifier int64, params *UpdateMachineParams, body UpdateMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMachineResponse, error)
+
+	// CloneMachineWithBodyWithResponse request with any body
+	CloneMachineWithBodyWithResponse(ctx context.Context, identifier int64, params *CloneMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CloneMachineResponse, error)
+
+	CloneMachineWithResponse(ctx context.Context, identifier int64, params *CloneMachineParams, body CloneMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CloneMachineResponse, error)
+
 	// ResetMachineWithResponse request
 	ResetMachineWithResponse(ctx context.Context, identifier int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*ResetMachineResponse, error)
 
@@ -2506,6 +3359,26 @@ type ClientWithResponsesInterface interface {
 
 	// GetNodeStatusWithResponse request
 	GetNodeStatusWithResponse(ctx context.Context, name string, params *GetNodeStatusParams, reqEditors ...RequestEditorFn) (*GetNodeStatusResponse, error)
+
+	// ListStoragesWithResponse request
+	ListStoragesWithResponse(ctx context.Context, name string, params *ListStoragesParams, reqEditors ...RequestEditorFn) (*ListStoragesResponse, error)
+
+	// ListStorageContentWithResponse request
+	ListStorageContentWithResponse(ctx context.Context, name string, storage string, params *ListStorageContentParams, reqEditors ...RequestEditorFn) (*ListStorageContentResponse, error)
+
+	// ListSnippetsWithResponse request
+	ListSnippetsWithResponse(ctx context.Context, params *ListSnippetsParams, reqEditors ...RequestEditorFn) (*ListSnippetsResponse, error)
+
+	// CreateSnippetWithBodyWithResponse request with any body
+	CreateSnippetWithBodyWithResponse(ctx context.Context, params *CreateSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnippetResponse, error)
+
+	CreateSnippetWithResponse(ctx context.Context, params *CreateSnippetParams, body CreateSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnippetResponse, error)
+
+	// DeleteSnippetWithResponse request
+	DeleteSnippetWithResponse(ctx context.Context, name string, params *DeleteSnippetParams, reqEditors ...RequestEditorFn) (*DeleteSnippetResponse, error)
+
+	// GetSnippetWithResponse request
+	GetSnippetWithResponse(ctx context.Context, name string, params *GetSnippetParams, reqEditors ...RequestEditorFn) (*GetSnippetResponse, error)
 }
 
 type ListContainersResponse struct {
@@ -2859,6 +3732,72 @@ func (r GetMachineResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetMachineResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateMachineResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *StatusResult
+	JSON400      *Error
+	JSON404      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateMachineResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateMachineResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateMachineResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CloneMachineResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CreateMachineResult
+	JSON400      *Error
+	JSON404      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r CloneMachineResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CloneMachineResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CloneMachineResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -3227,6 +4166,198 @@ func (r GetNodeStatusResponse) ContentType() string {
 	return ""
 }
 
+type ListStoragesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]Storage
+	JSON400      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ListStoragesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListStoragesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListStoragesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ListStorageContentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]StorageContentItem
+	JSON400      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ListStorageContentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListStorageContentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListStorageContentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ListSnippetsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]SnippetItem
+	JSON400      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSnippetsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSnippetsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSnippetsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SnippetCreateResult
+	JSON400      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateSnippetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *StatusResult
+	JSON400      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteSnippetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SnippetDetail
+	JSON400      *Error
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSnippetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListContainersWithResponse request returning *ListContainersResponse
 func (c *ClientWithResponses) ListContainersWithResponse(ctx context.Context, params *ListContainersParams, reqEditors ...RequestEditorFn) (*ListContainersResponse, error) {
 	rsp, err := c.ListContainers(ctx, params, reqEditors...)
@@ -3342,6 +4473,40 @@ func (c *ClientWithResponses) GetMachineWithResponse(ctx context.Context, identi
 	return ParseGetMachineResponse(rsp)
 }
 
+// UpdateMachineWithBodyWithResponse request with arbitrary body returning *UpdateMachineResponse
+func (c *ClientWithResponses) UpdateMachineWithBodyWithResponse(ctx context.Context, identifier int64, params *UpdateMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMachineResponse, error) {
+	rsp, err := c.UpdateMachineWithBody(ctx, identifier, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMachineResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateMachineWithResponse(ctx context.Context, identifier int64, params *UpdateMachineParams, body UpdateMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMachineResponse, error) {
+	rsp, err := c.UpdateMachine(ctx, identifier, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMachineResponse(rsp)
+}
+
+// CloneMachineWithBodyWithResponse request with arbitrary body returning *CloneMachineResponse
+func (c *ClientWithResponses) CloneMachineWithBodyWithResponse(ctx context.Context, identifier int64, params *CloneMachineParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CloneMachineResponse, error) {
+	rsp, err := c.CloneMachineWithBody(ctx, identifier, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCloneMachineResponse(rsp)
+}
+
+func (c *ClientWithResponses) CloneMachineWithResponse(ctx context.Context, identifier int64, params *CloneMachineParams, body CloneMachineJSONRequestBody, reqEditors ...RequestEditorFn) (*CloneMachineResponse, error) {
+	rsp, err := c.CloneMachine(ctx, identifier, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCloneMachineResponse(rsp)
+}
+
 // ResetMachineWithResponse request returning *ResetMachineResponse
 func (c *ClientWithResponses) ResetMachineWithResponse(ctx context.Context, identifier int64, params *ResetMachineParams, reqEditors ...RequestEditorFn) (*ResetMachineResponse, error) {
 	rsp, err := c.ResetMachine(ctx, identifier, params, reqEditors...)
@@ -3447,6 +4612,68 @@ func (c *ClientWithResponses) GetNodeStatusWithResponse(ctx context.Context, nam
 		return nil, err
 	}
 	return ParseGetNodeStatusResponse(rsp)
+}
+
+// ListStoragesWithResponse request returning *ListStoragesResponse
+func (c *ClientWithResponses) ListStoragesWithResponse(ctx context.Context, name string, params *ListStoragesParams, reqEditors ...RequestEditorFn) (*ListStoragesResponse, error) {
+	rsp, err := c.ListStorages(ctx, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListStoragesResponse(rsp)
+}
+
+// ListStorageContentWithResponse request returning *ListStorageContentResponse
+func (c *ClientWithResponses) ListStorageContentWithResponse(ctx context.Context, name string, storage string, params *ListStorageContentParams, reqEditors ...RequestEditorFn) (*ListStorageContentResponse, error) {
+	rsp, err := c.ListStorageContent(ctx, name, storage, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListStorageContentResponse(rsp)
+}
+
+// ListSnippetsWithResponse request returning *ListSnippetsResponse
+func (c *ClientWithResponses) ListSnippetsWithResponse(ctx context.Context, params *ListSnippetsParams, reqEditors ...RequestEditorFn) (*ListSnippetsResponse, error) {
+	rsp, err := c.ListSnippets(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSnippetsResponse(rsp)
+}
+
+// CreateSnippetWithBodyWithResponse request with arbitrary body returning *CreateSnippetResponse
+func (c *ClientWithResponses) CreateSnippetWithBodyWithResponse(ctx context.Context, params *CreateSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnippetResponse, error) {
+	rsp, err := c.CreateSnippetWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSnippetResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateSnippetWithResponse(ctx context.Context, params *CreateSnippetParams, body CreateSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnippetResponse, error) {
+	rsp, err := c.CreateSnippet(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSnippetResponse(rsp)
+}
+
+// DeleteSnippetWithResponse request returning *DeleteSnippetResponse
+func (c *ClientWithResponses) DeleteSnippetWithResponse(ctx context.Context, name string, params *DeleteSnippetParams, reqEditors ...RequestEditorFn) (*DeleteSnippetResponse, error) {
+	rsp, err := c.DeleteSnippet(ctx, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteSnippetResponse(rsp)
+}
+
+// GetSnippetWithResponse request returning *GetSnippetResponse
+func (c *ClientWithResponses) GetSnippetWithResponse(ctx context.Context, name string, params *GetSnippetParams, reqEditors ...RequestEditorFn) (*GetSnippetResponse, error) {
+	rsp, err := c.GetSnippet(ctx, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSnippetResponse(rsp)
 }
 
 // ParseListContainersResponse parses an HTTP response from a ListContainersWithResponse call
@@ -3893,6 +5120,100 @@ func ParseGetMachineResponse(rsp *http.Response) (*GetMachineResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest MachineDetail
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateMachineResponse parses an HTTP response from a UpdateMachineWithResponse call
+func ParseUpdateMachineResponse(rsp *http.Response) (*UpdateMachineResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateMachineResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest StatusResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCloneMachineResponse parses an HTTP response from a CloneMachineWithResponse call
+func ParseCloneMachineResponse(rsp *http.Response) (*CloneMachineResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CloneMachineResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CreateMachineResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -4421,6 +5742,246 @@ func ParseGetNodeStatusResponse(rsp *http.Response) (*GetNodeStatusResponse, err
 			return nil, err
 		}
 		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListStoragesResponse parses an HTTP response from a ListStoragesWithResponse call
+func ParseListStoragesResponse(rsp *http.Response) (*ListStoragesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListStoragesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []Storage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListStorageContentResponse parses an HTTP response from a ListStorageContentWithResponse call
+func ParseListStorageContentResponse(rsp *http.Response) (*ListStorageContentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListStorageContentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []StorageContentItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListSnippetsResponse parses an HTTP response from a ListSnippetsWithResponse call
+func ParseListSnippetsResponse(rsp *http.Response) (*ListSnippetsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSnippetsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []SnippetItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateSnippetResponse parses an HTTP response from a CreateSnippetWithResponse call
+func ParseCreateSnippetResponse(rsp *http.Response) (*CreateSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SnippetCreateResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteSnippetResponse parses an HTTP response from a DeleteSnippetWithResponse call
+func ParseDeleteSnippetResponse(rsp *http.Response) (*DeleteSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest StatusResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSnippetResponse parses an HTTP response from a GetSnippetWithResponse call
+func ParseGetSnippetResponse(rsp *http.Response) (*GetSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SnippetDetail
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest ErrorResponse

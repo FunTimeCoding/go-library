@@ -198,6 +198,66 @@ func TestListStorages(t *testing.T) {
 	assert.StringContains(t, "local", result)
 }
 
+func TestGetMachine(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "web-server")
+	result := o.Client.MustCallTool(
+		constant.GetMachine,
+		map[string]any{"identifier": 100, "node": "test"},
+	)
+	assert.StringContains(t, "web-server", result)
+}
+
+func TestDeleteMachine(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "disposable")
+	result := o.Client.MustCallTool(
+		constant.DeleteMachine,
+		map[string]any{"identifier": 100, "node": "test"},
+	)
+	assert.StringContains(t, "deleted", result)
+}
+
+func TestDeleteMachineRunning(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "running-vm")
+	o.MockClient.SetMachineStatus("test", 100, "running")
+	result := o.Client.MustCallToolError(
+		constant.DeleteMachine,
+		map[string]any{"identifier": 100, "node": "test"},
+	)
+	assert.StringContains(t, "running", result)
+}
+
+func TestStartMachine(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "stopped-vm")
+	result := o.Client.MustCallTool(
+		constant.StartMachine,
+		map[string]any{"identifier": 100, "node": "test"},
+	)
+	assert.StringContains(t, "task_id", result)
+}
+
+func TestCreateMachineSnapshot(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "snapshot-target")
+	result := o.Client.MustCallTool(
+		constant.CreateMachineSnapshot,
+		map[string]any{
+			"identifier": 100,
+			"name":       "before-upgrade",
+			"node":       "test",
+		},
+	)
+	assert.StringContains(t, "task_id", result)
+}
+
 func TestMachineNotFound(t *testing.T) {
 	o := model_context_tester.New(t)
 	defer o.Close()

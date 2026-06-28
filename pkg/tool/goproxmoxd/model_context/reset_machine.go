@@ -30,7 +30,7 @@ func (s *Server) ResetMachine(
 		return s.captureDetail(e)
 	}
 
-	vm, e := findMachine(c, a.Identifier, a.Node)
+	taskID, e := s.service.ResetMachine(c, a.Identifier, a.Node)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
@@ -40,11 +40,5 @@ func (s *Server) ResetMachine(
 		return s.captureDetail(e)
 	}
 
-	task, e := c.ResetMachine(vm)
-
-	if e != nil {
-		return s.captureDetail(e)
-	}
-
-	return response.SuccessAny(map[string]string{"task_id": string(task.UPID)})
+	return response.SuccessAny(map[string]string{"task_id": taskID})
 }

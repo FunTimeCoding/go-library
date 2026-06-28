@@ -15,6 +15,10 @@ func (c *Client) PagesBySpace(
 		status = constant.CurrentStatus
 	}
 
+	if status == constant.DraftStatus {
+		return c.draftPagesBySpace(identifier)
+	}
+
 	l := c.basic.Base().Copy().Path(
 		"%s/%s%s",
 		constant.Space,

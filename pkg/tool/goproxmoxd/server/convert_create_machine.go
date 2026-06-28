@@ -34,12 +34,28 @@ func convertCreateMachine(b *server.CreateMachineRequest) *create_machine.Machin
 		m.DiskImport = *b.DiskImport
 	}
 
+	if b.Cdrom != nil {
+		m.CDROM = *b.Cdrom
+	}
+
 	if b.Bridge != nil {
 		m.Bridge = *b.Bridge
 	}
 
+	if b.CpuType != nil {
+		m.CPUType = *b.CpuType
+	}
+
 	if b.OsType != nil {
 		m.OSType = *b.OsType
+	}
+
+	if b.Agent != nil {
+		m.Agent = b.Agent
+	}
+
+	if b.Onboot != nil {
+		m.OnBoot = b.Onboot
 	}
 
 	if b.Start != nil {
@@ -64,6 +80,10 @@ func convertCreateMachine(b *server.CreateMachineRequest) *create_machine.Machin
 
 	if b.IpConfig != nil {
 		m.IPConfiguration = *b.IpConfig
+	}
+
+	if b.SearchDomain != nil {
+		m.SearchDomain = *b.SearchDomain
 	}
 
 	if b.Extras != nil {

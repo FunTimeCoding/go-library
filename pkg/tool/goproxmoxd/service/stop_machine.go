@@ -1,0 +1,23 @@
+package service
+
+import "github.com/funtimecoding/go-library/pkg/tool/goproxmoxd/face"
+
+func (s *Service) StopMachine(
+	c face.ProxmoxClient,
+	identifier int,
+	node string,
+) (string, error) {
+	vm, e := findMachine(c, identifier, node)
+
+	if e != nil {
+		return "", e
+	}
+
+	task, e := c.StopMachine(vm)
+
+	if e != nil {
+		return "", e
+	}
+
+	return string(task.UPID), nil
+}

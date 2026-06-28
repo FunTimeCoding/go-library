@@ -36,6 +36,7 @@ type ConfluenceSource interface {
 		message string,
 		status string,
 	) (*page.Page, error)
+	DraftPages() ([]*page.Page, error)
 	PagesBySpace(
 		identifier string,
 		status string,

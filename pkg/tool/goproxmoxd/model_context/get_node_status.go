@@ -28,7 +28,7 @@ func (s *Server) GetNodeStatus(
 		return s.captureDetail(e)
 	}
 
-	result, e := c.NodeStatus(a.Node)
+	result, e := s.service.GetNodeStatus(c, a.Node)
 
 	if e != nil {
 		return s.captureDetail(e)

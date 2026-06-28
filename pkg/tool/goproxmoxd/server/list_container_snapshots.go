@@ -24,7 +24,13 @@ func (s *Server) ListContainerSnapshots(
 		return server.ListContainerSnapshots500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	ct, e := findContainer(c, r.Identifier, r.Params.Node)
+	node := ""
+
+	if r.Params.Node != nil {
+		node = *r.Params.Node
+	}
+
+	snapshots, e := s.service.ListContainerSnapshots(c, int(r.Identifier), node)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
@@ -34,20 +40,14 @@ func (s *Server) ListContainerSnapshots(
 		return server.ListContainerSnapshots500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	snapshots, e := c.ContainerSnapshots(ct)
-
-	if e != nil {
-		return server.ListContainerSnapshots500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	pointers := convert.ContainerSnapshots(snapshots)
+	converted := convert.ContainerSnapshots(snapshots)
 	result := make(
 		server.ListContainerSnapshots200JSONResponse,
-		len(pointers),
+		len(converted),
 	)
 
-	for i, snap := range pointers {
-		result[i] = *snap
+	for i, v := range converted {
+		result[i] = *v
 	}
 
 	return result, nil

@@ -1,6 +1,6 @@
-package argument
+package update_machine
 
-type UpdateMachine struct {
+type Machine struct {
 	Identifier  int    `json:"identifier"`
 	Node        string `json:"node"`
 	Name        string `json:"name"`

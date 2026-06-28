@@ -25,53 +25,26 @@ func (s *Server) ListContainers(
 		return s.captureDetail(e)
 	}
 
-	var nodeNames []string
+	containers, e := s.service.ListContainers(c, a.Node)
 
-	if a.Node != "" {
-		nodeNames = []string{a.Node}
-	} else {
-		nodes, e := c.Nodes()
-
-		if e != nil {
-			return s.captureDetail(e)
-		}
-
-		for _, n := range nodes {
-			nodeNames = append(nodeNames, n.Node)
-		}
+	if e != nil {
+		return s.captureDetail(e)
 	}
 
-	var rows []proxResponse.Container
+	rows := make([]proxResponse.Container, len(containers))
 
-	for _, name := range nodeNames {
-		node, e := c.Node(name)
-
-		if e != nil {
-			return s.captureFail(e, "node not found")
-		}
-
-		containers, e := c.Containers(node)
-
-		if e != nil {
-			return s.captureDetail(e)
-		}
-
-		for _, ct := range containers {
-			rows = append(
-				rows,
-				proxResponse.Container{
-					Identifier: uint64(ct.VMID),
-					Name:       ct.Name,
-					Node:       ct.Node,
-					Status:     ct.Status,
-					CPUs:       ct.CPUs,
-					MaxMem:     ct.MaxMem,
-					MaxDisk:    ct.MaxDisk,
-					MaxSwap:    ct.MaxSwap,
-					Uptime:     ct.Uptime,
-					Tags:       ct.Tags,
-				},
-			)
+	for i, ct := range containers {
+		rows[i] = proxResponse.Container{
+			Identifier: uint64(ct.VMID),
+			Name:       ct.Name,
+			Node:       ct.Node,
+			Status:     ct.Status,
+			CPUs:       ct.CPUs,
+			MaxMem:     ct.MaxMem,
+			MaxDisk:    ct.MaxDisk,
+			MaxSwap:    ct.MaxSwap,
+			Uptime:     ct.Uptime,
+			Tags:       ct.Tags,
 		}
 	}
 

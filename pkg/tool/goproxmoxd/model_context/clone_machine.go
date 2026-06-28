@@ -35,16 +35,6 @@ func (s *Server) CloneMachine(
 		return s.captureDetail(e)
 	}
 
-	vm, e := findMachine(c, a.Identifier, a.Node)
-
-	if e != nil {
-		if errors.Is(e, not_found.Sentinel) {
-			return response.Fail("%s", e)
-		}
-
-		return s.captureDetail(e)
-	}
-
 	options := &proxmox.VirtualMachineCloneOptions{
 		Name: a.Name,
 	}
@@ -65,15 +55,13 @@ func (s *Server) CloneMachine(
 		options.SnapName = a.Snapshot
 	}
 
-	newID, task, e := c.CloneMachine(vm, options)
+	newID, e := s.service.CloneMachine(c, a.Identifier, a.Node, options)
 
 	if e != nil {
-		return s.captureDetail(e)
-	}
+		if errors.Is(e, not_found.Sentinel) {
+			return response.Fail("%s", e)
+		}
 
-	e = c.WaitForTask(task, 600)
-
-	if e != nil {
 		return s.captureDetail(e)
 	}
 

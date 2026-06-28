@@ -25,7 +25,7 @@ func (s *Server) ListNodes(
 		return s.captureDetail(e)
 	}
 
-	nodes, e := c.Nodes()
+	nodes, e := s.service.ListNodes(c)
 
 	if e != nil {
 		return s.captureDetail(e)

@@ -216,7 +216,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.ConfluenceListPages,
 			mcp.WithDescription(
-				"List pages in a Confluence space. Defaults to published pages. Set status to 'draft' to find draft pages that have never been published.",
+				"List pages in a Confluence space. Defaults to published pages. Set status to 'draft' to find draft pages — returns all drafts visible to the current user (the v1 API does not filter drafts by space).",
 			),
 			mcp.WithString(
 				constant.SpaceIdentifier,

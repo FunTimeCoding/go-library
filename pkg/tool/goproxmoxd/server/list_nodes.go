@@ -22,7 +22,7 @@ func (s *Server) ListNodes(
 		return server.ListNodes500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	nodes, e := c.Nodes()
+	nodes, e := s.service.ListNodes(c)
 
 	if e != nil {
 		return server.ListNodes500JSONResponse(*s.captureDetail(e)), nil

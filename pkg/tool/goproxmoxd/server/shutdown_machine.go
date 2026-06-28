@@ -23,7 +23,13 @@ func (s *Server) ShutdownMachine(
 		return server.ShutdownMachine500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	vm, e := findMachine(c, r.Identifier, r.Params.Node)
+	node := ""
+
+	if r.Params.Node != nil {
+		node = *r.Params.Node
+	}
+
+	taskID, e := s.service.ShutdownMachine(c, int(r.Identifier), node)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {
@@ -33,13 +39,5 @@ func (s *Server) ShutdownMachine(
 		return server.ShutdownMachine500JSONResponse(*s.captureDetail(e)), nil
 	}
 
-	task, e := c.ShutdownMachine(vm)
-
-	if e != nil {
-		return server.ShutdownMachine500JSONResponse(*s.captureDetail(e)), nil
-	}
-
-	return server.ShutdownMachine200JSONResponse{
-		TaskId: string(task.UPID),
-	}, nil
+	return server.ShutdownMachine200JSONResponse{TaskId: taskID}, nil
 }

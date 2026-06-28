@@ -14,7 +14,10 @@ func addRecord(c *technitium.Client) *cobra.Command {
 		Use:   "add-record [domain]",
 		Short: "Add a DNS record",
 		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			r := c.MustAddRecord(arguments[0], recordType, value)
 			fmt.Printf(
 				"added: %s %s %v\n",

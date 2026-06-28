@@ -2,7 +2,10 @@ package technitium
 
 import "encoding/json"
 
-func (c *Client) get(path string, result any) error {
+func (c *Client) get(
+	path string,
+	result any,
+) error {
 	payload, e := c.do(path)
 
 	if e != nil {

@@ -12,7 +12,10 @@ func createZone(c *technitium.Client) *cobra.Command {
 		Use:   "create-zone [name]",
 		Short: "Create a new authoritative zone",
 		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			domain := c.MustCreateZone(arguments[0], zoneType)
 			fmt.Printf("created zone: %s\n", domain)
 		},

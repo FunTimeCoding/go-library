@@ -7,7 +7,10 @@ import (
 	"net/http"
 )
 
-func New(host string, token string) *Client {
+func New(
+	host string,
+	token string,
+) *Client {
 	errors.FatalOnEmpty(host, "host")
 	errors.FatalOnEmpty(token, "token")
 

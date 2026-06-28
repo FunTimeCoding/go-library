@@ -36,9 +36,10 @@ func (s *Server) ListSnippets(
 		rows = append(
 			rows,
 			proxResponse.Snippet{
-			Name: v.Name(),
-			Size: uint64(v.Size()),
-		})
+				Name: v.Name(),
+				Size: uint64(v.Size()),
+			},
+		)
 	}
 
 	return response.SuccessAny(rows)

@@ -102,12 +102,12 @@ func TestBuildOptionsAgentDisabled(t *testing.T) {
 
 func TestBuildOptionsCustomValues(t *testing.T) {
 	m := &Machine{
-		Name:    "custom",
-		Cores:   8,
-		Memory:  16384,
-		Bridge:  "vmbr0",
-		OSType:  "l26",
-		Tags:    "prod;web",
+		Name:   "custom",
+		Cores:  8,
+		Memory: 16384,
+		Bridge: "vmbr0",
+		OSType: "l26",
+		Tags:   "prod;web",
 	}
 	options := m.BuildOptions()
 	assert.Integer(t, 8, requireOption(t, options, "cores").(int))

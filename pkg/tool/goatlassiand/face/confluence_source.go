@@ -10,7 +10,10 @@ type ConfluenceSource interface {
 	Page(identifier string) (*page.Page, error)
 	DraftPage(identifier string) (*page.Page, error)
 	DraftOverlay(identifier string) (*page.Page, error)
-	Search(query string, a ...any) ([]*search_result.Result, error)
+	Search(
+		query string,
+		a ...any,
+	) ([]*search_result.Result, error)
 	Spaces() ([]*space.Space, error)
 	ChildPagesByIdentifier(identifier string) ([]*page.Page, error)
 	CreatePage(
@@ -33,8 +36,14 @@ type ConfluenceSource interface {
 		message string,
 		status string,
 	) (*page.Page, error)
-	PagesBySpace(identifier string, status string) ([]*page.Page, error)
-	AddComment(pageIdentifier string, body string) error
+	PagesBySpace(
+		identifier string,
+		status string,
+	) ([]*page.Page, error)
+	AddComment(
+		pageIdentifier string,
+		body string,
+	) error
 	Delete(pageIdentifier string) error
 	DeleteDraft(pageIdentifier string) error
 }

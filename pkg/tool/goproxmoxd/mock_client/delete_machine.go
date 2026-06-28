@@ -2,7 +2,10 @@ package mock_client
 
 import "github.com/luthermonson/go-proxmox"
 
-func (c *Client) DeleteMachine(v *proxmox.VirtualMachine, _ *proxmox.VirtualMachineDeleteOptions) (*proxmox.Task, error) {
+func (c *Client) DeleteMachine(
+	v *proxmox.VirtualMachine,
+	_ *proxmox.VirtualMachineDeleteOptions,
+) (*proxmox.Task, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 	nodeMachines, okay := c.machines[v.Node]

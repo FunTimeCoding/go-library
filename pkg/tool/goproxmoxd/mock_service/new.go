@@ -11,7 +11,7 @@ func New(
 	snippetClient face.SnippetClient,
 ) *Service {
 	return &Service{
-		inventory: inventory.NewSingle(instanceName),
+		inventory:      inventory.NewSingle(instanceName),
 		proxmoxClient:  proxmoxClient,
 		snippetClient:  snippetClient,
 		activeInstance: make(map[string]string),

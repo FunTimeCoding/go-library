@@ -2,7 +2,10 @@ package mock_client
 
 import "github.com/luthermonson/go-proxmox"
 
-func (c *Client) CloneMachine(vm *proxmox.VirtualMachine, options *proxmox.VirtualMachineCloneOptions) (int, *proxmox.Task, error) {
+func (c *Client) CloneMachine(
+	vm *proxmox.VirtualMachine,
+	options *proxmox.VirtualMachineCloneOptions,
+) (int, *proxmox.Task, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 	newID := options.NewID

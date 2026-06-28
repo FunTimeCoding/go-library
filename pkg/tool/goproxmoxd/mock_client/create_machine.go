@@ -5,7 +5,11 @@ import (
 	"github.com/luthermonson/go-proxmox"
 )
 
-func (c *Client) CreateMachine(n *proxmox.Node, identifier int, options ...proxmox.VirtualMachineOption) (*proxmox.Task, error) {
+func (c *Client) CreateMachine(
+	n *proxmox.Node,
+	identifier int,
+	options ...proxmox.VirtualMachineOption,
+) (*proxmox.Task, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 	nodeMachines, okay := c.machines[n.Name]

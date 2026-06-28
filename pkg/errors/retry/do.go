@@ -27,11 +27,11 @@ func Do(
 	}
 
 	return &Result{
-		Attempts: attempts,
-		Elapsed:  time.Since(start),
-	}, fmt.Errorf(
-		"after %d attempts: %w",
-		attempts,
-		last,
-	)
+			Attempts: attempts,
+			Elapsed:  time.Since(start),
+		}, fmt.Errorf(
+			"after %d attempts: %w",
+			attempts,
+			last,
+		)
 }

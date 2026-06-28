@@ -2,7 +2,10 @@ package mock_client
 
 import "github.com/luthermonson/go-proxmox"
 
-func (c *Client) CreateMachineSnapshot(v *proxmox.VirtualMachine, name string) (*proxmox.Task, error) {
+func (c *Client) CreateMachineSnapshot(
+	v *proxmox.VirtualMachine,
+	name string,
+) (*proxmox.Task, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 	identifier := int(v.VMID)

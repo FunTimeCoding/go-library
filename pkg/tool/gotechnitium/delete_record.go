@@ -14,7 +14,10 @@ func deleteRecord(c *technitium.Client) *cobra.Command {
 		Use:   "delete-record [domain]",
 		Short: "Delete a DNS record",
 		Args:  cobra.ExactArgs(1),
-		Run: func(_ *cobra.Command, arguments []string) {
+		Run: func(
+			_ *cobra.Command,
+			arguments []string,
+		) {
 			c.MustDeleteRecord(arguments[0], recordType, value)
 			fmt.Printf(
 				"deleted: %s %s %s\n",

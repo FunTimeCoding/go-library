@@ -9,5 +9,5 @@ func (c *Client) PagesBySpaceName(n string) ([]*page.Page, error) {
 		return nil, e
 	}
 
-	return c.PagesBySpace(s.Identifier)
+	return c.PagesBySpace(s.Identifier, "")
 }

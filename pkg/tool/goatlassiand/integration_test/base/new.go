@@ -5,6 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/reporter/memory"
 	"github.com/funtimecoding/go-library/pkg/generative/model_context_server"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/mock_client"
+	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/mock_client/mock_jira"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/model_context"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/model_context/mock_recorder"
 	"net/http"
@@ -18,7 +19,7 @@ func New(t *testing.T) *Server {
 		t,
 		func(m *http.ServeMux) {
 			model_context.New(
-				nil,
+				mock_jira.New(),
 				c,
 				memory.New(),
 				mock_recorder.New(),

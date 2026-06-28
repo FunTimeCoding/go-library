@@ -33,6 +33,7 @@ type ConfluenceSource interface {
 		message string,
 		status string,
 	) (*page.Page, error)
+	PagesBySpace(identifier string, status string) ([]*page.Page, error)
 	AddComment(pageIdentifier string, body string) error
 	Delete(pageIdentifier string) error
 	DeleteDraft(pageIdentifier string) error

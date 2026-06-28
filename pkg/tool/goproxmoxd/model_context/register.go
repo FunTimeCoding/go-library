@@ -278,6 +278,10 @@ func (s *Server) register() {
 				"agent",
 				mcp.Description("Enable QEMU guest agent (default true)"),
 			),
+			mcp.WithBoolean(
+				"onboot",
+				mcp.Description("Start VM automatically on host boot"),
+			),
 			mcp.WithString("ci_user", mcp.Description("Cloud-init user")),
 			mcp.WithString(
 				"ci_password",
@@ -313,6 +317,43 @@ func (s *Server) register() {
 			),
 		),
 		mcp.NewTypedToolHandler(s.CreateMachine),
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.UpdateMachine,
+			mcp.WithDescription(
+				"Update configuration of an existing virtual machine.",
+			),
+			mcp.WithNumber(
+				"identifier",
+				mcp.Required(),
+				mcp.Description("Machine ID"),
+			),
+			mcp.WithString(
+				"node",
+				mcp.Description("Node name (omit to search all nodes)"),
+			),
+			mcp.WithString("name", mcp.Description("New VM name")),
+			mcp.WithString(
+				"tags",
+				mcp.Description("Semicolon-separated tags (replaces existing)"),
+			),
+			mcp.WithBoolean(
+				"onboot",
+				mcp.Description("Start VM automatically on host boot"),
+			),
+			mcp.WithNumber("cores", mcp.Description("CPU cores")),
+			mcp.WithNumber("memory", mcp.Description("Memory in MiB")),
+			mcp.WithString(
+				"description",
+				mcp.Description("VM description"),
+			),
+			mcp.WithString(
+				"delete",
+				mcp.Description("Comma-separated field names to clear, e.g. tags,description"),
+			),
+		),
+		mcp.NewTypedToolHandler(s.UpdateMachine),
 	)
 	s.server.AddTool(
 		mcp.NewTool(

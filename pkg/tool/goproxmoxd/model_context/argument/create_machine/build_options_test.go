@@ -48,12 +48,12 @@ func TestBuildOptionsDefaults(t *testing.T) {
 	)
 	assert.String(
 		t,
-		"local-lvm:32,aio=io_uring,iothread=1,discard=on",
+		"local-lvm:32,aio=io_uring,backup=1,cache=none,discard=on,iothread=1,replicate=1",
 		requireOption(t, options, "virtio0").(string),
 	)
 	assert.String(
 		t,
-		"order=virtio0",
+		"order=virtio0;net0",
 		requireOption(t, options, "boot").(string),
 	)
 	assert.String(
@@ -61,13 +61,33 @@ func TestBuildOptionsDefaults(t *testing.T) {
 		"virtio,bridge=vmbr0",
 		requireOption(t, options, "net0").(string),
 	)
+	assert.Integer(t, 0, requireOption(t, options, "balloon").(int))
 	assert.Integer(t, 1, requireOption(t, options, "agent").(int))
-	assert.String(t, "socket", requireOption(t, options, "serial0").(string))
 	assert.String(t, "host", requireOption(t, options, "cpu").(string))
 	_, hasIDE := findOption(options, "ide2")
 	assert.Boolean(t, false, hasIDE)
 	_, hasCI := findOption(options, "ipconfig0")
 	assert.Boolean(t, false, hasCI)
+	_, hasOnBoot := findOption(options, "onboot")
+	assert.Boolean(t, false, hasOnBoot)
+}
+
+func TestBuildOptionsOnBoot(t *testing.T) {
+	m := &Machine{
+		Name:   "boot-vm",
+		OnBoot: new(true),
+	}
+	options := m.BuildOptions()
+	assert.Integer(t, 1, requireOption(t, options, "onboot").(int))
+}
+
+func TestBuildOptionsOnBootDisabled(t *testing.T) {
+	m := &Machine{
+		Name:   "no-boot-vm",
+		OnBoot: new(false),
+	}
+	options := m.BuildOptions()
+	assert.Integer(t, 0, requireOption(t, options, "onboot").(int))
 }
 
 func TestBuildOptionsAgentDisabled(t *testing.T) {
@@ -109,7 +129,7 @@ func TestBuildOptionsDiskImport(t *testing.T) {
 	options := m.BuildOptions()
 	assert.String(
 		t,
-		"local-lvm:0,import-from=local:import/debian-13-generic-amd64.qcow2,aio=io_uring,iothread=1,discard=on",
+		"local-lvm:0,import-from=local:import/debian-13-generic-amd64.qcow2,aio=io_uring,backup=1,cache=none,discard=on,iothread=1,replicate=1",
 		requireOption(t, options, "virtio0").(string),
 	)
 }
@@ -123,7 +143,7 @@ func TestBuildOptionsDiskImportCustomStorage(t *testing.T) {
 	options := m.BuildOptions()
 	assert.String(
 		t,
-		"ceph-pool:0,import-from=local:import/debian-13.qcow2,aio=io_uring,iothread=1,discard=on",
+		"ceph-pool:0,import-from=local:import/debian-13.qcow2,aio=io_uring,backup=1,cache=none,discard=on,iothread=1,replicate=1",
 		requireOption(t, options, "virtio0").(string),
 	)
 }
@@ -274,7 +294,7 @@ func TestBuildOptionsCustomDiskSize(t *testing.T) {
 	options := m.BuildOptions()
 	assert.String(
 		t,
-		"local-lvm:100,aio=io_uring,iothread=1,discard=on",
+		"local-lvm:100,aio=io_uring,backup=1,cache=none,discard=on,iothread=1,replicate=1",
 		requireOption(t, options, "virtio0").(string),
 	)
 }

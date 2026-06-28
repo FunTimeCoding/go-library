@@ -1,7 +1,6 @@
 package model_context
 
 import (
-	"github.com/funtimecoding/go-library/pkg/atlassian/jira"
 	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/generative/mark/server"
 	"github.com/funtimecoding/go-library/pkg/tool/goatlassiand/constant"
@@ -10,7 +9,7 @@ import (
 )
 
 func New(
-	j *jira.Client,
+	j atlassianFace.JiraSource,
 	c atlassianFace.ConfluenceSource,
 	r face.Reporter,
 	t face.Recorder,

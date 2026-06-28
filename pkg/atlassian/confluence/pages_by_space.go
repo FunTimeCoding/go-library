@@ -7,8 +7,14 @@ import (
 	"github.com/funtimecoding/go-library/pkg/notation"
 )
 
-func (c *Client) PagesBySpace(identifier string) ([]*page.Page, error) {
-	// https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-spaces-id-pages-get
+func (c *Client) PagesBySpace(
+	identifier string,
+	status string,
+) ([]*page.Page, error) {
+	if status == "" {
+		status = constant.CurrentStatus
+	}
+
 	l := c.basic.Base().Copy().Path(
 		"%s/%s%s",
 		constant.Space,
@@ -17,7 +23,7 @@ func (c *Client) PagesBySpace(identifier string) ([]*page.Page, error) {
 	).Set(
 		constant.BodyFormat,
 		constant.StorageFormat,
-	).Set(constant.Status, constant.CurrentStatus).String()
+	).Set(constant.Status, status).String()
 	var result []*response.Page
 
 	for {

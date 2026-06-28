@@ -37,7 +37,7 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 			option(
 				"virtio0",
 				fmt.Sprintf(
-					"%s:0,import-from=%s,aio=io_uring,iothread=1,discard=on",
+					"%s:0,import-from=%s,aio=io_uring,backup=1,cache=none,discard=on,iothread=1,replicate=1",
 					diskStorage,
 					m.DiskImport,
 				),
@@ -55,7 +55,7 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 			option(
 				"virtio0",
 				fmt.Sprintf(
-					"%s:%d,aio=io_uring,iothread=1,discard=on",
+					"%s:%d,aio=io_uring,backup=1,cache=none,discard=on,iothread=1,replicate=1",
 					diskStorage,
 					diskSize,
 				),
@@ -63,7 +63,8 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		)
 	}
 
-	result = append(result, option("boot", "order=virtio0"))
+	result = append(result, option("boot", "order=virtio0;net0"))
+	result = append(result, option("balloon", 0))
 	bridge := m.Bridge
 
 	if bridge == "" {
@@ -83,7 +84,14 @@ func (m *Machine) BuildOptions() []proxmox.VirtualMachineOption {
 		result = append(result, option("agent", 1))
 	}
 
-	result = append(result, option("serial0", "socket"))
+	if m.OnBoot != nil {
+		if *m.OnBoot {
+			result = append(result, option("onboot", 1))
+		} else {
+			result = append(result, option("onboot", 0))
+		}
+	}
+
 	cpuType := m.CPUType
 
 	if cpuType == "" {

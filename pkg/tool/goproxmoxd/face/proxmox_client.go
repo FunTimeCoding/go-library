@@ -19,6 +19,7 @@ type ProxmoxClient interface {
 	ShutdownMachine(v *proxmox.VirtualMachine) (*proxmox.Task, error)
 	ResetMachine(v *proxmox.VirtualMachine) (*proxmox.Task, error)
 	ResizeDisk(v *proxmox.VirtualMachine, disk string, size string) (*proxmox.Task, error)
+	UpdateMachineConfiguration(v *proxmox.VirtualMachine, options ...proxmox.VirtualMachineOption) error
 	NextIdentifier() (int, error)
 	WaitForTask(t *proxmox.Task, seconds int) error
 	MachineSnapshots(v *proxmox.VirtualMachine) ([]*proxmox.VirtualMachineSnapshot, error)

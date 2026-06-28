@@ -100,9 +100,9 @@ func (s *Server) register() {
 	)
 	s.server.AddTool(
 		mcp.NewTool(
-			constant.ConfluenceGetDraftOverlay,
+			constant.ConfluenceGetPageDraft,
 			mcp.WithDescription(
-				"Get pending draft edits on a published Confluence page. Returns unpublished changes saved via confluence_set_page_status with status 'draft'. Returns 404 if no draft overlay exists.",
+				"Get the draft layer of a Confluence page. Confluence maintains a draft layer for every page — this always returns content, even if there are no unpublished changes. Compare against the published version (confluence_get_page) to detect actual differences.",
 			),
 			mcp.WithString(
 				parameter.Identifier,
@@ -110,7 +110,7 @@ func (s *Server) register() {
 				mcp.Description("Page ID"),
 			),
 		),
-		s.getDraftOverlay,
+		s.getPageDraft,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
@@ -203,8 +203,34 @@ func (s *Server) register() {
 				parameter.Message,
 				mcp.Description("Version comment"),
 			),
+			mcp.WithBoolean(
+				constant.Draft,
+				mcp.Description(
+					"Edit a draft page. The page stays as a draft after editing.",
+				),
+			),
 		),
 		s.editPage,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.ConfluenceListPages,
+			mcp.WithDescription(
+				"List pages in a Confluence space. Defaults to published pages. Set status to 'draft' to find draft pages that have never been published.",
+			),
+			mcp.WithString(
+				constant.SpaceIdentifier,
+				mcp.Required(),
+				mcp.Description("Space ID"),
+			),
+			mcp.WithString(
+				constant.PageStatus,
+				mcp.Description(
+					"Filter by status: 'current' (default) for published pages, 'draft' for draft pages.",
+				),
+			),
+		),
+		s.listPages,
 	)
 	s.server.AddTool(
 		mcp.NewTool(
@@ -231,7 +257,7 @@ func (s *Server) register() {
 		mcp.NewTool(
 			constant.ConfluenceDeletePage,
 			mcp.WithDescription(
-				"Delete a Confluence page. For draft pages, set draft to true — draft pages are permanently deleted, not sent to trash.",
+				"Delete a Confluence page. For draft pages, set draft to true — draft pages are permanently deleted, not sent to trash. Draft overlays (unpublished changes on published pages) cannot be deleted via the API.",
 			),
 			mcp.WithString(
 				parameter.Identifier,

@@ -11,8 +11,16 @@ func (s *Service) EditPage(
 	newText string,
 	title string,
 	message string,
+	draft bool,
 ) (*page.Page, error) {
-	current, e := s.confluence.Page(identifier)
+	var current *page.Page
+	var e error
+
+	if draft {
+		current, e = s.confluence.DraftPage(identifier)
+	} else {
+		current, e = s.confluence.Page(identifier)
+	}
 
 	if e != nil {
 		return nil, e
@@ -29,12 +37,18 @@ func (s *Service) EditPage(
 		title = current.Name
 	}
 
+	status := constant.CurrentStatus
+
+	if draft {
+		status = constant.DraftStatus
+	}
+
 	return s.confluence.PutPage(
 		identifier,
 		title,
 		page.ToStorage(newMarkdown),
 		current.Raw.Version.Number+1,
 		message,
-		constant.CurrentStatus,
+		status,
 	)
 }

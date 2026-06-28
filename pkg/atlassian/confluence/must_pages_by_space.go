@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) MustPagesBySpace(identifier string) []*page.Page {
-	result, e := c.PagesBySpace(identifier)
+	result, e := c.PagesBySpace(identifier, "")
 	errors.PanicOnError(e)
 
 	return result

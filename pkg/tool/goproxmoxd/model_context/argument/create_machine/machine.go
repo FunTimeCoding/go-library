@@ -14,6 +14,7 @@ type Machine struct {
 	CPUType         string `json:"cpu_type"`
 	OSType          string `json:"os_type"`
 	Agent           *bool  `json:"agent"`
+	OnBoot          *bool  `json:"onboot"`
 	Start           bool   `json:"start"`
 	Tags            string `json:"tags"`
 	CIUser          string `json:"ci_user"`

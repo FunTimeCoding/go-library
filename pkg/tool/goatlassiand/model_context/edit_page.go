@@ -33,12 +33,14 @@ func (s *Server) editPage(
 
 	title := r.GetString(parameter.Title, "")
 	message := r.GetString(parameter.Message, "")
+	draft := r.GetBool(constant.Draft, false)
 	result, i := s.service.EditPage(
 		identifier,
 		oldText,
 		newText,
 		title,
 		message,
+		draft,
 	)
 
 	if i != nil {

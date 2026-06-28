@@ -47,6 +47,7 @@ const (
 	ListSnippets              = "list_snippets"
 	DeleteSnippet             = "delete_snippet"
 	CreateMachine             = "create_machine"
+	UpdateMachine             = "update_machine"
 	CloneMachine              = "clone_machine"
 	DeleteMachine             = "delete_machine"
 )

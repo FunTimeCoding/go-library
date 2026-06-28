@@ -86,6 +86,67 @@ func TestCreateMachineCDROMAndCloudInitError(t *testing.T) {
 	assert.StringContains(t, "mutually exclusive", result)
 }
 
+func TestUpdateMachine(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "original")
+	result := o.Client.MustCallTool(
+		constant.UpdateMachine,
+		map[string]any{
+			"identifier":  100,
+			"node":        "test",
+			"tags":        "web;prod",
+			"description": "production web server",
+		},
+	)
+	assert.StringContains(t, "updated", result)
+}
+
+func TestUpdateMachineDelete(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "tagged-vm")
+	result := o.Client.MustCallTool(
+		constant.UpdateMachine,
+		map[string]any{
+			"identifier": 100,
+			"node":       "test",
+			"delete":     "tags,description",
+		},
+	)
+	assert.StringContains(t, "updated", result)
+}
+
+func TestUpdateMachineSetAndDeleteConflict(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "conflict-vm")
+	result := o.Client.MustCallToolError(
+		constant.UpdateMachine,
+		map[string]any{
+			"identifier": 100,
+			"node":       "test",
+			"tags":       "web",
+			"delete":     "tags",
+		},
+	)
+	assert.StringContains(t, "cannot set and delete", result)
+}
+
+func TestUpdateMachineNoChanges(t *testing.T) {
+	o := model_context_tester.New(t)
+	defer o.Close()
+	o.MockClient.AddMachine("test", 100, "original")
+	result := o.Client.MustCallToolError(
+		constant.UpdateMachine,
+		map[string]any{
+			"identifier": 100,
+			"node":       "test",
+		},
+	)
+	assert.StringContains(t, "no changes", result)
+}
+
 func TestCloneMachine(t *testing.T) {
 	o := model_context_tester.New(t)
 	defer o.Close()

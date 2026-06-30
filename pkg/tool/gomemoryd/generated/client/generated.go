@@ -27,6 +27,64 @@ type ImpressionResponse struct {
 	Identifier int `json:"identifier"`
 }
 
+// ProfileCompletion defines model for ProfileCompletion.
+type ProfileCompletion struct {
+	Body        string `json:"body"`
+	SessionName string `json:"session_name"`
+}
+
+// ProfileImpression defines model for ProfileImpression.
+type ProfileImpression struct {
+	Content    string `json:"content"`
+	CreatedAt  string `json:"created_at"`
+	Identifier int    `json:"identifier"`
+	Source     string `json:"source"`
+}
+
+// ProfileMemory defines model for ProfileMemory.
+type ProfileMemory struct {
+	Content     string    `json:"content"`
+	CreatedAt   string    `json:"created_at"`
+	Description string    `json:"description"`
+	Identifier  int       `json:"identifier"`
+	IsActive    bool      `json:"is_active"`
+	Name        string    `json:"name"`
+	Tags        *[]string `json:"tags,omitempty"`
+	Type        string    `json:"type"`
+	UpdatedAt   string    `json:"updated_at"`
+}
+
+// ProfileResponse defines model for ProfileResponse.
+type ProfileResponse struct {
+	Always      []ProfileMemory        `json:"always"`
+	Completions *[]ProfileCompletion   `json:"completions,omitempty"`
+	Impressions *[]ProfileImpression   `json:"impressions,omitempty"`
+	Index       []ProfileSummary       `json:"index"`
+	Relevant    *[]ProfileSearchResult `json:"relevant,omitempty"`
+}
+
+// ProfileSearchResult defines model for ProfileSearchResult.
+type ProfileSearchResult struct {
+	Content     string    `json:"content"`
+	Description string    `json:"description"`
+	Identifier  int       `json:"identifier"`
+	Name        string    `json:"name"`
+	Rank        float32   `json:"rank"`
+	Tags        *[]string `json:"tags,omitempty"`
+	Type        string    `json:"type"`
+	UpdatedAt   string    `json:"updated_at"`
+}
+
+// ProfileSummary defines model for ProfileSummary.
+type ProfileSummary struct {
+	Description string    `json:"description"`
+	Identifier  int       `json:"identifier"`
+	Name        string    `json:"name"`
+	Tags        *[]string `json:"tags,omitempty"`
+	Type        string    `json:"type"`
+	UpdatedAt   string    `json:"updated_at"`
+}
+
 // VersionEntry defines model for VersionEntry.
 type VersionEntry struct {
 	ChangeType       string `json:"change_type"`
@@ -42,6 +100,11 @@ type VersionEntry struct {
 type PostImpressionsJSONBody struct {
 	Content string  `json:"content"`
 	Source  *string `json:"source,omitempty"`
+}
+
+// GetProfileParams defines parameters for GetProfile.
+type GetProfileParams struct {
+	Topic *string `form:"topic,omitempty" json:"topic,omitempty"`
 }
 
 // GetVersionsParams defines parameters for GetVersions.
@@ -132,6 +195,9 @@ type ClientInterface interface {
 
 	PostImpressions(ctx context.Context, body PostImpressionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetProfile request
+	GetProfile(ctx context.Context, params *GetProfileParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetVersions request
 	GetVersions(ctx context.Context, params *GetVersionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
@@ -150,6 +216,18 @@ func (c *Client) PostImpressionsWithBody(ctx context.Context, contentType string
 
 func (c *Client) PostImpressions(ctx context.Context, body PostImpressionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostImpressionsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetProfile(ctx context.Context, params *GetProfileParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProfileRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -208,6 +286,60 @@ func NewPostImpressionsRequestWithBody(server string, contentType string, body i
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetProfileRequest generates requests for GetProfile
+func NewGetProfileRequest(server string, params *GetProfileParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/profile")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Topic != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "topic", *params.Topic, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -334,6 +466,9 @@ type ClientWithResponsesInterface interface {
 
 	PostImpressionsWithResponse(ctx context.Context, body PostImpressionsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostImpressionsResponse, error)
 
+	// GetProfileWithResponse request
+	GetProfileWithResponse(ctx context.Context, params *GetProfileParams, reqEditors ...RequestEditorFn) (*GetProfileResponse, error)
+
 	// GetVersionsWithResponse request
 	GetVersionsWithResponse(ctx context.Context, params *GetVersionsParams, reqEditors ...RequestEditorFn) (*GetVersionsResponse, error)
 }
@@ -363,6 +498,37 @@ func (r PostImpressionsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r PostImpressionsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetProfileResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ProfileResponse
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetProfileResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetProfileResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetProfileResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -417,6 +583,15 @@ func (c *ClientWithResponses) PostImpressionsWithResponse(ctx context.Context, b
 	return ParsePostImpressionsResponse(rsp)
 }
 
+// GetProfileWithResponse request returning *GetProfileResponse
+func (c *ClientWithResponses) GetProfileWithResponse(ctx context.Context, params *GetProfileParams, reqEditors ...RequestEditorFn) (*GetProfileResponse, error) {
+	rsp, err := c.GetProfile(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetProfileResponse(rsp)
+}
+
 // GetVersionsWithResponse request returning *GetVersionsResponse
 func (c *ClientWithResponses) GetVersionsWithResponse(ctx context.Context, params *GetVersionsParams, reqEditors ...RequestEditorFn) (*GetVersionsResponse, error) {
 	rsp, err := c.GetVersions(ctx, params, reqEditors...)
@@ -442,6 +617,39 @@ func ParsePostImpressionsResponse(rsp *http.Response) (*PostImpressionsResponse,
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ImpressionResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetProfileResponse parses an HTTP response from a GetProfileWithResponse call
+func ParseGetProfileResponse(rsp *http.Response) (*GetProfileResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetProfileResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProfileResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

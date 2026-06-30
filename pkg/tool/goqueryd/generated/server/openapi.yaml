@@ -45,6 +45,14 @@ paths:
           type: object
           additionalProperties:
             type: string
+      - name: exclude
+        in: query
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: Search results with facets.

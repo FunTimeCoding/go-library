@@ -3,11 +3,12 @@ package store
 import (
 	"github.com/funtimecoding/go-library/pkg/generative/ollama"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/search_option"
 	"sort"
 )
 
 func (s *Store) SearchHybrid(
-	o *SearchOption,
+	o *search_option.Option,
 	l *ollama.Client,
 ) ([]SearchResult, error) {
 	scores := map[string]float64{}
@@ -108,6 +109,12 @@ func (s *Store) SearchHybrid(
 		}
 	}
 
+	excludeSet := map[string]bool{}
+
+	for _, p := range o.Exclude {
+		excludeSet[p] = true
+	}
+
 	type scored struct {
 		result SearchResult
 		score  float64
@@ -116,6 +123,11 @@ func (s *Store) SearchHybrid(
 
 	for path, score := range scores {
 		r := byPath[path]
+
+		if excludeSet[r.Path] {
+			continue
+		}
+
 		r.Score = score
 		r.Source = "hybrid"
 		merged = append(merged, scored{result: r, score: score})

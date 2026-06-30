@@ -5,6 +5,7 @@ package service
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/integration_test/service_tester"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/search_option"
 	"testing"
 )
 
@@ -37,14 +38,9 @@ func TestPushDocumentAppearsInSearch(t *testing.T) {
 			nil,
 		),
 	)
-	result := s.Service.Search(
-		"platypus",
-		10,
-		"",
-		false,
-		"keyword",
-		nil,
-	)
+	o := search_option.New("platypus", 10)
+	o.Mode = "keyword"
+	result := s.Service.Search(o)
 	assert.Count(t, 1, result.Results)
 	assert.String(t, "Searchable", result.Results[0].Title)
 }

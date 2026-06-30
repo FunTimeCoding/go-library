@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/funtimecoding/go-library/pkg/face"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/face"
 )
 
 func New(

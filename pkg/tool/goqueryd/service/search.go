@@ -1,38 +1,37 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/tool/goqueryd/store"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/search_option"
+)
 
-func (s *Service) Search(
-	query string,
-	limit int,
-	collection string,
-	full bool,
-	mode string,
-	metadata map[string]string,
-) *store.SearchOutcome {
+func (s *Service) Search(o *search_option.Option) *store.SearchOutcome {
+	o.Reranker = s.reranker
 	var outcome *store.SearchOutcome
 
-	if mode == "keyword" {
+	if o.Mode == "keyword" {
+		limit := o.Limit + len(o.Exclude)
 		results, e := s.store.SearchKeyword(
-			query,
+			o.Query,
 			limit,
-			collection,
-			full,
+			o.Collection,
+			o.Full,
 		)
 
 		if e != nil {
 			return store.NewDegradedSearchOutcome(e)
 		}
 
+		filtered := store.ExcludePaths(results, o.Exclude)
+
+		if len(filtered) > o.Limit {
+			filtered = filtered[:o.Limit]
+		}
+
 		outcome = store.NewSearchOutcome(
-			s.store.EnrichResults(results, metadata),
+			s.store.EnrichResults(filtered, o.Metadata),
 		)
 	} else {
-		o := store.NewSearchOption(query, limit)
-		o.Collection = collection
-		o.Full = full
-		o.Metadata = metadata
-		o.Reranker = s.reranker
 		outcome = s.store.SearchWithFallback(o, s.ollama)
 	}
 

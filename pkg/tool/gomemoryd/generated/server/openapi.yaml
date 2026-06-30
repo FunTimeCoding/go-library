@@ -38,6 +38,27 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /api/profile:
+    get:
+      operationId: getProfile
+      parameters:
+      - name: topic
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Profile with tiered memories.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+        "500":
+          description: Failed to load profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /api/impressions:
     post:
       operationId: postImpressions
@@ -91,6 +112,114 @@ components:
         change_type:
           type: string
         source:
+          type: string
+    ProfileResponse:
+      type: object
+      required: [always, index]
+      properties:
+        always:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileMemory"
+        relevant:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileSearchResult"
+        index:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileSummary"
+        impressions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileImpression"
+        completions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileCompletion"
+    ProfileMemory:
+      type: object
+      required: [identifier, name, content, description, type, created_at, updated_at, is_active]
+      properties:
+        identifier:
+          type: integer
+        name:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        is_active:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+    ProfileSearchResult:
+      type: object
+      required: [identifier, name, content, description, type, updated_at, rank]
+      properties:
+        identifier:
+          type: integer
+        name:
+          type: string
+        content:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        updated_at:
+          type: string
+        rank:
+          type: number
+    ProfileSummary:
+      type: object
+      required: [identifier, name, description, type, updated_at]
+      properties:
+        identifier:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        updated_at:
+          type: string
+    ProfileImpression:
+      type: object
+      required: [identifier, content, source, created_at]
+      properties:
+        identifier:
+          type: integer
+        content:
+          type: string
+        source:
+          type: string
+        created_at:
+          type: string
+    ProfileCompletion:
+      type: object
+      required: [session_name, body]
+      properties:
+        session_name:
+          type: string
+        body:
           type: string
     ErrorResponse:
       type: object

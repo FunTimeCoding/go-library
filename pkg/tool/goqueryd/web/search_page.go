@@ -3,6 +3,7 @@ package web
 import (
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/search_option"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/web/search_cache"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -32,14 +33,10 @@ func (s *Server) searchPage(
 	outcome := s.cache.Get(key)
 
 	if outcome == nil {
-		outcome = s.service.Search(
-			query,
-			20,
-			collection,
-			false,
-			mode,
-			nil,
-		)
+		o := search_option.New(query, 20)
+		o.Collection = collection
+		o.Mode = mode
+		outcome = s.service.Search(o)
 		s.cache.Put(key, outcome)
 	}
 

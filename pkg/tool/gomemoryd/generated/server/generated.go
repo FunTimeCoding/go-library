@@ -33,6 +33,64 @@ type ImpressionResponse struct {
 	Identifier int `json:"identifier"`
 }
 
+// ProfileCompletion defines model for ProfileCompletion.
+type ProfileCompletion struct {
+	Body        string `json:"body"`
+	SessionName string `json:"session_name"`
+}
+
+// ProfileImpression defines model for ProfileImpression.
+type ProfileImpression struct {
+	Content    string `json:"content"`
+	CreatedAt  string `json:"created_at"`
+	Identifier int    `json:"identifier"`
+	Source     string `json:"source"`
+}
+
+// ProfileMemory defines model for ProfileMemory.
+type ProfileMemory struct {
+	Content     string    `json:"content"`
+	CreatedAt   string    `json:"created_at"`
+	Description string    `json:"description"`
+	Identifier  int       `json:"identifier"`
+	IsActive    bool      `json:"is_active"`
+	Name        string    `json:"name"`
+	Tags        *[]string `json:"tags,omitempty"`
+	Type        string    `json:"type"`
+	UpdatedAt   string    `json:"updated_at"`
+}
+
+// ProfileResponse defines model for ProfileResponse.
+type ProfileResponse struct {
+	Always      []ProfileMemory        `json:"always"`
+	Completions *[]ProfileCompletion   `json:"completions,omitempty"`
+	Impressions *[]ProfileImpression   `json:"impressions,omitempty"`
+	Index       []ProfileSummary       `json:"index"`
+	Relevant    *[]ProfileSearchResult `json:"relevant,omitempty"`
+}
+
+// ProfileSearchResult defines model for ProfileSearchResult.
+type ProfileSearchResult struct {
+	Content     string    `json:"content"`
+	Description string    `json:"description"`
+	Identifier  int       `json:"identifier"`
+	Name        string    `json:"name"`
+	Rank        float32   `json:"rank"`
+	Tags        *[]string `json:"tags,omitempty"`
+	Type        string    `json:"type"`
+	UpdatedAt   string    `json:"updated_at"`
+}
+
+// ProfileSummary defines model for ProfileSummary.
+type ProfileSummary struct {
+	Description string    `json:"description"`
+	Identifier  int       `json:"identifier"`
+	Name        string    `json:"name"`
+	Tags        *[]string `json:"tags,omitempty"`
+	Type        string    `json:"type"`
+	UpdatedAt   string    `json:"updated_at"`
+}
+
 // VersionEntry defines model for VersionEntry.
 type VersionEntry struct {
 	ChangeType       string `json:"change_type"`
@@ -50,6 +108,11 @@ type PostImpressionsJSONBody struct {
 	Source  *string `json:"source,omitempty"`
 }
 
+// GetProfileParams defines parameters for GetProfile.
+type GetProfileParams struct {
+	Topic *string `form:"topic,omitempty" json:"topic,omitempty"`
+}
+
 // GetVersionsParams defines parameters for GetVersions.
 type GetVersionsParams struct {
 	Since  string `form:"since" json:"since"`
@@ -65,6 +128,9 @@ type ServerInterface interface {
 
 	// (POST /api/impressions)
 	PostImpressions(w http.ResponseWriter, r *http.Request)
+
+	// (GET /api/profile)
+	GetProfile(w http.ResponseWriter, r *http.Request, params GetProfileParams)
 
 	// (GET /api/versions)
 	GetVersions(w http.ResponseWriter, r *http.Request, params GetVersionsParams)
@@ -84,6 +150,39 @@ func (siw *ServerInterfaceWrapper) PostImpressions(w http.ResponseWriter, r *htt
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.PostImpressions(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetProfile operation middleware
+func (siw *ServerInterfaceWrapper) GetProfile(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetProfileParams
+
+	// ------------- Optional query parameter "topic" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "topic", r.URL.Query(), &params.Topic, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "topic"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "topic", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetProfile(w, r, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -273,6 +372,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	}
 
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/impressions", wrapper.PostImpressions)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/profile", wrapper.GetProfile)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/versions", wrapper.GetVersions)
 
 	return m
@@ -303,6 +403,42 @@ func (response PostImpressions200JSONResponse) VisitPostImpressionsResponse(w ht
 type PostImpressions500JSONResponse ErrorResponse
 
 func (response PostImpressions500JSONResponse) VisitPostImpressionsResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetProfileRequestObject struct {
+	Params GetProfileParams
+}
+
+type GetProfileResponseObject interface {
+	VisitGetProfileResponse(w http.ResponseWriter) error
+}
+
+type GetProfile200JSONResponse ProfileResponse
+
+func (response GetProfile200JSONResponse) VisitGetProfileResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GetProfile500JSONResponse ErrorResponse
+
+func (response GetProfile500JSONResponse) VisitGetProfileResponse(w http.ResponseWriter) error {
 
 	var buf bytes.Buffer
 	if err := json.NewEncoder(&buf).Encode(response); err != nil {
@@ -355,6 +491,9 @@ type StrictServerInterface interface {
 
 	// (POST /api/impressions)
 	PostImpressions(ctx context.Context, request PostImpressionsRequestObject) (PostImpressionsResponseObject, error)
+
+	// (GET /api/profile)
+	GetProfile(ctx context.Context, request GetProfileRequestObject) (GetProfileResponseObject, error)
 
 	// (GET /api/versions)
 	GetVersions(ctx context.Context, request GetVersionsRequestObject) (GetVersionsResponseObject, error)
@@ -420,6 +559,32 @@ func (sh *strictHandler) PostImpressions(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+// GetProfile operation middleware
+func (sh *strictHandler) GetProfile(w http.ResponseWriter, r *http.Request, params GetProfileParams) {
+	var request GetProfileRequestObject
+
+	request.Params = params
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetProfile(ctx, request.(GetProfileRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetProfile")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetProfileResponseObject); ok {
+		if err := validResponse.VisitGetProfileResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // GetVersions operation middleware
 func (sh *strictHandler) GetVersions(w http.ResponseWriter, r *http.Request, params GetVersionsParams) {
 	var request GetVersionsRequestObject
@@ -451,15 +616,20 @@ func (sh *strictHandler) GetVersions(w http.ResponseWriter, r *http.Request, par
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"xFRNa9tAEP0rYtqjsNyWXHQspCWHQukhlxDMVnqyJ1i7m9lxwBj997Irf6ne1PQDehOaj/dm3pvdUeN6",
-	"7yysBqp3FJoVepM+b0WcfEPwzgbEH16chygjhRHD8UO3HlRTUGG7pKEkvMDqgltY5Y6RSxpKEjxvWNBS",
-	"/bDvlal8LA+V7vsTGo3t73ovCIGdfZ1cFpytYgm5QL+Cdw+JYLdWZXuJ1KyMXWIxVmWWMcbbhdFsuEVo",
-	"hL2ys9n4rwcpqUfvZLu4lmZNn6cX3EYaXFfoDCAHukeYzjMZvpxs6gh8ufCIzLZziRPrOsaWboRsqaSX",
-	"UQ6q6d1sPpvHIZyHNZ6ppg/pV0ne6CrJUxnPFR8dk/55F5IYUUYTmd61VNNXF/TuLHGcH0E/ujbp3jir",
-	"sKnSeL/mJtVWT2GUbrycjEFOZX+8/UOP/LZOmSobpB/jXST89/P5b7F/K+iopjfV6WGo9q9ClTm9xGDi",
-	"4rMDLRqBUbSzOOzNPyQyfZsyHD4ZXqMt1O0pFCcPzGL+UI7W2LspbWqJjC0+Q+8POdFXYnooJFD9sCOO",
-	"UM8byPZwATUFtg3oZ1XKs8EutM43WnPP8W5OhS06s1kr1TfzMvOo5du4rgt4pU+uzeNf+ocVfbim3+RN",
-	"HY4sjIjZ5uT8ks6/OKhVpCUXyj2Cmt7/T3+ldR+ZjeYahh8BAAD//w==",
+	"1FdNb9swDP0rhrajkWQbevFxQzf0MKDogF6KIlBsJlFnfVSi0wVF/vsgyXGsWHbjfqDbLbFo8vE9kqIf",
+	"SS65kgIEGpI9EpOvgVP381xrqa/AKCkM2AdKSwUaGbhjsMf2B24VkIwY1EysyC4lsAGBc1aAQLZkEDPa",
+	"pUTDfcU0FCS7qX1F3rxN92/KxR3kaN1fcKXBGCZFP7hocCYQVqA70Z+Id6nlkpXwTXJVAjIpuuEWsthG",
+	"qTAe6FxQDk/TEFin3usAogMRXUS5FAgCo6ByDRShmNP48TB3KTGy0vkJ2bT8pA2e5vUAxkCSP4FLvX3V",
+	"BAswuWZqL+VoApiZ0xzZps3BQsoSqLDHPVqnBOnKFycCN3EL/4BqTbeH/xHDShX9GQ7pUJfWQY42GXXA",
+	"gMAgVjv3Ac36+5KWD3QbkvBRw5Jk5MP0MIim9RSahjUQIShvmnK001Y/RxyzprdGO261ZcyxKODPWJe/",
+	"Ks5pnAENJWyob4RRLoHqfH0Fpiqx6/eohGrZ9ugHpA/cjmral3Zlb9tpKn63DkTFF/6N/6cfgxZ0+QxJ",
+	"UBdLh/03Y/gfIvIp+mK8XYO23XouMHrRrKlYwbwXsT9/s8uGu9k3f7Y2z7qtu0F7CG4lnwZMNYG7hO/c",
+	"FFxKh4lhac9W0ocsSEo2Xg6SkU+T2WRmk5AKBFWMZOSLe5QSRXHt5JlSxaZH01pJ48SwMlKL9KIgGbmU",
+	"Bi9ahj5/MPi13t5a04kqVbLcvTu9M146P0DHDbVT2d/7iLN1sERdgXvgL1gX//NsNgr90OUQ2a0dgqCK",
+	"Wxt4Um8KE5vs2SsCCT8+Ihi+U1ZCkaCsISSHGphY+13qS0P5oWjjrSBSFT8A67npqkpTDgjakOzmkTAb",
+	"6L4Cvd3Xf0ZQKpbb8m7SOFb29g31OV6wIsTUJskDw3WCDDQUiWsuBuY9ZSolLZJajUChut/NkETXe5uT",
+	"NDJMuC+MsG+GNEvjjkrGGQZiF7CkbrU5m6WR78q4G7lcGujxE3Pz0go6aQ8Mbr3uAthR0i/hyV6txJGc",
+	"IONgkHL1nqXl6G6Q+eLa7f4GAAD//w==",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

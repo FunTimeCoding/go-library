@@ -4,6 +4,7 @@ package store
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/search_option"
 	"testing"
 )
 
@@ -12,8 +13,7 @@ func TestHybridSearchReturnsResults(t *testing.T) {
 	defer s.Close()
 	e := embedTestDocuments(s, o)
 	assert.FatalOnError(t, e)
-	option := NewSearchOption("search pipeline", 10)
-	option.Reranker = nil
+	option := search_option.New("search pipeline", 10)
 	results, e := s.SearchHybrid(option, o)
 	assert.FatalOnError(t, e)
 	assert.Greater(t, 0, float64(len(results)))
@@ -25,8 +25,7 @@ func TestHybridSearchDiffersFromKeyword(t *testing.T) {
 	e := embedTestDocuments(s, o)
 	assert.FatalOnError(t, e)
 	keyword := s.MustSearchKeyword("context resolution", 5, "", false)
-	option := NewSearchOption("context resolution", 5)
-	option.Reranker = nil
+	option := search_option.New("context resolution", 5)
 	hybrid, e := s.SearchHybrid(option, o)
 	assert.FatalOnError(t, e)
 
@@ -45,7 +44,7 @@ func TestHybridSearchDiffersFromKeyword(t *testing.T) {
 func TestSearchFallsBackToKeywordWithoutEmbeddings(t *testing.T) {
 	s, o := indexedTestStore(t)
 	defer s.Close()
-	option := NewSearchOption("chunking strategy", 10)
+	option := search_option.New("chunking strategy", 10)
 	outcome := s.SearchWithFallback(option, o)
 	assert.True(t, outcome.Degraded)
 	assert.Greater(t, 0, float64(len(outcome.Results)))

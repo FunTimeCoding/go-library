@@ -7,6 +7,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/session_cache"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/client"
+	queryd "github.com/funtimecoding/go-library/pkg/tool/goqueryd/face"
 	"time"
 )
 
@@ -14,8 +15,8 @@ func New(
 	s *store.Store,
 	c face.ClaudeSource,
 	m client.Client,
-	summaryIndexer library.Indexer,
-	completionIndexer library.Indexer,
+	summaryIndexer queryd.Indexer,
+	completionIndexer queryd.Indexer,
 	n face.Notifier,
 	r library.Reporter,
 	harbor string,

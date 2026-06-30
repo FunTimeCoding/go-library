@@ -6,6 +6,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/generative/model_context/parameter"
 	"github.com/funtimecoding/go-library/pkg/notation"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/search_option"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -19,25 +20,22 @@ func (s *Server) search(
 		return response.Fail("query is required: %v", e)
 	}
 
-	metadata := extractMetadata(q)
+	o := search_option.New(query, int(q.GetFloat(parameter.Limit, 10)))
+	o.Collection = q.GetString(constant.Collection, "")
+	o.Full = q.GetBool(constant.Full, false)
+	o.Mode = q.GetString(constant.Mode, "hybrid")
+	o.Metadata = extractMetadata(q)
 	sourceType := q.GetString(constant.SourceType, "")
 
 	if sourceType != "" {
-		if metadata == nil {
-			metadata = map[string]string{}
+		if o.Metadata == nil {
+			o.Metadata = map[string]string{}
 		}
 
-		metadata[constant.SourceType] = sourceType
+		o.Metadata[constant.SourceType] = sourceType
 	}
 
-	outcome := s.service.Search(
-		query,
-		int(q.GetFloat(parameter.Limit, 10)),
-		q.GetString(constant.Collection, ""),
-		q.GetBool(constant.Full, false),
-		q.GetString(constant.Mode, "hybrid"),
-		metadata,
-	)
+	outcome := s.service.Search(o)
 
 	if outcome.Cause != nil {
 		s.reporter.CaptureException(outcome.Cause)

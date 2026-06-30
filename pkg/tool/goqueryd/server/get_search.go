@@ -4,52 +4,48 @@ import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/constant"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/server"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/search_option"
 )
 
 func (s *Server) GetSearch(
 	_ context.Context,
 	r server.GetSearchRequestObject,
 ) (server.GetSearchResponseObject, error) {
-	limit := 10
+	o := search_option.New(r.Params.Query, 10)
 
 	if r.Params.Limit != nil {
-		limit = *r.Params.Limit
+		o.Limit = *r.Params.Limit
 	}
-
-	collection := ""
 
 	if r.Params.Collection != nil {
-		collection = *r.Params.Collection
+		o.Collection = *r.Params.Collection
 	}
 
-	mode := "hybrid"
+	o.Mode = "hybrid"
 
 	if r.Params.Mode != nil {
-		mode = string(*r.Params.Mode)
+		o.Mode = string(*r.Params.Mode)
 	}
 
-	var metadata map[string]string
+	o.Full = r.Params.Full != nil && *r.Params.Full
 
 	if r.Params.Metadata != nil {
-		metadata = *r.Params.Metadata
+		o.Metadata = *r.Params.Metadata
 	}
 
 	if r.Params.SourceType != nil && *r.Params.SourceType != "" {
-		if metadata == nil {
-			metadata = map[string]string{}
+		if o.Metadata == nil {
+			o.Metadata = map[string]string{}
 		}
 
-		metadata[constant.SourceType] = *r.Params.SourceType
+		o.Metadata[constant.SourceType] = *r.Params.SourceType
 	}
 
-	outcome := s.service.Search(
-		r.Params.Query,
-		limit,
-		collection,
-		r.Params.Full != nil && *r.Params.Full,
-		mode,
-		metadata,
-	)
+	if r.Params.Exclude != nil {
+		o.Exclude = *r.Params.Exclude
+	}
+
+	outcome := s.service.Search(o)
 	result := server.GetSearch200JSONResponse{
 		Results: convertSearchResults(outcome.Results),
 	}

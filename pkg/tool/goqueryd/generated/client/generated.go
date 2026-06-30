@@ -198,6 +198,7 @@ type GetSearchParams struct {
 	Full       *bool                `form:"full,omitempty" json:"full,omitempty"`
 	SourceType *string              `form:"source_type,omitempty" json:"source_type,omitempty"`
 	Metadata   *map[string]string   `json:"metadata,omitempty"`
+	Exclude    *[]string            `form:"exclude,omitempty" json:"exclude,omitempty"`
 }
 
 // GetSearchParamsMode defines parameters for GetSearch.
@@ -1331,6 +1332,18 @@ func NewGetSearchRequest(server string, params *GetSearchParams) (*http.Request,
 		if params.Metadata != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("deepObject", true, "metadata", *params.Metadata, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "object", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Exclude != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "exclude", *params.Exclude, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {

@@ -9,4 +9,5 @@ type Client interface {
 		content string,
 		source string,
 	)
+	Profile(topic string) string
 }

@@ -3,7 +3,7 @@ package memory_indexer
 import (
 	"context"
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/face"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/face"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/generated/client"
 )
 

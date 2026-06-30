@@ -1,12 +1,18 @@
 package service
 
-import "github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+import (
+	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/face/search_option"
+)
 
 func (s *Service) SearchRelevant(
 	query string,
 	limit int,
+	exclude []string,
 ) ([]store.SearchResult, error) {
-	results, e := s.searcher.Search(query, "memories", limit)
+	o := search_option.New(query, "memories", limit)
+	o.Exclude = exclude
+	results, e := s.searcher.Search(o)
 
 	if e != nil {
 		return nil, e
@@ -15,15 +21,15 @@ func (s *Service) SearchRelevant(
 	var matches []store.SearchResult
 
 	for _, r := range results {
-		identifier, e := extractIdentifier(r.Path)
+		identifier, f := extractIdentifier(r.Path)
 
-		if e != nil {
+		if f != nil {
 			continue
 		}
 
-		m, e := s.store.GetMemory(identifier)
+		m, g := s.store.GetMemory(identifier)
 
-		if e != nil {
+		if g != nil {
 			continue
 		}
 

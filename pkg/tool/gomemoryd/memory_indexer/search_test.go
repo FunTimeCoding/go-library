@@ -3,6 +3,7 @@ package memory_indexer_test
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/memory_indexer_tester"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/face/search_option"
 	"testing"
 )
 
@@ -23,7 +24,9 @@ func TestSearchReturnsResults(t *testing.T) {
 		),
 		memory_indexer_tester.EmptyFixture(),
 	)
-	results, e := s.Search("error handling", "memories", 10)
+	results, e := s.Search(
+		search_option.New("error handling", "memories", 10),
+	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 2, results)
 	assert.String(t, "memory/1", results[0].Path)
@@ -36,7 +39,9 @@ func TestSearchEmptyResults(t *testing.T) {
 		memory_indexer_tester.SearchFixture(),
 		memory_indexer_tester.EmptyFixture(),
 	)
-	results, e := s.Search("nonexistent", "memories", 10)
+	results, e := s.Search(
+		search_option.New("nonexistent", "memories", 10),
+	)
 	assert.FatalOnError(t, e)
 	assert.Count(t, 0, results)
 }

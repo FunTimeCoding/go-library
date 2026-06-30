@@ -8,6 +8,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/session_cache"
 	"github.com/funtimecoding/go-library/pkg/tool/goclauded/store"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/client"
+	queryd "github.com/funtimecoding/go-library/pkg/tool/goqueryd/face"
 	"sync"
 	"time"
 )
@@ -16,8 +17,8 @@ type Service struct {
 	store             *store.Store
 	client            face.ClaudeSource
 	memory            client.Client
-	summaryIndexer    library.Indexer
-	completionIndexer library.Indexer
+	summaryIndexer    queryd.Indexer
+	completionIndexer queryd.Indexer
 	notifier          face.Notifier
 	reporter          library.Reporter
 	clock             func() time.Time

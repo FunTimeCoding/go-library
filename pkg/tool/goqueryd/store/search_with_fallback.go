@@ -1,9 +1,12 @@
 package store
 
-import "github.com/funtimecoding/go-library/pkg/generative/ollama"
+import (
+	"github.com/funtimecoding/go-library/pkg/generative/ollama"
+	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/store/search_option"
+)
 
 func (s *Store) SearchWithFallback(
-	o *SearchOption,
+	o *search_option.Option,
 	l *ollama.Client,
 ) *SearchOutcome {
 	status, e := s.Status()
@@ -13,25 +16,56 @@ func (s *Store) SearchWithFallback(
 	}
 
 	if status.TotalEmbeddings == 0 {
-		results, f := s.SearchKeyword(o.Query, o.Limit, o.Collection, o.Full)
+		limit := o.Limit + len(o.Exclude)
+		results, f := s.SearchKeyword(
+			o.Query,
+			limit,
+			o.Collection,
+			o.Full,
+		)
 
 		if f != nil {
 			return &SearchOutcome{Degraded: true, Cause: f}
 		}
 
-		return &SearchOutcome{Results: results, Degraded: true}
+		filtered := ExcludePaths(results, o.Exclude)
+
+		if len(filtered) > o.Limit {
+			filtered = filtered[:o.Limit]
+		}
+
+		return &SearchOutcome{
+			Results:  filtered,
+			Degraded: true,
+		}
 	}
 
 	results, f := s.SearchHybrid(o, l)
 
 	if f != nil {
-		keyword, g := s.SearchKeyword(o.Query, o.Limit, o.Collection, o.Full)
+		limit := o.Limit + len(o.Exclude)
+		keyword, g := s.SearchKeyword(
+			o.Query,
+			limit,
+			o.Collection,
+			o.Full,
+		)
 
 		if g != nil {
 			return &SearchOutcome{Degraded: true, Cause: g}
 		}
 
-		return &SearchOutcome{Results: keyword, Degraded: true, Cause: f}
+		filtered := ExcludePaths(keyword, o.Exclude)
+
+		if len(filtered) > o.Limit {
+			filtered = filtered[:o.Limit]
+		}
+
+		return &SearchOutcome{
+			Results:  filtered,
+			Degraded: true,
+			Cause:    f,
+		}
 	}
 
 	return &SearchOutcome{Results: results}

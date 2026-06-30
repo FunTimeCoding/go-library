@@ -16,7 +16,8 @@ func (s *Server) GetProfile(
 		topic = *r.Params.Topic
 	}
 
-	result, e := s.service.Profile(topic)
+	showDetail := r.Params.Detail != nil && *r.Params.Detail
+	result, d, e := s.service.Profile(topic, showDetail)
 
 	if e != nil {
 		return server.GetProfile500JSONResponse(
@@ -128,6 +129,22 @@ func (s *Server) GetProfile(
 		}
 
 		response.Completions = &completions
+	}
+
+	if d != nil {
+		response.Detail = &server.ProfileDetail{
+			Budget:             d.Budget,
+			AlwaysTokens:       d.AlwaysTokens,
+			IndexTokens:        d.IndexTokens,
+			IndexTrimmed:       d.IndexTrimmed,
+			CompletionTokens:   d.CompletionTokens,
+			CompletionsTrimmed: d.CompletionsTrimmed,
+			ImpressionTokens:   d.ImpressionTokens,
+			ImpressionsTrimmed: d.ImpressionsTrimmed,
+			RelevantTokens:     d.RelevantTokens,
+			RelevantTrimmed:    d.RelevantTrimmed,
+			TotalTokens:        d.TotalTokens,
+		}
 	}
 
 	return response, nil

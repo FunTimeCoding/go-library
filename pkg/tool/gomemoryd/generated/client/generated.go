@@ -33,6 +33,21 @@ type ProfileCompletion struct {
 	SessionName string `json:"session_name"`
 }
 
+// ProfileDetail defines model for ProfileDetail.
+type ProfileDetail struct {
+	AlwaysTokens       int `json:"always_tokens"`
+	Budget             int `json:"budget"`
+	CompletionTokens   int `json:"completion_tokens"`
+	CompletionsTrimmed int `json:"completions_trimmed"`
+	ImpressionTokens   int `json:"impression_tokens"`
+	ImpressionsTrimmed int `json:"impressions_trimmed"`
+	IndexTokens        int `json:"index_tokens"`
+	IndexTrimmed       int `json:"index_trimmed"`
+	RelevantTokens     int `json:"relevant_tokens"`
+	RelevantTrimmed    int `json:"relevant_trimmed"`
+	TotalTokens        int `json:"total_tokens"`
+}
+
 // ProfileImpression defines model for ProfileImpression.
 type ProfileImpression struct {
 	Content    string `json:"content"`
@@ -58,6 +73,7 @@ type ProfileMemory struct {
 type ProfileResponse struct {
 	Always      []ProfileMemory        `json:"always"`
 	Completions *[]ProfileCompletion   `json:"completions,omitempty"`
+	Detail      *ProfileDetail         `json:"detail,omitempty"`
 	Impressions *[]ProfileImpression   `json:"impressions,omitempty"`
 	Index       []ProfileSummary       `json:"index"`
 	Relevant    *[]ProfileSearchResult `json:"relevant,omitempty"`
@@ -104,7 +120,8 @@ type PostImpressionsJSONBody struct {
 
 // GetProfileParams defines parameters for GetProfile.
 type GetProfileParams struct {
-	Topic *string `form:"topic,omitempty" json:"topic,omitempty"`
+	Topic  *string `form:"topic,omitempty" json:"topic,omitempty"`
+	Detail *bool   `form:"detail,omitempty" json:"detail,omitempty"`
 }
 
 // GetVersionsParams defines parameters for GetVersions.
@@ -321,6 +338,18 @@ func NewGetProfileRequest(server string, params *GetProfileParams) (*http.Reques
 		if params.Topic != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "topic", *params.Topic, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Detail != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "detail", *params.Detail, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {

@@ -14,7 +14,10 @@ func (s *Server) profile(
 	_ context.Context,
 	q mcp.CallToolRequest,
 ) (*mcp.CallToolResult, error) {
-	result, e := s.service.Profile(q.GetString(constant.Topic, ""))
+	result, _, e := s.service.Profile(
+		q.GetString(constant.Topic, ""),
+		false,
+	)
 
 	if e != nil {
 		message := "failed to load profile"

@@ -1,13 +1,15 @@
 package service
 
 import (
+	"github.com/funtimecoding/go-library/pkg/generative/anthropic/tokenizer"
 	"github.com/funtimecoding/go-library/pkg/tool/gomemoryd/store"
 	"github.com/funtimecoding/go-library/pkg/tool/goqueryd/face"
 )
 
 type Service struct {
-	store    *store.Store
-	indexer  face.Indexer
-	searcher face.Searcher
-	lister   face.Lister
+	store     *store.Store
+	indexer   face.Indexer
+	searcher  face.Searcher
+	lister    face.Lister
+	tokenizer *tokenizer.Encoder
 }

@@ -11,6 +11,7 @@ import (
 
 func profile(l **client.Client) *cobra.Command {
 	var topic string
+	var detail bool
 	c := &cobra.Command{
 		Use:   "profile",
 		Short: "Load memory profile",
@@ -19,6 +20,10 @@ func profile(l **client.Client) *cobra.Command {
 
 			if topic != "" {
 				params.Topic = &topic
+			}
+
+			if detail {
+				params.Detail = &detail
 			}
 
 			r, e := (*l).GetProfile(
@@ -37,6 +42,12 @@ func profile(l **client.Client) *cobra.Command {
 		"topic",
 		"",
 		"session topic for relevance matching",
+	)
+	c.Flags().BoolVar(
+		&detail,
+		"detail",
+		false,
+		"include token budget details",
 	)
 
 	return c

@@ -46,6 +46,11 @@ paths:
         in: query
         schema:
           type: string
+      - name: detail
+        in: query
+        schema:
+          type: boolean
+          default: false
       responses:
         "200":
           description: Profile with tiered memories.
@@ -137,6 +142,34 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProfileCompletion"
+        detail:
+          $ref: "#/components/schemas/ProfileDetail"
+    ProfileDetail:
+      type: object
+      required: [budget, always_tokens, index_tokens, index_trimmed, completion_tokens, completions_trimmed, impression_tokens, impressions_trimmed, relevant_tokens, relevant_trimmed, total_tokens]
+      properties:
+        budget:
+          type: integer
+        always_tokens:
+          type: integer
+        index_tokens:
+          type: integer
+        index_trimmed:
+          type: integer
+        completion_tokens:
+          type: integer
+        completions_trimmed:
+          type: integer
+        impression_tokens:
+          type: integer
+        impressions_trimmed:
+          type: integer
+        relevant_tokens:
+          type: integer
+        relevant_trimmed:
+          type: integer
+        total_tokens:
+          type: integer
     ProfileMemory:
       type: object
       required: [identifier, name, content, description, type, created_at, updated_at, is_active]

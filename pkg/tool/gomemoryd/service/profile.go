@@ -7,29 +7,28 @@ import (
 	"strings"
 )
 
-func (s *Service) Profile(topic string) (*ProfileResult, error) {
+const profileBudget = 15000
+
+func (s *Service) Profile(
+	topic string,
+	detail bool,
+) (*ProfileResult, *ProfileDetail, error) {
+	if f := s.ensureTokenizer(); f != nil {
+		return nil, nil, f
+	}
+
 	always, e := s.ListMemoriesWithContent(constant.AlwaysTag)
 
 	if e != nil {
-		return nil, fmt.Errorf("%w: %v", ErrorAlwaysLoad, e)
+		return nil, nil, fmt.Errorf("%w: %v", ErrorAlwaysLoad, e)
 	}
 
 	result := &ProfileResult{Always: always}
+	alwaysTokens := s.countTokens(always)
+	remaining := profileBudget - alwaysTokens
 
-	if topic != "" {
-		exclude := make([]string, len(always))
-
-		for i, m := range always {
-			exclude[i] = fmt.Sprintf("memory/%d", m.Identifier)
-		}
-
-		relevant, f := s.SearchRelevant(topic, 10, exclude)
-
-		if f != nil {
-			return nil, fmt.Errorf("%w: %v", ErrorRelevantSearch, f)
-		}
-
-		result.Relevant = relevant
+	if remaining < 0 {
+		remaining = 0
 	}
 
 	alwaysIDs := map[int64]bool{}
@@ -38,30 +37,32 @@ func (s *Service) Profile(topic string) (*ProfileResult, error) {
 		alwaysIDs[m.Identifier] = true
 	}
 
-	relevantIDs := map[int64]bool{}
-
-	for _, r := range result.Relevant {
-		relevantIDs[r.Identifier] = true
-	}
-
 	allMemories, e := s.ListMemories("", "", true)
 
 	if e != nil {
-		return nil, fmt.Errorf("%w: %v", ErrorMemoryList, e)
+		return nil, nil, fmt.Errorf("%w: %v", ErrorMemoryList, e)
 	}
+
+	indexTrimmed := 0
 
 	for _, m := range allMemories {
-		if !alwaysIDs[m.Identifier] && !relevantIDs[m.Identifier] {
-			result.Index = append(result.Index, m)
+		if alwaysIDs[m.Identifier] {
+			continue
 		}
+
+		tokens := s.countTokens(m)
+
+		if remaining-tokens < 0 {
+			indexTrimmed++
+
+			continue
+		}
+
+		remaining -= tokens
+		result.Index = append(result.Index, m)
 	}
 
-	impressions, e := s.LatestImpressions(10)
-
-	if e == nil {
-		result.Impressions = impressions
-	}
-
+	completionsTrimmed := 0
 	completions, e := s.ListCompletions()
 
 	if e == nil {
@@ -72,12 +73,88 @@ func (s *Service) Profile(topic string) (*ProfileResult, error) {
 				name = name[:i]
 			}
 
-			result.Completions = append(
-				result.Completions,
-				CompletionEntry{SessionName: name, Body: r.Body},
-			)
+			entry := CompletionEntry{SessionName: name, Body: r.Body}
+			tokens := s.countTokens(entry)
+
+			if remaining-tokens < 0 {
+				completionsTrimmed++
+
+				continue
+			}
+
+			remaining -= tokens
+			result.Completions = append(result.Completions, entry)
 		}
 	}
 
-	return result, nil
+	impressionsTrimmed := 0
+	impressions, e := s.LatestImpressions(10)
+
+	if e == nil {
+		for _, i := range impressions {
+			tokens := s.countTokens(i)
+
+			if remaining-tokens < 0 {
+				impressionsTrimmed++
+
+				continue
+			}
+
+			remaining -= tokens
+			result.Impressions = append(result.Impressions, i)
+		}
+	}
+
+	relevantTrimmed := 0
+
+	if topic != "" {
+		exclude := make([]string, len(always))
+
+		for i, m := range always {
+			exclude[i] = fmt.Sprintf("memory/%d", m.Identifier)
+		}
+
+		relevant, f := s.SearchRelevant(topic, 20, exclude)
+
+		if f != nil {
+			return nil, nil, fmt.Errorf(
+				"%w: %v",
+				ErrorRelevantSearch,
+				f,
+			)
+		}
+
+		for _, r := range relevant {
+			tokens := s.countTokens(r)
+
+			if remaining-tokens < 0 {
+				relevantTrimmed++
+
+				continue
+			}
+
+			remaining -= tokens
+			result.Relevant = append(result.Relevant, r)
+		}
+	}
+
+	var d *ProfileDetail
+
+	if detail {
+		d = &ProfileDetail{
+			Budget:             profileBudget,
+			AlwaysTokens:       alwaysTokens,
+			IndexTokens:        s.countTokens(result.Index),
+			IndexTrimmed:       indexTrimmed,
+			CompletionTokens:   s.countTokens(result.Completions),
+			CompletionsTrimmed: completionsTrimmed,
+			ImpressionTokens:   s.countTokens(result.Impressions),
+			ImpressionsTrimmed: impressionsTrimmed,
+			RelevantTokens:     s.countTokens(result.Relevant),
+			RelevantTrimmed:    relevantTrimmed,
+			TotalTokens:        profileBudget - remaining,
+		}
+	}
+
+	return result, d, nil
 }

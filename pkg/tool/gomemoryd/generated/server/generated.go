@@ -39,6 +39,21 @@ type ProfileCompletion struct {
 	SessionName string `json:"session_name"`
 }
 
+// ProfileDetail defines model for ProfileDetail.
+type ProfileDetail struct {
+	AlwaysTokens       int `json:"always_tokens"`
+	Budget             int `json:"budget"`
+	CompletionTokens   int `json:"completion_tokens"`
+	CompletionsTrimmed int `json:"completions_trimmed"`
+	ImpressionTokens   int `json:"impression_tokens"`
+	ImpressionsTrimmed int `json:"impressions_trimmed"`
+	IndexTokens        int `json:"index_tokens"`
+	IndexTrimmed       int `json:"index_trimmed"`
+	RelevantTokens     int `json:"relevant_tokens"`
+	RelevantTrimmed    int `json:"relevant_trimmed"`
+	TotalTokens        int `json:"total_tokens"`
+}
+
 // ProfileImpression defines model for ProfileImpression.
 type ProfileImpression struct {
 	Content    string `json:"content"`
@@ -64,6 +79,7 @@ type ProfileMemory struct {
 type ProfileResponse struct {
 	Always      []ProfileMemory        `json:"always"`
 	Completions *[]ProfileCompletion   `json:"completions,omitempty"`
+	Detail      *ProfileDetail         `json:"detail,omitempty"`
 	Impressions *[]ProfileImpression   `json:"impressions,omitempty"`
 	Index       []ProfileSummary       `json:"index"`
 	Relevant    *[]ProfileSearchResult `json:"relevant,omitempty"`
@@ -110,7 +126,8 @@ type PostImpressionsJSONBody struct {
 
 // GetProfileParams defines parameters for GetProfile.
 type GetProfileParams struct {
-	Topic *string `form:"topic,omitempty" json:"topic,omitempty"`
+	Topic  *string `form:"topic,omitempty" json:"topic,omitempty"`
+	Detail *bool   `form:"detail,omitempty" json:"detail,omitempty"`
 }
 
 // GetVersionsParams defines parameters for GetVersions.
@@ -177,6 +194,19 @@ func (siw *ServerInterfaceWrapper) GetProfile(w http.ResponseWriter, r *http.Req
 			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "topic"})
 		} else {
 			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "topic", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "detail" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "detail", r.URL.Query(), &params.Detail, runtime.BindQueryParameterOptions{Type: "boolean", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "detail"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "detail", Err: err})
 		}
 		return
 	}
@@ -616,20 +646,22 @@ func (sh *strictHandler) GetVersions(w http.ResponseWriter, r *http.Request, par
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"1FdNb9swDP0rhrajkWQbevFxQzf0MKDogF6KIlBsJlFnfVSi0wVF/vsgyXGsWHbjfqDbLbFo8vE9kqIf",
-	"SS65kgIEGpI9EpOvgVP381xrqa/AKCkM2AdKSwUaGbhjsMf2B24VkIwY1EysyC4lsAGBc1aAQLZkEDPa",
-	"pUTDfcU0FCS7qX1F3rxN92/KxR3kaN1fcKXBGCZFP7hocCYQVqA70Z+Id6nlkpXwTXJVAjIpuuEWsthG",
-	"qTAe6FxQDk/TEFin3usAogMRXUS5FAgCo6ByDRShmNP48TB3KTGy0vkJ2bT8pA2e5vUAxkCSP4FLvX3V",
-	"BAswuWZqL+VoApiZ0xzZps3BQsoSqLDHPVqnBOnKFycCN3EL/4BqTbeH/xHDShX9GQ7pUJfWQY42GXXA",
-	"gMAgVjv3Ac36+5KWD3QbkvBRw5Jk5MP0MIim9RSahjUQIShvmnK001Y/RxyzprdGO261ZcyxKODPWJe/",
-	"Ks5pnAENJWyob4RRLoHqfH0Fpiqx6/eohGrZ9ugHpA/cjmral3Zlb9tpKn63DkTFF/6N/6cfgxZ0+QxJ",
-	"UBdLh/03Y/gfIvIp+mK8XYO23XouMHrRrKlYwbwXsT9/s8uGu9k3f7Y2z7qtu0F7CG4lnwZMNYG7hO/c",
-	"FFxKh4lhac9W0ocsSEo2Xg6SkU+T2WRmk5AKBFWMZOSLe5QSRXHt5JlSxaZH01pJ48SwMlKL9KIgGbmU",
-	"Bi9ahj5/MPi13t5a04kqVbLcvTu9M146P0DHDbVT2d/7iLN1sERdgXvgL1gX//NsNgr90OUQ2a0dgqCK",
-	"Wxt4Um8KE5vs2SsCCT8+Ihi+U1ZCkaCsISSHGphY+13qS0P5oWjjrSBSFT8A67npqkpTDgjakOzmkTAb",
-	"6L4Cvd3Xf0ZQKpbb8m7SOFb29g31OV6wIsTUJskDw3WCDDQUiWsuBuY9ZSolLZJajUChut/NkETXe5uT",
-	"NDJMuC+MsG+GNEvjjkrGGQZiF7CkbrU5m6WR78q4G7lcGujxE3Pz0go6aQ8Mbr3uAthR0i/hyV6txJGc",
-	"IONgkHL1nqXl6G6Q+eLa7f4GAAD//w==",
+	"1FdLj9s2EP4rAtujsHZb5KJj27TYQ4EgBXIJAoOWxjYT8RFytKmx8H8v+LAkShTX2mSR9maLw48z3zcP",
+	"8pHUkispQKAh1SMx9Qk4dT9fay31WzBKCgP2g9JSgUYGbhnssv2BZwWkIgY1E0dyKQk8gMAda0AgOzBI",
+	"GV1KouFzxzQ0pHofsBI7P5TXnXL/EWq08PdcaTCGSbHsXPJwJhCOoGenP3HeGy0PrIXfJFctIJNiftxe",
+	"NuckFcY7uhOUw9M0RNalR8149DsgZe3cG9p+oWezQ/kJhEnFX5J91xwB02t1H2gWYjAzO9SMcxtDypD1",
+	"emXxBrOn8EQD/+ShvEUOREMLD1RgFmcwykGhRNpmcCYiB+rLiUyTuKZBpGRJa5AiPM3unIVEyJP4Muk4",
+	"1OU8JWspEAQma6TWQBGaHU0v50u5JEZ2ur6huEY4Ze9Pvz1yIxPkX8ClPn/TABswtWbq2llWE8DMjtbI",
+	"HsYc7KVsgQq7vNB6SoL06HslAjdpC/+Bak3Pw/+EYaea5QhzOoRON8gxJiMcGBEYnTWOPaPZ8pjwJRiR",
+	"8KOGA6nID5thLm7CUNzEOZAgaFSPa0FH4yUB3PSt/gaoMBfinrrWn1E1J/xxzWkt5N8d5zRN3LXtrIYE",
+	"quvTWzBdi3PcSeYFta/eZzImgl1V619bzIvVqqn4NFoQHd+H8fO/KeOocl08OQlCsszYfzGG/0NEPkVf",
+	"ird3oG21vhaYnE8nKo6wW/TYr7/YjOKuZe6erc2zhvz80AWCR8GXEVP9wXPCL64LHqTziWFr147SH2lv",
+	"TQ9eDlKRn+62d1sbhFQgqGKkIr+4TyVRFE9Ong1VbDPp1koaJ4aVkVpP7xtSkTfS4P3I0McPBn8Nb5BR",
+	"d6JKtax2ezcfjZfON9B1Te1W9q8YabYGS9QduA9+Lrvzf95uV3mfGw6JF6LzIMri0TuyCBeMOxvsq2/o",
+	"SPyETvjwB2UtNAXK4EIx5MCdtb+UPjWUb4r2vPBui7PiT8DQN11WacoBQRtSvX8kzB70uQN9vuZ/RVAq",
+	"Vtv07sOYKZveGC4i450NHKibkwfaGihnV9DLhxeUenrFS3AcTIovDE8FMtDQFK5OGZjvqXgraVMEYSOx",
+	"Q+swObXfXW1uktsw4d44cQk+Q/6WcYZp9V9ty8TTNw0jDwcDCzgpmK/NoJuulNEAnd8lZ0r6Z0BxVatw",
+	"JBfIOBikXH3P1HJ095755Lpc/g0AAP//",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

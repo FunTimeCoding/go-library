@@ -2,7 +2,7 @@ package job
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/google/go-github/v88/github"
 	"testing"
 	"time"
@@ -11,7 +11,7 @@ import (
 func TestJob(t *testing.T) {
 	r := New(
 		&github.WorkflowJob{
-			Name:      new(strings.Alfa),
+			Name:      new(upper.Alfa),
 			CreatedAt: &github.Timestamp{},
 		},
 	)

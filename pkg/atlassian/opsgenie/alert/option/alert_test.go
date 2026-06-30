@@ -2,7 +2,7 @@ package option
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -12,7 +12,7 @@ func TestAlert(t *testing.T) {
 		New(
 			nil,
 			nil,
-			strings.Alfa,
+			upper.Alfa,
 			nil,
 			nil,
 			nil,

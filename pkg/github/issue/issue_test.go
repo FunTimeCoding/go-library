@@ -2,7 +2,7 @@ package issue
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"github.com/google/go-github/v88/github"
 	"testing"
@@ -14,8 +14,8 @@ func TestIssue(t *testing.T) {
 			RepositoryURL: locator.New(
 				"api.github.com",
 			).Path("/repos/funtimecoding/go-library").Pointer(),
-			Title:   new(strings.Alfa),
-			HTMLURL: new(strings.Bravo),
+			Title:   new(upper.Alfa),
+			HTMLURL: new(upper.Bravo),
 		},
 	)
 	i.Raw = nil
@@ -23,8 +23,8 @@ func TestIssue(t *testing.T) {
 		t,
 		&Issue{
 			Repository: "funtimecoding/go-library",
-			Title:      strings.Alfa,
-			Link:       strings.Bravo,
+			Title:      upper.Alfa,
+			Link:       upper.Bravo,
 		},
 		i,
 	)

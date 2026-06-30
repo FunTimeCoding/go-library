@@ -3,7 +3,7 @@ package range_mapping
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/math/ranges"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -19,10 +19,10 @@ func TestGenerate(t *testing.T) {
 		Generate(
 			[]float64{0.5, 1.5, 2.5},
 			[]string{
-				strings.Alfa,
-				strings.Bravo,
-				strings.Charlie,
-				strings.Delta,
+				upper.Alfa,
+				upper.Bravo,
+				upper.Charlie,
+				upper.Delta,
 			},
 		),
 	)
@@ -91,10 +91,10 @@ func TestGenerate(t *testing.T) {
 				78462.7853715095,
 			},
 			[]string{
-				strings.Alfa,
-				strings.Bravo,
-				strings.Charlie,
-				strings.Delta,
+				upper.Alfa,
+				upper.Bravo,
+				upper.Charlie,
+				upper.Delta,
 			},
 		),
 	)

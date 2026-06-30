@@ -13,16 +13,16 @@ import (
 func TestReloadEnvironment(t *testing.T) {
 	s := tester.New(
 		t,
-		"alpha: sh -c 'echo $TEST_VALUE && sleep 60'\n",
+		"alfa: sh -c 'echo $TEST_VALUE && sleep 60'\n",
 		"export TEST_VALUE=original\n",
 	)
 	time.Sleep(200 * time.Millisecond)
-	log := s.Send("log", "alpha")
+	log := s.Send("log", "alfa")
 	assert.True(t, strings.Contains(log, "original"))
 	s.WriteEnvrc("export TEST_VALUE=updated\n")
 	s.Send("reload-environment")
-	s.Send("restart", "alpha")
+	s.Send("restart", "alfa")
 	time.Sleep(200 * time.Millisecond)
-	log = s.Send("log", "alpha")
+	log = s.Send("log", "alfa")
 	assert.True(t, strings.Contains(log, "updated"))
 }

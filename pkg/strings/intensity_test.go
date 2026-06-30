@@ -2,11 +2,12 @@ package strings
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
 func TestIntensity(t *testing.T) {
-	v := []string{Alfa, Bravo, Charlie}
+	v := []string{upper.Alfa, upper.Bravo, upper.Charlie}
 	assert.String(t, "Alfa", Intensity(v, 0))
 	assert.String(t, "Alfa", Intensity(v, 0.33))
 	assert.String(t, "Bravo", Intensity(v, 0.34))

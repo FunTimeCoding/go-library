@@ -4,6 +4,7 @@ package service
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings/lower"
 	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/integration_test/service_tester"
 	"github.com/funtimecoding/go-library/pkg/tool/gosproutd/service"
 	"testing"
@@ -13,24 +14,24 @@ func TestMoveUpNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	s.Service.Sync(
 		[]service.DiscoveredFile{
-			{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
-			{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
+			{Name: lower.Alfa, Path: "alfa.md", ContentHash: "a", Content: "a"},
+			{Name: lower.Bravo, Path: "bravo.md", ContentHash: "b", Content: "b"},
 		},
 	)
 	s.Notifier.Reset()
 	s.Service.MoveUp(s.Service.Seeds()[1].Identifier)
 	assert.True(t, s.Notifier.Notified > 0)
-	assert.String(t, "beta", s.Service.Seeds()[0].Name)
+	assert.String(t, "bravo", s.Service.Seeds()[0].Name)
 }
 
 func TestSetPositionNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	s.Service.Sync(
 		[]service.DiscoveredFile{
-			{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
-			{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
+			{Name: lower.Alfa, Path: "alfa.md", ContentHash: "a", Content: "a"},
+			{Name: lower.Bravo, Path: "bravo.md", ContentHash: "b", Content: "b"},
 			{
-				Name:        "charlie",
+				Name:        lower.Charlie,
 				Path:        "charlie.md",
 				ContentHash: "c",
 				Content:     "c",
@@ -47,13 +48,13 @@ func TestReorderNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	s.Service.Sync(
 		[]service.DiscoveredFile{
-			{Name: "alpha", Path: "alpha.md", ContentHash: "a", Content: "a"},
-			{Name: "beta", Path: "beta.md", ContentHash: "b", Content: "b"},
+			{Name: lower.Alfa, Path: "alfa.md", ContentHash: "a", Content: "a"},
+			{Name: lower.Bravo, Path: "bravo.md", ContentHash: "b", Content: "b"},
 		},
 	)
 	seeds := s.Service.Seeds()
 	s.Notifier.Reset()
 	s.Service.Reorder([]uint{seeds[1].Identifier, seeds[0].Identifier})
 	assert.True(t, s.Notifier.Notified > 0)
-	assert.String(t, "beta", s.Service.Seeds()[0].Name)
+	assert.String(t, "bravo", s.Service.Seeds()[0].Name)
 }

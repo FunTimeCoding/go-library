@@ -2,7 +2,7 @@ package list
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -16,6 +16,6 @@ func TestToStrings(t *testing.T) {
 	assert.Strings(
 		t,
 		[]string{"Alfa", "Bravo"},
-		ToStrings([]Fixture{strings.Alfa, strings.Bravo}),
+		ToStrings([]Fixture{upper.Alfa, upper.Bravo}),
 	)
 }

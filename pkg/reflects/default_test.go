@@ -2,7 +2,7 @@ package reflects
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -15,6 +15,6 @@ func TestDefault(t *testing.T) {
 	assert.False(t, Default(nil))
 	assert.False(t, Default(true))
 	assert.False(t, Default(1))
-	assert.False(t, Default(strings.Alfa))
-	assert.False(t, Default(new(strings.Alfa)))
+	assert.False(t, Default(upper.Alfa))
+	assert.False(t, Default(new(upper.Alfa)))
 }

@@ -4,7 +4,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/monitor/collector"
 	"github.com/funtimecoding/go-library/pkg/monitor/constant"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	web "github.com/funtimecoding/go-library/pkg/web/constant"
 	"github.com/funtimecoding/go-library/pkg/web/locator"
 	"testing"
@@ -25,7 +25,7 @@ func TestItem(t *testing.T) {
 			c,
 			c.IntegerIdentifier(1),
 			constant.Critical,
-			strings.Alfa,
+			upper.Alfa,
 			locator.New(web.Example).Path("/1").String(),
 			nil,
 		).Identifier,

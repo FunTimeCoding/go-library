@@ -3,14 +3,14 @@ package lint
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/constant"
-	library "github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"strings"
 	"testing"
 )
 
 func TestSpacingBlankBeforeControl(t *testing.T) {
 	l := Spacing(
-		library.Alfa,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
 		),
@@ -37,7 +37,7 @@ func TestSpacingBlankBeforeControl(t *testing.T) {
 
 func TestSpacingBlankBeforeReturn(t *testing.T) {
 	l := Spacing(
-		library.Bravo,
+		upper.Bravo,
 		strings.NewReader(
 			"package example\n\nfunc Example() int {\n\tx := 1\n\treturn x\n}\n",
 		),
@@ -64,7 +64,7 @@ func TestSpacingBlankBeforeReturn(t *testing.T) {
 
 func TestSpacingBlankAfterControl(t *testing.T) {
 	l := Spacing(
-		library.Charlie,
+		upper.Charlie,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n\tfmt.Println(\"b\")\n}\n",
 		),
@@ -91,14 +91,14 @@ func TestSpacingBlankAfterControl(t *testing.T) {
 
 func TestSpacingReturnFirstInBlock(t *testing.T) {
 	l := Spacing(
-		library.Echo,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() int {\n\treturn 1\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Echo",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() int {\n\treturn 1\n}\n",
@@ -108,14 +108,14 @@ func TestSpacingReturnFirstInBlock(t *testing.T) {
 
 func TestSpacingControlFirstInBlock(t *testing.T) {
 	l := Spacing(
-		library.Foxtrot,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Foxtrot",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n}\n",
@@ -125,14 +125,14 @@ func TestSpacingControlFirstInBlock(t *testing.T) {
 
 func TestSpacingConsecutiveClosingBraces(t *testing.T) {
 	l := Spacing(
-		library.Golf,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tif true {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\t}\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Golf",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tif true {\n\t\tif true {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\t}\n}\n",
@@ -142,14 +142,14 @@ func TestSpacingConsecutiveClosingBraces(t *testing.T) {
 
 func TestSpacingElse(t *testing.T) {
 	l := Spacing(
-		library.Hotel,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t} else {\n\t\tfmt.Println(\"b\")\n\t}\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Hotel",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t} else {\n\t\tfmt.Println(\"b\")\n\t}\n}\n",
@@ -159,7 +159,7 @@ func TestSpacingElse(t *testing.T) {
 
 func TestSpacingExtraneousBlanks(t *testing.T) {
 	l := Spacing(
-		library.Delta,
+		upper.Delta,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n\n\ty := 2\n}\n",
 		),
@@ -195,14 +195,14 @@ func TestSpacingExtraneousBlanks(t *testing.T) {
 
 func TestSpacingClean(t *testing.T) {
 	l := Spacing(
-		library.Juliett,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tfmt.Println(\"a\")\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Juliett",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tfmt.Println(\"a\")\n}\n",
@@ -212,14 +212,14 @@ func TestSpacingClean(t *testing.T) {
 
 func TestSpacingClosingBraceBeforeDefault(t *testing.T) {
 	l := Spacing(
-		library.Kilo,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example(x int) {\n\tswitch x {\n\tcase 1:\n\t\tif x > 0 {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\tdefault:\n\t\tfmt.Println(\"b\")\n\t}\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Kilo",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example(x int) {\n\tswitch x {\n\tcase 1:\n\t\tif x > 0 {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\tdefault:\n\t\tfmt.Println(\"b\")\n\t}\n}\n",
@@ -229,14 +229,14 @@ func TestSpacingClosingBraceBeforeDefault(t *testing.T) {
 
 func TestSpacingClosingBraceBeforeComma(t *testing.T) {
 	l := Spacing(
-		library.Lima,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example(run func()) {\n\trun()\n}\n\nfunc Call() {\n\tExample(func() {\n\t\tif true {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\t})\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Lima",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example(run func()) {\n\trun()\n}\n\nfunc Call() {\n\tExample(func() {\n\t\tif true {\n\t\t\tfmt.Println(\"a\")\n\t\t}\n\t})\n}\n",
@@ -246,14 +246,14 @@ func TestSpacingClosingBraceBeforeComma(t *testing.T) {
 
 func TestSpacingContinueAsIdentifierPrefix(t *testing.T) {
 	l := Spacing(
-		library.Mike,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example(\n\tcontinueOnError bool,\n) {\n\tfmt.Println(continueOnError)\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Mike",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example(\n\tcontinueOnError bool,\n) {\n\tfmt.Println(continueOnError)\n}\n",
@@ -263,14 +263,14 @@ func TestSpacingContinueAsIdentifierPrefix(t *testing.T) {
 
 func TestSpacingCommentBeforeControl(t *testing.T) {
 	l := Spacing(
-		library.Mike,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\t// Check condition\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Mike",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tx := 1\n\t// Check condition\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
@@ -280,14 +280,14 @@ func TestSpacingCommentBeforeControl(t *testing.T) {
 
 func TestSpacingCompositeLiteralInFunction(t *testing.T) {
 	l := Spacing(
-		library.November,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := map[string]int{\n\t\t\"a\": 1,\n\t}\n\ty := 2\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"November",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tx := map[string]int{\n\t\t\"a\": 1,\n\t}\n\ty := 2\n}\n",
@@ -297,14 +297,14 @@ func TestSpacingCompositeLiteralInFunction(t *testing.T) {
 
 func TestSpacingRawStringLiteral(t *testing.T) {
 	l := Spacing(
-		library.Oscar,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nvar Template = `\nif (x) {\n\treturn false;\n}\ny = 1;\n`\n",
 		),
 	)
 	assertReport(
 		t,
-		"Oscar",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nvar Template = `\nif (x) {\n\treturn false;\n}\ny = 1;\n`\n",
@@ -314,14 +314,14 @@ func TestSpacingRawStringLiteral(t *testing.T) {
 
 func TestSpacingVariableBlockCompositeLiteral(t *testing.T) {
 	l := Spacing(
-		library.Papa,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nvar (\n\tStatuses = []string{\n\t\t\"open\",\n\t\t\"closed\",\n\t}\n\tOther = \"other\"\n)\n",
 		),
 	)
 	assertReport(
 		t,
-		"Papa",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nvar (\n\tStatuses = []string{\n\t\t\"open\",\n\t\t\"closed\",\n\t}\n\tOther = \"other\"\n)\n",
@@ -331,20 +331,20 @@ func TestSpacingVariableBlockCompositeLiteral(t *testing.T) {
 
 func TestSpacingBlankBetweenAssignments(t *testing.T) {
 	l := Spacing(
-		library.Quebec,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n\ty := 2\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Quebec",
+		"Alfa",
 		true,
 		[]*concern.Concern{
 			{
 				Key:      constant.BlankInsideFunctionKey,
 				Text:     constant.BlankInsideFunctionText,
-				Path:     "Quebec",
+				Path:     "Alfa",
 				Type:     concern.Line,
 				Line:     5,
 				LineText: "",
@@ -358,20 +358,20 @@ func TestSpacingBlankBetweenAssignments(t *testing.T) {
 
 func TestSpacingBlankAtStartOfFunction(t *testing.T) {
 	l := Spacing(
-		library.Romeo,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\n\tx := 1\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Romeo",
+		"Alfa",
 		true,
 		[]*concern.Concern{
 			{
 				Key:      constant.BlankInsideFunctionKey,
 				Text:     constant.BlankInsideFunctionText,
-				Path:     "Romeo",
+				Path:     "Alfa",
 				Type:     concern.Line,
 				Line:     4,
 				LineText: "",
@@ -385,20 +385,20 @@ func TestSpacingBlankAtStartOfFunction(t *testing.T) {
 
 func TestSpacingBlankAtEndOfFunction(t *testing.T) {
 	l := Spacing(
-		library.Sierra,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Sierra",
+		"Alfa",
 		true,
 		[]*concern.Concern{
 			{
 				Key:      constant.BlankInsideFunctionKey,
 				Text:     constant.BlankInsideFunctionText,
-				Path:     "Sierra",
+				Path:     "Alfa",
 				Type:     concern.Line,
 				Line:     5,
 				LineText: "",
@@ -412,20 +412,20 @@ func TestSpacingBlankAtEndOfFunction(t *testing.T) {
 
 func TestSpacingBlankBeforeReturnFirstInBlock(t *testing.T) {
 	l := Spacing(
-		library.Tango,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() int {\n\n\treturn 1\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Tango",
+		"Alfa",
 		true,
 		[]*concern.Concern{
 			{
 				Key:      constant.BlankInsideFunctionKey,
 				Text:     constant.BlankInsideFunctionText,
-				Path:     "Tango",
+				Path:     "Alfa",
 				Type:     concern.Line,
 				Line:     4,
 				LineText: "",
@@ -439,20 +439,20 @@ func TestSpacingBlankBeforeReturnFirstInBlock(t *testing.T) {
 
 func TestSpacingBlankBetweenAssignmentsInNestedBlock(t *testing.T) {
 	l := Spacing(
-		library.Uniform,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tx := 1\n\n\t\ty := 2\n\t}\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Uniform",
+		"Alfa",
 		true,
 		[]*concern.Concern{
 			{
 				Key:      constant.BlankInsideFunctionKey,
 				Text:     constant.BlankInsideFunctionText,
-				Path:     "Uniform",
+				Path:     "Alfa",
 				Type:     concern.Line,
 				Line:     6,
 				LineText: "",
@@ -466,14 +466,14 @@ func TestSpacingBlankBetweenAssignmentsInNestedBlock(t *testing.T) {
 
 func TestSpacingBlankAfterControlBeforeStatement(t *testing.T) {
 	l := Spacing(
-		library.Victor,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n\n\tfmt.Println(\"b\")\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Victor",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n\n\tfmt.Println(\"b\")\n}\n",
@@ -483,14 +483,14 @@ func TestSpacingBlankAfterControlBeforeStatement(t *testing.T) {
 
 func TestSpacingBlankBeforeIfInFunction(t *testing.T) {
 	l := Spacing(
-		library.Whiskey,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Whiskey",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tx := 1\n\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
@@ -500,20 +500,20 @@ func TestSpacingBlankBeforeIfInFunction(t *testing.T) {
 
 func TestSpacingBlankInFunctionLiteral(t *testing.T) {
 	l := Spacing(
-		library.Xray,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tf := func() {\n\t\tx := 1\n\n\t\ty := 2\n\t}\n\tf()\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Xray",
+		"Alfa",
 		true,
 		[]*concern.Concern{
 			{
 				Key:      constant.BlankInsideFunctionKey,
 				Text:     constant.BlankInsideFunctionText,
-				Path:     "Xray",
+				Path:     "Alfa",
 				Type:     concern.Line,
 				Line:     6,
 				LineText: "",
@@ -544,14 +544,14 @@ func TestSpacingCompositeLiteralCloserDoesNotLeakDepth(t *testing.T) {
 
 func TestSpacingBlankBeforeCommentBeforeControl(t *testing.T) {
 	l := Spacing(
-		library.Zulu,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n\t// check\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Zulu",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tx := 1\n\n\t// check\n\tif x > 0 {\n\t\tfmt.Println(x)\n\t}\n}\n",
@@ -561,14 +561,14 @@ func TestSpacingBlankBeforeCommentBeforeControl(t *testing.T) {
 
 func TestSpacingBlankBeforeCommentBeforeAssignment(t *testing.T) {
 	l := Spacing(
-		library.Yankee,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx := 1\n\n\t// note\n\ty := 2\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"Yankee",
+		"Alfa",
 		false,
 		nil,
 		"package example\n\nfunc Example() {\n\tx := 1\n\n\t// note\n\ty := 2\n}\n",
@@ -844,20 +844,20 @@ func TestSpacingMultiLineConditionThreeLineBlankAfterControl(t *testing.T) {
 
 func TestSpacingDoubleBlankAfterClosingBrace(t *testing.T) {
 	l := Spacing(
-		library.India,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tif true {\n\t\tfmt.Println(\"a\")\n\t}\n\n\n\tfmt.Println(\"b\")\n}\n",
 		),
 	)
 	assertReport(
 		t,
-		"India",
+		"Alfa",
 		true,
 		[]*concern.Concern{
 			{
 				Key:      constant.ExtraneousBlankLineKey,
 				Text:     constant.ExtraneousBlankLineText,
-				Path:     "India",
+				Path:     "Alfa",
 				Type:     concern.Line,
 				Line:     8,
 				LineText: "",

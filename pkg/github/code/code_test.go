@@ -2,7 +2,7 @@ package code
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/google/go-github/v88/github"
 	"testing"
 )
@@ -10,9 +10,9 @@ import (
 func TestCode(t *testing.T) {
 	r := New(
 		&github.CodeResult{
-			SHA:  new(strings.Alfa),
-			Name: new(strings.Bravo),
-			Path: new(strings.Charlie),
+			SHA:  new(upper.Alfa),
+			Name: new(upper.Bravo),
+			Path: new(upper.Charlie),
 		},
 	)
 	r.Raw = nil

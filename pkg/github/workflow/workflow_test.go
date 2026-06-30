@@ -2,7 +2,7 @@ package workflow
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/google/go-github/v88/github"
 	"testing"
 	"time"
@@ -11,7 +11,7 @@ import (
 func TestWorkflow(t *testing.T) {
 	r := New(
 		&github.Workflow{
-			Name:      new(strings.Alfa),
+			Name:      new(upper.Alfa),
 			CreatedAt: &github.Timestamp{},
 		},
 	)

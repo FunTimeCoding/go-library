@@ -2,14 +2,14 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
-	stringLibrary "github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"strings"
 	"testing"
 )
 
 func TestMarkupClean(t *testing.T) {
 	l := Markup(
-		stringLibrary.Bravo,
+		upper.Bravo,
 		strings.NewReader("---\nmyKey: myValue\n"),
 	)
 	assertReport(t, "Bravo", false, nil, "", l)
@@ -17,7 +17,7 @@ func TestMarkupClean(t *testing.T) {
 
 func TestMarkup(t *testing.T) {
 	l := Markup(
-		stringLibrary.Alfa,
+		upper.Alfa,
 		strings.NewReader("myKey: myValue\n"),
 	)
 	assertReport(

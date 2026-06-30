@@ -2,6 +2,7 @@ package strings
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -17,19 +18,19 @@ func TestCompare(t *testing.T) {
 	// Add
 	assertCompare(
 		t,
-		[]string{Alfa},
+		[]string{upper.Alfa},
 		[]string{},
 		[]string{},
 		[]string{},
-		[]string{Alfa},
+		[]string{upper.Alfa},
 	)
 	// Remove
 	assertCompare(
 		t,
 		[]string{},
-		[]string{Alfa},
+		[]string{upper.Alfa},
 		[]string{},
-		[]string{Alfa},
+		[]string{upper.Alfa},
 		[]string{},
 	)
 	// Stay
@@ -37,9 +38,9 @@ func TestCompare(t *testing.T) {
 		t,
 		[]string{},
 		[]string{},
-		[]string{Alfa},
-		[]string{Alfa},
-		[]string{Alfa},
+		[]string{upper.Alfa},
+		[]string{upper.Alfa},
+		[]string{upper.Alfa},
 	)
 }
 

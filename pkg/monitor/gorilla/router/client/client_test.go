@@ -2,11 +2,11 @@ package client
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"net"
 	"testing"
 )
 
 func TestClient(t *testing.T) {
-	assert.NotNil(t, New(strings.Alfa, strings.Bravo, net.IP{}, nil))
+	assert.NotNil(t, New(upper.Alfa, upper.Bravo, net.IP{}, nil))
 }

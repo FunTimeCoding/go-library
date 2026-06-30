@@ -11,30 +11,30 @@ import (
 )
 
 func TestRestartProcess(t *testing.T) {
-	s := tester.New(t, "alpha: sleep 60\n", "")
-	result := s.Send("restart", "alpha")
+	s := tester.New(t, "alfa: sleep 60\n", "")
+	result := s.Send("restart", "alfa")
 	assert.String(t, "ok", result)
 	time.Sleep(200 * time.Millisecond)
 	status := s.Send("status")
-	assert.String(t, "*alpha", strings.TrimSpace(status))
+	assert.String(t, "*alfa", strings.TrimSpace(status))
 }
 
 func TestStopProcess(t *testing.T) {
-	s := tester.New(t, "alpha: sleep 60\n", "")
-	result := s.Send("stop", "alpha")
+	s := tester.New(t, "alfa: sleep 60\n", "")
+	result := s.Send("stop", "alfa")
 	assert.String(t, "ok", result)
 	time.Sleep(200 * time.Millisecond)
 	status := s.Send("status")
-	assert.String(t, " alpha", status)
+	assert.String(t, " alfa", status)
 }
 
 func TestStartStoppedProcess(t *testing.T) {
-	s := tester.New(t, "alpha: sleep 60\n", "")
-	s.Send("stop", "alpha")
+	s := tester.New(t, "alfa: sleep 60\n", "")
+	s.Send("stop", "alfa")
 	time.Sleep(200 * time.Millisecond)
-	result := s.Send("start", "alpha")
+	result := s.Send("start", "alfa")
 	assert.String(t, "ok", result)
 	time.Sleep(200 * time.Millisecond)
 	status := s.Send("status")
-	assert.String(t, "*alpha", strings.TrimSpace(status))
+	assert.String(t, "*alfa", strings.TrimSpace(status))
 }

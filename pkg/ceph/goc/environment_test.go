@@ -2,7 +2,7 @@ package goc
 
 import (
 	"fmt"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/funtimecoding/go-library/pkg/system/environment"
 	"testing"
 )
@@ -10,14 +10,14 @@ import (
 func TestEnvironment(t *testing.T) {
 	if false {
 		// Only works for the running process
-		environment.Set(ConfigurationEnvironment, strings.Alfa)
-		environment.Set(ArgumentEnvironment, strings.Bravo)
+		environment.Set(ConfigurationEnvironment, upper.Alfa)
+		environment.Set(ArgumentEnvironment, upper.Bravo)
 	}
 
 	if false {
 		// Not sure if this works
-		setEnvironmentEscape(ConfigurationEnvironment, strings.Alfa)
-		setEnvironmentEscape(ArgumentEnvironment, strings.Bravo)
+		setEnvironmentEscape(ConfigurationEnvironment, upper.Alfa)
+		setEnvironmentEscape(ArgumentEnvironment, upper.Bravo)
 	}
 
 	if false {

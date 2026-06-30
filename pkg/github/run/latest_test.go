@@ -2,7 +2,7 @@ package run
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -13,17 +13,17 @@ func TestLatest(t *testing.T) {
 		Latest(
 			[]*Run{
 				{
-					Name:   strings.Alfa,
+					Name:   upper.Alfa,
 					Status: Completed,
 					Create: assert.NewDay(0),
 				},
 				{
-					Name:   strings.Bravo,
+					Name:   upper.Bravo,
 					Status: Completed,
 					Create: assert.NewDay(1),
 				},
 				{
-					Name:   strings.Charlie,
+					Name:   upper.Charlie,
 					Status: Completed,
 					Create: assert.NewDay(2),
 				},

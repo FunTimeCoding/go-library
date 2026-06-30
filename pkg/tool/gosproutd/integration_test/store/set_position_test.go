@@ -15,8 +15,8 @@ func TestSetPositionMoveToTop(t *testing.T) {
 	s.Store.SetPosition(seeds[2].Identifier, 1)
 	after := s.Store.Seeds()
 	assert.String(t, "charlie", after[0].Name)
-	assert.String(t, "alpha", after[1].Name)
-	assert.String(t, "beta", after[2].Name)
+	assert.String(t, "alfa", after[1].Name)
+	assert.String(t, "bravo", after[2].Name)
 }
 
 func TestSetPositionMoveToBottom(t *testing.T) {
@@ -25,9 +25,9 @@ func TestSetPositionMoveToBottom(t *testing.T) {
 	seeds := s.Store.Seeds()
 	s.Store.SetPosition(seeds[0].Identifier, 3)
 	after := s.Store.Seeds()
-	assert.String(t, "beta", after[0].Name)
+	assert.String(t, "bravo", after[0].Name)
 	assert.String(t, "charlie", after[1].Name)
-	assert.String(t, "alpha", after[2].Name)
+	assert.String(t, "alfa", after[2].Name)
 }
 
 func TestSetPositionMoveToMiddle(t *testing.T) {
@@ -36,9 +36,9 @@ func TestSetPositionMoveToMiddle(t *testing.T) {
 	seeds := s.Store.Seeds()
 	s.Store.SetPosition(seeds[2].Identifier, 2)
 	after := s.Store.Seeds()
-	assert.String(t, "alpha", after[0].Name)
+	assert.String(t, "alfa", after[0].Name)
 	assert.String(t, "charlie", after[1].Name)
-	assert.String(t, "beta", after[2].Name)
+	assert.String(t, "bravo", after[2].Name)
 }
 
 func TestSetPositionSamePositionIsNoOp(t *testing.T) {
@@ -47,7 +47,7 @@ func TestSetPositionSamePositionIsNoOp(t *testing.T) {
 	seeds := s.Store.Seeds()
 	s.Store.SetPosition(seeds[1].Identifier, 2)
 	after := s.Store.Seeds()
-	assert.String(t, "alpha", after[0].Name)
-	assert.String(t, "beta", after[1].Name)
+	assert.String(t, "alfa", after[0].Name)
+	assert.String(t, "bravo", after[1].Name)
 	assert.String(t, "charlie", after[2].Name)
 }

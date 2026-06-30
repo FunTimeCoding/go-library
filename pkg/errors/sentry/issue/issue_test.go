@@ -3,17 +3,17 @@ package issue
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
 func TestIssue(t *testing.T) {
 	r := response.NewIssue()
 	r.ID = "1"
-	r.Type = strings.Bravo
-	r.Title = strings.Charlie
-	r.Permalink = strings.Delta
-	r.Project.Name = strings.Alfa
+	r.Type = upper.Bravo
+	r.Title = upper.Charlie
+	r.Permalink = upper.Delta
+	r.Project.Name = upper.Alfa
 	actual := New(r)
 	actual.Create = nil
 	actual.Raw = nil

@@ -3,7 +3,7 @@ package silence
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/funtimecoding/go-library/pkg/time"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"testing"
@@ -12,18 +12,18 @@ import (
 func TestSilence(t *testing.T) {
 	actual := New(
 		&models.GettableSilence{
-			ID: new(strings.Alfa),
+			ID: new(upper.Alfa),
 			Status: &models.SilenceStatus{
 				State: new(constant.ActiveState),
 			},
 			Silence: models.Silence{
-				CreatedBy: new(strings.Bravo),
-				Comment:   new(strings.Charlie),
+				CreatedBy: new(upper.Bravo),
+				Comment:   new(upper.Charlie),
 				StartsAt:  new(time.Scan(assert.NewMinute(0))),
 				EndsAt:    new(time.Scan(assert.NewMinute(10))),
 			},
 		},
-		strings.Delta,
+		upper.Delta,
 	)
 	actual.Start = nil
 	actual.End = nil

@@ -2,24 +2,25 @@ package strings
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
 func TestRemoveFromList(t *testing.T) {
 	assert.Any(
 		t,
-		[]string{Bravo, Charlie},
+		[]string{upper.Bravo, upper.Charlie},
 		RemoveFromList(
-			[]string{Alfa, Alfa, Bravo, Charlie},
-			[]string{Alfa},
+			[]string{upper.Alfa, upper.Alfa, upper.Bravo, upper.Charlie},
+			[]string{upper.Alfa},
 		),
 	)
 	assert.Any(
 		t,
-		[]string{Charlie},
+		[]string{upper.Charlie},
 		RemoveFromList(
-			[]string{Alfa, Alfa, Bravo, Charlie},
-			[]string{Alfa, Bravo},
+			[]string{upper.Alfa, upper.Alfa, upper.Bravo, upper.Charlie},
+			[]string{upper.Alfa, upper.Bravo},
 		),
 	)
 }

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/basic/response"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/constant"
-	"github.com/funtimecoding/go-library/pkg/errors/sentry/helper"
 	"github.com/funtimecoding/go-library/pkg/errors/sentry/issue"
+	"github.com/funtimecoding/go-library/pkg/errors/sentry/validate"
 )
 
 func (c *Client) Issues(
@@ -14,7 +14,7 @@ func (c *Client) Issues(
 	projectIdentifier string,
 	period string,
 ) ([]*issue.Issue, error) {
-	helper.ValidateContains(constant.Periods, period)
+	validate.Contains(constant.Periods, period)
 	query := map[string]string{
 		"project": projectIdentifier,
 		"query":   constant.UnresolvedFilter,

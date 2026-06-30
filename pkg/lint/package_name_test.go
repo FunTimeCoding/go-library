@@ -2,14 +2,14 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
-	library "github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"strings"
 	"testing"
 )
 
 func TestPackageNameBlacklisted(t *testing.T) {
 	l := PackageName(
-		library.Alfa,
+		upper.Alfa,
 		strings.NewReader("package api\n"),
 	)
 	assertReport(
@@ -33,7 +33,7 @@ func TestPackageNameBlacklisted(t *testing.T) {
 
 func TestPackageNameAllowed(t *testing.T) {
 	l := PackageName(
-		library.Bravo,
+		upper.Bravo,
 		strings.NewReader("package server\n"),
 	)
 	assertReport(t, "Bravo", false, nil, "", l)

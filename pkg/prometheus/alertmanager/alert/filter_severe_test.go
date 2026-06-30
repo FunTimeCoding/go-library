@@ -3,7 +3,7 @@ package alert
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/constant"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -11,17 +11,17 @@ func TestFilterSevere(t *testing.T) {
 	actual := FilterSevere(
 		[]*Alert{
 			{
-				Name:     strings.Alfa,
+				Name:     upper.Alfa,
 				State:    constant.ActiveState,
 				Severity: constant.CriticalSeverity,
 			},
 			{
-				Name:     strings.Bravo,
+				Name:     upper.Bravo,
 				State:    constant.SuppressedState,
 				Severity: constant.CriticalSeverity,
 			},
 			{
-				Name:     strings.Charlie,
+				Name:     upper.Charlie,
 				State:    constant.ActiveState,
 				Severity: constant.InformationSeverity,
 			},

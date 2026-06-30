@@ -13,7 +13,7 @@ func TestMerge(t *testing.T) {
 
 	if e := os.WriteFile(
 		target,
-		[]byte("# English\nalpha\ncharlie\n\n# Go\ngoroutine\n"),
+		[]byte("# English\nalfa\ncharlie\n\n# Go\ngoroutine\n"),
 		0o644,
 	); e != nil {
 		t.Fatal(e)
@@ -52,7 +52,7 @@ func TestMerge(t *testing.T) {
 		)
 	}
 
-	if english.Words[0] != "alpha" ||
+	if english.Words[0] != "alfa" ||
 		english.Words[1] != "bravo" ||
 		english.Words[2] != "charlie" {
 		t.Fatalf("unexpected words: %v", english.Words)

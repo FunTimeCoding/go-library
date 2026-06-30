@@ -2,17 +2,17 @@ package concern
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
 func TestNewLine(t *testing.T) {
 	c := NewLine(
-		strings.Alfa,
-		strings.Bravo,
-		strings.Charlie,
+		upper.Alfa,
+		upper.Bravo,
+		upper.Charlie,
 		1,
-		strings.Charlie,
+		upper.Charlie,
 		false,
 	)
 	assert.NotNil(t, c)
@@ -22,9 +22,9 @@ func TestNewLine(t *testing.T) {
 
 func TestNewFile(t *testing.T) {
 	c := NewFile(
-		strings.Alfa,
-		strings.Bravo,
-		strings.Charlie,
+		upper.Alfa,
+		upper.Bravo,
+		upper.Charlie,
 		false,
 	)
 	assert.NotNil(t, c)
@@ -34,9 +34,9 @@ func TestNewFile(t *testing.T) {
 
 func TestNewPackage(t *testing.T) {
 	c := NewPackage(
-		strings.Alfa,
-		strings.Bravo,
-		strings.Charlie,
+		upper.Alfa,
+		upper.Bravo,
+		upper.Charlie,
 	)
 	assert.NotNil(t, c)
 	assert.String(t, Package, c.Type)
@@ -45,11 +45,11 @@ func TestNewPackage(t *testing.T) {
 
 func TestNewDelegatesToNewLine(t *testing.T) {
 	c := New(
-		strings.Alfa,
-		strings.Bravo,
-		strings.Charlie,
+		upper.Alfa,
+		upper.Bravo,
+		upper.Charlie,
 		1,
-		strings.Charlie,
+		upper.Charlie,
 		false,
 	)
 	assert.String(t, Line, c.Type)

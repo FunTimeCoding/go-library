@@ -2,7 +2,7 @@ package packages
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"gitlab.com/gitlab-org/api/client-go/v2"
 	"testing"
 )
@@ -16,10 +16,10 @@ func TestLatest(t *testing.T) {
 		},
 		Latest(
 			[]*gitlab.Package{
-				{Name: strings.Alfa, Version: "v1.0.0"},
-				{Name: strings.Alfa, Version: "v1.0.2"},
-				{Name: strings.Alfa, Version: "v1.0.1"},
-				{Name: strings.Bravo, Version: "v1.1.0"},
+				{Name: upper.Alfa, Version: "v1.0.0"},
+				{Name: upper.Alfa, Version: "v1.0.2"},
+				{Name: upper.Alfa, Version: "v1.0.1"},
+				{Name: upper.Bravo, Version: "v1.1.0"},
 			},
 		),
 	)

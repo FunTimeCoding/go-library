@@ -2,10 +2,10 @@ package push
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
 func TestPush(t *testing.T) {
-	assert.NotNil(t, New(strings.Alfa, 0, false, strings.Bravo))
+	assert.NotNil(t, New(upper.Alfa, 0, false, upper.Bravo))
 }

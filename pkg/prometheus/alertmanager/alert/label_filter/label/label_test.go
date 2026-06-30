@@ -2,13 +2,13 @@ package label
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
 func TestLabel(t *testing.T) {
 	assert.True(
 		t,
-		New(strings.Alfa, strings.Bravo).Match("Alfa", "Bravo"),
+		New(upper.Alfa, upper.Bravo).Match(upper.Alfa, upper.Bravo),
 	)
 }

@@ -3,18 +3,18 @@ package label_filter
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/prometheus/alertmanager/alert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
 func TestFilter(t *testing.T) {
 	fixture := []*alert.Alert{
 		{
-			Name:   strings.Alfa,
+			Name:   upper.Alfa,
 			Labels: map[string]string{"Apple": "Red"},
 		},
 		{
-			Name:   strings.Bravo,
+			Name:   upper.Bravo,
 			Labels: map[string]string{"Banana": "Yellow"},
 		},
 	}
@@ -26,11 +26,11 @@ func TestFilter(t *testing.T) {
 	assertHasOnly(t, f2.Run(fixture), "Bravo")
 	fixtureValue := []*alert.Alert{
 		{
-			Name:   strings.Alfa,
+			Name:   upper.Alfa,
 			Labels: map[string]string{"Apple": "Red"},
 		},
 		{
-			Name:   strings.Alfa,
+			Name:   upper.Alfa,
 			Labels: map[string]string{"Apple": "Green"},
 		},
 	}

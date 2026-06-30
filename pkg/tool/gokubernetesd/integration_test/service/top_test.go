@@ -5,7 +5,7 @@ package service
 import (
 	"context"
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/funtimecoding/go-library/pkg/tool/gokubernetesd/integration_test/service_tester"
 	"github.com/funtimecoding/go-library/pkg/tool/gokubernetesd/service"
 	"testing"
@@ -13,12 +13,12 @@ import (
 
 func TestTopNodes(t *testing.T) {
 	s := service_tester.New(t)
-	s.AddNode(strings.Alfa, 2, 8)
-	s.AddNodeMetrics(strings.Alfa, "500m", "4Gi")
+	s.AddNode(upper.Alfa, 2, 8)
+	s.AddNodeMetrics(upper.Alfa, "500m", "4Gi")
 	result, e := s.Service.TopNodes(context.Background(), "test")
 	assert.Nil(t, e)
 	assert.Count(t, 1, result)
-	assert.String(t, strings.Alfa, result[0].Name)
+	assert.String(t, upper.Alfa, result[0].Name)
 	assert.String(t, "500m", result[0].CPU)
 	assert.String(t, "25%", result[0].CPUPercent)
 	assert.String(t, "50%", result[0].MemoryPercent)

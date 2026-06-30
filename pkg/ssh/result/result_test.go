@@ -2,7 +2,7 @@ package result
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -15,6 +15,6 @@ func TestResult(t *testing.T) {
 			Exit:         1,
 			Error:        nil,
 		},
-		New(strings.Alfa, strings.Bravo, 1, nil),
+		New(upper.Alfa, upper.Bravo, 1, nil),
 	)
 }

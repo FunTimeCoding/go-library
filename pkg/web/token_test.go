@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/funtimecoding/go-library/pkg/web/constant"
 	"net/http"
 	"testing"
@@ -10,7 +10,7 @@ import (
 
 func TestToken(t *testing.T) {
 	r := NewGet(constant.Localhost)
-	Token(r, strings.Alfa)
+	Token(r, upper.Alfa)
 	assert.Any(
 		t,
 		http.Header{"Authorization": {"Token Alfa"}},

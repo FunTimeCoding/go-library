@@ -1,7 +1,10 @@
 package kubernetes
 
-import "testing"
+import (
+	"github.com/funtimecoding/go-library/pkg/strings/lower"
+	"testing"
+)
 
 func TestValidateName(t *testing.T) {
-	ValidateName("alfa")
+	ValidateName(lower.Alfa)
 }

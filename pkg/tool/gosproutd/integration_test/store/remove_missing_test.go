@@ -11,10 +11,10 @@ import (
 func TestRemoveMissingDeletesAbsentPaths(t *testing.T) {
 	s := store_tester.New(t)
 	threeSeeds(s)
-	s.Store.RemoveMissing([]string{"alpha.md", "charlie.md"})
+	s.Store.RemoveMissing([]string{"alfa.md", "charlie.md"})
 	seeds := s.Store.Seeds()
 	assert.Count(t, 2, seeds)
-	assert.String(t, "alpha", seeds[0].Name)
+	assert.String(t, "alfa", seeds[0].Name)
 	assert.String(t, "charlie", seeds[1].Name)
 }
 

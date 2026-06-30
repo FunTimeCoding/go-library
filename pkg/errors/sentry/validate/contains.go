@@ -1,4 +1,4 @@
-package helper
+package validate
 
 import (
 	"github.com/funtimecoding/go-library/pkg/strings/join"
@@ -6,7 +6,7 @@ import (
 	"slices"
 )
 
-func ValidateContains(
+func Contains(
 	valid []string,
 	s string,
 ) {

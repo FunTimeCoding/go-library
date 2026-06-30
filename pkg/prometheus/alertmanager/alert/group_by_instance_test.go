@@ -2,7 +2,7 @@ package alert
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"github.com/prometheus/common/model"
 	"testing"
@@ -35,21 +35,21 @@ func TestGroupByInstance(t *testing.T) {
 		GroupByInstance(
 			[]*Alert{
 				{
-					Name:        strings.Alfa,
+					Name:        upper.Alfa,
 					Fingerprint: "fingerprint1",
 					Labels: models.LabelSet{
 						model.InstanceLabel: "instance1",
 					},
 				},
 				{
-					Name:        strings.Bravo,
+					Name:        upper.Bravo,
 					Fingerprint: "fingerprint2",
 					Labels: models.LabelSet{
 						model.InstanceLabel: "instance1",
 					},
 				},
 				{
-					Name:        strings.Charlie,
+					Name:        upper.Charlie,
 					Fingerprint: "fingerprint3",
 					Labels: models.LabelSet{
 						model.InstanceLabel: "instance2",

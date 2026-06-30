@@ -2,25 +2,25 @@ package contains
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
 func TestAny(t *testing.T) {
-	assert.True(t, Any([]string{strings.Alfa}, []string{strings.Alfa}))
-	assert.False(t, Any([]string{strings.Alfa}, []string{strings.Bravo}))
+	assert.True(t, Any([]string{upper.Alfa}, []string{upper.Alfa}))
+	assert.False(t, Any([]string{upper.Alfa}, []string{upper.Bravo}))
 	assert.True(
 		t,
 		Any(
-			[]string{strings.Alfa, strings.Bravo, strings.Charlie},
-			[]string{strings.Alfa},
+			[]string{upper.Alfa, upper.Bravo, upper.Charlie},
+			[]string{upper.Alfa},
 		),
 	)
 	assert.False(
 		t,
 		Any(
-			[]string{strings.Alfa, strings.Bravo, strings.Charlie},
-			[]string{strings.Delta},
+			[]string{upper.Alfa, upper.Bravo, upper.Charlie},
+			[]string{upper.Delta},
 		),
 	)
 }

@@ -3,14 +3,14 @@ package lint
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
 	"github.com/funtimecoding/go-library/pkg/lint/constant"
-	stringLibrary "github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"strings"
 	"testing"
 )
 
 func TestStrayConstantFlagged(t *testing.T) {
 	l := StrayConstant(
-		stringLibrary.Alfa,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nconst Foo = 1\n",
 		),
@@ -36,7 +36,7 @@ func TestStrayConstantFlagged(t *testing.T) {
 
 func TestStrayConstantBlockFlagged(t *testing.T) {
 	l := StrayConstant(
-		stringLibrary.Bravo,
+		upper.Bravo,
 		strings.NewReader(
 			"package example\n\nconst (\n\tFoo = 1\n\tBar = 2\n)\n",
 		),
@@ -82,7 +82,7 @@ func TestStrayConstantExemptByFilenameTest(t *testing.T) {
 
 func TestStrayConstantExemptByPackage(t *testing.T) {
 	l := StrayConstant(
-		stringLibrary.Charlie,
+		upper.Charlie,
 		strings.NewReader(
 			"package constant\n\nconst Foo = 1\n",
 		),
@@ -92,7 +92,7 @@ func TestStrayConstantExemptByPackage(t *testing.T) {
 
 func TestStrayConstantInsideFunctionNotFlagged(t *testing.T) {
 	l := StrayConstant(
-		stringLibrary.Delta,
+		upper.Delta,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tconst x = 1\n\t_ = x\n}\n",
 		),

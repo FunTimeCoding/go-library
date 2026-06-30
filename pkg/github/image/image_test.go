@@ -5,7 +5,7 @@ import (
 	"github.com/funtimecoding/go-library/pkg/assert"
 	"github.com/funtimecoding/go-library/pkg/errors"
 	"github.com/funtimecoding/go-library/pkg/github/constant"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/google/go-github/v88/github"
 	"testing"
 	"time"
@@ -16,7 +16,7 @@ func TestImage(t *testing.T) {
 		github.PackageMetadata{
 			PackageType: new(constant.ContainerPackageType),
 			Container: &github.PackageContainerMetadata{
-				Tags: []string{strings.Alfa},
+				Tags: []string{upper.Alfa},
 			},
 		},
 	)
@@ -24,7 +24,7 @@ func TestImage(t *testing.T) {
 	i := New(
 		&github.PackageVersion{
 			ID:        new(int64(1)),
-			Name:      new(strings.Bravo),
+			Name:      new(upper.Bravo),
 			CreatedAt: &github.Timestamp{},
 			Metadata:  meta,
 		},
@@ -34,8 +34,8 @@ func TestImage(t *testing.T) {
 		t,
 		&Image{
 			Identifier: 1,
-			Digest:     strings.Bravo,
-			Tags:       []string{strings.Alfa},
+			Digest:     upper.Bravo,
+			Tags:       []string{upper.Alfa},
 			Create:     time.Time{},
 		},
 		i,

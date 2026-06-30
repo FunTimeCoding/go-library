@@ -2,7 +2,7 @@ package release
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"github.com/google/go-github/v88/github"
 	"testing"
 	"time"
@@ -11,7 +11,7 @@ import (
 func TestRelease(t *testing.T) {
 	r := New(
 		&github.RepositoryRelease{
-			TagName:   new(strings.Alfa),
+			TagName:   new(upper.Alfa),
 			CreatedAt: &github.Timestamp{},
 		},
 	)

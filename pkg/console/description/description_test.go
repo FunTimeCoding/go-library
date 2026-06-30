@@ -2,7 +2,7 @@ package description
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"testing"
 )
 
@@ -10,11 +10,11 @@ func TestDescription(t *testing.T) {
 	assert.Any(
 		t,
 		&Description{Title: "Alfa", Short: "Bravo"},
-		New(strings.Alfa, strings.Bravo),
+		New(upper.Alfa, upper.Bravo),
 	)
 	assert.Any(
 		t,
 		&Description{Type: "Alfa", Title: "Bravo", Short: "Charlie"},
-		NewType(strings.Alfa, strings.Bravo, strings.Charlie),
+		NewType(upper.Alfa, upper.Bravo, upper.Charlie),
 	)
 }

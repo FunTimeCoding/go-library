@@ -2,7 +2,7 @@ package node
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
-	"github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	core "k8s.io/api/core/v1"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
@@ -12,7 +12,7 @@ func TestNode(t *testing.T) {
 	assert.NotNil(
 		t,
 		New(
-			&core.Node{ObjectMeta: meta.ObjectMeta{Name: strings.Alfa}},
+			&core.Node{ObjectMeta: meta.ObjectMeta{Name: upper.Alfa}},
 			"",
 		),
 	)

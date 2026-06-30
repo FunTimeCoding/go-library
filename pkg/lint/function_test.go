@@ -2,14 +2,14 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
-	library "github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"strings"
 	"testing"
 )
 
 func TestFunctionEmptyBody(t *testing.T) {
 	l := Function(
-		library.Bravo,
+		upper.Bravo,
 		strings.NewReader(
 			"package main\n\nfunc main() {\n}\n",
 		),
@@ -36,7 +36,7 @@ func TestFunctionEmptyBody(t *testing.T) {
 
 func TestFunctionClean(t *testing.T) {
 	l := Function(
-		library.Alfa,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tfmt.Println(\"hello\")\n}\n",
 		),

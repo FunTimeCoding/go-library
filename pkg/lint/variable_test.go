@@ -2,14 +2,14 @@ package lint
 
 import (
 	"github.com/funtimecoding/go-library/pkg/lint/concern"
-	library "github.com/funtimecoding/go-library/pkg/strings"
+	"github.com/funtimecoding/go-library/pkg/strings/upper"
 	"strings"
 	"testing"
 )
 
 func TestVariableErrorAssignment(t *testing.T) {
 	l := Variable(
-		library.Alfa,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\terr := foo()\n}\n",
 		),
@@ -35,7 +35,7 @@ func TestVariableErrorAssignment(t *testing.T) {
 
 func TestVariableErrorMultiReturn(t *testing.T) {
 	l := Variable(
-		library.Bravo,
+		upper.Bravo,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\tx, err := foo()\n}\n",
 		),
@@ -61,7 +61,7 @@ func TestVariableErrorMultiReturn(t *testing.T) {
 
 func TestVariableErrorComparison(t *testing.T) {
 	l := Variable(
-		library.Charlie,
+		upper.Charlie,
 		strings.NewReader(
 			"package example\n\nfunc Example() bool {\n\treturn err == nil\n}\n",
 		),
@@ -71,7 +71,7 @@ func TestVariableErrorComparison(t *testing.T) {
 
 func TestVariableEOkay(t *testing.T) {
 	l := Variable(
-		library.Delta,
+		upper.Delta,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\te := foo()\n}\n",
 		),
@@ -81,20 +81,20 @@ func TestVariableEOkay(t *testing.T) {
 
 func TestVariableErrorInString(t *testing.T) {
 	l := Variable(
-		library.Foxtrot,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\nfunc Example() {\n\ts := \"err := foo()\"\n\t_ = s\n}\n",
 		),
 	)
-	assertReport(t, "Foxtrot", false, nil, "", l)
+	assertReport(t, "Alfa", false, nil, "", l)
 }
 
 func TestVariableErrorComment(t *testing.T) {
 	l := Variable(
-		library.Echo,
+		upper.Alfa,
 		strings.NewReader(
 			"package example\n\n// err := foo()\n",
 		),
 	)
-	assertReport(t, "Echo", false, nil, "", l)
+	assertReport(t, "Alfa", false, nil, "", l)
 }

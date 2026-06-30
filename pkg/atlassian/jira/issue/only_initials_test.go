@@ -2,6 +2,7 @@ package issue
 
 import (
 	"github.com/funtimecoding/go-library/pkg/assert"
+	"github.com/funtimecoding/go-library/pkg/strings/capital"
 	"testing"
 )
 
@@ -10,8 +11,11 @@ func TestOnlyInitials(t *testing.T) {
 		t,
 		[]*Issue{{Initials: "ALFA"}},
 		OnlyInitials(
-			[]*Issue{{Initials: "ALFA"}, {Initials: "BRAVO"}},
-			"ALFA",
+			[]*Issue{
+				{Initials: capital.Alfa},
+				{Initials: capital.Bravo},
+			},
+			capital.Alfa,
 		),
 	)
 }

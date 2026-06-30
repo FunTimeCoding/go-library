@@ -3,7 +3,6 @@ package service
 func (s *Service) Sync(files []DiscoveredFile) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-
 	var paths []string
 
 	for _, f := range files {

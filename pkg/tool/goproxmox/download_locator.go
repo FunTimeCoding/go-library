@@ -19,15 +19,17 @@ func downloadLocator(c *command_context.Context) *cobra.Command {
 			_ *cobra.Command,
 			a []string,
 		) {
-			fmt.Println(c.Client().DownloadLocator(
-				a[0],
-				a[1],
-				client.DownloadLocatorJSONRequestBody{
-					Content:  content,
-					Filename: filename,
-					Locator:  a[2],
-				},
-			))
+			fmt.Println(
+				c.Client().DownloadLocator(
+					a[0],
+					a[1],
+					client.DownloadLocatorJSONRequestBody{
+						Content:  content,
+						Filename: filename,
+						Locator:  a[2],
+					},
+				),
+			)
 		},
 	}
 	result.Flags().StringVar(

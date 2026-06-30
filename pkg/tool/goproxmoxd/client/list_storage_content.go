@@ -6,7 +6,10 @@ import (
 	"github.com/funtimecoding/go-library/pkg/web"
 )
 
-func (c *Client) ListStorageContent(name string, storage string) string {
+func (c *Client) ListStorageContent(
+	name string,
+	storage string,
+) string {
 	result, e := c.client.ListStorageContentWithResponse(
 		c.context,
 		name,

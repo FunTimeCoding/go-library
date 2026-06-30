@@ -34,7 +34,12 @@ func (s *Server) CreateContainerSnapshot(
 		return s.captureDetail(e)
 	}
 
-	taskID, e := s.service.CreateContainerSnapshot(c, a.Identifier, a.Node, a.Name)
+	taskID, e := s.service.CreateContainerSnapshot(
+		c,
+		a.Identifier,
+		a.Node,
+		a.Name,
+	)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {

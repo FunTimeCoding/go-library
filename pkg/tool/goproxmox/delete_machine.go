@@ -37,7 +37,12 @@ func deleteMachine(c *command_context.Context) *cobra.Command {
 		},
 	}
 	result.Flags().StringVar(&node, "node", "", "node name")
-	result.Flags().BoolVar(&purge, "purge", false, "remove from cluster config")
+	result.Flags().BoolVar(
+		&purge,
+		"purge",
+		false,
+		"remove from cluster config",
+	)
 
 	return result
 }

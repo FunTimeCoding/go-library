@@ -27,7 +27,13 @@ func rollbackContainerSnapshot(c *command_context.Context) *cobra.Command {
 				n = &node
 			}
 
-			fmt.Println(c.Client().RollbackContainerSnapshot(identifier, name, n))
+			fmt.Println(
+				c.Client().RollbackContainerSnapshot(
+					identifier,
+					name,
+					n,
+				),
+			)
 		},
 	}
 	result.Flags().StringVar(&node, "node", "", "node name")

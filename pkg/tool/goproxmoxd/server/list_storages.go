@@ -37,16 +37,17 @@ func (s *Server) ListStorages(
 		result = append(
 			result,
 			server.Storage{
-			Name:    v.Name,
-			Type:    &v.Type,
-			Content: &v.Content,
-			Enabled: new(v.Enabled == 1),
-			Shared:  new(v.Shared == 1),
-			Active:  new(v.Active == 1),
-			Avail:   new(int64(v.Avail)),
-			Used:    new(int64(v.Used)),
-			Total:   new(int64(v.Total)),
-		})
+				Name:    v.Name,
+				Type:    &v.Type,
+				Content: &v.Content,
+				Enabled: new(v.Enabled == 1),
+				Shared:  new(v.Shared == 1),
+				Active:  new(v.Active == 1),
+				Avail:   new(int64(v.Avail)),
+				Used:    new(int64(v.Used)),
+				Total:   new(int64(v.Total)),
+			},
+		)
 	}
 
 	return result, nil

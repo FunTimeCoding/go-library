@@ -34,7 +34,12 @@ func (s *Server) CreateMachineSnapshot(
 		return s.captureDetail(e)
 	}
 
-	taskID, e := s.service.CreateMachineSnapshot(c, a.Identifier, a.Node, a.Name)
+	taskID, e := s.service.CreateMachineSnapshot(
+		c,
+		a.Identifier,
+		a.Node,
+		a.Name,
+	)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {

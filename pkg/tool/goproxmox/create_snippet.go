@@ -18,12 +18,14 @@ func createSnippet(c *command_context.Context) *cobra.Command {
 			_ *cobra.Command,
 			a []string,
 		) {
-			fmt.Println(c.Client().CreateSnippet(
-				client.CreateSnippetJSONRequestBody{
-					Name:    a[0],
-					Content: content,
-				},
-			))
+			fmt.Println(
+				c.Client().CreateSnippet(
+					client.CreateSnippetJSONRequestBody{
+						Name:    a[0],
+						Content: content,
+					},
+				),
+			)
 		},
 	}
 	result.Flags().StringVar(

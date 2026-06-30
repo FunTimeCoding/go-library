@@ -35,9 +35,10 @@ func (s *Server) ListSnippets(
 		result = append(
 			result,
 			server.SnippetItem{
-			Name: v.Name(),
-			Size: new(int64(v.Size())),
-		})
+				Name: v.Name(),
+				Size: new(int64(v.Size())),
+			},
+		)
 	}
 
 	return result, nil

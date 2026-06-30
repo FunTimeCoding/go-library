@@ -113,15 +113,30 @@ func createMachine(c *command_context.Context) *cobra.Command {
 	}
 	result.Flags().StringVar(&node, "node", "", "target node")
 	result.Flags().StringVar(&name, "name", "", "VM name")
-	result.Flags().StringVar(&diskImport, "disk-import", "", "import-from path")
+	result.Flags().StringVar(
+		&diskImport,
+		"disk-import",
+		"",
+		"import-from path",
+	)
 	result.Flags().IntVar(&diskSize, "disk-size", 0, "disk size in GiB")
-	result.Flags().StringVar(&diskStorage, "disk-storage", "", "storage backend")
+	result.Flags().StringVar(
+		&diskStorage,
+		"disk-storage",
+		"",
+		"storage backend",
+	)
 	result.Flags().StringVar(&cdrom, "cdrom", "", "ISO volume")
 	result.Flags().StringVar(&bridge, "bridge", "", "network bridge")
 	result.Flags().StringVar(&cpuType, "cpu-type", "", "CPU type")
 	result.Flags().StringVar(&osType, "os-type", "", "OS type")
 	result.Flags().StringVar(&ciUser, "ci-user", "", "cloud-init user")
-	result.Flags().StringVar(&ciPassword, "ci-password", "", "cloud-init password")
+	result.Flags().StringVar(
+		&ciPassword,
+		"ci-password",
+		"",
+		"cloud-init password",
+	)
 	result.Flags().StringVar(&sshKeys, "ssh-keys", "", "SSH public keys")
 	result.Flags().StringVar(
 		&ipConfiguration,

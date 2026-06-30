@@ -30,7 +30,11 @@ func (s *Server) ListContainerSnapshots(
 		node = *r.Params.Node
 	}
 
-	snapshots, e := s.service.ListContainerSnapshots(c, int(r.Identifier), node)
+	snapshots, e := s.service.ListContainerSnapshots(
+		c,
+		int(r.Identifier),
+		node,
+	)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {

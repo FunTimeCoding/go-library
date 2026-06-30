@@ -39,10 +39,11 @@ func (s *Server) ListStorageContent(
 		result = append(
 			result,
 			server.StorageContentItem{
-			Volume: v.Volid,
-			Format: &v.Format,
-			Size:   new(int64(v.Size)),
-		})
+				Volume: v.Volid,
+				Format: &v.Format,
+				Size:   new(int64(v.Size)),
+			},
+		)
 	}
 
 	return result, nil

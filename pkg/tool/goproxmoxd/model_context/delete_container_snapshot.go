@@ -34,7 +34,12 @@ func (s *Server) DeleteContainerSnapshot(
 		return s.captureDetail(e)
 	}
 
-	taskID, e := s.service.DeleteContainerSnapshot(c, a.Identifier, a.Node, a.Name)
+	taskID, e := s.service.DeleteContainerSnapshot(
+		c,
+		a.Identifier,
+		a.Node,
+		a.Name,
+	)
 
 	if e != nil {
 		if errors.Is(e, not_found.Sentinel) {

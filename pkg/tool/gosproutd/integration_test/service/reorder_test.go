@@ -14,8 +14,18 @@ func TestMoveUpNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	s.Service.Sync(
 		[]service.DiscoveredFile{
-			{Name: lower.Alfa, Path: "alfa.md", ContentHash: "a", Content: "a"},
-			{Name: lower.Bravo, Path: "bravo.md", ContentHash: "b", Content: "b"},
+			{
+				Name:        lower.Alfa,
+				Path:        "alfa.md",
+				ContentHash: "a",
+				Content:     "a",
+			},
+			{
+				Name:        lower.Bravo,
+				Path:        "bravo.md",
+				ContentHash: "b",
+				Content:     "b",
+			},
 		},
 	)
 	s.Notifier.Reset()
@@ -28,8 +38,18 @@ func TestSetPositionNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	s.Service.Sync(
 		[]service.DiscoveredFile{
-			{Name: lower.Alfa, Path: "alfa.md", ContentHash: "a", Content: "a"},
-			{Name: lower.Bravo, Path: "bravo.md", ContentHash: "b", Content: "b"},
+			{
+				Name:        lower.Alfa,
+				Path:        "alfa.md",
+				ContentHash: "a",
+				Content:     "a",
+			},
+			{
+				Name:        lower.Bravo,
+				Path:        "bravo.md",
+				ContentHash: "b",
+				Content:     "b",
+			},
 			{
 				Name:        lower.Charlie,
 				Path:        "charlie.md",
@@ -48,8 +68,18 @@ func TestReorderNotifies(t *testing.T) {
 	s := service_tester.New(t)
 	s.Service.Sync(
 		[]service.DiscoveredFile{
-			{Name: lower.Alfa, Path: "alfa.md", ContentHash: "a", Content: "a"},
-			{Name: lower.Bravo, Path: "bravo.md", ContentHash: "b", Content: "b"},
+			{
+				Name:        lower.Alfa,
+				Path:        "alfa.md",
+				ContentHash: "a",
+				Content:     "a",
+			},
+			{
+				Name:        lower.Bravo,
+				Path:        "bravo.md",
+				ContentHash: "b",
+				Content:     "b",
+			},
 		},
 	)
 	seeds := s.Service.Seeds()

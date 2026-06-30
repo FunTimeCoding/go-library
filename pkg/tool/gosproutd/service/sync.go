@@ -1,6 +1,9 @@
 package service
 
 func (s *Service) Sync(files []DiscoveredFile) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
 	var paths []string
 
 	for _, f := range files {
@@ -9,5 +12,6 @@ func (s *Service) Sync(files []DiscoveredFile) {
 	}
 
 	s.store.RemoveMissing(paths)
+	s.store.Compact()
 	s.notifier.Notify()
 }

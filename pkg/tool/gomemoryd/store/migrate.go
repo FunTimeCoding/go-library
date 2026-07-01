@@ -24,4 +24,10 @@ func migrate(d *sql.DB) {
 		constant.Source,
 		"TEXT NOT NULL DEFAULT ''",
 	)
+	addColumnIfMissing(
+		d,
+		"memory",
+		"parent_identifier",
+		"INTEGER REFERENCES memory(identifier)",
+	)
 }

@@ -14,13 +14,20 @@ import (
 )
 
 type profileResult struct {
-	Always   []profileMemory `json:"always"`
-	Relevant []profileMemory `json:"relevant"`
+	Always   []profileMemory  `json:"always"`
+	Relevant []profileMemory  `json:"relevant"`
+	Index    []profileSummary `json:"index"`
 }
 
 type profileMemory struct {
 	Identifier int64  `json:"identifier"`
 	Name       string `json:"name"`
+}
+
+type profileSummary struct {
+	Identifier int64    `json:"identifier"`
+	Name       string   `json:"name"`
+	Children   []string `json:"children,omitempty"`
 }
 
 func collectIDs(memories []profileMemory) []int64 {

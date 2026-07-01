@@ -16,6 +16,7 @@ func TestServiceCreateMemory(t *testing.T) {
 		"retry with backoff",
 		"",
 		"test",
+		nil,
 	)
 	assert.FatalOnError(t, e)
 	assert.String(t, "retry policy", m.Name)
@@ -32,6 +33,7 @@ func TestServiceCreateMemoryWithExplicitType(t *testing.T) {
 		"blue-green deploy pattern",
 		"user",
 		"test",
+		nil,
 	)
 	assert.FatalOnError(t, e)
 	assert.String(t, "user", m.Type)

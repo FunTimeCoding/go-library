@@ -17,7 +17,8 @@ func initialize(database *sql.DB) {
 			created_at  TEXT NOT NULL,
 			updated_at  TEXT NOT NULL,
 			embedding   BLOB,
-			is_active   INTEGER NOT NULL DEFAULT 1
+			is_active   INTEGER NOT NULL DEFAULT 1,
+			parent_identifier INTEGER REFERENCES memory(identifier)
 		)`,
 		"CREATE INDEX IF NOT EXISTS idx_memory_type ON memory(type, is_active)",
 		"CREATE INDEX IF NOT EXISTS idx_memory_active ON memory(is_active)",

@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-const profileBudget = 15000
-
 func (s *Service) Profile(
 	topic string,
 	detail bool,
@@ -25,7 +23,7 @@ func (s *Service) Profile(
 
 	result := &ProfileResult{Always: always}
 	alwaysTokens := s.countTokens(always)
-	remaining := profileBudget - alwaysTokens
+	remaining := constant.ProfileBudget - alwaysTokens
 
 	if remaining < 0 {
 		remaining = 0
@@ -43,11 +41,30 @@ func (s *Service) Profile(
 		return nil, nil, fmt.Errorf("%w: %v", ErrorMemoryList, e)
 	}
 
+	childrenByParent := map[int64][]string{}
+
+	for _, m := range allMemories {
+		if m.ParentIdentifier != nil {
+			childrenByParent[*m.ParentIdentifier] = append(
+				childrenByParent[*m.ParentIdentifier],
+				m.Name,
+			)
+		}
+	}
+
 	indexTrimmed := 0
 
 	for _, m := range allMemories {
 		if alwaysIDs[m.Identifier] {
 			continue
+		}
+
+		if m.ParentIdentifier != nil {
+			continue
+		}
+
+		if children, found := childrenByParent[m.Identifier]; found {
+			m.Children = children
 		}
 
 		tokens := s.countTokens(m)
@@ -142,7 +159,7 @@ func (s *Service) Profile(
 
 	if detail {
 		d = &ProfileDetail{
-			Budget:             profileBudget,
+			Budget:             constant.ProfileBudget,
 			AlwaysTokens:       alwaysTokens,
 			IndexTokens:        s.countTokens(result.Index),
 			IndexTrimmed:       indexTrimmed,
@@ -152,7 +169,7 @@ func (s *Service) Profile(
 			ImpressionsTrimmed: impressionsTrimmed,
 			RelevantTokens:     s.countTokens(result.Relevant),
 			RelevantTrimmed:    relevantTrimmed,
-			TotalTokens:        profileBudget - remaining,
+			TotalTokens:        constant.ProfileBudget - remaining,
 		}
 	}
 

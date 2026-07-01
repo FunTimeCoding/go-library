@@ -36,6 +36,10 @@ func (s *Server) register() {
 				constant.Source,
 				mcp.Description("Session name of the caller (optional, for version attribution)"),
 			),
+			mcp.WithNumber(
+				constant.ParentIdentifier,
+				mcp.Description("Parent memory ID (optional, for hierarchy)"),
+			),
 		),
 		s.create,
 	)
@@ -213,5 +217,23 @@ func (s *Server) register() {
 			),
 		),
 		s.tag,
+	)
+	s.server.AddTool(
+		mcp.NewTool(
+			constant.SetParent,
+			mcp.WithDescription(
+				"Set or unset the parent of a memory. Pass parent_id to set, omit to unset. Children are collapsed under their parent in the profile index.",
+			),
+			mcp.WithNumber(
+				constant.MemoryIdentifier,
+				mcp.Required(),
+				mcp.Description("Memory ID"),
+			),
+			mcp.WithNumber(
+				constant.ParentIdentifier,
+				mcp.Description("Parent memory ID (omit to unset)"),
+			),
+		),
+		s.setParent,
 	)
 }

@@ -234,6 +234,10 @@ components:
             type: string
         updated_at:
           type: string
+        children:
+          type: array
+          items:
+            type: string
     ProfileImpression:
       type: object
       required: [identifier, content, source, created_at]

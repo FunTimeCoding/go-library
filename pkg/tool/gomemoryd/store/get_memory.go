@@ -2,7 +2,7 @@ package store
 
 func (s *Store) GetMemory(identifier int64) (*Memory, error) {
 	row := s.database.QueryRow(
-		`SELECT identifier, name, content, description, type, created_at, updated_at, is_active
+		`SELECT identifier, name, content, description, type, created_at, updated_at, is_active, parent_identifier
 		FROM memory WHERE identifier = ?`,
 		identifier,
 	)
@@ -17,6 +17,7 @@ func (s *Store) GetMemory(identifier int64) (*Memory, error) {
 		&m.CreatedAt,
 		&m.UpdatedAt,
 		&active,
+		&m.ParentIdentifier,
 	)
 
 	if e != nil {

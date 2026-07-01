@@ -17,6 +17,7 @@ func TestServiceUpdateMemoryPreservesTags(t *testing.T) {
 		"original desc",
 		"feedback",
 		"test",
+		nil,
 	)
 	assert.FatalOnError(t, e)
 	assert.FatalOnError(

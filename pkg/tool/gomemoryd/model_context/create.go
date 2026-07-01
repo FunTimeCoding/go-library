@@ -30,12 +30,20 @@ func (s *Server) create(
 		return response.Fail("description is required")
 	}
 
+	var parentIdentifier *int64
+
+	if parentID := q.GetFloat(constant.ParentIdentifier, 0); parentID > 0 {
+		identifier := int64(parentID)
+		parentIdentifier = &identifier
+	}
+
 	m, h := s.service.CreateMemory(
 		name,
 		content,
 		description,
 		q.GetString(constant.Type, ""),
 		q.GetString(constant.Source, ""),
+		parentIdentifier,
 	)
 
 	if h != nil {

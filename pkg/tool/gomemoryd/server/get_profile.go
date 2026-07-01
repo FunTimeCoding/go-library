@@ -86,6 +86,10 @@ func (s *Server) GetProfile(
 			entry.Tags = &m.Tags
 		}
 
+		if len(m.Children) > 0 {
+			entry.Children = &m.Children
+		}
+
 		response.Index = append(response.Index, entry)
 	}
 

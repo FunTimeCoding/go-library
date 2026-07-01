@@ -17,6 +17,7 @@ func TestServiceForgetMemory(t *testing.T) {
 		"desc",
 		"feedback",
 		"test",
+		nil,
 	)
 	assert.FatalOnError(t, e)
 	assert.FatalOnError(t, o.Service.ForgetMemory(m.Identifier, "test"))

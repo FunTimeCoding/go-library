@@ -22,6 +22,7 @@ const (
 	ForgetMemory   = "forget_memory"
 	SearchMemories = "search_memories"
 	RelateMemories = "relate_memories"
+	SetParent      = "set_parent"
 	TagMemory      = "tag_memory"
 	ListTags       = "list_tags"
 
@@ -34,6 +35,7 @@ const (
 	MemoryIdentifier = "memory_id"
 	SourceIdentifier = "source_id"
 	TargetIdentifier = "target_id"
+	ParentIdentifier = "parent_id"
 	IncludeHistory   = "include_history"
 	Topic            = "topic"
 	AlwaysTag        = "always"
@@ -51,6 +53,8 @@ const (
 	SearchPath       = "/search"
 	Identifier       = "identifier"
 	Query            = "query"
+
+	ProfileBudget = 15000
 
 	FixtureName    = "name"
 	FixtureContent = "content"

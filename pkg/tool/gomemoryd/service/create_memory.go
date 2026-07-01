@@ -12,6 +12,7 @@ func (s *Service) CreateMemory(
 	description string,
 	memoryType string,
 	source string,
+	parentIdentifier *int64,
 ) (*store.Memory, error) {
 	if memoryType == "" {
 		memoryType = "feedback"
@@ -23,6 +24,7 @@ func (s *Service) CreateMemory(
 	o.Description = description
 	o.Type = memoryType
 	o.Source = source
+	o.ParentIdentifier = parentIdentifier
 	identifier, e := s.store.CreateMemory(o)
 
 	if e != nil {

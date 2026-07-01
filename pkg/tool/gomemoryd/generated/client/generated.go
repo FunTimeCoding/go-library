@@ -93,6 +93,7 @@ type ProfileSearchResult struct {
 
 // ProfileSummary defines model for ProfileSummary.
 type ProfileSummary struct {
+	Children    *[]string `json:"children,omitempty"`
 	Description string    `json:"description"`
 	Identifier  int       `json:"identifier"`
 	Name        string    `json:"name"`

@@ -15,14 +15,15 @@ func (s *Store) CreateMemory(o *save_option.Option) (int64, error) {
 
 	defer rollback(t)
 	result, e := t.Exec(
-		`INSERT INTO memory (name, content, description, type, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?)`,
+		`INSERT INTO memory (name, content, description, type, created_at, updated_at, parent_identifier)
+		VALUES (?, ?, ?, ?, ?, ?, ?)`,
 		o.Name,
 		o.Content,
 		o.Description,
 		o.Type,
 		now,
 		now,
+		o.ParentIdentifier,
 	)
 
 	if e != nil {
